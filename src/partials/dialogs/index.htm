@@ -1,0 +1,434 @@
+
+			<!-- <div class="field-row">
+				<div class="option">
+					<span class="label">Location</span>
+					<ul class="opt-group" data-click="">
+						<li data-arg="inside" class="active">Inside</li>
+						<li data-arg="center">Center</li>
+						<li data-arg="outside">Outside</li>
+					</ul>
+				</div>
+			</div> -->
+
+<div class="dialog-box" data-dlg="dlgGaussianBlur">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Gaussian Blur
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Radius</span>
+					<span class="value"><input type="text" name="radius" value="0px" data-min="0" data-max="50" data-default="0" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-change="set-radius"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgStroke">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Stroke
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Width</span>
+					<span class="value">
+						<input type="text" name="size" value="12px" data-min="2" data-max="100" data-default="12" data-suffix="px">
+					</span>
+				</div>
+				<div class="knob" data-change="set-size"></div>
+			</div>
+			<div class="field-row">
+				<div class="option preset">
+					<span class="label">
+						Color
+					</span>
+					<span class="preset-value">
+						<i class="icon icon-color-preset"></i>
+						<span class="value" style="background: #eb261f;"></span>
+					</span>
+				</div>
+			</div>
+			<div class="field-row">
+				<div class="option select" data-change="set-stroke-location" data-match="//StrokeLocations">
+					<span class="label">Location</span>
+					<span class="fld-value">
+						<span class="value">Inside</span>
+					</span>
+				</div>
+			</div>
+			<div class="field-row">
+				<div class="option select" data-change="set-stroke-blend" data-match="//BlendModes">
+					<span class="label">Blend</span>
+					<span class="fld-value">
+						<span class="value">Normal</span>
+					</span>
+				</div>
+			</div>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Opacity</span>
+					<span class="value">
+						<input type="text" name="opacity" value="100%" data-min="2" data-max="100" data-default="12" data-suffix="%">
+					</span>
+				</div>
+				<div class="knob" data-change="set-opacity"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgMosaic">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Mosaic
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Cell Size</span>
+					<span class="value"><input type="text" name="size" value="12" data-min="2" data-max="100" data-default="12"></span>
+				</div>
+				<div class="knob" data-change="set-size"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgPointillize">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Pointillize
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Cell Size</span>
+					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+				</div>
+				<div class="knob" data-change="set-size"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgCrystallize">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Crystallize
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Cell Size</span>
+					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+				</div>
+				<div class="knob" data-change="set-size"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgSponge">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Sponge
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Intensity</span>
+					<span class="value"><input type="text" name="intensity" value="12" data-min="0" data-max="40" data-default="12"></span>
+				</div>
+				<div class="knob" data-change="set-intensity"></div>
+			</div>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Radius</span>
+					<span class="value"><input type="text" name="radius" value="4" data-min="1" data-max="20" data-default="4"></span>
+				</div>
+				<div class="knob" data-change="set-radius"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgPixelator">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Pixelator
+			</h2>
+			
+			<div class="presets">
+				<div class="preset-head">
+					Presets
+				</div>
+				<ul class="opt-group" data-click="select-preset">
+					<li data-id="prst-1">1</li>
+					<li data-id="prst-2">2</li>
+					<li data-id="prst-3">3</li>
+					<li data-id="prst-4">4</li>
+					<li data-id="prst-5">5</li>
+					<li data-id="prst-6">6</li>
+					<li data-id="prst-7">7</li>
+					<li data-id="prst-8">8</li>
+					<li data-id="prst-9">9</li>
+					<li data-id="prst-10">10</li>
+				</ul>
+			</div>
+
+			<div class="layers">
+				<div class="list-head">
+					<div class="row">
+						<div>Shape</div>
+						<div>Spacing</div>
+						<div>Size</div>
+						<div>Offset</div>
+						<div>Alpha</div>
+					</div>
+				</div>
+				<div class="list-body">
+					<!-- preset layer list goes here -->
+
+					<!-- bubble displayed above bars -->
+					<div class="hover-bubble hidden">100%</div>
+					<!-- knob displayed above layer attribute numbers -->
+					<div class="inline-menubox arrow-below hover-knob hidden">
+						<div class="inline-content"><div class="knob"></div></div>
+					</div>
+					<!-- add more layers -->
+					<div class="add-row" data-click="add-layer">
+						<i class="icon-add-layer"></i>
+						Add Layer
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgThreshold">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Threshold
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Threshold</span>
+					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+				</div>
+				<div class="knob" data-change="set-amount"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgBrightnessContrast">
+	<div class="dlg-content">
+		<div class="fields">
+			<h2>
+				<i class="icon-dlg-close" data-click="dlg-close"></i>
+				Brightness / Contrast
+			</h2>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Brightness</span>
+					<span class="value"><input type="text" name="brightness" value="0" data-min="-150" data-max="150" data-default="0"></span>
+				</div>
+				<div class="pan-knob" data-change="set-brightness"></div>
+			</div>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Contrast</span>
+					<span class="value"><input type="text" name="contrast" value="0" data-min="-100" data-max="100" data-default="0"></span>
+				</div>
+				<div class="pan-knob" data-change="set-contrast"></div>
+			</div>
+		</div>
+		<div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="dialog-box" data-dlg="dlgColors">
+	<div class="dlg-content">
+		
+		<div class="color-box">
+			<div class="cursor"></div>
+		</div>
+
+		<div class="hue-bar">
+			<div class="cursor"></div>
+		</div>
+
+		<div class="fields">
+
+			<div class="field-row">
+				<div class="swatches">
+					<div class="new-color"></div>
+					<div class="current-color"></div>
+				</div>
+
+				<div class="buttons">
+					<div class="button" data-click="dlg-ok">OK</div>
+					<div class="button" data-click="dlg-close">Close</div>
+				</div>
+			</div>
+
+			<div class="field-row color-values">
+				<div class="fields-rgb">
+					<div class="field">
+						<div class="option input">
+							<span class="label">R</span>
+							<span class="value"><input type="text" name="color-rgb-red" disabled value="255"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">G</span>
+							<span class="value"><input type="text" name="color-rgb-green" disabled value="255"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">B</span>
+							<span class="value"><input type="text" name="color-rgb-blue" disabled value="255"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="fields-hsl">
+					<div class="field">
+						<div class="option input">
+							<span class="label">H</span>
+							<span class="value"><input type="text" name="color-hsl-hue" disabled value="0°"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">S</span>
+							<span class="value"><input type="text" name="color-hsl-saturation" disabled value="0%"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">L</span>
+							<span class="value"><input type="text" name="color-hsl-lightness" disabled value="100%"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<hr/>
+
+			<div class="field-row has-knob">
+				<div class="field-opacity">
+					<div class="option input">
+						<span class="label">Opacity</span>
+						<span class="value"><input type="text" name="color-opacity" disabled value="100%" data-min="0" data-max="100" data-suffix="%"></span>
+					</div>
+				</div>
+				<div class="knob" data-change="set-color-opacity"></div>
+			</div>
+
+			<hr/>
+
+			<div class="field-row">
+				<div class="field-hex">
+					<div class="option input">
+						<span class="label">Hex</span>
+						<span class="value">
+							<span class="prefix">#</span>
+							<input type="text" name="color-hex" disabled value="ffffff">
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

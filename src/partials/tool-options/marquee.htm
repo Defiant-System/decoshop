@@ -1,0 +1,87 @@
+<div class="tool-options-marquee hidden" data-area="marquee">
+	<div class="tool tool-marquee-rect down" title="Rectangular Marquee Tool" data-click="select-option" data-arg="rectangle" data-group="options" data-option="main" data-subOptions="basic"></div>
+	<div class="tool tool-marquee-circle" title="Elliptical Marquee Tool" data-click="select-option" data-arg="elliptic" data-group="options" data-option="main" data-subOptions="basic"></div>
+	<div class="tool tool-wand" title="Magic Wand Tool" data-click="select-option" data-arg="magic-wand" data-group="options" data-option="main" data-subOptions="wand"></div>
+	
+	<div class="divider"></div>
+
+	<div class="tool tool-lasso" title="Lasso Tool" data-click="select-option" data-arg="lasso" data-group="options" data-option="main"></div>
+	<div class="tool tool-lasso-polygon" title="Polygonal Lasso Tool" data-click="select-option" data-arg="polygon" data-group="options" data-option="main"></div>
+	<div class="tool tool-lasso-magnetic disabled" title="Magnetic Lasso Tool" data-click="select-option" data-arg="magnetic" data-group="options" data-option="main"></div>
+	
+	<div class="divider"></div>
+	
+	<div class="tool icon-marquee-new down" title="New Selection" data-click="select-method" data-arg="replace" data-group="method"></div>
+	<div class="tool icon-marquee-union" title="Add Selection" data-click="select-method" data-arg="union" data-group="method"></div>
+	<div class="tool icon-marquee-subtract" title="Subtract Selection" data-click="select-method" data-arg="subtract" data-group="method"></div>
+	<div class="tool icon-marquee-intersect" title="Intersect Seelction" data-click="select-method" data-arg="intersect" data-group="method"></div>
+	
+	<div class="divider"></div>
+	
+	<span class="tool-group active" data-subName="basic">
+		<div class="option disabled">
+			<span class="label">Feather</span>
+			<span class="value">0px</span>
+		</div>
+
+		<div class="option check disabled">
+			<span class="value">
+				<input type="checkbox" id="marquee-anti-alias" disabled checked>
+				<i></i>
+			</span>
+			<label class="label" for="marquee-anti-alias">Anti-alias</label>
+		</div>
+
+		<div class="divider"></div>
+		
+		<div class="option select disabled">
+			<span class="label">Style</span>
+			<span class="value">Normal</span>
+		</div>
+
+		<div class="option input hidden">
+			<span class="label">Width:</span>
+			<span class="value"><input type="text"></span>
+		</div>
+
+		<div class="option input hidden">
+			<span class="label">Height:</span>
+			<span class="value"><input type="text"></span>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="button disabled">Refine Edge&#8230;</div>
+	</span>
+
+	<span class="tool-group" data-subName="wand">
+		<div class="option opt-tiny disabled" data-change="change-feather" data-options="knob" data-min="0" data-max="20" data-suffix="px">
+			<span class="label">Feather</span>
+			<span class="value">5px</span>
+		</div>
+
+		<div class="option opt-tiny disabled" data-change="change-tolerance" data-options="knob" data-min="0" data-max="100" data-suffix="px">
+			<span class="label">Tolerance</span>
+			<span class="value">15px</span>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="option check disabled">
+			<span class="value">
+				<input type="checkbox" id="marquee-wand-anti-alias" disabled checked>
+				<i></i>
+			</span>
+			<label class="label" for="marquee-wand-anti-alias">Anti-alias</label>
+		</div>
+
+		<div class="option check disabled">
+			<span class="value">
+				<input type="checkbox" id="marquee-wand-contigous" disabled>
+				<i></i>
+			</span>
+			<label class="label" for="marquee-wand-contigous">Contigious</label>
+		</div>
+	</span>
+
+</div>

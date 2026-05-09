@@ -1,0 +1,71 @@
+<div class="tool-options-shape hidden" data-area="shape">
+	<div class="tool tool-shape-rect down" title="Rectangle" data-click="select-option" data-arg="rectangle" data-group="options" data-option="main" data-subOptions="rectangle"></div>
+	<div class="tool tool-shape-elliptical" title="Ellipse" data-click="select-option" data-arg="elliptical" data-group="options" data-option="main" data-subOptions="elliptical"></div>
+	<div class="tool tool-shape-polygon" title="Parametric Shape" data-click="select-option" data-arg="polygon" data-group="options" data-option="main" data-subOptions="polygon"></div>
+	<div class="tool tool-shape-star" title="Custom Shape" data-click="select-option" data-arg="star" data-group="options" data-option="main" data-subOptions="star"></div>
+	<div class="tool tool-shape-line" title="Line" data-click="select-option" data-arg="line" data-group="options" data-option="main" data-subOptions="line"></div>
+
+	<div class="divider"></div>
+
+	<div class="option preset">
+		<span class="label">Fill</span>
+		<span class="value fill-color" style="--color: #3333dd;"></span>
+	</div>
+
+	<div class="option preset">
+		<span class="label">Stroke</span>
+		<span class="value stroke-color" style="--color: #dd3333;"></span>
+	</div>
+	
+	<div class="option opt-tiny" data-arg="stroke-width" data-change="change-stroke-width" data-options="knob" data-min="0" data-max="20" data-suffix="px">
+		<span class="value">1px</span>
+	</div>
+	
+	<div class="option">
+		<span class="value">
+			<div class="icon icon-line-solid"></div>
+		</span>
+	</div>
+
+	<div class="divider"></div>
+
+	<!-- general info -->
+	<div class="option read-only">
+		<span class="label">W</span>
+		<span class="value shape-width" data-suffix="px">100px</span>
+	</div>
+
+	<div class="option read-only">
+		<span class="label">H</span>
+		<span class="value shape-height" data-suffix="px">100px</span>
+	</div>
+
+	<div class="option read-only">
+		<span class="label"><i class="icon icon-rotation-angle"></i></span>
+		<span class="value shape-rotation" data-suffix="°">0°</span>
+	</div>
+
+	<span class="tool-group active" data-subName="rectangle">
+		<div class="option read-only">
+			<span class="label"><i class="icon icon-rect-radius"></i></span>
+			<span class="value shape-radius" data-suffix="px">0px</span>
+		</div>
+	</span>
+
+	<span class="tool-group" data-subName="elliptical">
+		<!--<span class="tool-info">elliptical</span>-->
+	</span>
+
+	<span class="tool-group" data-subName="polygon">
+		<!--<span class="tool-info">polygon</span>-->
+	</span>
+
+	<span class="tool-group" data-subName="star">
+		<!--<span class="tool-info">star</span>-->
+	</span>
+
+	<span class="tool-group" data-subName="line">
+		<!--<span class="tool-info">line</span>-->
+	</span>
+
+</div>

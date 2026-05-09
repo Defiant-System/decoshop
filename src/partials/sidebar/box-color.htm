@@ -1,0 +1,87 @@
+<div data-box="color" class="hidden">
+	<div class="color-wrapper">
+		<div class="configs">
+
+			<div>
+				<div class="field">
+					<div class="group">
+						<div class="active" data-arg="hsl" data-click="show-color-values">HSL</div>
+						<div data-arg="rgb" data-click="show-color-values">RGB</div>
+					</div>
+					<div class="group hidden">
+						<div class="active" data-arg="triangle" data-click="color-wheel-shape">
+							<div class="icon icon-triangle"></div>
+						</div>
+						<div data-arg="rectangle" data-click="color-wheel-shape">
+							<div class="icon icon-rectangle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="color-values show-hsl">
+				<div class="field field-hsl">
+					<div class="option input">
+						<span class="label">H</span>
+						<span class="value"><input type="text" name="color-hsl-hue" value="0°"></span>
+					</div>
+				</div>
+				<div class="field field-hsl">
+					<div class="option input">
+						<span class="label">S</span>
+						<span class="value"><input type="text" name="color-hsl-saturation" value="0%"></span>
+					</div>
+				</div>
+				<div class="field field-hsl">
+					<div class="option input">
+						<span class="label">L</span>
+						<span class="value"><input type="text" name="color-hsl-lightness" value="100%"></span>
+					</div>
+				</div>
+
+				<div class="field field-rgb">
+					<div class="option input">
+						<span class="label">R</span>
+						<span class="value"><input type="text" name="color-rgb-red" value="255"></span>
+					</div>
+				</div>
+				<div class="field field-rgb">
+					<div class="option input">
+						<span class="label">G</span>
+						<span class="value"><input type="text" name="color-rgb-green" value="255"></span>
+					</div>
+				</div>
+				<div class="field field-rgb">
+					<div class="option input">
+						<span class="label">B</span>
+						<span class="value"><input type="text" name="color-rgb-blue" value="255"></span>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<div class="field">
+					<div class="option input">
+						<span class="label">Hex</span>
+						<span class="value">
+							<span class="prefix">#</span>
+							<input type="text" name="color-hex" value="ffffff">
+						</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="wheel-object" style="--color: #f00; --rotation: rotate(0deg);">
+			<div class="color-wheel">
+				<div class="negative-space"></div>
+				<div class="color-shape rectangle">
+					<!-- box cursor -->
+					<div class="box-cursor"></div>
+				</div>
+				<!-- circle cursor -->
+				<div class="circle-cursor"></div>
+			</div>
+		</div>
+	</div>
+</div>
