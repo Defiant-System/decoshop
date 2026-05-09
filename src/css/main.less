@@ -35,6 +35,12 @@ backdrop-filter: blur(@backgrop-blur);
 	//z-index: initial;
 }
 
+&.showing-blank-view {
+	.win-caption-title_ {
+		left: 67px;
+	}
+}
+
 content {
 	position: absolute;
 	top: 0;
@@ -47,6 +53,155 @@ content {
 
 	// imports
 	@import "blank-view";
+	
+	// transitions for blank view / work view
+	.tools-bar,
+	.tools-options-bar {
+		top: 0;
+		transition: top @blankViewAnim ease-in-out;
+	}
+
+	.blank-view {
+		.blank-content {
+			opacity: 0;
+			transition: opacity @blankViewAnim ease-in-out;
+		}
+	}
+
+	.cvs-wrapper {
+		opacity: 1;
+		transition: opacity @blankViewAnim ease-in-out;
+	}
+
+	.workspace {
+		.sidebar-wrapper {
+			right: 0;
+			transition: right @blankViewAnim ease-in-out;
+		}
+
+		.status-bar {
+			bottom: 0;
+			transition: bottom @blankViewAnim ease-in-out;
+		}
+	}
+
+	&.no-anim {
+		.tools-bar,
+		.tools-options-bar,
+		.blank-view.blank-content,
+		.cvs-wrapper,
+		.workspace .sidebar-wrapper,
+		.workspace .status-bar {
+			transition-delay: 0s;
+			transition-duration: 0s;
+		}
+	}
+
+	&.show-blank-view {
+		overflow: hidden;
+
+		&.files-open {
+			.blank-view .block-buttons .btn[data-click="close-view"] {
+				display: inline-block;
+			}
+		}
+
+		.blank-view {
+			display: block;
+
+			.blank-content {
+				opacity: 1;
+			}
+		}
+
+		.tools-bar,
+		.tools-options-bar {
+			transition-delay: 250ms;
+			top: -73px;
+		}
+
+		.cvs-wrapper {
+			visibility: hidden;
+			opacity: 0;
+		}
+			
+		.workspace {
+			visibility: hidden;
+
+			.sidebar-wrapper {
+				right: -273px;
+			}
+
+			.status-bar {
+				bottom: -25px;
+			}
+		}
+	}
+
+	&.seq-show-blank-view {
+		box-shadow: 0 1px 0;
+		transition-duration: @blankViewAnim * 2.1;
+		overflow: hidden;
+
+		.blank-view {
+			display: block;
+		}
+
+		.tools-bar,
+		.tools-options-bar {
+			top: -73px;
+		}
+
+		.cvs-wrapper {
+			opacity: 0;
+		}
+
+		.workspace {
+			.sidebar-wrapper {
+				right: -273px;
+			}
+
+			.status-bar {
+				bottom: -25px;
+			}
+		}
+	}
+
+	&.seq-hide-blank-view {
+		box-shadow: 0 1px 0;
+		transition-duration: @blankViewAnim * 2.1;
+
+		.blank-view {
+			.blank-content {
+				opacity: 0;
+			}
+		}
+
+		.tools-bar,
+		.tools-options-bar {
+			top: 0;
+		}
+
+		.cvs-wrapper {
+			visibility: visible;
+			opacity: 1;
+			transition-delay: @blankViewAnim;
+		}
+
+		.workspace {
+			visibility: visible;
+
+			.sidebar-wrapper {
+				right: 0;
+				transition-delay: @blankViewAnim;
+			}
+
+			.status-bar {
+				bottom: 0;
+				transition-delay: @blankViewAnim;
+			}
+		}
+	}
 
 	.tools-bar {
 		background-color: rgba(#233,.8);

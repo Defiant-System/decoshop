@@ -1,0 +1,77 @@
+
+// decoshop.tools
+
+{
+	init() {
+		// fast references
+		this.els = {
+			toolBar: window.find(".tools-bar"),
+			optionBar: window.find(".tools-options-bar"),
+		};
+		// all tools
+		this.allTools = "marquee move brush gradient type crop blur stamp pipette pen shape pointer zoom others".split(" ");
+
+		// init sub objects
+		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
+
+		// select a tool
+		this.els.toolBar.find(".tool:nth(0)").trigger("click");
+	},
+	dispatch(event) {
+		let APP = decoshop,
+			Self = APP.tools,
+			root,
+			name,
+			value,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			// proxied events
+			case "select-tool":
+				el = $(event.target);
+				if (el.hasClass("active") || !el.data("content")) return;
+				el.parent().find(".active").removeClass("active");
+				el.addClass("active");
+
+				if (Self._active) {
+					Self.els.optionBar.find(`> .tool-options-${Self._active}`).addClass("hidden");
+					// disable active tool
+					Self[Self._active].dispatch({ type: "disable" });
+				}
+
+				Self._active = el.data("content");
+				root = Self.els.optionBar.find(`> .tool-options-${Self._active}`).removeClass("hidden");
+				// enable tool
+				Self[Self._active].dispatch({ type: "enable", root });
+				break;
+			case "select-option":
+				root = event.el.parents("div[data-area]:first");
+				root.find(`.tool.down[data-group="options"]`).removeClass("down");
+				event.el.addClass("down");
+				// tool sub-options
+				name = event.el.data("subOptions");
+				root.find(`.tool-group.active`).removeClass("active");
+				root.find(`.tool-group[data-subName="${name}"]`).addClass("active");
+				// change "parent" icon
+				Self.els.toolBar.find(".tool.active").data({ opt: event.el.data("arg") });
+
+				// select tool option
+				Self[Self._active].dispatch({ type: "select-option", arg: event.el.data("arg") });
+				break;
+		}
+	},
+	marquee   : @import "marquee.js",
+	move      : @import "move.js",
+	pipette   : @import "pipette.js",
+	brush     : @import "brush.js",
+	gradient  : @import "gradient.js",
+	type      : @import "type.js",
+	crop      : @import "crop.js",
+	blur      : @import "blur.js",
+	stamp     : @import "stamp.js",
+	pen       : @import "pen.js",
+	shape     : @import "shape.js",
+	pointer   : @import "pointer.js",
+	zoom      : @import "zoom.js",
+	quickMask : @import "quickMask.js",
+}

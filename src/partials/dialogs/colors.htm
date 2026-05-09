@@ -1,0 +1,98 @@
+<div class="dialog-box" data-dlg="dlgColors">
+	<div class="dlg-content">
+		
+		<div class="color-box">
+			<div class="cursor"></div>
+		</div>
+
+		<div class="hue-bar">
+			<div class="cursor"></div>
+		</div>
+
+		<div class="fields">
+
+			<div class="field-row">
+				<div class="swatches">
+					<div class="new-color"></div>
+					<div class="current-color"></div>
+				</div>
+
+				<div class="buttons">
+					<div class="button" data-click="dlg-ok">OK</div>
+					<div class="button" data-click="dlg-close">Close</div>
+				</div>
+			</div>
+
+			<div class="field-row color-values">
+				<div class="fields-rgb">
+					<div class="field">
+						<div class="option input">
+							<span class="label">R</span>
+							<span class="value"><input type="text" name="color-rgb-red" disabled value="255"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">G</span>
+							<span class="value"><input type="text" name="color-rgb-green" disabled value="255"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">B</span>
+							<span class="value"><input type="text" name="color-rgb-blue" disabled value="255"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="fields-hsl">
+					<div class="field">
+						<div class="option input">
+							<span class="label">H</span>
+							<span class="value"><input type="text" name="color-hsl-hue" disabled value="0°"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">S</span>
+							<span class="value"><input type="text" name="color-hsl-saturation" disabled value="0%"></span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="option input">
+							<span class="label">L</span>
+							<span class="value"><input type="text" name="color-hsl-lightness" disabled value="100%"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<hr/>
+
+			<div class="field-row has-knob">
+				<div class="field-opacity">
+					<div class="option input">
+						<span class="label">Opacity</span>
+						<span class="value"><input type="text" name="color-opacity" disabled value="100%" data-min="0" data-max="100" data-suffix="%"></span>
+					</div>
+				</div>
+				<div class="knob" data-change="set-color-opacity"></div>
+			</div>
+
+			<hr/>
+
+			<div class="field-row">
+				<div class="field-hex">
+					<div class="option input">
+						<span class="label">Hex</span>
+						<span class="value">
+							<span class="prefix">#</span>
+							<input type="text" name="color-hex" disabled value="ffffff">
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

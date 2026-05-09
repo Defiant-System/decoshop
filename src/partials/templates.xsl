@@ -38,4 +38,86 @@
 	</xsl:if>
 </xsl:template>
 
+
+<xsl:template name="preset-list">
+	<xsl:for-each select="./Presets/*">
+		<div class="preset">
+			<xsl:attribute name="data-width"><xsl:value-of select="@width"/></xsl:attribute>
+			<xsl:attribute name="data-height"><xsl:value-of select="@height"/></xsl:attribute>
+			<xsl:attribute name="data-bg"><xsl:value-of select="@bg"/></xsl:attribute>
+			<xsl:if test="@icon = 'folder-open'">
+				<xsl:attribute name="class">preset fs-open</xsl:attribute>
+			</xsl:if>
+			<i>
+				<xsl:attribute name="class">icon-<xsl:value-of select="@icon"/></xsl:attribute>
+			</i>
+			<h4><xsl:value-of select="@name"/></h4>
+			<xsl:if test="@bg-name">
+				<h5><xsl:value-of select="@bg-name"/>, <xsl:value-of select="@width"/>x<xsl:value-of select="@height"/> pixels</h5>
+			</xsl:if>
+		</div>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="sample-list">
+	<xsl:for-each select="./Samples/*">
+		<div class="sample">
+			<xsl:attribute name="style">background-image: url(<xsl:value-of select="@path"/>);</xsl:attribute>
+			<xsl:attribute name="data-url"><xsl:value-of select="@path"/></xsl:attribute>
+			<span class="sample-kind"><xsl:call-template name="substring-after-last">
+				<xsl:with-param name="string" select="@path" />
+				<xsl:with-param name="delimiter" select="'.'" />
+			</xsl:call-template></span>
+		</div>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="recent-list">
+	<xsl:for-each select="./Recents/*">
+		<div class="recent-file">
+			<xsl:attribute name="data-file"><xsl:value-of select="@filepath"/></xsl:attribute>
+			<span class="thumbnail">
+				<xsl:attribute name="style">background-image: url(<xsl:value-of select="@filepath"/>);</xsl:attribute>
+			</span>
+			<span class="name"><xsl:value-of select="@name"/></span>
+		</div>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="substring-after-last">
+	<xsl:param name="string" />
+	<xsl:param name="delimiter" />
+	<xsl:choose>
+		<xsl:when test="contains($string, $delimiter)">
+			<xsl:call-template name="substring-after-last">
+				<xsl:with-param name="string" select="substring-after($string, $delimiter)" />
+				<xsl:with-param name="delimiter" select="$delimiter" />
+			</xsl:call-template>
+		</xsl:when>
+		<xsl:otherwise><xsl:value-of select="$string" /></xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+
+<xsl:template name="statusbar-tab">
+	<div class="file" data-click="select-file">
+		<xsl:attribute name="data-arg"><xsl:value-of select="@id"/></xsl:attribute>
+		<span><xsl:value-of select="@name"/></span>
+		<div class="close" data-click="close-file"></div>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="knob">
+	<div class="inline-menubox" data-ui="doKnob">
+		<div class="inline-content">
+			<div class="knob"></div>
+		</div>
+	</div>
+</xsl:template>
+
+
 </xsl:stylesheet>
