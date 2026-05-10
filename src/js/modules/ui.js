@@ -336,74 +336,14 @@ const UI = {
 				break;
 
 			case "dlg-open-common":
-				file = Projector.file;
-				layer = file.activeLayer;
-				pixels = layer.ctx.getImageData(0, 0, layer.width, layer.height);
-				value = {};
-				// collect default values
-				event.dEl.find(`.field-row input`).map(elem => {
-					let iEl = $(elem);
-					value[iEl.attr("name")] = parseInt(iEl.val(), 10);
-				});
-				// fast references for knob twist event
-				Dialogs.data = { file, layer, pixels, value };
-				// save reference to event
-				Dialogs.srcEvent = event;
-				// read preview toggler state
-				Dialogs.preview = event.dEl.find(`.toggler[data-click="dlg-preview"]`).data("value") === "on";
-				// apply -- In case Preview is turned off, apply filter on image
-				Dialogs[event.name]({ type: "apply-filter-data" });
 				break;
 			case "dlg-ok-common":
-				// collect values
-				Dialogs.srcEvent.dEl.find(`.field-row input`).map(elem => {
-					let iEl = $(elem);
-					Dialogs.data.value[iEl.attr("name")] = parseInt(iEl.val(), 10);
-				});
-				// apply -- In case Preview is turned off, apply filter on image
-				Dialogs[event.name]({ type: "apply-filter-data", noEmit: 0 });
-				// update layer thumbnail
-				Dialogs.data.layer.updateThumbnail();
-				// notify event origin of the results
-				if (Dialogs.srcEvent.callback) Dialogs.srcEvent.callback(Dialogs.data.value);
-				// close dialog
-				Dialogs[event.name]({ ...event, type: "dlg-close" });
 				break;
 			case "dlg-reset-common":
-				// reset input fields
-				Dialogs.srcEvent.dEl.find(`.field-row input`).map(elem => {
-					let iEl = $(elem),
-						row = iEl.parents(".field-row"),
-						suffix = iEl.data("suffix") || "";
-					iEl.val(iEl.data("default") + suffix);
-					if (row.hasClass("has-knob")) {
-						// reset knobs
-						let val = +iEl.data("default"),
-							min = +iEl.data("min"),
-							max = +iEl.data("max"),
-							value = Math.round((val-min) / (max-min) * 100);
-						row.find(".knob, .pan-knob").data({ value });
-					}
-					// default values for dialog
-					Dialogs.data.value[iEl.attr("name")] = parseInt(iEl.val(), 10);
-				});
-				// apply filter with default values
-				Dialogs[event.name]({ type: "apply-filter-data", noEmit: (event.noEmit !== undefined) ? event.noEmit : 1 });
 				break;
 			case "dlg-preview-common":
-				Dialogs.preview = event.el.data("value") === "on";
-				if (Dialogs.preview) {
-					// apply -- In case Preview is turned off, apply filter on image
-					Dialogs[event.name]({ type: "apply-filter-data", noEmit: 1 });
-				} else {
-					Self.doDialog({ type: "dlg-undo-filter" });
-				}
 				break;
 			case "dlg-close-common":
-				if (event.el && event.el.hasClass("icon-dlg-close")) {
-					// Dialogs[event.name]({ type: "dlg-reset", noEmit: 0 });
-					Self.doDialog({ type: "dlg-undo-filter" });
-				}
 				Self.doDialog({ ...event, type: "dlg-close" });
 				break;
 		}

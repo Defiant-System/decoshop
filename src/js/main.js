@@ -5,6 +5,7 @@
 @import "modules/color.js"
 @import "modules/ui.js"
 @import "modules/tabs.js"
+@import "modules/projector.js"
 @import "modules/dialogs.js"
 
 
