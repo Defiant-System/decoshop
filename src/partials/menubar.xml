@@ -264,16 +264,16 @@
 		<Menu name="Deselect" click="select-none" hotkey="alt+d"/>
 		<Menu name="Inverse" click="inverse-selection" hotkey="alt+shift+i"/>
 		<Menu type="divider"/>
-		<Menu name="Color Range"/>
-		<Menu name="Magic Cut"/>
+		<Menu name="Color Range" click="open-dialog" arg="dlgSelectColorRange"/>
+		<Menu name="Magic Cut" click="open-dialog" arg="dlgSelectMagicCut"/>
 		<Menu type="divider"/>
-		<Menu name="Refine Edge"/>
+		<Menu name="Refine Edge" click="open-dialog" arg="dlgSelectRefineEdge"/>
 		<Menu name="Modify">
-			<Menu name="Border"/>
-			<Menu name="Smooth"/>
-			<Menu name="Expand"/>
-			<Menu name="Contract"/>
-			<Menu name="Feather"/>
+			<Menu name="Border" click="open-dialog" arg="dlgSelectModifyBorder"/>
+			<Menu name="Smooth" click="open-dialog" arg="dlgSelectModifySmooth"/>
+			<Menu name="Expand" click="open-dialog" arg="dlgSelectModifyExpand"/>
+			<Menu name="Contract" click="open-dialog" arg="dlgSelectModifyContract"/>
+			<Menu name="Feather" click="open-dialog" arg="dlgSelectModifyFeather"/>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Grow"/>
