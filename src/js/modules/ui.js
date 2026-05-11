@@ -309,7 +309,9 @@ const UI = {
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				// auto forward open event
-				Dialogs[event.name]({ ...event, dEl });
+
+				if (Dialogs[event.name]) Dialogs[event.name]({ ...event, dEl });
+				else Self.doDialog({ ...event, type: `${event.type}-common` });
 				// prevent mouse from triggering mouseover
 				Self.content.addClass("cover");
 				// open dialog

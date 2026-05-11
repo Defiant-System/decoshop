@@ -131,7 +131,9 @@ const decoshop = {
 					rEl = el.parents(".dialog-box");
 					if (rEl.length) {
 						let name = rEl.data("dlg");
-						return Dialogs[name](event);
+						return Dialogs[name]
+							? Dialogs[name](event)
+							: UI.doDialog({ ...event, type: `${event.type}-common` });;
 					}
 				} else {
 					return Self.tools.dispatch(event);

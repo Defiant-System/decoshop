@@ -4,6 +4,423 @@
 		<Menu type="divider"/>
 		<Menu name="Quit Decoshop" shell="win -c"/>
 	</Menu>
+	<Menu name="File">
+		<Menu name="New"/>
+		<Menu name="Open&#8230;"/>
+		<Menu name="Open &amp; Place&#8230;"/>
+		<Menu name="Open More&#8230;">
+			<Menu name="Open from URL"/>
+			<Menu name="Take a picture"/>
+			<Menu name="PSD Templates"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Save"/>
+		<Menu name="Save as PSD"/>
+		<Menu name="Export as&#8230;">
+			<Menu name="PNG"/>
+			<Menu name="JPG"/>
+			<Menu name="SVG"/>
+			<Menu name="GIF"/>
+			<Menu name="PDF"/>
+			<Menu name="More&#8230;">
+				<Menu name="WEBP"/>
+				<Menu name="BMP"/>
+				<Menu name="TIFF"/>
+				<Menu name="ICO"/>
+				<Menu name="TGA"/>
+				<Menu name="RAW"/>
+			</Menu>
+		</Menu>
+		<Menu name="Print&#8230;"/>
+		<Menu type="divider"/>
+		<Menu name="Export Layers"/>
+		<Menu name="Export Color Lookup"/>
+		<Menu type="divider"/>
+		<Menu name="File Info"/>
+		<Menu type="divider"/>
+		<Menu name="Close" click="close-file"/>
+		<Menu name="Close All"/>
+	</Menu>
+	<Menu name="Edit">
+		<Menu name="Undo/Redo"/>
+		<Menu name="Step Forward"/>
+		<Menu name="Step Backward"/>
+		<Menu type="divider"/>
+		<Menu name="Fade"/>
+		<Menu type="divider"/>
+		<Menu name="Cut"/>
+		<Menu name="Copy"/>
+		<Menu name="Copy Merged"/>
+		<Menu name="Paste"/>
+		<Menu name="Clear"/>
+		<Menu type="divider"/>
+		<Menu name="Fill" click="edit-action" arg="fill"/>
+		<Menu name="Stroke" click="open-dialog" arg="dlgStroke"/>
+		<Menu type="divider"/>
+		<Menu name="Content-Aware Scale"/>
+		<Menu name="Puppet Warp"/>
+		<Menu name="Free Transform"/>
+		<Menu name="Transform&#8230;">
+			<Menu name="Again"/>
+			<Menu type="divider"/>
+			<Menu name="Scale"/>
+			<Menu name="Rotate"/>
+			<Menu name="Distort"/>
+			<Menu name="Perspective"/>
+			<Menu name="Warp"/>
+			<Menu type="divider"/>
+			<Menu name="Rotate 90° &#8635;" click="file-rotate90cw" arg="layer"/>
+			<Menu name="Rotate 90° &#8634;" click="file-rotate90ccw" arg="layer"/>
+			<Menu name="Rotate 180°" click="file-rotate180" arg="layer"/>
+			<Menu type="divider"/>
+			<Menu name="Flip Horizontally" click="file-flipH" arg="layer"/>
+			<Menu name="Flip Vertically" click="file-flipV" arg="layer"/>
+		</Menu>
+		<Menu name="Auto Align"/>
+		<Menu name="Auto-Blend"/>
+		<Menu type="divider"/>
+		<Menu name="Define New&#8230;">
+			<Menu name="Pattern"/>
+			<Menu name="Brush"/>
+			<Menu name="Custom Shape"/>
+		</Menu>
+		<Menu name="Preset Manager"/>
+		<Menu name="Preferences"/>
+	</Menu>
+	<Menu name="Image">
+		<Menu name="Mode">
+			<Menu name="RGB"/>
+			<Menu name="CMYK"/>
+			<Menu name="Grayscale" click="filter-render" arg="grayscale"/>
+			<Menu type="divider"/>
+			<Menu name="Raster"/>
+			<Menu name="Vector"/>
+		</Menu>
+		<Menu name="Adjustments">
+			<Menu name="Brightness / Contrast" click="open-dialog" arg="dlgBrightnessContrast"/>
+			<Menu name="Levels"/>
+			<Menu name="Curves"/>
+			<Menu name="Exposure"/>
+			<Menu type="divider"/>
+			<Menu name="Vibrance"/>
+			<Menu name="Hue / Saturation"/>
+			<Menu name="Color Balance"/>
+			<Menu name="Black &amp; White"/>
+			<Menu name="Photo Filter"/>
+			<Menu name="Channel Mixer"/>
+			<Menu name="Color Lookup"/>
+			<Menu type="divider"/>
+			<Menu name="Invert" click="filter-render" arg="invert"/>
+			<Menu name="Posterize"/>
+			<Menu name="Threshold" click="open-dialog" arg="dlgThreshold"/>
+			<Menu name="Gradient Map"/>
+			<Menu name="Selective Color"/>
+			<Menu type="divider"/>
+			<Menu name="Shadow Highlights"/>
+			<Menu type="divider"/>
+			<Menu name="Desaturate" click="filter-render" arg="grayscale"/>
+			<Menu name="Match Color"/>
+			<Menu name="Replace Color"/>
+		</Menu>
+		<Menu name="Auto Tone"/>
+		<Menu name="Auto Contrast"/>
+		<Menu name="Auto Color"/>
+		<Menu type="divider"/>
+		<Menu name="Reduce Colors"/>
+		<Menu name="Vectorize Bitmap"/>
+		<Menu type="divider"/>
+		<Menu name="Canvas Size"/>
+		<Menu name="Image Size"/>
+		<Menu name="Transform">
+			<Menu name="Rotate 90° &#8635;" click="file-rotate90cw"/>
+			<Menu name="Rotate 90° &#8634;" click="file-rotate90ccw"/>
+			<Menu name="Rotate 180°" click="file-rotate180"/>
+			<Menu type="divider"/>
+			<Menu name="Flip Horizontally" click="file-flipH"/>
+			<Menu name="Flip Vertically" click="file-flipV"/>
+		</Menu>
+		<Menu name="Crop"/>
+		<Menu name="Trim"/>
+		<Menu name="Reveal All"/>
+		<Menu type="divider"/>
+		<Menu name="Apply Image"/>
+		<Menu type="divider"/>
+		<Menu name="Variables"/>
+	</Menu>
+	<Menu name="Layer">
+		<Menu name="New"/>
+		<Menu name="Duplicate Layer"/>
+		<Menu name="Duplicate Info"/>
+		<Menu name="Delete"/>
+		<Menu type="divider"/>
+		<Menu name="Layer Style">
+			<Menu name="Blending Options"/>
+			<Menu type="divider"/>
+			<Menu name="Bevel &amp; Emboss"/>
+			<Menu name="Stroke"/>
+			<Menu name="Inner Shadow"/>
+			<Menu name="Inner Glow"/>
+			<Menu name="Satin"/>
+			<Menu name="Color Overlay"/>
+			<Menu name="Gradient Overlay"/>
+			<Menu name="Pattern Overlay"/>
+			<Menu name="Outer Glow"/>
+			<Menu name="Drop Shadow"/>
+			<Menu type="divider"/>
+			<Menu name="Layer Style">
+				<Menu name="Copy"/>
+				<Menu name="Paste"/>
+				<Menu name="Clear"/>
+			</Menu>
+			<Menu type="divider"/>
+			<Menu name="Scale Effects"/>
+			<Menu name="Create Layers"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="New Fill Layer">
+			<Menu name="Color Fill"/>
+			<Menu name="Gradient Fill"/>
+			<Menu name="Patten Fill"/>
+		</Menu>
+		<Menu name="New Adjustment Layer">
+			<Menu name="Brightness / Contrast"/>
+			<Menu name="Levels"/>
+			<Menu name="Curves"/>
+			<Menu name="Exposure"/>
+			<Menu type="divider"/>
+			<Menu name="Vibrance"/>
+			<Menu name="Hue / Saturation"/>
+			<Menu name="Color Balance"/>
+			<Menu name="Black &amp; White"/>
+			<Menu name="Photo Filter"/>
+			<Menu name="Channel Mixer"/>
+			<Menu name="Color Lookup"/>
+			<Menu type="divider"/>
+			<Menu name="Invert"/>
+			<Menu name="Posterize"/>
+			<Menu name="Threshold"/>
+			<Menu name="Gradient Map"/>
+			<Menu name="Selective Color"/>
+			<Menu type="divider"/>
+			<Menu name="Replace Color"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Raster Mask">
+			<Menu name="Add (Reveal All)"/>
+			<Menu name="Add (Hide All)"/>
+			<Menu name="Reveal Selection"/>
+			<Menu name="Hide Selection"/>
+			<Menu name="From Transparency"/>
+			<Menu type="divider"/>
+			<Menu name="Delete"/>
+			<Menu name="Apply"/>
+			<Menu name="Enable/Disable"/>
+		</Menu>
+		<Menu name="Vector Mask">
+			<Menu name="Add (Reveal All)"/>
+			<Menu name="Add (Hide All)"/>
+			<Menu name="Current Path"/>
+			<Menu type="divider"/>
+			<Menu name="Delete"/>
+			<Menu name="Enable/Disable"/>
+		</Menu>
+		<Menu name="Clipping Mask"/>
+		<Menu type="divider"/>
+		<Menu name="Smart Object">
+			<Menu name="Convert to Smart Object"/>
+			<Menu type="divider"/>
+			<Menu name="Open (Edit Contents)"/>
+			<Menu name="Replace Contents"/>
+			<Menu name="Export Contents"/>
+			<Menu type="divider"/>
+			<Menu name="Stack Mode"/>
+			<Menu name="Turn into JPG"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Rasterize"/>
+		<Menu name="Rasterize Layer Style"/>
+		<Menu type="divider"/>
+		<Menu name="Group Layers"/>
+		<Menu type="divider"/>
+		<Menu name="Arrange">
+			<Menu name="Bring to Front"/>
+			<Menu name="Bring Forward"/>
+			<Menu name="Send Backward"/>
+			<Menu name="Send to Back"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Animation">
+			<Menu name="Make Frames"/>
+			<Menu name="Unmake Frames"/>
+			<Menu name="Merge"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Merge Down"/>
+		<Menu name="Flatten Image"/>
+		<Menu name="Defringe"/>
+	</Menu>
+	<Menu name="Select">
+		<Menu name="All" click="select-all" hotkey="alt+a"/>
+		<Menu name="Deselect" click="select-none" hotkey="alt+d"/>
+		<Menu name="Inverse" click="inverse-selection" hotkey="alt+shift+i"/>
+		<Menu type="divider"/>
+		<Menu name="Color Range"/>
+		<Menu name="Magic Cut"/>
+		<Menu type="divider"/>
+		<Menu name="Refine Edge"/>
+		<Menu name="Modify">
+			<Menu name="Border"/>
+			<Menu name="Smooth"/>
+			<Menu name="Expand"/>
+			<Menu name="Contract"/>
+			<Menu name="Feather"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Grow"/>
+		<Menu name="Similar"/>
+		<Menu type="divider"/>
+		<Menu name="Transform Selection"/>
+		<Menu type="divider"/>
+		<Menu name="place-holder-for-hotkey" click="toggle-quick-mask-mode" hotkey="q" type="hidden"/>
+		<Menu name="Edit in Quick Mask Mode" click="enter-quick-mask-mode"/>
+		<Menu name="Exit Quick Mask Mode" click="exit-quick-mask-mode" type="hidden"/>
+		<Menu name="Paint Selected Area" click="toggle-paint-masked-area" is-checked="1" check-group="paint-masked-rea"/>
+		<Menu type="divider"/>
+		<Menu name="Save Selection"/>
+	</Menu>
+	<Menu name="Filter">
+		<Menu name="Last Filter"/>
+		<Menu type="divider"/>
+		<Menu name="Filter Gallery" click="open-dialog" arg="dlgFilterGallery"/>
+		<Menu name="Lens Correction" click="open-dialog" arg="dlgLensCorrection"/>
+		<Menu name="Camera Raw" click="open-dialog" arg="dlgCameraRaw"/>
+		<Menu name="Liquify" click="open-dialog" arg="dlgLiquify"/>
+		<Menu name="Pixelator" click="open-dialog" arg="dlgPixelator"/>
+		<Menu type="divider"/>
+		<Menu name="3D">
+			<Menu name="Normal Map" click="open-dialog" arg="dlgNormalMap"/>
+			<Menu name="Texture Dilation" click="open-dialog" arg="dlgTextureDilation"/>
+		</Menu>
+		<Menu name="Blur">
+			<Menu name="Avergage"/>
+			<Menu name="Blur" click="filter-render" arg="blur"/>
+			<Menu name="Blur More" click="filter-render" arg="gaussianBlur,2"/>
+			<Menu name="Box Blur" click="open-dialog" arg="dlgBoxBlur"/>
+			<Menu name="Gaussian Blur" click="open-dialog" arg="dlgGaussianBlur"/>
+			<Menu name="Lens Blur" click="open-dialog" arg="dlgLensBlur"/>
+			<Menu name="Motion Blur" click="open-dialog" arg="dlgMotionBlur"/>
+			<Menu name="Radial Blur" click="open-dialog" arg="dlgRadialBlur"/>
+			<Menu name="Surface Blur" click="open-dialog" arg="dlgSurfaceBlur"/>
+		</Menu>
+		<Menu name="Distort">
+			<Menu name="Displace" click="filter-render" arg="dlgDisplace"/>
+			<Menu name="Kaleidoscope" click="filter-render" arg="dlgKaleidoscope"/>
+			<Menu name="Pinch" click="filter-render" arg="dlgPinch"/>
+			<Menu name="Polar Coordinates" click="filter-render" arg="dlgPolarCoordinates"/>
+			<Menu name="Ripple" click="filter-render" arg="dlgRipple"/>
+			<Menu name="Shear" click="filter-render" arg="dlgShear"/>
+			<Menu name="Spherize" click="filter-render" arg="dlgSpherize"/>
+			<Menu name="Twirl" click="filter-render" arg="dlgTwirl"/>
+			<Menu name="Wave" click="filter-render" arg="dlgWave"/>
+			<Menu name="ZigZag" click="filter-render" arg="dlgZigZag"/>
+		</Menu>
+		<Menu name="Noise">
+			<Menu name="Add Noise" click="open-dialog" arg="dlgAddNoise"/>
+			<Menu name="Despeckle"/>
+			<Menu name="Dust &amp; Scratches" click="open-dialog" arg="dlgDustScratches"/>
+			<Menu name="Median" click="open-dialog" arg="dlgMedian"/>
+			<Menu name="Reduce Noise" click="open-dialog" arg="dlgReduceNoise"/>
+		</Menu>
+		<Menu name="Pixelate">
+			<Menu name="Color Halftone" click="open-dialog" arg="dlgColorHalftone"/>
+			<Menu name="Crystallize" click="open-dialog" arg="dlgCrystallize"/>
+			<Menu name="Fragment"/>
+			<Menu name="Mezzotint" click="open-dialog" arg="dlgMezzoint"/>
+			<Menu name="Mosaic" click="open-dialog" arg="dlgMosaic"/>
+			<Menu name="Pointillize" click="open-dialog" arg="dlgPointillize"/>
+		</Menu>
+		<Menu name="Render">
+			<Menu name="Flame" click="open-dialog" arg="dlgFlame"/>
+			<Menu name="Clouds" click="filter-render" arg="clouds"/>
+			<Menu name="Noise" click="filter-render" arg="noise"/>
+			<Menu name="Difference Clouds"/>
+			<Menu name="Fibers" click="open-dialog" arg="dlgFibers"/>
+			<Menu name="Lens Flare" click="open-dialog" arg="dlgLensFlare"/>
+		</Menu>
+		<Menu name="Sharpen">
+			<Menu name="Sharpen" click="filter-render" arg="sharpen"/>
+			<Menu name="Sharpen Edges"/>
+			<Menu name="Sharpen More"/>
+			<Menu name="Smart Sharpen" click="open-dialog" arg="dlgSmartSharpen"/>
+			<Menu name="Unsharp Mask" click="open-dialog" arg="dlgUnshartMask"/>
+		</Menu>
+		<Menu name="Stylize">
+			<Menu name="Diffuse" click="open-dialog" arg="dlgDiffuse"/>
+			<Menu name="Emboss" click="open-dialog" arg="dlgEmboss"/>
+			<Menu name="Sobel" click="filter-render" arg="sobel"/>
+			<Menu name="Find Edges"/>
+			<Menu name="Oil Paint" click="open-dialog" arg="dlgOilPaint"/>
+			<Menu name="Solarize"/>
+			<Menu name="Trace Contour" click="open-dialog" arg="dlgTraceContour"/>
+			<Menu name="Wind" click="open-dialog" arg="dlgWind"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Other">
+			<Menu name="High Pass"/>
+			<Menu name="HSB/HSL"/>
+			<Menu name="Maximum"/>
+			<Menu name="Minimum"/>
+			<Menu name="Offset"/>
+			<Menu name="Repeat"/>
+			<Menu name="Color to Alpha"/>
+			<Menu name="Dither" click="filter-render" arg="dither"/>
+			<Menu name="Particles"/>
+		</Menu>
+	</Menu>
+	<Menu name="View">
+		<Menu name="Zoom In"/>
+		<Menu name="Zoom Out"/>
+		<Menu name="Fit To Area"/>
+		<Menu name="Pixel to Pixel"/>
+		<Menu name="Patter Preview"/>
+		<Menu type="divider"/>
+		<Menu name="Modes"/>
+		<Menu type="divider"/>
+		<Menu name="Extras"/>
+		<Menu name="Show&#8230;">
+			<Menu name="Selection"/>
+			<Menu name="Paths"/>
+			<Menu name="Guides" click="toggle-guides" check-group="toggle-guides" is-checked="1"/>
+			<Menu name="Grid" click="toggle-grid" check-group="toggle-grid"/>
+			<Menu name="Pixel Grid" click="toggle-pixel-grid" check-group="toggle-pixel-grid" is-checked="1"/>
+			<Menu name="Pixel Slices"/>
+		</Menu>
+		<Menu type="divider"/>
+		<Menu name="Rulers" click="toggle-rulers" check-group="toggle-rulers" is-checked="1" hotkey="alt+r" />
+		<Menu type="divider"/>
+		<Menu name="Snap"/>
+		<Menu name="Snap To&#8230;"/>
+		<Menu type="divider"/>
+		<Menu name="Lock Guides"/>
+		<Menu name="Clear Guides"/>
+		<Menu name="Add Guides&#8230;"/>
+		<Menu name="Guides From Layer"/>
+		<Menu type="divider"/>
+		<Menu name="Clear Slices"/>
+		<Menu name="Status Bar" click="toggle-statusbar" check-group="toggle-statusbar" is-checked="1" />
+	</Menu>
+	<Menu name="Window">
+		<Menu name="Navigator" check-group="sidebar-top" is-checked="1"/>
+		<Menu name="Color" check-group="sidebar-top"/>
+		<Menu name="Info" check-group="sidebar-top"/>
+		<Menu name="Character" check-group="sidebar-middle" is-checked="1"/>
+		<Menu name="Paragraph" check-group="sidebar-middle"/>
+		<Menu name="Swatches" check-group="sidebar-middle"/>
+		<Menu name="Layers" check-group="sidebar-bottom" is-checked="1"/>
+		<Menu name="Channels" check-group="sidebar-bottom"/>
+		<Menu name="Paths" check-group="sidebar-bottom"/>
+		<Menu type="divider"/>
+	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
 		<Menu type="divider"/>
