@@ -55,7 +55,7 @@
 		<Menu name="Clear"/>
 		<Menu type="divider"/>
 		<Menu name="Fill" click="edit-action" arg="fill"/>
-		<Menu name="Stroke" click="open-dialog" arg="dlgStroke"/>
+		<Menu name="Stroke&#8230;" click="open-dialog" arg="dlgStroke"/>
 		<Menu type="divider"/>
 		<Menu name="Content-Aware Scale"/>
 		<Menu name="Puppet Warp"/>
@@ -97,30 +97,30 @@
 			<Menu name="Vector"/>
 		</Menu>
 		<Menu name="Adjustments">
-			<Menu name="Brightness / Contrast" click="open-dialog" arg="dlgBrightnessContrast"/>
-			<Menu name="Levels" click="open-dialog" arg="dlgLevels"/>
-			<Menu name="Curves" click="open-dialog" arg="dlgCurves"/>
-			<Menu name="Exposure" click="open-dialog" arg="dlgExposure"/>
+			<Menu name="Brightness / Contrast&#8230;" click="open-dialog" arg="dlgBrightnessContrast"/>
+			<Menu name="Levels&#8230;" click="open-dialog" arg="dlgLevels"/>
+			<Menu name="Curves&#8230;" click="open-dialog" arg="dlgCurves"/>
+			<Menu name="Exposure&#8230;" click="open-dialog" arg="dlgExposure"/>
 			<Menu type="divider"/>
-			<Menu name="Vibrance" click="open-dialog" arg="dlgVibrance"/>
-			<Menu name="Hue / Saturation" click="open-dialog" arg="dlgHueSaturation"/>
-			<Menu name="Color Balance" click="open-dialog" arg="dlgColorBalance"/>
-			<Menu name="Black &amp; White" click="open-dialog" arg="dlgBlackWhite"/>
-			<Menu name="Photo Filter" click="open-dialog" arg="dlgPhotoFilter"/>
-			<Menu name="Channel Mixer" click="open-dialog" arg="dlgChannelMixer"/>
-			<Menu name="Color Lookup" click="open-dialog" arg="dlgColorLookup"/>
+			<Menu name="Vibrance&#8230;" click="open-dialog" arg="dlgVibrance"/>
+			<Menu name="Hue / Saturation&#8230;" click="open-dialog" arg="dlgHueSaturation"/>
+			<Menu name="Color Balance&#8230;" click="open-dialog" arg="dlgColorBalance"/>
+			<Menu name="Black &amp; White&#8230;" click="open-dialog" arg="dlgBlackWhite"/>
+			<Menu name="Photo Filter&#8230;" click="open-dialog" arg="dlgPhotoFilter"/>
+			<Menu name="Channel Mixer&#8230;" click="open-dialog" arg="dlgChannelMixer"/>
+			<Menu name="Color Lookup&#8230;" click="open-dialog" arg="dlgColorLookup"/>
 			<Menu type="divider"/>
 			<Menu name="Invert" click="filter-render" arg="invert"/>
 			<Menu name="Posterize"/>
-			<Menu name="Threshold" click="open-dialog" arg="dlgThreshold"/>
-			<Menu name="Gradient Map" click="open-dialog" arg="dlgGradientMap"/>
-			<Menu name="Selective Color" click="open-dialog" arg="dlgSelectiveColor"/>
+			<Menu name="Threshold&#8230;" click="open-dialog" arg="dlgThreshold"/>
+			<Menu name="Gradient Map&#8230;" click="open-dialog" arg="dlgGradientMap"/>
+			<Menu name="Selective Color&#8230;" click="open-dialog" arg="dlgSelectiveColor"/>
 			<Menu type="divider"/>
-			<Menu name="Shadow Highlights" click="open-dialog" arg="dlgShadowHighlights"/>
+			<Menu name="Shadow Highlights&#8230;" click="open-dialog" arg="dlgShadowHighlights"/>
 			<Menu type="divider"/>
 			<Menu name="Desaturate" click="filter-render" arg="grayscale"/>
-			<Menu name="Match Color" click="open-dialog" arg="dlgMatchColor"/>
-			<Menu name="Replace Color" click="open-dialog" arg="dlgReplaceColor"/>
+			<Menu name="Match Color&#8230;" click="open-dialog" arg="dlgMatchColor"/>
+			<Menu name="Replace Color&#8230;" click="open-dialog" arg="dlgReplaceColor"/>
 		</Menu>
 		<Menu name="Auto Tone"/>
 		<Menu name="Auto Contrast"/>
@@ -129,8 +129,8 @@
 		<Menu name="Reduce Colors"/>
 		<Menu name="Vectorize Bitmap"/>
 		<Menu type="divider"/>
-		<Menu name="Canvas Size" click="open-dialog" arg="dlgCanvasSize"/>
-		<Menu name="Image Size" click="open-dialog" arg="dlgImageSize"/>
+		<Menu name="Canvas Size&#8230;" click="open-dialog" arg="dlgCanvasSize"/>
+		<Menu name="Image Size&#8230;" click="open-dialog" arg="dlgImageSize"/>
 		<Menu name="Transform">
 			<Menu name="Rotate 90° &#8635;" click="file-rotate90cw"/>
 			<Menu name="Rotate 90° &#8634;" click="file-rotate90ccw"/>
@@ -140,12 +140,12 @@
 			<Menu name="Flip Vertically" click="file-flipV"/>
 		</Menu>
 		<Menu name="Crop"/>
-		<Menu name="Trim" click="open-dialog" arg="dlgTrim"/>
+		<Menu name="Trim&#8230;" click="open-dialog" arg="dlgTrim"/>
 		<Menu name="Reveal All"/>
 		<Menu type="divider"/>
-		<Menu name="Apply Image" click="open-dialog" arg="dlgApplyImage"/>
+		<Menu name="Apply Image&#8230;" click="open-dialog" arg="dlgApplyImage"/>
 		<Menu type="divider"/>
-		<Menu name="Variables" click="open-dialog" arg="dlgVariables"/>
+		<Menu name="Variables&#8230;" click="open-dialog" arg="dlgVariables"/>
 	</Menu>
 	<Menu name="Layer">
 		<Menu name="New"/>
@@ -291,26 +291,26 @@
 	<Menu name="Filter">
 		<Menu name="Last Filter"/>
 		<Menu type="divider"/>
-		<Menu name="Filter Gallery" click="open-dialog" arg="dlgFilterGallery"/>
-		<Menu name="Lens Correction" click="open-dialog" arg="dlgLensCorrection"/>
-		<Menu name="Camera Raw" click="open-dialog" arg="dlgCameraRaw"/>
-		<Menu name="Liquify" click="open-dialog" arg="dlgLiquify"/>
-		<Menu name="Pixelator" click="open-dialog" arg="dlgPixelator"/>
+		<Menu name="Filter Gallery&#8230;" click="open-dialog" arg="dlgFilterGallery"/>
+		<Menu name="Lens Correction&#8230;" click="open-dialog" arg="dlgLensCorrection"/>
+		<Menu name="Camera Raw&#8230;" click="open-dialog" arg="dlgCameraRaw"/>
+		<Menu name="Liquify&#8230;" click="open-dialog" arg="dlgLiquify"/>
+		<Menu name="Pixelator&#8230;" click="open-dialog" arg="dlgPixelator"/>
 		<Menu type="divider"/>
 		<Menu name="3D">
-			<Menu name="Normal Map" click="open-dialog" arg="dlgNormalMap"/>
-			<Menu name="Texture Dilation" click="open-dialog" arg="dlgTextureDilation"/>
+			<Menu name="Normal Map&#8230;" click="open-dialog" arg="dlgNormalMap"/>
+			<Menu name="Texture Dilation&#8230;" click="open-dialog" arg="dlgTextureDilation"/>
 		</Menu>
 		<Menu name="Blur">
 			<Menu name="Avergage"/>
 			<Menu name="Blur" click="filter-render" arg="blur"/>
 			<Menu name="Blur More" click="filter-render" arg="gaussianBlur,2"/>
-			<Menu name="Box Blur" click="open-dialog" arg="dlgBoxBlur"/>
-			<Menu name="Gaussian Blur" click="open-dialog" arg="dlgGaussianBlur"/>
-			<Menu name="Lens Blur" click="open-dialog" arg="dlgLensBlur"/>
-			<Menu name="Motion Blur" click="open-dialog" arg="dlgMotionBlur"/>
-			<Menu name="Radial Blur" click="open-dialog" arg="dlgRadialBlur"/>
-			<Menu name="Surface Blur" click="open-dialog" arg="dlgSurfaceBlur"/>
+			<Menu name="Box Blur&#8230;" click="open-dialog" arg="dlgBoxBlur"/>
+			<Menu name="Gaussian Blur&#8230;" click="open-dialog" arg="dlgGaussianBlur"/>
+			<Menu name="Lens Blur&#8230;" click="open-dialog" arg="dlgLensBlur"/>
+			<Menu name="Motion Blur&#8230;" click="open-dialog" arg="dlgMotionBlur"/>
+			<Menu name="Radial Blur&#8230;" click="open-dialog" arg="dlgRadialBlur"/>
+			<Menu name="Surface Blur&#8230;" click="open-dialog" arg="dlgSurfaceBlur"/>
 		</Menu>
 		<Menu name="Distort">
 			<Menu name="Displace" click="filter-render" arg="dlgDisplace"/>
@@ -325,56 +325,56 @@
 			<Menu name="ZigZag" click="filter-render" arg="dlgZigZag"/>
 		</Menu>
 		<Menu name="Noise">
-			<Menu name="Add Noise" click="open-dialog" arg="dlgAddNoise"/>
+			<Menu name="Add Noise&#8230;" click="open-dialog" arg="dlgAddNoise"/>
 			<Menu name="Despeckle"/>
-			<Menu name="Dust &amp; Scratches" click="open-dialog" arg="dlgDustScratches"/>
-			<Menu name="Median" click="open-dialog" arg="dlgMedian"/>
-			<Menu name="Reduce Noise" click="open-dialog" arg="dlgReduceNoise"/>
+			<Menu name="Dust &amp; Scratches&#8230;" click="open-dialog" arg="dlgDustScratches"/>
+			<Menu name="Median&#8230;" click="open-dialog" arg="dlgMedian"/>
+			<Menu name="Reduce Noise&#8230;" click="open-dialog" arg="dlgReduceNoise"/>
 		</Menu>
 		<Menu name="Pixelate">
-			<Menu name="Color Halftone" click="open-dialog" arg="dlgColorHalftone"/>
-			<Menu name="Crystallize" click="open-dialog" arg="dlgCrystallize"/>
+			<Menu name="Color Halftone&#8230;" click="open-dialog" arg="dlgColorHalftone"/>
+			<Menu name="Crystallize&#8230;" click="open-dialog" arg="dlgCrystallize"/>
 			<Menu name="Fragment"/>
-			<Menu name="Mezzotint" click="open-dialog" arg="dlgMezzoint"/>
-			<Menu name="Mosaic" click="open-dialog" arg="dlgMosaic"/>
-			<Menu name="Pointillize" click="open-dialog" arg="dlgPointillize"/>
+			<Menu name="Mezzotint&#8230;" click="open-dialog" arg="dlgMezzoint"/>
+			<Menu name="Mosaic&#8230;" click="open-dialog" arg="dlgMosaic"/>
+			<Menu name="Pointillize&#8230;" click="open-dialog" arg="dlgPointillize"/>
 		</Menu>
 		<Menu name="Render">
-			<Menu name="Flame" click="open-dialog" arg="dlgFlame"/>
+			<Menu name="Flame&#8230;" click="open-dialog" arg="dlgFlame"/>
 			<Menu name="Clouds" click="filter-render" arg="clouds"/>
 			<Menu name="Noise" click="filter-render" arg="noise"/>
 			<Menu name="Difference Clouds"/>
-			<Menu name="Fibers" click="open-dialog" arg="dlgFibers"/>
-			<Menu name="Lens Flare" click="open-dialog" arg="dlgLensFlare"/>
+			<Menu name="Fibers&#8230;" click="open-dialog" arg="dlgFibers"/>
+			<Menu name="Lens Flare&#8230;" click="open-dialog" arg="dlgLensFlare"/>
 		</Menu>
 		<Menu name="Sharpen">
 			<Menu name="Sharpen" click="filter-render" arg="sharpen"/>
 			<Menu name="Sharpen Edges"/>
 			<Menu name="Sharpen More"/>
-			<Menu name="Smart Sharpen" click="open-dialog" arg="dlgSmartSharpen"/>
-			<Menu name="Unsharp Mask" click="open-dialog" arg="dlgUnshartMask"/>
+			<Menu name="Smart Sharpen&#8230;" click="open-dialog" arg="dlgSmartSharpen"/>
+			<Menu name="Unsharp Mask&#8230;" click="open-dialog" arg="dlgUnshartMask"/>
 		</Menu>
 		<Menu name="Stylize">
-			<Menu name="Diffuse" click="open-dialog" arg="dlgDiffuse"/>
-			<Menu name="Emboss" click="open-dialog" arg="dlgEmboss"/>
+			<Menu name="Diffuse&#8230;" click="open-dialog" arg="dlgDiffuse"/>
+			<Menu name="Emboss&#8230;" click="open-dialog" arg="dlgEmboss"/>
 			<Menu name="Sobel" click="filter-render" arg="sobel"/>
 			<Menu name="Find Edges"/>
-			<Menu name="Oil Paint" click="open-dialog" arg="dlgOilPaint"/>
+			<Menu name="Oil Paint&#8230;" click="open-dialog" arg="dlgOilPaint"/>
 			<Menu name="Solarize"/>
-			<Menu name="Trace Contour" click="open-dialog" arg="dlgTraceContour"/>
-			<Menu name="Wind" click="open-dialog" arg="dlgWind"/>
+			<Menu name="Trace Contour&#8230;" click="open-dialog" arg="dlgTraceContour"/>
+			<Menu name="Wind&#8230;" click="open-dialog" arg="dlgWind"/>
 		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Other">
-			<Menu name="High Pass" click="open-dialog" arg="dlgHighPass"/>
-			<Menu name="HSB/HSL" click="open-dialog" arg="dlgHsbHsl"/>
-			<Menu name="Maximum" click="open-dialog" arg="dlgMaximum"/>
-			<Menu name="Minimum" click="open-dialog" arg="dlgMinimum"/>
-			<Menu name="Offset" click="open-dialog" arg="dlgOffset"/>
-			<Menu name="Repeat" click="open-dialog" arg="dlgRepeat"/>
-			<Menu name="Color to Alpha" click="open-dialog" arg="dlgColorToAlpha"/>
-			<Menu name="Dither" click="open-dialog" arg="dlgDither"/>
-			<Menu name="Particles" click="open-dialog" arg="dlgParticles"/>
+			<Menu name="High Pass&#8230;" click="open-dialog" arg="dlgHighPass"/>
+			<Menu name="HSB/HSL&#8230;" click="open-dialog" arg="dlgHsbHsl"/>
+			<Menu name="Maximum&#8230;" click="open-dialog" arg="dlgMaximum"/>
+			<Menu name="Minimum&#8230;" click="open-dialog" arg="dlgMinimum"/>
+			<Menu name="Offset&#8230;" click="open-dialog" arg="dlgOffset"/>
+			<Menu name="Repeat&#8230;" click="open-dialog" arg="dlgRepeat"/>
+			<Menu name="Color to Alpha&#8230;" click="open-dialog" arg="dlgColorToAlpha"/>
+			<Menu name="Dither&#8230;" click="open-dialog" arg="dlgDither"/>
+			<Menu name="Particles&#8230;" click="open-dialog" arg="dlgParticles"/>
 		</Menu>
 	</Menu>
 	<Menu name="View">
