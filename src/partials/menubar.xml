@@ -98,29 +98,29 @@
 		</Menu>
 		<Menu name="Adjustments">
 			<Menu name="Brightness / Contrast" click="open-dialog" arg="dlgBrightnessContrast"/>
-			<Menu name="Levels"/>
-			<Menu name="Curves"/>
-			<Menu name="Exposure"/>
+			<Menu name="Levels" click="open-dialog" arg="dlgLevels"/>
+			<Menu name="Curves" click="open-dialog" arg="dlgCurves"/>
+			<Menu name="Exposure" click="open-dialog" arg="dlgExposure"/>
 			<Menu type="divider"/>
-			<Menu name="Vibrance"/>
-			<Menu name="Hue / Saturation"/>
-			<Menu name="Color Balance"/>
-			<Menu name="Black &amp; White"/>
-			<Menu name="Photo Filter"/>
-			<Menu name="Channel Mixer"/>
-			<Menu name="Color Lookup"/>
+			<Menu name="Vibrance" click="open-dialog" arg="dlgVibrance"/>
+			<Menu name="Hue / Saturation" click="open-dialog" arg="dlgHueSaturation"/>
+			<Menu name="Color Balance" click="open-dialog" arg="dlgColorBalance"/>
+			<Menu name="Black &amp; White" click="open-dialog" arg="dlgBlackWhite"/>
+			<Menu name="Photo Filter" click="open-dialog" arg="dlgPhotoFilter"/>
+			<Menu name="Channel Mixer" click="open-dialog" arg="dlgChannelMixer"/>
+			<Menu name="Color Lookup" click="open-dialog" arg="dlgColorLookup"/>
 			<Menu type="divider"/>
 			<Menu name="Invert" click="filter-render" arg="invert"/>
 			<Menu name="Posterize"/>
 			<Menu name="Threshold" click="open-dialog" arg="dlgThreshold"/>
-			<Menu name="Gradient Map"/>
-			<Menu name="Selective Color"/>
+			<Menu name="Gradient Map" click="open-dialog" arg="dlgGradientMap"/>
+			<Menu name="Selective Color" click="open-dialog" arg="dlgSelectiveColor"/>
 			<Menu type="divider"/>
-			<Menu name="Shadow Highlights"/>
+			<Menu name="Shadow Highlights" click="open-dialog" arg="dlgShadowHighlights"/>
 			<Menu type="divider"/>
 			<Menu name="Desaturate" click="filter-render" arg="grayscale"/>
-			<Menu name="Match Color"/>
-			<Menu name="Replace Color"/>
+			<Menu name="Match Color" click="open-dialog" arg="dlgMatchColor"/>
+			<Menu name="Replace Color" click="open-dialog" arg="dlgReplaceColor"/>
 		</Menu>
 		<Menu name="Auto Tone"/>
 		<Menu name="Auto Contrast"/>
@@ -129,8 +129,8 @@
 		<Menu name="Reduce Colors"/>
 		<Menu name="Vectorize Bitmap"/>
 		<Menu type="divider"/>
-		<Menu name="Canvas Size"/>
-		<Menu name="Image Size"/>
+		<Menu name="Canvas Size" click="open-dialog" arg="dlgCanvasSize"/>
+		<Menu name="Image Size" click="open-dialog" arg="dlgImageSize"/>
 		<Menu name="Transform">
 			<Menu name="Rotate 90° &#8635;" click="file-rotate90cw"/>
 			<Menu name="Rotate 90° &#8634;" click="file-rotate90ccw"/>
@@ -140,12 +140,12 @@
 			<Menu name="Flip Vertically" click="file-flipV"/>
 		</Menu>
 		<Menu name="Crop"/>
-		<Menu name="Trim"/>
+		<Menu name="Trim" click="open-dialog" arg="dlgTrim"/>
 		<Menu name="Reveal All"/>
 		<Menu type="divider"/>
-		<Menu name="Apply Image"/>
+		<Menu name="Apply Image" click="open-dialog" arg="dlgApplyImage"/>
 		<Menu type="divider"/>
-		<Menu name="Variables"/>
+		<Menu name="Variables" click="open-dialog" arg="dlgVariables"/>
 	</Menu>
 	<Menu name="Layer">
 		<Menu name="New"/>
@@ -366,15 +366,15 @@
 		</Menu>
 		<Menu type="divider"/>
 		<Menu name="Other">
-			<Menu name="High Pass"/>
-			<Menu name="HSB/HSL"/>
-			<Menu name="Maximum"/>
-			<Menu name="Minimum"/>
-			<Menu name="Offset"/>
-			<Menu name="Repeat"/>
-			<Menu name="Color to Alpha"/>
-			<Menu name="Dither" click="filter-render" arg="dither"/>
-			<Menu name="Particles"/>
+			<Menu name="High Pass" click="open-dialog" arg="dlgHighPass"/>
+			<Menu name="HSB/HSL" click="open-dialog" arg="dlgHsbHsl"/>
+			<Menu name="Maximum" click="open-dialog" arg="dlgMaximum"/>
+			<Menu name="Minimum" click="open-dialog" arg="dlgMinimum"/>
+			<Menu name="Offset" click="open-dialog" arg="dlgOffset"/>
+			<Menu name="Repeat" click="open-dialog" arg="dlgRepeat"/>
+			<Menu name="Color to Alpha" click="open-dialog" arg="dlgColorToAlpha"/>
+			<Menu name="Dither" click="open-dialog" arg="dlgDither"/>
+			<Menu name="Particles" click="open-dialog" arg="dlgParticles"/>
 		</Menu>
 	</Menu>
 	<Menu name="View">
