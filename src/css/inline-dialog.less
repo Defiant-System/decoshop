@@ -1,11 +1,11 @@
 
 .dialog-box {
-	background: rgba(0,0,0,.35);
+	background: #0004;
 	position: absolute;
 	z-index: 99;padding: 1px;
 	z-index: 101;
 	border-radius: 7px;
-	filter: drop-shadow(0 1px 3px rgba(0,0,0,.5));
+	filter: drop-shadow(0 1px 3px #0007);
 	transform-origin: 50% 0;
 	visibility: hidden;
 
@@ -34,8 +34,8 @@
 		left: 350px;
 
 		.presets {
-			color: rgba(255,255,255,0.5);
-			text-shadow: 0 1px 0 rgba(0,0,0,.25);
+			color: #fff7;
+			text-shadow: 0 1px 0 #0003;
 			text-transform: uppercase;
 			font-size: 11px;
 			// height: 19px;
@@ -67,13 +67,13 @@
 					&:nth-child(2) { width: 63px; padding-top: 1px; }
 					&:nth-child(3) { width: 50px; padding-top: 1px; }
 					&:nth-child(4) { width: 57px; padding-top: 1px; }
-					&:nth-child(5) { width: 95px; padding-right: 1px; }
+					&:nth-child(5) { width: 95px; padding-top: 1px; padding-right: 1px; }
 				}
 			}
 
 			.list-head {
-				color: rgba(255,255,255,0.5);
-				text-shadow: 0 1px 0 rgba(0,0,0,.25);
+				color: #fff7;
+				text-shadow: 0 1px 0 #0003;
 				text-transform: uppercase;
 				font-size: 11px;
 				padding-bottom: 3px;
@@ -87,7 +87,7 @@
 				padding: 3px 0 21px;
 				font-size: 11px;
 				background: #344;
-				color: rgba(#fff, .55);
+				color: #fff7;
 				text-shadow: 0 1px 0 #122;
 				opacity: 1;
 
@@ -112,7 +112,7 @@
 					}
 
 					&:hover {
-						color: rgba(#fff, .85);
+						color: #fffd;
 
 						.icon-eye-on,
 						.icon-trashcan {
@@ -148,7 +148,7 @@
 						background-repeat: no-repeat;
 						background-position: 50% 50%;
 						background-image: url(~/icons/icon-add-layer.png);
-						filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
+						filter: invert() drop-shadow(0 1px 0 #0005);
 					}
 				}
 			}
@@ -178,13 +178,13 @@
 				z-index: 2;
 				background: #677;
 				background: linear-gradient(#677 0%, #405050 100%);
-				color: rgba(#fff, .75);
+				color: #fffb;
 				text-shadow: 0 1px 0 #122;
 				text-align: center;
 				border-radius: 50%;
 				padding-top: 9px;
 				margin: -41px 0 0 1px;
-				box-shadow: 0 0 0 1px rgba(0,0,0,.45),
+				box-shadow: 0 0 0 1px #0007,
 							0 2px 5px rgba(#233,.5);
 				filter: drop-shadow(0 0 2px #233);
 				transform-origin: 50% 100%;
@@ -208,7 +208,7 @@
 					margin-left: -9px;
 					border-left: 9px solid transparent;
 					border-right: 9px solid transparent;
-					border-top: 14px solid rgba(0,0,0,.45);
+					border-top: 14px solid #0007;
 				}
 
 				&:after {
@@ -237,7 +237,7 @@
 				background-size: 15px 15px;
 				background-repeat: no-repeat;
 				background-position: 50% 50%;
-				filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
+				filter: invert() drop-shadow(0 1px 0 #0005);
 				cursor: pointer;
 			}
 
@@ -355,6 +355,206 @@
 		}
 	}
 
+	&[data-dlg="dlgFilterGallery"] {
+		top: 58px;
+		left: 52px;
+
+		.dlg-content {
+			flex-direction: column;
+			width: 960px;
+			height: 690px;
+		}
+
+		.layout {
+			position: absolute;
+			top: 31px;
+			bottom: 7px;
+			left: 7px;
+			right: 7px;
+			display: flex;
+			flex-direction: row;
+
+			.preview {
+				background: linear-gradient(180deg, #344b, #3448);
+				position: relative;
+				border-radius: 3px;
+				flex: 1;
+
+				&:before {
+					content: "";
+					background: url(/cdn/img/2d-samples/robert-collins.jpg) 50% 50% no-repeat;
+					background-size: 450px auto;
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+				}
+			}
+
+			.active-filters {
+				width: 249px;
+				padding: 0px 7px;
+
+				.filter-row {
+
+					.filter {
+						height: 53px;
+						overflow: initial;
+						text-align: left;
+
+						&:after {
+							background: transparent;
+							top: 0;
+							left: 83px;
+							right: auto;
+							width: 157px;
+							font-size: 12px;
+							text-transform: uppercase;
+						}
+					}
+				}
+			}
+		}
+
+		.bubble-options {
+			background: linear-gradient(#788 0%, #566 100%);
+			position: absolute;
+			top: 65px;
+			left: 440px;
+			width: 264px;
+			height: 520px;
+			overflow: auto;
+			padding: 7px 11px;
+			border-radius: 5px;
+			box-shadow: 0 0 0 1px #0003,
+						0 2px 5px #0005;
+
+			div:nth-child(3n+1) {
+				margin-right: 0;
+			}
+		}
+
+		fieldset {
+			position: relative;
+			// height: 21px;
+			overflow: hidden;
+			font-size: 0;
+
+			&.expanded {
+				height: auto;
+			}
+
+			legend {
+				width: 100%;
+				padding: 4px 5px 5px;
+				margin-bottom: 5px;
+				font-size: 11px;
+				color: #fff7;
+				text-shadow: 0 1px 0 #0007;
+				text-transform: uppercase;
+
+				&:after {
+					content: "";
+					background: linear-gradient(90deg, transparent 0%, #0003 5%, transparent 100%);
+					position: absolute;
+					right: 0;
+					left: -7px;
+					top: 21px;
+					height: 1px;
+				}
+			}
+		}
+
+		.bubble-options fieldset > div,
+		.filter {
+			position: relative;
+			display: inline-block;
+			width: 76px;
+			height: 69px;
+			margin: 0 7px 9px 0;
+			border-radius: 4px;
+			overflow: hidden;
+			text-align: center;
+
+			&:before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 76px;
+				height: 53px;
+				background: url(~/img/filter-gallery.webp) no-repeat;
+			}
+
+			&:after {
+				content: attr(data-filter);
+				background: #fff2;
+				color: #fffa;
+				text-shadow: 0 1px 0 #0007;
+				position: absolute;
+				top: 53px;
+				left: 0;
+				right: 0;
+				font-size: 10px;
+				padding: 2px 0 3px;
+			}
+
+			&[data-filter="Colored Pencil"]:before       { background-position: 0 0; }
+			&[data-filter="Cutout"]:before               { background-position: -77px 0; }
+			&[data-filter="Dry Brush"]:before            { background-position: -155px 0; }
+			&[data-filter="Film Grain"]:before           { background-position: -232px 0; }
+			&[data-filter="Fresco"]:before               { background-position: -309px 0; }
+			&[data-filter="Neon Glow"]:before            { background-position: -385px 0; }
+			&[data-filter="Paint Daubs"]:before          { background-position: 0 -54px; }
+			&[data-filter="Palette Knife"]:before        { background-position: -77px -54px; }
+			&[data-filter="Plastic Wrap"]:before         { background-position: -155px -54px; }
+			&[data-filter="Poster Edges"]:before         { background-position: -232px -54px; }
+			&[data-filter="Rough Pastels"]:before        { background-position: -309px -54px; }
+			&[data-filter="Smudge Stick"]:before         { background-position: -385px -54px; }
+			&[data-filter="Sponge"]:before               { background-position: 0 -108px; }
+			&[data-filter="Underpainting"]:before        { background-position: -77px -108px; }
+			&[data-filter="Watercolor"]:before           { background-position: -155px -108px; }
+
+			&[data-filter="Accented Edges"]:before       { background-position: 0 -162px; }
+			&[data-filter="Angled Strokes"]:before       { background-position: -77px -162px; }
+			&[data-filter="Crosshatch"]:before           { background-position: -155px -162px; }
+			&[data-filter="Dark Strokes"]:before         { background-position: -232px -162px; }
+			&[data-filter="Ink Outlines"]:before         { background-position: -309px -162px; }
+			&[data-filter="Spatter"]:before              { background-position: -385px -162px; }
+			&[data-filter="Sprayed Strokes"]:before      { background-position: 0 -216px; }
+			&[data-filter="Sumi-e"]:before               { background-position: -77px -216px; }
+
+			&[data-filter="Diffuse Glow"]:before         { background-position: 0 -270px; }
+			&[data-filter="Glass"]:before                { background-position: -77px -270px; }
+			&[data-filter="Ocean Ripple"]:before         { background-position: -155px -270px; }
+
+			&[data-filter="Bas Relief"]:before           { background-position: 0 -324px; }
+			&[data-filter="Chalk &amp; Charcoal"]:before { background-position: -77px -324px; }
+			&[data-filter="Charcoal"]:before             { background-position: -155px -324px; }
+			&[data-filter="Chrome"]:before               { background-position: -232px -324px; }
+			&[data-filter="Contè Crayon"]:before         { background-position: -309px -324px; }
+			&[data-filter="Graphic Pen"]:before          { background-position: -385px -324px; }
+			&[data-filter="Halftone Pattern"]:before     { background-position: 0 -378px; }
+			&[data-filter="Note Paper"]:before           { background-position: -77px -378px; }
+			&[data-filter="Photocopy"]:before            { background-position: -155px -378px; }
+			&[data-filter="Plaster"]:before              { background-position: -232px -378px; }
+			&[data-filter="Reticulation"]:before         { background-position: -309px -378px; }
+			&[data-filter="Stamp"]:before                { background-position: -385px -378px; }
+			&[data-filter="Torn Edges"]:before           { background-position: 0 -432px; }
+			&[data-filter="Water Paper"]:before          { background-position: -77px -432px; }
+
+			&[data-filter="Glowing Edges"]:before        { background-position: 0 -486px; }
+			
+			&[data-filter="Craquelure"]:before           { background-position: 0 -540px; }
+			&[data-filter="Grain"]:before                { background-position: -77px -540px; }
+			&[data-filter="Mosaic Tiles"]:before         { background-position: -155px -540px; }
+			&[data-filter="Patch Work"]:before           { background-position: -232px -540px; }
+			&[data-filter="Stained Glass"]:before        { background-position: -309px -540px; }
+			&[data-filter="Texturizer"]:before           { background-position: -385px -540px; }
+		}
+	}
+
 	/*
 	&[data-dlg="dlgBrightnessContrast"] {
 		top: 105px;
@@ -376,8 +576,8 @@
 		position: relative;
 		top: -3px;
 		padding-left: 19px;
-		color: rgba(255,255,255,0.5);
-		text-shadow: 0 1px 0 rgba(0,0,0,.25);
+		color: #fff7;
+		text-shadow: 0 1px 0 #0003;
 		font-size: 11px;
 		font-weight: 400;
 		text-transform: uppercase;
@@ -385,7 +585,7 @@
 
 		&:after {
 			content: "";
-			background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.25) 5%, transparent 100%);
+			background: linear-gradient(90deg, transparent 0%, #0003 5%, transparent 100%);
 			position: absolute;
 			right: 0;
 			left: -7px;
@@ -407,7 +607,7 @@
 			cursor: pointer;
 			border-radius: 50%;
 			background: rgba(255,255,255,.25);
-			box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+			box-shadow: 0 0 0 1px #0003;
 
 			&:before {
 				content: "";
@@ -557,13 +757,13 @@
 			display: inline-block;
 			font-size: 0;
 			border-radius: 12px;
-			box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+			box-shadow: 0 0 0 1px #0003;
 
 			li {
 				display: inline-block;
 				background: rgba(255,255,255,.175);
 				color: rgba(255,255,255,.5);
-				text-shadow: 0 1px 0 rgba(0,0,0,.25);
+				text-shadow: 0 1px 0 #0003;
 				text-transform: uppercase;
 				font-size: 11px;
 				padding: 2px 7px;
@@ -588,7 +788,7 @@
 				}
 
 				&.active {
-					background: rgba(0,0,0,.25);
+					background: #0003;
 					color: rgba(255,255,255,.75);
 				}
 			}
@@ -641,7 +841,7 @@
 				width: 255px;
 				height: 255px;
 				border-radius: 2px;
-				box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+				box-shadow: 0 0 0 1px #0003;
 
 				&:before,
 				&:after {
@@ -703,7 +903,7 @@
 				width: 19px;
 				margin: 0 17px 0 11px;
 				border-radius: 2px;
-				box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+				box-shadow: 0 0 0 1px #0003;
 
 				.cursor {
 					position: absolute;
@@ -716,7 +916,7 @@
 					background: var(--hue);
 					// border: 1px solid #ffffff99;
 					box-shadow: inset 0 0 0 2px #ffffff88,
-								0 1px 3px rgba(0,0,0,.35);
+								0 1px 3px #0004;
 					pointer-events: none;
 
 					&:after {
@@ -839,7 +1039,7 @@
 						bottom: 0;
 						z-index: 3;
 						border-radius: inherit;
-						box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+						box-shadow: 0 0 0 1px #0003;
 					}
 
 					&:after {
@@ -879,7 +1079,7 @@
 								left: 0;
 								right: 0;
 								height: 0;
-								border-bottom: 1px solid rgba(0,0,0,.25);
+								border-bottom: 1px solid #0003;
 							}
 						}
 						
