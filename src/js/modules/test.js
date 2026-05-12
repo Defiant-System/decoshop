@@ -13,24 +13,22 @@ let Test = {
 		   dlgExposure 	dlgVibrance 	dlgHueSaturation 	dlgColorBalance 	dlgBlackWhite 	dlgPhotoFilter
 		   dlgChannelMixer 	dlgColorLookup 	dlgThreshold 	dlgGradientMap 	dlgSelectiveColor 	dlgShadowHighlights
 		   dlgMatchColor	dlgReplaceColor	
-		 * dlgSelectColorRange	dlgSelectMagicCut	dlgSelectRefineEdge	dlgSelectModifyBorder
-		 * dlgSelectModifySmooth	dlgSelectModifyExpand	dlgSelectModifyContract	dlgSelectModifyFeather
-
+		 * dlgDuplicateInfo	dlgArtboard	dlgArtboardFromLayer
+		 * dlgSelectColorRange	dlgSelectMagicCut	dlgSelectRefineEdge
+		 * dlgSelectModifyBorder	dlgSelectModifySmooth	dlgSelectModifyExpand	dlgSelectModifyContract	dlgSelectModifyFeather
 		 * dlgFilterGallery	dlgLensCorrection	dlgCameraRaw	dlgLiquify	dlgPixelator
 		 * dlgNormalMap	dlgTextureDilation
-
 		 * dlgBoxBlur	dlgGaussianBlur	dlgLensBlur	dlgMotionBlur	dlgRadialBlur	dlgSurfaceBlur
 		 * dlgDisplace	dlgKaleidoscope	dlgPinch	dlgPolarCoordinates	dlgRipple	dlgShear	dlgSpherize	dlgTwirl	dlgWave	dlgZigZag
 		 * dlgAddNoise	dlgDustScratches	dlgMedian	dlgReduceNoise
 		 * dlgColorHalftone	dlgCrystallize	dlgMezzoint	dlgMosaic	dlgPointillize
 		 * dlgFlame	dlgFibers	dlgLensFlare
-		 * dlgSmartSharpen	dlgUnshartMask
-
+		 * dlgSmartSharpen	dlgUnsharpMask
 		 * dlgDiffuse	dlgEmboss	dlgOilPaint	dlgTraceContour	dlgWind
 		 * dlgHighPass	dlgHsbHsl	dlgMaximum	dlgMinimum	dlgOffset	dlgRepeat	dlgColorToAlpha	dlgDither	dlgParticles
 		 * dlgAddGuides
 		 */
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgPreferences" }), 800);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgFilterGallery" }), 800);
 
 	}
 };

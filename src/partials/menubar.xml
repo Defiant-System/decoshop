@@ -96,6 +96,7 @@
 			<Menu name="Raster"/>
 			<Menu name="Vector"/>
 		</Menu>
+		<Menu type="divider"/>
 		<Menu name="Adjustments">
 			<Menu name="Brightness / Contrast&#8230;" click="open-dialog" arg="dlgBrightnessContrast"/>
 			<Menu name="Levels&#8230;" click="open-dialog" arg="dlgLevels"/>
@@ -122,6 +123,7 @@
 			<Menu name="Match Color&#8230;" click="open-dialog" arg="dlgMatchColor"/>
 			<Menu name="Replace Color&#8230;" click="open-dialog" arg="dlgReplaceColor"/>
 		</Menu>
+		<Menu type="divider"/>
 		<Menu name="Auto Tone"/>
 		<Menu name="Auto Contrast"/>
 		<Menu name="Auto Color"/>
@@ -148,9 +150,18 @@
 		<Menu name="Variables&#8230;" click="open-dialog" arg="dlgVariables"/>
 	</Menu>
 	<Menu name="Layer">
-		<Menu name="New"/>
+		<Menu name="New">
+			<Menu name="Layer"/>
+			<Menu name="Folder"/>
+			<Menu name="Delete"/>
+			<Menu name="Artboard&#8230;" click="open-dialog" arg="dlgArtboard"/>
+			<Menu name="Artboard from Layer&#8230;" click="open-dialog" arg="dlgArtboardFromLayer"/>
+			<Menu type="divider"/>
+			<Menu name="Layer via Copy"/>
+			<Menu name="Layer via Cut"/>
+		</Menu>
 		<Menu name="Duplicate Layer"/>
-		<Menu name="Duplicate Info"/>
+		<Menu name="Duplicate Info&#8230;" click="open-dialog" arg="dlgDuplicateInfo"/>
 		<Menu name="Delete"/>
 		<Menu type="divider"/>
 		<Menu name="Layer Style">
