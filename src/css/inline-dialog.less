@@ -366,12 +366,12 @@
 
 	&[data-dlg="dlgFilterGallery"] {
 		top: 58px;
-		left: 52px;
+		left: 50px;
 
 		.dlg-content {
 			flex-direction: column;
-			width: 960px;
-			height: 690px;
+			width: 1080px;
+			height: 740px;
 		}
 
 		.layout {
@@ -406,17 +406,17 @@
 				padding: 0 0 3px 7px;
 
 				.filter-row {
-					// background: #0001;
 					position: relative;
 					height: 31px;
 					overflow: hidden;
 					margin-bottom: 3px;
 					border-radius: 5px;
-					box-shadow: inset 0 0 0 1px #0001;
+					box-shadow: inset 0 0 0 1px #0002;
+					cursor: pointer;
 
 					&:before {
 						content: "";
-						background: #0002;
+						background: #0001;
 						position: absolute;
 						top: 0;
 						left: 0;
@@ -429,7 +429,7 @@
 
 					&:after {
 						content: "";
-						background: #0002;
+						background: #0001;
 						position: absolute;
 						top: 0;
 						right: 0;
@@ -441,6 +441,11 @@
 					}
 
 					&:hover {
+						&:before,
+						&:after {
+							background: #0002;
+						}
+
 						.action-icons {
 							i {
 								opacity: .5;
@@ -500,6 +505,8 @@
 
 						i {
 							opacity: 0;
+
+							&:hover { opacity: .75; }
 						}
 					}
 				}
@@ -507,52 +514,76 @@
 		}
 
 		.bubble-options {
-			display: none;
+			// display: none;
 			background: linear-gradient(#788 0%, #566 100%);
 			position: absolute;
-			top: 65px;
-			left: 440px;
-			width: 264px;
-			height: 520px;
-			overflow: auto;
-			padding: 7px 11px;
-			border-radius: 5px;
-			box-shadow: 0 0 0 1px #0003,
-						0 2px 5px #0005;
+			top: 52px;
+			left: 470px;
+			padding: 12px 5px;
+			border-radius: 6px;
+			box-shadow: 0 0 0 1px #0003;
+			filter: drop-shadow(0 2px 5px #0007);
 
-			div:nth-child(3n+1) {
-				margin-right: 0;
+			&:before {
+				content: "";
+				position: absolute;
+				top: 17px;
+				right: -15px;
+				width: 0;
+				height: 0;
+				border-top: 11px solid transparent;
+				border-bottom: 11px solid transparent;
+				border-left: 15px solid #0003;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: 17px;
+				right: -13px;
+				width: 0;
+				height: 0;
+				border-top: 11px solid transparent;
+				border-bottom: 11px solid transparent;
+				border-left: 13px solid #768686;
+			}
+
+			.bubble-content {
+				position: relative;
+				width: 339px;
+				height: 600px;
+				overflow: auto;
+			}
+
+			fieldset > div {
+				cursor: pointer;
+
+				&:hover {
+					box-shadow: 0 0 0 4px #1224;
+				}
+
+				&:nth-child(4n+1) {
+					margin-right: 0;
+				}
 			}
 		}
 
 		fieldset {
 			position: relative;
-			// height: 21px;
-			overflow: hidden;
+			padding: 7px;
+			margin-bottom: 5px;
 			font-size: 0;
 
-			&.expanded {
-				height: auto;
-			}
-
 			legend {
+				background: #1223;
 				width: 100%;
-				padding: 4px 5px 5px;
-				margin-bottom: 5px;
+				padding: 4px 5px 3px;
+				// margin-bottom: 5px;
 				font-size: 11px;
 				color: #fff7;
 				text-shadow: 0 1px 0 #0007;
 				text-transform: uppercase;
-
-				&:after {
-					content: "";
-					background: linear-gradient(90deg, transparent 0%, #0003 5%, transparent 100%);
-					position: absolute;
-					right: 0;
-					left: -7px;
-					top: 21px;
-					height: 1px;
-				}
+				border-radius: 4px 4px 0 0;
 			}
 		}
 
@@ -561,7 +592,7 @@
 			position: relative;
 			display: inline-block;
 			width: 76px;
-			height: 69px;
+			height: 70px;
 			margin: 0 7px 9px 0;
 			border-radius: 4px;
 			overflow: hidden;
@@ -579,7 +610,7 @@
 
 			&:after {
 				content: attr(data-filter);
-				background: #fff2;
+				background: #0002;
 				color: #fffa;
 				text-shadow: 0 1px 0 #0007;
 				position: absolute;
