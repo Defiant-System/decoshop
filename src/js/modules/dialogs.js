@@ -1,5 +1,54 @@
 
 const Dialogs = {
+	dlgFilterGallery(event) {
+		/*
+		 * Brightness -  Min: -150   Max: 150
+		 * Contrast -    Min: -100   Max: 100
+		 */
+		let APP = decoshop,
+			Self = Dialogs,
+			val,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "hide-filter-options":
+				el = Self.orgEl.parents(".dialog-box");
+				el.removeClass("covered");
+				// reset element
+				el.find(".bubble-options").cssSequence("popOut", "animationend", el => el.removeClass("popup popOut"));
+				el.find(".dlg-content").removeAttr("data-click");
+				// clean up
+				delete Self.orgEl;
+				break;
+			case "show-filter-options":
+				Self.orgEl = event.el;
+				el = event.el.parents(".dialog-box").addClass("covered");
+				el.find(".dlg-content").data({ click: "hide-filter-options" });
+
+				val = Self.orgEl.offset(".dlg-content").top - 14;
+				el.find(".bubble-options").css({ "--top": `${val}px` }).addClass("popup");
+				el.find(".bubble-options .selected").removeClass("selected");
+
+				selEl = el.find(`.bubble-options [data-filter="${Self.orgEl.data("filter")}"]`).addClass("selected");
+				selEl.parents(".bubble-content").scrollTop(selEl.offset(".bubble-content").top - 30);
+				break;
+			case "select-filter":
+				el = $(event.target);
+				Self.orgEl.data({ filter: el.data("filter") });
+				break;
+			case "toggle-filter":
+				if (event.el.hasClass("icon-eye-on")) {
+					event.el.removeClass("icon-eye-on").addClass("icon-eye-off");
+				} else {
+					event.el.removeClass("icon-eye-off").addClass("icon-eye-on");
+				}
+				break;
+			case "remove-filter":
+				event.el.parents(".filter-row").remove();
+				break;
+		}
+	},
 	dlgBrightnessContrast(event) {
 		/*
 		 * Brightness -  Min: -150   Max: 150

@@ -22,6 +22,21 @@
 		animation: closing 150ms ease-in-out forwards;
 	}
 
+	&.covered {
+		.dlg-content {
+			&:before {
+				content: "";
+				background: #0000;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 2;
+			}
+		}
+	}
+
 	[class*="icon-"],
 	[class^="icon-"] {
 		display: inline-block;
@@ -507,6 +522,7 @@
 							opacity: 0;
 
 							&:hover { opacity: .75; }
+							&.icon-eye-off { opacity: .5; }
 						}
 					}
 				}
@@ -514,15 +530,28 @@
 		}
 
 		.bubble-options {
-			// display: none;
 			background: linear-gradient(#788 0%, #566 100%);
 			position: absolute;
-			top: 52px;
+			// top: 52px;
+			top: var(--top);
 			left: 470px;
 			padding: 12px 5px;
 			border-radius: 6px;
 			box-shadow: 0 0 0 1px #0003;
 			filter: drop-shadow(0 2px 5px #0007);
+			transform-origin: 100% 4%;
+			opacity: 0;
+			visibility: hidden;
+
+			&.popup {
+				z-index: 3;
+				visibility: visible;
+				animation: popup-filters-bubble 200ms ease-in-out forwards;
+			}
+
+			&.popOut {
+				animation: popout-filters-bubble 160ms ease-in-out forwards;
+			}
 
 			&:before {
 				content: "";
@@ -558,8 +587,12 @@
 			fieldset > div {
 				cursor: pointer;
 
-				&:hover {
-					box-shadow: 0 0 0 4px #1224;
+				&:not(.selected):hover {
+					box-shadow: 0 0 0 4px #eff7;
+				}
+
+				&.selected {
+					box-shadow: 0 0 3px 2px #eff9;
 				}
 
 				&:nth-child(4n+1) {
@@ -625,13 +658,13 @@
 			&[data-filter="Cutout"]:before               { background-position: -77px 0; }
 			&[data-filter="Dry Brush"]:before            { background-position: -155px 0; }
 			&[data-filter="Film Grain"]:before           { background-position: -232px 0; }
-			&[data-filter="Fresco"]:before               { background-position: -309px 0; }
+			&[data-filter="Fresco"]:before               { background-position: -308px 0; }
 			&[data-filter="Neon Glow"]:before            { background-position: -385px 0; }
 			&[data-filter="Paint Daubs"]:before          { background-position: 0 -54px; }
 			&[data-filter="Palette Knife"]:before        { background-position: -77px -54px; }
 			&[data-filter="Plastic Wrap"]:before         { background-position: -155px -54px; }
 			&[data-filter="Poster Edges"]:before         { background-position: -232px -54px; }
-			&[data-filter="Rough Pastels"]:before        { background-position: -309px -54px; }
+			&[data-filter="Rough Pastels"]:before        { background-position: -308px -54px; }
 			&[data-filter="Smudge Stick"]:before         { background-position: -385px -54px; }
 			&[data-filter="Sponge"]:before               { background-position: 0 -108px; }
 			&[data-filter="Underpainting"]:before        { background-position: -77px -108px; }
@@ -641,7 +674,7 @@
 			&[data-filter="Angled Strokes"]:before       { background-position: -77px -162px; }
 			&[data-filter="Crosshatch"]:before           { background-position: -155px -162px; }
 			&[data-filter="Dark Strokes"]:before         { background-position: -232px -162px; }
-			&[data-filter="Ink Outlines"]:before         { background-position: -309px -162px; }
+			&[data-filter="Ink Outlines"]:before         { background-position: -308px -162px; }
 			&[data-filter="Spatter"]:before              { background-position: -385px -162px; }
 			&[data-filter="Sprayed Strokes"]:before      { background-position: 0 -216px; }
 			&[data-filter="Sumi-e"]:before               { background-position: -77px -216px; }
@@ -654,13 +687,13 @@
 			&[data-filter="Chalk &amp; Charcoal"]:before { background-position: -77px -324px; }
 			&[data-filter="Charcoal"]:before             { background-position: -155px -324px; }
 			&[data-filter="Chrome"]:before               { background-position: -232px -324px; }
-			&[data-filter="Contè Crayon"]:before         { background-position: -309px -324px; }
+			&[data-filter="Contè Crayon"]:before         { background-position: -308px -324px; }
 			&[data-filter="Graphic Pen"]:before          { background-position: -385px -324px; }
 			&[data-filter="Halftone Pattern"]:before     { background-position: 0 -378px; }
 			&[data-filter="Note Paper"]:before           { background-position: -77px -378px; }
 			&[data-filter="Photocopy"]:before            { background-position: -155px -378px; }
 			&[data-filter="Plaster"]:before              { background-position: -232px -378px; }
-			&[data-filter="Reticulation"]:before         { background-position: -309px -378px; }
+			&[data-filter="Reticulation"]:before         { background-position: -308px -378px; }
 			&[data-filter="Stamp"]:before                { background-position: -385px -378px; }
 			&[data-filter="Torn Edges"]:before           { background-position: 0 -432px; }
 			&[data-filter="Water Paper"]:before          { background-position: -77px -432px; }
@@ -671,7 +704,7 @@
 			&[data-filter="Grain"]:before                { background-position: -77px -540px; }
 			&[data-filter="Mosaic Tiles"]:before         { background-position: -155px -540px; }
 			&[data-filter="Patch Work"]:before           { background-position: -232px -540px; }
-			&[data-filter="Stained Glass"]:before        { background-position: -309px -540px; }
+			&[data-filter="Stained Glass"]:before        { background-position: -308px -540px; }
 			&[data-filter="Texturizer"]:before           { background-position: -385px -540px; }
 		}
 	}
@@ -1221,6 +1254,17 @@
 	}
 }
 
+
+@keyframes popup-filters-bubble {
+	0%   { transform: scale(.25); opacity: 0; }
+	91%  { transform: scale(1.05); opacity: 1; }
+	100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes popout-filters-bubble {
+	0%   { transform: scale(1); opacity: 1; }
+	100% { transform: scale(.25); opacity: 0; }
+}
 
 @keyframes pop-hover-bubble {
 	0%   { transform: scale(.25); opacity: 0; }

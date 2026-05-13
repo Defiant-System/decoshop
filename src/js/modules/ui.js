@@ -81,7 +81,7 @@ const UI = {
 					el.addClass("active");
 				} else if (el.parents("[data-dlg]").length) {
 					return Self.doDialog(event);
-				} else {
+				} else if (Self.menu) {
 					// clean up
 					Self.menu.remove();
 				}

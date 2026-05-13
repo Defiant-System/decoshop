@@ -16,4 +16,389 @@
 		<i width="600" height="400" path="/cdn/img/2d-samples/brantley-neal.jpg"/>
 		<i width="600" height="400" path="/cdn/img/2d-samples/alexander-scott-lambley.jpg"/>
 	</Samples>
+	<Filters>
+		<i group="Artistic">
+			<i name="Colored Pencil">
+				<i name="Stroke Width" min="1" max="30" value="4"/>
+				<i name="Stroke Pressure" min="0" max="15" value="8"/>
+				<i name="Stroke Brightness" min="0" max="50" value="25"/>
+			</i>
+			<i name="Cutout">
+				<i name="Number of Levels" min="2" max="8" value="4"/>
+				<i name="Edge Simplicity" min="0" max="10" value="3"/>
+				<i name="Edge Fidelity" min="1" max="3" value="1"/>
+			</i>
+			<i name="Dry Brush">
+				<i name="Brush Size" min="0" max="10" value="4"/>
+				<i name="Brush Detail" min="0" max="10" value="4"/>
+				<i name="Texture" min="1" max="3" value="2"/>
+			</i>
+			<i name="Film Grain">
+				<i name="Grain" min="0" max="20" value="4"/>
+				<i name="Highlight Area" min="0" max="20" value="0"/>
+				<i name="Intensity" min="0" max="10" value="10"/>
+			</i>
+			<i name="Fresco">
+				<i name="Brush Size" min="0" max="10" value="2"/>
+				<i name="Brush Detail" min="0" max="10" value="8"/>
+				<i name="Texture" min="1" max="3" value="1"/>
+			</i>
+			<i name="Neon Glow">
+				<i name="Glow Size" min="-24" max="24" value="5"/>
+				<i name="Glow Brightness" min="0" max="50" value="15"/>
+				<i type="color" value="#ff0000"/>
+			</i>
+			<i name="Paint Daubs">
+				<i name="Brush Size" min="1" max="50" value="10"/>
+				<i name="Sharpness" min="0" max="40" value="10"/>
+				<i type="select" name="Brush Type">
+					<o value="0" name="Simple"/>
+					<o value="1" name="Light Rough"/>
+					<o value="2" name="Dark Rough"/>
+					<o value="3" name="Wide Sharp"/>
+					<o value="4" name="Wide Blurry"/>
+					<o value="5" name="Sparkle"/>
+				</i>
+			</i>
+			<i name="Palette Knife">
+				<i name="Stroke Size" min="1" max="50" value="25"/>
+				<i name="Stroke Detail" min="1" max="3" value="3"/>
+				<i name="Softness" min="0" max="10" value="2"/>
+			</i>
+			<i name="Plastic Wrap">
+				<i name="Strength" min="0" max="20" value="20"/>
+				<i name="Detail" min="1" max="15" value="4"/>
+				<i name="Smoothness" min="1" max="15" value="5"/>
+			</i>
+			<i name="Poster Edges">
+				<i name="Edge Thickness" min="0" max="10" value="2"/>
+				<i name="Edge Intensity" min="0" max="10" value="1"/>
+				<i name="Posterization" min="0" max="6" value="2"/>
+			</i>
+			<i name="Rough Pastels">
+				<i name="Stroke Length" min="0" max="20" value="6"/>
+				<i name="Stroke Detail" min="1" max="4" value="4"/>
+				<i type="select" name="Texture">
+					<o value="0" name="Blocks"/>
+					<o value="1" name="Canvas" selected="1"/>
+					<o value="2" name="Frosted"/>
+					<o value="3" name="Tiny Lens"/>
+					<o value="4" name="Bricks"/>
+					<o value="5" name="Burlap"/>
+					<o value="6" name="Sandstone"/>
+				</i>
+				<i name="Scale" min="50" max="200" value="100"/>
+				<i name="Relief" min="0" max="50" value="20"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom" selected="1"/>
+					<o value="1" name="Bottom Left"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+				<i type="checkbox" name="Invert" checked="false"/>
+			</i>
+			<i name="Smudge Stick">
+				<i name="Stroke Length" min="0" max="20" value="2"/>
+				<i name="Highlight Area" min="0" max="20" value="0"/>
+				<i name="Intensity" min="0" max="10" value="10"/>
+			</i>
+			<i name="Sponge">
+				<i name="Brush Size" min="0" max="10" value="2"/>
+				<i name="Definition" min="0" max="25" value="12"/>
+				<i name="Smoothness" min="1" max="15" value="5"/>
+			</i>
+			<i name="Underpainting">
+				<i name="Brush Size" min="0" max="10" value="6"/>
+				<i name="Texture Coverage" min="0" max="50" value="16"/>
+				<i type="select" name="Texture">
+					<o value="0" name="Blocks"/>
+					<o value="1" name="Canvas" selected="1"/>
+					<o value="2" name="Frosted"/>
+					<o value="3" name="Tiny Lens"/>
+					<o value="4" name="Bricks"/>
+					<o value="5" name="Burlap"/>
+					<o value="6" name="Sandstone"/>
+				</i>
+				<i name="Scale" min="50" max="200" value="100"/>
+				<i name="Relief" min="0" max="50" value="4"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom"/>
+					<o value="1" name="Bottom Left"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top" selected="1"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+				<i type="checkbox" name="Invert" checked="false"/>
+			</i>
+			<i name="Watercolor">
+				<i name="Brush Detail" min="0" max="10" value="9"/>
+				<i name="Shadow Intensity" min="0" max="10" value="1"/>
+				<i name="Texture" min="1" max="3" value="3"/>
+			</i>
+		</i>
+		<i group="Brush Strokes">
+			<i name="Accented Edges">
+				<i name="Edge Width" min="1" max="14" value="2"/>
+				<i name="Edge Brightness" min="0" max="50" value="38"/>
+				<i name="Smoothness" min="1" max="15" value="5"/>
+			</i>
+			<i name="Angled Strokes">
+				<i name="Direction Balance" min="0" max="100" value="50"/>
+				<i name="Stroke Length" min="0" max="20" value="15"/>
+				<i name="Sharpness" min="0" max="40" value="3"/>
+			</i>
+			<i name="Crosshatch">
+				<i name="Stroke Length" min="0" max="20" value="9"/>
+				<i name="Sharpness" min="0" max="40" value="6"/>
+				<i name="Strength" min="1" max="3" value="1"/>
+			</i>
+			<i name="Dark Strokes">
+				<i name="Balance" min="0" max="10" value="5"/>
+				<i name="Black Intensity" min="0" max="10" value="6"/>
+				<i name="White Intensity" min="0" max="10" value="2"/>
+			</i>
+			<i name="Ink Outlines">
+				<i name="Stroke Length" min="1" max="50" value="4"/>
+				<i name="Dark Intensity" min="0" max="50" value="20"/>
+				<i name="Light Intensity" min="0" max="50" value="10"/>
+			</i>
+			<i name="Spatter">
+				<i name="Spray Radius" min="0" max="25" value="10"/>
+				<i name="Smoothness" min="1" max="25" value="5"/>
+			</i>
+			<i name="Sprayed Strokes">
+				<i name="Stroke Length" min="0" max="20" value="12"/>
+				<i name="Spray Radius" min="0" max="25" value="7"/>
+				<i type="select" name="Direction">
+					<o value="0" name="Right Diagonal" selected="1"/>
+					<o value="1" name="Horizontal"/>
+					<o value="2" name="Left Diagonal"/>
+					<o value="3" name="Vertical"/>
+				</i>
+			</i>
+			<i name="Sumi-e">
+				<i name="Stroke Width" min="3" max="15" value="10"/>
+				<i name="Stroke Pressure" min="0" max="15" value="5"/>
+				<i name="Contrast" min="0" max="50" value="16"/>
+			</i>
+		</i>
+		<i group="Distort">
+			<i name="Diffuse Glow">
+				<i name="Graininess" min="0" max="10" value="6"/>
+				<i name="Glow Amount" min="0" max="20" value="10"/>
+				<i name="Clear Amount" min="0" max="20" value="15"/>
+			</i>
+			<i name="Glass">
+				<i name="Distortion" min="0" max="20" value="3"/>
+				<i name="Smoothness" min="1" max="15" value="1"/>
+				<i type="select" name="Texture">
+					<o value="0" name="Blocks"/>
+					<o value="1" name="Canvas"/>
+					<o value="2" name="Frosted"/>
+					<o value="3" name="Tiny Lens" selected="1"/>
+					<o value="4" name="Bricks"/>
+					<o value="5" name="Burlap"/>
+					<o value="6" name="Sandstone"/>
+				</i>
+				<i name="Scale" min="50" max="200" value="10"/>
+				<i type="checkbox" name="Invert" checked="false"/>
+			</i>
+			<i name="Ocean Ripple">
+				<i name="Ripple Size" min="1" max="15" value="5"/>
+				<i name="Ripple Magnitude" min="0" max="20" value="15"/>
+			</i>
+		</i>
+		<i group="Sketch">
+			<i name="Bas Relief">
+				<i name="Detail" min="1" max="15" value="11"/>
+				<i name="Smoothness" min="1" max="15" value="7"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom" selected="1"/>
+					<o value="1" name="Bottom Left"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+			</i>
+			<i name="Chalk &amp; Charcoal">
+				<i name="Charcoal Area" min="0" max="20" value="6"/>
+				<i name="Chalk Area" min="0" max="20" value="6"/>
+				<i name="Stroke Pressure" min="0" max="15" value="1"/>
+			</i>
+			<i name="Charcoal">
+				<i name="Thickness" min="1" max="7" value="1"/>
+				<i name="Detail" min="0" max="5" value="5"/>
+				<i name="Light/Dark Balance" min="0" max="100" value="50"/>
+			</i>
+			<i name="Chrome">
+				<i name="Detail" min="1" max="15" value="4"/>
+				<i name="Smoothness" min="1" max="15" value="4"/>
+			</i>
+			<i name="Contè Crayon">
+				<i name="Foreground Level" min="1" max="15" value="11"/>
+				<i name="Background Level" min="1" max="15" value="7"/>
+				<i type="select" name="Texture">
+					<o value="0" name="Blocks"/>
+					<o value="1" name="Canvas" selected="1"/>
+					<o value="2" name="Frosted"/>
+					<o value="3" name="Tiny Lens"/>
+					<o value="4" name="Bricks"/>
+					<o value="5" name="Burlap"/>
+					<o value="6" name="Sandstone"/>
+				</i>
+				<i name="Scale" min="50" max="200" value="100"/>
+				<i name="Relief" min="0" max="50" value="4"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom"/>
+					<o value="1" name="Bottom Left"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top" selected="1"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+				<i type="checkbox" name="Invert" checked="false"/>
+			</i>
+			<i name="Graphic Pen">
+				<i name="Stroke Length" min="0" max="20" value="7"/>
+				<i name="Light/Dark Balance" min="0" max="100" value="50"/>
+				<i type="select" name="Direction">
+					<o value="0" name="Right Diagonal" selected="1"/>
+					<o value="1" name="Horizontal"/>
+					<o value="2" name="Left Diagonal"/>
+					<o value="3" name="Vertical"/>
+				</i>
+			</i>
+			<i name="Halftone Pattern">
+				<i name="Size" min="1" max="15" value="1"/>
+				<i name="Contrast" min="0" max="50" value="5"/>
+				<i type="select" name="Pattern">
+					<o value="0" name="Circle"/>
+					<o value="1" name="Dot"/>
+					<o value="2" name="Line"/>
+				</i>
+			</i>
+			<i name="Note Paper">
+				<i name="Image Balance" min="0" max="50" value="25"/>
+				<i name="Graininess" min="0" max="20" value="10"/>
+				<i name="Relief" min="0" max="25" value="11"/>
+			</i>
+			<i name="Photocopy">
+				<i name="Detail" min="1" max="15" value="10"/>
+				<i name="Darkness" min="1" max="50" value="4"/>
+			</i>
+			<i name="Plaster">
+				<i name="Image Balance" min="0" max="50" value="20"/>
+				<i name="Smoothness" min="1" max="15" value="2"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom"/>
+					<o value="1" name="Bottom Left"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top" selected="1"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+			</i>
+			<i name="Reticulation">
+				<i name="Density" min="0" max="50" value="12"/>
+				<i name="Foreground Level" min="0" max="50" value="40"/>
+				<i name="Background Level" min="0" max="50" value="5"/>
+			</i>
+			<i name="Stamp">
+				<i name="Light/Dark Balance" min="0" max="50" value="25"/>
+				<i name="Smoothness" min="1" max="50" value="4"/>
+			</i>
+			<i name="Torn Edges">
+				<i name="Image Balance" min="0" max="50" value="25"/>
+				<i name="Smoothness" min="1" max="15" value="11"/>
+				<i name="Contrast" min="0" max="50" value="17"/>
+			</i>
+			<i name="Water Paper">
+				<i name="Fiber Length" min="3" max="50" value="15"/>
+				<i name="Glow Brightness" min="0" max="100" value="60"/>
+				<i name="Contrast" min="0" max="100" value="80"/>
+			</i>
+		</i>
+		<i group="Stylize">
+			<i name="Glowing Edges">
+				<i name="Edge Width" min="1" max="14" value="1"/>
+				<i name="Edge Brightness" min="0" max="20" value="10"/>
+				<i name="Smoothness" min="1" max="15" value="1"/>
+			</i>
+		</i>
+		<i group="Texture">
+			<i name="Craquelure">
+				<i name="Crack Spacing" min="2" max="100" value="15"/>
+				<i name="Crack Depth" min="0" max="10" value="6"/>
+				<i name="Crack Brightness" min="0" max="10" value="9"/>
+			</i>
+			<i name="Grain">
+				<i name="Intensity" min="0" max="40" value="40"/>
+				<i name="Contrast" min="0" max="50" value="50"/>
+				<i type="select" name="Grain Type">
+					<o value="0" name="Regular"/>
+					<o value="1" name="Soft"/>
+					<o value="2" name="Sprinkles"/>
+					<o value="3" name="Clumped"/>
+					<o value="4" name="Contrasty"/>
+					<o value="5" name="Enlarged"/>
+					<o value="6" name="Stippled"/>
+					<o value="7" name="Horizontal"/>
+					<o value="8" name="Vertical"/>
+					<o value="9" name="Speckle"/>
+				</i>
+			</i>
+			<i name="Mosaic Tiles">
+				<i name="Tile Size" min="2" max="100" value="12"/>
+				<i name="Grout Width" min="1" max="15" value="3"/>
+				<i name="Lighten Grout" min="0" max="10" value="9"/>
+			</i>
+			<i name="Patch Work">
+				<i name="Square Size" min="0" max="10" value="4"/>
+				<i name="Relief" min="0" max="25" value="8"/>
+			</i>
+			<i name="Stained Glass">
+				<i name="Cell Size" min="3" max="100" value="10"/>
+				<i name="Border" min="1" max="20" value="4"/>
+				<i name="Light Intensity" min="0" max="50" value="0"/>
+			</i>
+			<i name="Texturizer">
+				<i type="select" name="Texture">
+					<o value="0" name="Blocks"/>
+					<o value="1" name="Canvas"/>
+					<o value="2" name="Frosted"/>
+					<o value="3" name="Tiny Lens"/>
+					<o value="4" name="Bricks" selected="1"/>
+					<o value="5" name="Burlap"/>
+					<o value="6" name="Sandstone"/>
+				</i>
+				<i name="Scale" min="50" max="200" value="100"/>
+				<i name="Relief" min="0" max="50" value="10"/>
+				<i type="select" name="Light">
+					<o value="0" name="Bottom"/>
+					<o value="1" name="Bottom Left" selected="1"/>
+					<o value="2" name="Left"/>
+					<o value="3" name="Top Left"/>
+					<o value="4" name="Top"/>
+					<o value="5" name="Top Right"/>
+					<o value="6" name="Right"/>
+					<o value="7" name="Bottom Right"/>
+				</i>
+				<i type="checkbox" name="Invert" checked="false"/>
+			</i>
+		</i>
+	</Filters>
 </Data>

@@ -29,6 +29,7 @@ let Test = {
 		 * dlgAddGuides
 		 */
 		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgFilterGallery" }), 800);
+		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
 	}
 };
