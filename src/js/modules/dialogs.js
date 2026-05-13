@@ -47,6 +47,27 @@ const Dialogs = {
 			case "remove-filter":
 				event.el.parents(".filter-row").remove();
 				break;
+
+			// standard dialog events
+			case "dlg-open":
+				if (!event.dEl.find(".bubble-options fieldset > div").length) {
+					window.render({
+						template: "filter-gallery-list",
+						match: `//Filters`,
+						target: event.dEl.find(".bubble-options .bubble-content"),
+					}).then(() => {
+						// re-apply filter
+						// Self.dlgPixelator({ type: "apply-filter-data" });
+					});
+				}
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFilterGallery" });
 		}
 	},
 	dlgBrightnessContrast(event) {

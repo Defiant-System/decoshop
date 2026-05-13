@@ -87,6 +87,20 @@
 </xsl:template>
 
 
+<xsl:template name="filter-gallery-list">
+	<xsl:for-each select="./*">
+		<fieldset>
+			<legend><xsl:value-of select="@group"/></legend>
+			<xsl:for-each select="./*">
+				<div>
+					<xsl:attribute name="data-filter"><xsl:value-of select="@name"/></xsl:attribute>
+				</div>
+			</xsl:for-each>
+		</fieldset>
+	</xsl:for-each>
+</xsl:template>
+
+
 <xsl:template name="substring-after-last">
 	<xsl:param name="string" />
 	<xsl:param name="delimiter" />
