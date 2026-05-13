@@ -22,6 +22,40 @@
 		animation: closing 150ms ease-in-out forwards;
 	}
 
+	[class*="icon-"],
+	[class^="icon-"] {
+		display: inline-block;
+		width: 17px;
+		height: 17px;
+		margin: 0 1px;
+		// opacity: 0;
+		vertical-align: middle;
+		background-size: 15px 15px;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		filter: invert() drop-shadow(0 1px 0 #0005);
+		cursor: pointer;
+
+		&.icon-arrow   {
+			background-image: url(~/icons/icon-arrow.png);
+			background-size: 7px 7px;
+			filter: drop-shadow(0 1px 0 #0005);
+		}
+
+		&.icon-eye-on   {
+			background-image: url(~/icons/icon-eye-on.png);
+		}
+
+		&.icon-eye-off  {
+			background-image: url(~/icons/icon-eye-off.png);
+			opacity: .35;
+		}
+
+		&.icon-trashcan {
+			background-image: url(~/icons/icon-trashcan.png);
+			background-size: 17px 17px;
+		}
+	}
 
 	// default position
 	&[data-dlg] {
@@ -118,6 +152,11 @@
 						.icon-trashcan {
 							opacity: .35;
 						}
+					}
+
+					.icon-eye-on,
+					.icon-trashcan {
+						opacity: 0;
 					}
 
 					> div:nth-child(5) { font-size: 0; }
@@ -223,36 +262,6 @@
 					border-right: 8px solid transparent;
 					border-top: 13px solid #425151;
 				}
-			}
-
-			.icon-eye-on,
-			.icon-eye-off,
-			.icon-trashcan {
-				display: inline-block;
-				width: 17px;
-				height: 17px;
-				margin: 0 1px;
-				opacity: 0;
-				vertical-align: middle;
-				background-size: 15px 15px;
-				background-repeat: no-repeat;
-				background-position: 50% 50%;
-				filter: invert() drop-shadow(0 1px 0 #0005);
-				cursor: pointer;
-			}
-
-			.icon-eye-on   {
-				background-image: url(~/icons/icon-eye-on.png);
-			}
-
-			.icon-eye-off  {
-				background-image: url(~/icons/icon-eye-off.png);
-				opacity: .35;
-			}
-
-			.icon-trashcan {
-				background-image: url(~/icons/icon-trashcan.png);
-				background-size: 17px 17px;
 			}
 
 			.icon-bars {
@@ -394,23 +403,103 @@
 
 			.active-filters {
 				width: 249px;
-				padding: 0px 7px;
+				padding: 0 0 3px 7px;
 
 				.filter-row {
+					// background: #0001;
+					position: relative;
+					height: 31px;
+					overflow: hidden;
+					margin-bottom: 3px;
+					border-radius: 5px;
+					box-shadow: inset 0 0 0 1px #0001;
+
+					&:before {
+						content: "";
+						background: #0002;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 12px;
+						height: inherit;
+						border-radius: inherit;
+						border-top-right-radius: 0;
+						border-bottom-right-radius: 0;
+					}
+
+					&:after {
+						content: "";
+						background: #0002;
+						position: absolute;
+						top: 0;
+						right: 0;
+						width: 5px;
+						height: inherit;
+						border-radius: inherit;
+						border-top-left-radius: 0;
+						border-bottom-left-radius: 0;
+					}
+
+					&:hover {
+						.action-icons {
+							i {
+								opacity: .5;
+							}
+						}
+					}
+
+					&.expanded {
+						i.icon-arrow {
+							transform: rotate(0deg);
+							filter: drop-shadow(0 1px 0 #0005);
+						}
+					}
+
+					i.icon-arrow {
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 11px;
+						height: inherit;
+						transform: rotate(-90deg);
+						filter: drop-shadow(-1px 0 0 #0005);
+					}
 
 					.filter {
-						height: 53px;
+						position: absolute;
+						top: 2px;
+						left: 15px;
+						width: 38px;
+						height: 27px;
 						overflow: initial;
 						text-align: left;
+						border-radius: 2px;
+
+						&:before {
+							top: -13px;
+							left: -19px;
+							scale: .5;
+						}
 
 						&:after {
 							background: transparent;
-							top: 0;
-							left: 83px;
+							top: 4px;
+							left: 43px;
 							right: auto;
-							width: 157px;
+							width: 143px;
 							font-size: 12px;
-							text-transform: uppercase;
+						}
+					}
+
+					.action-icons {
+						// background: #0002;
+						position: absolute;
+						top: 5px;
+						right: 7px;
+						width: 43px;
+
+						i {
+							opacity: 0;
 						}
 					}
 				}
@@ -418,6 +507,7 @@
 		}
 
 		.bubble-options {
+			display: none;
 			background: linear-gradient(#788 0%, #566 100%);
 			position: absolute;
 			top: 65px;
@@ -608,6 +698,7 @@
 			border-radius: 50%;
 			background: rgba(255,255,255,.25);
 			box-shadow: 0 0 0 1px #0003;
+			filter: none;
 
 			&:before {
 				content: "";
