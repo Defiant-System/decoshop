@@ -414,15 +414,124 @@
 					right: 0;
 					bottom: 0;
 				}
+
+				.zoom-level {
+					background: #566c;
+					position: absolute;
+					bottom: 13px;
+					left: 50%;
+					height: 22px;
+					display: flex;
+					padding: 2px;
+					margin-left: -30px;
+					border-radius: 30px;
+					text-align: center;
+					user-select: none;
+
+					[data-click="preview-zoom-out"] {
+						position: relative;
+						width: 27px;
+						opacity: .75;
+						cursor: pointer;
+
+						&:hover {
+							opacity: 1;
+						}
+
+						&:after {
+							content: "";
+							background: #abb;
+							box-shadow: 0 1px 0 #0007;
+							position: absolute;
+							top: 8px;
+							left: 7px;
+							width: 12px;
+							height: 2px;
+						}
+					}
+
+					[data-click="preview-zoom-in"] {
+						position: relative;
+						width: 27px;
+						opacity: .75;
+						cursor: pointer;
+
+						&:hover {
+							opacity: 1;
+						}
+
+						&:before {
+							content: "";
+							background: #abb;
+							box-shadow: 0 1px 0 #0007;
+							position: absolute;
+							top: 8px;
+							left: 8px;
+							width: 12px;
+							height: 2px;
+						}
+
+						&:after {
+							content: "";
+							background: #abb;
+							box-shadow: 0 1px 0 #0007;
+							position: absolute;
+							top: 3px;
+							left: 13px;
+							width: 2px;
+							height: 12px;
+						}
+					}
+					
+
+					.preview-zoom-value {
+						background: #0116;
+						width: 47px;
+						padding: 2px 0 0;
+						font-size: 11px;
+						color: #abb;
+						text-shadow: 0 1px 0 #0007;
+						border-radius: 30px;
+					}
+				}
 			}
 
 			.active-filters {
 				width: 249px;
+				overflow: auto;
 				padding: 0 0 3px 7px;
+
+				.add-filter {
+					position: relative;
+					opacity: .5;
+					padding: 3px 0 5px;
+					font-size: 11px;
+					color: #fffd;
+					text-shadow: 0 1px 0 #0007;
+					text-align: center;
+					cursor: pointer;
+
+					&:hover {
+						opacity: .65;
+					}
+
+					.icon-add-filter {
+						display: inline-block;
+						width: 13px;
+						height: 13px;
+						margin: 0 3px 0 0;
+						vertical-align: text-top;
+						background-size: 13px 13px;
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						background-image: url(~/icons/icon-add-layer.png);
+						filter: invert() drop-shadow(0 1px 0 #0005);
+					}
+				}
 
 				.filter-row {
 					position: relative;
-					height: 31px;
+					// height: 31px;
 					overflow: hidden;
 					margin-bottom: 3px;
 					border-radius: 5px;
@@ -434,9 +543,9 @@
 						background: #0001;
 						position: absolute;
 						top: 0;
+						bottom: 0;
 						left: 0;
 						width: 12px;
-						height: inherit;
 						border-radius: inherit;
 						border-top-right-radius: 0;
 						border-bottom-right-radius: 0;
@@ -447,9 +556,9 @@
 						background: #0001;
 						position: absolute;
 						top: 0;
+						bottom: 0;
 						right: 0;
 						width: 5px;
-						height: inherit;
 						border-radius: inherit;
 						border-top-left-radius: 0;
 						border-bottom-left-radius: 0;
@@ -461,68 +570,137 @@
 							background: #0002;
 						}
 
-						.action-icons {
-							i {
-								opacity: .5;
+						.filter-head {
+							.action-icons {
+								i {
+									opacity: .5;
+								}
 							}
 						}
 					}
 
 					&.expanded {
-						i.icon-arrow {
-							transform: rotate(0deg);
-							filter: drop-shadow(0 1px 0 #0005);
+						height: auto;
+
+						.filter-head {
+							.arrow {
+								.icon-arrow {
+									transform: translateX(-50%) translateY(-50%) rotate(0deg);
+									filter: drop-shadow(0 1px 0 #0005);
+								}
+							}
+						}
+
+						.filter-body {
+							max-height: 300px;
+							padding-bottom: 2px;
+
+							&:before {
+								display: block;
+							}
 						}
 					}
 
-					i.icon-arrow {
-						position: absolute;
-						top: 0;
-						left: 0;
-						width: 11px;
-						height: inherit;
-						transform: rotate(-90deg);
-						filter: drop-shadow(-1px 0 0 #0005);
+					.filter-head {
+						position: relative;
+						height: 31px;
+						overflow: hidden;
+
+						.arrow {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 11px;
+							height: inherit;
+						
+							.icon-arrow {
+								position: absolute;
+								top: 50%;
+								left: 50%;
+								width: 7px;
+								height: 7px;
+								transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+								filter: drop-shadow(-1px 0 0 #0005);
+							}
+						}
+
+						.filter {
+							position: absolute;
+							top: 2px;
+							left: 15px;
+							width: 38px;
+							height: 27px;
+							overflow: initial;
+							text-align: left;
+							border-radius: 2px;
+
+							&:before {
+								top: -13px;
+								left: -19px;
+								scale: .5;
+							}
+
+							&:after {
+								background: transparent;
+								top: 4px;
+								left: 43px;
+								right: auto;
+								width: 143px;
+								font-size: 12px;
+							}
+						}
+
+						.action-icons {
+							position: absolute;
+							top: 6px;
+							right: 7px;
+							width: 43px;
+
+							i {
+								opacity: 0;
+
+								&:hover { opacity: .75; }
+								&.icon-eye-off { opacity: .5; }
+							}
+						}
 					}
 
-					.filter {
-						position: absolute;
-						top: 2px;
-						left: 15px;
-						width: 38px;
-						height: 27px;
-						overflow: initial;
-						text-align: left;
-						border-radius: 2px;
+					.filter-body {
+						position: relative;
+						max-height: 0;
+						padding: 0 7px 0 15px;
+						transition: max-height 250ms ease-in-out,
+									padding 250ms ease-in-out;
 
 						&:before {
-							top: -13px;
-							left: -19px;
-							scale: .5;
+							content: "";
+							display: none;
+							position: absolute;
+							top: 0;
+							left: 12px;
+							right: 5px;
+							height: 0;
+							border-top: 1px dashed #0002;
 						}
 
-						&:after {
-							background: transparent;
-							top: 4px;
-							left: 43px;
-							right: auto;
-							width: 143px;
-							font-size: 12px;
-						}
-					}
+						.field-row {
+							margin-left: 0;
+							margin-right: 0;
 
-					.action-icons {
-						// background: #0002;
-						position: absolute;
-						top: 5px;
-						right: 7px;
-						width: 43px;
+							.option {
+								min-width: 179px;
 
-						i {
-							opacity: 0;
+								.label {
+									min-width: 124px;
+									padding-left: 3px;
+								}
 
-							&:hover { opacity: .75; }
-							&.icon-eye-off { opacity: .5; }
+								.value {
+									input {
+										width: 27px;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -708,23 +886,6 @@
 			&[data-filter="Texturizer"]:before           { background-position: -385px -540px; }
 		}
 	}
-
-	/*
-	&[data-dlg="dlgBrightnessContrast"] {
-		top: 105px;
-		left: 310px;
-	}
-
-	&[data-dlg="dlgGaussianBlur"] {
-		top: 140px;
-		left: 410px;
-	}
-
-	&[data-dlg="dlgSharpen"] {
-		top: 420px;
-		left: 600px;
-	}
-	*/
 
 	h2 {
 		position: relative;

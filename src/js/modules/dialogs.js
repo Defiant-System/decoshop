@@ -37,6 +37,14 @@ const Dialogs = {
 				el = $(event.target);
 				Self.orgEl.data({ filter: el.data("filter") });
 				break;
+			case "toggle-filter-row":
+				el = event.el.parents(".filter-row");
+				if (el.hasClass("expanded")) {
+					el.removeClass("expanded");
+				} else {
+					el.addClass("expanded");
+				}
+				break;
 			case "toggle-filter":
 				if (event.el.hasClass("icon-eye-on")) {
 					event.el.removeClass("icon-eye-on").addClass("icon-eye-off");
@@ -44,8 +52,14 @@ const Dialogs = {
 					event.el.removeClass("icon-eye-off").addClass("icon-eye-on");
 				}
 				break;
+			case "add-filter":
+				console.log(event);
+				break;
 			case "remove-filter":
 				event.el.parents(".filter-row").remove();
+				break;
+			case "preview-zoom-out":
+			case "preview-zoom-in":
 				break;
 
 			// standard dialog events
