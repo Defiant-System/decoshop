@@ -422,7 +422,7 @@
 					left: 50%;
 					height: 22px;
 					display: flex;
-					padding: 2px;
+					padding: 1px;
 					margin-left: -30px;
 					border-radius: 30px;
 					text-align: center;
@@ -487,7 +487,7 @@
 					.preview-zoom-value {
 						background: #0116;
 						width: 47px;
-						padding: 2px 0 0;
+						padding: 3px 0 0;
 						font-size: 11px;
 						color: #abb;
 						text-shadow: 0 1px 0 #0007;
@@ -500,6 +500,22 @@
 				width: 249px;
 				overflow: auto;
 				padding: 0 0 3px 7px;
+
+				&.one-left {
+					.filter-row {
+						.filter-head {
+							.filter {
+								&:after {
+									width: 179px;
+								}
+							}
+
+							.action-icons {
+								display: none;
+							}
+						}
+					}
+				}
 
 				.add-filter {
 					position: relative;
@@ -980,7 +996,8 @@
 		text-align: left;
 		border-radius: inherit;
 
-		input[type="text"] {
+		input[type="text"],
+		input[type="number"] {
 			background: transparent;
 			border: 0;
 			padding: 2px 1px 0px;

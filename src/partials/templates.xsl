@@ -87,6 +87,23 @@
 </xsl:template>
 
 
+<xsl:template name="filter-row">
+	<div class="filter-row">
+		<div class="filter-head">
+			<span class="arrow" data-click="toggle-filter-row">
+				<i class="icon-arrow"></i>
+			</span>
+			<span class="filter" data-filter="Colored Pencil" data-click="show-filter-options"></span>
+			<span class="action-icons">
+				<i class="icon-eye-on" data-click="toggle-filter"></i>
+				<i class="icon-trashcan" data-click="remove-filter"></i>
+			</span>
+		</div>
+		<div class="filter-body"></div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="filter-gallery-list">
 	<xsl:for-each select="./*">
 		<fieldset>
@@ -97,6 +114,65 @@
 				</div>
 			</xsl:for-each>
 		</fieldset>
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="filter-options">
+	<xsl:for-each select="./*">
+		<xsl:when test="@type = 'select'">
+			<div class="field-row">
+				<div class="option">
+					<span class="label"><xsl:value-of select="@name" /></span>
+					<span class="value"><xsl:value-of select="./*[@selected='1']/@name"/></span>
+				</div>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'checkbox'">
+			<div class="field-row">
+				<div class="option check">
+					<span class="value">
+						<input type="checkbox">
+							<xsl:attribute name="id">check-<xsl:value-of select="position()" /></xsl:attribute>
+							<xsl:if test="@checked = 'true'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+						</input>
+						<i></i>
+					</span>
+					<label class="label">
+						<xsl:attribute name="for">check-<xsl:value-of select="position()" /></xsl:attribute>
+						<xsl:value-of select="@name" />
+					</label>
+				</div>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'color'">
+			<div class="field-row">
+				<div class="option preset" data-change="set-color" data-options="swatches" data-match="//Swatches">
+					<span class="label"><xsl:value-of select="@name" /></span>
+					<span class="value" style="background: #eb261f;"></span>
+				</div>
+			</div>
+		</xsl:when>
+		<xsl:choose>
+			<xsl:otherwise>
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label"><xsl:value-of select="@name" /></span>
+						<span class="value">
+							<input type="number">
+								<xsl:attribute name="name">field-<xsl:value-of select="position()" /></xsl:attribute>
+								<xsl:attribute name="data-min"><xsl:value-of select="@min" /></xsl:attribute>
+								<xsl:attribute name="data-max"><xsl:value-of select="@max" /></xsl:attribute>
+								<xsl:attribute name="value"><xsl:value-of select="@value" /></xsl:attribute>
+							</input>
+						</span>
+					</div>
+					<div class="knob" data-change="set-filter-value">
+						<xsl:attribute name="data-value"><xsl:value-of select="@value" /></xsl:attribute>
+					</div>
+				</div>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:for-each>
 </xsl:template>
 

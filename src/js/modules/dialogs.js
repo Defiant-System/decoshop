@@ -2,8 +2,7 @@
 const Dialogs = {
 	dlgFilterGallery(event) {
 		/*
-		 * Brightness -  Min: -150   Max: 150
-		 * Contrast -    Min: -100   Max: 100
+		 * 
 		 */
 		let APP = decoshop,
 			Self = Dialogs,
@@ -12,6 +11,11 @@ const Dialogs = {
 			el;
 		// console.log(event);
 		switch (event.type) {
+			// "fast events"
+			case "set-filter-value":
+				// console.log(event.value);
+				break;
+
 			case "hide-filter-options":
 				el = Self.orgEl.parents(".dialog-box");
 				el.removeClass("covered");
@@ -35,7 +39,14 @@ const Dialogs = {
 				break;
 			case "select-filter":
 				el = $(event.target);
+				selEl = Self.orgEl.parents(".filter-row");
 				Self.orgEl.data({ filter: el.data("filter") });
+				// empty / re-render filter properties
+				selEl.find(".filter-body").html("");
+				if (selEl.hasClass("expanded")) {
+					selEl.removeClass("expanded");
+					selEl.find(".arrow").trigger("click");
+				}
 				break;
 			case "toggle-filter-row":
 				el = event.el.parents(".filter-row");
@@ -43,6 +54,13 @@ const Dialogs = {
 					el.removeClass("expanded");
 				} else {
 					el.addClass("expanded");
+					if (!el.find(".filter-body .field-row").length) {
+						let name = el.find(`.filter[data-filter]`).data("filter"),
+							match = `//Filters//i[@name="${name}"]`,
+							target = el.find(".filter-body");
+						// render filter options
+						window.render({ template: "filter-options", match, target });
+					}
 				}
 				break;
 			case "toggle-filter":
@@ -52,14 +70,26 @@ const Dialogs = {
 					event.el.removeClass("icon-eye-off").addClass("icon-eye-on");
 				}
 				break;
-			case "add-filter":
-				console.log(event);
-				break;
 			case "remove-filter":
+				selEl = event.el.parents(".active-filters");
+				val = selEl.find(".filter-row").length - 1 > 1;
+				selEl.toggleClass("one-left", val);
+
 				event.el.parents(".filter-row").remove();
+				break;
+			case "add-filter":
+				selEl = event.el.parents(".active-filters");
+				selEl.removeClass("one-left");
+				// render filter options
+				window.render({
+					template: "filter-row",
+					match: `//Filters/i[1]/i[1]`,
+					before: selEl.find(".add-filter"),
+				});
 				break;
 			case "preview-zoom-out":
 			case "preview-zoom-in":
+				console.log(event);
 				break;
 
 			// standard dialog events
@@ -69,9 +99,17 @@ const Dialogs = {
 						template: "filter-gallery-list",
 						match: `//Filters`,
 						target: event.dEl.find(".bubble-options .bubble-content"),
-					}).then(() => {
-						// re-apply filter
-						// Self.dlgPixelator({ type: "apply-filter-data" });
+					});
+					return;
+					// reset filter list
+					selEl = event.dEl.find(".active-filters");
+					selEl.addClass("one-left");
+					selEl.find(".filter-row").remove();
+					// render filter options
+					window.render({
+						template: "filter-row",
+						match: `//Filters/i[1]/i[1]`,
+						before: selEl.find(".add-filter"),
 					});
 				}
 				break;

@@ -4,6 +4,12 @@
 			<i class="icon-dlg-close" data-click="dlg-close"></i>
 			Filter Gallery
 		</h2>
+		<!-- <div class="buttons">
+			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
+		</div> -->
 		
 		<div class="layout">
 			<div class="preview">
@@ -13,15 +19,13 @@
 					<span data-click="preview-zoom-in"></span>
 				</div>
 			</div>
-			<div class="active-filters">
-				<!-- <div class="button" data-click="dlg-ok">OK</div> -->
-
+			<div class="active-filters one-left">
 				<div class="filter-row">
 					<div class="filter-head">
 						<span class="arrow" data-click="toggle-filter-row">
 							<i class="icon-arrow"></i>
 						</span>
-						<span class="filter" data-filter="Colored Pencil" data-click="show-filter-options"></span>
+						<span class="filter" data-filter="Rough Pastels" data-click="show-filter-options"></span>
 						<span class="action-icons">
 							<i class="icon-eye-on" data-click="toggle-filter"></i>
 							<i class="icon-trashcan" data-click="remove-filter"></i>
@@ -30,7 +34,7 @@
 					<div class="filter-body"></div>
 				</div>
 
-				<div class="filter-row expanded1">
+				<!-- <div class="filter-row">
 					<div class="filter-head">
 						<span class="arrow" data-click="toggle-filter-row">
 							<i class="icon-arrow"></i>
@@ -41,29 +45,7 @@
 							<i class="icon-trashcan" data-click="remove-filter"></i>
 						</span>
 					</div>
-					<div class="filter-body">
-						<div class="field-row has-knob">
-							<div class="option input">
-								<span class="label">Stroke Width</span>
-								<span class="value"><input type="text" name="size" value="1" data-min="5" data-max="70" data-default="1"></span>
-							</div>
-							<div class="knob" data-change="set-size"></div>
-						</div>
-						<div class="field-row has-knob">
-							<div class="option input">
-								<span class="label">Stroke Brightness</span>
-								<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="12"></span>
-							</div>
-							<div class="knob" data-change="set-size"></div>
-						</div>
-						<div class="field-row has-knob">
-							<div class="option input">
-								<span class="label">Stroke Smothness</span>
-								<span class="value"><input type="text" name="size" value="23" data-min="5" data-max="70" data-default="23"></span>
-							</div>
-							<div class="knob" data-change="set-size"></div>
-						</div>
-					</div>
+					<div class="filter-body"></div>
 				</div>
 
 				<div class="filter-row">
@@ -71,29 +53,20 @@
 						<span class="arrow" data-click="toggle-filter-row">
 							<i class="icon-arrow"></i>
 						</span>
-						<span class="filter" data-filter="Halftone Pattern" data-click="show-filter-options"></span>
+						<span class="filter" data-filter="Neon Glow" data-click="show-filter-options"></span>
 						<span class="action-icons">
 							<i class="icon-eye-on" data-click="toggle-filter"></i>
 							<i class="icon-trashcan" data-click="remove-filter"></i>
 						</span>
 					</div>
-					<div class="filter-body">
-						<div class="field-row has-knob">
-							<div class="option input">
-								<span class="label">Stroke Width</span>
-								<span class="value"><input type="text" name="size" value="1" data-min="5" data-max="70" data-default="1"></span>
-							</div>
-							<div class="knob" data-change="set-size"></div>
-						</div>
-					</div>
-				</div>
+					<div class="filter-body"></div>
+				</div> -->
 
 				<!-- add more filters -->
 				<div class="add-filter" data-click="add-filter">
 					<i class="icon-add-filter"></i>
 					Add Filter
 				</div>
-
 			</div>
 		</div>
 

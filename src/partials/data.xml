@@ -16,6 +16,56 @@
 		<i width="600" height="400" path="/cdn/img/2d-samples/brantley-neal.jpg"/>
 		<i width="600" height="400" path="/cdn/img/2d-samples/alexander-scott-lambley.jpg"/>
 	</Samples>
+	<Swatches>
+		<i value="#5cc2fc" />
+		<i value="#79fce9" />
+		<i value="#8cf85a" />
+		<i value="#feef63" />
+		<i value="#fd978f" />
+		<i value="#fd97ca" />
+		<i value="#1ca4fc" />
+		<i value="#2fe6cf" />
+		<i value="#65d643" />
+		<i value="#fed846" />
+		<i value="#fc6554" />
+		<i value="#fc48a1" />
+		<i value="#1177b8" />
+		<i value="#1aaa8e" />
+		<i value="#29af1d" />
+		<i value="#fcad2a" />
+		<i value="#eb261f" />
+		<i value="#d12177" />
+		<i value="#084e7e" />
+		<i value="#0c6c65" />
+		<i value="#0d700f" />
+		<i value="#f07220" />
+		<i value="#b31a10" />
+		<i value="#951453" />
+		<i value="#ffffff" />
+		<i value="#d5d5d5" />
+		<i value="#929292" />
+		<i value="#5e5e5e" />
+		<i value="#313131" />
+		<i value="#000000" />
+	</Swatches>
+	<Gradients>
+		<i g="#336699 0%, #ffffff 100%" />
+		<i g="#ffffff 0%, transparent 100%" />
+		<i g="#000000 0%, #ffffff 100%" />
+		<i g="#df0b24 0%, #095f1f 100%" />
+		<i g="#290f58 0%, #fd7c23 100%" />
+		<i g="#0900b2 0%, #ff0000 50%, #fffb00 100%" />
+		<i g="#0b01b8 10%, #fdfa02 50%, #0b01b8 90%" />
+		<i g="#ff6e01 0%, #fffe00 50%, #ff6e01 100%" />
+		<i g="#6f156c 0%, #00601b 50%, #fd7c00 100%" />
+		<i g="#f9e500 5%, #6f156c 35%, #fd7c00 65%, #002874 95%" />
+		<i g="#97461a 0%, #fbd7c4 30%, #6c2e16 70%, #efdbcd 100%" />
+		<i g="#2888cc 0%, #ffffff 50%, #906900 51%, #d99f00 64%, #ffffff 100%" />
+		<i g="#ff0000 0%, #ff00ff 15%, #0000ff 33%, #00ffff 49%, #00ff00 67%, #ffff00 84%, #ff0000 100%" />
+		<i g="transparent 0%, #ff0000 12%, #ff00ff 28%, #0000ff 45%, #00ffff 60%, #00ff00 0%, #ffff00 75%, #ff0000 88%, transparent 100%" />
+		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%" />
+		<i g="#000000aa 0%, transparent 100%" />
+	</Gradients>
 	<Filters>
 		<i group="Artistic">
 			<i name="Colored Pencil">
@@ -46,13 +96,13 @@
 			<i name="Neon Glow">
 				<i name="Glow Size" min="-24" max="24" value="5"/>
 				<i name="Glow Brightness" min="0" max="50" value="15"/>
-				<i type="color" value="#ff0000"/>
+				<i type="color" name="Glow Color" value="#ff0000"/>
 			</i>
 			<i name="Paint Daubs">
 				<i name="Brush Size" min="1" max="50" value="10"/>
 				<i name="Sharpness" min="0" max="40" value="10"/>
 				<i type="select" name="Brush Type">
-					<o value="0" name="Simple"/>
+					<o value="0" name="Simple" selected="1"/>
 					<o value="1" name="Light Rough"/>
 					<o value="2" name="Dark Rough"/>
 					<o value="3" name="Wide Sharp"/>
@@ -285,7 +335,7 @@
 				<i name="Contrast" min="0" max="50" value="5"/>
 				<i type="select" name="Pattern">
 					<o value="0" name="Circle"/>
-					<o value="1" name="Dot"/>
+					<o value="1" name="Dot" selected="1"/>
 					<o value="2" name="Line"/>
 				</i>
 			</i>
@@ -349,7 +399,7 @@
 				<i name="Intensity" min="0" max="40" value="40"/>
 				<i name="Contrast" min="0" max="50" value="50"/>
 				<i type="select" name="Grain Type">
-					<o value="0" name="Regular"/>
+					<o value="0" name="Regular" selected="1"/>
 					<o value="1" name="Soft"/>
 					<o value="2" name="Sprinkles"/>
 					<o value="3" name="Clumped"/>
@@ -401,4 +451,60 @@
 			</i>
 		</i>
 	</Filters>
+	<Pixelator>
+		<Preset id="prst-1">
+			<Layer res="16" />
+		</Preset>
+		<Preset id="prst-2">
+			<Layer res="32" />
+			<Layer shape="circle" res="32" offset="15" />
+			<Layer shape="circle" res="32" offset="13" size="26" />
+			<Layer shape="circle" res="32" offset="10" size="18" />
+			<Layer shape="circle" res="32" offset="8" size="8" />
+		</Preset>
+		<Preset id="prst-3">
+			<Layer res="48" />
+			<Layer shape="diamond" res="48" offset="12" alpha=".5" />
+			<Layer shape="diamond" res="48" offset="36" alpha=".5" />
+			<Layer shape="circle" res="16" offset="4" alpha=".5" size="8" />
+			<Layer res="24" alpha=".5" />
+		</Preset>
+		<Preset id="prst-4">
+			<Layer shape="circle" res="32" offset="8" size="6" />
+			<Layer shape="circle" res="32" offset="16" size="9" />
+			<Layer shape="circle" res="32" offset="24" size="12" />
+			<Layer shape="circle" res="32" offset="0" size="9" />
+		</Preset>
+		<Preset id="prst-5">
+			<Layer shape="diamond" res="24" size="25" />
+			<Layer shape="diamond" res="24" offset="12" />
+			<Layer res="24" alpha=".5" />
+		</Preset>
+		<Preset id="prst-6">
+			<Layer shape="circle" res="24" />
+			<Layer shape="circle" res="24" size="9" offset="12" />
+		</Preset>
+		<Preset id="prst-7">
+			<Layer res="48" />
+			<Layer shape="diamond" res="12" size="8" />
+			<Layer shape="diamond" res="12" size="8" offset="6" />
+		</Preset>
+		<Preset id="prst-8">
+			<Layer shape="square" res="48" offset="24" />
+			<Layer shape="circle" res="48" offset="0" />
+			<Layer shape="diamond" res="16" size="15" offset="0" alpha=".6" />
+			<Layer shape="diamond" res="16" size="15" offset="8" alpha=".6" />
+		</Preset>
+		<Preset id="prst-9">
+			<Layer res="32" />
+			<Layer shape="circle" res="32" offset="16" />
+			<Layer shape="circle" res="32" offset="0" alpha="0.5" />
+			<Layer shape="circle" res="16" offset="0" alpha="0.5" size="9" />
+		</Preset>
+		<Preset id="prst-10">
+			<Layer shape="diamond" res="48" size="50" />
+			<Layer shape="diamond" res="48" offset="24" />
+			<Layer shape="circle" res="8" size="6" />
+		</Preset>
+	</Pixelator>
 </Data>
