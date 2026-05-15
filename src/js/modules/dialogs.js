@@ -100,7 +100,6 @@ const Dialogs = {
 						match: `//Filters`,
 						target: event.dEl.find(".bubble-options .bubble-content"),
 					});
-					return;
 					// reset filter list
 					selEl = event.dEl.find(".active-filters");
 					selEl.addClass("one-left");
