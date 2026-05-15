@@ -87,6 +87,32 @@
 </xsl:template>
 
 
+<xsl:template name="layer-style-list">
+	<xsl:for-each select="./*">
+		<xsl:choose>
+			<xsl:when test="@check = 0">
+				<div class="option"><xsl:value-of select="@name"/></div>
+			</xsl:when>
+			<xsl:otherwise>
+				<div>
+					<xsl:attribute name="class">option check <xsl:value-of select="@class" /></xsl:attribute>
+					<span class="value">
+						<input type="checkbox">
+							<xsl:attribute name="id">check-<xsl:value-of select="position()" /></xsl:attribute>
+						</input>
+						<i></i>
+					</span>
+					<label class="label">
+						<xsl:attribute name="for">check-<xsl:value-of select="position()" /></xsl:attribute>
+						<xsl:value-of select="@name"/>
+					</label>
+				</div>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:for-each>
+</xsl:template>
+
+
 <xsl:template name="filter-row">
 	<div class="filter-row">
 		<div class="filter-head">

@@ -66,6 +66,21 @@
 		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%" />
 		<i g="#000000aa 0%, transparent 100%" />
 	</Gradients>
+	<LayerStyles>
+		<i check="0" name="Blending Options"/>
+		<i check="1" name="Bevel &amp; Emboss"/>
+		<i check="1" name="Contour" class="push"/>
+		<i check="1" name="Texture" class="push"/>
+		<i check="1" name="Stroke"/>
+		<i check="1" name="Inner Shadow"/>
+		<i check="1" name="Inner Glow"/>
+		<i check="1" name="Satin"/>
+		<i check="1" name="Color Overlay"/>
+		<i check="1" name="Gradient Overlay"/>
+		<i check="1" name="Pattern Overlay"/>
+		<i check="1" name="Outer Glow"/>
+		<i check="1" name="Drop Shadow"/>
+	</LayerStyles>
 	<Filters>
 		<i group="Artistic">
 			<i name="Colored Pencil">
