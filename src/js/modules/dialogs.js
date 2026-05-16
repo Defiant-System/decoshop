@@ -15,13 +15,21 @@ const Dialogs = {
 			case "set-filter-value":
 				// console.log(event.value);
 				break;
+
+			case "selected-style-item":
+				el = $(event.target);
+				el.parents("?.option").addClass("selected");
+				break;
 			// standard dialog events
 			case "dlg-open":
-				if (!event.dEl.find(".bubble-options fieldset > div").length) {
+				if (!event.dEl.find(".style-list .option").length) {
 					window.render({
 						template: "layer-style-list",
 						match: `//LayerStyles`,
 						target: event.dEl.find(".style-list"),
+					}).then(() => {
+						// auto select first item
+						event.dEl.find(".style-list .option").get(0).trigger("click");
 					});
 				}
 				break;
@@ -425,6 +433,7 @@ const Dialogs = {
 			el;
 		switch (event.type) {
 			case "apply-filter-data":
+				return;
 				// copy first, then apply filter on pixels
 				pixels = Self.data.pixels;
 				

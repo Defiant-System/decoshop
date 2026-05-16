@@ -79,12 +79,12 @@
 	}
 
 	&[data-dlg="dlgPixelator"] {
-		top: 10px;
+		top: 50px;
 		left: 350px;
 
 		.presets {
-			color: #fff7;
-			text-shadow: 0 1px 0 #0003;
+			color: rgba(255,255,255,0.5);
+			text-shadow: 0 1px 0 rgba(0,0,0,.25);
 			text-transform: uppercase;
 			font-size: 11px;
 			// height: 19px;
@@ -116,13 +116,13 @@
 					&:nth-child(2) { width: 63px; padding-top: 1px; }
 					&:nth-child(3) { width: 50px; padding-top: 1px; }
 					&:nth-child(4) { width: 57px; padding-top: 1px; }
-					&:nth-child(5) { width: 95px; padding-top: 1px; padding-right: 1px; }
+					&:nth-child(5) { width: 95px; padding-right: 1px; }
 				}
 			}
 
 			.list-head {
-				color: #fff7;
-				text-shadow: 0 1px 0 #0003;
+				color: rgba(255,255,255,0.5);
+				text-shadow: 0 1px 0 rgba(0,0,0,.25);
 				text-transform: uppercase;
 				font-size: 11px;
 				padding-bottom: 3px;
@@ -136,7 +136,7 @@
 				padding: 3px 0 21px;
 				font-size: 11px;
 				background: #344;
-				color: #fff7;
+				color: rgba(#fff, .55);
 				text-shadow: 0 1px 0 #122;
 				opacity: 1;
 
@@ -161,17 +161,12 @@
 					}
 
 					&:hover {
-						color: #fffd;
+						color: rgba(#fff, .85);
 
 						.icon-eye-on,
 						.icon-trashcan {
 							opacity: .35;
 						}
-					}
-
-					.icon-eye-on,
-					.icon-trashcan {
-						opacity: 0;
 					}
 
 					> div:nth-child(5) { font-size: 0; }
@@ -202,7 +197,7 @@
 						background-repeat: no-repeat;
 						background-position: 50% 50%;
 						background-image: url(~/icons/icon-add-layer.png);
-						filter: invert() drop-shadow(0 1px 0 #0005);
+						filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
 					}
 				}
 			}
@@ -232,13 +227,13 @@
 				z-index: 2;
 				background: #677;
 				background: linear-gradient(#677 0%, #405050 100%);
-				color: #fffb;
+				color: rgba(#fff, .75);
 				text-shadow: 0 1px 0 #122;
 				text-align: center;
 				border-radius: 50%;
 				padding-top: 9px;
 				margin: -41px 0 0 1px;
-				box-shadow: 0 0 0 1px #0007,
+				box-shadow: 0 0 0 1px rgba(0,0,0,.45),
 							0 2px 5px rgba(#233,.5);
 				filter: drop-shadow(0 0 2px #233);
 				transform-origin: 50% 100%;
@@ -262,7 +257,7 @@
 					margin-left: -9px;
 					border-left: 9px solid transparent;
 					border-right: 9px solid transparent;
-					border-top: 14px solid #0007;
+					border-top: 14px solid rgba(0,0,0,.45);
 				}
 
 				&:after {
@@ -277,6 +272,42 @@
 					border-right: 8px solid transparent;
 					border-top: 13px solid #425151;
 				}
+			}
+
+			[class*="icon-"],
+			[class^="icon-"] {
+				margin: 0;
+				filter: none;
+			}
+
+			.icon-eye-on,
+			.icon-eye-off,
+			.icon-trashcan {
+				display: inline-block;
+				width: 17px;
+				height: 17px;
+				margin: 0 1px;
+				opacity: 0;
+				vertical-align: middle;
+				background-size: 15px 15px;
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
+				cursor: pointer;
+			}
+
+			.icon-eye-on   {
+				background-image: url(~/icons/icon-eye-on.png);
+			}
+
+			.icon-eye-off  {
+				background-image: url(~/icons/icon-eye-off.png);
+				opacity: .35;
+			}
+
+			.icon-trashcan {
+				background-image: url(~/icons/icon-trashcan.png);
+				background-size: 17px 17px;
 			}
 
 			.icon-bars {
@@ -438,7 +469,73 @@
 					}
 
 					.style-details {
+						// background: #0001;
 						flex: 1;
+						margin: 0 0 0 7px;
+
+						h3 {
+							position: relative;
+							color: #fffa;
+							text-shadow: 0 1px 0 #0003;
+							font-size: 11px;
+							font-weight: 400;
+							text-transform: uppercase;
+							margin: 0 0 7px 3px;
+						}
+
+						fieldset {
+							padding: 3px 0 19px 9px;
+							text-align: center;
+
+							h4 {
+								position: relative;
+								display: inline-block;
+								color: #fff7;
+								text-shadow: 0 1px 0 #0003;
+								font-size: 11px;
+								font-weight: 400;
+								text-transform: uppercase;
+								margin-bottom: 7px;
+
+								&:before {
+									content: "";
+									background: linear-gradient(90deg, transparent 0%, #0003 97%, transparent 100%);
+									position: absolute;
+									right: 100%;
+									top: 7px;
+									height: 1px;
+									width: 100px;
+									transform: translateX(-7px);
+									filter: drop-shadow(0 1px 0 #fff);
+								}
+
+								&:after {
+									content: "";
+									background: linear-gradient(90deg, transparent 0%, #0003 3%, transparent 100%);
+									position: absolute;
+									left: 100%;
+									top: 7px;
+									height: 1px;
+									width: 100px;
+									transform: translateX(7px);
+									filter: drop-shadow(0 1px 0 #fffa);
+								}
+							}
+
+							.field-row {
+								height: 29px;
+
+								.option {
+									padding-top: 5px;
+									margin-top: 0;
+
+									.label {
+										min-width: 110px;
+										text-align: right;
+									}
+								}
+							}
+						}
 					}
 				}
 			}

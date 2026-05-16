@@ -52,7 +52,7 @@
 			top,
 			left;
 
-		if (!Self.els.root) return;
+		if (!Self.els.root || !_rulers) return;
 
 		// console.log(event);
 		switch (event.type) {

@@ -27,8 +27,8 @@
 				let newBox = Self.els.root.find(`div[data-box="${el.data("content")}"]`),
 					oldBox = newBox.parent().find("> div[data-box]:not(.hidden)");
 				// signal events of change
-				Self[oldBox.data("box")].dispatch({ type: "disable" });
-				Self[newBox.data("box")].dispatch({ type: "enable" });
+				// Self[oldBox.data("box")].dispatch({ type: "disable" });
+				// Self[newBox.data("box")].dispatch({ type: "enable" });
 				// UI update
 				oldBox.addClass("hidden");
 				newBox.removeClass("hidden");

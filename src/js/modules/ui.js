@@ -338,6 +338,17 @@ const UI = {
 				break;
 
 			case "dlg-open-common":
+				// collect default values
+				event.dEl.find(`.field-row input`).map(elem => {
+					let iEl = $(elem);
+					value[iEl.attr("name")] = parseInt(iEl.val(), 10);
+				});
+				// save reference to event
+				Dialogs.srcEvent = event;
+				// read preview toggler state
+				Dialogs.preview = event.dEl.find(`.toggler[data-click="dlg-preview"]`).data("value") === "on";
+				// apply -- In case Preview is turned off, apply filter on image
+				Dialogs[event.name]({ type: "apply-filter-data" });
 				break;
 			case "dlg-ok-common":
 				break;

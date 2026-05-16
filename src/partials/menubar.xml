@@ -165,18 +165,18 @@
 		<Menu name="Delete"/>
 		<Menu type="divider"/>
 		<Menu name="Layer Style">
-			<Menu name="Blending Options"/>
+			<Menu name="Blending Options" click="open-dialog" arg="dlgLayerStyle"/>
 			<Menu type="divider"/>
-			<Menu name="Bevel &amp; Emboss"/>
-			<Menu name="Stroke"/>
-			<Menu name="Inner Shadow"/>
-			<Menu name="Inner Glow"/>
-			<Menu name="Satin"/>
-			<Menu name="Color Overlay"/>
-			<Menu name="Gradient Overlay"/>
-			<Menu name="Pattern Overlay"/>
-			<Menu name="Outer Glow"/>
-			<Menu name="Drop Shadow"/>
+			<Menu name="Bevel &amp; Emboss" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Stroke" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Inner Shadow" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Inner Glow" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Satin" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Color Overlay" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Gradient Overlay" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Pattern Overlay" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Outer Glow" click="open-dialog" arg="dlgLayerStyle"/>
+			<Menu name="Drop Shadow" click="open-dialog" arg="dlgLayerStyle"/>
 			<Menu type="divider"/>
 			<Menu name="Layer Style">
 				<Menu name="Copy"/>

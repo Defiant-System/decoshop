@@ -203,6 +203,54 @@
 </xsl:template>
 
 
+<xsl:template name="pixelator-preset">
+	<xsl:for-each select="./*">
+		<xsl:call-template name="pixelator-preset-layer" />
+	</xsl:for-each>
+</xsl:template>
+
+
+<xsl:template name="pixelator-preset-layer">
+	<xsl:variable name="shape"><xsl:choose>
+		<xsl:when test="@shape"><xsl:value-of select="@shape"/></xsl:when>
+		<xsl:otherwise>square</xsl:otherwise>
+	</xsl:choose></xsl:variable>
+
+	<xsl:variable name="alpha"><xsl:choose>
+		<xsl:when test="@alpha"><xsl:value-of select="@alpha * 100"/></xsl:when>
+		<xsl:otherwise>100</xsl:otherwise>
+	</xsl:choose></xsl:variable>
+
+	<div class="row">
+		<div>
+			<div class="shape-options" data-click="set-layer-shape">
+				<i class="icon-shape-square"><xsl:if test="$shape = 'square'">
+					<xsl:attribute name="class">icon-shape-square active</xsl:attribute>
+				</xsl:if></i>
+				<i class="icon-shape-diamond"><xsl:if test="$shape = 'diamond'">
+					<xsl:attribute name="class">icon-shape-diamond active</xsl:attribute>
+				</xsl:if></i>
+				<i class="icon-shape-circle"><xsl:if test="$shape = 'circle'">
+					<xsl:attribute name="class">icon-shape-circle active</xsl:attribute>
+				</xsl:if></i>
+			</div>
+		</div>
+		<div data-ux="dlg-knob" data-change="set-spacing" data-min="0" data-max="64" data-suffix="px"><xsl:value-of select="@res"/> <xsl:if test="@res">px</xsl:if></div>
+		<div data-ux="dlg-knob" data-change="set-size" data-min="0" data-max="64" data-suffix="px"><xsl:value-of select="@size"/> <xsl:if test="@size">px</xsl:if></div>
+		<div data-ux="dlg-knob" data-change="set-offset" data-min="0" data-max="64" data-suffix="px"><xsl:value-of select="@offset"/> <xsl:if test="@offset">px</xsl:if></div>
+		<div>
+			<i class="icon-bars" data-ux="dlg-bars" data-change="set-opacity">
+				<xsl:attribute name="style">--value: <xsl:value-of select="$alpha"/>%;</xsl:attribute>
+			</i>
+			<i class="icon-eye-on" data-click="toggle-layer"><xsl:if test="@hidden = 1">
+				<xsl:attribute name="class">icon-eye-on icon-eye-off</xsl:attribute>
+			</xsl:if></i>
+			<i class="icon-trashcan" data-click="remove-layer"></i>
+		</div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="substring-after-last">
 	<xsl:param name="string" />
 	<xsl:param name="delimiter" />
