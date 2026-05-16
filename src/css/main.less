@@ -836,6 +836,32 @@ content {
 			}
 		}
 
+		&.dbl-range {
+			.value {
+				background: transparent;
+				text-align: left;
+				padding-top: 1px;
+				padding-left: 1px;
+
+				&:before,
+				&:after {
+					display: none;
+				}
+
+				.low {
+					position: absolute;
+					top: 3px;
+					left: 0;
+				}
+
+				.high {
+					position: absolute;
+					top: 3px;
+					right: 0;
+				}
+			}
+		}
+
 		&.opt-gradient {
 			.value {
 				width: 79px;

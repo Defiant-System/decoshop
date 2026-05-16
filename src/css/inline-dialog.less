@@ -452,7 +452,9 @@
 							}
 
 							&.check {
-
+								.value {
+									background: #0003;
+								}
 							}
 
 							&.push {
@@ -484,7 +486,7 @@
 						}
 
 						fieldset {
-							padding: 3px 0 19px 9px;
+							padding: 0 0 19px 9px;
 							text-align: center;
 
 							h4 {
@@ -495,7 +497,7 @@
 								font-size: 11px;
 								font-weight: 400;
 								text-transform: uppercase;
-								margin-bottom: 7px;
+								margin-bottom: 5px;
 
 								&:before {
 									content: "";
@@ -524,6 +526,11 @@
 
 							.field-row {
 								height: 29px;
+								margin-right: 0;
+
+								&.has-dbl-range {
+									height: 49px;
+								}
 
 								.option {
 									padding-top: 5px;
@@ -542,7 +549,7 @@
 
 			.buttons {
 				width: 90px;
-				margin-left: 11px;
+				margin-left: 13px;
 			}
 		}
 	}
@@ -1191,6 +1198,7 @@
 		}
 
 		.field-row {
+			position: relative;
 			height: 32px;
 			margin-right: 19px;
 
@@ -1212,6 +1220,36 @@
 				&.hover .knob {
 					visibility: visible;
 					opacity: 1;
+				}
+			}
+
+			&.has-dbl-range {
+				height: 47px;
+
+				.dbl-slider {
+					position: relative;
+					top: -2px;
+					left: 113px;
+					width: calc(100% - 113px);
+					height: 9px;
+					border-radius: 3px;
+					background: linear-gradient(90deg, #000, #fff);
+					box-shadow: inset 0 1px 2px #0005;
+
+					&.gray { background: linear-gradient(90deg, #000, #fff); }
+					&.red { background: linear-gradient(90deg, #000, #f00); }
+					&.green { background: linear-gradient(90deg, #000, #0f0); }
+					&.blue { background: linear-gradient(90deg, #000, #00f); }
+
+					&:after {
+						content: "";
+						position: absolute;
+						left: 0;
+						right: 0;
+						bottom: -1px;
+						height: 1px;
+						background: linear-gradient(90deg, #fff0, #fff5, #fff0);
+					}
 				}
 			}
 

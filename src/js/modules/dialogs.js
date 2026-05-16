@@ -18,6 +18,7 @@ const Dialogs = {
 
 			case "selected-style-item":
 				el = $(event.target);
+				event.el.find(".selected").removeClass("selected");
 				el.parents("?.option").addClass("selected");
 				break;
 			// standard dialog events
