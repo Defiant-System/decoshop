@@ -497,7 +497,7 @@
 								font-size: 11px;
 								font-weight: 400;
 								text-transform: uppercase;
-								margin-bottom: 5px;
+								margin-bottom: 3px;
 
 								&:before {
 									content: "";
@@ -529,7 +529,11 @@
 								margin-right: 0;
 
 								&.has-dbl-range {
-									height: 49px;
+									height: 47px;
+
+									.option {
+										padding-top: 1px;
+									}
 								}
 
 								.option {
@@ -1224,14 +1228,12 @@
 			}
 
 			&.has-dbl-range {
-				height: 47px;
-
 				.dbl-slider {
 					position: relative;
 					top: -2px;
 					left: 113px;
 					// width: calc(100% - 113px);
-					width: 210px;
+					width: 200px;
 					height: 9px;
 					border-radius: 3px;
 					background: linear-gradient(90deg, #000, #fff);
@@ -1242,6 +1244,26 @@
 					&.green { background: linear-gradient(90deg, #000, #0f0); }
 					&.blue { background: linear-gradient(90deg, #000, #00f); }
 
+					// temp
+					&.red {
+						.low,
+						.high {
+							&:after { display: none; }
+
+							.min { left: 11px; }
+							.max { left: 43px; }
+						
+							&.high {
+								left: 180px;
+
+								&:after { display: none; }
+
+								.min { left: -16px; }
+								.max { left: 13px; }
+							}
+						}
+					}
+
 					&:after {
 						content: "";
 						position: absolute;
@@ -1249,7 +1271,7 @@
 						right: 0;
 						bottom: -1px;
 						height: 1px;
-						background: linear-gradient(90deg, #aff0, #aff5, #aff0);
+						background: linear-gradient(90deg, #aff0, #aff4, #aff0);
 					}
 
 					.low,
@@ -1257,9 +1279,22 @@
 						position: absolute;
 						top: 11px;
 						left: 0;
+						filter: brightness(.7);
 
 						&.high {
-							left: 210px;
+							left: 200px;
+							filter: brightness(1.15);
+						}
+
+						&:after {
+							content: "";
+							position: absolute;
+							top: 2px;
+							left: -1px;
+							width: 2px;
+							height: 9px;
+							background: #fff4;
+							z-index: 2;
 						}
 
 						.min,
@@ -1270,8 +1305,9 @@
 							left: 0;
 							width: 7px;
 							height: 12px;
+							z-index: 1;
 							transform: translateX(-7px);
-							filter: drop-shadow(0 1px 2px #1337);
+							filter: drop-shadow(0 1px 1px #1337);
 
 							&.max {
 								background-position: -7px;
