@@ -432,8 +432,20 @@
 		}
 
 		hr {
-			background: linear-gradient(90deg, transparent 0%, #788 50%, transparent 100%); //rgba(255,255,255,0.15);
-			margin: 3px 0 4px;
+			position: relative;
+			background: linear-gradient(90deg, #7880 0%, #788 50%, #7880 100%); //rgba(255,255,255,0.15);
+			margin: 6px 0 3px;
+			overflow: visible;
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: -1px;
+				left: 0;
+				right: 0;
+				height: 1px;
+				background: linear-gradient(90deg, #1220 0%, #1224 50%, #1220 100%);
+			}
 		}
 
 		.knob {

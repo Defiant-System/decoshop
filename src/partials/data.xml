@@ -66,6 +66,89 @@
 		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%" />
 		<i g="#000000aa 0%, transparent 100%" />
 	</Gradients>
+
+	<BlendModes>
+		<i type="option" name="Normal" value="source-over"/>
+		<i type="option" name="Dissolve" value="dissolve"/>
+		<i type="divider"/>
+		<i type="option" name="Darken"/>
+		<i type="option" name="Multiply"/>
+		<i type="option" name="Color Burn"/>
+		<i type="option" name="Linear Burn"/>
+		<i type="option" name="Darker Color"/>
+		<i type="divider"/>
+		<i type="option" name="Lighten"/>
+		<i type="option" name="Screen"/>
+		<i type="option" name="Color Dodge"/>
+		<i type="option" name="Linear Dodge"/>
+		<i type="option" name="Lighter Color"/>
+		<i type="divider"/>
+		<i type="option" name="Overlay"/>
+		<i type="option" name="Soft Light"/>
+		<i type="option" name="Hard Light"/>
+		<i type="option" name="Vivid Light"/>
+		<i type="option" name="Linear Light"/>
+		<i type="option" name="Pin Light"/>
+		<i type="option" name="Hard Mix"/>
+		<i type="divider"/>
+		<i type="option" name="Difference"/>
+		<i type="option" name="Exclusion"/>
+		<i type="option" name="Subtract"/>
+		<i type="option" name="Divide"/>
+		<i type="divider"/>
+		<i type="option" name="Hue"/>
+		<i type="option" name="Saturation"/>
+		<i type="option" name="Color"/>
+		<i type="option" name="Luminosity"/>
+	</BlendModes>
+	<BlendIf>
+		<i type="option" name="Gray" value="0"/>
+		<i type="option" name="Red" value="1"/>
+		<i type="option" name="Green" value="2"/>
+		<i type="option" name="Blue" value="3"/>
+	</BlendIf>
+	<FeatherModes>
+		<i type="option" name="Chrome"/>
+		<i type="option" name="Fur"/>
+		<i type="option" name="Longfur"/>
+		<i type="option" name="Sketchy"/>
+		<i type="option" name="Shaded"/>
+		<i type="option" name="Web"/>
+		<i type="option" name="Ribbon"/>
+		<i type="divider"/>
+		<i type="option" name="Squares"/>
+		<i type="option" name="Circles"/>
+		<i type="option" name="Grid"/>
+	</FeatherModes>
+	<TipShapes>
+		<i name="hard-round" size="20" hardness="100" roundness="100" angle="0" />
+		<i name="soft-round" size="37" hardness="0" roundness="50" angle="78" />
+		<i name="box" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="triangle" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="heart" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="star" size="40" hardness="100" roundness="100" angle="0" />
+
+		<i name="sponge-1" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-2" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-3" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-4" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-5" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-6" size="40" hardness="100" roundness="100" angle="0" />
+
+		<i name="splatter-1" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-2" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-3" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-4" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-5" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-6" size="40" hardness="100" roundness="100" angle="0" />
+
+		<i name="crayon-1" type="texture" tip="round" />
+		<i name="crayon-1" type="texture" />
+		<i name="crayon-2" type="texture" tip="round" />
+		<i name="crayon-2" type="texture" />
+		<i name="crayon-3" type="texture" tip="round" />
+		<i name="crayon-3" type="texture" />
+	</TipShapes>
 	<LayerStyles>
 		<i check="0" name="Blending Options"/>
 		<i check="1" name="Bevel &amp; Emboss"/>

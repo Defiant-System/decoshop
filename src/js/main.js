@@ -2,6 +2,7 @@
 @import "./modules/test.js"
 
 
+@import "modules/misc.js"
 @import "modules/color.js"
 @import "modules/ui.js"
 @import "modules/tabs.js"

@@ -522,6 +522,30 @@
 									transform: translateX(7px);
 									filter: drop-shadow(0 1px 0 #fffa);
 								}
+
+								.inline-menu {
+									display: inline-block;
+									padding: 2px 19px 2px 3px;
+									border: 1px dashed #244;
+									border-radius: 5px;
+									margin-left: 3px;
+									cursor: pointer;
+
+									&:hover {
+										color: #fffd;
+									}
+
+									&:after {
+										content: "";
+										background: url(~/icons/icon-arrow.png) 50% 50% / contain no-repeat;
+										position: absolute;
+										top: 7px;
+										right: 8px;
+										width: 7px;
+										height: 7px;
+										filter: drop-shadow(0 1px 0 #00000070);
+									}
+								}
 							}
 
 							.field-row {

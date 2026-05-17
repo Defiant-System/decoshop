@@ -21,7 +21,7 @@ const UI = {
 		this.content.css({ "--guide-color": APP.Settings.guides.color });
 
 		// bind event handlers
-		this.content.on("click", ".option .value", this.dispatch);
+		this.content.on("click", ".option .value, .inline-menu", this.dispatch);
 		this.content.on("mousedown mouseup", "[data-ui], [data-dlg]", this.dispatch);
 	},
 	async dispatch(event) {
@@ -39,7 +39,7 @@ const UI = {
 		// console.log(event);
 		switch (event.type) {
 			case "click":
-				el = $(this.parentNode);
+				el = $(event.target).parents("?[data-options]");
 				value = el.data("options");
 				if (!value || el.hasClass("disabled")) return;
 
@@ -278,6 +278,7 @@ const UI = {
 						max = opW - oL;
 						break;
 					case "r-handle":
+						max = opW - oW;
 						break;
 				}
 				Self.drag = { el, type, hEl, offset, min, max };
@@ -646,6 +647,7 @@ const UI = {
 			data,
 			value,
 			el;
+		// console.log(event);
 		switch (event.type) {
 			// native events
 			case "mousedown":
@@ -675,9 +677,10 @@ const UI = {
 			// custom events
 			case "set-initial-value":
 				// initial value
-				value = event.el.find(".value").text();
+				value = event.el.find(".value");
+				if (!value.length) value = event.el;
 				Self.menu.find(".option").map(elem => {
-					if (elem.textContent === value) {
+					if (elem.textContent === value.text()) {
 						elem.className += " selected";
 					}
 				});

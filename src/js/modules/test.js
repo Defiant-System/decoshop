@@ -1,9 +1,12 @@
 
 let Test = {
 	init(APP) {
+		// return;
 
 		setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
+
+		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 
 		/* 
 		 * dlgExportAs	dlgPrint	dlgExportLayers	dlgExportColorLookUp	dlgFileInfo
