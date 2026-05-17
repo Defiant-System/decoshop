@@ -430,7 +430,7 @@
 
 					.style-list {
 						width: 160px;
-						background: linear-gradient(180deg, #3448, #3445);
+						background: linear-gradient(180deg, #3446, #3445);
 						border-radius: 4px;
 						padding: 3px 0;
 
@@ -1233,7 +1233,7 @@
 					top: -2px;
 					left: 113px;
 					// width: calc(100% - 113px);
-					width: 200px;
+					width: 201px;
 					height: 9px;
 					border-radius: 3px;
 					background: linear-gradient(90deg, #000, #fff);
@@ -1248,18 +1248,12 @@
 					&.red {
 						.low,
 						.high {
-							&:after { display: none; }
+							left: 11px;
+							width: 32px;
 
-							.min { left: 11px; }
-							.max { left: 43px; }
-						
 							&.high {
-								left: 180px;
-
-								&:after { display: none; }
-
-								.min { left: -16px; }
-								.max { left: 13px; }
+								left: 164px;
+								width: 29px;
 							}
 						}
 					}
@@ -1279,22 +1273,19 @@
 						position: absolute;
 						top: 11px;
 						left: 0;
+						height: 12px;
 						filter: brightness(.7);
+						cursor: ew-resize;
+
+						&:hover,
+						&.hover {
+							// background: linear-gradient(0deg, #fff0, #fff7, #fff0);
+							background: #fff4;
+						}
 
 						&.high {
 							left: 200px;
 							filter: brightness(1.15);
-						}
-
-						&:after {
-							content: "";
-							position: absolute;
-							top: 2px;
-							left: -1px;
-							width: 2px;
-							height: 9px;
-							background: #fff4;
-							z-index: 2;
 						}
 
 						.min,
@@ -1306,12 +1297,14 @@
 							width: 7px;
 							height: 12px;
 							z-index: 1;
-							transform: translateX(-7px);
+							transform: translateX(-6px);
 							filter: drop-shadow(0 1px 1px #1337);
 
 							&.max {
+								left: auto;
+								right: 0;
 								background-position: -7px;
-								transform: translateX(0);
+								transform: translateX(7px);
 							}
 						}
 					}

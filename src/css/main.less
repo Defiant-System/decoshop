@@ -54,6 +54,28 @@ content {
 	// imports
 	@import "blank-view";
 	
+	// prevent mouse from triggering mouseover when panning for instance
+	&.cover:after,
+	&.no-dlg-cursor:after,
+	&.no-cursor:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 99;
+		background: transparent;
+	}
+
+	&.no-dlg-cursor:after {
+		cursor: none;
+		z-index: 199;
+	}
+	&.no-cursor:after {
+		cursor: none;
+	}
+	
 	// transitions for blank view / work view
 	.tools-bar,
 	.tools-options-bar {

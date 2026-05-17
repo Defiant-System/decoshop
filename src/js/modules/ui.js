@@ -244,6 +244,45 @@ const UI = {
 				break;
 		}
 	},
+	doDblRange(event) {
+		let Self = UI,
+			Drag = Self.drag;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+
+				let el = $(event.target).parents("?[data-ux]");
+
+				let type = el.data("ux"),
+					handle = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
+					offset = {
+						y: +el.prop("offsetTop") - event.clientY,
+						x: +el.prop("offsetLeft") - event.clientX,
+					},
+					min = 0,
+					max = 160;
+				Self.drag = { el, type, handle, offset, min, max };
+
+				// bind event handlers
+				Self.content.addClass("no-dlg-cursor");
+				Self.doc.on("mousemove mouseup", Self.doDblRange);
+				break;
+			case "mousemove":
+				let left = Math.max(Math.min(Drag.max, event.clientX + Drag.offset.x), Drag.min);
+				Drag.el.css({ left });
+				break;
+			case "mouseup":
+				// reset range element
+				Drag.handle.removeClass("hover");
+				// unbind event handlers
+				Self.content.removeClass("no-dlg-cursor");
+				Self.doc.off("mousemove mouseup", Self.doDblRange);
+				break;
+		}
+	},
 	doDialog(event) {
 		let Self = UI,
 			Drag = Self.drag,
@@ -273,6 +312,10 @@ const UI = {
 						return Self.doDialogKnobValue(event);
 					case el.data("ux") === "dlg-bars":
 						return Self.doDialogBars(event);
+					case el.data("ux") === "r-handle":
+					case el.data("ux") === "r-low":
+					case el.data("ux") === "r-high":
+						return Self.doDblRange(event);
 					case el.hasClass("knob"):
 					case el.hasClass("pan-knob"):
 						return Self.doDialogKnob(event);
