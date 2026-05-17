@@ -892,7 +892,7 @@
 								min-width: 179px;
 
 								.label {
-									min-width: 124px;
+									min-width: 104px;
 									padding-left: 3px;
 								}
 
@@ -1230,7 +1230,8 @@
 					position: relative;
 					top: -2px;
 					left: 113px;
-					width: calc(100% - 113px);
+					// width: calc(100% - 113px);
+					width: 210px;
 					height: 9px;
 					border-radius: 3px;
 					background: linear-gradient(90deg, #000, #fff);
@@ -1248,7 +1249,35 @@
 						right: 0;
 						bottom: -1px;
 						height: 1px;
-						background: linear-gradient(90deg, #fff0, #fff5, #fff0);
+						background: linear-gradient(90deg, #aff0, #aff5, #aff0);
+					}
+
+					.low,
+					.high {
+						position: absolute;
+						top: 11px;
+						left: 0;
+
+						&.high {
+							left: 210px;
+						}
+
+						.min,
+						.max {
+							background: url(~/icons/icon-dbl-slider-handle.png) 0 0 no-repeat;
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 7px;
+							height: 12px;
+							transform: translateX(-7px);
+							filter: drop-shadow(0 1px 2px #1337);
+
+							&.max {
+								background-position: -7px;
+								transform: translateX(0);
+							}
+						}
 					}
 				}
 			}
@@ -1260,7 +1289,8 @@
 
 				&.select {
 					.value {
-						width: 89px;
+						min-width: 89px;
+						flex: initial;
 					}
 				}
 

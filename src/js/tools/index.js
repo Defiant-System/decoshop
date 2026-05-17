@@ -74,4 +74,5 @@
 	pointer   : @import "pointer.js",
 	zoom      : @import "zoom.js",
 	quickMask : @import "quickMask.js",
+	others    : @import "others.js",
 }

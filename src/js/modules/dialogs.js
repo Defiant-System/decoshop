@@ -81,7 +81,9 @@ const Dialogs = {
 				selEl.parents(".bubble-content").scrollTop(selEl.offset(".bubble-content").top - 30);
 				break;
 			case "select-filter":
-				el = $(event.target);
+				event.el.find(".selected").removeClass("selected");
+
+				el = $(event.target).addClass("selected");
 				selEl = Self.orgEl.parents(".filter-row");
 				Self.orgEl.data({ filter: el.data("filter") });
 				// empty / re-render filter properties
