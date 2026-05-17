@@ -21,6 +21,12 @@ const Dialogs = {
 				event.el.find(".selected").removeClass("selected");
 				el.parents("?.option").addClass("selected");
 				break;
+			case "change-blend-if":
+				// update inline "selectbox"
+				event.el.removeClass("opened").html(event.text);
+				// update dbl-slider
+				event.el.parents("fieldset").find(".dbl-slider").data({ mode: event.text.toLowerCase() });
+				break;
 			// standard dialog events
 			case "dlg-open":
 				if (!event.dEl.find(".style-list .option").length) {

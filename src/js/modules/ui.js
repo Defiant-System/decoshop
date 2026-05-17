@@ -63,6 +63,10 @@ const UI = {
 
 				// prevent mouse from triggering mouseover
 				APP.els.content.addClass("cover");
+
+				let dEl = Self.srcEl.parents(".dialog-box");
+				if (dEl.length) Self.dEl = dEl.addClass("covered");
+
 				// event handler checks for clicks outside inline-menubox
 				Self.doc.on("mousedown", Self.dispatch);
 				break;
@@ -86,6 +90,7 @@ const UI = {
 					Self.menu.remove();
 				}
 				if (Self.srcEl) Self.srcEl.removeClass("opened");
+				if (Self.dEl.length) Self.dEl.removeClass("covered");
 				// uncover app UI
 				APP.els.content.removeClass("cover");
 				// unbind event handler
@@ -351,6 +356,8 @@ const UI = {
 					case el.hasClass("knob"):
 					case el.hasClass("pan-knob"):
 						return Self.doDialogKnob(event);
+					case el.parent().hasClass("covered"):
+						return Self.dispatch({ type: "mousedown", target: el.parent()[0] });
 				}
 
 				// prevent default behaviour
