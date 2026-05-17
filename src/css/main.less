@@ -55,23 +55,36 @@ content {
 	@import "blank-view";
 	
 	// prevent mouse from triggering mouseover when panning for instance
-	&.cover:after,
-	&.no-dlg-cursor:after,
-	&.no-cursor:after {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 99;
-		background: transparent;
+	&.cover,
+	&.no-dlg-cursor,
+	&.no-cursor {
+		&:after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 98;
+			background: transparent;
+		}
+
+		.win-caption-bar_ {
+			z-index: 99;
+		}
 	}
 
-	&.no-dlg-cursor:after {
-		cursor: none;
-		z-index: 199;
+	&.no-dlg-cursor {
+		&:after {
+			cursor: none;
+			z-index: 198;
+		}
+
+		.win-caption-bar_ {
+			z-index: 199;
+		}
 	}
+
 	&.no-cursor:after {
 		cursor: none;
 	}

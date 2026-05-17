@@ -254,29 +254,60 @@ const UI = {
 				// prevent default behaviour
 				event.preventDefault();
 
-				let el = $(event.target).parents("?[data-ux]");
+				let el = $(event.target).parents("?[data-ux]"),
+					type = el.data("ux");
 
-				let type = el.data("ux"),
-					handle = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
+				let hEl = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
+					opW = +hEl.parent().prop("offsetWidth") - 1,
+					oW = +hEl.prop("offsetWidth"),
+					oL = +hEl.prop("offsetLeft"),
 					offset = {
-						y: +el.prop("offsetTop") - event.clientY,
 						x: +el.prop("offsetLeft") - event.clientX,
+						w: oW + oL,
 					},
 					min = 0,
-					max = 160;
-				Self.drag = { el, type, handle, offset, min, max };
+					max = opW;
+
+				switch (type) {
+					case "r-min":
+						offset.x += +hEl.prop("offsetLeft");
+						max = offset.w;
+						break;
+					case "r-max":
+						offset.x += event.offsetX;
+						max = opW - oL;
+						break;
+					case "r-handle":
+						break;
+				}
+				Self.drag = { el, type, hEl, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
 				Self.doc.on("mousemove mouseup", Self.doDblRange);
 				break;
 			case "mousemove":
-				let left = Math.max(Math.min(Drag.max, event.clientX + Drag.offset.x), Drag.min);
-				Drag.el.css({ left });
+				let diff = event.clientX + Drag.offset.x,
+					data = {};
+				switch (Drag.type) {
+					case "r-min":
+						data.left = Math.max(Math.min(Drag.max, diff), Drag.min);
+						data.width = Drag.offset.w - data.left;
+						Drag.hEl.css(data);
+						break;
+					case "r-max":
+						data.width = Math.max(Math.min(Drag.max, diff), Drag.min);
+						Drag.hEl.css(data);
+						break;
+					case "r-handle":
+						data.left = Math.max(Math.min(Drag.max, diff), Drag.min);
+						Drag.el.css(data);
+						break;
+				}
 				break;
 			case "mouseup":
 				// reset range element
-				Drag.handle.removeClass("hover");
+				Drag.hEl.removeClass("hover");
 				// unbind event handlers
 				Self.content.removeClass("no-dlg-cursor");
 				Self.doc.off("mousemove mouseup", Self.doDblRange);
@@ -313,8 +344,8 @@ const UI = {
 					case el.data("ux") === "dlg-bars":
 						return Self.doDialogBars(event);
 					case el.data("ux") === "r-handle":
-					case el.data("ux") === "r-low":
-					case el.data("ux") === "r-high":
+					case el.data("ux") === "r-min":
+					case el.data("ux") === "r-max":
 						return Self.doDblRange(event);
 					case el.hasClass("knob"):
 					case el.hasClass("pan-knob"):
