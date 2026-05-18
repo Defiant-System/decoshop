@@ -476,6 +476,24 @@
 						flex: 1;
 						margin: 0 0 0 7px;
 
+						&[data-show="Blending Options"] .style-fields[data-name="Blending Options"] { display: block; }
+						&[data-show="Bevel Emboss"] .style-fields[data-name="Bevel Emboss"] { display: block; }
+						&[data-show="Contour"] .style-fields[data-name="Contour"] { display: block; }
+						&[data-show="Texture"] .style-fields[data-name="Texture"] { display: block; }
+						&[data-show="Stroke"] .style-fields[data-name="Stroke"] { display: block; }
+						&[data-show="Inner Shadow"] .style-fields[data-name="Inner Shadow"] { display: block; }
+						&[data-show="Inner Glow"] .style-fields[data-name="Inner Glow"] { display: block; }
+						&[data-show="Satin"] .style-fields[data-name="Satin"] { display: block; }
+						&[data-show="Color Overlay"] .style-fields[data-name="Color Overlay"] { display: block; }
+						&[data-show="Gradient Overlay"] .style-fields[data-name="Gradient Overlay"] { display: block; }
+						&[data-show="Pattern Overlay"] .style-fields[data-name="Pattern Overlay"] { display: block; }
+						&[data-show="Outer Glow"] .style-fields[data-name="Outer Glow"] { display: block; }
+						&[data-show="Drop Shadow"] .style-fields[data-name="Drop Shadow"] { display: block; }
+
+						.style-fields {
+							display: none;
+						}
+
 						h3 {
 							position: relative;
 							color: #fffa;
@@ -562,7 +580,7 @@
 								margin-right: 0;
 
 								&.has-dbl-range {
-									height: 47px;
+									height: 43px;
 
 									.option {
 										padding-top: 1px;
@@ -1263,9 +1281,9 @@
 			&.has-dbl-range {
 				.dbl-slider {
 					position: relative;
-					top: -2px;
-					left: 113px;
-					// width: calc(100% - 113px);
+					top: -3px;
+					left: 117px;
+					// width: calc(100% - 117px);
 					width: 201px;
 					height: 9px;
 					border-radius: 3px;
@@ -1277,20 +1295,6 @@
 					&[data-mode="green"] { background: linear-gradient(90deg, #000, #0f0); }
 					&[data-mode="blue"] { background: linear-gradient(90deg, #000, #00f); }
 
-					// temp
-					// &.red {
-					// 	.low,
-					// 	.high {
-					// 		left: 11px;
-					// 		width: 62px;
-
-					// 		&.high {
-					// 			left: 164px;
-					// 			width: 29px;
-					// 		}
-					// 	}
-					// }
-
 					&:after {
 						content: "";
 						position: absolute;
@@ -1301,11 +1305,22 @@
 						background: linear-gradient(90deg, #aff0, #aff4, #aff0);
 					}
 
+					.low {
+						--min: 0;
+						--max: 0;
+					}
+
+					.high {
+						--min: 255;
+						--max: 255;
+					}
+
 					.low,
 					.high {
 						position: absolute;
 						top: 11px;
-						left: 0;
+						left: calc( calc( var( --min ) / 255 ) * 200px );
+						width: calc( calc( calc( var( --max ) - var( --min ) ) / 255 ) * 200px );
 						height: 12px;
 						filter: brightness(.7);
 						cursor: ew-resize;
@@ -1317,7 +1332,6 @@
 						}
 
 						&.high {
-							left: 200px;
 							filter: brightness(1.15);
 						}
 

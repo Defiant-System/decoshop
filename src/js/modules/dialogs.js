@@ -12,14 +12,22 @@ const Dialogs = {
 		// console.log(event);
 		switch (event.type) {
 			// "fast events"
-			case "set-filter-value":
-				// console.log(event.value);
-				break;
+			case "set-slider-low":
+				event.els[0].html(event.value[0]);
+				event.els[1].html(event.value[1]);
+				return;
+			case "set-slider-high":
+				event.els[0].html(event.value[0]);
+				event.els[1].html(event.value[1]);
+				return;
 
 			case "selected-style-item":
 				el = $(event.target);
 				event.el.find(".selected").removeClass("selected");
 				el.parents("?.option").addClass("selected");
+
+				selEl = el.find("label").length ? el.find("label") : el;
+				el.parents(".dlg-content").find(".style-details").data({ show: selEl.html().replace("&amp; ", "") });
 				break;
 			case "change-blend-if":
 				// update inline "selectbox"
@@ -36,7 +44,7 @@ const Dialogs = {
 						target: event.dEl.find(".style-list"),
 					}).then(() => {
 						// auto select first item
-						event.dEl.find(".style-list .option").get(0).trigger("click");
+						event.dEl.find(".style-list .option").get(1).trigger("click");
 					});
 				}
 				break;
@@ -63,7 +71,7 @@ const Dialogs = {
 			// "fast events"
 			case "set-filter-value":
 				// console.log(event.value);
-				break;
+				return;
 
 			case "hide-filter-options":
 				el = Self.orgEl.parents(".dialog-box");
@@ -197,7 +205,7 @@ const Dialogs = {
 				copy = Filters.brightnessContrast(copy, Self.data.value);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			
 			// slow/once events
 			case "before:set-contrast":
@@ -259,7 +267,7 @@ const Dialogs = {
 				gaussianBlur(copy.data, pixels.width, pixels.height, Self.data.value.radius);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -289,7 +297,7 @@ const Dialogs = {
 				copy = Filters.threshold(copy, Self.data.value.amount);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -319,7 +327,7 @@ const Dialogs = {
 				copy = Filters.crystallize(copy, Self.data.value.size);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -353,7 +361,7 @@ const Dialogs = {
 				copy = Filters.crystallize(copy, Self.data.value.size, Self.data.value.color);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -383,7 +391,7 @@ const Dialogs = {
 				copy = Filters.pixelate(copy, Self.data.value.size);
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
+				return;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -416,7 +424,7 @@ const Dialogs = {
 				// update layer
 				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				console.timeEnd("Sponge Filter");
-				break;
+				return;
 			
 			// slow/once events
 			case "before:set-intensity":
@@ -572,7 +580,7 @@ const Dialogs = {
 			// "fast events"
 			case "set-color-opacity":
 				Self.els.content.css({ "--alpha": event.value / 100 });
-				break;
+				return;
 
 			// slow/once events
 			case "before:set-color-opacity":

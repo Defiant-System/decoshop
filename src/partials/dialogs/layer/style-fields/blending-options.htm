@@ -1,0 +1,106 @@
+
+<div class="style-fields" data-name="Blending Options">
+	<h3>Blending Options</h3>
+
+	<fieldset>
+		<h4>General Blending</h4>
+		<div class="field-row">
+			<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="blend-modes" data-match="//BlendModes">
+				<span class="label">Blend Mode</span>
+				<span class="value">Normal</span>
+			</div>
+		</div>
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Opacity</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-change="set-filter-value" data-value="100"></div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<h4>Advanced Blending</h4>
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Fill</span>
+				<span class="value">
+					<input type="text" name="field-2" data-min="1" data-max="100" value="100%" data-suffix="%">
+				</span>
+			</div>
+			<div class="knob" data-change="set-filter-value" data-value="100"></div>
+		</div>
+		<div class="field-row">
+			<div class="option opt-group">
+				<span class="label">Channels</span>
+				<span class="value">
+					<ul class="opt-group">
+						<li data-id="prst-1">R</li>
+						<li data-id="prst-2">G</li>
+						<li data-id="prst-3">B</li>
+					</ul>
+				</span>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<h4>
+			Blend If
+			<span class="inline-menu" data-arg="blend-if" data-change="change-blend-if" data-options="blend-modes" data-match="//BlendIf">Gray</span>
+		</h4>
+		<div class="field-row has-dbl-range">
+			<div class="option dbl-range">
+				<span class="label">This Layer</span>
+				<span class="value">
+					<span class="low">
+						<span class="min" data-id="layer-0-low-min">0</span> /
+						<span class="max" data-id="layer-0-low-max">0</span>
+					</span>
+					<span class="high">
+						<span class="min" data-id="layer-0-high-min">255</span> /
+						<span class="max" data-id="layer-0-high-max">255</span>
+					</span>
+				</span>
+			</div>
+			<div class="dbl-slider">
+				<span class="low" data-ux="r-handle" style="--min: 13; --max: 43;" data-change="set-slider-low" data-arg="layer-0">
+					<span class="min" data-ux="r-min" data-for="layer-0-low-min"></span>
+					<span class="max" data-ux="r-max" data-for="layer-0-low-max"></span>
+				</span>
+				<span class="high" data-ux="r-handle" style="--min: 203; --max: 243;" data-change="set-slider-high" data-arg="layer-0">
+					<span class="min" data-ux="r-min" data-for="layer-0-high-min"></span>
+					<span class="max" data-ux="r-max" data-for="layer-0-high-max"></span>
+				</span>
+			</div>
+		</div>
+
+		<div class="field-row has-dbl-range">
+			<div class="option dbl-range">
+				<span class="label">Underlying Layer</span>
+				<span class="value">
+					<span class="low">
+						<span class="min" data-id="layer-1-low-min">0</span> /
+						<span class="max" data-id="layer-1-low-max">0</span>
+					</span>
+					<span class="high">
+						<span class="min" data-id="layer-1-high-min">255</span> /
+						<span class="max" data-id="layer-1-high-max">255</span>
+					</span>
+				</span>
+			</div>
+			<div class="dbl-slider">
+				<span class="low" data-ux="r-handle" data-change="set-slider-low" data-arg="layer-1">
+					<span class="min" data-ux="r-min" data-for="layer-1-low-min"></span>
+					<span class="max" data-ux="r-max" data-for="layer-1-low-max"></span>
+				</span>
+				<span class="high" data-ux="r-handle" data-change="set-slider-high" data-arg="layer-1">
+					<span class="min" data-ux="r-min" data-for="layer-1-high-min"></span>
+					<span class="max" data-ux="r-max" data-for="layer-1-high-max"></span>
+				</span>
+			</div>
+		</div>
+	</fieldset>
+</div>

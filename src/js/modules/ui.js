@@ -90,7 +90,7 @@ const UI = {
 					Self.menu.remove();
 				}
 				if (Self.srcEl) Self.srcEl.removeClass("opened");
-				if (Self.dEl.length) Self.dEl.removeClass("covered");
+				if (Self.dEl) Self.dEl.removeClass("covered");
 				// uncover app UI
 				APP.els.content.removeClass("cover");
 				// unbind event handler
@@ -260,20 +260,34 @@ const UI = {
 				event.preventDefault();
 
 				let el = $(event.target).parents("?[data-ux]"),
-					type = el.data("ux");
+					ux = el.data("ux");
 
-				let hEl = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
+				let dId = el.parents(`.dialog-box[data-dlg]`).data("dlg"),
+					hEl = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
+					type = hEl.data("change"),
 					opW = +hEl.parent().prop("offsetWidth") - 1,
 					oW = +hEl.prop("offsetWidth"),
 					oL = +hEl.prop("offsetLeft"),
 					offset = {
 						x: +el.prop("offsetLeft") - event.clientX,
 						w: oW + oL,
+						opW,
+						oL,
+						oW,
 					},
 					min = 0,
-					max = opW;
+					max = opW,
+					els = [],
+					value = [],
+					newValue = [];
+				// min & max values
+				value.push(+hEl.cssProp("--min"));
+				value.push(+hEl.cssProp("--max"));
+				// prepare DOM elements
+				els.push(el.parents(".field-row").find(`.min[data-id="${hEl.find(".min").data("for")}"]`));
+				els.push(el.parents(".field-row").find(`.max[data-id="${hEl.find(".max").data("for")}"]`));
 
-				switch (type) {
+				switch (ux) {
 					case "r-min":
 						offset.x += +hEl.prop("offsetLeft");
 						max = offset.w;
@@ -286,7 +300,7 @@ const UI = {
 						max = opW - oW;
 						break;
 				}
-				Self.drag = { el, type, hEl, offset, min, max };
+				Self.drag = { el, ux, hEl, dId, els, value, newValue, type, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
@@ -294,22 +308,36 @@ const UI = {
 				break;
 			case "mousemove":
 				let diff = event.clientX + Drag.offset.x,
-					data = {};
-				switch (Drag.type) {
+					data = {},
+					val = [].concat(Drag.value);
+				switch (Drag.ux) {
 					case "r-min":
 						data.left = Math.max(Math.min(Drag.max, diff), Drag.min);
 						data.width = Drag.offset.w - data.left;
 						Drag.hEl.css(data);
+
+						val[0] = Math.round((data.left / Drag.offset.opW) * 255);
+						val[1] = Math.round(((data.left + data.width) / Drag.offset.opW) * 255);
 						break;
 					case "r-max":
 						data.width = Math.max(Math.min(Drag.max, diff), Drag.min);
 						Drag.hEl.css(data);
+
+						val[1] = Math.round(((Drag.offset.oL + data.width) / Drag.offset.opW) * 255);
 						break;
 					case "r-handle":
 						data.left = Math.max(Math.min(Drag.max, diff), Drag.min);
 						Drag.el.css(data);
+
+						val[0] = Math.round((data.left / Drag.offset.opW) * 255);
+						val[1] = Math.round(((data.left + Drag.offset.oW) / Drag.offset.opW) * 255);
 						break;
 				}
+				if (Drag.newValue[0] === val[0] && Drag.newValue[1] === val[1]) return;
+				Drag.newValue = val;
+
+				// proxy changed value
+				Dialogs[Drag.dId]({ type: Drag.type, els: Drag.els, value: Drag.newValue });
 				break;
 			case "mouseup":
 				// reset range element

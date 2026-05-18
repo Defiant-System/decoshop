@@ -151,7 +151,7 @@
 	</TipShapes>
 	<LayerStyles>
 		<i check="0" name="Blending Options"/>
-		<i check="1" name="Bevel &amp; Emboss"/>
+		<i check="1" name="Bevel &#38; Emboss"/>
 		<i check="1" name="Contour" class="push"/>
 		<i check="1" name="Texture" class="push"/>
 		<i check="1" name="Stroke"/>

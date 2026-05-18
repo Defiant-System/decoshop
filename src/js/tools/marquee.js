@@ -70,7 +70,7 @@
 				// set default cursor for this tool
 				APP.els.content.addClass("cursor-crosshair");
 				// bind event handler
-				Proj.cvs.on("mousedown", Self.doMarquee);
+				// Proj.cvs.on("mousedown", Self.doMarquee);
 				// subscribe to events
 				window.on("mouse-move", Self.dispatch);
 				break;
@@ -78,7 +78,7 @@
 				// unset default cursor for this tool
 				APP.els.content.removeClass("cursor-crosshair");
 				// unbind event handler
-				Proj.cvs.off("mousedown", Self.doMarquee);
+				// Proj.cvs.off("mousedown", Self.doMarquee);
 				// subscribe to events
 				window.off("mouse-move", Self.dispatch);
 				break;
