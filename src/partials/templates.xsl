@@ -366,6 +366,19 @@
 </xsl:template>
 
 
+<xsl:template name="contours">
+	<div class="inline-menubox" data-ui="doContours">
+		<div class="inline-content contours">
+			<xsl:for-each select="./*">
+				<div class="contour">
+					<xsl:attribute name="data-name"><xsl:value-of select="@name"/></xsl:attribute>
+				</div>
+			</xsl:for-each>
+		</div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="swatches">
 	<div class="inline-menubox" data-ui="doSwatches">
 		<div class="inline-content swatches">

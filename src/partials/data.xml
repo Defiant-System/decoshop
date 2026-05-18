@@ -67,36 +67,36 @@
 		<i g="#000000aa 0%, transparent 100%" />
 	</Gradients>
 	<Countours>
-		<i value="Linear" />
-		<i value="Cone" />
-		<i value="Cone - Asymmetrical" />
-		<i value="Cone - Inverted" />
-		<i value="Cove - Deep" />
-		<i value="Cove - Shallow" />
-		<i value="Gaussian" />
-		<i value="Guassian - Inverse" />
-		<i value="Half Round" />
-		<i value="Log" />
-		<i value="Notched Slope" />
-		<i value="Notched Slope- Rounded" />
-		<i value="Peaks" />
-		<i value="Ring" />
-		<i value="Ring - Double" />
-		<i value="Ring - Triple" />
-		<i value="Rolling Slope - Ascending" />
-		<i value="Rolling Slope - Descending" />
-		<i value="Rounded Slope" />
-		<i value="Rounded Steps" />
-		<i value="Sawtooth 1" />
-		<i value="Sawtooth 2" />
-		<i value="Shallow Slope - Valley" />
-		<i value="Shallow Slope - Valleys" />
-		<i value="Steep Slope - Jagged" />
-		<i value="Steep Slope - Rolling" />
-		<i value="Steps" />
-		<i value="Terraced" />
-		<i value="Valley - High" />
-		<i value="Valley - Low" />
+		<i name="Linear" />
+		<i name="Cone" />
+		<i name="Cone - Asymmetrical" />
+		<i name="Cone - Inverted" />
+		<i name="Cove - Deep" />
+		<i name="Cove - Shallow" />
+		<i name="Gaussian" />
+		<i name="Guassian - Inverse" />
+		<i name="Half Round" />
+		<i name="Log" />
+		<i name="Notched Slope" />
+		<i name="Notched Slope- Rounded" />
+		<i name="Peaks" />
+		<i name="Ring" />
+		<i name="Ring - Double" />
+		<i name="Ring - Triple" />
+		<i name="Rolling Slope - Ascending" />
+		<i name="Rolling Slope - Descending" />
+		<i name="Rounded Slope" />
+		<i name="Rounded Steps" />
+		<i name="Sawtooth 1" />
+		<i name="Sawtooth 2" />
+		<i name="Shallow Slope - Valley" />
+		<i name="Shallow Slope - Valleys" />
+		<i name="Steep Slope - Jagged" />
+		<i name="Steep Slope - Rolling" />
+		<i name="Steps" />
+		<i name="Terraced" />
+		<i name="Valley - High" />
+		<i name="Valley - Low" />
 	</Countours>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>

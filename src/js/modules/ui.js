@@ -999,6 +999,12 @@ const UI = {
 				break;
 		}
 	},
+	doContours(event) {
+		let APP = decoshop,
+			Self = UI,
+			el;
+		console.log(1111, event);
+	},
 	doKnob(event) {
 		let APP = decoshop,
 			Self = UI,

@@ -21,7 +21,7 @@
 				<span class="label">Direction</span>
 				<span class="value">
 					<ul class="opt-group">
-						<li data-id="dir-up">Up</li>
+						<li data-id="dir-up" class="active">Up</li>
 						<li data-id="dir-down">Down</li>
 					</ul>
 				</span>
@@ -94,14 +94,14 @@
 		<div class="field-row">
 			<div class="option select">
 				<span class="label">Gloss Contour</span>
-				<span class="value">Smooth</span>
+				<span class="value" data-options="contours" data-match="//Countours">Smooth</span>
 			</div>
 		</div>
 		<div class="field-row has-preset">
 			<div class="option select">
 				<span class="label">Highlight Mode</span>
 				<span class="value">Screen</span>
-				<span class="color-preset" style="background: #f00;"></span>
+				<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
 			</div>
 		</div>
 		<div class="field-row has-knob">
@@ -117,7 +117,7 @@
 			<div class="option select">
 				<span class="label">Shadow Mode</span>
 				<span class="value">Multiply</span>
-				<span class="color-preset" style="background: #393;"></span>
+				<span class="color-preset inline-menu" style="background: #393;" data-options="swatches" data-match="//Swatches"></span>
 			</div>
 		</div>
 		<div class="field-row has-knob">
