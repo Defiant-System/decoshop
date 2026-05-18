@@ -870,6 +870,36 @@ content {
 				}
 			}
 		}
+		
+		&.has-toggler {
+			.label {
+				vertical-align: middle;
+			}
+
+			.value {
+				background: transparent;
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 0;
+				padding: 0 9px 1px 0;
+				text-align: left;
+
+				&:before,
+				&:after {
+					display: none;
+				}
+
+				.toggler {
+					margin-top: 0;
+				}
+			}
+		}
+
+		&.push-value {
+			.value {
+				margin-left: 73px;
+			}
+		}
 
 		&.dbl-range {
 			.value {

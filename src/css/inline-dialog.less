@@ -587,6 +587,10 @@
 									}
 								}
 
+								&.slim-row {
+									height: 26px;
+								}
+
 								.option {
 									padding-top: 5px;
 									margin-top: 0;
@@ -1266,6 +1270,7 @@
 					visibility: hidden;
 					opacity: 0;
 					transition: opacity 500ms;
+					top: -1px;
 					margin-bottom: -3px;
 				}
 
@@ -1370,6 +1375,10 @@
 					}
 				}
 
+				&.push-value {
+
+				}
+
 				&.preset {
 					> span {
 						display: inline-block;
@@ -1390,6 +1399,44 @@
 							width: 66px;
 							margin-left: 23px;
 						}
+					}
+				}
+
+				&.has-ring {
+					z-index: 2;
+				}
+
+				.ring-input {
+					position: absolute;
+					top: 5px;
+					left: -73px;
+					width: 60px;
+					height: 60px;
+					border-radius: 50%;
+					border: 2px solid #1339;
+					// filter: drop-shadow(0 1px 0 #fff4);
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: 27px;
+						left: 27px;
+						width: 3px;
+						height: 3px;
+						border-radius: 50%;
+						background: #1339;
+					}
+
+					&:after {
+						content: "";
+						position: absolute;
+						top: 2px;
+						left: 26px;
+						transform: translateY(-2px) translateX(-2px);
+						width: 4px;
+						height: 4px;
+						border-radius: 50%;
+						border: 2px solid #1339;
 					}
 				}
 
