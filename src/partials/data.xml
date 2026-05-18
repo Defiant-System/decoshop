@@ -66,7 +66,38 @@
 		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%" />
 		<i g="#000000aa 0%, transparent 100%" />
 	</Gradients>
-
+	<Countours>
+		<i value="Linear" />
+		<i value="Cone" />
+		<i value="Cone - Asymmetrical" />
+		<i value="Cone - Inverted" />
+		<i value="Cove - Deep" />
+		<i value="Cove - Shallow" />
+		<i value="Gaussian" />
+		<i value="Guassian - Inverse" />
+		<i value="Half Round" />
+		<i value="Log" />
+		<i value="Notched Slope" />
+		<i value="Notched Slope- Rounded" />
+		<i value="Peaks" />
+		<i value="Ring" />
+		<i value="Ring - Double" />
+		<i value="Ring - Triple" />
+		<i value="Rolling Slope - Ascending" />
+		<i value="Rolling Slope - Descending" />
+		<i value="Rounded Slope" />
+		<i value="Rounded Steps" />
+		<i value="Sawtooth 1" />
+		<i value="Sawtooth 2" />
+		<i value="Shallow Slope - Valley" />
+		<i value="Shallow Slope - Valleys" />
+		<i value="Steep Slope - Jagged" />
+		<i value="Steep Slope - Rolling" />
+		<i value="Steps" />
+		<i value="Terraced" />
+		<i value="Valley - High" />
+		<i value="Valley - Low" />
+	</Countours>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>
 		<i type="option" name="Dissolve" value="dissolve"/>
