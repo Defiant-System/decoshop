@@ -36,6 +36,6 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
 		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle" }), 600);
-		setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
+		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 	}
 };

@@ -1,5 +1,25 @@
 
 const Dialogs = {
+	dlgContourEditor(event) {
+		/*
+		 * 
+		 */
+		let APP = decoshop,
+			Self = Dialogs,
+			val,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
+		}
+	},
 	dlgLayerStyle(event) {
 		/*
 		 * 
