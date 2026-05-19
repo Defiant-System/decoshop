@@ -1621,6 +1621,10 @@
 
 				&.has-ring {
 					z-index: 2;
+
+					.knob {
+						top: -7px;
+					}
 				}
 
 				.ring-input {
@@ -1631,7 +1635,8 @@
 					height: 47px;
 					border-radius: 50%;
 					border: 2px solid #1339;
-					background: radial-gradient(circle at center, #cee7 0%, #cee2 55%, #fff0 70%); 
+					background: radial-gradient(circle at center, #cee7 0%, #cee2 55%, #fff0 70%);
+					cursor: crosshair;
 
 					&:before {
 						content: "";
