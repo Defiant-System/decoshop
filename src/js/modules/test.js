@@ -37,5 +37,6 @@ let Test = {
 
 		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Stroke" }), 600);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
+		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
 	}
 };

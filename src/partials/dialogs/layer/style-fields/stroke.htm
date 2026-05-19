@@ -40,13 +40,14 @@
 		</div>
 	</fieldset>
 
-	<fieldset>
+	<fieldset data-show="Color">
 		<h4>
 			Fill Type
 			<span class="inline-menu" data-change="change-fill-type" data-options="fieldset-inline-menubox" data-match="//StrokeFillTypes">Color</span>
 		</h4>
 
-		<div class="field-options hidden">
+		<!-- FILL TYPE: COLOR -->
+		<div class="field-options" data-name="Color">
 			<div class="field-row has-preset">
 				<div class="option select">
 					<span class="label">Color</span>
@@ -55,8 +56,9 @@
 			</div>
 		</div>
 		
-		<div class="field-options hidden1">
-			<div class="field-row has-toggler has-preset">
+		<!-- FILL TYPE: GRADIENT -->
+		<div class="field-options" data-name="Gradient">
+			<div class="field-row has-gradient has-toggler">
 				<div class="option opt-gradient" data-options="pop-gradient-strips" data-match="//Gradients">
 					<span class="label">Gradient</span>
 					<div class="value">
@@ -78,10 +80,24 @@
 				</div>
 			</div>
 
-			<div class="field-row">
-				<div class="option input">
+			<div class="field-row slim-row has-knob">
+				<div class="option input has-ring push-value">
 					<span class="label">Angle</span>
-					<span class="value"></span>
+					<span class="value">
+						<div class="ring-input"></div>
+						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row slim-row">
+				<div class="option has-toggler push-value">
+					<span class="label"></span>
+					<span class="value">
+						<div class="toggler" data-value="on">
+							<span>Dither</span>
+						</div>
+					</span>
 				</div>
 			</div>
 
@@ -116,8 +132,70 @@
 			</div>
 		</div>
 		
-		<div class="field-options hidden">
-			Pattern
+		<!-- FILL TYPE: PATTERN -->
+		<div class="field-options" data-name="Pattern">
+			<div class="field-row has-preview-box">
+				<div class="option select">
+					<span class="label">Pattern</span>
+					<span class="preview-box">
+						<i class="pattern-preview"></i>
+					</span>
+					<span class="value" data-options="patterns" data-match="//Patterns">
+						<span>Pattern 01</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row slim-row has-knob">
+				<div class="option input has-ring push-value">
+					<span class="label">Angle</span>
+					<span class="value">
+						<div class="ring-input"></div>
+						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row slim-row">
+				<div class="option has-toggler push-value">
+					<span class="label"></span>
+					<span class="value">
+						<div class="toggler" data-value="on">
+							<span>Layer Linked</span>
+						</div>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Scale</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="400" value="100%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="100"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Off X</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-100" data-max="100" value="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Off Y</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-100" data-max="100" value="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
 		</div>
 
 	</fieldset>

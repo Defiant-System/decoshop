@@ -557,6 +557,43 @@
 
 						.style-fields {
 							display: none;
+
+							&[data-name="Bevel Emboss"] {
+								.option {
+									&.push-value {
+										.value {
+											margin-left: 67px;
+
+											.ring-input {
+												&.size-3 {
+													top: 5px;
+													left: -67px;
+													width: 60px;
+													height: 60px;
+
+													&:before {
+														top: 27px;
+														left: 27px;
+													}
+
+													&:after {
+														top: 2px;
+														left: 26px;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
+							&[data-name="Stroke"] {
+								fieldset {
+									&[data-show="Color"] .field-options[data-name="Color"] { display: block; }
+									&[data-show="Gradient"] .field-options[data-name="Gradient"] { display: block; }
+									&[data-show="Pattern"] .field-options[data-name="Pattern"] { display: block; }
+								}
+							}
 						}
 
 						h3 {
@@ -1323,10 +1360,7 @@
 
 		.field-options {
 			position: relative;
-
-			&.hidden {
-				display: none;
-			}
+			display: none;
 		}
 
 		.field-row {
@@ -1362,6 +1396,14 @@
 				&.hover .knob {
 					visibility: visible;
 					opacity: 1;
+				}
+			}
+
+			&.has-gradient {
+				&.has-toggler {
+					.toggler {
+						top: 1px;
+					}
 				}
 			}
 
@@ -1411,12 +1453,19 @@
 					margin-right: 7px;
 					cursor: pointer;
 
+					.pattern-preview,
 					.contour-preview {
 						position: absolute;
 						top: 0px;
 						left: 0px;
 						width: 20px;
 						height: 20px;
+
+						&:hover {
+							&:before {
+								scale: 1;
+							}
+						}
 
 						&:before {
 							content: "";
@@ -1430,6 +1479,20 @@
 							border-radius: 5px;
 							scale: calc(18 / 38);
 							box-shadow: 0 0 0 3px #0004;
+							z-index: 1;
+							transition: scale 80ms ease-in-out;
+						}
+					}
+
+					.pattern-preview {
+						&:before {
+							background-image: url(~/img/patterns.webp);
+							background-position: -70px 0;
+							top: -7px;
+							left: -4px;
+							width: 34px;
+							height: 34px;
+							scale: calc(18 / 34);
 						}
 					}
 				}
@@ -1562,20 +1625,19 @@
 
 				.ring-input {
 					position: absolute;
-					top: 5px;
-					left: -73px;
-					width: 60px;
-					height: 60px;
+					top: 0;
+					left: -53px;
+					width: 47px;
+					height: 47px;
 					border-radius: 50%;
 					border: 2px solid #1339;
 					background: radial-gradient(circle at center, #cee7 0%, #cee2 55%, #fff0 70%); 
-					// filter: drop-shadow(0 1px 0 #fff4);
 
 					&:before {
 						content: "";
 						position: absolute;
-						top: 27px;
-						left: 27px;
+						top: 20px;
+						left: 20px;
 						width: 3px;
 						height: 3px;
 						border-radius: 50%;
@@ -1585,11 +1647,11 @@
 					&:after {
 						content: "";
 						position: absolute;
-						top: 2px;
-						left: 26px;
+						top: 20px;
+						left: 38px;
+						width: 3px;
+						height: 3px;
 						transform: translateY(-2px) translateX(-2px);
-						width: 4px;
-						height: 4px;
 						border-radius: 50%;
 						border: 2px solid #fffc;
 						background: #fff2;

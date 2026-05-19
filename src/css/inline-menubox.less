@@ -209,6 +209,77 @@
 			}
 		}
 
+		&.patterns {
+			font-size: 0;
+			width: 244px;
+			padding: 7px 7px 4px;
+
+			.pattern {
+				position: relative;
+				display: inline-block;
+				margin: 1px 5px 4px 0;
+				width: 34px;
+				height: 34px;
+				cursor: pointer;
+				border-radius: 3px;
+				box-shadow: inset 0 0 0 1px rgba(0,0,0,.65);
+				background: url(~/img/patterns.webp) no-repeat;
+				filter: opacity(.75);
+
+				&:after {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					border-radius: inherit;
+					border: 1px solid;
+					border-color: #eff8 #0114 #0114 #eff8;
+				}
+
+				&[data-name="Pattern 01"] { background-position: 0 0; }
+				&[data-name="Pattern 02"] { background-position: -35px 0; }
+				&[data-name="Pattern 03"] { background-position: -70px 0; }
+				&[data-name="Pattern 04"] { background-position: -105px 0; }
+				&[data-name="Pattern 05"] { background-position: -140px 0; }
+				&[data-name="Pattern 06"] { background-position: -175px 0; }
+				&[data-name="Pattern 07"] { background-position: 0 -35px; }
+				&[data-name="Pattern 08"] { background-position: -35px -35px; }
+				&[data-name="Pattern 09"] { background-position: -70px -35px; }
+				&[data-name="Pattern 10"] { background-position: -105px -35px; }
+				&[data-name="Pattern 11"] { background-position: -140px -35px; }
+				&[data-name="Pattern 12"] { background-position: -175px -35px; }
+				&[data-name="Pattern 13"] { background-position: 0 -70px; }
+				&[data-name="Pattern 14"] { background-position: -35px -70px; }
+				&[data-name="Pattern 15"] { background-position: -70px -70px; }
+				&[data-name="Pattern 16"] { background-position: -105px -70px; }
+				&[data-name="Pattern 17"] { background-position: -140px -70px; }
+				&[data-name="Pattern 18"] { background-position: -175px -70px; }
+				&[data-name="Pattern 19"] { background-position: 0 -105px; }
+				&[data-name="Pattern 20"] { background-position: -35px -105px; }
+				&[data-name="Pattern 21"] { background-position: -70px -105px; }
+				&[data-name="Pattern 22"] { background-position: -105px -105px; }
+				&[data-name="Pattern 23"] { background-position: -140px -105px; }
+				&[data-name="Pattern 24"] { background-position: -175px -105px; }
+
+				&:nth-child(6n) {
+					margin-right: 0;
+				}
+
+				&:not(.selected):hover {
+					filter: none;
+					box-shadow: 0 0 0 2px #1227;
+				}
+
+				&.selected {
+					cursor: default;
+					box-shadow: 0 0 0 1px #cdd,
+								inset 0 0 0 1px #222;
+				}
+			}
+		}
+
 		&.swatches {
 			font-size: 0;
 			width: 215px;

@@ -379,6 +379,19 @@
 </xsl:template>
 
 
+<xsl:template name="patterns">
+	<div class="inline-menubox" data-ui="doPatterns">
+		<div class="inline-content patterns">
+			<xsl:for-each select="./*">
+				<div class="pattern">
+					<xsl:attribute name="data-name"><xsl:value-of select="@name"/></xsl:attribute>
+				</div>
+			</xsl:for-each>
+		</div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="swatches">
 	<div class="inline-menubox" data-ui="doSwatches">
 		<div class="inline-content swatches">

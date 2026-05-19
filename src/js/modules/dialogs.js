@@ -1,38 +1,5 @@
 
 const Dialogs = {
-	dlgContourEditor(event) {
-		/*
-		 * 
-		 */
-		let APP = decoshop,
-			Self = Dialogs,
-			val,
-			selEl,
-			el;
-		// console.log(event);
-		switch (event.type) {
-			case "selected-style-item":
-				break;
-			// standard dialog events
-			case "dlg-open":
-				// make sure layer style is covered
-				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
-				break;
-			case "dlg-close":
-				// make sure layer style is covered
-				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
-				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
-				break;
-			default:
-				/* Falls through to "master UI"
-				 * Can be handled here if needed - just capture events:
-				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
-				 */
-				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
-		}
-	},
 	dlgLayerStyle(event) {
 		/*
 		 * 
@@ -67,9 +34,9 @@ const Dialogs = {
 				event.dEl.find(".style-list .option").get(index).trigger("click");
 				break;
 			case "selected-style-item":
-				el = $(event.target);
+				el = $(event.target).parents("?.option");
 				event.el.find(".selected").removeClass("selected");
-				el.parents("?.option").addClass("selected");
+				el.addClass("selected");
 
 				selEl = el.find("label").length ? el.find("label") : el;
 				el.parents(".dlg-content").find(".style-details").data({ show: selEl.html().replace("&amp; ", "") });
@@ -83,8 +50,10 @@ const Dialogs = {
 			case "change-fill-type":
 				// update inline "selectbox"
 				event.el.removeClass("opened").html(event.text);
+				// update what field options to show
+				event.el.parents("fieldset").data({ show: event.text });
 				break;
-			
+
 			// standard dialog events
 			case "dlg-open":
 				if (!event.dEl.find(".style-list .option").length) {
@@ -106,6 +75,39 @@ const Dialogs = {
 				 */
 				// handler standard dialog events
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFilterGallery" });
+		}
+	},
+	dlgContourEditor(event) {
+		/*
+		 * 
+		 */
+		let APP = decoshop,
+			Self = Dialogs,
+			val,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "selected-style-item":
+				break;
+			// standard dialog events
+			case "dlg-open":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
+				break;
+			case "dlg-close":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
 		}
 	},
 	dlgFilterGallery(event) {

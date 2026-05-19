@@ -702,7 +702,12 @@ const UI = {
 					text: el.html(),
 					value: el.data("value"),
 				};
-				if (data.old === data.value || !data.value) return;
+				if (data.old === data.value || !data.value) {
+					// clean up
+					Self.srcEl = false;
+					Self.menu.remove();
+					return;
+				}
 				// dispatch event to be forwarded
 				if (data.type) APP.dispatch(data);
 
@@ -1006,7 +1011,13 @@ const UI = {
 		let APP = decoshop,
 			Self = UI,
 			el;
-		console.log(1111, event);
+		console.log(1222, event);
+	},
+	doPatterns(event) {
+		let APP = decoshop,
+			Self = UI,
+			el;
+		console.log(1333, event);
 	},
 	doKnob(event) {
 		let APP = decoshop,

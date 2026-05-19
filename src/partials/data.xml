@@ -17,87 +17,113 @@
 		<i width="600" height="400" path="/cdn/img/2d-samples/alexander-scott-lambley.jpg"/>
 	</Samples>
 	<Swatches>
-		<i value="#5cc2fc" />
-		<i value="#79fce9" />
-		<i value="#8cf85a" />
-		<i value="#feef63" />
-		<i value="#fd978f" />
-		<i value="#fd97ca" />
-		<i value="#1ca4fc" />
-		<i value="#2fe6cf" />
-		<i value="#65d643" />
-		<i value="#fed846" />
-		<i value="#fc6554" />
-		<i value="#fc48a1" />
-		<i value="#1177b8" />
-		<i value="#1aaa8e" />
-		<i value="#29af1d" />
-		<i value="#fcad2a" />
-		<i value="#eb261f" />
-		<i value="#d12177" />
-		<i value="#084e7e" />
-		<i value="#0c6c65" />
-		<i value="#0d700f" />
-		<i value="#f07220" />
-		<i value="#b31a10" />
-		<i value="#951453" />
-		<i value="#ffffff" />
-		<i value="#d5d5d5" />
-		<i value="#929292" />
-		<i value="#5e5e5e" />
-		<i value="#313131" />
-		<i value="#000000" />
+		<i value="#5cc2fc"/>
+		<i value="#79fce9"/>
+		<i value="#8cf85a"/>
+		<i value="#feef63"/>
+		<i value="#fd978f"/>
+		<i value="#fd97ca"/>
+		<i value="#1ca4fc"/>
+		<i value="#2fe6cf"/>
+		<i value="#65d643"/>
+		<i value="#fed846"/>
+		<i value="#fc6554"/>
+		<i value="#fc48a1"/>
+		<i value="#1177b8"/>
+		<i value="#1aaa8e"/>
+		<i value="#29af1d"/>
+		<i value="#fcad2a"/>
+		<i value="#eb261f"/>
+		<i value="#d12177"/>
+		<i value="#084e7e"/>
+		<i value="#0c6c65"/>
+		<i value="#0d700f"/>
+		<i value="#f07220"/>
+		<i value="#b31a10"/>
+		<i value="#951453"/>
+		<i value="#ffffff"/>
+		<i value="#d5d5d5"/>
+		<i value="#929292"/>
+		<i value="#5e5e5e"/>
+		<i value="#313131"/>
+		<i value="#000000"/>
 	</Swatches>
 	<Gradients>
-		<i g="#336699 0%, #ffffff 100%" />
-		<i g="#ffffff 0%, transparent 100%" />
-		<i g="#000000 0%, #ffffff 100%" />
-		<i g="#df0b24 0%, #095f1f 100%" />
-		<i g="#290f58 0%, #fd7c23 100%" />
-		<i g="#0900b2 0%, #ff0000 50%, #fffb00 100%" />
-		<i g="#0b01b8 10%, #fdfa02 50%, #0b01b8 90%" />
-		<i g="#ff6e01 0%, #fffe00 50%, #ff6e01 100%" />
-		<i g="#6f156c 0%, #00601b 50%, #fd7c00 100%" />
-		<i g="#f9e500 5%, #6f156c 35%, #fd7c00 65%, #002874 95%" />
-		<i g="#97461a 0%, #fbd7c4 30%, #6c2e16 70%, #efdbcd 100%" />
-		<i g="#2888cc 0%, #ffffff 50%, #906900 51%, #d99f00 64%, #ffffff 100%" />
-		<i g="#ff0000 0%, #ff00ff 15%, #0000ff 33%, #00ffff 49%, #00ff00 67%, #ffff00 84%, #ff0000 100%" />
-		<i g="transparent 0%, #ff0000 12%, #ff00ff 28%, #0000ff 45%, #00ffff 60%, #00ff00 0%, #ffff00 75%, #ff0000 88%, transparent 100%" />
-		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%" />
-		<i g="#000000aa 0%, transparent 100%" />
+		<i g="#336699 0%, #ffffff 100%"/>
+		<i g="#ffffff 0%, transparent 100%"/>
+		<i g="#000000 0%, #ffffff 100%"/>
+		<i g="#df0b24 0%, #095f1f 100%"/>
+		<i g="#290f58 0%, #fd7c23 100%"/>
+		<i g="#0900b2 0%, #ff0000 50%, #fffb00 100%"/>
+		<i g="#0b01b8 10%, #fdfa02 50%, #0b01b8 90%"/>
+		<i g="#ff6e01 0%, #fffe00 50%, #ff6e01 100%"/>
+		<i g="#6f156c 0%, #00601b 50%, #fd7c00 100%"/>
+		<i g="#f9e500 5%, #6f156c 35%, #fd7c00 65%, #002874 95%"/>
+		<i g="#97461a 0%, #fbd7c4 30%, #6c2e16 70%, #efdbcd 100%"/>
+		<i g="#2888cc 0%, #ffffff 50%, #906900 51%, #d99f00 64%, #ffffff 100%"/>
+		<i g="#ff0000 0%, #ff00ff 15%, #0000ff 33%, #00ffff 49%, #00ff00 67%, #ffff00 84%, #ff0000 100%"/>
+		<i g="transparent 0%, #ff0000 12%, #ff00ff 28%, #0000ff 45%, #00ffff 60%, #00ff00 0%, #ffff00 75%, #ff0000 88%, transparent 100%"/>
+		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%"/>
+		<i g="#000000aa 0%, transparent 100%"/>
 	</Gradients>
 	<Countours>
-		<i name="Linear" />
-		<i name="Cone" />
-		<i name="Cone - Asymmetrical" />
-		<i name="Cone - Inverted" />
-		<i name="Cove - Deep" />
-		<i name="Cove - Shallow" />
-		<i name="Gaussian" />
-		<i name="Guassian - Inverse" />
-		<i name="Half Round" />
-		<i name="Log" />
-		<i name="Notched Slope" />
-		<i name="Notched Slope - Rounded" />
-		<i name="Peaks" />
-		<i name="Ring" />
-		<i name="Ring - Double" />
-		<i name="Ring - Triple" />
-		<i name="Rolling Slope - Ascending" />
-		<i name="Rolling Slope - Descending" />
-		<i name="Rounded Slope" />
-		<i name="Rounded Steps" />
-		<i name="Sawtooth 1" />
-		<i name="Sawtooth 2" />
-		<i name="Shallow Slope - Valley" />
-		<i name="Shallow Slope - Valleys" />
-		<i name="Steep Slope - Jagged" />
-		<i name="Steep Slope - Rolling" />
-		<i name="Steps" />
-		<i name="Terraced" />
-		<i name="Valley - High" />
-		<i name="Valley - Low" />
+		<i name="Linear"/>
+		<i name="Cone"/>
+		<i name="Cone - Asymmetrical"/>
+		<i name="Cone - Inverted"/>
+		<i name="Cove - Deep"/>
+		<i name="Cove - Shallow"/>
+		<i name="Gaussian"/>
+		<i name="Guassian - Inverse"/>
+		<i name="Half Round"/>
+		<i name="Log"/>
+		<i name="Notched Slope"/>
+		<i name="Notched Slope - Rounded"/>
+		<i name="Peaks"/>
+		<i name="Ring"/>
+		<i name="Ring - Double"/>
+		<i name="Ring - Triple"/>
+		<i name="Rolling Slope - Ascending"/>
+		<i name="Rolling Slope - Descending"/>
+		<i name="Rounded Slope"/>
+		<i name="Rounded Steps"/>
+		<i name="Sawtooth 1"/>
+		<i name="Sawtooth 2"/>
+		<i name="Shallow Slope - Valley"/>
+		<i name="Shallow Slope - Valleys"/>
+		<i name="Steep Slope - Jagged"/>
+		<i name="Steep Slope - Rolling"/>
+		<i name="Steps"/>
+		<i name="Terraced"/>
+		<i name="Valley - High"/>
+		<i name="Valley - Low"/>
 	</Countours>
+	<Patterns>
+		<i name="Pattern 01"/>
+		<i name="Pattern 02"/>
+		<i name="Pattern 03"/>
+		<i name="Pattern 04"/>
+		<i name="Pattern 05"/>
+		<i name="Pattern 06"/>
+		<i name="Pattern 07"/>
+		<i name="Pattern 08"/>
+		<i name="Pattern 09"/>
+		<i name="Pattern 10"/>
+		<i name="Pattern 11"/>
+		<i name="Pattern 12"/>
+		<i name="Pattern 13"/>
+		<i name="Pattern 14"/>
+		<i name="Pattern 15"/>
+		<i name="Pattern 16"/>
+		<i name="Pattern 17"/>
+		<i name="Pattern 18"/>
+		<i name="Pattern 19"/>
+		<i name="Pattern 20"/>
+		<i name="Pattern 21"/>
+		<i name="Pattern 22"/>
+		<i name="Pattern 23"/>
+		<i name="Pattern 24"/>
+	</Patterns>
 	<StrokeFillTypes>
 		<i type="option" name="Color" value="0"/>
 		<i type="option" name="Gradient" value="1"/>
@@ -165,33 +191,33 @@
 		<i type="option" name="Grid"/>
 	</FeatherModes>
 	<TipShapes>
-		<i name="hard-round" size="20" hardness="100" roundness="100" angle="0" />
-		<i name="soft-round" size="37" hardness="0" roundness="50" angle="78" />
-		<i name="box" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="triangle" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="heart" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="star" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="hard-round" size="20" hardness="100" roundness="100" angle="0"/>
+		<i name="soft-round" size="37" hardness="0" roundness="50" angle="78"/>
+		<i name="box" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="triangle" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="heart" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="star" size="40" hardness="100" roundness="100" angle="0"/>
 
-		<i name="sponge-1" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="sponge-2" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="sponge-3" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="sponge-4" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="sponge-5" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="sponge-6" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="sponge-1" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="sponge-2" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="sponge-3" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="sponge-4" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="sponge-5" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="sponge-6" size="40" hardness="100" roundness="100" angle="0"/>
 
-		<i name="splatter-1" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="splatter-2" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="splatter-3" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="splatter-4" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="splatter-5" size="40" hardness="100" roundness="100" angle="0" />
-		<i name="splatter-6" size="40" hardness="100" roundness="100" angle="0" />
+		<i name="splatter-1" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="splatter-2" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="splatter-3" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="splatter-4" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="splatter-5" size="40" hardness="100" roundness="100" angle="0"/>
+		<i name="splatter-6" size="40" hardness="100" roundness="100" angle="0"/>
 
-		<i name="crayon-1" type="texture" tip="round" />
-		<i name="crayon-1" type="texture" />
-		<i name="crayon-2" type="texture" tip="round" />
-		<i name="crayon-2" type="texture" />
-		<i name="crayon-3" type="texture" tip="round" />
-		<i name="crayon-3" type="texture" />
+		<i name="crayon-1" type="texture" tip="round"/>
+		<i name="crayon-1" type="texture"/>
+		<i name="crayon-2" type="texture" tip="round"/>
+		<i name="crayon-2" type="texture"/>
+		<i name="crayon-3" type="texture" tip="round"/>
+		<i name="crayon-3" type="texture"/>
 	</TipShapes>
 	<LayerStyles>
 		<i check="0" name="Blending Options"/>
@@ -595,58 +621,58 @@
 	</Filters>
 	<Pixelator>
 		<Preset id="prst-1">
-			<Layer res="16" />
+			<Layer res="16"/>
 		</Preset>
 		<Preset id="prst-2">
-			<Layer res="32" />
-			<Layer shape="circle" res="32" offset="15" />
-			<Layer shape="circle" res="32" offset="13" size="26" />
-			<Layer shape="circle" res="32" offset="10" size="18" />
-			<Layer shape="circle" res="32" offset="8" size="8" />
+			<Layer res="32"/>
+			<Layer shape="circle" res="32" offset="15"/>
+			<Layer shape="circle" res="32" offset="13" size="26"/>
+			<Layer shape="circle" res="32" offset="10" size="18"/>
+			<Layer shape="circle" res="32" offset="8" size="8"/>
 		</Preset>
 		<Preset id="prst-3">
-			<Layer res="48" />
-			<Layer shape="diamond" res="48" offset="12" alpha=".5" />
-			<Layer shape="diamond" res="48" offset="36" alpha=".5" />
-			<Layer shape="circle" res="16" offset="4" alpha=".5" size="8" />
-			<Layer res="24" alpha=".5" />
+			<Layer res="48"/>
+			<Layer shape="diamond" res="48" offset="12" alpha=".5"/>
+			<Layer shape="diamond" res="48" offset="36" alpha=".5"/>
+			<Layer shape="circle" res="16" offset="4" alpha=".5" size="8"/>
+			<Layer res="24" alpha=".5"/>
 		</Preset>
 		<Preset id="prst-4">
-			<Layer shape="circle" res="32" offset="8" size="6" />
-			<Layer shape="circle" res="32" offset="16" size="9" />
-			<Layer shape="circle" res="32" offset="24" size="12" />
-			<Layer shape="circle" res="32" offset="0" size="9" />
+			<Layer shape="circle" res="32" offset="8" size="6"/>
+			<Layer shape="circle" res="32" offset="16" size="9"/>
+			<Layer shape="circle" res="32" offset="24" size="12"/>
+			<Layer shape="circle" res="32" offset="0" size="9"/>
 		</Preset>
 		<Preset id="prst-5">
-			<Layer shape="diamond" res="24" size="25" />
-			<Layer shape="diamond" res="24" offset="12" />
-			<Layer res="24" alpha=".5" />
+			<Layer shape="diamond" res="24" size="25"/>
+			<Layer shape="diamond" res="24" offset="12"/>
+			<Layer res="24" alpha=".5"/>
 		</Preset>
 		<Preset id="prst-6">
-			<Layer shape="circle" res="24" />
-			<Layer shape="circle" res="24" size="9" offset="12" />
+			<Layer shape="circle" res="24"/>
+			<Layer shape="circle" res="24" size="9" offset="12"/>
 		</Preset>
 		<Preset id="prst-7">
-			<Layer res="48" />
-			<Layer shape="diamond" res="12" size="8" />
-			<Layer shape="diamond" res="12" size="8" offset="6" />
+			<Layer res="48"/>
+			<Layer shape="diamond" res="12" size="8"/>
+			<Layer shape="diamond" res="12" size="8" offset="6"/>
 		</Preset>
 		<Preset id="prst-8">
-			<Layer shape="square" res="48" offset="24" />
-			<Layer shape="circle" res="48" offset="0" />
-			<Layer shape="diamond" res="16" size="15" offset="0" alpha=".6" />
-			<Layer shape="diamond" res="16" size="15" offset="8" alpha=".6" />
+			<Layer shape="square" res="48" offset="24"/>
+			<Layer shape="circle" res="48" offset="0"/>
+			<Layer shape="diamond" res="16" size="15" offset="0" alpha=".6"/>
+			<Layer shape="diamond" res="16" size="15" offset="8" alpha=".6"/>
 		</Preset>
 		<Preset id="prst-9">
-			<Layer res="32" />
-			<Layer shape="circle" res="32" offset="16" />
-			<Layer shape="circle" res="32" offset="0" alpha="0.5" />
-			<Layer shape="circle" res="16" offset="0" alpha="0.5" size="9" />
+			<Layer res="32"/>
+			<Layer shape="circle" res="32" offset="16"/>
+			<Layer shape="circle" res="32" offset="0" alpha="0.5"/>
+			<Layer shape="circle" res="16" offset="0" alpha="0.5" size="9"/>
 		</Preset>
 		<Preset id="prst-10">
-			<Layer shape="diamond" res="48" size="50" />
-			<Layer shape="diamond" res="48" offset="24" />
-			<Layer shape="circle" res="8" size="6" />
+			<Layer shape="diamond" res="48" size="50"/>
+			<Layer shape="diamond" res="48" offset="24"/>
+			<Layer shape="circle" res="8" size="6"/>
 		</Preset>
 	</Pixelator>
 </Data>
