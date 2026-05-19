@@ -416,11 +416,62 @@
 		left: 255px;
 
 		.dlg-content {
-			width: 410px;
+			width: 412px;
 			min-height: 360px;
+			--clr1: #dee1;
+			--clr2: #cee2;
+			--bW1: 50px;
+			--bW2: 150px;
+
+			.graph {
+				background: #3443;
+				position: relative;
+				height: 299px;
+				margin-bottom: 3px;
+				border-radius: 3px;
+				background-image: repeating-linear-gradient(90deg,
+						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+					),
+					repeating-linear-gradient(90deg,
+						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
+						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
+					),
+					repeating-linear-gradient(0deg,
+						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+					),
+					repeating-linear-gradient(0deg,
+						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
+						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
+					);
+				background-position: 0 -1px;
+				box-shadow: inset 0 2px 7px #0001,
+							0 0 0 1px #1226;
+
+				&:after {
+					content: "";
+					background: linear-gradient(90deg, #6770 0%, #677 50%, #6770 100%);
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+					right: 0;
+					height: 1px;
+				}
+			}
 
 			.fields {
 				flex: 1;
+
+				.field-row.has-toggler {
+					height: 0;
+
+					.toggler {
+						position: absolute;
+						top: 8px;
+						left: 211px;
+					}
+				}
 			}
 		}
 	}
@@ -1521,8 +1572,8 @@
 						width: 4px;
 						height: 4px;
 						border-radius: 50%;
-						border: 2px solid #1337;
-						background: #1223;
+						border: 2px solid #fffc;
+						background: #fff2;
 					}
 				}
 
@@ -1585,6 +1636,7 @@
 		.buttons {
 			position: relative;
 			text-align: right;
+			margin-left: 5px;
 
 			.button {
 				display: block;

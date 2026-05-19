@@ -11,6 +11,19 @@ const Dialogs = {
 			el;
 		// console.log(event);
 		switch (event.type) {
+			case "selected-style-item":
+				break;
+			// standard dialog events
+			case "dlg-open":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
+				break;
+			case "dlg-close":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
+				break;
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
