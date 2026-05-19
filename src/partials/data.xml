@@ -124,6 +124,10 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<GlowFillTypes>
+		<i type="option" name="Color" value="0"/>
+		<i type="option" name="Gradient" value="1"/>
+	</GlowFillTypes>
 	<StrokeFillTypes>
 		<i type="option" name="Color" value="0"/>
 		<i type="option" name="Gradient" value="1"/>

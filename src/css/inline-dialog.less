@@ -643,37 +643,37 @@
 									transform: translateX(7px);
 									filter: drop-shadow(0 1px 0 #fffa);
 								}
+							}
 
-								.inline-menu {
-									position: relative;
-									top: -3px;
-									display: inline-block;
-									vertical-align: text-top;
-									padding: 2px 19px 2px 3px;
-									border: 1px dashed #244;
-									border-radius: 5px;
-									margin-left: 3px;
-									cursor: pointer;
+							.inline-menu:not(.color-preset) {
+								position: relative;
+								top: -3px;
+								display: inline-block;
+								vertical-align: text-top;
+								padding: 2px 19px 2px 5px;
+								border: 1px dashed #244;
+								border-radius: 5px;
+								margin-left: 3px;
+								cursor: pointer;
 
-									&.opened {
-										background: #1121;
-										color: #fffd;
-									}
+								&.opened {
+									background: #1121;
+									color: #fffd;
+								}
 
-									&:hover {
-										color: #fffd;
-									}
+								&:hover {
+									color: #fffd;
+								}
 
-									&:after {
-										content: "";
-										background: url(~/icons/icon-arrow.png) 50% 50% / contain no-repeat;
-										position: absolute;
-										top: 7px;
-										right: 8px;
-										width: 7px;
-										height: 7px;
-										filter: drop-shadow(0 1px 0 #00000070);
-									}
+								&:after {
+									content: "";
+									background: url(~/icons/icon-arrow.png) 50% 50% / contain no-repeat;
+									position: absolute;
+									top: 5px;
+									right: 8px;
+									width: 7px;
+									height: 7px;
+									filter: drop-shadow(0 1px 0 #00000070);
 								}
 							}
 
@@ -1435,7 +1435,7 @@
 						content: "";
 						background: url(~/icons/icon-arrow.png) 50% 50%/contain no-repeat;
 						position: absolute;
-						top: 7px;
+						top: 6px;
 						right: 8px;
 						width: 7px;
 						height: 7px;
@@ -1575,6 +1575,24 @@
 							}
 						}
 					}
+				}
+			}
+
+			&[data-show="Color"] {
+				.option {
+					.value {
+						display: none;
+					}
+				}
+
+				.color-preset {
+					left: 23px;
+				}
+			}
+
+			&[data-show="Gradient"] {
+				.color-preset {
+					display: none;
 				}
 			}
 

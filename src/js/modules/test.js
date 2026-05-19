@@ -15,7 +15,8 @@ let Test = {
 		 * dlgBrightnessContrast	dlgLevels	dlgCurves
 		   dlgExposure 	dlgVibrance 	dlgHueSaturation 	dlgColorBalance 	dlgBlackWhite 	dlgPhotoFilter
 		   dlgChannelMixer 	dlgColorLookup 	dlgThreshold 	dlgGradientMap 	dlgSelectiveColor 	dlgShadowHighlights
-		   dlgMatchColor	dlgReplaceColor	
+		   dlgMatchColor	dlgReplaceColor
+		   dlgGradientEditor	dlgContourEditor	
 		 * dlgDuplicateInfo	dlgArtboard	dlgArtboardFromLayer
 		 * dlgSelectColorRange	dlgSelectMagicCut	dlgSelectRefineEdge
 		 * dlgSelectModifyBorder	dlgSelectModifySmooth	dlgSelectModifyExpand	dlgSelectModifyContract	dlgSelectModifyFeather
@@ -35,7 +36,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Inner Shadow" }), 600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Inner Glow" }), 600);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
 	}
