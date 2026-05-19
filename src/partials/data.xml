@@ -103,6 +103,14 @@
 		<i type="option" name="Gradient" value="1"/>
 		<i type="option" name="Pattern" value="2"/>
 	</StrokeFillTypes>
+	<StrokeGradientStyles>
+		<i type="option" name="Linear" value="0"/>
+		<i type="option" name="Radial" value="1"/>
+		<i type="option" name="Angle" value="2"/>
+		<i type="option" name="Reflected" value="3"/>
+		<i type="option" name="Diamond" value="4"/>
+		<i type="option" name="Shape Burst" value="5"/>
+	</StrokeGradientStyles>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>
 		<i type="option" name="Dissolve" value="dissolve"/>

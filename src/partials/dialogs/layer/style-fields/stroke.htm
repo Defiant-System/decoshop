@@ -4,6 +4,40 @@
 
 	<fieldset>
 		<h4>Structure</h4>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Size</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="200" value="10px" data-suffix="px"/>
+				</span>
+			</div>
+			<div class="knob" data-value="10"></div>
+		</div>
+
+		<div class="field-row">
+			<div class="option select">
+				<span class="label">Position</span>
+				<span class="value">Outside</span>
+			</div>
+		</div>
+
+		<div class="field-row">
+			<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="blend-modes" data-match="//BlendModes">
+				<span class="label">Blend Mode</span>
+				<span class="value">Normal</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Opacity</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="100"></div>
+		</div>
 	</fieldset>
 
 	<fieldset>
@@ -11,5 +45,80 @@
 			Fill Type
 			<span class="inline-menu" data-change="change-fill-type" data-options="fieldset-inline-menubox" data-match="//StrokeFillTypes">Color</span>
 		</h4>
+
+		<div class="field-options hidden">
+			<div class="field-row has-preset">
+				<div class="option select">
+					<span class="label">Color</span>
+					<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="field-options hidden1">
+			<div class="field-row has-toggler has-preset">
+				<div class="option opt-gradient" data-options="pop-gradient-strips" data-match="//Gradients">
+					<span class="label">Gradient</span>
+					<div class="value">
+						<div class="gradient-strip"></div>
+					</div>
+					<div class="toggler" data-value="off">
+						<span>Reverse</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row has-toggler">
+				<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//StrokeGradientStyles">
+					<span class="label">Style</span>
+					<span class="value">Linear</span>
+					<div class="toggler" data-value="on">
+						<span>Layer Linked</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option input">
+					<span class="label">Angle</span>
+					<span class="value"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Scale</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="400" value="100%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="100"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Off X</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-100" data-max="100" value="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Off Y</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-100" data-max="100" value="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+		</div>
+		
+		<div class="field-options hidden">
+			Pattern
+		</div>
+
 	</fieldset>
 </div>

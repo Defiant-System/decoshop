@@ -1321,10 +1321,27 @@
 			margin: 9px 0 10px;
 		}
 
+		.field-options {
+			position: relative;
+
+			&.hidden {
+				display: none;
+			}
+		}
+
 		.field-row {
 			position: relative;
 			height: 32px;
 			margin-right: 19px;
+
+			&.has-toggler {
+				.option.select {
+					.toggler {
+						top: 1px;
+						margin-left: 3px;
+					}
+				}
+			}
 
 			&.has-knob {
 				display: flex;
@@ -1503,15 +1520,17 @@
 				padding: 6px 0 0;
 				margin-right: 1px;
 
+				&.opt-gradient {
+					.value {
+						flex: initial;
+					}
+				}
+
 				&.select {
 					.value {
 						min-width: 89px;
 						flex: initial;
 					}
-				}
-
-				&.push-value {
-
 				}
 
 				&.preset {
