@@ -1,4 +1,79 @@
 
 <div class="style-fields" data-name="Satin">
 	<h3>Satin</h3>
+
+	<fieldset>
+		<h4>Structure</h4>
+
+		<div class="field-row">
+			<div class="option select" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+				<span class="label">Blend Mode</span>
+				<span class="value">Screen</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Opacity</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="75%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="75"></div>
+		</div>
+
+		<div class="field-row slim-row has-knob">
+			<div class="option input has-ring push-value">
+				<span class="label">Angle</span>
+				<span class="value">
+					<div class="ring-input"></div>
+					<input type="text" name="field-4" data-min="-180" data-max="180" value="135°" data-suffix="°"/>
+				</span>
+				<div class="knob" data-value="135"></div>
+			</div>
+		</div>
+
+		<div class="field-row slim-row">
+			<div class="option has-toggler push-value">
+				<span class="label"></span>
+				<span class="value">
+					<div class="toggler" data-value="on">
+						<span>Invert</span>
+					</div>
+				</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Distance</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="0" data-max="200" value="11px" data-suffix="px"/>
+				</span>
+			</div>
+			<div class="knob" data-value="11"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Size</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="0" data-max="100" value="14%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="14"></div>
+		</div>
+
+		<div class="field-row has-preview-box">
+			<div class="option select">
+				<span class="label">Contour</span>
+				<span class="preview-box" data-click="open-dialog" data-arg="dlgContourEditor">
+					<i class="contour-preview"></i>
+				</span>
+				<span class="value" data-options="contours" data-match="//Countours">
+					<span>Rolling Slope - Descending</span>
+				</span>
+			</div>
+		</div>
+	</fieldset>
 </div>

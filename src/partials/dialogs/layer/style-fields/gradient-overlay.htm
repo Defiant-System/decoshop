@@ -1,4 +1,99 @@
 
 <div class="style-fields" data-name="Gradient Overlay">
 	<h3>Gradient Overlay</h3>
+
+	<fieldset>
+		<h4>Gradient</h4>
+
+		<div class="field-row">
+			<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+				<span class="label">Blend Mode</span>
+				<span class="value">Normal</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Opacity</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-change="set-filter-value" data-value="100"></div>
+		</div>
+
+		<div class="field-row has-gradient has-toggler">
+			<div class="option opt-gradient" data-options="pop-gradient-strips" data-match="//Gradients">
+				<span class="label">Gradient</span>
+				<div class="value">
+					<div class="gradient-strip"></div>
+				</div>
+				<div class="toggler" data-value="off">
+					<span>Reverse</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="field-row has-toggler">
+			<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//StrokeGradientStyles">
+				<span class="label">Style</span>
+				<span class="value">Linear</span>
+				<div class="toggler" data-value="on">
+					<span>Layer Linked</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="field-row slim-row has-knob">
+			<div class="option input has-ring push-value">
+				<span class="label">Angle</span>
+				<span class="value">
+					<div class="ring-input"></div>
+					<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+				</span>
+				<div class="knob" data-value="0"></div>
+			</div>
+		</div>
+
+		<div class="field-row slim-row">
+			<div class="option has-toggler push-value">
+				<span class="label"></span>
+				<span class="value">
+					<div class="toggler" data-value="on">
+						<span>Dither</span>
+					</div>
+				</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Scale</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="0" data-max="400" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="100"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Off X</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+				</span>
+			</div>
+			<div class="pan-knob" data-value="0"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Off Y</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+				</span>
+			</div>
+			<div class="pan-knob" data-value="0"></div>
+		</div>
+	</fieldset>
 </div>

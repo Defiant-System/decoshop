@@ -1,4 +1,114 @@
 
 <div class="style-fields" data-name="Outer Glow">
 	<h3>Outer Glow</h3>
+
+	<fieldset>
+		<h4>Pattern</h4>
+
+		<div class="field-row">
+			<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+				<span class="label">Blend Mode</span>
+				<span class="value">Normal</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Opacity</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-change="set-filter-value" data-value="100"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Noise</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="0%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-change="set-filter-value" data-value="0"></div>
+		</div>
+
+		<div class="field-row has-preset has-gradient" data-show="Color">
+			<div class="option opt-gradient">
+				<span class="label">
+					<span class="inline-menu" data-change="change-glow-fill-type" data-options="fieldset-inline-menubox" data-match="//GlowFillTypes">Color</span>
+				</span>
+				<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				<div class="value">
+					<div class="gradient-strip" data-options="pop-gradient-strips" data-match="//Gradients"></div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<h4>Elements</h4>
+
+		<div class="field-row">
+			<div class="option select" data-options="fieldset-inline-menubox" data-match="//GlowTechnique">
+				<span class="label">Technique</span>
+				<span class="value">Softer</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Spread</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="100"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Size</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="200" value="5px" data-suffix="px"/>
+				</span>
+			</div>
+			<div class="knob" data-value="5"></div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<h4>Quality</h4>
+
+		<div class="field-row has-preview-box">
+			<div class="option select">
+				<span class="label">Contour</span>
+				<span class="preview-box" data-click="open-dialog" data-arg="dlgContourEditor">
+					<i class="contour-preview"></i>
+				</span>
+				<span class="value" data-options="contours" data-match="//Countours">
+					<span>Rolling Slope - Descending</span>
+				</span>
+			</div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Range</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="1" data-max="100" value="50%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="50"></div>
+		</div>
+
+		<div class="field-row has-knob">
+			<div class="option input">
+				<span class="label">Jitter</span>
+				<span class="value">
+					<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-suffix="%"/>
+				</span>
+			</div>
+			<div class="knob" data-value="0"></div>
+		</div>
+	</fieldset>
 </div>

@@ -141,6 +141,10 @@
 		<i type="option" name="Diamond" value="4"/>
 		<i type="option" name="Shape Burst" value="5"/>
 	</StrokeGradientStyles>
+	<GlowTechnique>
+		<i type="option" name="Softer" value="0"/>
+		<i type="option" name="Precise" value="1"/>
+	</GlowTechnique>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>
 		<i type="option" name="Dissolve" value="dissolve"/>
