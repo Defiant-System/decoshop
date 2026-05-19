@@ -39,6 +39,7 @@ const Dialogs = {
 		 */
 		let APP = decoshop,
 			Self = Dialogs,
+			index,
 			val,
 			selEl,
 			el;
@@ -54,6 +55,17 @@ const Dialogs = {
 				event.els[1].html(event.value[1]);
 				return;
 
+			case "select-index-item":
+				index = 0;
+				if (event.args.length) {
+					event.dEl.find(`.style-list label`).map((el, i) => {
+						let label = $(el).text();
+						if (event.args[0] === label.replace("& ", "")) index = i+1;
+					});
+				}
+				// auto select first item
+				event.dEl.find(".style-list .option").get(index).trigger("click");
+				break;
 			case "selected-style-item":
 				el = $(event.target);
 				event.el.find(".selected").removeClass("selected");
@@ -76,9 +88,10 @@ const Dialogs = {
 						match: `//LayerStyles`,
 						target: event.dEl.find(".style-list"),
 					}).then(() => {
-						// auto select first item
-						event.dEl.find(".style-list .option").get(1).trigger("click");
+						Self.dlgLayerStyle({ ...event, type: "select-index-item" });
 					});
+				} else {
+					Self.dlgLayerStyle({ ...event, type: "select-index-item" });
 				}
 				break;
 			default:

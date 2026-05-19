@@ -415,6 +415,9 @@ const UI = {
 
 			// custom events
 			case "dlg-open":
+				let param = event.name.split(",");
+				event.args = param.slice(1);
+				event.name = param[0];
 				dEl = $(`.dialog-box[data-dlg="${event.name}"]`);
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
