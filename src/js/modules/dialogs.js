@@ -80,6 +80,11 @@ const Dialogs = {
 				// update dbl-slider
 				event.el.parents("fieldset").find(".dbl-slider").data({ mode: event.text.toLowerCase() });
 				break;
+			case "change-fill-type":
+				// update inline "selectbox"
+				event.el.removeClass("opened").html(event.text);
+				break;
+			
 			// standard dialog events
 			case "dlg-open":
 				if (!event.dEl.find(".style-list .option").length) {

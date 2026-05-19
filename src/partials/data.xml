@@ -98,6 +98,11 @@
 		<i name="Valley - High" />
 		<i name="Valley - Low" />
 	</Countours>
+	<StrokeFillTypes>
+		<i type="option" name="Color" value="0"/>
+		<i type="option" name="Gradient" value="1"/>
+		<i type="option" name="Pattern" value="2"/>
+	</StrokeFillTypes>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>
 		<i type="option" name="Dissolve" value="dissolve"/>

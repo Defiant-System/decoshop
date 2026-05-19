@@ -392,7 +392,7 @@
 </xsl:template>
 
 
-<xsl:template name="blend-modes">
+<xsl:template name="fieldset-inline-menubox">
 	<div class="inline-menubox" data-ui="doSelectbox">
 		<div class="inline-content">
 			<xsl:for-each select="./*">
