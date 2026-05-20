@@ -157,6 +157,18 @@
 		<i type="option" name="Softer" value="0"/>
 		<i type="option" name="Precise" value="1"/>
 	</GlowTechnique>
+	<FillOptions>
+		<i type="option" name="Foreground" value="0"/>
+		<i type="option" name="Background" value="1"/>
+		<i type="option" name="Custom" value="2"/>
+		<i type="divider"/>
+		<i type="option" name="Black" value="3"/>
+		<i type="option" name="Gray" value="4"/>
+		<i type="option" name="White" value="5"/>
+		<i type="divider"/>
+		<i type="option" name="Content Aware" value="6"/>
+		<i type="option" name="Pattern" value="7"/>
+	</FillOptions>
 	<BlendModes>
 		<i type="option" name="Normal" value="source-over"/>
 		<i type="option" name="Dissolve" value="dissolve"/>

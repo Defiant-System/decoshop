@@ -5,51 +5,59 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Fill
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Width</span>
-					<span class="value">
-						<input type="text" name="size" value="12px" data-min="2" data-max="100" data-default="12" data-suffix="px">
-					</span>
-				</div>
-				<div class="knob" data-change="set-size"></div>
-			</div>
+
 			<div class="field-row">
-				<div class="option preset">
-					<span class="label">
-						Color
+				<div class="option select" data-change="change-fill-option" data-options="fieldset-inline-menubox" data-match="//FillOptions">
+					<span class="label">Fill</span>
+					<span class="value">Foreground</span>
+				</div>
+			</div>
+
+			<div class="field-row has-preset hidden" data-option="Custom">
+				<div class="option">
+					<span class="label">Color</span>
+					<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-preview-box hidden" data-option="Pattern">
+				<div class="option select">
+					<span class="label">Pattern</span>
+					<span class="preview-box">
+						<i class="pattern-preview"></i>
 					</span>
-					<span class="preset-value">
-						<i class="icon icon-color-preset"></i>
-						<span class="value" style="background: #eb261f;"></span>
+					<span class="value" data-options="patterns" data-match="//Patterns">
+						<span>Pattern 01</span>
 					</span>
 				</div>
 			</div>
+
 			<div class="field-row">
-				<div class="option select" data-change="set-stroke-location" data-match="//StrokeLocations">
-					<span class="label">Location</span>
-					<span class="fld-value">
-						<span class="value">Inside</span>
-					</span>
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+					<span class="label">Blend Mode</span>
+					<span class="value">Screen</span>
 				</div>
 			</div>
-			<div class="field-row">
-				<div class="option select" data-change="set-stroke-blend" data-match="//BlendModes">
-					<span class="label">Blend</span>
-					<span class="fld-value">
-						<span class="value">Normal</span>
-					</span>
-				</div>
-			</div>
+
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Opacity</span>
 					<span class="value">
-						<input type="text" name="opacity" value="100%" data-min="2" data-max="100" data-default="12" data-suffix="%">
+						<input type="text" name="field-1" data-min="1" data-max="100" value="75%" data-suffix="%"/>
 					</span>
 				</div>
-				<div class="knob" data-change="set-opacity"></div>
+				<div class="knob" data-value="75"></div>
 			</div>
+
+			<div class="field-row has-toggler">
+				<div class="option">
+					<span class="label">Transparency</span>
+					<div class="toggler" data-value="on">
+						<span>Preserve</span>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

@@ -10,7 +10,7 @@ let Test = {
 
 		/* 
 		 * dlgExportAs	dlgPrint	dlgExportLayers	dlgExportColorLookUp	dlgFileInfo
-		 * dlgFill	dlgPresetManager	dlgPreferences
+		 * 	dlgPresetManager	dlgPreferences
 		 * dlgCanvasSize	dlgImageSize	dlgTrim	dlgApplyImage	dlgVariables
 		 * dlgBrightnessContrast	dlgLevels	dlgCurves
 		   dlgExposure 	dlgVibrance 	dlgHueSaturation 	dlgColorBalance 	dlgBlackWhite 	dlgPhotoFilter
@@ -40,11 +40,12 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgColorHalftone" }), 600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgFill" }), 600);
 	}
 };
 
 /* 
 dlgContourEditor	dlgFilterGallery	dlgLensCorrection	dlgPixelator	dlgLayerStyle	dlgBrightnessContrast
 dlgStroke	dlgGaussianBlur	dlgThreshold	dlgCrystallize	dlgPointillize	dlgMosaic	dlgMezzoint	dlgColorHalftone
+dlgFill 	
  */

@@ -1396,8 +1396,17 @@
 
 		.field-row {
 			position: relative;
+			opacity: 1;
 			height: 32px;
 			margin-right: 19px;
+			transition: height 100ms ease-in-out,
+						opacity 100ms ease-in-out;
+
+			&.hidden {
+				height: 0;
+				opacity: 0;
+				overflow: hidden;
+			}
 
 			&.has-toggler {
 				.option.select {

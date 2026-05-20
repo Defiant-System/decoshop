@@ -516,35 +516,27 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorHalftone" });
 		}
 	},
-	dlgSponge(event) {
+	dlgFill(event) {
 		let APP = decoshop,
 			Self = Dialogs,
 			pixels,
-			copy;
+			copy,
+			pEl;
+		// console.log(event);
 		switch (event.type) {
 			// "fast events"
-			case "set-intensity":
-			case "set-radius":
-				if (Self.data.value[Self.data.filter] === +event.value) return;
-				Self.data.value[Self.data.filter] = +event.value;
+			case "set-type":
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				console.time("Sponge Filter");
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.sponge(copy, Self.data.value);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				console.timeEnd("Sponge Filter");
 				return;
-			
-			// slow/once events
-			case "before:set-intensity":
-			case "before:set-radius":
-				Self.data.filter = event.type.split("-")[1];
+
+			case "change-fill-option":
+				pEl = event.el.parents(".fields");
+				pEl.find(`.field-row[data-option="Custom"]`).toggleClass("hidden", event.text === "Custom");
+				pEl.find(`.field-row[data-option="Pattern"]`).toggleClass("hidden", event.text === "Pattern");
+				// TODO: do something with event.value
 				break;
 
 			default:
@@ -553,7 +545,7 @@ const Dialogs = {
 				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 				 */
 				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSponge" });
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFill" });
 		}
 	},
 	dlgPixelator(event) {
@@ -566,113 +558,6 @@ const Dialogs = {
 		switch (event.type) {
 			case "apply-filter-data":
 				return;
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				
-				// layers = Dialogs.dlgPixelator({ type: "preset-from-xml", id: "prst-2" });
-				layers = Self.dlgPixelator({ type: "preset-from-html" });
-				if (!layers.length || closePixelate.working) return;
-				closePixelate.working = true;
-
-				// console.time("Pixelator Filter");
-				copy = closePixelate({
-						copy: new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height),
-						width: pixels.width,
-						height: pixels.height,
-						layers,
-					});
-				// console.timeEnd("Pixelator Filter");
-
-				// reset flag
-				delete closePixelate.working;
-
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
-				break;
-
-			// custom dialog events
-			case "preset-from-html":
-				layers = Self.srcEvent.dEl.find(".list-body .row").map(row => {
-					let el = $(row),
-						sEl = el.find(".shape-options i.active"),
-						[a, b, shape] = sEl.prop("className").split(" ")[0].split("-"),
-						res = parseInt(el.find("> div:nth(1)").text(), 10),
-						size = parseInt(el.find("> div:nth(2)").text(), 10),
-						offset = parseInt(el.find("> div:nth(3)").text(), 10),
-						alpha = parseInt(el.find(".icon-bars").cssProp("--value"), 10) / 100,
-						hidden = el.find(".icon-eye-on").hasClass("icon-eye-off") ? 1 : 0,
-						data = { res };
-
-					if (shape !== "square") data.shape = shape;
-					if (hidden) data.hidden = hidden;
-					if (!isNaN(size)) data.size = size;
-					if (!isNaN(offset)) data.offset = offset;
-					if (!isNaN(alpha) && alpha !== 1) data.alpha = alpha;
-
-					return data;
-				});
-				return layers;
-			case "preset-from-xml":
-				let xPreset = window.bluePrint.selectSingleNode(`//Pixelator/Preset[@id="${event.id}"]`);
-				layers = xPreset.selectNodes("./*").map(xLayer => {
-					let data = {};
-					[...xLayer.attributes].map(a => {
-						let val = parseInt(a.value, 10);
-						return data[a.name] = isNaN(val) ? a.value : val;
-					});
-					return data;
-				});
-				return layers;
-			case "select-preset":
-				el = $(event.target);
-
-				let prepend = Self.srcEvent.dEl.find(".list-body");
-				prepend.find(".row").remove();
-				// render active preset layer list
-				window.render({
-					template: "pixelator-preset",
-					match: `//Pixelator/Preset[@id="${el.data("id")}"]`,
-					prepend,
-				}).then(() => {
-					// re-apply filter
-					Self.dlgPixelator({ type: "apply-filter-data" });
-				});
-				break;
-			case "add-layer":
-				window.render({
-					template: "pixelator-preset-layer",
-					match: "//Pixelator/Preset[1]",
-				}).then(str => {
-					let row = event.el.before(str).addClass("adding");
-					requestAnimationFrame(() =>
-						row.cssSequence("!adding", "transitionend", el => el.removeClass("adding")));
-				});
-				break;
-			case "remove-layer":
-				event.el.parents(".row").cssSequence("removing", "transitionend", el => el.remove());
-				// re-apply filter
-				Self.dlgPixelator({ type: "apply-filter-data" });
-				break;
-			case "toggle-layer":
-				event.el.toggleClass("icon-eye-off", event.el.hasClass("icon-eye-off"));
-				// re-apply filter
-				Self.dlgPixelator({ type: "apply-filter-data" });
-				break;
-			case "set-layer-shape":
-				event.el.find(".active").removeClass("active");
-				el = $(event.target).addClass("active");
-				// re-apply filter
-				Self.dlgPixelator({ type: "apply-filter-data" });
-				break;
-
-			case "set-spacing":
-			case "set-size":
-			case "set-offset":
-			case "set-opacity":
-				// re-apply filter
-				Self.dlgPixelator({ type: "apply-filter-data" });
-				break;
-
 			// standard dialog events
 			case "dlg-open":
 				// click on a preset
