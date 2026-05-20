@@ -300,7 +300,6 @@ const Dialogs = {
 			// slow/once events
 			case "before:set-contrast":
 			case "before:set-brightness":
-				Self.data.filter = event.type.split("-")[1];
 				break;
 
 			// standard dialog events
@@ -671,6 +670,106 @@ const Dialogs = {
 				 */
 				// handler standard dialog events
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMotionBlur" });
+		}
+	},
+	dlgRadialBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgRadialBlur" });
+		}
+	},
+	dlgSurfaceBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSurfaceBlur" });
+		}
+	},
+	dlgDisplace(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDisplace" });
+		}
+	},
+	dlgKaleidoscope(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgKaleidoscope" });
 		}
 	},
 	dlgPixelator(event) {

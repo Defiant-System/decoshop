@@ -5,16 +5,60 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Radial Blur
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Amount</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="1" data-max="100" value="10" data-default="10"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-value="10"></div>
 			</div>
+
+			<div class="field-row">
+				<div class="option opt-group">
+					<span class="label">Mode</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li class="active">Spin</li>
+							<li>Zom</li>
+						</ul>
+					</span>
+				</div>
+			</div>
+
+			<div class="sample-grid">
+				<canvas></canvas>
+			</div>
+
+			<!-- <div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Position X</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="1" data-max="100" value="50%" data-default="50%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-change="set-filter-value" data-value="50"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Position Y</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="1" data-max="100" value="50%" data-default="50%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-change="set-filter-value" data-value="50"></div>
+			</div> -->
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
