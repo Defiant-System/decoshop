@@ -1,5 +1,44 @@
 
 const Dialogs = {
+	dlgLensCorrection(event) {
+		/*
+		 * 
+		 */
+		let APP = decoshop,
+			Self = Dialogs,
+			val,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-amount":
+			case "set-scale":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				break;
+
+			// standard dialog events
+			case "dlg-open":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
+				break;
+			case "dlg-close":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensCorrection" });
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensCorrection" });
+		}
+	},
 	dlgLayerStyle(event) {
 		/*
 		 * 
@@ -56,7 +95,6 @@ const Dialogs = {
 			case "change-glow-fill-type":
 				// update inline "selectbox"
 				event.el.removeClass("opened").html(event.text);
-				console.log(event);
 				// update what field options to show
 				event.el.parents(".field-row").data({ show: event.text });
 				break;
@@ -115,39 +153,6 @@ const Dialogs = {
 				 */
 				// handler standard dialog events
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
-		}
-	},
-	dlgGradientEditor(event) {
-		/*
-		 * 
-		 */
-		let APP = decoshop,
-			Self = Dialogs,
-			val,
-			selEl,
-			el;
-		// console.log(event);
-		switch (event.type) {
-			case "selected-style-item":
-				break;
-			// standard dialog events
-			case "dlg-open":
-				// make sure layer style is covered
-				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
-				break;
-			case "dlg-close":
-				// make sure layer style is covered
-				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
-				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
-				break;
-			default:
-				/* Falls through to "master UI"
-				 * Can be handled here if needed - just capture events:
-				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
-				 */
-				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
 		}
 	},
 	dlgFilterGallery(event) {
@@ -286,18 +291,10 @@ const Dialogs = {
 			// "fast events"
 			case "set-contrast":
 			case "set-brightness":
-				if (Self.data.value[Self.data.filter] === +event.value) return;
-				Self.data.value[Self.data.filter] = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.brightnessContrast(copy, Self.data.value);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			
 			// slow/once events
@@ -323,14 +320,6 @@ const Dialogs = {
 			copy;
 		// console.log(event);
 		switch (event.type) {
-			case "apply-filter-data":
-				break;
-			
-			case "set-stroke-location":
-				// inside, center, outside
-				console.log(event);
-				break;
-
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:
@@ -348,18 +337,10 @@ const Dialogs = {
 		switch (event.type) {
 			// "fast events"
 			case "set-radius":
-				if (Self.data.value.radius === +event.value) return;
-				Self.data.value.radius = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				gaussianBlur(copy.data, pixels.width, pixels.height, Self.data.value.radius);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			default:
 				/* Falls through to "master UI"
@@ -370,6 +351,39 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
 		}
 	},
+	dlgGradientEditor(event) {
+		/*
+		 * 
+		 */
+		let APP = decoshop,
+			Self = Dialogs,
+			val,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "selected-style-item":
+				break;
+			// standard dialog events
+			case "dlg-open":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
+				break;
+			case "dlg-close":
+				// make sure layer style is covered
+				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
+		}
+	},
 	dlgThreshold(event) {
 		let APP = decoshop,
 			Self = Dialogs,
@@ -378,18 +392,10 @@ const Dialogs = {
 		switch (event.type) {
 			// "fast events"
 			case "set-amount":
-				if (Self.data.value.amount === +event.value) return;
-				Self.data.value.amount = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.threshold(copy, Self.data.value.amount);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			default:
 				/* Falls through to "master UI"
@@ -408,18 +414,10 @@ const Dialogs = {
 		switch (event.type) {
 			// "fast events"
 			case "set-size":
-				if (Self.data.value.size === +event.value) return;
-				Self.data.value.size = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.crystallize(copy, Self.data.value.size);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			default:
 				/* Falls through to "master UI"
@@ -438,22 +436,10 @@ const Dialogs = {
 		switch (event.type) {
 			// "fast events"
 			case "set-size":
-				if (Self.data.value.size === +event.value) return;
-				Self.data.value.size = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				if (!Self.data.value.color) {
-					let clr = ColorLib.hexToRgb(Projector.file.fgColor);
-					Self.data.value.color = [clr.r, clr.g, clr.b];
-				}
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.crystallize(copy, Self.data.value.size, Self.data.value.color);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			default:
 				/* Falls through to "master UI"
@@ -472,18 +458,10 @@ const Dialogs = {
 		switch (event.type) {
 			// "fast events"
 			case "set-size":
-				if (Self.data.value.size === +event.value) return;
-				Self.data.value.size = +event.value;
 				// exit if "preview" is not enabled
 				if (!Self.preview) return;
 				/* falls-through */
 			case "apply-filter-data":
-				// copy first, then apply filter on pixels
-				pixels = Self.data.pixels;
-				copy = new ImageData(new Uint8ClampedArray(pixels.data), pixels.width, pixels.height);
-				copy = Filters.pixelate(copy, Self.data.value.size);
-				// update layer
-				Self.data.layer.putImageData({ data: copy, noEmit: event.noEmit });
 				return;
 			default:
 				/* Falls through to "master UI"
@@ -492,6 +470,50 @@ const Dialogs = {
 				 */
 				// handler standard dialog events
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMosaic" });
+		}
+	},
+	dlgMezzoint(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy;
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMezzoint" });
+		}
+	},
+	dlgColorHalftone(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy;
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorHalftone" });
 		}
 	},
 	dlgSponge(event) {

@@ -451,10 +451,11 @@ const UI = {
 				break;
 
 			case "dlg-open-common":
+				if (!event.dEl) return;
 				// collect default values
 				event.dEl.find(`.field-row input`).map(elem => {
 					let iEl = $(elem);
-					value[iEl.attr("name")] = parseInt(iEl.val(), 10);
+					// value[iEl.attr("name")] = parseInt(iEl.val(), 10);
 				});
 				// save reference to event
 				Dialogs.srcEvent = event;
@@ -464,10 +465,24 @@ const UI = {
 				Dialogs[event.name]({ type: "apply-filter-data" });
 				break;
 			case "dlg-ok-common":
+				// TODO: apply changes
+				Self.doDialog({ ...event, type: "dlg-close" });
 				break;
 			case "dlg-reset-common":
+				dEl = event.dEl || event.el.parents(".dialog-box");
+				// reset input fields
+				dEl.find(`.field-row input[data-default]`).map(elem => {
+					let iEl = $(elem),
+						value = iEl.data("default");
+					// update input field
+					iEl.val(value);
+					// update knob, if any
+					iEl.parents(".field-row").find(".knob, .pan-knob").data({ value });
+				});
+				// TODO: auto-trigger new render
 				break;
 			case "dlg-preview-common":
+				// TODO: toggle canvas render
 				break;
 			case "dlg-close-common":
 				Self.doDialog({ ...event, type: "dlg-close" });

@@ -5,15 +5,48 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Stroke
 			</h2>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Size</span>
+					<span class="value">
+						<input type="text" name="size" data-min="0" data-max="100" data-default="3px" value="3px" data-suffix="px">
+					</span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="3px"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option opt-group">
+					<span class="label">Position</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li data-value="0">Inside</li>
+							<li data-value="1">Center</li>
+							<li data-value="2" class="active">Outside</li>
+						</ul>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-preset">
+				<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+					<span class="label">Blend Mode</span>
+					<span class="value">Normal</span>
+					<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				</div>
+			</div>
+
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Opacity</span>
 					<span class="value">
-						<input type="text" name="opacity" value="100%" data-min="2" data-max="100" data-default="12" data-suffix="%">
+						<input type="text" name="opacity" data-min="0" data-max="100" data-default="100%" value="100%" data-suffix="%">
 					</span>
 				</div>
-				<div class="knob" data-change="set-opacity"></div>
+				<div class="knob" data-change="set-opacity" data-value="100%"></div>
 			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

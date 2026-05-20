@@ -10,22 +10,22 @@ let Test = {
 
 		/* 
 		 * dlgExportAs	dlgPrint	dlgExportLayers	dlgExportColorLookUp	dlgFileInfo
-		 * dlgFill	dlgStroke	dlgPresetManager	dlgPreferences
+		 * dlgFill	dlgPresetManager	dlgPreferences
 		 * dlgCanvasSize	dlgImageSize	dlgTrim	dlgApplyImage	dlgVariables
 		 * dlgBrightnessContrast	dlgLevels	dlgCurves
 		   dlgExposure 	dlgVibrance 	dlgHueSaturation 	dlgColorBalance 	dlgBlackWhite 	dlgPhotoFilter
-		   dlgChannelMixer 	dlgColorLookup 	dlgThreshold 	dlgGradientMap 	dlgSelectiveColor 	dlgShadowHighlights
+		   dlgChannelMixer 	dlgColorLookup 	 	dlgGradientMap 	dlgSelectiveColor 	dlgShadowHighlights
 		   dlgMatchColor	dlgReplaceColor
-		   dlgGradientEditor	dlgContourEditor	
+		   dlgGradientEditor		
 		 * dlgDuplicateInfo	dlgArtboard	dlgArtboardFromLayer
 		 * dlgSelectColorRange	dlgSelectMagicCut	dlgSelectRefineEdge
 		 * dlgSelectModifyBorder	dlgSelectModifySmooth	dlgSelectModifyExpand	dlgSelectModifyContract	dlgSelectModifyFeather
-		 * dlgFilterGallery	dlgLensCorrection	dlgCameraRaw	dlgLiquify	dlgPixelator
+		 * 		dlgCameraRaw	dlgLiquify	
 		 * dlgNormalMap	dlgTextureDilation
-		 * dlgBoxBlur	dlgGaussianBlur	dlgLensBlur	dlgMotionBlur	dlgRadialBlur	dlgSurfaceBlur
+		 * dlgBoxBlur		dlgLensBlur	dlgMotionBlur	dlgRadialBlur	dlgSurfaceBlur
 		 * dlgDisplace	dlgKaleidoscope	dlgPinch	dlgPolarCoordinates	dlgRipple	dlgShear	dlgSpherize	dlgTwirl	dlgWave	dlgZigZag
 		 * dlgAddNoise	dlgDustScratches	dlgMedian	dlgReduceNoise
-		 * dlgColorHalftone	dlgCrystallize	dlgMezzoint	dlgMosaic	dlgPointillize
+		 * 				
 		 * dlgFlame	dlgFibers	dlgLensFlare
 		 * dlgSmartSharpen	dlgUnsharpMask
 		 * dlgDiffuse	dlgEmboss	dlgOilPaint	dlgTraceContour	dlgWind
@@ -36,8 +36,15 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Drop Shadow" }), 600);
+		// setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Drop Shadow" }), 600);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
+
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgColorHalftone" }), 600);
 	}
 };
+
+/* 
+dlgContourEditor	dlgFilterGallery	dlgLensCorrection	dlgPixelator	dlgLayerStyle	dlgBrightnessContrast
+dlgStroke	dlgGaussianBlur	dlgThreshold	dlgCrystallize	dlgPointillize	dlgMosaic	dlgMezzoint	dlgColorHalftone
+ */
