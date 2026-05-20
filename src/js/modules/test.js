@@ -21,7 +21,7 @@ let Test = {
 		 * dlgSelectColorRange	dlgSelectMagicCut	dlgSelectRefineEdge
 		 * dlgSelectModifyBorder	dlgSelectModifySmooth	dlgSelectModifyExpand	dlgSelectModifyContract	dlgSelectModifyFeather
 		 * 		dlgCameraRaw	dlgLiquify	
-		 * dlgNormalMap	dlgTextureDilation
+		 * 	
 		 * dlgBoxBlur		dlgLensBlur	dlgMotionBlur	dlgRadialBlur	dlgSurfaceBlur
 		 * dlgDisplace	dlgKaleidoscope	dlgPinch	dlgPolarCoordinates	dlgRipple	dlgShear	dlgSpherize	dlgTwirl	dlgWave	dlgZigZag
 		 * dlgAddNoise	dlgDustScratches	dlgMedian	dlgReduceNoise
@@ -40,12 +40,12 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgFill" }), 600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgTextureDilation" }), 600);
 	}
 };
 
 /* 
 dlgContourEditor	dlgFilterGallery	dlgLensCorrection	dlgPixelator	dlgLayerStyle	dlgBrightnessContrast
 dlgStroke	dlgGaussianBlur	dlgThreshold	dlgCrystallize	dlgPointillize	dlgMosaic	dlgMezzoint	dlgColorHalftone
-dlgFill 	
+dlgFill	dlgNormalMap	dlgTextureDilation
  */

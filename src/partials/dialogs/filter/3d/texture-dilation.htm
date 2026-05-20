@@ -5,16 +5,33 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Texture Dilation
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Crop</span>
+					<span class="value">
+						<input type="text" name="size" data-min="0" data-max="20" data-default="0px" value="0px" data-suffix="px">
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-change="set-size" data-value="0px"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Radius</span>
+					<span class="value">
+						<input type="text" name="size" data-min="0" data-max="400" data-default="10px" value="10px" data-suffix="px">
+					</span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="10px"></div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
