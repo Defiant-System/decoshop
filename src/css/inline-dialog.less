@@ -1417,6 +1417,20 @@
 				}
 			}
 
+			&.fat-ring-row {
+				height: 49px;
+
+				.option {
+					padding-top: 15px;
+
+					.value {
+						.ring-input {
+							top: -14px;
+						}
+					}
+				}
+			}
+
 			&.has-knob {
 				display: flex;
 				margin-right: 13px;
@@ -1695,6 +1709,19 @@
 					border: 2px solid #1339;
 					background: radial-gradient(circle at center, #cee7 0%, #cee2 55%, #fff0 70%);
 					cursor: crosshair;
+
+					&.line {
+						&:after {
+							top: 23px;
+							left: 3px;
+							right: -1px;
+							width: auto;
+							border-radius: 0;
+							border: 0;
+							height: 1px;
+							background: #1227;
+						}
+					}
 
 					&:before {
 						content: "";

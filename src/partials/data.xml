@@ -124,6 +124,19 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<LensBlurDepthMaps>
+		<i type="option" name="None" value="0"/>
+		<i type="option" name="From Transparency" value="1"/>
+		<i type="option" name="Raster Mask" value="2"/>
+	</LensBlurDepthMaps>
+	<LensBlurShapes>
+		<i type="option" name="Triangle (3)" value="0"/>
+		<i type="option" name="Square (4)" value="1"/>
+		<i type="option" name="Pentagon (5)" value="2"/>
+		<i type="option" name="Hexagon (6)" value="3"/>
+		<i type="option" name="Heptagon (7)" value="4"/>
+		<i type="option" name="Octagon (8)" value="5"/>
+	</LensBlurShapes>
 	<MezzointTypes>
 		<i type="option" name="Fine Dots" value="0"/>
 		<i type="option" name="Medium Dots" value="1"/>

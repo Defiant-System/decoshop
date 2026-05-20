@@ -329,28 +329,6 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgStroke" });
 		}
 	},
-	dlgGaussianBlur(event) {
-		let APP = decoshop,
-			Self = Dialogs,
-			pixels,
-			copy;
-		switch (event.type) {
-			// "fast events"
-			case "set-radius":
-				// exit if "preview" is not enabled
-				if (!Self.preview) return;
-				/* falls-through */
-			case "apply-filter-data":
-				return;
-			default:
-				/* Falls through to "master UI"
-				 * Can be handled here if needed - just capture events:
-				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
-				 */
-				// handler standard dialog events
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
-		}
-	},
 	dlgGradientEditor(event) {
 		/*
 		 * 
@@ -571,6 +549,128 @@ const Dialogs = {
 				 */
 				// handler standard dialog events
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgNormalMap" });
+		}
+	},
+	dlgTextureDilation(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTextureDilation" });
+		}
+	},
+	dlgBoxBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgBoxBlur" });
+		}
+	},
+	dlgGaussianBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy;
+		switch (event.type) {
+			// "fast events"
+			case "set-radius":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
+		}
+	},
+	dlgLensBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensBlur" });
+		}
+	},
+	dlgMotionBlur(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			pixels,
+			copy,
+			pEl;
+		// console.log(event);
+		switch (event.type) {
+			// "fast events"
+			case "set-type":
+				// exit if "preview" is not enabled
+				if (!Self.preview) return;
+				/* falls-through */
+			case "apply-filter-data":
+				return;
+
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMotionBlur" });
 		}
 	},
 	dlgPixelator(event) {

@@ -5,16 +5,33 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Motion Blur
 			</h2>
+
+			<div class="field-row fat-ring-row has-knob">
+				<div class="option input has-ring push-value">
+					<span class="label">Angle</span>
+					<span class="value">
+						<div class="ring-input line"></div>
+						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+					</span>
+					<div class="knob" data-value="0"></div>
+				</div>
+			</div>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Distance</span>
+					<span class="value"><input type="text" name="radius" data-min="1" data-max="100" value="4px" data-default="4px" data-suffix="px"></span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-change="set-radius" data-value="4"></div>
 			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
