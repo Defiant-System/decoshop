@@ -124,6 +124,18 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<DiffuseModes>
+		<i type="option" name="Normal" value="0"/>
+		<i type="option" name="Darker Clor" value="1"/>
+		<i type="option" name="Lighter Color" value="2"/>
+		<i type="option" name="Anistropic" value="3"/>
+	</DiffuseModes>
+	<LensFlareTypes>
+		<i type="option" name="50-300mm Zoom" value="0"/>
+		<i type="option" name="35mm Prime" value="1"/>
+		<i type="option" name="105mm Prime" value="2"/>
+		<i type="option" name="Movie Prime" value="3"/>
+	</LensFlareTypes>
 	<ZigZagStyles>
 		<i type="option" name="Around Center" value="0"/>
 		<i type="option" name="Out From Center" value="1"/>

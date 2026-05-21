@@ -5,16 +5,29 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Dust &amp; Scratches
 			</h2>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Radius</span>
+					<span class="value"><input type="text" name="radius" data-min="1" data-max="200" value="2px" data-default="2px" data-suffix="px"></span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-change="set-radius" data-value="2"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Threshold</span>
+					<span class="value"><input type="text" name="radius" data-min="1" data-max="255" value="26px" data-default="26px" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-change="set-radius" data-value="26"></div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>

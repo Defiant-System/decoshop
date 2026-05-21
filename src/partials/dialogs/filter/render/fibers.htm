@@ -5,16 +5,38 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Fibers
 			</h2>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Variance</span>
+					<span class="value"><input type="text" name="radius" data-min="0" data-max="10" value="10" data-default="10"></span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-value="10"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Strength</span>
+					<span class="value"><input type="text" name="radius" data-min="0" data-max="100" value="1" data-default="1"></span>
+				</div>
+				<div class="knob" data-value="1"></div>
+			</div>
+			
+			<div class="field-row has-button">
+				<div class="option input">
+					<span class="label">Seed</span>
+					<span class="value">
+						<div class="button">Randomize</div>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>

@@ -417,6 +417,62 @@
 		}
 	}
 
+	&[data-dlg="dlgLensFlare"] {
+		.dlg-content {
+			.sample-rect {
+				background: #3443;
+				position: relative;
+				width: 249px;
+				height: 249px;
+				overflow: hidden;
+				margin-bottom: 5px;
+				border-radius: 3px;
+				box-shadow: inset 0 2px 7px #0001,
+							0 0 0 1px #1226;
+				cursor: move;
+
+				&:before {
+					content: "";
+					position: absolute;
+					top: 45px;
+					left: 14px;
+					width: 220px;
+					height: 160px;
+					background: linear-gradient(45deg,
+									#ccc 25%, transparent 25%, transparent 75%,
+									#ccc 75%,
+									#ccc 0),
+								linear-gradient(45deg,
+									#ccc 25%, transparent 25%, transparent 75%,
+									#ccc 75%,
+									#ccc 0), #ddd;
+					background-repeat: repeat, repeat;
+					background-position: 0px 0, 8px 8px;
+					background-origin: padding-box, padding-box;
+					background-clip: border-box, border-box;
+					background-size: 16px 16px, 16px 16px;
+					transform: scaleX(1) scaleY(1) scaleZ(1);
+					box-shadow: 0 0 0 1px #111;
+				}
+
+				&:after {
+					content: "";
+					background: linear-gradient(90deg, #6770 0%, #677 50%, #6770 100%);
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+					right: 0;
+					height: 1px;
+				}
+
+				canvas {
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgTwirl"] {
 		.dlg-content {
 			--clr1: #dee1;
@@ -1696,6 +1752,15 @@
 						.ring-input {
 							top: -14px;
 						}
+					}
+				}
+			}
+
+			&.has-button {
+				.option {
+					.value {
+						background: transparent;
+						padding-left: 0;
 					}
 				}
 			}
