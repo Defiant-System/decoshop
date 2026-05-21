@@ -124,6 +124,19 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ColorChannels>
+		<i type="option" name="RGB" value="0"/>
+		<i type="option" name="Red" value="1"/>
+		<i type="option" name="Green" value="2"/>
+		<i type="option" name="Blue" value="3"/>
+		<i type="option" name="Colors" value="4"/>
+	</ColorChannels>
+	<DitherPalette>
+		<i type="option" name="Black &amp; White" value="0"/>
+		<i type="option" name="RGB 2x2x2" value="1"/>
+		<i type="option" name="RGB 4x4x4" value="2"/>
+		<i type="option" name="RGB 8x8x4" value="3"/>
+	</DitherPalette>
 	<UndefinedArea>
 		<i type="option" name="Repeat Edge Pixels" value="0"/>
 		<i type="option" name="Set to Transparent" value="1"/>

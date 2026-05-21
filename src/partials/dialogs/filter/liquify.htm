@@ -1,20 +1,81 @@
 <div class="dialog-box" data-dlg="dlgLiquify">
 	<div class="dlg-content">
-		<div class="fields">
-			<h2>
-				<i class="icon-dlg-close" data-click="dlg-close"></i>
-				Liquify
-			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
-				</div>
-				<div class="knob" data-change="set-size"></div>
-			</div>
-		</div>
+		<h2>
+			<i class="icon-dlg-close" data-click="dlg-close"></i>
+			Liquify
+		</h2>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+		</div>
+
+		<div class="layout">
+			<div class="preview">
+				<div class="zoom-level">
+					<span data-click="preview-zoom-out"></span>
+					<span class="preview-zoom-value">100%</span>
+					<span data-click="preview-zoom-in"></span>
+				</div>
+			</div>
+			<div class="tools">
+				<span class="tool active"></span>
+				<span class="tool"></span>
+				<span class="tool"></span>
+				<span class="tool"></span>
+				<span class="tool"></span>
+				<span class="tool"></span>
+			</div>
+			<div class="controls">
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Size</span>
+						<span class="value">
+							<input type="text" name="field-1" data-min="1" data-max="1000" value="70" data-default="70"/>
+						</span>
+					</div>
+					<div class="knob" data-value="70"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Density</span>
+						<span class="value">
+							<input type="text" name="field-1" data-min="1" data-max="1000" value="70" data-default="70"/>
+						</span>
+					</div>
+					<div class="knob" data-value="70"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Rate</span>
+						<span class="value">
+							<input type="text" name="field-1" data-min="1" data-max="1000" value="70" data-default="70"/>
+						</span>
+					</div>
+					<div class="knob" data-value="70"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option push-value">
+						<span class="label"></span>
+						<div class="toggler" data-value="on">
+							<span>Background</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Opacity</span>
+						<span class="value">
+							<input type="text" name="field-1" data-min="0" data-max="100" value="100%" data-default="100%" data-suffix="%"/>
+						</span>
+					</div>
+					<div class="knob" data-value="100"></div>
+				</div>
+				
+			</div>
 		</div>
 	</div>
 </div>

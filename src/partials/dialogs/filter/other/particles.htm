@@ -5,12 +5,81 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Particles
 			</h2>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+					<span class="label">Count</span>
+					<span class="value"><input type="text" name="size" data-min="0" data-max="100" value="10%" data-default="10%" data-suffix="%"></span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+				<div class="knob" data-change="set-size" data-value="10"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Size</span>
+					<span class="value"><input type="text" name="size" data-min="0" data-max="50" value="8px" data-default="8px" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="8"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Depth</span>
+					<span class="value"><input type="text" name="size" data-min="0" data-max="100" value="100%" data-default="100%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="100"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Brightness</span>
+					<span class="value"><input type="text" name="size" data-min="10" data-max="1000" value="800%" data-default="800%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="800"></div>
+			</div>
+
+			<div class="field-row has-preset">
+				<div class="option">
+					<span class="label">Color</span>
+					<span class="color-preset inline-menu pull" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				</div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Time</span>
+					<span class="value"><input type="text" name="size" data-min="0" data-max="1000" value="70%" data-default="70%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="70"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Turbulence</span>
+					<span class="value"><input type="text" name="size" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-change="set-size" data-value="0"></div>
+			</div>
+
+			<div class="field-row has-toggler">
+				<div class="option input">
+					<span class="label"></span>
+					<div class="toggler" data-value="on">
+						<span>Blink</span>
+					</div>
+					<div class="toggler" data-value="off">
+						<span>Fall</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row has-button">
+				<div class="option input">
+					<span class="label">Seed</span>
+					<span class="value">
+						<div class="button">Randomize</div>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
