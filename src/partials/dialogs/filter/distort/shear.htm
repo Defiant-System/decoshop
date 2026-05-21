@@ -5,16 +5,43 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Shear
 			</h2>
-			<div class="field-row has-knob">
+			
+			<div class="graph"></div>
+
+			<div class="field-row half-half">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">In (X)</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="1000" value="51%" data-suffix="%"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="option input">
+					<span class="label">Out (Y)</span>
+					<span class="value">
+						<input type="text" name="field-2" data-min="0" data-max="1000" value="67%" data-suffix="%"/>
+					</span>
+				</div>
 			</div>
+			
+			<div class="field-row long-label">
+				<div class="option opt-group">
+					<span class="label">Undefined Area</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li data-value="0" class="active">Wrap Around</li>
+							<li data-valie="1">Repeat Edge</li>
+						</ul>
+					</span>
+				</div>
+			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>

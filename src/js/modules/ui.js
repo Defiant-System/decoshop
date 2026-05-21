@@ -1014,9 +1014,8 @@ const UI = {
 					if (kEl.length) {
 						kEl.data({ value: Math.round((val-min) / (max-min) * 100) });
 					} else {
-						// console.log( val / Math.abs(min) + Math.abs(max)  );
 						kEl = row.find(".pan-knob");
-						kEl.data({ value: 15 });
+						kEl.data({ value: Math.round((Math.invLerp(min, max, val) - .5) * 100) });
 					}
 				});
 				break;

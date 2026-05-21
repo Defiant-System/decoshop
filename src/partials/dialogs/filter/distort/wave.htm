@@ -5,16 +5,114 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Wave
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Generators</span>
+					<span class="value">
+						<input type="text" name="field-4" data-min="1" data-max="100" value="1" data-default="1"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="pan-knob" data-value="1"></div>
+			</div>
+			
+			<div class="field-row">
+				<div class="option opt-group">
+					<span class="label">Type</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li data-value="0" class="active">Sine</li>
+							<li data-valie="1">Triangle</li>
+							<li data-valie="2">Square</li>
+						</ul>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-dbl-range simple">
+				<div class="option dbl-range">
+					<span class="label">Wavelength</span>
+					<span class="value">
+						<span class="label">
+							<span class="min">Min.</span> /
+							<span class="max">Max.</span>
+						</span>
+						<span class="low">
+							<span class="min" data-id="layer-0-low-min">0</span> /
+							<span class="max" data-id="layer-0-low-max">0</span>
+						</span>
+					</span>
+				</div>
+				<div class="dbl-slider">
+					<span class="low" data-ux="r-handle" style="--min: 10; --max: 120;">
+						<span class="min" data-ux="r-min" data-for="layer-0-low-min"></span>
+						<span class="max" data-ux="r-max" data-for="layer-0-low-max"></span>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-dbl-range simple">
+				<div class="option dbl-range">
+					<span class="label">Amlitude</span>
+					<span class="value">
+						<span class="label">
+							<span class="min">Min.</span> /
+							<span class="max">Max.</span>
+						</span>
+						<span class="low">
+							<span class="min" data-id="layer-0-low-min">0</span> /
+							<span class="max" data-id="layer-0-low-max">0</span>
+						</span>
+					</span>
+				</div>
+				<div class="dbl-slider">
+					<span class="low" data-ux="r-handle" style="--min: 5; --max: 35;">
+						<span class="min" data-ux="r-min" data-for="layer-0-low-min"></span>
+						<span class="max" data-ux="r-max" data-for="layer-0-low-max"></span>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-dbl-range simple">
+				<div class="option dbl-range">
+					<span class="label">Scale</span>
+					<span class="value">
+						<span class="label">
+							<span class="min">Horizontal</span> /
+							<span class="max">Vertical</span>
+						</span>
+						<span class="low">
+							<span class="min" data-id="layer-0-low-min">0</span> /
+							<span class="max" data-id="layer-0-low-max">0</span>
+						</span>
+					</span>
+				</div>
+				<div class="dbl-slider">
+					<span class="low" data-ux="r-handle" style="--min: 100; --max: 100;">
+						<span class="min" data-ux="r-min" data-for="layer-0-low-min"></span>
+						<span class="max" data-ux="r-max" data-for="layer-0-low-max"></span>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option opt-group">
+					<span class="label">Undefined Area</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li class="active">Wrap Around</li>
+							<li>Repeat Edge</li>
+						</ul>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>

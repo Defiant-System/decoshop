@@ -124,6 +124,11 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ZigZagStyles>
+		<i type="option" name="Around Center" value="0"/>
+		<i type="option" name="Out From Center" value="1"/>
+		<i type="option" name="Pond Ripples" value="2"/>
+	</ZigZagStyles>
 	<LensBlurDepthMaps>
 		<i type="option" name="None" value="0"/>
 		<i type="option" name="From Transparency" value="1"/>

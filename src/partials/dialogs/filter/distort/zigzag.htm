@@ -5,16 +5,38 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				ZigZag
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Amount</span>
+					<span class="value">
+						<input type="text" name="field-4" data-min="-100" data-max="100" value="50" data-default="50"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="pan-knob" data-value="50"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Ridges</span>
+					<span class="value"><input type="text" name="mirrors" data-min="0" data-max="20" value="10" data-default="10"</span>
+				</div>
+				<div class="knob" data-value="10"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//ZigZagStyles">
+					<span class="label">Style</span>
+					<span class="value">Around Center</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>

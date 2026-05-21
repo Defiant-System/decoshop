@@ -5,16 +5,26 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Twirl
 			</h2>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Amount</span>
+					<span class="value">
+						<input type="text" name="field-4" data-min="-999" data-max="999" value="90°" data-default="90°" data-suffix="°"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="pan-knob" data-value="90"></div>
 			</div>
+			
+			<div class="sample-grid"></div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
