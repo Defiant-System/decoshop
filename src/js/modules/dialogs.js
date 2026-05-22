@@ -1571,6 +1571,11 @@ const Dialogs = {
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
 				break;
+			case "set-liquify-background":
+				event.el.parents(".field-row")
+					.nextAll(".field-row").get(0).find(".option")
+					.toggleClass("disabled", event.el.data("value") === "on");
+				break;
 
 			default:
 				/* Falls through to "master UI"
