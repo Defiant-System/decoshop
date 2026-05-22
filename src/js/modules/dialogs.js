@@ -1553,7 +1553,7 @@ const Dialogs = {
 			pixels,
 			copy,
 			el;
-		console.log(event);
+		// console.log(event);
 		switch (event.type) {
 			// "fast events"
 			case "set-type":
@@ -1566,7 +1566,7 @@ const Dialogs = {
 			case "preview-zoom-out":
 			case "preview-zoom-in":
 				break;
-			case "select-tool":
+			case "select-liquify-tool":
 				el = $(event.target);
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
