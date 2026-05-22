@@ -1249,9 +1249,9 @@
 				}
 			}
 
-			.tools {
+			.liq-tools {
 				position: relative;
-				width: 31px;
+				width: 35px;
 				padding: 0 5px;
 
 				&:after {
@@ -1264,20 +1264,55 @@
 					background: #0112;
 				}
 
-				.tool {
-					background: #0112;
+				.liq-tool {
+					background-color: #0112;
+					background-size: 0px;
 					position: relative;
 					display: inline-block;
-					width: 21px;
-					height: 21px;
+					width: 25px;
+					height: 25px;
 					margin-right: 0;
-					opacity: 1;
-					border-radius: 2px;
+					border-radius: 3px;
+					cursor: pointer;
+
+					&:after {
+						content: "";
+						position: absolute;
+						top: 4px;
+						left: 4px;
+						background-image: inherit;
+						background-size: contain;
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 rgba(#000, .5));
+						width: 17px;
+						height: 17px;
+						opacity: .5;
+					}
 
 					&.active {
-						background: #0113;
+						background-color: #0113;
 						cursor: default;
+
+						&:after {
+							opacity: 0.85;
+						}
 					}
+
+					&:hover:not(.disabled):not(.active) {
+						&:after {
+							opacity: 0.75;
+						}
+					}
+
+					&.liq-tool-liquify-smudge { background-image: url(~/icons/tool-liquify-smudge.png); }
+					&.liq-tool-reconstruct { background-image: url(~/icons/tool-reconstruct.png); }
+					&.liq-tool-smoothen { background-image: url(~/icons/tool-smoothen.png); }
+					&.liq-tool-twirl { background-image: url(~/icons/tool-twirl.png); }
+					&.liq-tool-shrink { background-image: url(~/icons/tool-shrink.png); }
+					&.liq-tool-blow { background-image: url(~/icons/tool-blow.png); }
+					&.liq-tool-push { background-image: url(~/icons/tool-push.png); }
+					&.liq-tool-hand { background-image: url(~/icons/tool-hand.png); }
 				}
 			}
 

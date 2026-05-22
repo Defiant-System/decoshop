@@ -1552,8 +1552,8 @@ const Dialogs = {
 			Self = Dialogs,
 			pixels,
 			copy,
-			pEl;
-		// console.log(event);
+			el;
+		console.log(event);
 		switch (event.type) {
 			// "fast events"
 			case "set-type":
@@ -1562,6 +1562,15 @@ const Dialogs = {
 				/* falls-through */
 			case "apply-filter-data":
 				return;
+
+			case "preview-zoom-out":
+			case "preview-zoom-in":
+				break;
+			case "select-tool":
+				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+				break;
 
 			default:
 				/* Falls through to "master UI"
