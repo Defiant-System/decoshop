@@ -1586,6 +1586,46 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLiquify" });
 		}
 	},
+	dlgAddGuides(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgAddGuides" });
+				break;
+		}
+	},
+	dlgCanvasSize(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCanvasSize" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,

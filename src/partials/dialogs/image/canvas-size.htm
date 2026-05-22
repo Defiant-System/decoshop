@@ -5,20 +5,66 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Canvas Size
 			</h2>
+
+			<div class="field-row">
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//Units">
+					<span class="label">Units</span>
+					<span class="value">Pixels</span>
+				</div>
+			</div>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+					<span class="label">Width</span>
+					<span class="value">
+						<input type="text" name="field-2" data-min="0" data-max="200" value="5px" data-suffix="px"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+				<div class="knob" data-value="5"></div>
 			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Height</span>
+					<span class="value">
+						<input type="text" name="field-2" data-min="0" data-max="200" value="5px" data-suffix="px"/>
+					</span>
+				</div>
+				<div class="knob" data-value="5"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option has-toggler">
+					<span class="label"></span>
+					<span class="value">
+						<div class="toggler" data-value="on">
+							<span>Relative</span>
+						</div>
+					</span>
+				</div>
+			</div>
+
+			<div class="field-row has-3x3-grid">
+				<div class="option">
+					<span class="label">Anchor</span>
+					<div class="grid-3x3-input">
+						<span class="grid-arrow-ne" data-arg="ne"></span>
+						<span class="grid-arrow-n" data-arg="n"></span>
+						<span class="grid-arrow-nw" data-arg="nw"></span>
+						<span class="grid-arrow-e" data-arg="e"></span>
+						<span class="grid-arrow-c active" data-arg="c"></span>
+						<span class="grid-arrow-w" data-arg="w"></span>
+						<span class="grid-arrow-se" data-arg="se"></span>
+						<span class="grid-arrow-s" data-arg="s"></span>
+						<span class="grid-arrow-sw" data-arg="sw"></span>
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
 			<div class="button" data-click="dlg-reset">Reset</div>
-			<div class="toggler" data-value="on" data-click="dlg-preview">
-				<span>Preview</span>
-			</div>
 		</div>
 	</div>
 </div>

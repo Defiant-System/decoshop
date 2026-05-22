@@ -5,16 +5,50 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Add Guides
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+
+			<div class="gl-list">
+				<div class="list-head">
+					<div class="row">
+						<div>Axis</div>
+						<div>Offset</div>
+						<div>Units</div>
+					</div>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="list-body">
+					<!-- preset layer list goes here -->
+					<div class="row">
+						<div>
+							<div class="axis-options" data-click="set-guideline-axis">
+								<i class="icon-vertical"></i>
+								<i class="icon-horizontal active"></i>
+							</div>
+						</div>
+						<div data-ux="dlg-knob" data-min="0" data-max="100">45</div>
+						<div class="inline-menu" data-options="fieldset-inline-menubox" data-match="//Units">Pixels</div>
+						<div>
+							<i class="icon-eye-on" data-click="toggle-layer"></i>
+							<i class="icon-trashcan" data-click="remove-layer"></i>
+						</div>
+					</div>
+
+					<!-- knob displayed above layer attribute numbers -->
+					<div class="inline-menubox arrow-below hover-knob hidden">
+						<div class="inline-content"><div class="knob"></div></div>
+					</div>
+					<!-- add more layers -->
+					<div class="add-row" data-click="add-layer">
+						<i class="icon-add-layer"></i>
+						Add Guideline
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Remove All</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Show</span>
+			</div>
 		</div>
 	</div>
 </div>
