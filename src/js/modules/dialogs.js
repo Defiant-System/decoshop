@@ -1697,6 +1697,11 @@ const Dialogs = {
 		switch (event.type) {
 			case "apply-filter-data":
 				return;
+			
+			case "toggle-ratio-linked":
+				event.el.toggleClass("active", event.el.hasClass("active"));
+				break;
+
 			// standard dialog events
 			case "dlg-open":
 				// click on a preset

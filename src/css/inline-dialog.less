@@ -2117,6 +2117,61 @@
 			margin: 9px 0 10px;
 		}
 
+		.fields {
+			&.push-rows {
+				.field-row {
+					margin-left: 47px;
+				}
+
+				.linked-2 {
+					position: relative;
+					margin-left: 47px;
+					font-size: 0;
+					height: 0;
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: 16px;
+						left: -31px;
+						width: 21px;
+						height: 5px;
+						border-radius: 2px 0 0 0;
+						border-top: 2px solid #eff2;
+						border-left: 2px solid #eff2;
+					}
+
+					&:after {
+						content: "";
+						position: absolute;
+						top: 44px;
+						left: -31px;
+						width: 21px;
+						height: 6px;
+						border-radius: 0 0 0 2px;
+						border-left: 2px solid #eff2;
+						border-bottom: 2px solid #eff2;
+					}
+
+					.icon-linked {
+						background: url(~/icons/icon-linked.png) 50% 50% / contain no-repeat;
+						position: absolute;
+						top: 25px;
+						left: -39px;
+						width: 17px;
+						height: 17px;
+						border-radius: 1px;
+						cursor: pointer;
+						
+						&.active {
+							background-color: #eff2;
+							box-shadow: 0 0 0 2px #eff2;
+						}
+					}
+				}
+			}
+		}
+
 		.field-options {
 			position: relative;
 			display: none;
