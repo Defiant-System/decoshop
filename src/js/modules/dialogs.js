@@ -1608,6 +1608,87 @@ const Dialogs = {
 	},
 	dlgCanvasSize(event) {
 		let APP = decoshop,
+			Self = Dialogs;
+		switch (event.type) {
+			// "fast events"
+			case "set-canvas-width":
+				Self.newDim.width = event.value;
+				Self.dlgCanvasSize({ type: "set-canvas-resize-anchor" });
+				return;
+			case "set-canvas-height":
+				Self.newDim.height = event.value;
+				Self.dlgCanvasSize({ type: "set-canvas-resize-anchor" });
+				return;
+
+			case "set-canvas-resize-anchor":
+				if (event.el && event.el[0] === event.target) return;
+
+				let el = $(event.target);
+				if (event.target) Self.index = el.index();
+
+				let adjacent = [...Self.matrix[Self.index]], // clone adjacent matrix
+					hCol = Self.oldDim.width >= Self.newDim.width,
+					vCol = Self.oldDim.height >= Self.newDim.height;
+				// compare old vs new dimensions
+				adjacent = adjacent.map(e => {
+					let v = e;
+					switch (e) {
+						case "n": if (vCol) v = "s"; break;
+						case "e": if (hCol) v = "w"; break;
+						case "w": if (hCol) v = "e"; break;
+						case "s": if (vCol) v = "n"; break;
+						case "ne": if (vCol && vCol) v = "sw"; break;
+						case "nw": if (vCol && vCol) v = "se"; break;
+						case "se": if (vCol && vCol) v = "nw"; break;
+						case "sw": if (vCol && vCol) v = "ne"; break;
+					}
+					return v;
+				});
+				// iterate arrows
+				Self.els.map((aElem, i) => {
+					let aEl = $(aElem),
+						cn = ["grid-arrow"];
+					if (adjacent[i] > 0) cn.push("n");
+					else cn.push(adjacent[i]);
+					// update element class name
+					aEl.prop({ className: cn.join(" ") });
+				});
+				break;
+			// standard dialog events
+			case "dlg-open":
+				// initial values
+				Self.els = event.dEl.find(".grid-arrow");
+				Self.oldDim = {
+					width: parseInt(event.dEl.find(`input[name="canvas-width"]`).val(), 10),
+					height: parseInt(event.dEl.find(`input[name="canvas-height"]`).val(), 10),
+				};
+				Self.newDim = {
+					width: parseInt(event.dEl.find(`input[name="canvas-width"]`).val(), 10),
+					height: parseInt(event.dEl.find(`input[name="canvas-height"]`).val(), 10),
+				};
+				Self.index = 4;
+				Self.matrix = [
+					[ "c", "w", -1, "s", "sw", -1, -1, -1, -1],
+					[ "e", "c", "w", "se", "s", "sw", -1, -1, -1],
+					[-1, "e", "c", -1, "se", "s", -1, -1, -1],
+					[ "n", "nw", -1, "c", "w", -1, "s", "sw", -1],
+					["ne", "n", "nw", "e", "c", "w", "se", "s", "sw"],
+					[-1, "ne", "n", -1, "e", "c", -1, "se", "s"],
+					[-1, -1, -1, "n", "nw", -1, "c", "w", -1],
+					[-1, -1, -1, "ne", "n", "nw", "e", "c", "w"],
+					[-1, -1, -1, -1, "ne", "n", -1, "e", "c"],
+				];
+				/* falls through */
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCanvasSize" });
+				break;
+		}
+	},
+	dlgImageSize(event) {
+		let APP = decoshop,
 			Self = Dialogs,
 			layers,
 			pixels,
@@ -1618,11 +1699,14 @@ const Dialogs = {
 				return;
 			// standard dialog events
 			case "dlg-open":
+				// click on a preset
+				requestAnimationFrame(() =>
+					event.dEl.find(`.presets li[data-id="prst-2"]`).trigger("mousedown").trigger("click"));
 			case "dlg-ok":
 			case "dlg-reset":
 			case "dlg-preview":
 			case "dlg-close":
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCanvasSize" });
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgImageSize" });
 				break;
 		}
 	},

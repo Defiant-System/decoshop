@@ -841,42 +841,47 @@ content {
 	}
 
 	.grid-3x3-input {
-		width: 81px;
-		height: 81px;
+		width: 74px;
+		height: 74px;
 		border-radius: 5px;
-		border: 1px solid #1225;
-		box-shadow: 0 1px 1px #0112;
+		background: linear-gradient(#677 0%, #405050 100%);
+		box-shadow: 0 0 0 1px #1225,
+					inset 0 1px 0 #fff2,
+					inset 0 -1px 1px #0114;
 		padding: 2px 0 0 2px;
 		font-size: 0;
 
-		> span {
+		> span.grid-arrow {
 			display: inline-block;
 			width: 19px;
 			height: 19px;
-			margin: 3px;
+			margin: 2px;
 			vertical-align: middle;
-			border-radius: .5px;
-			background-color: #eff1;
+			border-radius: 1px;
+			background-color: #bcc1;
 			box-shadow: 0 0 0 1px #eff2;
 			background-size: contain;
 			background-repeat: no-repeat;
 			background-position: 50% 50%;
 			filter: invert() drop-shadow(0 1px 0 #0004);
+			cursor: pointer;
 
-			&.active {
-				// background-color: #0112;
-				// box-shadow: 0 0 0 2px #eff2;
+			&.c  {
+				background-image: url(~/icons/icon-arrow-c.png);
+				background-color: #eff2;
+				box-shadow: inset 0 2px 3px #eff2;
+				border-radius: 2px;
+				pointer-events: none;
 			}
 
-			&.grid-arrow-n { background-image: url(~/icons/icon-arrow-n.png); }
-			&.grid-arrow-nw { background-image: url(~/icons/icon-arrow-nw.png); }
-			&.grid-arrow-w { background-image: url(~/icons/icon-arrow-w.png); }
-			&.grid-arrow-sw { background-image: url(~/icons/icon-arrow-sw.png); }
-			&.grid-arrow-c { background-image: url(~/icons/icon-arrow-c.png); }
-			&.grid-arrow-s { background-image: url(~/icons/icon-arrow-s.png); }
-			&.grid-arrow-se { background-image: url(~/icons/icon-arrow-se.png); }
-			&.grid-arrow-e { background-image: url(~/icons/icon-arrow-e.png); }
-			&.grid-arrow-ne { background-image: url(~/icons/icon-arrow-ne.png); }
+			&.n  { background-image: url(~/icons/icon-arrow-n.png); }
+			&.nw { background-image: url(~/icons/icon-arrow-nw.png); opacity: .75; }
+			&.w  { background-image: url(~/icons/icon-arrow-w.png); }
+			&.sw { background-image: url(~/icons/icon-arrow-sw.png); opacity: .75; }
+			&.s  { background-image: url(~/icons/icon-arrow-s.png); }
+			&.se { background-image: url(~/icons/icon-arrow-se.png); opacity: .75; }
+			&.e  { background-image: url(~/icons/icon-arrow-e.png); }
+			&.ne { background-image: url(~/icons/icon-arrow-ne.png); opacity: .75; }
 		}
 	}
 

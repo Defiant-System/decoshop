@@ -11,26 +11,22 @@
 	<svg id="icon-arrow-nw" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
-			.st1{fill:none;stroke:#333333;stroke-miterlimit:10;}
 		</style>
-<polygon class="st0" points="10.7,13.2 5.8,8.3 13.9,5.1 "/>
-<line class="st1" x1="1.5" y1="17.5" x2="11.4" y2="7.6"/>
+		<polygon class="st0" points="16.3,2.7 8.2,5.8 10.3,7.8 2.7,15.4 3.6,16.3 11.2,8.7 13.2,10.7 "/>
 	</svg>
 	
 	<svg id="icon-arrow-w" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
 		</style>
-<polygon class="st0" points="9.9,13 17.9,9.6 9.9,6.1 9.9,9.1 1,9.1 1,10.1 9.9,10.1 "/>
+		<polygon class="st0" points="9.9,13 17.9,9.6 9.9,6.1 9.9,9.1 1,9.1 1,10.1 9.9,10.1 "/>
 	</svg>
 	
 	<svg id="icon-arrow-sw" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
-			.st1{fill:none;stroke:#333333;stroke-miterlimit:10;}
 		</style>
-<polygon class="st0" points="5.9,11 10.8,6 13.9,14.1 "/>
-<line class="st1" x1="1.5" y1="1.7" x2="11.4" y2="11.6"/>
+		<polygon class="st0" points="16.3,16.3 13.2,8.2 11.2,10.3 3.6,2.7 2.7,3.6 10.3,11.2 8.3,13.2 "/>
 	</svg>
 	
 	<svg id="icon-arrow-c" viewBox="0 0 19 19">
@@ -44,32 +40,39 @@
 		<style type="text/css">
 			.st0{fill:#333;}
 		</style>
-<polygon class="st0" points="6,10.1 9.4,18 12.9,10.1 9.9,10.1 9.9,1.1 8.9,1.1 8.9,10.1 "/>
+		<polygon class="st0" points="6,10.1 9.4,18 12.9,10.1 9.9,10.1 9.9,1.1 8.9,1.1 8.9,10.1 "/>
 	</svg>
 	
 	<svg id="icon-arrow-se" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
-			.st1{fill:none;stroke:#333333;stroke-miterlimit:10;}
 		</style>
-<polygon class="st0" points="8.1,5.9 13.1,10.9 5,14 "/>
-<line class="st1" x1="17.4" y1="1.6" x2="7.5" y2="11.5"/>
+		<polygon class="st0" points="2.7,16.3 10.8,13.2 8.7,11.2 16.3,3.6 15.4,2.7 7.8,10.3 5.8,8.3 "/>
 	</svg>
 	
 	<svg id="icon-arrow-e" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
 		</style>
-<polygon class="st0" points="8.9,6.1 1,9.6 8.9,13 8.9,10.1 17.9,10.1 17.9,9.1 8.9,9.1 "/>
+		<polygon class="st0" points="8.9,6.1 1,9.6 8.9,13 8.9,10.1 17.9,10.1 17.9,9.1 8.9,9.1 "/>
 	</svg>
 	
 	<svg id="icon-arrow-ne" viewBox="0 0 19 19">
 		<style type="text/css">
 			.st0{fill:#333;}
-			.st1{fill:none;stroke:#333333;stroke-miterlimit:10;}
 		</style>
-<polygon class="st0" points="13.1,8.3 8.1,13.2 5,5.1 "/>
-<line class="st1" x1="17.4" y1="17.5" x2="7.5" y2="7.6"/>
+		<polygon class="st0" points="2.7,2.7 5.8,10.8 7.8,8.7 15.4,16.3 16.3,15.4 8.7,7.8 10.7,5.8 "/>
+	</svg>
+
+	<svg id="icon-linked" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#333;fill-rule:evenodd;clip-rule:evenodd;}
+		</style>
+		<path class="st0" d="M12.6,1.5c-0.5-0.5-1.4-0.5-1.9,0L7.4,4.8c-0.5,0.5-0.5,1.4,0,1.9l0.2,0.2L9,5.4C9.3,5.1,9.7,5,10.1,4.9
+			l1.6-1.6l2,2l-1.6,1.6c0,0.4-0.2,0.8-0.5,1.1l-1.4,1.4l0.2,0.2c0.5,0.5,1.4,0.5,1.9,0l3.3-3.3c0.5-0.5,0.5-1.4,0-1.9L12.6,1.5z
+			 M11.1,5.9c-0.5-0.5-1.2-0.5-1.6,0L5.9,9.4c-0.5,0.5-0.5,1.2,0,1.6c0.5,0.5,1.2,0.5,1.6,0l3.5-3.5C11.5,7.1,11.5,6.4,11.1,5.9z
+			 M6.7,7.4c-0.5-0.5-1.4-0.5-1.9,0l-3.3,3.3c-0.5,0.5-0.5,1.4,0,1.9l2.9,2.9c0.5,0.5,1.4,0.5,1.9,0l3.3-3.3c0.5-0.5,0.5-1.4,0-1.9
+			l-0.2-0.2L8,11.6c-0.3,0.3-0.7,0.5-1.1,0.5l-1.6,1.6l-2-2l1.6-1.6C5,9.7,5.1,9.3,5.4,9l1.4-1.4L6.7,7.4z"/>
 	</svg>
 
 	<svg id="tool-liquify-smudge" viewBox="0 0 17 17">

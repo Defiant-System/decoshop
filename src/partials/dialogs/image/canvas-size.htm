@@ -17,20 +17,20 @@
 				<div class="option input">
 					<span class="label">Width</span>
 					<span class="value">
-						<input type="text" name="field-2" data-min="0" data-max="200" value="5px" data-suffix="px"/>
+						<input type="text" name="canvas-width" data-min="1" data-max="999" value="100px" data-default="100px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="knob" data-value="5"></div>
+				<div class="knob" data-change="set-canvas-width" data-value="100"></div>
 			</div>
 			
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Height</span>
 					<span class="value">
-						<input type="text" name="field-2" data-min="0" data-max="200" value="5px" data-suffix="px"/>
+						<input type="text" name="canvas-height" data-min="1" data-max="999" value="100px" data-default="100px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="knob" data-value="5"></div>
+				<div class="knob" data-change="set-canvas-height" data-value="100"></div>
 			</div>
 
 			<div class="field-row">
@@ -47,16 +47,16 @@
 			<div class="field-row has-3x3-grid">
 				<div class="option">
 					<span class="label">Anchor</span>
-					<div class="grid-3x3-input">
-						<span class="grid-arrow-ne" data-arg="ne"></span>
-						<span class="grid-arrow-n" data-arg="n"></span>
-						<span class="grid-arrow-nw" data-arg="nw"></span>
-						<span class="grid-arrow-e" data-arg="e"></span>
-						<span class="grid-arrow-c active" data-arg="c"></span>
-						<span class="grid-arrow-w" data-arg="w"></span>
-						<span class="grid-arrow-se" data-arg="se"></span>
-						<span class="grid-arrow-s" data-arg="s"></span>
-						<span class="grid-arrow-sw" data-arg="sw"></span>
+					<div class="grid-3x3-input" data-click="set-canvas-resize-anchor">
+						<span class="grid-arrow ne"></span>
+						<span class="grid-arrow n"></span>
+						<span class="grid-arrow nw"></span>
+						<span class="grid-arrow e"></span>
+						<span class="grid-arrow c"></span>
+						<span class="grid-arrow w"></span>
+						<span class="grid-arrow se"></span>
+						<span class="grid-arrow s"></span>
+						<span class="grid-arrow sw"></span>
 					</div>
 				</div>
 			</div>
