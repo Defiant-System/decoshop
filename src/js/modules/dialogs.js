@@ -1760,6 +1760,46 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgVibrance(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgVibrance" });
+				break;
+		}
+	},
+	dlgColorBalance(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorBalance" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,

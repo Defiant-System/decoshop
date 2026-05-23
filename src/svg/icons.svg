@@ -1300,6 +1300,14 @@
 		<rect fill="#777" x="29" width="2" height="9"/>
 	</svg>
 
+	<svg id="icon-slider-handle" viewBox="0 0 13 12" size="keep">
+		<style type="text/css">
+			.st0{fill:#fff7;stroke:#333;stroke-linejoin:round;stroke-miterlimit:10;}
+		</style>
+		<path class="st0" d="M6.5,0.5c-3.2,3-6,6-6,7.8c0,0.9,0,2.2,0.2,2.6c0.4,0.8,2.4,0.6,5.8,0.6s5.4,0.2,5.8-0.6
+			c0.2-0.4,0.2-1.7,0.2-2.6C12.5,6.5,9.7,3.5,6.5,0.5z"/>
+	</svg>
+
 	<svg id="icon-dbl-slider-handle" viewBox="0 0 14 12" size="keep">
 		<style type="text/css">
 			.st0{fill:#fff7;stroke:#333;stroke-linejoin:round;stroke-miterlimit:10;}

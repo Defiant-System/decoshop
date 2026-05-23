@@ -1074,6 +1074,103 @@
 		}
 	}
 
+	&[data-dlg="dlgColorBalance"] {
+		.dlg-content {
+			min-height: 240px;
+
+			.fields {
+				min-width: 330px;
+
+				.field-row {
+					&.has-range {
+						height: 127px;
+
+						.option {
+							height: 37px;
+
+							.value {
+								background: transparent;
+								padding: 0;
+
+								> span {
+									background: rgba(#000,.3);
+									display: inline-block;
+									width: 43px;
+									border-radius: 21px;
+									padding: 3px 9px;
+									margin-right: 7px;
+								}
+							}
+						}
+
+						.slider {
+							// background: #0001;
+							position: relative;
+							left: 87px;
+							width: 200px;
+							height: 21px;
+							margin-bottom: 7px;
+							font-size: 11px;
+							color: #fffa;
+							text-shadow: 0 1px 0 #0006;
+
+							&:before {
+								content: "";
+								position: absolute;
+								top: 0;
+								left: 0;
+								right: 0;
+								height: 5px;
+								border-radius: 2px;
+								box-shadow: inset 0 1px 2px #0005;
+							}
+
+							&[data-colors="cyan-red"] {
+								&:before { background: linear-gradient(90deg, #0ff, #f00); }
+							}
+
+							&[data-colors="magenta-green"] {
+								&:before { background: linear-gradient(90deg, #f0f, #0f0); }
+							}
+
+							&[data-colors="yellow-blue"] {
+								&:before { background: linear-gradient(90deg, #ff0, #00f); }
+							}
+
+							.handle {
+								background: url(~/icons/icon-slider-handle.png) 0 0 no-repeat;
+								position: absolute;
+								top: 3px;
+								left: 100px;
+								width: 13px;
+								height: 12px;
+								z-index: 1;
+								transform: translateX(-6px);
+								filter: drop-shadow(0 1px 1px #1337);
+								cursor: ew-resize;
+							}
+
+							.name-left {
+								position: absolute;
+								top: -5px;
+								left: -90px;
+								width: 79px;
+								text-align: right;
+							}
+
+							.name-right {
+								position: absolute;
+								top: -5px;
+								right: -90px;
+								width: 79px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgLayerStyle"] {
 		top: 120px;
 		left: 105px;
