@@ -124,6 +124,15 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ImageInterpolation>
+		<i type="option" name="Nearest Neighbor" value="0"/>
+		<i type="option" name="Bilinear" value="1"/>
+		<i type="option" name="Bicubic Sharper" value="2"/>
+	</ImageInterpolation>
+	<DpiUnits>
+		<i type="option" name="Pixels / Inch" value="0"/>
+		<i type="option" name="Pixels / Cm" value="1"/>
+	</DpiUnits>
 	<Units>
 		<i type="option" name="Pixels" value="0"/>
 		<i type="option" name="Inches" value="1"/>

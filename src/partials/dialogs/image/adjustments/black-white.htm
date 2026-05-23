@@ -5,13 +5,77 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Black &amp; White
 			</h2>
+
+			<div class="field-row has-preset">
+				<div class="option">
+					<span class="label">Colorize</span>
+					<div class="toggler" data-value="on">
+						<span>Resample</span>
+					</div>
+					<span class="color-preset pull inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+				</div>
+			</div>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+					<span class="label">Red</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="40" data-default="40"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+				<div class="knob" data-value="40"></div>
 			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Yellow</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="85" data-default="85"/>
+					</span>
+				</div>
+				<div class="knob" data-value="85"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">green</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="204" data-default="204"/>
+					</span>
+				</div>
+				<div class="knob" data-value="204"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Cyan</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="60" data-default="60"/>
+					</span>
+				</div>
+				<div class="knob" data-value="60"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Blue</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="20" data-default="20"/>
+					</span>
+				</div>
+				<div class="knob" data-value="20"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Magenta</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="-200" data-max="300" value="80" data-default="80"/>
+					</span>
+				</div>
+				<div class="knob" data-value="80"></div>
+			</div>
+			
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

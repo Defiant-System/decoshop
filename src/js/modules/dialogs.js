@@ -1701,6 +1701,11 @@ const Dialogs = {
 			case "toggle-ratio-linked":
 				event.el.toggleClass("active", event.el.hasClass("active"));
 				break;
+			case "toggle-resampled":
+				event.el.parents(".field-row")
+					.nextAll(".field-row").get(0)
+					.find(".option").toggleClass("disabled", event.el.data("value") === "on");
+				break;
 
 			// standard dialog events
 			case "dlg-open":
@@ -1712,6 +1717,46 @@ const Dialogs = {
 			case "dlg-preview":
 			case "dlg-close":
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgImageSize" });
+				break;
+		}
+	},
+	dlgBlackWhite(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgBlackWhite" });
+				break;
+		}
+	},
+	dlgExposure(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExposure" });
 				break;
 		}
 	},

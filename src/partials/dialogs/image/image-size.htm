@@ -41,16 +41,32 @@
 				<div class="option input">
 					<span class="label">Resolution</span>
 					<span class="value">
-						<input type="text" name="field-2" data-min="1" data-max="300" value="300"/>
+						<input type="text" name="field-2" data-min="1" data-max="600" value="300"/>
 					</span>
 				</div>
 				<div class="knob" data-value="300"></div>
 			</div>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//Units">
-					<span class="label">Units</span>
-					<span class="value">Pixels/Inch</span>
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//DpiUnits">
+					<span class="label">DPI Units</span>
+					<span class="value">Pixels / Inch</span>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label"></span>
+					<div class="toggler" data-value="on" data-click="toggle-resampled">
+						<span>Resample</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//ImageInterpolation">
+					<span class="label">Interpolation</span>
+					<span class="value">Bilinear</span>
 				</div>
 			</div>
 
