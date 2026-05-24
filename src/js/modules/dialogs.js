@@ -1788,6 +1788,11 @@ const Dialogs = {
 			copy,
 			el;
 		switch (event.type) {
+			case "set-cyan-red-value":
+			case "set-magenta-green-value":
+			case "set-yellow-blue-value":
+				event.target.html(event.value)
+				/* falls through */
 			case "apply-filter-data":
 				return;
 			// standard dialog events
@@ -1797,6 +1802,32 @@ const Dialogs = {
 			case "dlg-preview":
 			case "dlg-close":
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorBalance" });
+				break;
+		}
+	},
+	dlgHueSaturation(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			// "fast events"
+			case "set-hue-value":
+			case "set-saturation-value":
+			case "set-lightness-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHueSaturation" });
 				break;
 		}
 	},

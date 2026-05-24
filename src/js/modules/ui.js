@@ -249,6 +249,68 @@ const UI = {
 				break;
 		}
 	},
+	doRange(event) {
+		let Self = UI,
+			Drag = Self.drag;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+
+				let el = $(event.target).parents("?[data-ux]").get(0);
+
+				if (el.data("ux") === "br-track") {
+					let hEl = el.find(".handle");
+					// hEl.css({  });
+					return hEl.trigger("mousedown");
+				}
+
+				let pEl = el.parent(),
+					dEl = pEl.parents(".dialog-box"),
+					value = +pEl.cssProp("--val"),
+					newValue = +pEl.cssProp("--val"),
+					target = dEl.find(`[data-id="${pEl.data("target")}"]`),
+					type = pEl.data("change"),
+					offset = {
+						x: +el.prop("offsetLeft") - event.clientX,
+					},
+					range = {
+						min: +pEl.data("min"),
+						max: +pEl.data("max"),
+					},
+					min = 0,
+					max = +pEl.prop("offsetWidth"),
+					func = Dialogs[dEl.data("dlg")];
+				// drag related info
+				Self.drag = { el, pEl, func, type, target, value, newValue, range, offset, min, max };
+
+				// bind event handlers
+				Self.content.addClass("no-dlg-cursor");
+				Self.doc.on("mousemove mouseup", Self.doRange);
+				break;
+			case "mousemove":
+				let diff = event.clientX + Drag.offset.x,
+					left = Math.max(Math.min(Drag.max, diff), Drag.min);
+				
+				Drag.el.css({ left });
+
+				// let val = Math.round((left / Drag.max) * 255);
+				let val = Math.round(Math.lerp(Drag.range.min, Drag.range.max, left / Drag.max));
+				if (Drag.newValue === val) return;
+				Drag.newValue = val;
+
+				// proxy changed value
+				Drag.func({ type: Drag.type, target: Drag.target, value: Drag.newValue });
+				break;
+			case "mouseup":
+				// unbind event handlers
+				Self.content.removeClass("no-dlg-cursor");
+				Self.doc.off("mousemove mouseup", Self.doRange);
+				break;
+		}
+	},
 	doDblRange(event) {
 		let Self = UI,
 			Drag = Self.drag;
@@ -262,7 +324,7 @@ const UI = {
 				let el = $(event.target).parents("?[data-ux]"),
 					ux = el.data("ux");
 
-				let dId = el.parents(`.dialog-box[data-dlg]`).data("dlg"),
+				let func = Drag[el.parents(`.dialog-box[data-dlg]`).data("dlg")],
 					hEl = el.parents(`?[data-ux="r-handle"]`).addClass("hover"),
 					type = hEl.data("change"),
 					opW = +hEl.parent().prop("offsetWidth") - 1,
@@ -300,7 +362,8 @@ const UI = {
 						max = opW - oW;
 						break;
 				}
-				Self.drag = { el, ux, hEl, dId, els, value, newValue, type, offset, min, max };
+				// drag related info
+				Self.drag = { el, ux, hEl, func, els, value, newValue, type, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
@@ -337,7 +400,7 @@ const UI = {
 				Drag.newValue = val;
 
 				// proxy changed value
-				Dialogs[Drag.dId]({ type: Drag.type, els: Drag.els, value: Drag.newValue });
+				Drag.func({ type: Drag.type, els: Drag.els, value: Drag.newValue });
 				break;
 			case "mouseup":
 				// reset range element
@@ -377,6 +440,9 @@ const UI = {
 						return Self.doDialogKnobValue(event);
 					case el.data("ux") === "dlg-bars":
 						return Self.doDialogBars(event);
+					case el.data("ux") === "br-track":
+					case el.data("ux") === "br-handle":
+						return Self.doRange(event);
 					case el.data("ux") === "r-handle":
 					case el.data("ux") === "r-min":
 					case el.data("ux") === "r-max":

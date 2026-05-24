@@ -124,6 +124,15 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<HSRanges>
+		<i type="option" name="Master" value="0"/>
+		<i type="option" name="Red" value="1"/>
+		<i type="option" name="Yellow" value="2"/>
+		<i type="option" name="Green" value="3"/>
+		<i type="option" name="Cyan" value="4"/>
+		<i type="option" name="Blue" value="5"/>
+		<i type="option" name="Magenta" value="6"/>
+	</HSRanges>
 	<ImageInterpolation>
 		<i type="option" name="Nearest Neighbor" value="0"/>
 		<i type="option" name="Bilinear" value="1"/>
