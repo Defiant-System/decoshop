@@ -1109,31 +1109,66 @@
 							background: transparent;
 							padding: 0;
 
+							> i {
+								position: absolute;
+								top: 0;
+								left: -21px;
+								width: 19px;
+								height: 19px;
+								background: url(~/icons/tool-pipette-dark.png) 0 0 no-repeat;
+								background-position: 2px 2px;
+								background-size: 15px auto;
+								border-radius: 3px;
+								filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 #0007);
+								cursor: pointer;
+
+								&.icon-1 { left: 0px; background-image: url(~/icons/tool-pipette-dark.png); }
+								&.icon-2 { left: 79px; background-image: url(~/icons/tool-pipette-mid.png); }
+								&.icon-3 { left: 160px; background-image: url(~/icons/tool-pipette-light.png); }
+
+								&:hover {
+									background-color:  #fee2;
+								}
+
+								&:active {
+									background-color:  #fee4;
+								}
+							}
+
 							> span {
 								background: rgba(#000,.3);
+								position: relative;
 								display: inline-block;
 								width: 43px;
 								border-radius: 21px;
 								padding: 3px 9px;
 								margin-right: 7px;
 								text-align: center;
+
+								&[data-id="input-1"] { left: 21px; }
+								&[data-id="input-2"] { left: 49px; }
+								&[data-id="input-3"] { left: 77px; }
+
+								&[data-id="output-1"] { width: 53px; left: 0; }
+								&[data-id="output-2"] { width: 53px; left: 103px; }
 							}
 						}
 					}
 				}
 
 				.slider-handles {
-					// background: #0111;
 					position: relative;
-					top: -5px;
+					top: -6px;
+					left: 5px;
 					height: 15px;
+					width: 300px;
 				}
 
 				.slider {
 					position: relative;
 					top: 3px;
-					left: 0;
-					width: 310px;
+					left: 5px;
+					width: 300px;
 					height: 21px;
 					margin-bottom: 7px;
 
@@ -1160,7 +1195,7 @@
 					}
 
 					.handle {
-						top: 5px;
+						top: 6px;
 					}
 				}
 
@@ -1168,7 +1203,6 @@
 					background: url(~/icons/icon-slider-handle.png) 0 0 no-repeat;
 					position: absolute;
 					top: 0;
-					// left: 100px;
 					width: 13px;
 					height: 12px;
 					z-index: 1;
@@ -1176,9 +1210,11 @@
 					filter: drop-shadow(0 1px 1px #1337);
 					cursor: ew-resize;
 
-					&:nth-child(1) { left: 20px; }
-					&:nth-child(2) { left: 90px; }
-					&:nth-child(3) { left: 210px; }
+					&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
+					&[data-for="input-2"] { left: var( --v2 ); }
+					&[data-for="input-3"] { left: var( --v3 ); background-image: url(~/icons/icon-slider-light-handle.png); }
+					&[data-for="output-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
+					&[data-for="output-2"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
 				}
 			}
 
