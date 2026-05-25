@@ -1330,6 +1330,13 @@
 		<path class="st0" d="M7.5,11.5c3.4,0,5.4,0.2,5.8-0.6c0.2-0.4,0.2-1.7,0.2-2.6c0-1.8-2.8-4.8-6-7.8C7.5,0.5,7.5,9.4,7.5,11.5z"/>
 	</svg>
 
+	<svg id="icon-dbl-slider-mid-handle" viewBox="0 0 4 12" size="keep">
+		<style type="text/css">
+			.st0{fill:#fff7;stroke:#333;stroke-linejoin:round;stroke-miterlimit:10;}
+		</style>
+		<rect x=".5" y=".5" class="st0" width="3" height="11"/>
+	</svg>
+
 	<svg id="icon-black-white" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{fill:#333;}

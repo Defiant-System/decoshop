@@ -51,10 +51,12 @@
 
 			<div class="field-row has-ranges-tools">
 				<div class="range-values-left">
-					<span>315°</span> / <span>345°</span>
+					<span data-id="range-low-min">315°</span> /
+					<span data-id="range-low-mid-min">345°</span>
 				</div>
 				<div class="range-values-right">
-					<span>15°</span> \ <span>45°</span>
+					<span data-id="range-high-mid-max">15°</span> \
+					<span data-id="range-high-max">45°</span>
 				</div>
 				<span class="tool-items">
 					<span class="item-pipette active"></span>
@@ -64,13 +66,17 @@
 			</div>
 
 			<div class="field-row has-sliders-only">
-				<div class="slider no-drag"></div>
-				<div class="slider">
-					<span class="low" data-ux="r-handle" style="--min: 13; --max: 43;" data-arg="layer-0">
-						<span class="min" data-ux="r-min" data-for="layer-0-low-min"></span>
-						<span class="max" data-ux="r-max" data-for="layer-0-low-max"></span>
+				<div class="q-slider">
+					<span class="handle" data-ux="qr-handle" style="--min: 13; --max: 43;" data-arg="layer-0">
+						<span class="min" data-ux="qr-min" data-for="range-low-min"></span>
+						<span class="mid-handle" data-ux="qrm-handle">
+							<span class="min" data-ux="qrm-min" data-for="range-low-mid-min"></span>
+							<span class="max" data-ux="qrm-max" data-for="range-high-mid-max"></span>
+						</span>
+						<span class="max" data-ux="qr-max" data-for="range-high-max"></span>
 					</span>
 				</div>
+				<!-- <div class="slider no-drag"></div> -->
 			</div>
 			
 		</div>

@@ -263,8 +263,13 @@ const UI = {
 
 				if (el.data("ux") === "br-track") {
 					let hEl = el.find(".handle");
-					// hEl.css({  });
-					return hEl.trigger("mousedown");
+					hEl.css({ left: event.offsetX - 5 });
+					return Self.doRange({
+						type: "mousedown",
+						target: hEl[0],
+						clientX: event.clientX,
+						preventDefault() {},
+					});
 				}
 
 				let pEl = el.parent(),
@@ -308,6 +313,42 @@ const UI = {
 				// unbind event handlers
 				Self.content.removeClass("no-dlg-cursor");
 				Self.doc.off("mousemove mouseup", Self.doRange);
+				break;
+		}
+	},
+	doQRange(event) {
+		let Self = UI,
+			Drag = Self.drag;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+
+				let el = $(event.target).parents("?[data-ux]").get(0),
+					ux = el.data("ux");
+
+				let pEl = el.parent(),
+					dEl = pEl.parents(".dialog-box"),
+					offset = {
+						x: +el.prop("offsetLeft") - event.clientX,
+					},
+					min = 0,
+					max = +pEl.prop("offsetWidth");
+				// drag related info
+				Self.drag = { el, pEl, offset, min, max };
+
+				// bind event handlers
+				Self.content.addClass("no-dlg-cursor");
+				Self.doc.on("mousemove mouseup", Self.doQRange);
+				break;
+			case "mousemove":
+				break;
+			case "mouseup":
+				// unbind event handlers
+				Self.content.removeClass("no-dlg-cursor");
+				Self.doc.off("mousemove mouseup", Self.doQRange);
 				break;
 		}
 	},
@@ -426,6 +467,7 @@ const UI = {
 			// native events
 			case "mousedown":
 				el = $(event.target);
+				let ux = el.data("ux");
 
 				switch (true) {
 					case el.hasClass("toggler"):
@@ -436,17 +478,24 @@ const UI = {
 						return Self.doColorBox(event);
 					case el.hasClass("hue-bar"):
 						return Self.doHueBar(event);
-					case el.data("ux") === "dlg-knob":
+					case ux === "dlg-knob":
 						return Self.doDialogKnobValue(event);
-					case el.data("ux") === "dlg-bars":
+					case ux === "dlg-bars":
 						return Self.doDialogBars(event);
-					case el.data("ux") === "br-track":
-					case el.data("ux") === "br-handle":
+					case ux === "br-track":
+					case ux === "br-handle":
 						return Self.doRange(event);
-					case el.data("ux") === "r-handle":
-					case el.data("ux") === "r-min":
-					case el.data("ux") === "r-max":
+					case ux === "r-handle":
+					case ux === "r-min":
+					case ux === "r-max":
 						return Self.doDblRange(event);
+					case ux === "qr-handle":
+					case ux === "qr-min":
+					case ux === "qrm-handle":
+					case ux === "qrm-min":
+					case ux === "qrm-max":
+					case ux === "qr-max":
+						return Self.doQRange(event);
 					case el.hasClass("knob"):
 					case el.hasClass("pan-knob"):
 						return Self.doDialogKnob(event);
