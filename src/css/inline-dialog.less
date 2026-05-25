@@ -1114,23 +1114,44 @@
 								top: 0;
 								left: -21px;
 								width: 19px;
-								height: 19px;
-								background: url(~/icons/tool-pipette-dark.png) 0 0 no-repeat;
-								background-position: 2px 2px;
-								background-size: 15px auto;
-								border-radius: 3px;
-								filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 #0007);
+								height: 20px;
 								cursor: pointer;
+								background-size: 0 0;
+
+								&:before {
+									content: "";
+									background: #fee2;
+									border-radius: 20px;
+									position: absolute;
+									top: 0;
+									bottom: 0;
+									left: 0;
+									width: 67px;
+								}
+
+								&:after {
+									content: "";
+									position: absolute;
+									top: 0;
+									left: 4px;
+									width: inherit;
+									height: inherit;
+									background: 0 0 no-repeat;
+									background-image: inherit;
+									background-position: 2px 2px;
+									background-size: 15px auto;
+									filter: drop-shadow(0 1px 0 #0007);
+								}
 
 								&.icon-1 { left: 0px; background-image: url(~/icons/tool-pipette-dark.png); }
 								&.icon-2 { left: 79px; background-image: url(~/icons/tool-pipette-mid.png); }
 								&.icon-3 { left: 160px; background-image: url(~/icons/tool-pipette-light.png); }
 
-								&:hover {
+								&:hover:before {
 									background-color:  #fee2;
 								}
 
-								&:active {
+								&:active:before {
 									background-color:  #fee4;
 								}
 							}
@@ -1145,9 +1166,9 @@
 								margin-right: 7px;
 								text-align: center;
 
-								&[data-id="input-1"] { left: 21px; }
-								&[data-id="input-2"] { left: 49px; }
-								&[data-id="input-3"] { left: 77px; }
+								&[data-id="input-1"] { left: 25px; }
+								&[data-id="input-2"] { left: 53px; }
+								&[data-id="input-3"] { left: 80px; }
 
 								&[data-id="output-1"] { width: 53px; left: 0; }
 								&[data-id="output-2"] { width: 53px; left: 103px; }
