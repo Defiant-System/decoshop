@@ -1808,9 +1808,7 @@ const Dialogs = {
 	dlgHueSaturation(event) {
 		let APP = decoshop,
 			Self = Dialogs,
-			layers,
-			pixels,
-			copy,
+			value,
 			el;
 		switch (event.type) {
 			// "fast events"
@@ -1821,13 +1819,71 @@ const Dialogs = {
 				/* falls through */
 			case "apply-filter-data":
 				return;
+
+			case "toggle-image-saturation":
+				value = event.el.hasClass("active");
+				event.el.toggleClass("active", value);
+				break;
+			case "set-color-range":
+				el = event.el.parents(".dlg-content").find(".has-ranges-tools, .has-sliders-only");
+				if (event.value === "0") {
+					// master
+					el.removeClass("show");
+				} else {
+					el.addClass("show");
+					value = Self.colorRanges[event.text.toLowerCase()];
+					el.find(".q-slider").css({
+						"--x1": value.x1,
+						"--w1": value.w1,
+						"--w2": value.w2,
+					});
+				}
+				break;
+			case "select-pipette":
+				event.el.find(".active").removeClass("active");
+				el = $(event.target).addClass("active");
+				console.log(el.data("arg"));
+				break;
+
+			// standard dialog events
+			case "dlg-open":
+				Self.colorRanges = {
+					master:  {}, // q-slider not visible
+					cyan:    { x1: 0, w1: 70, w2: 22 },
+					blue:    { x1: 69, w1: 70, w2: 22 },
+					magenta: { x1: 138, w1: 70, w2: 22 },
+					red:     { x1: 207, w1: 70, w2: 22 },
+					yellow:  { x1: 276, w1: 70, w2: 22 },
+					green:   { x1: 345, w1: 70, w2: 22 },
+				};
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHueSaturation" });
+				break;
+		}
+	},
+	dlgLevels(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			layers,
+			pixels,
+			copy,
+			el;
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
 			// standard dialog events
 			case "dlg-open":
 			case "dlg-ok":
 			case "dlg-reset":
 			case "dlg-preview":
 			case "dlg-close":
-				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHueSaturation" });
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLevels" });
 				break;
 		}
 	},

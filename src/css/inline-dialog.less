@@ -1074,14 +1074,103 @@
 		}
 	}
 
+	&[data-dlg="dlgLevels"] {
+		.dlg-content {
+			--clr1: #dee1;
+			--clr2: #cee3;
+			--bW1: 50px;
+
+			.graph {
+				background: #3443;
+				position: relative;
+				width: 310px;
+				height: 159px;
+				margin-right: 3px;
+				margin-bottom: 3px;
+				border-radius: 3px;
+				background-image:
+					repeating-linear-gradient(90deg,
+						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+					),
+					repeating-linear-gradient(0deg,
+						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+					),
+					repeating-linear-gradient(90deg,
+						var( --clr2 ) 0px, var( --clr2 ) 1px,
+						transparent 1px, transparent 100%
+					),
+					repeating-linear-gradient(0deg,
+						transparent 0, transparent calc( 100% - 1px ),
+						var( --clr2 ) calc( 100% - 1px ), var( --clr2 ) 100%,
+					);
+				background-position: 5px -5px;
+				box-shadow: inset 0 2px 7px #0001,
+							0 0 0 1px #1226;
+
+				&:after {
+					content: "";
+					background: linear-gradient(90deg, #6770 0%, #677 50%, #6770 100%);
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+					right: 0;
+					height: 1px;
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgHueSaturation"] {
 		.dlg-content {
-			min-height: 240px;
+			// min-height: 240px;
 
 			.fields {
 				min-width: 365px;
 
 				.field-row {
+					&.has-option-tool {
+						.label {
+							position: relative;
+						
+							.toggle-tool {
+								position: absolute;
+								top: 0;
+								right: 0;
+								width: 21px;
+								height: 20px;
+								border-radius: 3px;
+
+								&.active {
+									background: #0113;
+								}
+
+								&:active {
+									background: #0114;
+								}
+
+								&:not(:active):hover {
+									background: #0112;
+								}
+
+								&:before {
+									content: "";
+									position: absolute;
+									top: 2px;
+									left: 2px;
+									width: 17px;
+									height: 17px;
+									background-size: contain;
+									background-repeat: no-repeat;
+									background-position: 50% 50%;
+									background-image: url(~/icons/icon-ew-resize.png);
+									filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 rgba(#000, .5));
+								}
+							}
+						}
+					}
+
 					&.has-basic-range {
 						// height: 47px;
 
@@ -1104,8 +1193,24 @@
 					}
 
 					&.has-ranges-tools {
+						display: none;
 						height: 25px;
-						margin: 13px 11px 5px 0;
+						margin: 23px 11px 5px 0;
+
+						&.show {
+							display: block;
+						}
+
+						&:before {
+							content: "";
+							position: absolute;
+							left: 0;
+							right: 0;
+							top: -9px;
+							height: 1px;
+							background: linear-gradient(90deg, #aff0, #aff3, #aff0);
+							filter: drop-shadow(0 -1px 0 #011c);
+						}
 
 						.range-values-left,
 						.range-values-right {
@@ -1191,7 +1296,12 @@
 					}
 
 					&.has-sliders-only {
+						display: none;
 						height: 29px;
+
+						&.show {
+							display: block;
+						}
 
 						.q-slider,
 						.slider {
@@ -1200,10 +1310,6 @@
 							width: 345px;
 							
 							&:before { background: linear-gradient(90deg, #0ff, #00f, #f0f, #f00, #ff0, #0f0); }
-
-							&.no-drag {
-								top: 23px;
-							}
 						}
 					}
 
@@ -1268,13 +1374,20 @@
 					}
 
 					.q-slider {
+						left: 2px;
+						width: 345px;
+						--w1: 70;
+						--w2: 22;
+						--x1: 171;
+						--x2: calc( calc( var( --w1 ) - var( --w2 ) ) * .5 );
+
 						.handle {
 							background: #dff1;
 							position: absolute;
 							top: 8px;
-							left: 23px;
-							width: 100px;
 							height: 10px;
+							left: calc( calc( var( --x1 ) - calc( var( --w1 ) * .5 ) ) * 1px );
+							width: calc( var( --w1 ) * 1px );
 							cursor: ew-resize;
 
 							&:hover,
@@ -1306,9 +1419,9 @@
 								background: #dff2;
 								position: absolute;
 								top: 0;
-								left: 31px;
-								width: 40px;
 								height: 10px;
+								left: calc( var( --x2 ) * 1px );
+								width: calc( var( --w2 ) * 1px );
 
 								&:hover,
 								&.hover {

@@ -6,9 +6,12 @@
 				Hue / Saturation
 			</h2>
 
-			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//HSRanges">
-					<span class="label">Range</span>
+			<div class="field-row has-option-tool">
+				<div class="option select" data-change="set-color-range" data-options="fieldset-inline-menubox" data-match="//HSRanges">
+					<span class="label">
+						Range
+						<div class="toggle-tool" data-click="toggle-image-saturation" title="Change saturation in image."></div>
+					</span>
 					<span class="value">Master</span>
 				</div>
 			</div>
@@ -49,7 +52,7 @@
 				</div>
 			</div>
 
-			<div class="field-row has-ranges-tools">
+			<div class="field-row has-ranges-tools show">
 				<div class="range-values-left">
 					<span data-id="range-low-min">315°</span> /
 					<span data-id="range-low-mid-min">345°</span>
@@ -58,16 +61,16 @@
 					<span data-id="range-high-mid-max">15°</span> \
 					<span data-id="range-high-max">45°</span>
 				</div>
-				<span class="tool-items">
-					<span class="item-pipette active"></span>
-					<span class="item-pipette-plus"></span>
-					<span class="item-pipette-minus"></span>
+				<span class="tool-items" data-click="select-pipette">
+					<span class="item-pipette" data-arg="normal"></span>
+					<span class="item-pipette-plus" data-arg="plus"></span>
+					<span class="item-pipette-minus" data-arg="minus"></span>
 				</span>
 			</div>
 
-			<div class="field-row has-sliders-only">
+			<div class="field-row has-sliders-only show">
 				<div class="q-slider">
-					<span class="handle" data-ux="qr-handle" style="--min: 13; --max: 43;" data-arg="layer-0">
+					<span class="handle" data-ux="qr-handle">
 						<span class="min" data-ux="qr-min" data-for="range-low-min"></span>
 						<span class="mid-handle" data-ux="qrm-handle">
 							<span class="min" data-ux="qrm-min" data-for="range-low-mid-min"></span>
