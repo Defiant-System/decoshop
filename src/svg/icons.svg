@@ -64,6 +64,12 @@
 		<polygon class="st0" points="2.7,2.7 5.8,10.8 7.8,8.7 15.4,16.3 16.3,15.4 8.7,7.8 10.7,5.8 "/>
 	</svg>
 	
+	<svg id="icon-ns-resize" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#333;}
+		</style>
+	</svg>
+	
 	<svg id="icon-ew-resize" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{fill:#333;}
@@ -389,6 +395,14 @@
 		<circle fill="#333" cx="8.5" cy="8.5" r="1.7"/>
 		<circle fill="#333" cx="14.3" cy="8.5" r="1.7"/>
 		<circle fill="#333" cx="2.7" cy="8.5" r="1.7"/>
+	</svg>
+
+	<svg id="tool-spline" viewBox="0 0 15 15">
+
+	</svg>
+
+	<svg id="tool-sketch" viewBox="0 0 15 15">
+
 	</svg>
 
 	<svg id="tool-pipette-dark" viewBox="0 0 15 15">
