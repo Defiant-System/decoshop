@@ -171,6 +171,22 @@
 		}
 	}
 
+	&[data-dlg="dlgMatchColor"] {
+		.dlg-content {
+			.fields {
+				min-width: 240px;
+			}
+
+			.field-row {
+				.option {
+					.label {
+						min-width: 90px;
+					}
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgAddGuides"] {
 		.gl-list {
 			width: 261px;
@@ -1167,8 +1183,8 @@
 								text-align: center;
 
 								&[data-id="input-1"] { left: 25px; }
-								&[data-id="input-2"] { left: 53px; }
-								&[data-id="input-3"] { left: 80px; }
+								&[data-id="input-2"] { left: 52px; }
+								&[data-id="input-3"] { left: 81px; }
 
 								&[data-id="output-1"] { width: 53px; left: 0; }
 								&[data-id="output-2"] { width: 53px; left: 103px; }
@@ -3211,6 +3227,9 @@
 				&.select {
 					.value {
 						min-width: 89px;
+						max-width: 110px;
+						overflow: hidden;
+						text-overflow: ellipsis;
 						flex: initial;
 					}
 				}
