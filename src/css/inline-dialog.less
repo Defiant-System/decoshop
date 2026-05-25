@@ -1080,9 +1080,112 @@
 			--clr2: #cee3;
 			--bW1: 50px;
 
+			.field-row {
+				&.has-range {
+					&.has-graph {
+						height: 221px;
+					}
+
+					&.has-input {
+						height: 73px;
+						padding-top: 7px;
+
+						&:before {
+							content: "";
+							position: absolute;
+							left: 0;
+							right: 0;
+							top: -1px;
+							height: 1px;
+							background: linear-gradient(90deg, #aff0, #aff3, #aff0);
+							filter: drop-shadow(0 -1px 0 #011c);
+						}
+					}
+					
+					.option {
+						height: 37px;
+
+						.value {
+							background: transparent;
+							padding: 0;
+
+							> span {
+								background: rgba(#000,.3);
+								display: inline-block;
+								width: 43px;
+								border-radius: 21px;
+								padding: 3px 9px;
+								margin-right: 7px;
+								text-align: center;
+							}
+						}
+					}
+				}
+
+				.slider-handles {
+					// background: #0111;
+					position: relative;
+					top: -5px;
+					height: 15px;
+				}
+
+				.slider {
+					position: relative;
+					top: 3px;
+					left: 0;
+					width: 310px;
+					height: 21px;
+					margin-bottom: 7px;
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						height: 6px;
+						border-radius: 2px;
+						box-shadow: inset 0 1px 2px #0005;
+						background: linear-gradient(90deg, #000, #fff);
+					}
+
+					&:after {
+						content: "";
+						position: absolute;
+						left: 0;
+						right: -1px;
+						top: 6px;
+						height: 1px;
+						background: linear-gradient(90deg, #aff0, #aff5, #aff0);
+					}
+
+					.handle {
+						top: 5px;
+					}
+				}
+
+				.handle {
+					background: url(~/icons/icon-slider-handle.png) 0 0 no-repeat;
+					position: absolute;
+					top: 0;
+					// left: 100px;
+					width: 13px;
+					height: 12px;
+					z-index: 1;
+					transform: translateX(-6px);
+					filter: drop-shadow(0 1px 1px #1337);
+					cursor: ew-resize;
+
+					&:nth-child(1) { left: 20px; }
+					&:nth-child(2) { left: 90px; }
+					&:nth-child(3) { left: 210px; }
+				}
+			}
+
 			.graph {
 				background: #3443;
 				position: relative;
+				top: -5px;
 				width: 310px;
 				height: 159px;
 				margin-right: 3px;

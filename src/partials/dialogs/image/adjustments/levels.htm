@@ -8,12 +8,41 @@
 
 			<div class="field-row">
 				<div class="option select" data-options="fieldset-inline-menubox" data-match="//LevelChannels">
-					<span class="label">Range</span>
-					<span class="value">Master</span>
+					<span class="label">Channel</span>
+					<span class="value">RGB</span>
 				</div>
 			</div>
 
-			<div class="graph"></div>
+			<div class="field-row has-graph has-range">
+				<div class="option input">
+					<span class="label">Input Levels</span>
+					<span class="value">
+						<span data-id="cyan-red">0</span>
+						<span data-id="magenta-green">0</span>
+						<span data-id="yellow-blue">0</span>
+					</span>
+				</div>
+				<div class="graph"></div>
+				<div class="slider-handles">
+					<span class="handle"></span>
+					<span class="handle"></span>
+					<span class="handle"></span>
+				</div>
+			</div>
+			
+			<div class="field-row has-range has-input">
+				<div class="option input">
+					<span class="label">Output Levels</span>
+					<span class="value">
+						<span data-id="cyan-red">0</span>
+						<span data-id="magenta-green">0</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-100" data-max="100" data-range="lightness">
+					<span class="handle"></span>
+					<span class="handle"></span>
+				</div>
+			</div>
 
 		</div>
 		<div class="buttons">
