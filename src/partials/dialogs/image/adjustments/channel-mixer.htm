@@ -5,13 +5,71 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Channel Mixer
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+
+			<div class="field-row">
+				<div class="option select" data-options="fieldset-inline-menubox" data-match="//ChannelMixerOutput">
+					<span class="label">Output</span>
+					<span class="value">Red</span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
 			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Red</span>
+					<span class="value">
+						<span data-id="channel-red" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-200" data-max="200" data-target="channel-red" data-ux="br-track" data-range="range-red">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Green</span>
+					<span class="value">
+						<span data-id="channel-green" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-200" data-max="200" data-target="channel-green" data-ux="br-track" data-range="range-green">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Blue</span>
+					<span class="value">
+						<span data-id="channel-blue" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-200" data-max="200" data-target="channel-blue" data-ux="br-track" data-range="range-blue">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Constant</span>
+					<span class="value">
+						<span data-id="channel-total" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-200" data-max="200" data-target="channel-total" data-ux="br-track" data-range="range-total">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Monochromatic</span>
+					<div class="toggler" data-value="off">
+						<span>Apply</span>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
