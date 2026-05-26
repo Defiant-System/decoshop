@@ -124,6 +124,12 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ColorRangeSelect>
+		<i type="option" name="Sampled Colors" value="0"/>
+		<i type="option" name="Shadows" value="1"/>
+		<i type="option" name="Midtones" value="2"/>
+		<i type="option" name="Highlights" value="3"/>
+	</ColorRangeSelect>
 	<ChannelMixerOutput>
 		<i type="option" name="Red" value="0"/>
 		<i type="option" name="Green" value="1"/>

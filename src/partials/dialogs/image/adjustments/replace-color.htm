@@ -5,13 +5,47 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Replace Color
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+					<span class="label">Fuzziness</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="55" data-default="55"></span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+				<div class="knob" data-value="55"></div>
 			</div>
+
+			<div class="field-row has-preset">
+				<div class="option">
+					<span class="label">Color</span>
+					<span class="color-preset pull inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+					<span class="tool-pipette"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Hue</span>
+					<span class="value"><input type="text" name="amount" data-min="-180" data-max="180" value="-22" data-default="-22"></span>
+				</div>
+				<div class="pan-knob" data-value="-22"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Saturation</span>
+					<span class="value"><input type="text" name="amount" data-min="-100" data-max="100" value="0" data-default="0"></span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Lightness</span>
+					<span class="value"><input type="text" name="amount" data-min="-100" data-max="100" value="0" data-default="0"></span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

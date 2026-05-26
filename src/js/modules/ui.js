@@ -42,7 +42,14 @@ const UI = {
 				el = $(event.target).parents("?[data-options]");
 				value = el.data("options");
 				if (!value || el.hasClass("disabled")) return;
-
+				// make option active
+				if (el.data("options") === "pop-gradient-strips") {
+					let gs = el.find(".gradient-strip").cssProp("--gs"),
+						aNode = window.bluePrint.selectSingleNode(`//Gradients/i[@active]`),
+						gNode = window.bluePrint.selectSingleNode(`//Gradients/i[@g="${gs}"]`);
+					if (aNode) aNode.removeAttribute("active");
+					if (gNode) gNode.setAttribute("active", 1);
+				}
 				// save reference to source element
 				Self.srcEl = el.addClass("opened");
 				// render menubox
@@ -112,6 +119,7 @@ const UI = {
 	},
 	doGradients(event) {
 		let Self = UI,
+			dEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -122,7 +130,16 @@ const UI = {
 				event.el.find(".active").removeClass("active");
 				el = $(event.target).addClass("active");
 				// update toolbar option selectbox
-				Self.srcEl.find(".gradient-strip").css({ "--gs": el.cssProp("--gs") })
+				Self.srcEl.find(".gradient-strip").css({ "--gs": el.cssProp("--gs") });
+				// forward event
+				dEl = Self.srcEl.parents(".dialog-box");
+				if (dEl.length) {
+					let func = Dialogs[dEl.data("dlg")],
+						type = Self.srcEl.data("change");
+					if (func) func({ ...event, type });
+					// clean up
+					Self.menu.remove();
+				}
 				break;
 		}
 	},

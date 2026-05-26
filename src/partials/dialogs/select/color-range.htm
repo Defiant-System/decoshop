@@ -1,20 +1,48 @@
 <div class="dialog-box" data-dlg="dlgSelectColorRange">
 	<div class="dlg-content">
-		<div class="fields">
+		<div class="fields" data-mode="0">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Color Range
 			</h2>
+
+			<div class="field-row">
+				<div class="option select" data-change="set-select-range" data-options="fieldset-inline-menubox" data-match="//ColorRangeSelect">
+					<span class="label">Select</span>
+					<span class="value">Sampled Colors</span>
+				</div>
+			</div>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Fuzziness</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="55" data-default="55"></span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-value="55"></div>
 			</div>
+
+			<span class="tool-items" data-click="select-pipette">
+				<span class="item-pipette" data-arg="normal"></span>
+				<span class="item-pipette-plus" data-arg="plus"></span>
+				<span class="item-pipette-minus" data-arg="minus"></span>
+			</span>
+
+			<div class="field-row has-graph">
+				<div class="graph">
+					<div class="slider range-v" style="--v1: 0px; --v2: 249px;">
+						<span class="handle" data-for="input-1"></span>
+						<span class="handle" data-for="input-2"></span>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
