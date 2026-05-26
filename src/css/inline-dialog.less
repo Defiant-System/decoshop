@@ -179,7 +179,26 @@
 
 			.field-row {
 				&.has-graph {
-					height: 309px;
+					margin-top: 19px;
+					height: 313px;
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: -11px;
+						left: 0;
+						right: 0;
+						height: 1px;
+						background: linear-gradient(90deg, #eff0, #eff3, #eff0);
+						filter: drop-shadow(0 -1px 0 #0119);
+					}
+				}
+
+				.option.select {
+					.value ~ .button {
+						position: relative;
+						top: 1px;
+					}
 				}
 
 				.option-bar {
@@ -199,7 +218,7 @@
 
 						&:before {
 							content: "";
-							background: #dee1;
+							// background: #dee1;
 							border-radius: 3px;
 							position: absolute;
 							top: 0;
@@ -217,14 +236,29 @@
 							height: 15px;
 							background: 0 0 no-repeat;
 							background-image: inherit;
-							// background-position: 1px 1px;
 							background-size: 15px auto;
-							filter: drop-shadow(0 1px 0 #0007);
+							filter: invert(1) drop-shadow(0 1px 0 rgba(#000, .4));
 						}
 
-						&.tool-ns-resize { left: 0px; background-image: url(~/icons/icon-ns-resize.png); }
-						&.tool-spline { left: 23px; background-image: url(~/icons/tool-spline.png); }
-						&.tool-sketch { left: 46px; background-image: url(~/icons/tool-sketch.png); }
+						&.tool-ns-resize {
+							left: 0px;
+							background-image: url(~/icons/icon-ns-resize.png);
+
+							&:after { top: 1px; left: 1px; width: 17px; height: 17px; background-size: 17px auto; }
+						}
+						&.tool-spline {
+							left: 23px;
+							background-image: url(~/icons/tool-spline.png);
+
+							&:after { top: 1px; left: 1px; width: 17px; height: 17px; background-size: 17px auto; }
+						}
+
+						&.tool-sketch {
+							left: 46px;
+							background-image: url(~/icons/tool-sketch.png);
+
+							&:after { top: 1px; left: 1px; width: 17px; height: 17px; background-size: 17px auto; }
+						}
 
 						&.tool-pipette-dark { right: 46px; background-image: url(~/icons/tool-pipette-dark.png); }
 						&.tool-pipette-mid { right: 23px; background-image: url(~/icons/tool-pipette-mid.png); }
@@ -288,6 +322,21 @@
 					top: 6px;
 					height: 1px;
 					background: linear-gradient(90deg, #aff0, #aff5, #aff0);
+				}
+
+				.handle {
+					background: url(~/icons/icon-slider-handle.png) 0 0 no-repeat;
+					position: absolute;
+					top: 6px;
+					width: 13px;
+					height: 12px;
+					z-index: 1;
+					transform: translateX(-6px);
+					filter: drop-shadow(0 1px 1px #1337);
+					cursor: ew-resize;
+
+					&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
+					&[data-for="input-2"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
 				}
 			}
 
@@ -3391,7 +3440,7 @@
 				&.select {
 					.value {
 						min-width: 89px;
-						max-width: 110px;
+						max-width: 140px;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						flex: initial;

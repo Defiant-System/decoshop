@@ -6,6 +6,21 @@
 // applies to window body (for blurred window)
 backdrop-filter: blur(@backgrop-blur);
 
+&.antwin-fullscreen_ {
+	.win-caption-bar_ {
+		display: block;
+
+		&:before {
+			height: 37px;
+		}
+
+		.win-caption-title_ {
+			background: transparent;
+			border-bottom: 0;
+		}
+	}
+}
+
 .win-caption-bar_ {
 	height: unset;
 }
