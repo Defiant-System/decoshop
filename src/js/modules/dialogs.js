@@ -2334,6 +2334,69 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgVariables(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgVariables" });
+				break;
+		}
+	},
+	dlgExportColorLookUp(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportColorLookUp" });
+				break;
+		}
+	},
+	dlgExportLayers(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportLayers" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,

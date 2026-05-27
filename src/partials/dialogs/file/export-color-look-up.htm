@@ -3,18 +3,35 @@
 		<div class="fields">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
-				Export Color Look Up Tables
+				Export Color Lookup Tables
 			</h2>
+			
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">
+						Grid Points
+						<i class="icon-switch-values"></i>
+					</span>
+					<span class="value">
+						<input type="text" name="canvas-width" data-min="1" data-max="256" value="16" data-default="16"/>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-value="16"></div>
 			</div>
+
+			<div class="field-row">
+				<div class="option input">
+					<span class="label">Format</span>
+					<span class="value">
+						<input type="text" value=".cube" disabled/>
+					</span>
+				</div>
+			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button">Export</div>
 		</div>
 	</div>
 </div>
