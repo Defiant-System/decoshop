@@ -2387,6 +2387,14 @@ const Dialogs = {
 				/* falls through */
 			case "apply-filter-data":
 				return;
+
+			case "set-export-mode":
+				event.el.parents(".fields").data({ mode: event.el.text().toLowerCase() });
+				break;
+			case "set-export-type":
+				event.el.parents(".fields").data({ export: event.text.toLowerCase() });
+				break;
+
 			// standard dialog events
 			case "dlg-open":
 			case "dlg-ok":
@@ -2394,6 +2402,27 @@ const Dialogs = {
 			case "dlg-preview":
 			case "dlg-close":
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportLayers" });
+				break;
+		}
+	},
+	dlgExportAs(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportAs" });
 				break;
 		}
 	},

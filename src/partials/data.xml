@@ -124,6 +124,18 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ExportFileNames>
+		<i type="option" name="1-0-1.png" value="0"/>
+		<i type="option" name="head1-eyes0-mouth1.png" value="1"/>
+		<i type="option" name="red-green-brown.png" value="2"/>
+	</ExportFileNames>
+	<ExportFormats>
+		<i type="option" name="PNG" value="0"/>
+		<i type="option" name="JPG" value="1"/>
+		<i type="option" name="SVG" value="2"/>
+		<i type="option" name="TIFF" value="3"/>
+		<i type="option" name="TGA" value="4"/>
+	</ExportFormats>
 	<ColorLookUpTables>
 		<i type="option" name="None"/>
 		<i type="divider"/>

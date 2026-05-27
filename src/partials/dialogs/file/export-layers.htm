@@ -1,16 +1,221 @@
 <div class="dialog-box" data-dlg="dlgExportLayers">
 	<div class="dlg-content">
-		<div class="fields">
+		<div class="fields" data-mode="layers" data-export="png">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Export Layers
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+
+			<div class="field-row">
+				<div class="option opt-group">
+					<span class="label">Export</span>
+					<span class="value">
+						<ul class="opt-group">
+							<li data-click="set-export-mode" class="active">Layers</li>
+							<li data-click="set-export-mode">Combinations</li>
+						</ul>
+					</span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+			</div>
+			
+			<div class="field-row">
+				<div class="option select" data-change="set-export-type" data-options="fieldset-inline-menubox" data-match="//ExportFormats">
+					<span class="label">Export As</span>
+					<span class="value">PNG</span>
+				</div>
+			</div>
+
+			<!-- export mode: LAYERS -->
+			<div class="mode" data-for="layers">
+				<div class="field-row has-check">
+					<div class="option check">
+						<span class="value">
+							<input type="checkbox" id="check-1">
+							<i></i>
+						</span>
+						<label class="label" for="check-1">Only layers / folders, with nam starts with "-e-"</label>
+					</div>
+				</div>
+
+				<div class="field-row has-check">
+					<div class="option check">
+						<span class="value">
+							<input type="checkbox" id="check-2" checked>
+							<i></i>
+						</span>
+						<label class="label" for="check-2">Remove parts outside canvas</label>
+					</div>
+				</div>
+
+				<div class="field-row has-check">
+					<div class="option check">
+						<span class="value">
+							<input type="checkbox" id="check-3" checked>
+							<i></i>
+						</span>
+						<label class="label" for="check-3">Trim transparent parts</label>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option opt-group">
+						<span class="label">Size</span>
+						<span class="value">
+							<ul class="opt-group">
+								<li class="active">1x</li>
+								<li>2x</li>
+								<li>3x</li>
+								<li>4x</li>
+							</ul>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export mode: COMBINATIONS -->
+			<div class="mode" data-for="combinations">
+				<div class="field-row">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//ExportFileNames">
+						<span class="label">File Names</span>
+						<span class="value">1-0-1.png</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export type: PNG -->
+			<div class="settings" data-for="png">
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Quality</span>
+						<span class="value">
+							<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
+						</span>
+					</div>
+					<div class="knob" data-value="70"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Palettes</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Use</span>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export type: JPG -->
+			<div class="settings" data-for="jpg">
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Quality</span>
+						<span class="value">
+							<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
+						</span>
+					</div>
+					<div class="knob" data-value="70"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Metadata</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Attach</span>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export type: SVG -->
+			<div class="settings" data-for="svg">
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Raster Graphics</span>
+						<span class="value">
+							<div class="toggler" data-value="on">
+								<span>Add</span>
+							</div>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Hidden Layers</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Add</span>
+							</div>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Vectorize Text</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Apply</span>
+							</div>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Rasterize Text</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Apply</span>
+							</div>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Minify</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Apply</span>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export type: TIFF -->
+			<div class="settings" data-for="tiff">
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Metadata</span>
+						<span class="value">
+							<div class="toggler" data-value="off">
+								<span>Attach</span>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- export type: TGA -->
+			<div class="settings" data-for="tga">
+				<!-- no options for tga -->
+			</div>
+
+			<div class="field-row">
+				<div class="option has-toggler">
+					<span class="label">Convert To</span>
+					<span class="value">
+						<div class="toggler" data-value="on">
+							<span>sRGB</span>
+						</div>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">

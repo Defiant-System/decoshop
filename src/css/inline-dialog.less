@@ -250,6 +250,29 @@
 		}
 	}
 
+	&[data-dlg="dlgExportLayers"] {
+		.dlg-content {
+			.fields {
+				&[data-mode="layers"] .mode[data-for="layers"] { display: block; }
+				&[data-mode="combinations"] .mode[data-for="combinations"] { display: block; }
+
+				&[data-export="png"] .settings[data-for="png"] { display: block; }
+				&[data-export="jpg"] .settings[data-for="jpg"] { display: block; }
+				&[data-export="svg"] .settings[data-for="svg"] { display: block; }
+				&[data-export="tiff"] .settings[data-for="tiff"] { display: block; }
+				&[data-export="tga"] .settings[data-for="tga"] { display: block; }
+			}
+
+			.mode[data-for] {
+				display: none;
+			}
+
+			.settings[data-for] {
+				display: none;
+			}
+		}
+	}
+
 	&[data-dlg="dlgApplyImage"] {
 		.dlg-content {
 			.fields {
@@ -3921,6 +3944,11 @@
 				height: 0;
 				opacity: 0;
 				overflow: hidden;
+			}
+
+			&.has-check {
+				margin-right: 0;
+				margin-left: 13px;
 			}
 
 			&.tight {
