@@ -2221,6 +2221,98 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgApplyImage(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+
+			case "change-target-mode":
+				// update inline "selectbox"
+				event.el.removeClass("opened").html(event.text);
+				// update dbl-slider
+				event.el.parents(".fields").data({ target: event.value });
+				break;
+
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgApplyImage" });
+				break;
+		}
+	},
+	dlgArtboard(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgArtboard" });
+				break;
+		}
+	},
+	dlgColorLookup(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorLookup" });
+				break;
+		}
+	},
+	dlgDuplicateInto(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDuplicateInto" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,

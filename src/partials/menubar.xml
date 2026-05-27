@@ -155,7 +155,7 @@
 			<Menu name="Folder"/>
 			<Menu name="Delete"/>
 			<Menu name="Artboard&#8230;" click="open-dialog" arg="dlgArtboard"/>
-			<Menu name="Artboard from Layer&#8230;" click="open-dialog" arg="dlgArtboardFromLayer"/>
+			<Menu name="Artboard from Layer&#8230;" click="open-dialog" arg="dlgArtboard"/>
 			<Menu type="divider"/>
 			<Menu name="Layer via Copy"/>
 			<Menu name="Layer via Cut"/>

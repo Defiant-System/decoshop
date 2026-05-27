@@ -124,6 +124,50 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<ColorLookUpTables>
+		<i type="option" name="None"/>
+		<i type="divider"/>
+		<i type="option" name="Arabica 12"/>
+		<i type="option" name="Ava 614"/>
+		<i type="option" name="Azrael 93"/>
+		<i type="option" name="Bourbon 64"/>
+		<i type="option" name="Byers 11"/>
+		<i type="option" name="Clayton 33"/>
+		<i type="option" name="Clouseau 54"/>
+		<i type="option" name="Cobi 3"/>
+		<i type="option" name="Contrail 35"/>
+		<i type="option" name="Cubicle 99"/>
+		<i type="option" name="Django 25"/>
+		<i type="option" name="Domingo 145"/>
+		<i type="option" name="Faded 47"/>
+		<i type="option" name="Folger 50"/>
+		<i type="option" name="Fusion 88"/>
+		<i type="option" name="Hyla 68"/>
+		<i type="option" name="Chemical 168"/>
+		<i type="option" name="Korben 214"/>
+		<i type="option" name="Lenox 340"/>
+		<i type="option" name="Lucky 64"/>
+		<i type="option" name="McKinnon 75"/>
+		<i type="option" name="Milo 5"/>
+		<i type="option" name="Neon 770"/>
+		<i type="option" name="Paladin 1875"/>
+		<i type="option" name="Pasadena 21"/>
+		<i type="option" name="Pitaya 15"/>
+		<i type="option" name="Reeve 38"/>
+		<i type="option" name="Remy 24"/>
+		<i type="option" name="Sprocket 231"/>
+		<i type="option" name="Teigen 28"/>
+		<i type="option" name="Trent 18"/>
+		<i type="option" name="Tweed 71"/>
+		<i type="option" name="Vireo 37"/>
+		<i type="option" name="Zed 32"/>
+		<i type="option" name="Zeke 39"/>
+	</ColorLookUpTables>
+	<ApplyImageTarget>
+		<i type="option" name="Normal" value="0"/>
+		<i type="option" name="Add" value="1"/>
+		<i type="option" name="Subtract" value="2"/>
+	</ApplyImageTarget>
 	<ColorRangeSelect>
 		<i type="option" name="Sampled Colors" value="0"/>
 		<i type="option" name="Shadows" value="1"/>
