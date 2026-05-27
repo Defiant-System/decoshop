@@ -5,12 +5,24 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Expand
 			</h2>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+					<span class="label">Amount</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="20" value="1px" data-default="1px" data-suffix="px"></span>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="knob" data-value="1"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option has-toggler">
+					<span class="label">Canvas Bounds</span>
+					<span class="value">
+						<div class="toggler" data-value="off">
+							<span>Apply</span>
+						</div>
+					</span>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">

@@ -2116,6 +2116,111 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgSelectModifyBorder(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyBorder" });
+				break;
+		}
+	},
+	dlgSelectModifySmooth(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifySmooth" });
+				break;
+		}
+	},
+	dlgSelectModifyExpand(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyExpand" });
+				break;
+		}
+	},
+	dlgSelectModifyContract(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyContract" });
+				break;
+		}
+	},
+	dlgSelectModifyFeather(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyFeather" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,
