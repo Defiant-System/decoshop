@@ -5,13 +5,69 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Shadows / Highlights
 			</h2>
+
+			<h3>Shadows</h3>
+
 			<div class="field-row has-knob">
 				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+					<span class="label">Amount</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="50%" data-default="50%" data-suffix="%"></span>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+				<div class="knob" data-value="50"></div>
 			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Tone</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="25%" data-default="25%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-value="25"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Amount</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="200" value="12px" data-default="12px" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-value="12"></div>
+			</div>
+
+			<h3>Highlights</h3>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Amount</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="50%" data-default="50%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-value="50"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Tone</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="100" value="25%" data-default="25%" data-suffix="%"></span>
+				</div>
+				<div class="knob" data-value="25"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Amount</span>
+					<span class="value"><input type="text" name="amount" data-min="0" data-max="200" value="12px" data-default="12px" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-value="12"></div>
+			</div>
+
+			<h3>Adjustments</h3>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Color</span>
+					<span class="value"><input type="text" name="amount" data-min="-100" data-max="100" value="0" data-default="0"></span>
+				</div>
+				<div class="pan-knob" data-value="0"></div>
+			</div>
+			
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

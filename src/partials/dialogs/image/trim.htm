@@ -5,12 +5,51 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Trim
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Threshold</span>
-					<span class="value"><input type="text" name="amount" value="127" data-min="1" data-max="255" data-default="127"></span>
+
+			<h3>Based On</h3>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Transparent</span>
+					<div class="toggler" data-value="on">
+						<span>Pixels</span>
+					</div>
 				</div>
-				<div class="knob" data-change="set-amount"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Top Left</span>
+					<div class="toggler" data-value="off">
+						<span>Pixel</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Bottom Right</span>
+					<div class="toggler" data-value="off">
+						<span>Pixel</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="field-row has-3x3-grid">
+				<div class="option">
+					<span class="label">Trim Away</span>
+					<div class="grid-3x3-input">
+						<span class="grid-arrow empty disabled"></span>
+						<span class="grid-arrow s down"></span>
+						<span class="grid-arrow empty disabled"></span>
+						<span class="grid-arrow w down"></span>
+						<span class="grid-arrow c disabled"></span>
+						<span class="grid-arrow e down"></span>
+						<span class="grid-arrow empty disabled"></span>
+						<span class="grid-arrow n down"></span>
+						<span class="grid-arrow empty disabled"></span>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">

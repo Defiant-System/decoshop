@@ -2074,6 +2074,48 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgShadowHighlights(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgShadowHighlights" });
+				break;
+		}
+	},
+	dlgTrim(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "set-cyan-red-value":
+				event.target.html(event.value)
+				/* falls through */
+			case "apply-filter-data":
+				return;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTrim" });
+				break;
+		}
+	},
 	dlgPixelator(event) {
 		let APP = decoshop,
 			Self = Dialogs,

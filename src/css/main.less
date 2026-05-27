@@ -881,6 +881,21 @@ content {
 			filter: invert() drop-shadow(0 1px 0 #0004);
 			cursor: pointer;
 
+			&.disabled {
+				cursor: default;
+			}
+
+			&.down {
+				background-color: #eff2;
+				box-shadow: inset 0 2px 3px #eff2;
+			}
+
+			&.empty {
+				background-color: transparent;
+				border-color: transparent;
+				box-shadow: none;
+			}
+
 			&.c  {
 				background-image: url(~/icons/icon-arrow-c.png);
 				background-color: #eff2;
