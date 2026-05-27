@@ -5,16 +5,44 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				File Info
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
+
+			<div class="fi-list">
+				<div class="list-head">
+					<div class="row">
+						<div>Parameter</div>
+						<div>Value</div>
+					</div>
 				</div>
-				<div class="knob" data-change="set-size"></div>
+				<div class="list-body">
+					<!-- preset layer list goes here -->
+					<div class="row">
+						<div>Artist</div>
+						<div>Hakan Bilgin</div>
+						<div>
+							<i class="icon-trashcan" data-click="remove-layer"></i>
+						</div>
+					</div>
+
+					<div class="row">
+						<div>Copyright</div>
+						<div>mr.hakan.bilgin@gmail.com</div>
+						<div>
+							<i class="icon-trashcan" data-click="remove-layer"></i>
+						</div>
+					</div>
+
+					<!-- add more layers -->
+					<div class="add-row" data-click="add-layer">
+						<i class="icon-add-layer"></i>
+						Add Value
+					</div>
+				</div>
 			</div>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-save">Save</div>
 		</div>
 	</div>
 </div>
