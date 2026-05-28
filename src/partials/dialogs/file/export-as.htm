@@ -14,12 +14,12 @@
 			</div>
 		</div>
 		<div class="sidebar-options">
-			<div class="options-wrapper">
+			<div class="options-wrapper" data-show="pdf">
 
 				<div class="field-row">
-					<div class="option select" data-options="fieldset-inline-menubox" data-match="//Units">
+					<div class="option select" data-change="set-export-format" data-options="fieldset-inline-menubox" data-match="//SaveAsFormat">
 						<span class="label">Format</span>
-						<span class="value">PNG</span>
+						<span class="value">png</span>
 					</div>
 				</div>
 
@@ -54,7 +54,7 @@
 					<div class="knob" data-change="set-canvas-height" data-value="100"></div>
 				</div>
 
-				<div data-format="png">
+				<div class="format-options" data-format="png">
 					<div class="field-row has-knob">
 						<div class="option input">
 							<span class="label">Quality</span>
@@ -76,6 +76,322 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="format-options" data-format="jpg">
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Quality</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="70"></div>
+					</div>
+
+					<div class="field-row">
+						<div class="option has-toggler">
+							<span class="label">Metadata</span>
+							<span class="value">
+								<div class="toggler" data-value="off">
+									<span>Attach</span>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="svg">
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-1" checked>
+								<i></i>
+							</span>
+							<label class="label" for="check-1">Add Raster Graphics</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-2">
+								<i></i>
+							</span>
+							<label class="label" for="check-2">Add Hidden Layers</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-3">
+								<i></i>
+							</span>
+							<label class="label" for="check-3">Vectorize Text</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-4">
+								<i></i>
+							</span>
+							<label class="label" for="check-4">Rasterize Text</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-5">
+								<i></i>
+							</span>
+							<label class="label" for="check-5">Minify</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="gif">
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Quality</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="100" value="100%" data-default="100%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="100"></div>
+					</div>
+
+					<div class="field-row">
+						<div class="option has-toggler">
+							<span class="label">Dither</span>
+							<span class="value">
+								<div class="toggler" data-value="off">
+									<span>Apply</span>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="pdf">
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Quality</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="70"></div>
+					</div>
+
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Add Margin</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="5" value="0in" data-default="0in" data-suffix="in" data-step="0.05"/>
+							</span>
+						</div>
+						<div class="knob" data-value="0"></div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-17">
+								<i></i>
+							</span>
+							<label class="label" for="check-17">Rasterize All</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-16">
+								<i></i>
+							</span>
+							<label class="label" for="check-16">Vectorize Text</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-16">
+								<i></i>
+							</span>
+							<label class="label" for="check-16">Add Crop Marks</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="webp">
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Quality</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="100" value="100%" data-default="100%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="100"></div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="bmp">
+					<!-- no options for BMP -->
+				</div>
+
+				<div class="format-options" data-format="tiff">
+					<div class="field-row">
+						<div class="option has-toggler">
+							<span class="label">Metadata</span>
+							<span class="value">
+								<div class="toggler" data-value="off">
+									<span>Attach</span>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="ico">
+					<!-- no options for ICO -->
+				</div>
+
+				<div class="format-options" data-format="dds">
+					<div class="field-row">
+						<div class="option select" data-options="fieldset-inline-menubox" data-match="//SaveAsDdsFormat">
+							<span class="label">Compression</span>
+							<span class="value">8x | BC1</span>
+						</div>
+					</div>
+
+					<div class="field-row">
+						<div class="option has-toggler">
+							<span class="label">Mipmaps</span>
+							<span class="value">
+								<div class="toggler" data-value="on">
+									<span>Add</span>
+								</div>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="tga">
+					<!-- no options for TGA -->
+				</div>
+
+				<div class="format-options" data-format="ppm">
+					<!-- no options for PPM -->
+				</div>
+
+				<div class="format-options" data-format="raw">
+					<div class="field-row">
+						<div class="option opt-group">
+							<span class="label">Channels</span>
+							<span class="value">
+								<ul class="opt-group">
+									<li class="active">1</li>
+									<li>3</li>
+									<li>4</li>
+								</ul>
+							</span>
+						</div>
+					</div>
+
+					<div class="field-row">
+						<div class="option opt-group">
+							<span class="label">Depth</span>
+							<span class="value">
+								<ul class="opt-group">
+									<li class="active">8 Bits</li>
+									<li>16 Bits</li>
+								</ul>
+							</span>
+						</div>
+					</div>
+
+					<div class="field-row">
+						<div class="option opt-group">
+							<span class="label">Byte Order</span>
+							<span class="value">
+								<ul class="opt-group">
+									<li class="active">12-34</li>
+									<li>34-12</li>
+								</ul>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="emf">
+					<div class="field-row">
+						<div class="option input">
+							<span class="label">Pages</span>
+							<span class="value">
+								<input type="text" name="quality"/>
+							</span>
+						</div>
+					</div>
+
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Quality</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="70"></div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-15">
+								<i></i>
+							</span>
+							<label class="label" for="check-15">Reverse Pages</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-17">
+								<i></i>
+							</span>
+							<label class="label" for="check-17">Rasterize All</label>
+						</div>
+					</div>
+
+					<div class="field-row has-check">
+						<div class="option check">
+							<span class="value">
+								<input type="checkbox" id="check-16">
+								<i></i>
+							</span>
+							<label class="label" for="check-16">Vectorize Text</label>
+						</div>
+					</div>
+
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Add Margin</span>
+							<span class="value">
+								<input type="text" name="quality" data-min="0" data-max="5" value="0in" data-default="0in" data-suffix="in" data-step="0.05"/>
+							</span>
+						</div>
+						<div class="knob" data-value="0"></div>
+					</div>
+				</div>
+
+				<div class="format-options" data-format="dxf">
+					<!-- no options for DXF -->
+				</div>
+
 			</div>
 			<div class="buttons">
 				<div class="button" data-click="dlg-ok">OK</div>

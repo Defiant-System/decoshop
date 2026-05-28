@@ -2411,11 +2411,9 @@ const Dialogs = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "set-cyan-red-value":
-				event.target.html(event.value)
-				/* falls through */
-			case "apply-filter-data":
-				return;
+			case "set-export-format":
+				event.el.parents(".options-wrapper").data({ show: event.text.toLowerCase() });
+				break;
 			// standard dialog events
 			case "dlg-open":
 			case "dlg-ok":

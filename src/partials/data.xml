@@ -124,6 +124,29 @@
 		<i name="Pattern 23"/>
 		<i name="Pattern 24"/>
 	</Patterns>
+	<SaveAsFormat>
+		<i type="option" name="png" value="1"/>
+		<i type="option" name="jpg" value="2"/>
+		<i type="option" name="svg" value="3"/>
+		<i type="option" name="gif" value="4"/>
+		<i type="option" name="pdf" value="5"/>
+		<i type="option" name="webp" value="6"/>
+		<i type="option" name="bmp" value="7"/>
+		<i type="option" name="tiff" value="8"/>
+		<i type="option" name="ico" value="9"/>
+		<i type="option" name="dds" value="10"/>
+		<i type="option" name="tga" value="11"/>
+		<i type="option" name="ppm" value="12"/>
+		<i type="option" name="raw" value="13"/>
+		<i type="option" name="emf" value="14"/>
+		<i type="option" name="dxf" value="15"/>
+	</SaveAsFormat>
+	<SaveAsDdsFormat>
+		<i type="option" name="8x | BC1" value="0"/>
+		<i type="option" name="4x | BC3" value="1"/>
+		<i type="option" name="4x | BC7" value="2"/>
+		<i type="option" name="None" value="3"/>
+	</SaveAsDdsFormat>
 	<ExportFileNames>
 		<i type="option" name="1-0-1.png" value="0"/>
 		<i type="option" name="head1-eyes0-mouth1.png" value="1"/>

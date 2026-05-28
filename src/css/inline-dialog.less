@@ -215,11 +215,52 @@
 
 				.options-wrapper {
 					position: relative;
-					left: 27px;
+					margin-left: 23px;
 					flex: 1;
 					font-size: 11px;
 					color: rgba(#fff, .55);
 					text-shadow: 0 1px 0 #1227;
+
+					&[data-show="png"] .format-options[data-format="png"] { display: block; }
+					&[data-show="jpg"] .format-options[data-format="jpg"] { display: block; }
+					&[data-show="svg"] .format-options[data-format="svg"] { display: block; }
+					&[data-show="gif"] .format-options[data-format="gif"] { display: block; }
+					&[data-show="pdf"] .format-options[data-format="pdf"] { display: block; }
+					&[data-show="webp"] .format-options[data-format="webp"] { display: block; }
+					&[data-show="bmp"] .format-options[data-format="bmp"] { display: block; }
+					&[data-show="tiff"] .format-options[data-format="tiff"] { display: block; }
+					&[data-show="ico"] .format-options[data-format="ico"] { display: block; }
+					&[data-show="dds"] .format-options[data-format="dds"] { display: block; }
+					&[data-show="tga"] .format-options[data-format="tga"] { display: block; }
+					&[data-show="ppm"] .format-options[data-format="ppm"] { display: block; }
+					&[data-show="raw"] .format-options[data-format="raw"] { display: block; }
+					&[data-show="emf"] .format-options[data-format="emf"] { display: block; }
+					&[data-show="dxf"] .format-options[data-format="dxf"] { display: block; }
+
+					.format-options {
+						display: none;
+						position: relative;
+						margin-top: 15px;
+
+						&:before {
+							content: "";
+							position: absolute;
+							top: -7px;
+							left: 0;
+							right: 0;
+							height: 1px;
+							background: linear-gradient(90deg, #eff0, #eff3, #eff0);
+							filter: drop-shadow(0 -1px 0 #0119);
+						}
+					}
+
+					.field-row {
+						margin-right: 0;
+
+						&.has-check {
+							margin-left: 0;
+						}
+					}
 
 					.linked-2 {
 						margin-left: 0;
@@ -227,12 +268,12 @@
 
 						&:before,
 						&:after {
-							left: -21px;
-							width: 13px;
+							left: -17px;
+							width: 11px;
 						}
 
 						.icon-linked {
-							left: -29px;
+							left: -25px;
 						}
 					}
 				}
