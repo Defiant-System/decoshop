@@ -171,6 +171,83 @@
 		}
 	}
 
+	&[data-dlg="dlgExportAs"] {
+		top: 48px;
+		left: 50px;
+
+		.dlg-content {
+			width: 1080px;
+			height: 740px;
+			padding-bottom: 9px;
+
+			.preview-box {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+
+				.preview {
+					background: linear-gradient(180deg, #344b, #3448);
+					position: relative;
+					border-radius: 3px;
+					flex: 1;
+
+					&:before {
+						content: "";
+						background: url(/cdn/img/2d-samples/robert-collins.jpg) 50% 50% no-repeat;
+						background-size: 450px auto;
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						filter: drop-shadow(0 1px 5px #0003);
+					}
+				}
+			}
+
+			.sidebar-options {
+				position: relative;
+				width: 230px;
+				display: flex;
+				flex-direction: column;
+				padding-top: 13px;
+				margin-left: 7px;
+
+				.options-wrapper {
+					position: relative;
+					left: 27px;
+					flex: 1;
+					font-size: 11px;
+					color: rgba(#fff, .55);
+					text-shadow: 0 1px 0 #1227;
+
+					.linked-2 {
+						margin-left: 0;
+						left: 0;
+
+						&:before,
+						&:after {
+							left: -21px;
+							width: 13px;
+						}
+
+						.icon-linked {
+							left: -29px;
+						}
+					}
+				}
+
+				.buttons {
+					height: 20px;
+
+					.button {
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgArtboard"] {
 		.dlg-content {
 			.field-row {
@@ -3872,57 +3949,57 @@
 			margin: 9px 0 10px;
 		}
 
+		.linked-2 {
+			position: relative;
+			margin-left: 47px;
+			font-size: 0;
+			height: 0;
+
+			&:before {
+				content: "";
+				position: absolute;
+				top: 16px;
+				left: -31px;
+				width: 21px;
+				height: 7px;
+				border-radius: 2px 0 0 0;
+				border-top: 2px solid #eff2;
+				border-left: 2px solid #eff2;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: 44px;
+				left: -31px;
+				width: 21px;
+				height: 6px;
+				border-radius: 0 0 0 2px;
+				border-left: 2px solid #eff2;
+				border-bottom: 2px solid #eff2;
+			}
+
+			.icon-linked {
+				background: url(~/icons/icon-linked.png) 50% 50% / contain no-repeat;
+				position: absolute;
+				top: 26px;
+				left: -39px;
+				width: 17px;
+				height: 17px;
+				border-radius: 1px;
+				cursor: pointer;
+				
+				&.active {
+					background-color: #eff2;
+					box-shadow: 0 0 0 2px #eff2;
+				}
+			}
+		}
+
 		.fields {
 			&.push-rows {
 				.field-row {
 					margin-left: 47px;
-				}
-
-				.linked-2 {
-					position: relative;
-					margin-left: 47px;
-					font-size: 0;
-					height: 0;
-
-					&:before {
-						content: "";
-						position: absolute;
-						top: 16px;
-						left: -31px;
-						width: 21px;
-						height: 7px;
-						border-radius: 2px 0 0 0;
-						border-top: 2px solid #eff2;
-						border-left: 2px solid #eff2;
-					}
-
-					&:after {
-						content: "";
-						position: absolute;
-						top: 44px;
-						left: -31px;
-						width: 21px;
-						height: 6px;
-						border-radius: 0 0 0 2px;
-						border-left: 2px solid #eff2;
-						border-bottom: 2px solid #eff2;
-					}
-
-					.icon-linked {
-						background: url(~/icons/icon-linked.png) 50% 50% / contain no-repeat;
-						position: absolute;
-						top: 26px;
-						left: -39px;
-						width: 17px;
-						height: 17px;
-						border-radius: 1px;
-						cursor: pointer;
-						
-						&.active {
-							background-color: #eff2;
-							box-shadow: 0 0 0 2px #eff2;
-						}
-					}
 				}
 			}
 		}
