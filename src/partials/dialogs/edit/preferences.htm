@@ -5,22 +5,123 @@
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Preferences
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Opacity</span>
-					<span class="value">
-						<input type="text" name="opacity" value="100%" data-min="2" data-max="100" data-default="12" data-suffix="%">
-					</span>
+			<div class="options">
+				<div class="pref-list" data-click="select-pref-option">
+					<div class="option selected">General</div>
+					<div class="option">Units &amp; Rulers</div>
+					<div class="option">Guides</div>
+					<div class="option">Grids</div>
+					<div class="option">Plugins</div>
 				</div>
-				<div class="knob" data-change="set-opacity"></div>
+				<div class="pref-details" data-show="General">
+
+					<!-- fields for General -->
+					<div class="pref-fields" data-name="General">
+						<fieldset>
+							<div class="field-row">
+								<div class="option select" data-options="fieldset-inline-menubox" data-match="//Units">
+									<span class="label">Units</span>
+									<span class="value">Pixels</span>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+					<!-- fields for Units &amp; Rulers -->
+					<div class="pref-fields" data-name="Units Rulers">
+						<fieldset>
+							<div class="field-row has-knob">
+								<div class="option input">
+									<span class="label">Cursor Offset</span>
+									<span class="value">
+										<input type="text" name="canvas-width" data-min="0" data-max="100" value="0" data-default="0" data-suffix="px"/>
+									</span>
+								</div>
+								<div class="knob" data-value="0"></div>
+							</div>
+
+							<div class="field-row">
+								<div class="option">
+									<span class="label">Saving</span>
+									<div class="toggler" data-value="on">
+										<span>Remind me</span>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+					<!-- fields for Guides -->
+					<div class="pref-fields" data-name="Guides">
+						<fieldset>
+							<div class="field-row has-preset" data-option="Custom">
+								<div class="option">
+									<span class="label">Color</span>
+									<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+								</div>
+							</div>
+
+							<div class="field-row has-toggler">
+								<div class="option">
+									<span class="label">Visibility</span>
+									<div class="toggler" data-value="on">
+										<span>Show</span>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+					<!-- fields for Grids -->
+					<div class="pref-fields" data-name="Grids">
+						<fieldset>
+							<div class="field-row has-preset" data-option="Custom">
+								<div class="option">
+									<span class="label">Color</span>
+									<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+								</div>
+							</div>
+
+							<div class="field-row">
+								<div class="option select" data-options="fieldset-inline-menubox" data-match="//Units">
+									<span class="label">Units</span>
+									<span class="value">Pixels</span>
+								</div>
+							</div>
+
+							<div class="field-row has-knob">
+								<div class="option input">
+									<span class="label">Grid Gap</span>
+									<span class="value">
+										<input type="text" name="canvas-width" data-min="0.02" data-max="100" value="20" data-default="20"/>
+									</span>
+								</div>
+								<div class="knob" data-value="20"></div>
+							</div>
+
+							<div class="field-row has-toggler">
+								<div class="option">
+									<span class="label">Visibility</span>
+									<div class="toggler" data-value="on">
+										<span>Show</span>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+					<!-- fields for Plugins -->
+					<div class="pref-fields" data-name="Plugins">
+						This section is not implemented yet
+					</div>
+
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-cancel">Cancel</div>
 			<div class="button" data-click="dlg-reset">Reset</div>
-			<div class="toggler" data-value="on" data-click="dlg-preview">
-				<span>Preview</span>
-			</div>
 		</div>
 	</div>
 </div>

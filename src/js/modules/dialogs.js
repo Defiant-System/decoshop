@@ -74,6 +74,7 @@ const Dialogs = {
 				break;
 			case "selected-style-item":
 				el = $(event.target).parents("?.option");
+				if (!el.length) return;
 				event.el.find(".selected").removeClass("selected");
 				el.addClass("selected");
 
@@ -2427,6 +2428,79 @@ const Dialogs = {
 			case "dlg-preview":
 			case "dlg-close":
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportAs" });
+				break;
+		}
+	},
+	dlgToolShape(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			// standard dialog events
+			case "dlg-open":
+				if (event.args.length) {
+					let el = event.dEl.find(`h2 span.type`),
+						text = event.args[0].toLowerCase();
+					el.text(text);
+				}
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgToolShape" });
+				break;
+		}
+	},
+	dlgPreferences(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "select-pref-option":
+				el = $(event.target).parents("?.option");
+				if (!el.length) return;
+				event.el.find(".selected").removeClass("selected");
+				el.addClass("selected");
+
+				selEl = el.find("label").length ? el.find("label") : el;
+				el.parents(".dlg-content").find(".pref-details").data({ show: selEl.html().replace("&amp; ", "") });
+				break;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPreferences" });
+				break;
+		}
+	},
+	dlgPresetManager(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			selEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "select-preset-option":
+				el = $(event.target).parents("?.option");
+				if (!el.length) return;
+				event.el.find(".selected").removeClass("selected");
+				el.addClass("selected");
+
+				selEl = el.find("label").length ? el.find("label") : el;
+				el.parents(".dlg-content").data({ show: selEl.html().replace("&amp; ", "") });
+				break;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPresetManager" });
 				break;
 		}
 	},

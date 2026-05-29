@@ -1,18 +1,52 @@
 <div class="dialog-box" data-dlg="dlgPresetManager">
-	<div class="dlg-content">
+	<div class="dlg-content" data-show="Brush">
 		<div class="fields">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Preset Manager
 			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Opacity</span>
-					<span class="value">
-						<input type="text" name="opacity" value="100%" data-min="2" data-max="100" data-default="12" data-suffix="%">
-					</span>
+			<div class="options">
+				<div class="preset-list" data-click="select-preset-option">
+					<div class="option selected">Brush</div>
+					<div class="option">Gradient</div>
+					<div class="option">Pattern</div>
+					<div class="option">Layer Style</div>
+					<div class="option">Shapes</div>
+					<div class="option">Contour</div>
 				</div>
-				<div class="knob" data-change="set-opacity"></div>
+				<div class="preset-details">
+
+					<!-- fields for Brush -->
+					<div class="preset-fields" data-name="Brush">
+						Brush
+					</div>
+
+					<!-- fields for Gradient -->
+					<div class="preset-fields" data-name="Gradient">
+						Gradient
+					</div>
+
+					<!-- fields for Pattern -->
+					<div class="preset-fields" data-name="Pattern">
+						Pattern
+					</div>
+
+					<!-- fields for Layer Style -->
+					<div class="preset-fields" data-name="Layer Style">
+						Layer Style
+					</div>
+
+					<!-- fields for Shapes -->
+					<div class="preset-fields" data-name="Shapes">
+						Shapes
+					</div>
+
+					<!-- fields for Contour -->
+					<div class="preset-fields" data-name="Contour">
+						Contour
+					</div>
+
+				</div>
 			</div>
 		</div>
 		<div class="buttons">
