@@ -6,6 +6,10 @@
 				Export As
 			</h2>
 			<div class="preview">
+				<div class="file-size">
+					<span>97 KB</span>
+					<span>99,324 B</span>
+				</div>
 				<div class="zoom-level">
 					<span data-click="preview-zoom-out"></span>
 					<span class="preview-zoom-value">100%</span>
@@ -232,15 +236,15 @@
 						<div class="option input">
 							<span class="label">Quality</span>
 							<span class="value">
-								<input type="text" name="quality" data-min="0" data-max="100" value="100%" data-default="100%" data-suffix="%"/>
+								<input type="text" name="quality" data-min="0" data-max="100" value="70%" data-default="70%" data-suffix="%"/>
 							</span>
 						</div>
-						<div class="knob" data-value="100"></div>
+						<div class="knob" data-value="70"></div>
 					</div>
 				</div>
 
-				<div class="format-options" data-format="bmp">
-					<!-- no options for BMP -->
+				<div class="format-options empty" data-format="bmp">
+					No options for filetype BMP
 				</div>
 
 				<div class="format-options" data-format="tiff">
@@ -256,8 +260,8 @@
 					</div>
 				</div>
 
-				<div class="format-options" data-format="ico">
-					<!-- no options for ICO -->
+				<div class="format-options empty" data-format="ico">
+					No options for filetype ICO
 				</div>
 
 				<div class="format-options" data-format="dds">
@@ -280,12 +284,12 @@
 					</div>
 				</div>
 
-				<div class="format-options" data-format="tga">
-					<!-- no options for TGA -->
+				<div class="format-options empty" data-format="tga">
+					No options for filetype TGA
 				</div>
 
-				<div class="format-options" data-format="ppm">
-					<!-- no options for PPM -->
+				<div class="format-options empty" data-format="ppm">
+					No options for filetype PPM
 				</div>
 
 				<div class="format-options" data-format="raw">
@@ -388,13 +392,14 @@
 					</div>
 				</div>
 
-				<div class="format-options" data-format="dxf">
-					<!-- no options for DXF -->
+				<div class="format-options empty" data-format="dxf">
+					No options for filetype DXF
 				</div>
 
 			</div>
 			<div class="buttons">
-				<div class="button" data-click="dlg-ok">OK</div>
+				<div class="button" data-click="dlg-cancel">Cancel</div>
+				<div class="button" data-click="dlg-save">Save</div>
 			</div>
 		</div>
 	</div>

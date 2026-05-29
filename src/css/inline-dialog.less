@@ -202,14 +202,55 @@
 						bottom: 0;
 						filter: drop-shadow(0 1px 5px #0003);
 					}
+
+					.file-size {
+						position: absolute;
+						top: 3px;
+						right: 3px;
+						border-radius: 3px;
+						text-align: right;
+						font-size: 11px;
+						color: #fff7;
+						text-shadow: 0 1px 0 #1227;
+
+						span {
+							background: #1237;
+							position: relative;
+							white-space: nowrap;
+							float: right;
+							clear: right;
+							
+							&:nth-child(1) {
+								border-radius: 3px 3px 0 0;
+								padding: 3px 7px 1px;
+
+								&:before {
+									content: "";
+									position: absolute;
+									bottom: 0;
+									left: -3px;
+									width: 3px;
+									height: 3px;
+									background-image: radial-gradient(circle at 0 100%, #1230 2px, #1237 3px);
+									transform: rotate(90deg);
+								}
+							}
+							
+							&:nth-child(2) {
+								border-radius: 3px 0 3px 3px;
+								padding: 3px 7px 4px;
+								color: #fff5;
+							}
+						}
+					}
 				}
 			}
 
 			.sidebar-options {
 				position: relative;
 				width: 230px;
-				display: flex;
-				flex-direction: column;
+				// display: flex;
+				// flex-direction: column;
 				padding-top: 13px;
 				margin-left: 7px;
 
@@ -252,13 +293,24 @@
 							background: linear-gradient(90deg, #eff0, #eff3, #eff0);
 							filter: drop-shadow(0 -1px 0 #0119);
 						}
+
+						&.empty {
+							padding: 3px 5px 5px 0;
+							text-align: center;
+						}
 					}
 
 					.field-row {
 						margin-right: 0;
 
 						&.has-check {
-							margin-left: 0;
+							margin-left: -22px;
+
+							.option {
+								.value {
+									margin-right: 4px;
+								}
+							}
 						}
 					}
 
@@ -280,9 +332,27 @@
 
 				.buttons {
 					height: 20px;
+					margin-top: 19px;
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: -15px;
+						left: 0;
+						right: 0;
+						height: 1px;
+						background: linear-gradient(90deg, #eff0, #eff3, #eff0);
+						filter: drop-shadow(0 -1px 0 #0119);
+					}
 
 					.button {
 						display: inline-block;
+
+						&[data-click="dlg-cancel"] {
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
 					}
 				}
 			}

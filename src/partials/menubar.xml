@@ -17,19 +17,17 @@
 		<Menu name="Save"/>
 		<Menu name="Save as PSD"/>
 		<Menu name="Export as&#8230;">
-			<Menu name="PNG" click="open-dialog" arg="dlgExportAs"/>
-			<Menu name="JPG" click="open-dialog" arg="dlgExportAs"/>
-			<Menu name="SVG" click="open-dialog" arg="dlgExportAs"/>
-			<Menu name="GIF" click="open-dialog" arg="dlgExportAs"/>
-			<Menu name="PDF" click="open-dialog" arg="dlgExportAs"/>
-			<Menu name="More&#8230;">
-				<Menu name="WEBP" click="open-dialog" arg="dlgExportAs"/>
-				<Menu name="BMP" click="open-dialog" arg="dlgExportAs"/>
-				<Menu name="TIFF" click="open-dialog" arg="dlgExportAs"/>
-				<Menu name="ICO" click="open-dialog" arg="dlgExportAs"/>
-				<Menu name="TGA" click="open-dialog" arg="dlgExportAs"/>
-				<Menu name="RAW" click="open-dialog" arg="dlgExportAs"/>
-			</Menu>
+			<Menu name="PNG" click="open-dialog" arg="dlgExportAs,PNG"/>
+			<Menu name="JPG" click="open-dialog" arg="dlgExportAs,JPG"/>
+			<Menu name="SVG" click="open-dialog" arg="dlgExportAs,SVG"/>
+			<Menu name="GIF" click="open-dialog" arg="dlgExportAs,GIF"/>
+			<Menu name="PDF" click="open-dialog" arg="dlgExportAs,PDF"/>
+			<Menu name="WEBP" click="open-dialog" arg="dlgExportAs,WEBP"/>
+			<Menu name="BMP" click="open-dialog" arg="dlgExportAs,BMP"/>
+			<Menu name="TIFF" click="open-dialog" arg="dlgExportAs,TIFF"/>
+			<Menu name="ICO" click="open-dialog" arg="dlgExportAs,ICO"/>
+			<Menu name="TGA" click="open-dialog" arg="dlgExportAs,TGA"/>
+			<Menu name="RAW" click="open-dialog" arg="dlgExportAs,RAW"/>
 		</Menu>
 		<Menu name="Print&#8230;" click="open-dialog" arg="dlgPrint"/>
 		<Menu type="divider"/>

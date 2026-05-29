@@ -134,12 +134,12 @@
 		<i type="option" name="bmp" value="7"/>
 		<i type="option" name="tiff" value="8"/>
 		<i type="option" name="ico" value="9"/>
-		<i type="option" name="dds" value="10"/>
+		<!-- <i type="option" name="dds" value="10"/> -->
 		<i type="option" name="tga" value="11"/>
-		<i type="option" name="ppm" value="12"/>
+		<!-- <i type="option" name="ppm" value="12"/>
 		<i type="option" name="raw" value="13"/>
 		<i type="option" name="emf" value="14"/>
-		<i type="option" name="dxf" value="15"/>
+		<i type="option" name="dxf" value="15"/> -->
 	</SaveAsFormat>
 	<SaveAsDdsFormat>
 		<i type="option" name="8x | BC1" value="0"/>

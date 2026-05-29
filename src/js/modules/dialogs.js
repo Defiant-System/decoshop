@@ -2416,6 +2416,12 @@ const Dialogs = {
 				break;
 			// standard dialog events
 			case "dlg-open":
+				if (event.args.length) {
+					let el = event.dEl.find(`.option.select[data-change="set-export-format"] .value`),
+						text = event.args[0].toLowerCase();
+					el.text(text);
+					Self.dlgExportAs({ type: "set-export-format", el, text });
+				}
 			case "dlg-ok":
 			case "dlg-reset":
 			case "dlg-preview":
