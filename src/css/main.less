@@ -545,6 +545,16 @@ content {
 			border-radius: inherit;
 			pointer-events: none;
 			transition: margin 120ms ease-in-out;
+			
+			&:after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 3px;
+				right: 3px;
+				height: 1px;
+				background: linear-gradient(90deg, #eff0, #eff4, #eff0);
+			}
 		}
 	}
 
@@ -930,6 +940,17 @@ content {
 
 		&:last-child {
 			margin-right: 7px;
+		}
+
+		&.no-input {
+			.value {
+				background: transparent;
+				
+				&:before,
+				&:after {
+					display: none;
+				}
+			}
 		}
 
 		&.opt-group {
