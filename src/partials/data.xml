@@ -66,7 +66,10 @@
 		<i g="transparent 0%, transparent 15%, #ffffff 15%, #ffffff 25%, transparent 25%, transparent 45%, #ffffff 45%, #ffffff 55%, transparent 55%, transparent 75%, #ffffff 75%, #ffffff 85%, transparent 85%, transparent 100%"/>
 		<i g="#000000aa 0%, transparent 100%"/>
 	</Gradients>
-	<Countours>
+	<Shapes>
+		<i name="Arrow"/>
+	</Shapes>
+	<Contours>
 		<i name="Linear"/>
 		<i name="Cone"/>
 		<i name="Cone - Asymmetrical"/>
@@ -97,7 +100,7 @@
 		<i name="Terraced"/>
 		<i name="Valley - High"/>
 		<i name="Valley - Low"/>
-	</Countours>
+	</Contours>
 	<Patterns>
 		<i name="Pattern 01"/>
 		<i name="Pattern 02"/>
