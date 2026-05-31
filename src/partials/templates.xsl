@@ -87,6 +87,61 @@
 </xsl:template>
 
 
+
+<xsl:template name="preset-brush-list">
+	<ul class="preset-list">
+		<li class="add-new" data-click="add-brush-preset"></li>
+	</ul>
+</xsl:template>
+
+
+<xsl:template name="preset-gradient-list">
+	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="style">--gs: <xsl:value-of select="@g"/>;</xsl:attribute>
+			</li>
+		</xsl:for-each>
+		<li class="add-new" data-click="add-gradient-preset"></li>
+	</ul>
+</xsl:template>
+
+
+<xsl:template name="preset-pattern-list">
+	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="style">--ptrn: "<xsl:value-of select="@name"/>";</xsl:attribute>
+			</li>
+		</xsl:for-each>
+		<li class="add-new" data-click="add-pattern-preset"></li>
+	</ul>
+</xsl:template>
+
+
+<xsl:template name="preset-layer-style-list">
+	<ul class="preset-list">
+		<li class="add-new" data-click="add-layer-style-preset"></li>
+	</ul>
+</xsl:template>
+
+
+<xsl:template name="preset-shapes-list">
+	<ul class="preset-list">
+		<li class="add-new" data-click="add-shapes-preset"></li>
+	</ul>
+</xsl:template>
+
+
+<xsl:template name="preset-contour-list">
+	<ul class="preset-list">
+		<li class="add-new" data-click="add-contour-preset"></li>
+	</ul>
+</xsl:template>
+
+
+
+
 <xsl:template name="layer-style-list">
 	<xsl:for-each select="./*">
 		<xsl:choose>

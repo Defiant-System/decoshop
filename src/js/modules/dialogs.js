@@ -2482,6 +2482,7 @@ const Dialogs = {
 		let APP = decoshop,
 			Self = Dialogs,
 			selEl,
+			pEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -2492,10 +2493,29 @@ const Dialogs = {
 				el.addClass("selected");
 
 				selEl = el.find("label").length ? el.find("label") : el;
-				el.parents(".dlg-content").data({ show: selEl.html().replace("&amp; ", "") });
+				pEl = el.parents(".dlg-content");
+				pEl.data({ show: selEl.html().replace("&amp; ", "") });
+
+				// render preset list if needed
+				let target = pEl.find(`.preset-fields[data-name="${pEl.data("show")}"]`);
+				if (!target.find("ul").length) {
+					let records = {
+							"Brush":       { template: "preset-brush-list", match: "//Brushes" },
+							"Gradient":    { template: "preset-gradient-list", match: "//Gradients" },
+							"Pattern":     { template: "preset-pattern-list", match: "//Patterns" },
+							"Layer Style": { template: "preset-layer-style-list", match: "//LayerStyles" },
+							"Shapes":      { template: "preset-shapes-list", match: "//Shapes" },
+							"Contour":     { template: "preset-contour-list", match: "//Contours" },
+						};
+					window.render({ ...records[pEl.data("show")], target });
+				}
 				break;
 			// standard dialog events
 			case "dlg-open":
+				if (event.args.length) {
+					let el = event.dEl.find(`.presets .option:contains(${event.args[0]})`);
+					if (el.length) el.trigger("click");
+				}
 			case "dlg-ok":
 			case "dlg-reset":
 			case "dlg-preview":

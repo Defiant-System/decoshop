@@ -8,7 +8,7 @@
 		<meta name="width" value="1180" min="920"/>
 		<meta name="height" value="840" min="660"/>
 		<meta name="top" value="140"/>
-		<meta name="left" value="90"/>
+		<meta name="left" value="60"/>
 		<meta name="headless" value="true" theme="dark"/>
 		<meta name="minimize"/>
 		<meta name="maximize"/>
