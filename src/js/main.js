@@ -45,6 +45,9 @@ const decoshop = {
 		UI.init();
 		Tabs.init();
 		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
+		// parses base64 items in "data.xml"
+		console.time("caching");
+		this.dispatch({ type: "parse-base64" });
 
 		// DEV-ONLY-START
 		Test.init(this);
@@ -80,6 +83,33 @@ const decoshop = {
 			// custom events
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
+				break;
+			case "parse-base64":
+				let xNode = window.bluePrint.selectSingleNode(`//*[@base64]`),
+					img = new Image;
+				// exit if all is processed
+				if (!xNode) {
+					console.timeEnd("caching");
+					return;
+				}
+				// put base64 in image
+				img.onload = () => {
+					// put image in canvas to create blob
+					let { cvs, ctx } = Misc.createCanvas(img.width, img.height);
+					ctx.drawImage(img, 0, 0);
+					// image to blob
+					ctx.canvas.toBlob(async blob => {
+						let name = `${xNode.getAttribute("name").sha1()}.png`;
+						await window.cache.set({ name, blob });
+						xNode.setAttribute("path", name);
+						// clean up node
+						xNode.removeAttribute("base64");
+						// parse next
+						Self.dispatch({ type: "parse-base64" });
+					});
+				};
+				// start processing
+				img.src = xNode.getAttribute("base64");
 				break;
 			case "setup-workspace":
 				// show blank view

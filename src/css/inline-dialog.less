@@ -205,6 +205,12 @@
 						width: 37px;
 						height: 47px;
 						background: transparent;
+
+						&:after {
+							background: 50% 50% / contain no-repeat;
+							background-image: var(--br);
+							filter: invert(1) opacity(.85);
+						}
 					}
 				}
 				.buttons .preset-buttons[data-for="Brush"] { display: block; }
@@ -390,12 +396,17 @@
 
 									&.add-new {
 										box-shadow: none;
+										background: none;
 										border: 2px dashed #1224;
-										background: url(~/icons/icon-plus.png);
-										background-size: 19px auto;
-										background-repeat: no-repeat;
-										background-position: 50% 50%;
 										filter: opacity(65%);
+
+										&:after {
+											background: url(~/icons/icon-plus.png);
+											background-size: 19px auto;
+											background-repeat: no-repeat;
+											background-position: 50% 50%;
+											filter: invert(1) drop-shadow(0 1px 0 #0115);
+										}
 
 										&:hover {
 											filter: opacity(100%);

@@ -2500,7 +2500,7 @@ const Dialogs = {
 				let target = pEl.find(`.preset-fields[data-name="${pEl.data("show")}"]`);
 				if (!target.find("ul").length) {
 					let records = {
-							"Brush":       { template: "preset-brush-list", match: "//TipShapes" },
+							"Brush":       { template: "preset-brush-list", match: "//Brushes" },
 							"Gradient":    { template: "preset-gradient-list", match: "//Gradients" },
 							"Pattern":     { template: "preset-pattern-list", match: "//Patterns" },
 							"Layer Style": { template: "preset-layer-style-list", match: "//LayerStyles" },

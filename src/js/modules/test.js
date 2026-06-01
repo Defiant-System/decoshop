@@ -19,7 +19,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.value[data-options="contours"]`).trigger("click"), 1200);
 		// setTimeout(() => APP.els.content.find(`.value[data-options="patterns"]`).trigger("click"), 1200);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgPresetManager,Pattern" }), 600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgPresetManager,Brush" }), 2000);
 		
 		// setTimeout(() => APP.els.content.find(`.grid-arrow:nth(4)`).trigger("click"), 900);
 		// setTimeout(() => APP.els.content.find(`.liq-tool:nth(0)`).trigger("click"), 900);

@@ -90,6 +90,11 @@
 
 <xsl:template name="preset-brush-list">
 	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="style">--br: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute>
+			</li>
+		</xsl:for-each>
 		<li class="add-new" data-click="add-brush-preset"></li>
 	</ul>
 </xsl:template>
