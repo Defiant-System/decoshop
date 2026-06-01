@@ -92,7 +92,10 @@
 	<ul class="preset-list">
 		<xsl:for-each select="./*">
 			<li>
-				<xsl:attribute name="style">--br: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:attribute name="data-size"><xsl:value-of select="@size"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--br: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
 			</li>
 		</xsl:for-each>
 		<li class="add-new" data-click="add-brush-preset"></li>
@@ -140,6 +143,13 @@
 
 <xsl:template name="preset-contour-list">
 	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--co: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
+			</li>
+		</xsl:for-each>
 		<li class="add-new" data-click="add-contour-preset"></li>
 	</ul>
 </xsl:template>
@@ -431,7 +441,7 @@
 		<div class="inline-content contours">
 			<xsl:for-each select="./*">
 				<div class="contour">
-					<xsl:attribute name="data-name"><xsl:value-of select="@name"/></xsl:attribute>
+					<xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute>
 				</div>
 			</xsl:for-each>
 		</div>

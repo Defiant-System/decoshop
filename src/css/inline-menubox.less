@@ -134,19 +134,20 @@
 
 		&.contours {
 			font-size: 0;
-			width: 269px;
+			width: 262px;
 			padding: 7px 7px 4px;
 
 			.contour {
 				position: relative;
 				display: inline-block;
 				margin: 1px 5px 4px 0;
-				width: 38px;
-				height: 38px;
+				width: 37px;
+				height: 37px;
 				cursor: pointer;
-				border-radius: 3px;
+				border-radius: 2px;
 				box-shadow: inset 0 0 0 1px rgba(0,0,0,.65);
-				background: url(~/img/curves.webp) no-repeat;
+				background: url(~/img/contours.webp) no-repeat;
+				background-size: 0;
 				filter: opacity(.75);
 
 				&:after {
@@ -157,40 +158,42 @@
 					right: 0;
 					bottom: 0;
 					border-radius: inherit;
-					border: 1px solid;
-					border-color: #eff8 #0114 #0114 #eff8;
+					background: inherit;
+					background-size: 380px auto;
+					// border: 1px solid;
+					// border-color: #eff8 #0114 #0114 #eff8;
 				}
 
-				&[data-name="Linear"]                     { background-position: 0 0; }
-				&[data-name="Cone"]                       { background-position: -39px 0; }
-				&[data-name="Cone - Asymmetrical"]        { background-position: -78px 0; }
-				&[data-name="Cone - Inverted"]            { background-position: -117px 0; }
-				&[data-name="Cove - Deep"]                { background-position: -156px 0; }
-				&[data-name="Cove - Shallow"]             { background-position: 0 -39px; }
-				&[data-name="Gaussian"]                   { background-position: -39px -39px; }
-				&[data-name="Guassian - Inverse"]         { background-position: -78px -39px; }
-				&[data-name="Half Round"]                 { background-position: -117px -39px; }
-				&[data-name="Log"]                        { background-position: -156px -39px; }
-				&[data-name="Notched Slope"]              { background-position: 0 -78px; }
-				&[data-name="Notched Slope - Rounded"]    { background-position: -39px -78px; }
-				&[data-name="Peaks"]                      { background-position: -78px -78px; }
-				&[data-name="Ring"]                       { background-position: -117px -78px; }
-				&[data-name="Ring - Double"]              { background-position: -156px -78px; }
-				&[data-name="Ring - Triple"]              { background-position: 0 -117px; }
-				&[data-name="Rolling Slope - Ascending"]  { background-position: -39px -117px; }
-				&[data-name="Rolling Slope - Descending"] { background-position: -78px -117px; }
-				&[data-name="Rounded Slope"]              { background-position: -117px -117px; }
-				&[data-name="Rounded Steps"]              { background-position: -156px -117px; }
-				&[data-name="Sawtooth 1"]                 { background-position: 0 -156px; }
-				&[data-name="Sawtooth 2"]                 { background-position: -39px -156px; }
-				&[data-name="Shallow Slope - Valley"]     { background-position: -78px -156px; }
-				&[data-name="Shallow Slope - Valleys"]    { background-position: -117px -156px; }
-				&[data-name="Steep Slope - Jagged"]       { background-position: -156px -156px; }
-				&[data-name="Steep Slope - Rolling"]      { background-position: 0 -195px; }
-				&[data-name="Steps"]                      { background-position: -39px -195px; }
-				&[data-name="Terraced"]                   { background-position: -78px -195px; }
-				&[data-name="Valley - High"]              { background-position: -117px -195px; }
-				&[data-name="Valley - Low"]               { background-position: -156px -195px; }
+				&[data-hash="af502f2b37eea07ed9083c7daf40f34553f6fccd"]:after { background-position: 0 0; }
+				&[data-hash="90bd7b949241349cf7be92ea54e98d6eb282106f"]:after { background-position: -38px 0; }
+				&[data-hash="d333925313ccf52dc7411f8946d856df69e071de"]:after { background-position: -76px 0; }
+				&[data-hash="99129f0e9d7145c225235fdc98ecc51f1cd47dd8"]:after { background-position: -114px 0; }
+				&[data-hash="48dd88bdfa3a2f9ceb225ae3f5842752b59acdc8"]:after { background-position: -152px 0; }
+				&[data-hash="0594531bbe1e93bc6d57a567196dce754d939fbf"]:after { background-position: -190px 0; }
+				&[data-hash="c33f839a0c79eeac5ac1bc0065822e74476ff402"]:after { background-position: -228px 0; }
+				&[data-hash="2c176e99b6106ee7af1e6ec868f5a04fdfb812a0"]:after { background-position: -266px 0; }
+				&[data-hash="df5fcc92b823af17aaad88ab0610a6aee5693605"]:after { background-position: -304px 0; }
+				&[data-hash="8bf95ea372568c7a254ba9fada5f6f1701ebc5b5"]:after { background-position: -342px 0; }
+				&[data-hash="4e8329327d04284e1f45120068b88d0e20c7137b"]:after { background-position: 0 -38px; }
+				&[data-hash="0045e64d45ebfac889ddd90127276ab46a418765"]:after { background-position: -38px -38px; }
+				&[data-hash="d11a88565134a5ff7d7db9f2ff225ff3d63a410b"]:after { background-position: -76px -38px; }
+				&[data-hash="96ddaccf581f483cbbf4d46e00691e51a167fc55"]:after { background-position: -114px -38px; }
+				&[data-hash="8964ac10e088a3b529867602f495ab6c937e6e97"]:after { background-position: -152px -38px; }
+				&[data-hash="b7384ecd5dfed5728a74167ce2b20f5882e423ad"]:after { background-position: -190px -38px; }
+				&[data-hash="01b16a846f28c156b3095f0e4e840f971ee5fe42"]:after { background-position: -228px -38px; }
+				&[data-hash="f735668521e52c23e4086138d4d1486af91d875c"]:after { background-position: -266px -38px; }
+				&[data-hash="dd816132024dd68ea980752528016d135f3e452d"]:after { background-position: -304px -38px; }
+				&[data-hash="e5c428d7abc96fed7a88eeca329b78115739f114"]:after { background-position: -342px -38px; }
+				&[data-hash="6eb44dcc0ebf74e82689399ed307a95d6a421f79"]:after { background-position: 0 -76px; }
+				&[data-hash="4b75369be493bfe02af9dbd41bc7f67ecbc64a36"]:after { background-position: -38px -76px; }
+				&[data-hash="8a7e4fccb59eeb78467e028becbf7b27870cfe04"]:after { background-position: -76px -76px; }
+				&[data-hash="d4b2e527cf8f2dc51727c372b0d2bda0e159a702"]:after { background-position: -114px -76px; }
+				&[data-hash="9504a03d5b8b30ca04c2b988e4e3731661a9c9b5"]:after { background-position: -152px -76px; }
+				&[data-hash="3c99fe2454454ae5888dc503804266927fd44714"]:after { background-position: -190px -76px; }
+				&[data-hash="cdde4f20ba31a24db2cc7ae71135c8353631907b"]:after { background-position: -228px -76px; }
+				&[data-hash="a228e4bf118fd62105d7a59b961843690e880fe4"]:after { background-position: -266px -76px; }
+				&[data-hash="2aaff33b2fe1530a717e89b08e3370a84f45a3b8"]:after { background-position: -304px -76px; }
+				&[data-hash="30f1aa7ceef674358af768e5308ae0d7314e9553"]:after { background-position: -342px -76px; }
 
 				&:nth-child(6n) {
 					margin-right: 0;
