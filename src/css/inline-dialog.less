@@ -204,7 +204,6 @@
 					ul.preset-list li {
 						width: 37px;
 						height: 47px;
-						background: transparent;
 
 						&[data-hash]:after { background: url(~/img/brushes.webp) no-repeat; }
 						&[data-hash="d121dc0c7b61262dc57530792289f73bcfa9e21a"]:after { background-position: 0 0; }
@@ -239,6 +238,10 @@
 							background-image: var(--br);
 							filter: invert(1) opacity(.85);
 						}
+
+						&:not(.add-new):hover:after {
+							filter: invert(1) opacity(1);
+						}
 					}
 				}
 				.buttons .preset-buttons[data-for="Brush"] { display: block; }
@@ -252,8 +255,33 @@
 						width: 37px;
 						height: 37px;
 
+						&[data-hash]:after { background: url(~/img/gradients.webp) no-repeat; }
+						&[data-hash="d694cd76f42e01052cd127a68f62d3244a2674bc"]:after { background-position: 0 0; }
+						&[data-hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"]:after { background-position: -38px 0; }
+						&[data-hash="d711ee5384b1edb68555f98659464b1682865481"]:after { background-position: -76px 0; }
+						&[data-hash="8da5800c1acdc85dc54afd33809f214bddcef36d"]:after { background-position: -114px 0; }
+						&[data-hash="3586c49351dc16bbfdab1b10d675d5334561a70a"]:after { background-position: -152px 0; }
+						&[data-hash="303f11d95718c632e430f3d4959cc521abe5dea4"]:after { background-position: -190px 0; }
+						&[data-hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"]:after { background-position: -228px 0; }
+						&[data-hash="36623964ca0c3ae46d5a1352b59126a927a7a204"]:after { background-position: -266px 0; }
+						&[data-hash="19a7d0151dd54246e7660a2f678dceda85d76786"]:after { background-position: -304px 0; }
+						&[data-hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"]:after { background-position: -342px 0; }
+						&[data-hash="392696b691848e1c2e14231fecd9edd150d7521e"]:after { background-position: 0 -38px; }
+						&[data-hash="218e75c7a912404b048fff0747e40108873b6334"]:after { background-position: -38px -38px; }
+						&[data-hash="9620cf2803289fe004997a280224318c045871a0"]:after { background-position: -76px -38px; }
+						&[data-hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"]:after { background-position: -114px -38px; }
+						&[data-hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"]:after { background-position: -152px -38px; }
+						&[data-hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"]:after { background-position: -190px -38px; }
+
 						&:after {
-							background: linear-gradient(135deg, var(--gs));
+							background: 50% 50% no-repeat;
+							background-size: 38px auto;
+							background-image: var(--gr);
+							filter: opacity(.85);
+						}
+
+						&:not(.add-new):hover:after {
+							filter: opacity(1);
 						}
 					}
 				}
@@ -267,18 +295,103 @@
 					ul.preset-list li {
 						width: 37px;
 						height: 37px;
+
+						&[data-hash]:after { background: url(~/img/patterns.webp) no-repeat; }
+						&[data-hash="0a26b20ee7703bdaf9ef83063c1bb43bd1ea22ab"]:after { background-position: 0 0; }
+						&[data-hash="34f32a1955c48bfbfc8f6a6dcc5638863921c7a0"]:after { background-position: -38px 0; }
+						&[data-hash="89b7082063eee1a03004203a180074d0832262a2"]:after { background-position: -76px 0; }
+						&[data-hash="6953945492ead781e97b040f1c46a3e36e4c4441"]:after { background-position: -114px 0; }
+						&[data-hash="9f85095172000c79d47b00f8d98c0dcf9310105f"]:after { background-position: -152px 0; }
+						&[data-hash="d392255c87e17c38f6a792f978e0c9f11821a3c7"]:after { background-position: -190px 0; }
+						&[data-hash="9a22f36320a748f0828f2ab446f0c972e52d7490"]:after { background-position: -228px 0; }
+						&[data-hash="471e5dbf01b2e83b22ba1c2f79723ca2d0197e1d"]:after { background-position: -266px 0; }
+						&[data-hash="c8c46b539a592dd2738bc26af3d95a56931e9f94"]:after { background-position: -304px 0; }
+						&[data-hash="f7ecb00e08f667a374381d7cb8eeedad582f9968"]:after { background-position: -342px 0; }
+						&[data-hash="12d581b2df31c61468d5b3ffee0bbbab02eb275b"]:after { background-position: 0 -38px; }
+						&[data-hash="5ec771f1888312c456e587df7b822c9cb043afbe"]:after { background-position: -38px -38px; }
+						&[data-hash="905ae9b801c83d856b68d185ff96b70a87358ca2"]:after { background-position: -76px -38px; }
+						&[data-hash="67577f7fce9aaa2513e4f08f481d8b3263bd7c20"]:after { background-position: -114px -38px; }
+						&[data-hash="280d51398bbf180286a6aa1036f6f2856a774ebf"]:after { background-position: -152px -38px; }
+						&[data-hash="f3d121f30dbde4164bdf4a9628d79462d3806375"]:after { background-position: -190px -38px; }
+						&[data-hash="c22013a05a5c6592d6882b821bbc90e381d25d00"]:after { background-position: -228px -38px; }
+						&[data-hash="cf9baa8a4e43b6e1a4d427e0e2a12b188ea6717f"]:after { background-position: -266px -38px; }
+						&[data-hash="c8c46b539a592dd2738bc26af3d95a56931e9f94"]:after { background-position: -304px -38px; }
+						&[data-hash="32b93b9d6218007a6b2eef5160fb4d144d135657"]:after { background-position: -342px -38px; }
+						&[data-hash="e0f1862a92c97582f721b196779f44a86b91bfed"]:after { background-position: 0 -76px; }
+						&[data-hash="1ceddd44b234f9c467f47f2461a7ae55fc8caf41"]:after { background-position: -38px -76px; }
+						&[data-hash="8185ece1ffd54b2f9d839ac04fc966bd77d34780"]:after { background-position: -76px -76px; }
+						&[data-hash="bc263343fb071983e60fbbaaae2b5ba997de107a"]:after { background-position: -114px -76px; }
+
+						&:after {
+							background: 50% 50% no-repeat;
+							background-size: 28px auto;
+							background-image: var(--pt);
+							filter: opacity(.85);
+						}
+
+						&:not(.add-new):hover:after {
+							filter: opacity(1);
+						}
 					}
 				}
 				.buttons .preset-buttons[data-for="Pattern"] { display: block; }
 			}
 
-			&[data-show="Layer Style"] {
+			&[data-show="Layer Style"  ] {
 				.fields .preset-details .preset-fields[data-name="Layer Style"] {
 					display: flex;
 
-					ul.preset-list li {
-						width: 37px;
-						height: 37px;
+					ul.preset-list {
+						padding: 5px 0 0 3px;
+
+						li {
+							width: 50px;
+							height: 50px;
+							margin: 0 3px 5px;
+
+							&[data-hash]:after { background: url(~/img/layer-styles.webp) no-repeat; }
+							&[data-hash="f6a301e9711ddbb18e4d0bfdcce4f2bae6bb61aa"]:after { background-position: 0 0; }
+							&[data-hash="e44cc0f66db9cba53c9e68a2ee7e19a9f973a143"]:after { background-position: -50px 0; }
+							&[data-hash="405ad414f68de38acb38936b8fc14361ac235494"]:after { background-position: -100px 0; }
+							&[data-hash="3c955b5b9abd59812458ae89b3f3f87b06cda393"]:after { background-position: -150px 0; }
+							&[data-hash="686b577c5673c6fa33147e1277390e501db71919"]:after { background-position: -200px 0; }
+							&[data-hash="2d273d5c3928d6cef9c11155b991bde5583cd344"]:after { background-position: -250px 0; }
+							&[data-hash="83f64c914b85f2b5775000844627e4f0bc16aedf"]:after { background-position: -300px 0; }
+							&[data-hash="81b3dfba0ac6bd2a23f74d29b61fbfdee87c4f98"]:after { background-position: -350px 0; }
+							&[data-hash="e9e472dc9fea5e8f2791b3b25e3b3c7de1ec16a1"]:after { background-position: -400px 0; }
+							&[data-hash="0c85a2a20b9e83679a94c17bc19b5daa37f91bbe"]:after { background-position: -450px 0; }
+							&[data-hash="135d57dec02bd2134f8d2a87d6f26dc9227c855f"]:after { background-position: 0 -50px; }
+							&[data-hash="7964204b38580423a8e35ea6d1b9621a979b39b5"]:after { background-position: -50px -50px; }
+							&[data-hash="24998300467f3faf9575c7313df9a82b535c1c1a"]:after { background-position: -100px -50px; }
+							&[data-hash="65712a4b7f68d84d3509fbd7179f71ed5b66b1d8"]:after { background-position: -150px -50px; }
+							&[data-hash="60bca1294092fb265fb9884b11774283af26d58b"]:after { background-position: -200px -50px; }
+							&[data-hash="dbc7577516ed76c5d5b085068ad02528d345e283"]:after { background-position: -250px -50px; }
+							&[data-hash="1c54132b8e5a9fa44a9a1a7d30b1be36ab3c4247"]:after { background-position: -300px -50px; }
+							&[data-hash="7a9fd1aa6963b3414e81928a06a8e0055ea1d07c"]:after { background-position: -350px -50px; }
+							&[data-hash="85450fe0bef46ab41d44be1b74d625b321e88c2d"]:after { background-position: -400px -50px; }
+							&[data-hash="e2227e58d4f22fa16906981bf0171dbca4b4b00c"]:after { background-position: -450px -50px; }
+							&[data-hash="8e86432c9e338f7d26d8d34115ef42c0a278ee1d"]:after { background-position: 0 -100px; }
+							&[data-hash="36e6d764076ad2323e9e953a179daf6c97f03ba1"]:after { background-position: -50px -100px; }
+							&[data-hash="1a3f9b9fce051b5146b30caf47af072a294cc292"]:after { background-position: -100px -100px; }
+							&[data-hash="091def0b3a9ff733fce083e5ef3e12ebd17c95da"]:after { background-position: -150px -100px; }
+							&[data-hash="c80a2a11d0197462315165d22c7a5abc5d0dbd80"]:after { background-position: -200px -100px; }
+							&[data-hash="185d2f4a935b291c5eab4f43c69dd6d4550a4396"]:after { background-position: -250px -100px; }
+							&[data-hash="20b4958788ede5eacbba077e1fed67444bb0c0eb"]:after { background-position: -300px -100px; }
+							&[data-hash="45bfc012fbf82490776101b9c6b63887c8a0fb1d"]:after { background-position: -350px -100px; }
+							&[data-hash="aaf290d5dab16035ab4230fcb5ca08ac8d1b79ff"]:after { background-position: -400px -100px; }
+							&[data-hash="b3d397f8838ec4842df26a156e7b30989f4cc1ef"]:after { background-position: -450px -100px; }
+
+							&:after {
+								background: 50% 50% no-repeat;
+								background-size: 50px auto;
+								background-image: var(--ls);
+							}
+
+							&:not(.add-new):hover:after {
+								// box-shadow: 0 0 0 1px #1229;
+								background-color: #eff1;
+							}
+						}
 					}
 				}
 				.buttons .preset-buttons[data-for="Layer Style"] { display: block; }
@@ -291,6 +404,58 @@
 					ul.preset-list li {
 						width: 37px;
 						height: 37px;
+
+						&[data-hash]:after { background: url(~/img/shapes.webp) no-repeat; }
+						&[data-hash="26b56c1bdfb048c3e46419fde332bab76deb2cd3"]:after { background-position: 0 0; }
+						&[data-hash="c0ac4842418e34583859262c033965cfd49454e0"]:after { background-position: -38px 0; }
+						&[data-hash="e8ae12058a307f51d76b0cb0f372459e49f591b8"]:after { background-position: -76px 0; }
+						&[data-hash="a11b0b1cb259c8dd9a1f2e8901db4601ed79a4c5"]:after { background-position: -114px 0; }
+						&[data-hash="f3dda6d96200fde2f90c68e5cad25f0b789c023e"]:after { background-position: -152px 0; }
+						&[data-hash="571c2585b9ea1297292566b880784e962704946a"]:after { background-position: -190px 0; }
+						&[data-hash="e6fb06210fafc02fd7479ddbed2d042cc3a5155e"]:after { background-position: -228px 0; }
+						&[data-hash="9df72c12cf024bed8b0a404590dff235454f0266"]:after { background-position: -266px 0; }
+						&[data-hash="f504f916e1d867209fb289723f669fae5f287598"]:after { background-position: -304px 0; }
+						&[data-hash="55f7d1f71091501a0205fba94258266031264150"]:after { background-position: -342px 0; }
+						&[data-hash="8ad447a6b21bfe6b447d7aa31e184660f12da49a"]:after { background-position: 0 -38px; }
+						&[data-hash="f872caad177d67bbe18c119d0505f2d3caa02af3"]:after { background-position: -38px -38px; }
+						&[data-hash="d0366674b400227e8594b9a3eff3ea86e29302dc"]:after { background-position: -76px -38px; }
+						&[data-hash="79df4b1718127a8c81390d4196d6cbfc976105f0"]:after { background-position: -114px -38px; }
+						&[data-hash="f30e46c4914904f8a6a508d5c95ca3adfc367f4c"]:after { background-position: -152px -38px; }
+						&[data-hash="971c419dd609331343dee105fffd0f4608dc0bf2"]:after { background-position: -190px -38px; }
+						&[data-hash="c932c53739a41ccd33680d6ab5363c9386893497"]:after { background-position: -228px -38px; }
+						&[data-hash="e694042ce96564ae08c60efbe988d934c5d15327"]:after { background-position: -266px -38px; }
+						&[data-hash="9f073fc050b1b45c039d154586ccad21eb313287"]:after { background-position: -304px -38px; }
+						&[data-hash="56e912c292bcc6280c84dad9409952aaf55a0bda"]:after { background-position: -342px -38px; }
+						&[data-hash="731c55c5ad867417c94fc80288d762d1250b5a41"]:after { background-position: 0 -76px; }
+						&[data-hash="3835a8ed4d0e8bb3b45b6230aeb8372f03e09325"]:after { background-position: -38px -76px; }
+						&[data-hash="c5b4efaca33006da6e916fbb94e1d6d245ee6cb7"]:after { background-position: -76px -76px; }
+						&[data-hash="112f3a99b283a4e1788dedd8e0e5d35375c33747"]:after { background-position: -114px -76px; }
+						&[data-hash="c47def46f96af1b3ca456906a9b7f31e08c31929"]:after { background-position: -152px -76px; }
+						&[data-hash="2d867e53e2afb3acd36985a05a69538e3722d333"]:after { background-position: -190px -76px; }
+						&[data-hash="ef8201e13a29bcc30d4df6b11b34d56cdade2bbd"]:after { background-position: -228px -76px; }
+						&[data-hash="18cd29b92e7aef3b2b8bbce2e4331ed91dd3f7f2"]:after { background-position: -266px -76px; }
+						&[data-hash="a7a5b07adcc32627ec7bf9cb1ad5f4ba58d90e5d"]:after { background-position: -304px -76px; }
+						&[data-hash="4e3e01b9af84f54d95f94d24eeb0583332a85268"]:after { background-position: -342px -76px; }
+						&[data-hash="5d8df1eee11d8b47cc39936d5205ddf097259464"]:after { background-position: 0 -114px; }
+						&[data-hash="7c1a4291888cd41ae5a8abb0735a88eecc2ceb0e"]:after { background-position: -38px -114px; }
+						&[data-hash="b0e997acf3987ec1f756e21caca58b758e9adb0b"]:after { background-position: -76px -114px; }
+						&[data-hash="cf9e268ffdd30a996b4cd183b8a1daca19e72ba6"]:after { background-position: -114px -114px; }
+						&[data-hash="040152260d55a87d96f584f013bfc4f709e9c8c4"]:after { background-position: -152px -114px; }
+						&[data-hash="46d551dae60a987b587dac7b1441911a7045899f"]:after { background-position: -190px -114px; }
+						&[data-hash="35ff4793f63f5b9a42b796cd458f5b4318812ab0"]:after { background-position: -228px -114px; }
+						&[data-hash="4e06ce73c2d2b0714e0958ab7afe10899a55adb6"]:after { background-position: -266px -114px; }
+
+						&:after {
+							background: 50% 50% no-repeat;
+							background-size: 38px auto;
+							background-image: var(--sh);
+							filter: opacity(.85) invert(1) drop-shadow(0 1px 0 #1225);
+							scale: .75;
+						}
+
+						&:not(.add-new):hover:after {
+							filter: opacity(1) invert(1);
+						}
 					}
 				}
 				.buttons .preset-buttons[data-for="Shapes"] { display: block; }
@@ -303,7 +468,6 @@
 					ul.preset-list li {
 						width: 37px;
 						height: 37px;
-						background: transparent;
 
 						&[data-hash]:after { background: url(~/img/contours.webp) no-repeat; }
 						&[data-hash="af502f2b37eea07ed9083c7daf40f34553f6fccd"]:after { background-position: 0 0; }
@@ -451,15 +615,15 @@
 									margin: 0 2px 4px;
 									border-radius: 2px;
 									cursor: pointer;
-									background: linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
-												linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
-												#ddd;
-									background-repeat: repeat, repeat;
-									background-position: 0px 0, 4px 4px;
-									background-origin: padding-box, padding-box;
-									background-clip: border-box, border-box;
-									background-size: 8px 8px, 8px 8px;
-									transform: scaleX(1) scaleY(1) scaleZ(1);
+									// background: linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
+									// 			linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
+									// 			#ddd;
+									// background-repeat: repeat, repeat;
+									// background-position: 0px 0, 4px 4px;
+									// background-origin: padding-box, padding-box;
+									// background-clip: border-box, border-box;
+									// background-size: 8px 8px, 8px 8px;
+									// transform: scaleX(1) scaleY(1) scaleZ(1);
 
 									&:after {
 										content: "";

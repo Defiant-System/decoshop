@@ -105,7 +105,7 @@ const Dialogs = {
 				if (!event.dEl.find(".style-list .option").length) {
 					window.render({
 						template: "layer-style-list",
-						match: `//LayerStyles`,
+						match: `//LayerStyleOptions`,
 						target: event.dEl.find(".style-list"),
 					}).then(() => {
 						Self.dlgLayerStyle({ ...event, type: "select-index-item" });

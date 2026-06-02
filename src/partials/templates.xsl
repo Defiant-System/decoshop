@@ -107,7 +107,9 @@
 	<ul class="preset-list">
 		<xsl:for-each select="./*">
 			<li>
-				<xsl:attribute name="style">--gs: <xsl:value-of select="@g"/>;</xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--gr: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
 			</li>
 		</xsl:for-each>
 		<li class="add-new" data-click="add-gradient-preset"></li>
@@ -119,7 +121,9 @@
 	<ul class="preset-list">
 		<xsl:for-each select="./*">
 			<li>
-				<xsl:attribute name="style">--ptrn: "<xsl:value-of select="@name"/>";</xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--pt: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
 			</li>
 		</xsl:for-each>
 		<li class="add-new" data-click="add-pattern-preset"></li>
@@ -129,6 +133,13 @@
 
 <xsl:template name="preset-layer-style-list">
 	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--ls: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
+			</li>
+		</xsl:for-each>
 		<li class="add-new" data-click="add-layer-style-preset"></li>
 	</ul>
 </xsl:template>
@@ -136,6 +147,13 @@
 
 <xsl:template name="preset-shapes-list">
 	<ul class="preset-list">
+		<xsl:for-each select="./*">
+			<li>
+				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@path"><xsl:attribute name="style">--sh: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
+			</li>
+		</xsl:for-each>
 		<li class="add-new" data-click="add-shapes-preset"></li>
 	</ul>
 </xsl:template>
