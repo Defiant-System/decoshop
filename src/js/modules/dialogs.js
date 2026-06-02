@@ -330,9 +330,6 @@ const Dialogs = {
 		}
 	},
 	dlgGradientEditor(event) {
-		/*
-		 * 
-		 */
 		let APP = decoshop,
 			Self = Dialogs,
 			val,
@@ -2512,10 +2509,12 @@ const Dialogs = {
 				break;
 			// standard dialog events
 			case "dlg-open":
-				if (event.args.length) {
-					let el = event.dEl.find(`.presets .option:contains(${event.args[0]})`);
-					if (el.length) el.trigger("click");
+				if (!event.args.length) {
+					// auto select "brush"option
+					event.args = ["Brush"];
 				}
+				el = event.dEl.find(`.presets .option:contains(${event.args[0]})`);
+				if (el.length) el.trigger("click");
 			case "dlg-ok":
 			case "dlg-reset":
 			case "dlg-preview":

@@ -1,5 +1,5 @@
 <div class="dialog-box" data-dlg="dlgPresetManager">
-	<div class="dlg-content" data-show="Brush">
+	<div class="dlg-content">
 		<div class="fields">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
@@ -7,7 +7,7 @@
 			</h2>
 			<div class="options">
 				<div class="presets" data-click="select-preset-option">
-					<div class="option selected">Brush</div>
+					<div class="option">Brush</div>
 					<div class="option">Gradient</div>
 					<div class="option">Pattern</div>
 					<div class="option">Layer Style</div>
@@ -47,34 +47,34 @@
 			<div class="button" data-click="dlg-ok">OK</div>
 			<div class="button" data-click="dlg-reset">Reset</div>
 
-			<div class="preset-buttons" data-for="Brush">
-				<div class="button" data-click="dlg-reset">Load .ABR</div>
-				<div class="button" data-click="dlg-reset">Export .ABR</div>
+			<div class="preset-buttons" data-for="Brush" data-arg="abr">
+				<div class="button" data-click="dlg-load">Load .ABR</div>
+				<div class="button" data-click="dlg-export">Export .ABR</div>
 			</div>
 			
-			<div class="preset-buttons" data-for="Gradient">
-				<div class="button" data-click="dlg-reset">Load .GRD</div>
-				<div class="button" data-click="dlg-reset">Export .GRD</div>
+			<div class="preset-buttons" data-for="Gradient" data-arg="grd">
+				<div class="button" data-click="dlg-load">Load .GRD</div>
+				<div class="button" data-click="dlg-export">Export .GRD</div>
 			</div>
 			
-			<div class="preset-buttons" data-for="Pattern">
-				<div class="button" data-click="dlg-reset">Load .PAT</div>
-				<div class="button" data-click="dlg-reset">Export .PAT</div>
+			<div class="preset-buttons" data-for="Pattern" data-arg="pat">
+				<div class="button" data-click="dlg-load">Load .PAT</div>
+				<div class="button" data-click="dlg-export">Export .PAT</div>
 			</div>
 			
-			<div class="preset-buttons" data-for="Layer Style">
-				<div class="button" data-click="dlg-reset">Load .ASL</div>
-				<div class="button" data-click="dlg-reset">Export .ASL</div>
+			<div class="preset-buttons" data-for="Layer Style" data-arg="asl">
+				<div class="button" data-click="dlg-load">Load .ASL</div>
+				<div class="button" data-click="dlg-export">Export .ASL</div>
 			</div>
 			
-			<div class="preset-buttons" data-for="Shapes">
-				<div class="button" data-click="dlg-reset">Load .CSH</div>
-				<div class="button" data-click="dlg-reset">Export .CSH</div>
+			<div class="preset-buttons" data-for="Shapes" data-arg="csh">
+				<div class="button" data-click="dlg-load">Load .CSH</div>
+				<div class="button" data-click="dlg-export">Export .CSH</div>
 			</div>
 			
-			<div class="preset-buttons" data-for="Contour">
-				<div class="button" data-click="dlg-reset">Load .SHC</div>
-				<div class="button" data-click="dlg-reset">Export .SHC</div>
+			<div class="preset-buttons" data-for="Contour" data-arg="shc">
+				<div class="button" data-click="dlg-load">Load .SHC</div>
+				<div class="button" data-click="dlg-export">Export .SHC</div>
 			</div>
 		</div>
 	</div>
