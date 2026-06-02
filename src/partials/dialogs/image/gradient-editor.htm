@@ -28,6 +28,69 @@
 				</ul>
 			</div>
 
+			<div class="gradient-slider">
+				<div class="track opacity">
+					<span class="point" style="--c: #000000; --x: 0;"></span>
+					<span class="point" style="--c: #ffffff; --x: 280;"></span>
+				</div>
+				<div class="gradient"></div>
+				<div class="track colors">
+					<span class="point" style="--c: #000000; --x: 0;"></span>
+					<span class="mid" style="--x: 140;"></span>
+					<span class="point" style="--c: #ffffff; --x: 280;"></span>
+				</div>
+			</div>
+
+			<fieldset>
+				<h4>Opacity</h4>
+
+				<div class="field-block">
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Opacity</span>
+							<span class="value">
+								<input type="text" name="field-2" data-min="0" data-max="100" value="25%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="25"></div>
+					</div>
+
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Location</span>
+							<span class="value">
+								<input type="text" name="field-2" data-min="0" data-max="100" value="25%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="25"></div>
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<h4>Color</h4>
+
+				<div class="field-block">
+					<div class="field-row has-preset">
+						<div class="option select">
+							<span class="label">Type</span>
+							<span class="value">Custom</span>
+							<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+						</div>
+					</div>
+
+					<div class="field-row has-knob">
+						<div class="option input">
+							<span class="label">Location</span>
+							<span class="value">
+								<input type="text" name="field-2" data-min="0" data-max="100" value="25%" data-suffix="%"/>
+							</span>
+						</div>
+						<div class="knob" data-value="25"></div>
+					</div>
+				</div>
+			</fieldset>
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
