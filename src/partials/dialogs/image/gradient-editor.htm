@@ -1,47 +1,58 @@
 <div class="dialog-box" data-dlg="dlgGradientEditor">
 	<div class="dlg-content">
-		<div class="fields">
-			<h2>
-				<i class="icon-dlg-close" data-click="dlg-close"></i>
-				Gradient Editor
-			</h2>
+		<div class="head-fields">
+			<div class="fields">
+				<h2>
+					<i class="icon-dlg-close" data-click="dlg-close"></i>
+					Gradient Editor
+				</h2>
 
-			<div class="preset-fields">
-				<ul class="preset-list">
-					<li title="Foreground to Background" data-hash="d694cd76f42e01052cd127a68f62d3244a2674bc"></li>
-					<li title="Foreground to Transparent" data-hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"></li>
-					<li title="Black, White" data-hash="d711ee5384b1edb68555f98659464b1682865481"></li>
-					<li title="Red, Green" data-hash="8da5800c1acdc85dc54afd33809f214bddcef36d"></li>
-					<li title="Violet, Orange" data-hash="3586c49351dc16bbfdab1b10d675d5334561a70a"></li>
-					<li title="Blue, Red, Yellow" data-hash="303f11d95718c632e430f3d4959cc521abe5dea4"></li>
-					<li title="Blue, Yellow, Blue" data-hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"></li>
-					<li title="Orange, Yellow, Orange" data-hash="36623964ca0c3ae46d5a1352b59126a927a7a204"></li>
-					<li title="Violet, Green, Orange" data-hash="19a7d0151dd54246e7660a2f678dceda85d76786"></li>
-					<li title="Yellow, Violet, Orange, Blue" data-hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"></li>
-					<li title="Copper" data-hash="392696b691848e1c2e14231fecd9edd150d7521e"></li>
-					<li title="Chrome" data-hash="218e75c7a912404b048fff0747e40108873b6334"></li>
-					<li title="Spectrum" data-hash="9620cf2803289fe004997a280224318c045871a0"></li>
-					<li title="Transparent Rainbow" data-hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"></li>
-					<li title="Transparent Stripes" data-hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"></li>
-					<li title="Neutral Density" data-hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"></li>
-					<li class="add-new" data-click="add-gradient-preset"></li>
-				</ul>
-			</div>
-
-			<div class="gradient-slider">
-				<div class="track opacity">
-					<span class="point" style="--c: #000000; --x: 0;"></span>
-					<span class="point" style="--c: #ffffff; --x: 280;"></span>
+				<div class="preset-fields">
+					<!-- gradient presets goes here -->
+					<ul class="preset-list">
+						<li title="Foreground to Background" data-hash="d694cd76f42e01052cd127a68f62d3244a2674bc"></li>
+						<li title="Foreground to Transparent" data-hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"></li>
+						<li title="Black, White" data-hash="d711ee5384b1edb68555f98659464b1682865481"></li>
+						<li title="Red, Green" data-hash="8da5800c1acdc85dc54afd33809f214bddcef36d"></li>
+						<li title="Violet, Orange" data-hash="3586c49351dc16bbfdab1b10d675d5334561a70a"></li>
+						<li title="Blue, Red, Yellow" data-hash="303f11d95718c632e430f3d4959cc521abe5dea4"></li>
+						<li title="Blue, Yellow, Blue" data-hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"></li>
+						<li title="Orange, Yellow, Orange" data-hash="36623964ca0c3ae46d5a1352b59126a927a7a204"></li>
+						<li title="Violet, Green, Orange" data-hash="19a7d0151dd54246e7660a2f678dceda85d76786"></li>
+						<li title="Yellow, Violet, Orange, Blue" data-hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"></li>
+						<li title="Copper" data-hash="392696b691848e1c2e14231fecd9edd150d7521e"></li>
+						<li title="Chrome" data-hash="218e75c7a912404b048fff0747e40108873b6334"></li>
+						<li title="Spectrum" data-hash="9620cf2803289fe004997a280224318c045871a0"></li>
+						<li title="Transparent Rainbow" data-hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"></li>
+						<li title="Transparent Stripes" data-hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"></li>
+						<li title="Neutral Density" data-hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"></li>
+						<li class="add-new" data-click="add-gradient-preset"></li>
+					</ul>
 				</div>
-				<div class="gradient"></div>
-				<div class="track colors">
-					<span class="point" style="--c: #000000; --x: 0;"></span>
-					<span class="mid" style="--x: 140;"></span>
-					<span class="point" style="--c: #ffffff; --x: 280;"></span>
+
+				<div class="gradient-slider">
+					<div class="track alpha" data-ux="ga-track">
+						<span class="point" data-ux="gp-handle" style="--c: #000000; --x: 0;"></span>
+						<span class="mid" data-ux="gm-handle" style="--x: 140;"></span>
+						<span class="point" data-ux="gp-handle" style="--c: #000000; --x: 280;"></span>
+					</div>
+					<div class="gradient"></div>
+					<div class="track colors" data-ux="gc-track">
+						<span class="point" data-ux="gp-handle" style="--c: #f9e503; --x: 0;"></span>
+						<span class="mid" data-ux="gm-handle" style="--x: 140;"></span>
+						<span class="point" data-ux="gp-handle" style="--c: #002772; --x: 280;"></span>
+					</div>
 				</div>
 			</div>
+			<div class="buttons">
+				<div class="button" data-click="dlg-ok">OK</div>
+				<div class="button" data-click="dlg-load">Load .GRD</div>
+				<div class="button" data-click="dlg-export">Export .GRD</div>
+			</div>
+		</div>
 
-			<fieldset>
+		<div class="alpha-stops">
+			<fieldset class="fields-alpha collapsed">
 				<h4>Opacity</h4>
 
 				<div class="field-block">
@@ -64,17 +75,21 @@
 						</div>
 						<div class="knob" data-value="25"></div>
 					</div>
+
+					<div class="button">Delete</div>
 				</div>
 			</fieldset>
 
-			<fieldset>
-				<h4>Color</h4>
+			<fieldset class="fields-color">
+				<h4>
+					Color
+					<span class="inline-menu" data-change="set-color-type" data-options="fieldset-inline-menubox" data-match="//GradientEditorColorTypes">Custom</span>
+				</h4>
 
 				<div class="field-block">
 					<div class="field-row has-preset">
-						<div class="option select">
+						<div class="option">
 							<span class="label">Type</span>
-							<span class="value">Custom</span>
 							<span class="color-preset inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
 						</div>
 					</div>
@@ -88,14 +103,10 @@
 						</div>
 						<div class="knob" data-value="25"></div>
 					</div>
+
+					<div class="button">Delete</div>
 				</div>
 			</fieldset>
-
-		</div>
-		<div class="buttons">
-			<div class="button" data-click="dlg-ok">OK</div>
-			<div class="button" data-click="dlg-load">Load .GRD</div>
-			<div class="button" data-click="dlg-export">Export .GRD</div>
 		</div>
 	</div>
 </div>

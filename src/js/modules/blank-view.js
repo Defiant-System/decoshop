@@ -51,7 +51,7 @@
 				APP.dispatch({ type: "open-file" });
 				break;
 			case "check-clipboard":
-				Self.els.btnClipboard.removeClass("disabled_");
+				// Self.els.btnClipboard.removeClass("disabled_");
 
 				// navigator.clipboard.read().then(async clipboardItems => {
 				// 	clipboardItems.map(clipboardItem => {

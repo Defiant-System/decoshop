@@ -48,6 +48,11 @@
 		<i value="#313131"/>
 		<i value="#000000"/>
 	</Swatches>
+	<GradientEditorColorTypes>
+		<i type="option" name="Foreground" value="0"/>
+		<i type="option" name="Background" value="1"/>
+		<i type="option" name="Custom" value="2"/>
+	</GradientEditorColorTypes>
 	<Brushes>
 		<i name="Soft Round" size="&#8230;" hash="d121dc0c7b61262dc57530792289f73bcfa9e21a"/>
 		<i name="Hard Round" size="&#8230;" hash="024cebefb68af14616895fa565603ac80c72929d"/>

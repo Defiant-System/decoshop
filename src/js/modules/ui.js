@@ -266,6 +266,66 @@ const UI = {
 				break;
 		}
 	},
+	doGradientSlider(event) {
+		let Self = UI,
+			Drag = Self.drag;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+
+				let el = $(event.target).parents("?[data-ux]").get(0),
+					pEl = el.parents(".track"),
+					gEl = el.parents(".gradient-slider"),
+					dEl = el.parents(".dlg-content"),
+					ux = el.data("ux"),
+					offset = {
+						x: +el.cssProp("--x") - event.clientX,
+					},
+					min = 0,
+					max = +pEl.prop("offsetWidth");
+
+				switch (ux) {
+					case "ga-track": break;
+					case "gp-handle":
+						dEl.find(".collapsed").removeClass("collapsed");
+						if (pEl.hasClass("alpha")) dEl.find(`fieldset.fields-color`).addClass("collapsed");
+						else dEl.find(`fieldset.fields-alpha`).addClass("collapsed");
+						break;
+					case "gp-handle": break;
+					case "gc-track": break;
+					case "gp-handle": break;
+					case "gm-handle": break;
+					case "gp-handle": break;
+				}
+
+				gEl.find(".selected").removeClass("selected");
+				el.addClass("selected dragging");
+
+				// drag related info
+				Self.drag = { el, pEl, gEl, ux, offset, min, max };
+
+				// bind event handlers
+				Self.content.addClass("no-dlg-cursor");
+				Self.doc.on("mousemove mouseup", Self.doGradientSlider);
+				break;
+			case "mousemove":
+				let diff = event.clientX + Drag.offset.x,
+					left = Math.max(Math.min(Drag.max, diff), Drag.min);
+				
+				Drag.el.css({ "--x": left });
+				break;
+			case "mouseup":
+				// reset element
+				Drag.el.removeClass("dragging");
+				// unbind event handlers
+				Self.content.removeClass("no-dlg-cursor");
+				Self.doc.off("mousemove mouseup", Self.doGradientSlider);
+				break;
+		}
+	},
 	doRange(event) {
 		let Self = UI,
 			Drag = Self.drag;
@@ -499,6 +559,14 @@ const UI = {
 						return Self.doDialogKnobValue(event);
 					case ux === "dlg-bars":
 						return Self.doDialogBars(event);
+					case ux === "ga-track":
+					case ux === "gp-handle":
+					case ux === "gp-handle":
+					case ux === "gc-track":
+					case ux === "gp-handle":
+					case ux === "gm-handle":
+					case ux === "gp-handle":
+						return Self.doGradientSlider(event);
 					case ux === "br-track":
 					case ux === "br-handle":
 						return Self.doRange(event);

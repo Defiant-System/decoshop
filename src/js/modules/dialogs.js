@@ -337,7 +337,9 @@ const Dialogs = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "selected-style-item":
+			case "set-color-type":
+				// update inline "selectbox"
+				event.el.removeClass("opened").html(event.text);
 				break;
 			// standard dialog events
 			case "dlg-open":
