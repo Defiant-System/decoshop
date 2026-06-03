@@ -332,8 +332,7 @@ const Dialogs = {
 	dlgGradientEditor(event) {
 		let APP = decoshop,
 			Self = Dialogs,
-			val,
-			selEl,
+			dEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -341,10 +340,33 @@ const Dialogs = {
 				// update inline "selectbox"
 				event.el.removeClass("opened").html(event.text);
 				break;
+			case "select-gap-handle":
+			case "select-gcp-handle":
+			case "select-gam-handle":
+			case "select-gcm-handle":
+				dEl = event.el.parents(".dialog-box");
+
+				let val = event.type.split("-")[1],
+					record = {
+						gap: "fields-alpha",
+						gcp: "fields-color",
+						gam: "fields-midpoint",
+						gcm: "fields-midpoint",
+					};
+
+				dEl.find("fieldset").addClass("collapsed");
+				dEl.find(`fieldset.${record[val]}`).removeClass("collapsed");
+				break;
 			// standard dialog events
 			case "dlg-open":
-				// make sure layer style is covered
-				window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).addClass("covered");
+				// render gradient preset list
+				window.render({
+					template: "preset-gradient-list",
+					match: "//Gradients",
+					target: event.dEl.find(".preset-fields"),
+				});
+				// trigger "selected" on for color point
+				event.dEl.find(".gradient-slider .track.colors .point:nth(0)").trigger("mousedown").trigger("mouseup");
 				break;
 			case "dlg-close":
 				// make sure layer style is covered

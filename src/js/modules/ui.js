@@ -279,7 +279,8 @@ const UI = {
 				let el = $(event.target).parents("?[data-ux]").get(0),
 					pEl = el.parents(".track"),
 					gEl = el.parents(".gradient-slider"),
-					dEl = el.parents(".dlg-content"),
+					dEl = el.parents(".dialog-box[data-dlg]"),
+					dlgFunc = Dialogs[dEl.data("dlg")],
 					ux = el.data("ux"),
 					offset = {
 						x: +el.cssProp("--x") - event.clientX,
@@ -288,17 +289,15 @@ const UI = {
 					max = +pEl.prop("offsetWidth");
 
 				switch (ux) {
-					case "ga-track": break;
-					case "gp-handle":
-						dEl.find(".collapsed").removeClass("collapsed");
-						if (pEl.hasClass("alpha")) dEl.find(`fieldset.fields-color`).addClass("collapsed");
-						else dEl.find(`fieldset.fields-alpha`).addClass("collapsed");
+					case "gap-handle":
+					case "gcp-handle":
+					case "gam-handle":
+					case "gcm-handle":
+						dlgFunc({ type: `select-${ux}`, el });
 						break;
-					case "gp-handle": break;
-					case "gc-track": break;
-					case "gp-handle": break;
-					case "gm-handle": break;
-					case "gp-handle": break;
+					case "gc-track":
+						// add new point
+						break;
 				}
 
 				gEl.find(".selected").removeClass("selected");
@@ -559,13 +558,11 @@ const UI = {
 						return Self.doDialogKnobValue(event);
 					case ux === "dlg-bars":
 						return Self.doDialogBars(event);
-					case ux === "ga-track":
-					case ux === "gp-handle":
-					case ux === "gp-handle":
 					case ux === "gc-track":
-					case ux === "gp-handle":
-					case ux === "gm-handle":
-					case ux === "gp-handle":
+					case ux === "gap-handle":
+					case ux === "gam-handle":
+					case ux === "gcm-handle":
+					case ux === "gcp-handle":
 						return Self.doGradientSlider(event);
 					case ux === "br-track":
 					case ux === "br-handle":
