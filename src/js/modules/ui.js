@@ -281,6 +281,7 @@ const UI = {
 					gEl = el.parents(".gradient-slider"),
 					dEl = el.parents(".dialog-box[data-dlg]"),
 					dlgFunc = Dialogs[dEl.data("dlg")],
+					target = {},
 					ux = el.data("ux"),
 					offset = {
 						x: +el.cssProp("--x") - event.clientX,
@@ -291,9 +292,18 @@ const UI = {
 				switch (ux) {
 					case "gap-handle":
 					case "gcp-handle":
+						dlgFunc({ type: `select-${ux}`, el });
+						break;
 					case "gam-handle":
 					case "gcm-handle":
 						dlgFunc({ type: `select-${ux}`, el });
+
+						target.input = dEl.find(`input[data-name="midpoint-location"]`);
+						target.suffix = target.input.data("suffix");
+						target.knob = target.input.parents(".field-row").find(".knob");
+
+						min += 9;
+						max -= 9;
 						break;
 					case "gc-track":
 						// add new point
@@ -304,7 +314,7 @@ const UI = {
 				el.addClass("selected dragging");
 
 				// drag related info
-				Self.drag = { el, pEl, gEl, ux, offset, min, max };
+				Self.drag = { el, pEl, gEl, ux, offset, min, max, target };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
@@ -312,9 +322,12 @@ const UI = {
 				break;
 			case "mousemove":
 				let diff = event.clientX + Drag.offset.x,
-					left = Math.max(Math.min(Drag.max, diff), Drag.min);
+					left = Math.max(Math.min(Drag.max, diff), Drag.min),
+					perc = ((left / (Drag.max - Drag.min)) * 100) | 0;
 				
 				Drag.el.css({ "--x": left });
+
+				Drag.target.input.val(perc + Drag.target.suffix);
 				break;
 			case "mouseup":
 				// reset element
