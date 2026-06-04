@@ -193,8 +193,22 @@
 	}
 
 	&[data-dlg="dlgFlame"] {
-		.dlg-content .fields {
-			min-width: 285px;
+		.dlg-content {
+			.fields {
+				min-width: 285px;
+
+				&[data-show="basic"] {
+					> div[data-fields="basic"] { display: block; }
+				}
+
+				&[data-show="advanced"] {
+					> div[data-fields="advanced"] { display: block; }
+				}
+
+				> div[data-fields] {
+					display: none;
+				}
+			}
 		}
 	}
 

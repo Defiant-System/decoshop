@@ -259,6 +259,13 @@
 		<i type="option" name="Multiple Flames Various Angle" value="4"/>
 		<i type="option" name="Candle Light" value="5"/>
 	</FlameTypes>
+	<FlameQuality>
+		<i type="option" name="1: Draft" value="0"/>
+		<i type="option" name="2: Low" value="1"/>
+		<i type="option" name="3: Medium" value="2"/>
+		<i type="option" name="4: High" value="3"/>
+		<i type="option" name="5: Fine" value="4"/>
+	</FlameQuality>
 	<ColorLookUpTables>
 		<i type="option" name="None"/>
 		<i type="divider"/>

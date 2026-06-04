@@ -1,61 +1,118 @@
 <div class="dialog-box" data-dlg="dlgFlame">
 	<div class="dlg-content">
-		<div class="fields">
+		<div class="fields" data-show="basic">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Flame
 			</h2>
-			
-			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//FlameTypes">
-					<span class="label">Type</span>
-					<span class="value">One Flame Along Path</span>
-				</div>
-			</div>
 
 			<div class="field-row">
-				<div class="option has-toggler">
-					<span class="label">Length</span>
-					<div class="toggler" data-value="on">
-						<span>Randomize</span>
+				<div class="option opt-group">
+					<span class="label">Style</span>
+					<span class="value">
+						<ul class="opt-group" data-click="select-style">
+							<li data-id="basic" class="active">Basic</li>
+							<li data-id="advanced">Advanced</li>
+						</ul>
+					</span>
+				</div>
+			</div>
+			
+			<div data-fields="basic">
+				<div class="field-row">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//FlameTypes">
+						<span class="label">Type</span>
+						<span class="value">One Flame Along Path</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Length</span>
+						<div class="toggler" data-value="off">
+							<span>Randomize</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Length</span>
+						<span class="value">
+							<input type="text" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
+						</span>
+					</div>
+					<div class="knob" data-value="140"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Width</span>
+						<span class="value">
+							<input type="text" data-min="5" data-max="600" value="100px" data-default="100px" data-suffix="px"/>
+						</span>
+					</div>
+					<div class="knob" data-value="100"></div>
+				</div>
+
+				<div class="field-row fat-ring-row has-knob">
+					<div class="option input has-ring push-value">
+						<span class="label">Angle</span>
+						<span class="value">
+							<div class="ring-input"></div>
+							<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+						</span>
+						<div class="knob" data-value="0"></div>
+					</div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Interval</span>
+						<span class="value">
+							<input type="text" data-min="5" data-max="200" value="100px" data-default="100px" data-suffix="px"/>
+						</span>
+					</div>
+					<div class="knob" data-value="100"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option has-toggler">
+						<span class="label">Loop Intervals</span>
+						<div class="toggler" data-value="off">
+							<span>Adapt</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-row has-preset">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//FlameQuality">
+						<span class="label">Quality</span>
+						<span class="value">2: Low</span>
+						<span class="color-preset inline-menu" style="--c: #ff6e1c;" data-options="swatches" data-match="//Swatches"></span>
 					</div>
 				</div>
 			</div>
 
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Length</span>
-					<span class="value">
-						<input type="text" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
-					</span>
-				</div>
-				<div class="knob" data-value="140"></div>
-			</div>
-
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Width</span>
-					<span class="value">
-						<input type="text" data-min="5" data-max="600" value="100px" data-default="100px" data-suffix="px"/>
-					</span>
-				</div>
-				<div class="knob" data-value="100"></div>
-			</div>
-
-			<div class="field-row slim-row has-knob">
-				<div class="option input has-ring push-value">
-					<span class="label">Angle</span>
-					<span class="value">
-						<div class="ring-input"></div>
-						<input type="text" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
-					</span>
-					<div class="pan-knob" data-value="0"></div>
+			<div class="hidden" data-fields="advanced">
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Turbulent</span>
+						<span class="value">
+							<input type="text" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
+						</span>
+					</div>
+					<div class="knob" data-value="140"></div>
 				</div>
 			</div>
 
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
