@@ -10,6 +10,14 @@
 @import "modules/dialogs.js"
 
 
+let {
+	Rect,
+	WebGLContext,
+	PixelUtil,
+	PatternHelper,
+} = await window.fetch("~/js/bundle.js");
+
+
 
 const DefaultSettings = {
 	guides: {
@@ -46,7 +54,6 @@ const decoshop = {
 		Tabs.init();
 		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 		// parses base64 items in "data.xml"
-		console.time("caching");
 		this.dispatch({ type: "parse-base64" });
 
 		// DEV-ONLY-START
@@ -88,10 +95,8 @@ const decoshop = {
 				let xNode = window.bluePrint.selectSingleNode(`//*[@base64]`),
 					img = new Image;
 				// exit if all is processed
-				if (!xNode) {
-					console.timeEnd("caching");
-					return;
-				}
+				if (!xNode) return;
+				
 				// put base64 in image
 				img.onload = () => {
 					// put image in canvas to create blob

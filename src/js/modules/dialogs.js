@@ -332,8 +332,7 @@ const Dialogs = {
 	dlgGradientEditor(event) {
 		let APP = decoshop,
 			Self = Dialogs,
-			rec,
-			val,
+			value,
 			dEl,
 			el;
 		// console.log(event);
@@ -343,22 +342,72 @@ const Dialogs = {
 				event.el.removeClass("opened").html(event.text);
 				break;
 			case "draw-gradient-preset":
-				// console.log(event.gradient);
+				let sw2 = Self.vars.stripWidth / 2,
+					sh2 = Self.vars.stripHeight / 2,
+					strip = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					gradientRect = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					stripImage = Self.els.ctx.getImageData(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					checkerPixels = new Uint8Array(stripImage.data.buffer),
+					gradientPixels = PixelUtil.allocBytes(Self.vars.stripWidth * Self.vars.stripHeight * 4),
+					matrix = [1 / Self.vars.stripWidth, 0, 0, 1 / Self.vars.stripHeight];
+
+				PixelUtil.fillCheckerboard(checkerPixels, Self.vars.stripWidth, Self.vars.stripHeight, 8);
+				PixelUtil.color.renderGradient(event.gradient, gradientPixels, gradientRect, matrix, sw2, sh2, !1, 0, Self.vars.fgColor, Self.vars.bgColor);
+				PixelUtil.blend.compositeBlend("norm", gradientPixels, strip, checkerPixels, strip, strip, 1);
+				Self.els.ctx.clearRect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight);
+				Self.els.ctx.putImageData(stripImage, 0, 0);
+				break;
+			case "plot-gradient-points":
+				let opacityStops = event.gradient.Trns.v,
+					colorStops = event.gradient.Clrs.v,
+					resolvedColors = PixelUtil.color.resolveGradientStops(event.gradient, Self.vars.fgColor, Self.vars.bgColor),
+					aTrack = [],
+					cTrack = [];
+
+				for (let i=0; i<opacityStops.length; i++) {
+					var stop = opacityStops[i].v,
+						gray = Math.round(255 - 255 * stop.Opct.v.val / 100),
+						perc = stop.Lctn.v / Self.vars.locationScale,
+						stopX = Self.vars.stripWidth * perc,
+						stopC = `rgb(${gray},${gray},${gray})`;
+					aTrack.push(`<span class="point" data-ux="gap-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
+				}
+				Self.els.trackAlpha.html(aTrack.join(""));
+
+				for (let i=0; i<colorStops.length; i++) {
+					var stop = colorStops[i].v,
+						rgb = resolvedColors[0][i][0],
+						perc = stop.Lctn.v / Self.vars.locationScale,
+						stopX = Self.vars.stripWidth * perc,
+						stopC = `rgb(${Math.round(rgb.o)},${Math.round(rgb.J)},${Math.round(rgb.k)})`;
+					cTrack.push(`<span class="point" data-ux="gcp-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
+				}
+				Self.els.trackColors.html(cTrack.join(""));
 				break;
 			case "select-gap-handle":
+				dEl = event.el.parents(".dialog-box");
+				dEl.find("fieldset").addClass("collapsed");
+				dEl.find(`fieldset.fields-alpha`).removeClass("collapsed");
+				break;
 			case "select-gcp-handle":
+				dEl = event.el.parents(".dialog-box");
+				dEl.find("fieldset").addClass("collapsed");
+				dEl.find(`fieldset.fields-color`).removeClass("collapsed");
+				// update field values
+				Self.els.iPointColor.css({ "--c": event.el.cssProp("--c") });
+				value = +event.el.cssProp("--perc") * 100 | 0;
+				Self.els.plInput.val(value + "%");
+				Self.els.plKnob.data({ value });
+				break;
 			case "select-gam-handle":
+				dEl = event.el.parents(".dialog-box");
+				dEl.find("fieldset").addClass("collapsed");
+				dEl.find(`fieldset.fields-midpoint`).removeClass("collapsed");
+				break;
 			case "select-gcm-handle":
 				dEl = event.el.parents(".dialog-box");
-				val = event.type.split("-")[1];
-				rec = {
-					gap: "fields-alpha",
-					gcp: "fields-color",
-					gam: "fields-midpoint",
-					gcm: "fields-midpoint",
-				};
 				dEl.find("fieldset").addClass("collapsed");
-				dEl.find(`fieldset.${rec[val]}`).removeClass("collapsed");
+				dEl.find(`fieldset.fields-midpoint`).removeClass("collapsed");
 				break;
 			// standard dialog events
 			case "dlg-open":
@@ -371,14 +420,28 @@ const Dialogs = {
 				// fast references
 				Self.els = {
 					cvs: event.dEl.find(".gradient canvas"),
+					iPointColor: event.dEl.find(`.fields-color .color-preset`),
+					plInput: event.dEl.find(`.fields-color input[data-name="color-location"]`),
+					plKnob: event.dEl.find(`.fields-color .knob`),
+					trackAlpha: event.dEl.find(`.track[data-ux="ga-track"]`),
+					trackColors: event.dEl.find(`.track[data-ux="gc-track"]`),
+				};
+				// vars used
+				Self.vars = {
+					fgColor: 0, // black
+					bgColor: 16777215, // white
+					locationScale: 4096,
+					stripWidth: +Self.els.cvs.prop("offsetWidth"),
+					stripHeight: +Self.els.cvs.prop("offsetHeight"),
 				};
 				// prepare canvas element
 				Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
 				Self.els.cvs.attr({
-					width: Self.els.cvs.prop("offsetWidth"),
-					height: Self.els.cvs.prop("offsetHeight"),
+					width: Self.vars.stripWidth,
+					height: Self.vars.stripHeight,
 				});
 				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: TMP_gradient });
+				Self.dlgGradientEditor({ type: "plot-gradient-points", gradient: TMP_gradient });
 				// trigger "selected" on for color point
 				event.dEl.find(".gradient-slider .track.colors .point:nth(0)").trigger("mousedown").trigger("mouseup");
 				break;
