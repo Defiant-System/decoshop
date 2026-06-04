@@ -7,7 +7,7 @@
 					Gradient Editor
 				</h2>
 
-				<div class="preset-fields">
+				<div class="preset-fields" data-click="select-gradient-preset">
 					<!-- gradient presets goes here -->
 				</div>
 
@@ -43,20 +43,20 @@
 						<div class="option input">
 							<span class="label">Opacity</span>
 							<span class="value">
-								<input type="text" data-name="alpha-value" data-min="0" data-max="100" value="100%" data-suffix="%"/>
+								<input type="text" data-change="update-alpha-value" data-name="alpha-value" data-min="0" data-max="100" value="100%" data-suffix="%"/>
 							</span>
 						</div>
-						<div class="knob" data-value="100"></div>
+						<div class="knob" data-change="update-alpha-value" data-value="100"></div>
 					</div>
 
 					<div class="field-row has-knob">
 						<div class="option input">
 							<span class="label">Location</span>
 							<span class="value">
-								<input type="text" data-name="alpha-location" data-min="0" data-max="100" value="100%" data-suffix="%"/>
+								<input type="text" data-change="update-alpha-location" data-name="alpha-location" data-min="0" data-max="100" value="100%" data-suffix="%"/>
 							</span>
 						</div>
-						<div class="knob" data-value="100"></div>
+						<div class="knob" data-change="update-alpha-location" data-value="100"></div>
 					</div>
 
 					<div class="button">Delete</div>

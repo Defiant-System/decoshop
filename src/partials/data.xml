@@ -251,6 +251,14 @@
 		<i type="option" name="TIFF" value="3"/>
 		<i type="option" name="TGA" value="4"/>
 	</ExportFormats>
+	<FlameTypes>
+		<i type="option" name="One Flame Along Path" value="0"/>
+		<i type="option" name="Multiple Flames Along Path" value="1"/>
+		<i type="option" name="Multiple Flames One Direction" value="2"/>
+		<i type="option" name="Multiple Flames Path Directed" value="3"/>
+		<i type="option" name="Multiple Flames Various Angle" value="4"/>
+		<i type="option" name="Candle Light" value="5"/>
+	</FlameTypes>
 	<ColorLookUpTables>
 		<i type="option" name="None"/>
 		<i type="divider"/>

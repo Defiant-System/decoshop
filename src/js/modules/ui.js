@@ -332,7 +332,7 @@ const UI = {
 				el.addClass("selected dragging");
 
 				// drag related info
-				Self.drag = { el, pEl, gEl, ux, offset, min, max, target };
+				Self.drag = { el, pEl, gEl, ux, dlgFunc, offset, min, max, target };
 
 				// bind event handlers
 				gEl.addClass("no-cursor");
@@ -341,11 +341,13 @@ const UI = {
 			case "mousemove":
 				let diff = event.clientX + Drag.offset.x,
 					left = Math.max(Math.min(Drag.max, diff), Drag.min),
-					perc = ((left / (Drag.max - Drag.min)) * 100) | 0;
+					perc = left / (Drag.max - Drag.min);
 				
 				Drag.el.css({ "--x": left });
-
-				Drag.target.input.val(perc + Drag.target.suffix);
+				// update input field
+				Drag.target.input.val((perc * 100) | 0 + Drag.target.suffix);
+				// forward event to dialog
+				Drag.dlgFunc({ type: `update-${Drag.ux}`, el: Drag.el, perc });
 				break;
 			case "mouseup":
 				// reset element
@@ -1213,7 +1215,8 @@ const UI = {
 				Drag.el.data({ value });
 
 				let i = Drag.val.step.toString().split(".")[1],
-					val = +((Drag.val.max * (value / 100)) + Drag.val.min).toFixed(i ? i.length : 0);
+					perc = value / 100,
+					val = +((Drag.val.max * perc) + Drag.val.min).toFixed(i ? i.length : 0);
 				Drag.src.val(val + Drag.suffix);
 				// forward event
 				Drag.dlg.func({ ...Drag.dlg, value: val });

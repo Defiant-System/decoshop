@@ -1,6 +1,5 @@
 
-@import "./modules/test.js"
-
+@import "registry/index.js"
 
 @import "modules/misc.js"
 @import "modules/color.js"
@@ -8,6 +7,8 @@
 @import "modules/tabs.js"
 @import "modules/projector.js"
 @import "modules/dialogs.js"
+
+@import "./modules/test.js"
 
 
 let {

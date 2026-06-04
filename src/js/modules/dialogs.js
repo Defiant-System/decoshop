@@ -337,53 +337,19 @@ const Dialogs = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "set-color-type":
-				// update inline "selectbox"
-				event.el.removeClass("opened").html(event.text);
-				break;
-			case "draw-gradient-preset":
-				let sw2 = Self.vars.stripWidth / 2,
-					sh2 = Self.vars.stripHeight / 2,
-					strip = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
-					gradientRect = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
-					stripImage = Self.els.ctx.getImageData(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
-					checkerPixels = new Uint8Array(stripImage.data.buffer),
-					gradientPixels = PixelUtil.allocBytes(Self.vars.stripWidth * Self.vars.stripHeight * 4),
-					matrix = [1 / Self.vars.stripWidth, 0, 0, 1 / Self.vars.stripHeight];
+			// "fast events"
+			case "update-gcp-handle":
+				Self.vars.preset.Clrs.v[0].v.Lctn.v = event.perc * Self.vars.locationScale;
+				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+				return; // exit function for perf
+			case "update-alpha-value":
+				Self.vars.preset.Trns.v[0].v.Opct.v.val = event.value;
+				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+				return; // exit function for perf
+			case "update-alpha-location":
+				return; // exit function for perf
 
-				PixelUtil.fillCheckerboard(checkerPixels, Self.vars.stripWidth, Self.vars.stripHeight, 8);
-				PixelUtil.color.renderGradient(event.gradient, gradientPixels, gradientRect, matrix, sw2, sh2, !1, 0, Self.vars.fgColor, Self.vars.bgColor);
-				PixelUtil.blend.compositeBlend("norm", gradientPixels, strip, checkerPixels, strip, strip, 1);
-				Self.els.ctx.clearRect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight);
-				Self.els.ctx.putImageData(stripImage, 0, 0);
-				break;
-			case "plot-gradient-points":
-				let opacityStops = event.gradient.Trns.v,
-					colorStops = event.gradient.Clrs.v,
-					resolvedColors = PixelUtil.color.resolveGradientStops(event.gradient, Self.vars.fgColor, Self.vars.bgColor),
-					aTrack = [],
-					cTrack = [];
-
-				for (let i=0; i<opacityStops.length; i++) {
-					var stop = opacityStops[i].v,
-						gray = Math.round(255 - 255 * stop.Opct.v.val / 100),
-						perc = stop.Lctn.v / Self.vars.locationScale,
-						stopX = Self.vars.stripWidth * perc,
-						stopC = `rgb(${gray},${gray},${gray})`;
-					aTrack.push(`<span class="point" data-ux="gap-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
-				}
-				Self.els.trackAlpha.html(aTrack.join(""));
-
-				for (let i=0; i<colorStops.length; i++) {
-					var stop = colorStops[i].v,
-						rgb = resolvedColors[0][i][0],
-						perc = stop.Lctn.v / Self.vars.locationScale,
-						stopX = Self.vars.stripWidth * perc,
-						stopC = `rgb(${Math.round(rgb.o)},${Math.round(rgb.J)},${Math.round(rgb.k)})`;
-					cTrack.push(`<span class="point" data-ux="gcp-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
-				}
-				Self.els.trackColors.html(cTrack.join(""));
-				break;
+			// slower events
 			case "select-gap-handle":
 				dEl = event.el.parents(".dialog-box");
 				dEl.find("fieldset").addClass("collapsed");
@@ -409,14 +375,82 @@ const Dialogs = {
 				dEl.find("fieldset").addClass("collapsed");
 				dEl.find(`fieldset.fields-midpoint`).removeClass("collapsed");
 				break;
+			case "set-color-type":
+				// update inline "selectbox"
+				event.el.removeClass("opened").html(event.text);
+				break;
+			case "select-gradient-preset":
+				el = $(event.target);
+				if (!el.parent().hasClass("preset-list")) return;
+
+				el.parent().find(".active").removeClass("active");
+				el.addClass("active");
+
+				Self.vars.preset = { ...Registry.gradients.list[el.index()] };
+				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+				Self.dlgGradientEditor({ type: "plot-gradient-points", gradient: Self.vars.preset });
+				break;
+			case "draw-gradient-preset":
+				let sw2 = Self.vars.stripWidth / 2,
+					sh2 = Self.vars.stripHeight / 2,
+					strip = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					gradientRect = new Rect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					stripImage = Self.els.ctx.getImageData(0, 0, Self.vars.stripWidth, Self.vars.stripHeight),
+					checkerPixels = new Uint8Array(stripImage.data.buffer),
+					gradientPixels = PixelUtil.allocBytes(Self.vars.stripWidth * Self.vars.stripHeight * 4),
+					matrix = [1 / Self.vars.stripWidth, 0, 0, 1 / Self.vars.stripHeight];
+
+				PixelUtil.fillCheckerboard(checkerPixels, Self.vars.stripWidth, Self.vars.stripHeight, 8);
+				PixelUtil.color.renderGradient(event.gradient, gradientPixels, gradientRect, matrix, sw2, sh2, !1, 0, Self.vars.fgColor, Self.vars.bgColor);
+				PixelUtil.blend.compositeBlend("norm", gradientPixels, strip, checkerPixels, strip, strip, 1);
+				Self.els.ctx.clearRect(0, 0, Self.vars.stripWidth, Self.vars.stripHeight);
+				Self.els.ctx.putImageData(stripImage, 0, 0);
+				break;
+			case "plot-gradient-points":
+				let opacityStops = event.gradient.Trns.v,
+					colorStops = event.gradient.Clrs.v,
+					resolvedColors = PixelUtil.color.resolveGradientStops(event.gradient, Self.vars.fgColor, Self.vars.bgColor),
+					opacityRowIndex = -1,
+					aTrack = [],
+					cTrack = [];
+
+				for (let i=0; i<opacityStops.length; i++) {
+					let stop = opacityStops[i].v,
+						gray = Math.round(255 - 255 * stop.Opct.v.val / 100),
+						perc = stop.Lctn.v / Self.vars.locationScale,
+						stopX = Self.vars.stripWidth * perc,
+						stopC = `rgb(${gray},${gray},${gray})`;
+					// midpoint
+					if (i != 0) {
+						let prev = opacityStops[i - 1].v,
+							midpointX = Self.vars.stripWidth * (prev.Lctn.v + (stop.Lctn.v - prev.Lctn.v) * stop.Mdpn.v / 100) / Self.vars.locationScale;
+						aTrack.push(`<span class="mid" data-ux="gam-handle" style="--x: ${midpointX};"></span>`);
+					}
+					// alpha point
+					aTrack.push(`<span class="point" data-ux="gap-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
+				}
+				Self.els.trackAlpha.html(aTrack.join(""));
+
+				for (let i=0; i<colorStops.length; i++) {
+					let stop = colorStops[i].v,
+						rgb = resolvedColors[0][i][0],
+						perc = stop.Lctn.v / Self.vars.locationScale,
+						stopX = Self.vars.stripWidth * perc,
+						stopC = `rgb(${Math.round(rgb.o)},${Math.round(rgb.J)},${Math.round(rgb.k)})`;
+					// midpoint
+					if (i != 0) {
+						var prev = colorStops[i - 1].v,
+							midpointX = Self.vars.stripWidth * (prev.Lctn.v + (stop.Lctn.v - prev.Lctn.v) * stop.Mdpn.v / 100) / Self.vars.locationScale;
+						cTrack.push(`<span class="mid" data-ux="gcm-handle" style="--x: ${midpointX};"></span>`);
+					}
+					// color point
+					cTrack.push(`<span class="point" data-ux="gcp-handle" style="--c: ${stopC}; --x: ${stopX}; --perc: ${perc};"></span>`);
+				}
+				Self.els.trackColors.html(cTrack.join(""));
+				break;
+			
 			// standard dialog events
 			case "dlg-open":
-				// render gradient preset list
-				window.render({
-					template: "preset-gradient-list",
-					match: "//Gradients",
-					target: event.dEl.find(".preset-fields"),
-				});
 				// fast references
 				Self.els = {
 					cvs: event.dEl.find(".gradient canvas"),
@@ -433,6 +467,7 @@ const Dialogs = {
 					locationScale: 4096,
 					stripWidth: +Self.els.cvs.prop("offsetWidth"),
 					stripHeight: +Self.els.cvs.prop("offsetHeight"),
+					// preset: { ...Registry.gradients.list[8] },
 				};
 				// prepare canvas element
 				Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
@@ -440,10 +475,18 @@ const Dialogs = {
 					width: Self.vars.stripWidth,
 					height: Self.vars.stripHeight,
 				});
-				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: TMP_gradient });
-				Self.dlgGradientEditor({ type: "plot-gradient-points", gradient: TMP_gradient });
-				// trigger "selected" on for color point
-				event.dEl.find(".gradient-slider .track.colors .point:nth(0)").trigger("mousedown").trigger("mouseup");
+				// render gradient preset list
+				window.render({
+					template: "preset-gradient-list",
+					match: "//Gradients",
+					target: event.dEl.find(".preset-fields"),
+				}).then(() => {
+					// click on a preset
+					event.dEl.find(`.preset-fields li`).get(8).trigger("click");
+					// trigger "selected" on for color point
+					event.dEl.find(".gradient-slider .track.alpha .point:nth(0)").trigger("mousedown").trigger("mouseup");
+					// event.dEl.find(".gradient-slider .track.colors .point:nth(0)").trigger("mousedown").trigger("mouseup");
+				});
 				break;
 			case "dlg-close":
 				// make sure layer style is covered
