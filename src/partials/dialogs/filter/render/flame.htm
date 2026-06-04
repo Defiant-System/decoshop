@@ -1,6 +1,6 @@
 <div class="dialog-box" data-dlg="dlgFlame">
 	<div class="dlg-content">
-		<div class="fields" data-show="basic">
+		<div class="fields" data-show="advanced">
 			<h2>
 				<i class="icon-dlg-close" data-click="dlg-close"></i>
 				Flame
@@ -99,10 +99,77 @@
 					<div class="option input">
 						<span class="label">Turbulent</span>
 						<span class="value">
-							<input type="text" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
+							<input type="text" data-min="0" data-max="100" value="50" data-default="50"/>
 						</span>
 					</div>
-					<div class="knob" data-value="140"></div>
+					<div class="knob" data-value="50"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Jag</span>
+						<span class="value">
+							<input type="text" data-min="0" data-max="100" value="0" data-default="0"/>
+						</span>
+					</div>
+					<div class="knob" data-value="0"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Opacity</span>
+						<span class="value">
+							<input type="text" data-min="0" data-max="100" value="25" data-default="25"/>
+						</span>
+					</div>
+					<div class="knob" data-value="25"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Lines</span>
+						<span class="value">
+							<input type="text" data-min="2" data-max="30" value="10" data-default="10"/>
+						</span>
+					</div>
+					<div class="knob" data-value="10"></div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Bottom</span>
+						<span class="value">
+							<input type="text" data-min="0" data-max="100" value="30" data-default="30"/>
+						</span>
+					</div>
+					<div class="knob" data-value="30"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//FlameStyles">
+						<span class="label">Style</span>
+						<span class="value">Normal</span>
+					</div>
+				</div>
+
+				<div class="field-row has-toggler">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//FlameShapes">
+						<span class="label">Shape</span>
+						<span class="value">Parallel</span>
+						<div class="toggler" data-value="off">
+							<span>Randomize</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Seed</span>
+						<span class="value">
+							<input type="text" data-min="0" data-max="100" value="18" data-default="18"/>
+						</span>
+					</div>
+					<div class="knob" data-value="18"></div>
 				</div>
 			</div>
 

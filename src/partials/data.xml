@@ -266,6 +266,18 @@
 		<i type="option" name="4: High" value="3"/>
 		<i type="option" name="5: Fine" value="4"/>
 	</FlameQuality>
+	<FlameStyles>
+		<i type="option" name="Normal" value="0"/>
+		<i type="option" name="Violent" value="1"/>
+		<i type="option" name="Flat" value="2"/>
+	</FlameStyles>
+	<FlameShapes>
+		<i type="option" name="Parallel" value="0"/>
+		<i type="option" name="To the center" value="1"/>
+		<i type="option" name="Spread" value="2"/>
+		<i type="option" name="Oval" value="3"/>
+		<i type="option" name="Pointing" value="4"/>
+	</FlameShapes>
 	<ColorLookUpTables>
 		<i type="option" name="None"/>
 		<i type="divider"/>
