@@ -332,6 +332,8 @@ const Dialogs = {
 	dlgGradientEditor(event) {
 		let APP = decoshop,
 			Self = Dialogs,
+			rec,
+			val,
 			dEl,
 			el;
 		// console.log(event);
@@ -340,22 +342,23 @@ const Dialogs = {
 				// update inline "selectbox"
 				event.el.removeClass("opened").html(event.text);
 				break;
+			case "draw-gradient-preset":
+				// console.log(event.gradient);
+				break;
 			case "select-gap-handle":
 			case "select-gcp-handle":
 			case "select-gam-handle":
 			case "select-gcm-handle":
 				dEl = event.el.parents(".dialog-box");
-
-				let val = event.type.split("-")[1],
-					record = {
-						gap: "fields-alpha",
-						gcp: "fields-color",
-						gam: "fields-midpoint",
-						gcm: "fields-midpoint",
-					};
-
+				val = event.type.split("-")[1];
+				rec = {
+					gap: "fields-alpha",
+					gcp: "fields-color",
+					gam: "fields-midpoint",
+					gcm: "fields-midpoint",
+				};
 				dEl.find("fieldset").addClass("collapsed");
-				dEl.find(`fieldset.${record[val]}`).removeClass("collapsed");
+				dEl.find(`fieldset.${rec[val]}`).removeClass("collapsed");
 				break;
 			// standard dialog events
 			case "dlg-open":
@@ -365,6 +368,17 @@ const Dialogs = {
 					match: "//Gradients",
 					target: event.dEl.find(".preset-fields"),
 				});
+				// fast references
+				Self.els = {
+					cvs: event.dEl.find(".gradient canvas"),
+				};
+				// prepare canvas element
+				Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
+				Self.els.cvs.attr({
+					width: Self.els.cvs.prop("offsetWidth"),
+					height: Self.els.cvs.prop("offsetHeight"),
+				});
+				Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: TMP_gradient });
 				// trigger "selected" on for color point
 				event.dEl.find(".gradient-slider .track.colors .point:nth(0)").trigger("mousedown").trigger("mouseup");
 				break;

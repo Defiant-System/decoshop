@@ -291,8 +291,18 @@ const UI = {
 
 				switch (ux) {
 					case "gap-handle":
+						dlgFunc({ type: `select-${ux}`, el });
+
+						target.input = dEl.find(`input[data-name="alpha-location"]`);
+						target.suffix = target.input.data("suffix");
+						target.knob = target.input.parents(".field-row").find(".knob");
+						break;
 					case "gcp-handle":
 						dlgFunc({ type: `select-${ux}`, el });
+
+						target.input = dEl.find(`input[data-name="color-location"]`);
+						target.suffix = target.input.data("suffix");
+						target.knob = target.input.parents(".field-row").find(".knob");
 						break;
 					case "gam-handle":
 					case "gcm-handle":
@@ -307,7 +317,15 @@ const UI = {
 						break;
 					case "gc-track":
 						// add new point
-						break;
+						target = el.append(`<span class="point selected dragging" data-ux="gcp-handle" style="--c: #f00; --x: ${event.offsetX};"></span>`);
+						// simulate new mousedown
+						Self.doGradientSlider({
+							type: "mousedown",
+							target: target[0],
+							clientX: event.clientX,
+							preventDefault() {}
+						});
+						return;
 				}
 
 				gEl.find(".selected").removeClass("selected");
@@ -317,7 +335,7 @@ const UI = {
 				Self.drag = { el, pEl, gEl, ux, offset, min, max, target };
 
 				// bind event handlers
-				Self.content.addClass("no-dlg-cursor");
+				gEl.addClass("no-cursor");
 				Self.doc.on("mousemove mouseup", Self.doGradientSlider);
 				break;
 			case "mousemove":
@@ -333,7 +351,7 @@ const UI = {
 				// reset element
 				Drag.el.removeClass("dragging");
 				// unbind event handlers
-				Self.content.removeClass("no-dlg-cursor");
+				Drag.gEl.removeClass("no-cursor");
 				Self.doc.off("mousemove mouseup", Self.doGradientSlider);
 				break;
 		}
