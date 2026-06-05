@@ -581,6 +581,22 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectRefineEdge" });
 		}
 	},
+	dlgQuickMaskOptions(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		switch (event.type) {
+			case "select-style":
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgQuickMaskOptions" });
+		}
+	},
 	dlgFlame(event) {
 		let APP = decoshop,
 			Self = Dialogs,
