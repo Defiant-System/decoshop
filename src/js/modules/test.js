@@ -23,7 +23,9 @@ let Test = {
 		// setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerStyle,Contour" }), 600);
 		// setTimeout(() => APP.els.content.find(`div[data-name="Contour"] .option .value[data-options="contours"]`).trigger("click"), 1200);
 
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgFlame" }), 400);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgSelectMagicCut" }), 400);
+
+		// karaqu.shell("fs -up '~/help/toc.md'"); // 'Select/magic-cut.md'
 		
 		// setTimeout(() => APP.els.content.find(`.grid-arrow:nth(4)`).trigger("click"), 900);
 		// setTimeout(() => APP.els.content.find(`.liq-tool:nth(0)`).trigger("click"), 900);

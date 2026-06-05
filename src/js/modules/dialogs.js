@@ -503,6 +503,45 @@ const Dialogs = {
 				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
 		}
 	},
+	dlgSelectMagicCut(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		switch (event.type) {
+			case "set-workarea-layout":
+				el = $(event.target);
+				event.el.parents(".dlg-content").find(`.work-cvs`).data({ layout: el.data("id") });
+				break;
+			case "set-result-bg":
+				el = $(event.target);
+				event.el.parents(".dlg-content").find(`.work-cvs`).data({ resultBg: el.data("id") });
+				break;
+			// standard dialog events
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectMagicCut" });
+		}
+	},
+	dlgSelectRefineEdge(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		switch (event.type) {
+			case "select-style":
+				break;
+			default:
+				/* Falls through to "master UI"
+				 * Can be handled here if needed - just capture events:
+				 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+				 */
+				// handler standard dialog events
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectRefineEdge" });
+		}
+	},
 	dlgFlame(event) {
 		let APP = decoshop,
 			Self = Dialogs,

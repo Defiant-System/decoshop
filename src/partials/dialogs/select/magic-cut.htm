@@ -1,20 +1,82 @@
 <div class="dialog-box" data-dlg="dlgSelectMagicCut">
 	<div class="dlg-content">
-		<div class="fields">
-			<h2>
-				<i class="icon-dlg-close" data-click="dlg-close"></i>
-				Magic Cut
-			</h2>
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cell Size</span>
-					<span class="value"><input type="text" name="size" value="12" data-min="5" data-max="70" data-default="10"></span>
-				</div>
-				<div class="knob" data-change="set-size"></div>
-			</div>
-		</div>
+		<h2>
+			<i class="icon-dlg-close" data-click="dlg-close"></i>
+			Magic Cut
+		</h2>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+		</div>
+		
+		<div class="layout">
+			<div class="preview">
+				<div class="work-cvs" data-layout="landscape" data-resultBg="transparent">
+					<div class="cvs-org"><canvas></canvas></div>
+					<div class="cvs-result"><canvas></canvas></div>
+				</div>
+				<div class="zoom-level">
+					<span data-click="preview-zoom-out"></span>
+					<span class="preview-zoom-value">100%</span>
+					<span data-click="preview-zoom-in"></span>
+				</div>
+			</div>
+
+			<div class="controls">
+
+				<div class="field-row">
+					<div class="option" data-options="pop-brush-tips" data-match="//TipShapes" data-suffix="px" data-name="hard-round" data-size="20" data-roundness="100" data-angle="0">
+						<span class="label">Brush</span>
+						<span class="value prefix-icon">
+							<i class="tip-icon" style="background-image: url(~/icons/brush-preset-hard-round.png);"></i>
+							<span>20px</span>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option opt-group">
+						<span class="label">Layout</span>
+						<span class="value">
+							<ul class="opt-group" data-click="set-workarea-layout">
+								<li data-id="landscape" class="active">L</li>
+								<li data-id="portrait">P</li>
+							</ul>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row has-knob">
+					<div class="option input">
+						<span class="label">Border</span>
+						<span class="value">
+							<input type="text" name="field-2" data-min="0" data-max="50" value="3" data-default="3">
+						</span>
+					</div>
+					<div class="knob" data-value="3"></div>
+				</div>
+
+				<div class="field-row">
+					<div class="option opt-group">
+						<span class="label">Background</span>
+						<span class="value">
+							<ul class="opt-group" data-click="set-result-bg">
+								<li data-id="transparent" class="active">T</li>
+								<li data-id="checkers">C</li>
+								<li data-id="white">W</li>
+								<li data-id="black">B</li>
+							</ul>
+						</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="option select" data-options="fieldset-inline-menubox" data-match="//ColorChannels">
+						<span class="label">Output</span>
+						<span class="value">New Layer</span>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>

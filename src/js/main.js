@@ -90,7 +90,7 @@ const decoshop = {
 				break;
 			// custom events
 			case "open-help":
-				karaqu.shell("fs -u '~/help/index.md'");
+				karaqu.shell("fs -u '~/help/toc.md'");
 				break;
 			case "parse-base64":
 				let xNode = window.bluePrint.selectSingleNode(`//*[@base64]`),

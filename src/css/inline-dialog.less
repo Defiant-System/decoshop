@@ -99,12 +99,15 @@
 		position: absolute;
 		bottom: 13px;
 		left: 50%;
+		width: 101px;
 		height: 22px;
+		margin-left: -50px;
 		display: flex;
 		padding: 1px;
-		margin-left: -30px;
 		border-radius: 30px;
 		text-align: center;
+		z-index: 2;
+		box-shadow: 0 2px 5px #1223;
 		user-select: none;
 
 		[data-click="preview-zoom-out"] {
@@ -189,6 +192,154 @@
 	&[data-dlg="dlgBlackWhite"] {
 		.dlg-content .fields {
 			min-width: 285px;
+		}
+	}
+
+	&[data-dlg="dlgSelectMagicCut"] {
+		top: 58px;
+		left: 50px;
+
+		.dlg-content {
+			flex-direction: column;
+			width: 1080px;
+			height: 740px;
+
+			h2 {
+				width: calc(100% - 100px);
+			}
+
+			.buttons {
+				position: absolute;
+				top: 7px;
+				right: 6px;
+			}
+		}
+
+		.layout {
+			position: absolute;
+			top: 31px;
+			bottom: 7px;
+			left: 7px;
+			right: 7px;
+			display: flex;
+			flex-direction: row;
+
+			.preview {
+				background: linear-gradient(180deg, #344b, #3448);
+				position: relative;
+				border-radius: 3px;
+				flex: 1;
+
+				&:before {
+					content: "";
+					position: absolute;
+					bottom: -1px;
+					left: 0;
+					right: 0;
+					height: 1px;
+					background: linear-gradient(90deg, #eff0, #eff3, #eff0);
+					filter: drop-shadow(0 -1px 0 #0119);
+				}
+
+				.work-cvs {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					display: flex;
+					border-radius: inherit;
+
+					&[data-layout="landscape"] {
+						flex-direction: column;
+
+						> div {
+							&.cvs-org {
+								border-bottom-left-radius: 0;
+								border-bottom-right-radius: 0;
+							}
+
+							&.cvs-result {
+								box-shadow: 0 -1px 0 #fff1;
+								border-top-left-radius: 0;
+								border-top-right-radius: 0;
+							}
+						}
+					}
+
+					&[data-layout="portrait"] {
+						flex-direction: row;
+
+						> div {
+							&.cvs-org {
+								border-top-right-radius: 0;
+								border-bottom-right-radius: 0;
+							}
+
+							&.cvs-result {
+								box-shadow: -1px 0 0 #fff1;
+								border-top-left-radius: 0;
+								border-bottom-left-radius: 0;
+							}
+						}
+					}
+
+					&[data-resultBg="transparent"] > div.cvs-result { background: transparent; }
+					&[data-resultBg="black"] > div.cvs-result { background: #000; }
+					&[data-resultBg="white"] > div.cvs-result { background: #fff; }
+					&[data-resultBg="checkers"] > div.cvs-result {
+						background: linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
+									linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb 0),
+									#ddd;
+						background-repeat: repeat, repeat;
+						background-position: 0px 0, 6px 6px;
+						background-origin: padding-box, padding-box;
+						background-clip: border-box, border-box;
+						background-size: 12px 12px, 12px 12px;
+						transform: scaleX(1) scaleY(1) scaleZ(1);
+					}
+
+
+					> div {
+						position: relative;
+						border-radius: inherit;
+						flex: 1;
+
+						canvas {
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 100%;
+							height: 100%;
+							border-radius: inherit;
+							background: url(/cdn/img/2d-samples/robert-collins.jpg) 50% 50% no-repeat;
+							background-size: 450px auto;
+						}
+					}
+				}
+			}
+
+			.controls {
+				width: 209px;
+				overflow: auto;
+				padding: 0 0 3px 7px;
+
+				.field-row {
+					margin-right: 0;
+
+					.option {
+						&[data-options="pop-brush-tips"] .value {
+							flex: none;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&[data-dlg="dlgSelectRefineEdge"] {
+		.dlg-content {
+			
 		}
 	}
 
