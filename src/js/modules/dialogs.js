@@ -512,7 +512,7 @@ const Dialogs = {
 				el = $(event.target).parents("?li[data-id]");
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
-				
+				// update DOM layout
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ layout: el.data("id") });
 				break;
 			case "set-mode":
@@ -524,9 +524,14 @@ const Dialogs = {
 				el = $(event.target);
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
-
+				// update DOM layout
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ resultBg: el.data("id") });
 				break;
+			case "open-help-page":
+				console.log(event.el.data("arg"));
+				karaqu.shell("fs -u '~/help/toc.md'");
+				break;
+
 			// standard dialog events
 			default:
 				/* Falls through to "master UI"
@@ -546,7 +551,7 @@ const Dialogs = {
 				el = $(event.target).parents("?li[data-id]");
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
-
+				// update DOM layout
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ layout: el.data("id") });
 				break;
 			case "set-mode":
@@ -558,8 +563,12 @@ const Dialogs = {
 				el = $(event.target);
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
-
+				// update DOM layout
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ resultBg: el.data("id") });
+				break;
+			case "open-help-page":
+				console.log(event.el.data("arg"));
+				karaqu.shell("fs -u '~/help/toc.md'");
 				break;
 
 			// standard dialog events
