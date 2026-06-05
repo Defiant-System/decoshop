@@ -278,6 +278,11 @@
 		<i type="option" name="Oval" value="3"/>
 		<i type="option" name="Pointing" value="4"/>
 	</FlameShapes>
+	<MagicCutOutputs>
+		<i type="option" name="New Layer" value="0"/>
+		<i type="option" name="Raster Mask" value="1"/>
+		<i type="option" name="Selection" value="2"/>
+	</MagicCutOutputs>
 	<ColorLookUpTables>
 		<i type="option" name="None"/>
 		<i type="divider"/>

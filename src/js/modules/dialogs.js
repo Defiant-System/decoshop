@@ -509,11 +509,22 @@ const Dialogs = {
 			el;
 		switch (event.type) {
 			case "set-workarea-layout":
-				el = $(event.target);
+				el = $(event.target).parents("?li[data-id]");
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+				
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ layout: el.data("id") });
+				break;
+			case "set-mode":
+				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
 				break;
 			case "set-result-bg":
 				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+
 				event.el.parents(".dlg-content").find(`.work-cvs`).data({ resultBg: el.data("id") });
 				break;
 			// standard dialog events
@@ -531,8 +542,27 @@ const Dialogs = {
 			Self = Dialogs,
 			el;
 		switch (event.type) {
-			case "select-style":
+			case "set-workarea-layout":
+				el = $(event.target).parents("?li[data-id]");
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+
+				event.el.parents(".dlg-content").find(`.work-cvs`).data({ layout: el.data("id") });
 				break;
+			case "set-mode":
+				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+				break;
+			case "set-result-bg":
+				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+
+				event.el.parents(".dlg-content").find(`.work-cvs`).data({ resultBg: el.data("id") });
+				break;
+
+			// standard dialog events
 			default:
 				/* Falls through to "master UI"
 				 * Can be handled here if needed - just capture events:

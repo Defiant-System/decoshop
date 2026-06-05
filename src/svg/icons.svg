@@ -64,6 +64,22 @@
 		<polygon class="st0" points="2.7,2.7 5.8,10.8 7.8,8.7 15.4,16.3 16.3,15.4 8.7,7.8 10.7,5.8 "/>
 	</svg>
 
+	<svg id="icon-landscape" viewBox="0 0 15 15">
+		<style type="text/css">
+			.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+		</style>
+		<rect x="1.5" y="1.5" class="st0" width="12" height="12"/>
+		<line class="st0" x1="1.5" y1="7.5" x2="13.5" y2="7.5"/>
+	</svg>
+	
+	<svg id="icon-portrait" viewBox="0 0 15 15">
+		<style type="text/css">
+			.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+		</style>
+		<rect x="1.5" y="1.5" class="st0" width="12" height="12"/>
+		<line class="st0" x1="7.5" y1="1.5" x2="7.5" y2="13.5"/>
+	</svg>
+
 	<svg id="icon-switch-values" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{fill:#333;}
