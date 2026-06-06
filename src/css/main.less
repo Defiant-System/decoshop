@@ -1634,6 +1634,7 @@ content {
 			bottom: 0;
 			right: 273px;
 			width: 37px;
+			font-size: 0;
 			border-left: 1px solid rgba(#011, .65);
 			border-right: 1px solid rgba(#011, .65);
 			background-color: rgba(#344,.8);
@@ -2677,6 +2678,22 @@ content {
 			bottom: 0;
 			border-radius: 5px;
 		}
+
+		/* temp START */
+		&:after {
+			content: "";
+			background: url(/cdn/img/2d-samples/robert-collins.jpg) 10% 59% no-repeat;
+			background-size: 790px auto;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			filter: drop-shadow(0 0 1px #122)
+					drop-shadow(0 1px 5px #1228);
+			pointer-events: none;
+		}
+		/* temp END */
 	
 		canvas {
 			&.canvas {
