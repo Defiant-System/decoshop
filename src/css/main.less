@@ -124,6 +124,13 @@ content {
 	}
 
 	.workspace {
+		.sidebar-extras {
+			opacity: 1;
+			transition: opacity @blankViewAnim ease-in-out,
+						right @blankViewAnim ease-in-out;
+			transition-delay: @blankViewAnim * .5;
+		}
+
 		.sidebar-wrapper {
 			right: 0;
 			transition: right @blankViewAnim ease-in-out;
@@ -140,6 +147,7 @@ content {
 		.tools-options-bar,
 		.blank-view.blank-content,
 		.cvs-wrapper,
+		.workspace .sidebar-extras,
 		.workspace .sidebar-wrapper,
 		.workspace .status-bar {
 			transition-delay: 0s;
@@ -178,6 +186,12 @@ content {
 		.workspace {
 			visibility: hidden;
 
+			.sidebar-extras {
+				opacity: 0;
+				right: -73px;
+				transition-delay: 0s;
+			}
+
 			.sidebar-wrapper {
 				right: -273px;
 			}
@@ -207,6 +221,12 @@ content {
 		}
 
 		.workspace {
+			.sidebar-extras {
+				opacity: 0;
+				right: -73px;
+				transition-delay: 0s;
+			}
+
 			.sidebar-wrapper {
 				right: -273px;
 			}
@@ -240,6 +260,11 @@ content {
 
 		.workspace {
 			visibility: visible;
+
+			.sidebar-extras {
+				opacity: 0;
+				transition-delay: @blankViewAnim;
+			}
 
 			.sidebar-wrapper {
 				right: 0;
@@ -648,9 +673,57 @@ content {
 			cursor: default;
 		}
 
+		&.box-icon {
+			display: inline-block;
+			width: 29px;
+			height: 29px;
+
+			&:after {
+				top: 6px;
+				left: 6px;
+			}
+		}
+
 		&:hover:not(.disabled):not(.active):not(.down) {
 			opacity: 0.75;
 		}
+
+		&[data-target="brightness-contrast"] { background-image: url(~/icons/tool-brightness-contrast.png); }
+		&[data-target="levels"]              { background-image: url(~/icons/tool-levels.png); }
+		&[data-target="curves"]              { background-image: url(~/icons/tool-curves.png); }
+		&[data-target="exposure"]            { background-image: url(~/icons/tool-exposure.png); }
+		&[data-target="vibrance"]            { background-image: url(~/icons/tool-vibrance.png); }
+		
+		&[data-target="hue-saturation"]      { background-image: url(~/icons/tool-hue-saturation.png); }
+		&[data-target="color-balance"]       { background-image: url(~/icons/tool-color-balance.png); }
+		&[data-target="black-white"]         { background-image: url(~/icons/tool-black-white.png); }
+		&[data-target="photo-filter"]        { background-image: url(~/icons/tool-photo-filter.png); }
+		&[data-target="channel-mixer"]       { background-image: url(~/icons/tool-channel-mixer.png); }
+		&[data-target="color-lookup"]        { background-image: url(~/icons/tool-color-lookup.png); }
+
+		&[data-target="invert"]              { background-image: url(~/icons/tool-invert.png); }
+		&[data-target="posterize"]           { background-image: url(~/icons/tool-posterize.png); }
+		&[data-target="threshold"]           { background-image: url(~/icons/tool-threshold.png); }
+		&[data-target="gradient-map"]        { background-image: url(~/icons/tool-gradient-map.png); }
+		&[data-target="selective-color"]     { background-image: url(~/icons/tool-selective-color.png); }
+		&[data-target="replace-color"]       { background-image: url(~/icons/tool-replace-color.png); }
+
+		&[data-target="info"]         { background-image: url(~/icons/tool-info.png); }
+		&[data-target="historgram"]   { background-image: url(~/icons/tool-historgram.png); }
+		&[data-target="properties"]   { background-image: url(~/icons/tool-properties.png); }
+		&[data-target="actions"]      { background-image: url(~/icons/tool-actions.png); }
+		&[data-target="navigator"]    { background-image: url(~/icons/tool-navigator.png); }
+		&[data-target="brush-tips"]   { background-image: url(~/icons/tool-brush-tips.png); }
+		&[data-target="layer-comps"]  { background-image: url(~/icons/tool-layer-comps.png); }
+		&[data-target="character"]    { background-image: url(~/icons/tool-character.png); }
+		&[data-target="paragraph"]    { background-image: url(~/icons/tool-paragraph.png); }
+		&[data-target="tool-presets"] { background-image: url(~/icons/tool-tool-presets.png); }
+		&[data-target="glyphs"]       { background-image: url(~/icons/tool-glyphs.png); }
+		&[data-target="notes"]        { background-image: url(~/icons/tool-notes.png); }
+		&[data-target="css"]          { background-image: url(~/icons/tool-css.png); }
+		&[data-target="guide-guy"]    { Background-image: url(~/icons/tool-guide-guy.png); }
+		&[data-target="memory"]       { background-image: url(~/icons/tool-memory.png); }
+		&[data-target="gallery"]      { background-image: url(~/icons/tool-gallery.png); }
 
 		&[data-content="move"] 		{ background-image: url(~/icons/tool-move.png); }
 		&[data-content="marquee"] 	{ background-image: url(~/icons/tool-marquee-rect.png); }
@@ -1555,6 +1628,59 @@ content {
 			}
 		}
 
+		.sidebar-extras {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 273px;
+			width: 37px;
+			border-left: 1px solid rgba(#011, .65);
+			border-right: 1px solid rgba(#011, .65);
+			background-color: rgba(#344,.8);
+			backdrop-filter: blur(@backgrop-blur);
+
+			.divider {
+				display: block;
+				border-top: 1px solid rgba(0,17,17,0.65);
+				border-bottom: 1px solid rgba(0,17,17,0.65);
+				margin: 1px 0;
+			}
+
+			.box-icon {
+				position: relative;
+			    width: 34px;
+			    height: 34px;
+			    margin: 1px 0 0 1px;
+				opacity: .65;
+				background-color: transparent;
+				background-size: 0;
+
+				&:before {
+					content: "";
+					display: none;
+					background: #1124;
+					position: absolute;
+					top: 3px;
+					left: 3px;
+					width: 27px;
+					height: 27px;
+					border-radius: 3px;
+				}
+
+				&:after {
+					top: 8px;
+					left: 8px;
+				}
+
+				&:hover,
+				&.down {
+					opacity: 1;
+
+					&:before { display: block; }
+				}
+			}
+		}
+
 		.sidebar-wrapper {
 			position: absolute;
 			top: 0;
@@ -2081,6 +2207,20 @@ content {
 								padding: 3px 0 0;
 								width: 43px;
 							}
+						}
+					}
+				}
+
+				.adjustments-wrapper {
+					height: 117px;
+					padding-top: 11px;
+					text-align: center;
+
+					.tool {
+						border-radius: 3px;
+
+						&:hover {
+							background-color: #1124;
 						}
 					}
 				}

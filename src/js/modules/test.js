@@ -3,6 +3,11 @@ let Test = {
 	init(APP) {
 		// return;
 
+		// reset content view "animations"
+		// APP.els.content.removeClass("no-anim");
+
+		setTimeout(() => APP.els.content.find(`.sidebar-wrapper .box-head > div`).get(3).trigger("click"), 100);
+
 		setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 

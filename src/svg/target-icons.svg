@@ -1,0 +1,231 @@
+
+<svg id="tool-brightness-contrast" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-levels" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-curves" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-exposure" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-vibrance" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-hue-saturation" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-color-balance" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-black-white" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-photo-filter" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-channel-mixer" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-color-lookup" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-invert" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-posterize" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-threshold" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-gradient-map" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-selective-color" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-replace-color" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-info" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-historgram" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-properties" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-actions" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-navigator" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-brush-tips" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-layer-comps" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-character" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-paragraph" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-tool-presets" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-glyphs" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-notes" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-css" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-guide-guy" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-memory" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="tool-gallery" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;stroke-width:1;stroke-linecap:round;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
