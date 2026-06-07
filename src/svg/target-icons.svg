@@ -278,9 +278,9 @@
 
 <svg id="tool-navigator" viewBox="0 0 17 17">
 	<style type="text/css">
-		.st0{fill:none;stroke:#333;.stroke-width:1.5;stroke-miterlimit:10;}
-		.st1{opacity:0.9;fill:#333;}
-		.st2{opacity:0.6;fill:#333;}
+		.st0{fill:none;stroke:#333;stroke-width:1.5;stroke-miterlimit:10;}
+		.st1{opacity:0.95;fill:#333;}
+		.st2{opacity:0.7;fill:#333;}
 	</style>
 	<circle class="st0" cx="8.5" cy="8.5" r="7"/>
 	<polygon class="st1" points="5.7,3.2 6.7,9.4 10.2,7.6 "/>

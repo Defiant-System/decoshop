@@ -150,8 +150,8 @@ const decoshop = {
 			case "exit-quick-mask-mode":
 			case "select-tool":
 				return Self.tools.dispatch(event);
-			case "box-head-tab":
-				return Self.sidebar.dispatch(event);
+			// case "box-head-tab":
+				// return Self.sidebar.dispatch(event);
 
 			default:
 				el = event.el;
@@ -180,6 +180,7 @@ const decoshop = {
 	blankView: @import "modules/blank-view.js",
 	statusbar: @import "modules/statusbar.js",
 	sidebar: @import "sidebar/index.js",
+	extras: @import "extras/index.js",
 	tools: @import "tools/index.js",
 };
 
