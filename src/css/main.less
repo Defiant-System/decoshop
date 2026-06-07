@@ -709,7 +709,7 @@ content {
 		&[data-target="replace-color"]       { background-image: url(~/icons/tool-replace-color.png); }
 
 		&[data-target="info"]         { background-image: url(~/icons/tool-info.png); }
-		&[data-target="historgram"]   { background-image: url(~/icons/tool-historgram.png); }
+		&[data-target="histogram"]    { background-image: url(~/icons/tool-histogram.png); }
 		&[data-target="properties"]   { background-image: url(~/icons/tool-properties.png); }
 		&[data-target="actions"]      { background-image: url(~/icons/tool-actions.png); }
 		&[data-target="navigator"]    { background-image: url(~/icons/tool-navigator.png); }
@@ -1635,18 +1635,24 @@ content {
 			bottom: 0;
 			right: 309px;
 			width: 300px;
+			overflow-x: hidden;
 			pointer-events: none;
 
 			.extra-box {
 				position: absolute;
 				top: 33px;
-				right: 0;
+				right: -230px;
 				width: 230px;
 				// height: 170px;
 				pointer-events: all;
 				background-color: rgba(#344,.8);
 				backdrop-filter: blur(@backgrop-blur);
 				border: 1px solid rgba(#011, .65);
+				transition: right 150ms ease-in-out;
+
+				&.show {
+					right: 0;
+				}
 
 				.box-head {
 					background-color: rgba(0,0,0,.05);

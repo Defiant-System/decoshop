@@ -14,10 +14,31 @@
 	dispatch(event) {
 		let APP = decoshop,
 			Self = APP.extras,
+			pEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
-			// proxied events
+			case "extras-tool-box":
+				el = $(event.target).parents("?.tool");
+				if (!el.length) return;
+				pEl = Self.els.root.find(`div[data-box="${el.data("target")}"]`).parents(".extra-box");
+
+				if (el.hasClass("down")) { // alread open - close
+					event.el.find(".down").removeClass("down");
+					pEl.cssSequence("!show", "transitionend", bEl => {
+							// console.log(bEl);
+						});
+				} else {
+					// pressed state
+					event.el.find(".down").removeClass("down");
+					el.addClass("down");
+					// open right box
+					pEl.find(`.box-head div[data-content="${el.data("target")}"]`).trigger("click");
+					pEl.cssSequence("show", "transitionend", bEl => {
+							// console.log(bEl);
+						});
+				}
+				break;
 			case "box-head-tab":
 				el = $(event.target);
 				if (el.hasClass("active") || !el.parent().hasClass("box-head")) return;

@@ -73,17 +73,31 @@
 		<div class="extras-wrapper" data-section="extras">
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
-					<div data-content="histogram">Historgram</div>
-					<div data-content="actions" class="active">Actions</div>
+					<div data-content="history">History</div>
+					<!-- <div data-content="properties">Properties</div> -->
+					<div data-content="actions">Actions</div>
+					<div data-content="histogram">Histogram</div>
 				</div>
 				<div class="box-body">
+					<div data-box="history" class="hidden">
+						<div class="history-wrapper">
+							History
+						</div>
+					</div>
+
+					<div data-box="properties" class="hidden">
+						<div class="properties-wrapper">
+							Properties
+						</div>
+					</div>
+
 					<div data-box="histogram" class="hidden">
 						<div class="histogram-wrapper">
 							Historgram
 						</div>
 					</div>
 
-					<div data-box="actions" class="hidden1">
+					<div data-box="actions" class="hidden">
 						<div class="actions-wrapper">
 							Actions
 						</div>
@@ -99,20 +113,47 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="adjustments">Adjustments</div>
+					<div data-content="brush">Brush</div>
+					<div data-content="layer-comps">Layer Comps</div>
+				</div>
+				<div class="box-body">
+					<div data-box="adjustments" class="hidden">
+						<div class="adjustments-wrapper">
+							Adjustments
+						</div>
+					</div>
+
+					<div data-box="brush" class="hidden">
+						<div class="brush-wrapper">
+							Brush
+						</div>
+					</div>
+
+					<div data-box="layer-comps" class="hidden">
+						<div class="layer-comps-wrapper">
+							Layer Comps
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		
-		<div class="sidebar-extras" data-section="extras">
-			<div class="tool box-icon" data-target="info" title="Info"></div>
-			<div class="tool box-icon" data-target="historgram" title="Historgram"></div>
-			<div class="tool box-icon" data-target="properties" title="Properties"></div>
-			<div class="tool box-icon down" data-target="actions" title="Actions"></div>
-			<div class="tool box-icon" data-target="navigator" title="Navigator"></div>
+		<div class="sidebar-extras" data-section="extras" data-click="extras-tool-box">
+			<div class="tool box-icon" data-target="history" title="History"></div>
+			<div class="tool box-icon" data-target="actions" title="Actions"></div>
+			<div class="tool box-icon" data-target="histogram" title="Histogram"></div>
+			<!-- <div class="tool box-icon" data-target="navigator" title="Navigator"></div> -->
 			<div class="divider"></div>
+			<div class="tool box-icon" data-target="adjustments" title="Adjustments"></div>
 			<div class="tool box-icon" data-target="brush-tips" title="Brush"></div>
 			<div class="tool box-icon" data-target="layer-comps" title="Layer Comps"></div>
 			<div class="divider"></div>
-			<div class="tool box-icon" data-target="character" title="Character"></div>
-			<div class="tool box-icon" data-target="paragraph" Title="Paragraph"></div>
+			<!-- <div class="tool box-icon" data-target="character" title="Character"></div> -->
+			<!-- <div class="tool box-icon" data-target="paragraph" Title="Paragraph"></div> -->
 			<div class="tool box-icon" data-target="tool-presets" title="Tool Presets"></div>
 			<div class="tool box-icon" data-target="glyphs" title="Glyphs"></div>
 			<div class="tool box-icon" data-target="notes" title="Notes"></div>
@@ -129,14 +170,12 @@
 					<div data-content="navigator" class="active">Navigator</div>
 					<div data-content="color">Color</div>
 					<div data-content="info">Info</div>
-					<div data-content="adjustments">Adj.</div>
 				</div>
 				<div class="box-body">
 					<!-- content goes here -->
 					@import "sidebar/box-navigator.htm"
 					@import "sidebar/box-color.htm"
 					@import "sidebar/box-info.htm"
-					@import "sidebar/box-adjustments.htm"
 				</div>
 			</div>
 

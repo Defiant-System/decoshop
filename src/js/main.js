@@ -156,7 +156,7 @@ const decoshop = {
 			default:
 				el = event.el;
 				if (el) {
-					let rEl = el.parents("[data-section]"),
+					let rEl = el.parents("?[data-section]"),
 						section = rEl.data("section");
 					if (section) {
 						return Self[section].dispatch(event);

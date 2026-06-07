@@ -240,7 +240,7 @@
 	<circle class="st1" cx="8.5" cy="5.3" r="1.0"/>
 </svg>
 
-<svg id="tool-historgram" viewBox="0 0 17 17">
+<svg id="tool-histogram" viewBox="0 0 17 17">
 	<style type="text/css">
 		.st0{fill:#333;}
 	</style>
