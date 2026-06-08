@@ -887,6 +887,35 @@ content {
 		&.icon-selection-ring   { background-image: url(~/icons/icon-selection-ring.png); }
 		&.icon-new              { background-image: url(~/icons/icon-new.png); }
 		&.icon-clipboard        { background-image: url(~/icons/icon-clipboard.png); }
+
+		&.icon-stop     { background-image: url(~/icons/icon-stop.png); }
+		&.icon-record   { background-image: url(~/icons/icon-record.png); }
+		&.icon-play     { background-image: url(~/icons/icon-play.png); }
+		&.icon-reload   { background-image: url(~/icons/icon-reload.png); }
+		&.icon-download { background-image: url(~/icons/icon-download.png); }
+
+		&.icon-glyph-up   { background-image: url(~/icons/icon-glyph-up.png); }
+		&.icon-glyph-down { background-image: url(~/icons/icon-glyph-down.png); }
+
+		&.icon-guide-mtop    { background-image: url(~/icons/icon-guide-mtop.png); }
+		&.icon-guide-mleft   { background-image: url(~/icons/icon-guide-mleft.png); }
+		&.icon-guide-mbottom { background-image: url(~/icons/icon-guide-mbottom.png); }
+		&.icon-guide-mright  { background-image: url(~/icons/icon-guide-mright.png); }
+		&.icon-guide-colnum     { background-image: url(~/icons/icon-guide-colnum.png); }
+		&.icon-guide-rownum     { background-image: url(~/icons/icon-guide-rownum.png); }
+		&.icon-guide-col-width  { background-image: url(~/icons/icon-guide-col-width.png); }
+		&.icon-guide-row-height { background-image: url(~/icons/icon-guide-row-height.png); }
+		&.icon-guide-col-gap    { background-image: url(~/icons/icon-guide-col-gap.png); }
+		&.icon-guide-row-gap    { background-image: url(~/icons/icon-guide-row-gap.png); }
+
+		&.icon-guide-top     { background-image: url(~/icons/icon-guide-top.png); }
+		&.icon-guide-left    { background-image: url(~/icons/icon-guide-left.png); }
+		&.icon-guide-bottom  { background-image: url(~/icons/icon-guide-bottom.png); }
+		&.icon-guide-bottom  { background-image: url(~/icons/icon-guide-bottom.png); }
+		&.icon-guide-hmid    { background-image: url(~/icons/icon-guide-hmid.png); }
+		&.icon-guide-vmid    { background-image: url(~/icons/icon-guide-vmid.png); }
+
+
 		&.icon-trashcan         { background-image: url(~/icons/icon-trashcan.png); }
 		&.icon-folder           { background-image: url(~/icons/icon-folder.png); }
 		&.icon-folder-open      { background-image: url(~/icons/icon-folder-open.png); }
@@ -1653,8 +1682,8 @@ content {
 				transition: right 150ms ease-in-out;
 
 				&:nth-child(1) { top: -1px; width: 230px; right: -230px; }
-				&:nth-child(2) { top: 108px; width: 250px; right: -250px; }
-				&:nth-child(3) { top: 217px; width: 230px; right: -230px; }
+				&:nth-child(2) { top: 108px; width: 225px; right: -225px; }
+				&:nth-child(3) { top: 217px; width: 250px; right: -250px; }
 				&:nth-child(4) { top: 326px; width: 230px; right: -230px; }
 				&:nth-child(5) { top: 400px; width: 230px; right: -230px; }
 
@@ -1693,7 +1722,6 @@ content {
 					div[data-box] {
 						display: flex;
 						flex-direction: column;
-						height: 100%;
 						border-top: 1px solid rgba(#011, .55);
 						color: rgba(#fff, .75);
 						font-size: 10px;
@@ -1765,6 +1793,21 @@ content {
 							.glyphs-wrapper {
 								// TODO
 							}
+
+							.box-foot {
+								.zoom-slider {
+
+								}
+
+								.foot-buttons {
+									width: 80px;
+									padding-left: 7px;
+
+									div.icon {
+										display: inline-block;
+									}
+								}
+							}
 						}
 
 						&[data-box="guides"] {
@@ -1802,31 +1845,6 @@ content {
 								// TODO
 							}
 						}
-					}
-				}
-
-				.box-foot {
-					background: rgba(#000, .15);
-					border-top: 1px solid rgba(#011, .45);
-					height: 23px;
-					padding: 2px 3px;
-					font-size: 0;
-					display: flex;
-
-					&.right {
-						justify-content: flex-end;
-
-						.icon {
-							margin: 0 0 0 6px;
-						}
-					}
-
-					> div {
-						display: inline-block;
-						vertical-align: middle;
-						color: #abb;
-						font-size: 11px;
-						text-shadow: 0 1px 0 rgba(#000, .5);
 					}
 				}
 			}
@@ -2747,110 +2765,110 @@ content {
 					}
 				}
 			}
+		}
+	}
+	
+	.box-foot {
+		background: rgba(#000, .15);
+		border-top: 1px solid rgba(#011, .45);
+		height: 23px;
+		padding: 2px 3px;
+		font-size: 0;
+		display: flex;
 
-			.box-foot {
-				background: rgba(#000, .15);
-				border-top: 1px solid rgba(#011, .45);
-				height: 23px;
-				padding: 2px 3px;
-				font-size: 0;
-				display: flex;
+		&.right {
+			justify-content: flex-end;
 
-				&.right {
-					justify-content: flex-end;
+			.icon {
+				margin: 0 0 0 6px;
+			}
+		}
 
-					.icon {
-						margin: 0 0 0 6px;
-					}
+		> div {
+			display: inline-block;
+			vertical-align: middle;
+			color: #abb;
+			font-size: 11px;
+			text-shadow: 0 1px 0 rgba(#000, .5);
+		}
+
+		.value {
+			background: rgba(#011, .35);
+			padding: 2px 1px 2px 0;
+			border-radius: 13px;
+			margin-right: 5px;
+			width: 53px;
+			text-align: center;
+			user-select: none;
+		}
+
+		.icon {
+			position: relative;
+			background-size: 0px;
+			width: 17px;
+			height: 17px;
+			margin: 0 3px;
+
+			&.mini {
+				background-image: url(~/icons/icon-mountain-mini.png);
+			}
+
+			&.maxi {
+				background-image: url(~/icons/icon-mountain.png);
+			}
+
+			&.disabled {
+				opacity: 0.35;
+
+				&[style*="selection-ring"] {
+					opacity: 0.85;
 				}
+			}
 
-				> div {
-					display: inline-block;
-					vertical-align: middle;
-					color: #abb;
-					font-size: 11px;
-					text-shadow: 0 1px 0 rgba(#000, .5);
+			&:hover:not(.disabled):after {
+				opacity: 1;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 2px;
+				opacity: 0.4;
+				background-image: inherit;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				filter: invert() drop-shadow(0 1px 0 #00000050);
+				width: inherit;
+				height: inherit;
+			}
+		}
+
+		.zoom-slider {
+			display: flex;
+			flex: 1;
+			padding: 0 11px 0 3px;
+
+			input {
+				display: inline-block;
+				vertical-align: middle;
+				margin: 0 7px;
+				height: 16px;
+				box-shadow: 0 0 0;
+
+				&::-webkit-slider-thumb {
+					background: #9aa;
+					box-shadow: 0 0 0;
+					height: 10px;
+					width: 10px;
+					margin-top: -4px;
+					border: 0;
 				}
-
-				.value {
-					background: rgba(#011, .35);
-					padding: 2px 1px 2px 0;
-					border-radius: 13px;
-					margin-right: 5px;
-					width: 53px;
-					text-align: center;
-					user-select: none;
-				}
-
-				.icon {
-					position: relative;
-					background-size: 0px;
-					width: 17px;
-					height: 17px;
-					margin: 0 3px;
-
-					&.mini {
-						background-image: url(~/icons/icon-mountain-mini.png);
-					}
-
-					&.maxi {
-						background-image: url(~/icons/icon-mountain.png);
-					}
-
-					&.disabled {
-						opacity: 0.35;
-
-						&[style*="selection-ring"] {
-							opacity: 0.85;
-						}
-					}
-
-					&:hover:not(.disabled):after {
-						opacity: 1;
-					}
-
-					&:after {
-						content: "";
-						position: absolute;
-						top: 0;
-						left: 2px;
-						opacity: 0.4;
-						background-image: inherit;
-						background-size: contain;
-						background-repeat: no-repeat;
-						background-position: 50% 50%;
-						filter: invert() drop-shadow(0 1px 0 #00000050);
-						width: inherit;
-						height: inherit;
-					}
-				}
-
-				.zoom-slider {
-					display: flex;
-					flex: 1;
-					padding: 0 11px 0 3px;
-
-					input {
-						display: inline-block;
-						vertical-align: middle;
-						margin: 0 7px;
-						height: 16px;
-						box-shadow: 0 0 0;
-
-						&::-webkit-slider-thumb {
-							background: #9aa;
-							box-shadow: 0 0 0;
-							height: 10px;
-							width: 10px;
-							margin-top: -4px;
-							border: 0;
-						}
-						&::-webkit-slider-runnable-track {
-							background: rgba(#788, .5);
-							height: 2px;
-							box-shadow: 0 1px 0 rgba(#000, 0.2)
-						}
-					}
+				&::-webkit-slider-runnable-track {
+					background: rgba(#788, .5);
+					height: 2px;
+					box-shadow: 0 1px 0 rgba(#000, 0.2)
 				}
 			}
 		}

@@ -6,7 +6,7 @@ let Test = {
 		// reset content view "animations"
 		// APP.els.content.removeClass("no-anim");
 
-		setTimeout(() => APP.els.content.find(`.sidebar-wrapper .box-head > div`).get(3).trigger("click"), 100);
+		// setTimeout(() => APP.els.content.find(`.sidebar-wrapper .box-head > div`).get(3).trigger("click"), 100);
 
 		setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
@@ -14,7 +14,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 
 
-		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool[data-target="history"]`).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool`).get(1).trigger("click"), 500);
 
 		/* 
 		 * 
