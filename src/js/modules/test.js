@@ -13,6 +13,9 @@ let Test = {
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 
+
+		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool[data-target="history"]`).trigger("click"), 500);
+
 		/* 
 		 * 
 		 */

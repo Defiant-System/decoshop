@@ -711,6 +711,8 @@ content {
 		&[data-target="info"]         { background-image: url(~/icons/tool-info.png); }
 		&[data-target="histogram"]    { background-image: url(~/icons/tool-histogram.png); }
 		&[data-target="properties"]   { background-image: url(~/icons/tool-properties.png); }
+		&[data-target="history"]      { background-image: url(~/icons/tool-history.png); }
+		&[data-target="adjustments"]  { background-image: url(~/icons/tool-adjustments.png); }
 		&[data-target="actions"]      { background-image: url(~/icons/tool-actions.png); }
 		&[data-target="navigator"]    { background-image: url(~/icons/tool-navigator.png); }
 		&[data-target="brush-tips"]   { background-image: url(~/icons/tool-brush-tips.png); }
@@ -1634,15 +1636,15 @@ content {
 			top: 0;
 			bottom: 0;
 			right: 309px;
-			width: 300px;
+			width: 320px;
 			overflow-x: hidden;
 			pointer-events: none;
 
 			.extra-box {
 				position: absolute;
-				top: 33px;
-				right: -230px;
-				width: 230px;
+				// top: 33px;
+				// right: -230px;
+				// width: 230px;
 				// height: 170px;
 				pointer-events: all;
 				background-color: rgba(#344,.8);
@@ -1650,9 +1652,13 @@ content {
 				border: 1px solid rgba(#011, .65);
 				transition: right 150ms ease-in-out;
 
-				&.show {
-					right: 0;
-				}
+				&:nth-child(1) { top: -1px; width: 230px; right: -230px; }
+				&:nth-child(2) { top: 108px; width: 250px; right: -250px; }
+				&:nth-child(3) { top: 217px; width: 230px; right: -230px; }
+				&:nth-child(4) { top: 326px; width: 230px; right: -230px; }
+				&:nth-child(5) { top: 400px; width: 230px; right: -230px; }
+
+				&.show { right: 0; }
 
 				.box-head {
 					background-color: rgba(0,0,0,.05);
@@ -1696,6 +1702,7 @@ content {
 
 						div[class*="-wrapper"] {
 							padding: 5px 0 0 7px;
+							min-height: 120px;
 						}
 
 						&.hidden {
@@ -1755,11 +1762,10 @@ content {
 			background-color: rgba(#344,.8);
 			backdrop-filter: blur(@backgrop-blur);
 
-			.divider {
-				display: block;
-				border-top: 1px solid rgba(0,17,17,0.65);
-				border-bottom: 1px solid rgba(0,17,17,0.65);
-				margin: 1px 0;
+			.box-group {
+				position: relative;
+				padding: 1px 0;
+				border-bottom: 2px solid rgba(0,17,17,0.65);
 			}
 
 			.box-icon {
