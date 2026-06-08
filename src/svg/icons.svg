@@ -549,7 +549,73 @@
 		<path class="st2" d="M13.9,13H5v-1.4l2.6-4.2l3,3.5h0.7l2.6-2.1V13z"/>
 	</svg>
 
-	@import "target-icons.svg"
+
+<svg id="icon-stop" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-record" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-play" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-reload" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-download" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-glyph-up" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-glyph-down" viewBox="0 0 17 17">
+	<style type="text/css">
+		.st0{fill:none;stroke:#333;}
+	</style>
+	<rect x="0.5" y="0.5" class="st0" width="16" height="16"/>
+</svg>
+
+<svg id="icon-guide-mtop" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-mleft" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-mbottom" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-mright" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-colnum" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-rownum" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-col-width" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-row-height" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-col-gap" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-row-gap" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-top" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-left" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-bottom" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-bottom" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-hmid" viewBox="0 0 17 17"></svg>
+<svg id="icon-guide-vmid" viewBox="0 0 17 17"></svg>
+
 
 	<svg id="icon-switch-values" viewBox="0 0 17 17">
 		<style type="text/css">
