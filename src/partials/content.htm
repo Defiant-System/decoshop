@@ -71,7 +71,69 @@
 		</div>
 
 		<div class="extras-wrapper" data-section="extras">
-			@import "sidebar/extras.htm"
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="history">History</div>
+					<div data-content="actions">Actions</div>
+					<div data-content="histogram">Histogram</div>
+				</div>
+				<div class="box-body">
+					@import "sidebar/box-history.htm"
+					@import "sidebar/box-actions.htm"
+					@import "sidebar/box-histogram.htm"
+				</div>
+			</div>
+
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="adjustments">Adjustments</div>
+					<div data-content="brush-tips">Brush</div>
+					<div data-content="layer-comps">Layer Comps</div>
+				</div>
+				<div class="box-body">
+					@import "sidebar/box-adjustments.htm"
+					@import "sidebar/box-brush-tips.htm"
+					@import "sidebar/box-layer-comps.htm"
+				</div>
+			</div>
+
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="tool-presets">Tool Presets</div>
+					<div data-content="glyphs">Glyphs</div>
+					<div data-content="guides">Guides</div>
+				</div>
+				<div class="box-body">
+					@import "sidebar/box-presets.htm"
+					@import "sidebar/box-glyphs.htm"
+					@import "sidebar/box-guides.htm"
+				</div>
+			</div>
+
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="properties">Properties</div>
+					<div data-content="memory">Memory</div>
+				</div>
+				<div class="box-body">
+					@import "sidebar/box-properties.htm"
+					@import "sidebar/box-memory.htm"
+				</div>
+			</div>
+
+
+			<div class="extra-box">
+				<div class="box-head" data-click="box-head-tab">
+					<div data-content="gallery">Gallery</div>
+					<div data-content="notes">Notes</div>
+					<div data-content="css">CSS</div>
+				</div>
+				<div class="box-body">
+					@import "sidebar/box-gallery.htm"
+					@import "sidebar/box-notes.htm"
+					@import "sidebar/box-css.htm"
+				</div>
+			</div>
 		</div>
 		
 		<div class="sidebar-extras" data-section="extras" data-click="extras-tool-box">

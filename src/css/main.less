@@ -1636,7 +1636,7 @@ content {
 			top: 0;
 			bottom: 0;
 			right: 309px;
-			width: 320px;
+			width: 450px;
 			overflow-x: hidden;
 			pointer-events: none;
 
@@ -1702,11 +1702,23 @@ content {
 
 						div[class*="-wrapper"] {
 							padding: 5px 0 0 7px;
-							min-height: 120px;
+							min-height: 90px;
 						}
 
 						&.hidden {
 							display: none;
+						}
+
+						&[data-box="history"] {
+							.history-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="actions"] {
+							.actions-wrapper {
+								height: 270px;
+							}
 						}
 
 						&[data-box="histogram"] {
@@ -1715,9 +1727,79 @@ content {
 							}
 						}
 
-						&[data-box="actions"] {
-							.actions-wrapper {
-								height: 270px;
+						&[data-box="adjustments"] {
+							.adjustments-wrapper {
+								height: 117px;
+								padding-top: 11px;
+								text-align: center;
+
+								.tool {
+									border-radius: 3px;
+
+									&:hover {
+										background-color: #1124;
+									}
+								}
+							}
+						}
+
+						&[data-box="brush-tips"] {
+							.brush-tips-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="layer-comps"] {
+							.layer-comps-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="tool-presets"] {
+							.tool-presets-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="glyphs"] {
+							.glyphs-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="guides"] {
+							.guides-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="properties"] {
+							.properties-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="memory"] {
+							.memory-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="gallery"] {
+							.gallery-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="notes"] {
+							.notes-wrapper {
+								// TODO
+							}
+						}
+
+						&[data-box="css"] {
+							.css-wrapper {
+								// TODO
 							}
 						}
 					}
@@ -2331,20 +2413,6 @@ content {
 								padding: 3px 0 0;
 								width: 43px;
 							}
-						}
-					}
-				}
-
-				.adjustments-wrapper {
-					height: 117px;
-					padding-top: 11px;
-					text-align: center;
-
-					.tool {
-						border-radius: 3px;
-
-						&:hover {
-							background-color: #1124;
 						}
 					}
 				}
