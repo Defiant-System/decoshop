@@ -6,6 +6,7 @@
 		// fast references
 		this.els = {
 			root: window.find(".extras-wrapper"),
+			extras: window.find(".sidebar-extras"),
 		};
 
 		// init sub objects
@@ -29,8 +30,12 @@
 							// console.log(bEl);
 						});
 				} else {
+					// check if any opened
+					let opened = event.el.find(".down");
+					if (opened.length && opened.parent([0] !== el.parent()[0])) {
+						opened.trigger("click");
+					}
 					// pressed state
-					event.el.find(".down").removeClass("down");
 					el.addClass("down");
 					// open right box
 					pEl.find(`.box-head div[data-content="${el.data("target")}"]`).trigger("click");
@@ -46,7 +51,16 @@
 				el.addClass("active");
 
 				let newBox = Self.els.root.find(`div[data-box="${el.data("content")}"]`),
-					oldBox = newBox.parent().find("> div[data-box]:not(.hidden)");
+					oldBox = newBox.parent().find("> div[data-box]:not(.hidden)"),
+					toolIcon = Self.els.extras.find(`.tool[data-target="${el.data("content")}"]`);
+
+				// UI sync tabs with icons
+				if (!toolIcon.hasClass("down")) {
+					// update sidebar icon
+					Self.els.extras.find(".tool.down").removeClass("down");
+					toolIcon.addClass("down");
+				}
+
 				// signal events of change
 				// Self[oldBox.data("box")].dispatch({ type: "disable" });
 				// Self[newBox.data("box")].dispatch({ type: "enable" });
