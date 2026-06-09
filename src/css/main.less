@@ -893,11 +893,18 @@ content {
 		&.icon-stop     { background-image: url(~/icons/icon-stop.png); }
 		&.icon-record   { background-image: url(~/icons/icon-record.png); }
 		&.icon-play     { background-image: url(~/icons/icon-play.png); }
+		&.icon-prev     { background-image: url(~/icons/icon-prev.png); }
+		&.icon-next     { background-image: url(~/icons/icon-next.png); }
 		&.icon-reload   { background-image: url(~/icons/icon-reload.png); }
 		&.icon-download { background-image: url(~/icons/icon-download.png); }
 
 		&.icon-glyph-up   { background-image: url(~/icons/icon-glyph-up.png); }
 		&.icon-glyph-down { background-image: url(~/icons/icon-glyph-down.png); }
+		&.icon-rgb    { background-image: url(~/icons/icon-rgb.png); }
+		&.icon-red    { background-image: url(~/icons/icon-red.png); }
+		&.icon-green  { background-image: url(~/icons/icon-green.png); }
+		&.icon-blue   { background-image: url(~/icons/icon-blue.png); }
+		&.icon-colors { background-image: url(~/icons/icon-colors.png); }
 
 		&.icon-guide-mtop    { background-image: url(~/icons/icon-guide-mtop.png); }
 		&.icon-guide-mleft   { background-image: url(~/icons/icon-guide-mleft.png); }
@@ -916,12 +923,6 @@ content {
 		&.icon-guide-right   { background-image: url(~/icons/icon-guide-right.png); }
 		&.icon-guide-hmid    { background-image: url(~/icons/icon-guide-hmid.png); }
 		&.icon-guide-vmid    { background-image: url(~/icons/icon-guide-vmid.png); }
-
-		&.icon-rgb    { background-image: url(~/icons/icon-rgb.png); }
-		&.icon-red    { background-image: url(~/icons/icon-red.png); }
-		&.icon-green  { background-image: url(~/icons/icon-green.png); }
-		&.icon-blue   { background-image: url(~/icons/icon-blue.png); }
-		&.icon-colors { background-image: url(~/icons/icon-colors.png); }
 
 
 
@@ -1810,7 +1811,26 @@ content {
 
 						&[data-box="histogram"] {
 							.histogram-wrapper {
-								height: 140px;
+								padding: 9px 7px;
+								--clr1: #9aa1;
+								--bW1: 31px;
+
+								.graph {
+									background: #4553;
+									position: relative;
+									height: 119px;
+									background-image:
+										repeating-linear-gradient(90deg,
+											transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+											var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+										),
+										repeating-linear-gradient(0deg,
+											transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+											var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+										);
+									background-position: 0 1px;
+									box-shadow: 0 0 0 1px #1227;
+								}
 							}
 						}
 
