@@ -917,6 +917,12 @@ content {
 		&.icon-guide-hmid    { background-image: url(~/icons/icon-guide-hmid.png); }
 		&.icon-guide-vmid    { background-image: url(~/icons/icon-guide-vmid.png); }
 
+		&.icon-rgb    { background-image: url(~/icons/icon-rgb.png); }
+		&.icon-red    { background-image: url(~/icons/icon-red.png); }
+		&.icon-green  { background-image: url(~/icons/icon-green.png); }
+		&.icon-blue   { background-image: url(~/icons/icon-blue.png); }
+		&.icon-colors { background-image: url(~/icons/icon-colors.png); }
+
 
 
 		&.icon-trashcan         { background-image: url(~/icons/icon-trashcan.png); }
@@ -1757,8 +1763,9 @@ content {
 
 						.icon {
 							display: inline-block;
-							margin: 0 5px;
+							margin: 0 0 0 6px;
 							opacity: .75;
+							cursor: pointer;
 							// width: 19px;
 
 							&:hover {
@@ -1767,6 +1774,10 @@ content {
 
 							&:after {
 								background-size: 17px;
+							}
+
+							&.disabled {
+								cursor: default;
 							}
 
 							&.active {
@@ -1787,19 +1798,19 @@ content {
 
 						&[data-box="history"] {
 							.history-wrapper {
-								// TODO
+								height: 270px;
 							}
 						}
 
 						&[data-box="actions"] {
 							.actions-wrapper {
-								height: 270px;
+								height: 220px;
 							}
 						}
 
 						&[data-box="histogram"] {
 							.histogram-wrapper {
-								height: 170px;
+								height: 140px;
 							}
 						}
 
@@ -2522,13 +2533,17 @@ content {
 				}
 
 				.character-wrapper {
-					padding: 3px 0 13px;
+					padding: 3px 0 11px;
 
 					.field:first-child {
 						.option:nth-child(2) {
 							width: 35%;
 							flex: none;
 						}
+					}
+
+					.field.centered {
+						padding: 7px 1px 0;
 					}
 
 					.field[data-click="select-font-style"] {
