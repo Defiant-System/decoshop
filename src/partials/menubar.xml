@@ -419,16 +419,32 @@
 		<Menu name="Status Bar" click="toggle-statusbar" check-group="toggle-statusbar" is-checked="1" />
 	</Menu>
 	<Menu name="Window">
-		<Menu name="Navigator" check-group="sidebar-top" is-checked="1"/>
-		<Menu name="Color" check-group="sidebar-top"/>
-		<Menu name="Info" check-group="sidebar-top"/>
-		<Menu name="Character" check-group="sidebar-middle" is-checked="1"/>
-		<Menu name="Paragraph" check-group="sidebar-middle"/>
-		<Menu name="Swatches" check-group="sidebar-middle"/>
-		<Menu name="Layers" check-group="sidebar-bottom" is-checked="1"/>
-		<Menu name="Channels" check-group="sidebar-bottom"/>
-		<Menu name="Paths" check-group="sidebar-bottom"/>
+		<Menu name="More&#8230;">
+			<Menu name="CSS"/>
+			<Menu name="Memory"/>
+		</Menu>
 		<Menu type="divider"/>
+		<Menu name="Actions"/>
+		<Menu name="Adjustments"/>
+		<Menu name="Channels" check-group="sidebar-bottom"/>
+		<Menu name="Character" check-group="sidebar-middle" is-checked="1"/>
+		<Menu name="Color" check-group="sidebar-top"/>
+		<Menu name="Gallery"/>
+		<Menu name="Glyhps"/>
+		<Menu name="Guides"/>
+		<Menu name="Histogram"/>
+		<Menu name="History"/>
+		<Menu name="Info" check-group="sidebar-top"/>
+		<Menu name="Layers" check-group="sidebar-bottom" is-checked="1"/>
+		<Menu name="Layer Comps"/>
+		<Menu name="Navigator" check-group="sidebar-top" is-checked="1"/>
+		<Menu name="Notes"/>
+		<Menu name="Paragraph" check-group="sidebar-middle"/>
+		<Menu name="Paths" check-group="sidebar-bottom"/>
+		<Menu name="Properties"/>
+		<Menu name="Style"/>
+		<Menu name="Swatches" check-group="sidebar-middle"/>
+		<Menu name="Tool Presets"/>
 	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
