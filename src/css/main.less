@@ -1806,6 +1806,47 @@ content {
 						&[data-box="history"] {
 							.history-wrapper {
 								height: 270px;
+								padding: 5px 7px;
+								display: flex;
+
+								> div {
+									position: relative;
+									flex: 1;
+									padding-bottom: 3px;
+									font-size: 0;
+									overflow: auto;
+									box-shadow: 0 0 0 1px #1227;
+								}
+
+								.item {
+									position: relative;
+									padding: 3px 0 0 5px;
+									height: 25px;
+									border-bottom: 1px solid #1227;
+
+									.icon {
+										// background: #1224;
+										border-radius: 2px;
+										vertical-align: top;
+										margin: 0 7px 0 0;
+										opacity: 1;
+
+										&.icon-brush       { background-image: url(~/icons/tool-brush.png); }
+										&.icon-crop        { background-image: url(~/icons/tool-crop.png); }
+										&.icon-stamp-clone { background-image: url(~/icons/tool-stamp-clone.png); }
+									}
+
+									span {
+										display: inline-block;
+										padding: 1px 0;
+										color: #eff9;
+										font-weight: 400;
+										font-size: 12px;
+										text-shadow: 0 1px 0 #1227;
+										vertical-align: top;
+										cursor: pointer;
+									}
+								}
 							}
 						}
 
