@@ -8,9 +8,6 @@
 			root: window.find(".extras-wrapper"),
 			extras: window.find(".sidebar-extras"),
 		};
-
-		// init sub objects
-		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 	},
 	dispatch(event) {
 		let APP = decoshop,
@@ -74,7 +71,8 @@
 					let pEl = el.parents("[data-box]"),
 						name = pEl.data("box");
 					if (name) {
-						Self[name].dispatch(event);
+						// forward event
+						Panels[name](event);
 					}
 				}
 		}

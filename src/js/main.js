@@ -5,7 +5,7 @@
 @import "modules/color.js"
 @import "modules/ui.js"
 @import "modules/tabs.js"
-@import "modules/projector.js"
+@import "modules/panels.js"
 @import "modules/dialogs.js"
 
 @import "./modules/test.js"
@@ -179,8 +179,8 @@ const decoshop = {
 	},
 	blankView: @import "modules/blank-view.js",
 	statusbar: @import "modules/statusbar.js",
-	sidebar: @import "sidebar/index.js",
-	extras: @import "extras/index.js",
+	sidebar: @import "modules/sidebar.js",
+	extras: @import "modules/extras.js",
 	tools: @import "tools/index.js",
 };
 
