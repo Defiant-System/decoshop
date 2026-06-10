@@ -1998,7 +1998,55 @@ content {
 
 						&[data-box="layer-comps"] {
 							.layer-comps-wrapper {
-								// TODO
+								height: 172px;
+								padding: 5px 7px;
+								display: flex;
+
+								> div {
+									position: relative;
+									flex: 1;
+									overflow: auto;
+									box-shadow: 0 0 0 1px #1227;
+
+									.item {
+										position: relative;
+										display: flex;
+										height: 25px;
+										border-bottom: 1px solid #1227;
+
+										&:hover:not(.selected) {
+											background: #8991;
+
+											.icon:after { opacity: .75; }
+											span { color: #effa; }
+										}
+
+										.icon {
+											// background-color: #1226;
+											border-radius: 2px;
+											vertical-align: top;
+											margin: 4px 3px 0 2px;
+
+											&.icon-blank       { background-image: none; margin-right: 0px; margin-left: 5px; }
+											&.icon-layer-comps { background-image: url(~/icons/tool-layer-comps.png); margin-right: 0px; margin-left: 5px; }
+											&.icon-eye-on      { background-image: url(~/icons/icon-eye-on.png); width: 15px; height: 15px; }
+											&.icon-eye-off     { background-image: url(~/icons/icon-eye-off.png); width: 15px; height: 15px; }
+											&.icon-position    { background-image: url(~/icons/icon-position.png); width: 15px; height: 15px; }
+											&.icon-layer-fx    { background-image: url(~/icons/icon-layer-fx.png); margin-right: 5px; }
+
+											&.icon-eye-on:after,
+											&.icon-eye-off:after,
+											&.icon-position:after { background-size: 15px auto; top: 1px; }
+										}
+
+										span {
+											flex: 1;
+											padding: 3px 0 0 5px;
+											vertical-align: top;
+											cursor: pointer;
+										}
+									}
+								}
 							}
 						}
 
