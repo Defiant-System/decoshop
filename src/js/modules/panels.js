@@ -54,7 +54,10 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "show-color-values":
+				event.el.parent().find(".active").removeClass("active");
+				event.el.addClass("active");
+				break;
 		}
 	},
 	css(event) {
@@ -96,7 +99,14 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "toggle-preset-guides":
+				el = $(event.target);
+				if (el.hasClass("active")) {
+					el.removeClass("active");
+				} else {
+					el.addClass("active");
+				}
+				break;
 		}
 	},
 	histogram(event) {
