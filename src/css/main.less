@@ -948,6 +948,9 @@ content {
 		&.icon-position     { background-image: url(~/icons/icon-position.png); }
 		&.icon-all          { background-image: url(~/icons/icon-all.png); }
 
+		&.icon-check   { background-image: url(~/icons/icon-check.png); }
+		&.icon-chevron { background-image: url(~/icons/icon-chevron.png); }
+
 
 		&.icon-font-size           { background-image: url(~/icons/icon-font-size.png); }
 		&.icon-line-height         { background-image: url(~/icons/icon-line-height.png); }
@@ -1731,6 +1734,10 @@ content {
 					}
 				}
 
+				.box-foot {
+
+				}
+
 				.box-body {
 					position: relative;
 					flex: 1;
@@ -1747,6 +1754,10 @@ content {
 						div[class*="-wrapper"] {
 							padding: 7px 0;
 							min-height: 90px;
+							color: #eff9;
+							font-weight: 400;
+							font-size: 12px;
+							text-shadow: 0 1px 0 #1227;
 
 							.field {
 								display: flex;
@@ -1771,8 +1782,8 @@ content {
 						.icon {
 							display: inline-block;
 							margin: 0 0 0 6px;
-							opacity: .75;
 							cursor: pointer;
+							// opacity: .75;
 							// width: 19px;
 
 							&:hover {
@@ -1813,7 +1824,6 @@ content {
 									position: relative;
 									flex: 1;
 									padding-bottom: 3px;
-									font-size: 0;
 									overflow: auto;
 									box-shadow: 0 0 0 1px #1227;
 								}
@@ -1824,12 +1834,29 @@ content {
 									height: 25px;
 									border-bottom: 1px solid #1227;
 
+									&.selected {
+										background: #abb1;
+
+										.icon:after { opacity: .75; }
+										span { color: #eff; cursor: default; }
+									}
+
+									&.future {
+										.icon:after { opacity: .15; }
+										span { color: #abb7; }
+									}
+
+									&:hover:not(.selected) {
+										background: #8991;
+
+										.icon:after { opacity: .75; }
+										span { color: #effa; }
+									}
+
 									.icon {
-										// background: #1224;
 										border-radius: 2px;
 										vertical-align: top;
-										margin: 0 7px 0 0;
-										opacity: 1;
+										margin: 0 3px 0 0;
 
 										&.icon-brush       { background-image: url(~/icons/tool-brush.png); }
 										&.icon-crop        { background-image: url(~/icons/tool-crop.png); }
@@ -1839,10 +1866,6 @@ content {
 									span {
 										display: inline-block;
 										padding: 1px 0;
-										color: #eff9;
-										font-weight: 400;
-										font-size: 12px;
-										text-shadow: 0 1px 0 #1227;
 										vertical-align: top;
 										cursor: pointer;
 									}
@@ -1852,7 +1875,77 @@ content {
 
 						&[data-box="actions"] {
 							.actions-wrapper {
-								height: 220px;
+								height: 270px;
+								padding: 5px 7px;
+								display: flex;
+
+								> div {
+									position: relative;
+									flex: 1;
+									overflow: auto;
+									box-shadow: 0 0 0 1px #1227;
+
+									.row {
+										position: relative;
+										display: flex;
+										padding: 0 0 0 5px;
+										height: 25px;
+										border-bottom: 1px solid #1227;
+
+										.icon {
+											margin: 3px 3px 0 0;
+										}
+
+										span {
+											padding: 4px 0 0 3px;
+											flex: 1;
+										}
+									}
+
+									.folder {
+										> .row {
+											&.expanded {
+												.icon-folder {
+													background-image: url(~/icons/icon-folder-open.png);
+												}
+											}
+										}
+
+										> .children {
+											> div .row > .icon-check {
+												margin-right: 13px;
+											}
+
+											.item {
+												> .row {
+													&.expanded {
+														.icon-chevron {
+															transform: rotate(90deg);
+
+															&:after {
+																filter: invert() drop-shadow(1px 0 0 #0005);
+															}
+														}
+													}
+												}
+
+												> div .row > .icon-check {
+													margin-right: 26px;
+												}
+
+												> .children {
+													> div .row > .icon-check {
+														margin-right: 39px;
+													}
+
+													.step {
+
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 
@@ -2276,6 +2369,15 @@ content {
 
 					&[data-box="layers"] {
 						border-top: 0;
+
+						&:after {
+							content: "";
+							position: absolute;
+							top: -1px;
+							left: 58px;
+							width: 214px;
+							border-bottom: 1px solid #1227;
+						}
 
 						.box-tools {
 							&.hidden {
@@ -3169,6 +3271,7 @@ content {
 			width: 17px;
 			height: 17px;
 			margin: 0 3px;
+			cursor: pointer;
 
 			&.mini {
 				background-image: url(~/icons/icon-mountain-mini.png);
@@ -3180,6 +3283,7 @@ content {
 
 			&.disabled {
 				opacity: 0.35;
+				cursor: default;
 
 				&[style*="selection-ring"] {
 					opacity: 0.85;
