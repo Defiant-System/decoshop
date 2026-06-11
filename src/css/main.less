@@ -716,6 +716,7 @@ content {
 		&[data-target="actions"]      { background-image: url(~/icons/tool-actions.png); }
 		&[data-target="navigator"]    { background-image: url(~/icons/tool-navigator.png); }
 		&[data-target="brush"]        { background-image: url(~/icons/tool-brush-tips.png); }
+		&[data-target="styles"]       { background-image: url(~/icons/tool-styles.png); }
 		&[data-target="layer-comps"]  { background-image: url(~/icons/tool-layer-comps.png); }
 		&[data-target="character"]    { background-image: url(~/icons/tool-character.png); }
 		&[data-target="paragraph"]    { background-image: url(~/icons/tool-paragraph.png); }
@@ -2497,8 +2498,10 @@ content {
 							}
 
 							.box-foot {
-								.zoom-slider {
+								padding: 2px 3px 2px 1px;
 
+								.zoom-slider {
+									padding: 0 11px 0 0px;
 								}
 
 								.foot-buttons {
@@ -2515,6 +2518,10 @@ content {
 
 										&.maxi {
 											margin-left: 0;
+										}
+
+										&:after {
+											background-size: 15px auto;
 										}
 									}
 								}
@@ -2576,6 +2583,90 @@ content {
 						&[data-box="css"] {
 							.css-wrapper {
 								// TODO
+							}
+						}
+
+						&[data-box="styles"] {
+							.styles-wrapper {
+								padding: 7px 6px;
+
+								> div {
+									background: #1221;
+									position: relative;
+									height: 207px;
+									font-size: 0;
+									border-radius: 1px;
+									box-shadow: 0 0 0 1px #1227;
+									overflow: auto;
+
+									ul.styles-list {
+										position: relative;
+										padding: 3px 0 0 1px;
+
+										li {
+											position: relative;
+											border-radius: 1px;
+											display: inline-block;
+											width: 50px;
+											height: 50px;
+											margin: 0 2px 5px;
+
+											&:nth-child(3n) {
+												margin-right: 0;
+											}
+
+											&[data-hash]:after { background: url(~/img/layer-styles.webp) no-repeat; }
+											&[data-hash="f6a301e9711ddbb18e4d0bfdcce4f2bae6bb61aa"]:after { background-position: 0 0; }
+											&[data-hash="e44cc0f66db9cba53c9e68a2ee7e19a9f973a143"]:after { background-position: -50px 0; }
+											&[data-hash="405ad414f68de38acb38936b8fc14361ac235494"]:after { background-position: -100px 0; }
+											&[data-hash="3c955b5b9abd59812458ae89b3f3f87b06cda393"]:after { background-position: -150px 0; }
+											&[data-hash="686b577c5673c6fa33147e1277390e501db71919"]:after { background-position: -200px 0; }
+											&[data-hash="2d273d5c3928d6cef9c11155b991bde5583cd344"]:after { background-position: -250px 0; }
+											&[data-hash="83f64c914b85f2b5775000844627e4f0bc16aedf"]:after { background-position: -300px 0; }
+											&[data-hash="81b3dfba0ac6bd2a23f74d29b61fbfdee87c4f98"]:after { background-position: -350px 0; }
+											&[data-hash="e9e472dc9fea5e8f2791b3b25e3b3c7de1ec16a1"]:after { background-position: -400px 0; }
+											&[data-hash="0c85a2a20b9e83679a94c17bc19b5daa37f91bbe"]:after { background-position: -450px 0; }
+											&[data-hash="135d57dec02bd2134f8d2a87d6f26dc9227c855f"]:after { background-position: 0 -50px; }
+											&[data-hash="7964204b38580423a8e35ea6d1b9621a979b39b5"]:after { background-position: -50px -50px; }
+											&[data-hash="24998300467f3faf9575c7313df9a82b535c1c1a"]:after { background-position: -100px -50px; }
+											&[data-hash="65712a4b7f68d84d3509fbd7179f71ed5b66b1d8"]:after { background-position: -150px -50px; }
+											&[data-hash="60bca1294092fb265fb9884b11774283af26d58b"]:after { background-position: -200px -50px; }
+											&[data-hash="dbc7577516ed76c5d5b085068ad02528d345e283"]:after { background-position: -250px -50px; }
+											&[data-hash="1c54132b8e5a9fa44a9a1a7d30b1be36ab3c4247"]:after { background-position: -300px -50px; }
+											&[data-hash="7a9fd1aa6963b3414e81928a06a8e0055ea1d07c"]:after { background-position: -350px -50px; }
+											&[data-hash="85450fe0bef46ab41d44be1b74d625b321e88c2d"]:after { background-position: -400px -50px; }
+											&[data-hash="e2227e58d4f22fa16906981bf0171dbca4b4b00c"]:after { background-position: -450px -50px; }
+											&[data-hash="8e86432c9e338f7d26d8d34115ef42c0a278ee1d"]:after { background-position: 0 -100px; }
+											&[data-hash="36e6d764076ad2323e9e953a179daf6c97f03ba1"]:after { background-position: -50px -100px; }
+											&[data-hash="1a3f9b9fce051b5146b30caf47af072a294cc292"]:after { background-position: -100px -100px; }
+											&[data-hash="091def0b3a9ff733fce083e5ef3e12ebd17c95da"]:after { background-position: -150px -100px; }
+											&[data-hash="c80a2a11d0197462315165d22c7a5abc5d0dbd80"]:after { background-position: -200px -100px; }
+											&[data-hash="185d2f4a935b291c5eab4f43c69dd6d4550a4396"]:after { background-position: -250px -100px; }
+											&[data-hash="20b4958788ede5eacbba077e1fed67444bb0c0eb"]:after { background-position: -300px -100px; }
+											&[data-hash="45bfc012fbf82490776101b9c6b63887c8a0fb1d"]:after { background-position: -350px -100px; }
+											&[data-hash="aaf290d5dab16035ab4230fcb5ca08ac8d1b79ff"]:after { background-position: -400px -100px; }
+											&[data-hash="b3d397f8838ec4842df26a156e7b30989f4cc1ef"]:after { background-position: -450px -100px; }
+
+											&:after {
+												content: "";
+												position: absolute;
+												top: 0px;
+												left: 0;
+												width: inherit;
+												height: inherit;
+												background: 50% 50% no-repeat;
+												background-size: 50px auto;
+												background-image: var(--ls);
+												border-radius: 2px;
+											}
+
+											&:not(.add-new):hover:after {
+												// box-shadow: 0 0 0 1px #1229;
+												background-color: #eff1;
+											}
+										}
+									}
+								}
 							}
 						}
 					}

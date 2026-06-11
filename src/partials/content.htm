@@ -86,25 +86,25 @@
 
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
-					<div data-content="adjustments">Adjustments</div>
 					<div data-content="brush">Brush</div>
+					<div data-content="adjustments">Adjustments</div>
 					<div data-content="guides">Guides</div>
 				</div>
 				<div class="box-body">
-					@import "sidebar/box-adjustments.htm"
 					@import "sidebar/box-brush-tips.htm"
+					@import "sidebar/box-adjustments.htm"
 					@import "sidebar/box-guides.htm"
 				</div>
 			</div>
 
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
-					<div data-content="tool-presets">Tool Presets</div>
+					<div data-content="properties">Properties</div>
 					<div data-content="layer-comps">Layer Comps</div>
 					<div data-content="glyphs">Glyphs</div>
 				</div>
 				<div class="box-body">
-					@import "sidebar/box-presets.htm"
+					@import "sidebar/box-properties.htm"
 					@import "sidebar/box-layer-comps.htm"
 					@import "sidebar/box-glyphs.htm"
 				</div>
@@ -112,23 +112,25 @@
 
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
-					<div data-content="properties">Properties</div>
-					<div data-content="memory">Memory</div>
+					<div data-content="styles">Styles</div>
+					<div data-content="tool-presets">Tool Presets</div>
 				</div>
 				<div class="box-body">
-					@import "sidebar/box-properties.htm"
-					@import "sidebar/box-memory.htm"
+					@import "sidebar/box-styles.htm"
+					@import "sidebar/box-presets.htm"
 				</div>
 			</div>
 
 
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
+					<div data-content="memory">Memory</div>
 					<div data-content="gallery">Gallery</div>
 					<div data-content="notes">Notes</div>
-					<div data-content="css">CSS</div>
+					<!-- <div data-content="css">CSS</div> -->
 				</div>
 				<div class="box-body">
+					@import "sidebar/box-memory.htm"
 					@import "sidebar/box-gallery.htm"
 					@import "sidebar/box-notes.htm"
 					@import "sidebar/box-css.htm"
@@ -144,25 +146,26 @@
 				<!-- <div class="tool box-icon" data-target="navigator" title="Navigator"></div> -->
 			</div>
 			<div class="box-group">
-				<div class="tool box-icon" data-target="adjustments" title="Adjustments"></div>
 				<div class="tool box-icon" data-target="brush" title="Brush"></div>
+				<div class="tool box-icon" data-target="adjustments" title="Adjustments"></div>
 				<div class="tool box-icon" data-target="guides" title="Guides"></div>
 			</div>
 			<div class="box-group">
 				<!-- <div class="tool box-icon" data-target="character" title="Character"></div> -->
 				<!-- <div class="tool box-icon" data-target="paragraph" Title="Paragraph"></div> -->
-				<div class="tool box-icon" data-target="tool-presets" title="Tool Presets"></div>
+				<div class="tool box-icon" data-target="properties" title="Properties"></div>
 				<div class="tool box-icon" data-target="layer-comps" title="Layer Comps"></div>
 				<div class="tool box-icon" data-target="glyphs" title="Glyphs"></div>
 			</div>
 			<div class="box-group">
-				<div class="tool box-icon" data-target="properties" title="Properties"></div>
-				<div class="tool box-icon" data-target="memory" title="Memory"></div>
+				<div class="tool box-icon" data-target="styles" title="Styles"></div>
+				<div class="tool box-icon" data-target="tool-presets" title="Tool Presets"></div>
 			</div>
 			<div class="box-group">
+				<div class="tool box-icon" data-target="memory" title="Memory"></div>
 				<div class="tool box-icon" data-target="gallery" title="Gallery"></div>
 				<div class="tool box-icon" data-target="notes" title="Notes"></div>
-				<div class="tool box-icon" data-target="css" title="CSS"></div>
+				<!-- <div class="tool box-icon" data-target="css" title="CSS"></div> -->
 			</div>
 		</div>
 

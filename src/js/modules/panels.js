@@ -235,6 +235,15 @@ const Panels = {
 			case "some-event": break;
 		}
 	},
+	styles(event) {
+		let APP = decoshop,
+			Self = Panels,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			case "some-event": break;
+		}
+	},
 	swatches(event) {
 		let APP = decoshop,
 			Self = Panels,
