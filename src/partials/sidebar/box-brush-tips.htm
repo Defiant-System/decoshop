@@ -1,5 +1,89 @@
-<div data-box="brush-tips" class="hidden">
-	<div class="brush-tips-wrapper">
+<div data-box="brush" class="hidden">
+	<div class="brush-tips-wrapper" data-show="tip-shape">
 		
+		<div class="field centered" data-click="select-tip-options">
+			<div class="icon icon-tip-shape active" data-target="tip-shape" title="Tip Shape"></div>
+			<div class="icon icon-tip-dynamics" data-target="tip-dynamics" title="Tip Dynamics"></div>
+			<div class="icon icon-tip-scatter" data-target="tip-scatter" title="Scatter"></div>
+			<div class="icon icon-color-dynamics" data-target="color-dynamics" title="Color Dynamics"></div>
+			<div class="icon icon-tip-transfer" data-target="tip-transfer" title="Transfer"></div>
+		</div>
+
+		<div class="divider"></div>
+		
+		<div class="field-group" data-for="tip-shape">
+			<div class="tip-presets">
+				<div class="rotation">
+					<div class="gyro">
+						<div class="handle"></div>
+						<div class="handle"></div>
+						<div class="direction"></div>
+					</div>
+				</div>
+				<div class="ranges">
+					<div class="tip-size">
+						<span class="label">Size:</span>
+						<span class="value" data-suffix="px">21px</span>
+						<input type="range" data-change="tip-menu-set-size" class="mini-range" min="1" max="200" />
+					</div>
+					<div class="tip-hardness">
+						<span class="label">Hardness:</span>
+						<span class="value" data-suffix="%">81%</span>
+						<input type="range" data-change="tip-menu-set-hardness" class="mini-range" min="0" max="100" />
+					</div>
+				</div>
+			</div>
+
+			<div class="shape-list">
+				<ul class="preset-list">
+					<li title="Soft Round" data-size="…" data-hash="d121dc0c7b61262dc57530792289f73bcfa9e21a" class="selected1"></li>
+					<li title="Hard Round" data-size="…" data-hash="024cebefb68af14616895fa565603ac80c72929d"></li>
+					<li title="Hard Mechanical 12px" data-size="12" data-hash="79e3ccfb6df96c3d554bc16ea1eb10747c18bc61"></li>
+					<li title="Hard Mechanical 24px" data-size="24" data-hash="18e9ace2c77a3dcd04594c49394e5cc789a6403b"></li>
+					<li title="Soft Mechanical 12px" data-size="12" data-hash="db55856400a470da19d268e90779e12e0c86b7e1"></li>
+					<li title="Soft Mechanical 24px" data-size="24" data-hash="ff9141d0c83d6586987fcbfbe694a6eef361e43d"></li>
+					<li title="Custom Brush" data-size="20" data-hash="8e8a96443d90edbfe0bfee8ba97285519ea03718"></li>
+					<li title="RoundNoisyMarker" data-size="76" data-hash="b6b645c59664869c18c138c46faa5c665fc976ca"></li>
+					<li title="Wet Shader Basic" data-size="80" data-hash="77ce54f3fbd575f53c848f76011aa04802c2dcbb"></li>
+					<li title="Big Marker 01" data-size="87" data-hash="46a4fd0929b2a4efcac4497cfb891625fcc63c8a"></li>
+					<li title="Big Marker 02" data-size="99" data-hash="3aba8b39c93c7c52ceafd3e5f234138962d78af4"></li>
+					<li title="Wet Marker 01" data-size="100" data-hash="7616203d2946cc9edcefedc775611d4a79737175"></li>
+					<li title="Wet marker 02" data-size="87" data-hash="2f518e9a3c4e11f80258a6605992a86821af6207"></li>
+				</ul>
+			</div>
+		</div>
+
+
+		<div class="field-group" data-for="tip-dynamics">
+			Tip Dynamics
+		</div>
+
+
+		<div class="field-group" data-for="tip-scatter">
+			Tip Scatter
+		</div>
+
+
+		<div class="field-group" data-for="color-dynamics">
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Jitter</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+		</div>
+
+
+		<div class="field-group" data-for="tip-transfer">
+			Tip Transfer
+		</div>
+
+		<div class="preview">
+			<canvas width="208" height="80"></canvas>
+		</div>
+
 	</div>
 </div>

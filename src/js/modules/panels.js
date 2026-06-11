@@ -21,10 +21,25 @@ const Panels = {
 	brush(event) {
 		let APP = decoshop,
 			Self = Panels,
+			pEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "select-tip-options":
+				el = $(event.target);
+				pEl = el.parents(".brush-tips-wrapper");
+				if (el.hasClass("active")) {
+					if (el.data("target") === "tip-shape") {
+
+					} else {
+						el.removeClass("active");
+					}
+					pEl.data({ show: "tip-shape" });
+				} else {
+					el.addClass("active");
+					pEl.data({ show: el.data("target") });
+				}
+				break;
 		}
 	},
 	channels(event) {

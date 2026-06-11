@@ -15,6 +15,7 @@ let Test = {
 
 
 		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool`).get(4).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.field[data-click="select-tip-options"] > div`).get(1).trigger("click"), 800);
 
 		/* 
 		 * 
