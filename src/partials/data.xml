@@ -251,6 +251,16 @@
 		<i type="option" name="TIFF" value="3"/>
 		<i type="option" name="TGA" value="4"/>
 	</ExportFormats>
+	<BrushJitterControl>
+		<i type="option" name="Off" value="0"/>
+		<i type="option" name="Fade" value="1"/>
+		<i type="option" name="Pressure" value="2"/>
+	</BrushJitterControl>
+	<BrushAngleControl>
+		<i type="option" name="Off" value="0"/>
+		<i type="option" name="Fade" value="1"/>
+		<i type="option" name="Direction" value="2"/>
+	</BrushAngleControl>
 	<FlameTypes>
 		<i type="option" name="One Flame Along Path" value="0"/>
 		<i type="option" name="Multiple Flames Along Path" value="1"/>

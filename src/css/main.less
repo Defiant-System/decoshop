@@ -1789,6 +1789,106 @@ content {
 							display: none;
 						}
 
+						.field-row {
+							position: relative;
+							// opacity: 1;
+							height: 29px;
+
+							&.has-knob {
+								display: flex;
+								margin-right: 0;
+
+								.knob,
+								.pan-knob {
+									visibility: hidden;
+									opacity: 0;
+									transition: opacity 500ms;
+									top: -1px;
+									margin-bottom: -3px;
+									filter: brightness(1.35);
+								}
+
+								&:hover .pan-knob,
+								&.hover .pan-knob,
+								&:hover .knob,
+								&.hover .knob {
+									visibility: visible;
+									opacity: 1;
+								}
+
+								.option.disabled + .knob {
+									display: none;
+								}
+							}
+
+							.option {
+								padding: 6px 0 0;
+								margin-right: 1px;
+
+								&.select {
+									.value {
+										// min-width: 79px;
+									}
+								}
+
+								&.has-input {
+
+								}
+							}
+
+							.label {
+								min-width: 70px;
+							}
+
+							.value {
+								margin-right: 3px;
+
+								input {
+									cursor: default;
+									width: 53px;
+								}
+							}
+
+							.extra-input {
+								position: relative;
+								background: #0116;
+								color: #eff8;
+								text-shadow: 0 1px 0 #122;
+								padding: 0 9px 1px;
+								white-space: nowrap;
+								border-radius: 21px;
+								height: 20px;
+								width: 37px;
+								margin-left: 3px;
+								display: inline-block;
+
+								&.hidden {
+									opacity: 0;
+									visibility: hidden;
+								}
+
+								&.disabled {
+									background: #0114;
+									color: #eff6;
+
+									input {
+										pointer-events: none;
+										user-select: none;
+									}
+								}
+
+								input {
+									background: transparent;
+									border: 0;
+									padding: 2px 1px 0px;
+									height: 20px;
+									color: inherit;
+									font-size: 11px;
+									box-shadow: none;
+								}
+							}
+						}
+
 						.divider {
 							background: rgba(#011, .35);
 							height: 1px;
@@ -1799,8 +1899,6 @@ content {
 							display: inline-block;
 							margin: 0 0 0 6px;
 							cursor: pointer;
-							// opacity: .75;
-							// width: 19px;
 
 							&:hover {
 								opacity: .9;
@@ -2035,6 +2133,10 @@ content {
 									display: none;
 									margin: 3px 0;
 									padding: 0 9px;
+
+									.divider {
+										margin: 7px -9px 5px;
+									}
 								}
 
 								.tip-presets {
@@ -2187,7 +2289,7 @@ content {
 								.shape-list {
 									background: #1221;
 									position: relative;
-									height: 157px;
+									height: 147px;
 									font-size: 0;
 									border-radius: 1px;
 									box-shadow: 0 0 0 1px #1227;

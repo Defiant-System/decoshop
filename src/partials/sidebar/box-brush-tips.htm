@@ -3,7 +3,7 @@
 		
 		<div class="field centered" data-click="select-tip-options">
 			<div class="icon icon-tip-shape active" data-target="tip-shape" title="Tip Shape"></div>
-			<div class="icon icon-tip-dynamics" data-target="tip-dynamics" title="Tip Dynamics"></div>
+			<div class="icon icon-tip-dynamics" data-target="tip-dynamics" title="Shape Dynamics"></div>
 			<div class="icon icon-tip-scatter" data-target="tip-scatter" title="Scatter"></div>
 			<div class="icon icon-color-dynamics" data-target="color-dynamics" title="Color Dynamics"></div>
 			<div class="icon icon-tip-transfer" data-target="tip-transfer" title="Transfer"></div>
@@ -55,16 +55,58 @@
 
 
 		<div class="field-group" data-for="tip-dynamics">
-			Tip Dynamics
-		</div>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Size Jitter</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
 
+			<div class="field-row">
+				<div class="option select has-input" data-options="fieldset-inline-menubox" data-match="//BrushJitterControl">
+					<span class="label">Control</span>
+					<span class="value">Off</span>
+					<span class="extra-input hidden">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="100" data-default="100"/>
+					</span>
+				</div>
+			</div>
 
-		<div class="field-group" data-for="tip-scatter">
-			Tip Scatter
-		</div>
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Diameter</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
 
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Angle Jitter</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
 
-		<div class="field-group" data-for="color-dynamics">
+			<div class="divider"></div>
+
+			<div class="field-row">
+				<div class="option select has-input" data-options="fieldset-inline-menubox" data-match="//BrushAngleControl">
+					<span class="label">Control</span>
+					<span class="value">Off</span>
+					<span class="extra-input hidden">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="100" data-default="100"/>
+					</span>
+				</div>
+			</div>
+
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Jitter</span>
@@ -74,11 +116,137 @@
 				</div>
 				<div class="knob" data-value="0"></div>
 			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Roundness</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+		</div>
+
+
+		<div class="field-group" data-for="tip-scatter">
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Position</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="56%" data-default="56%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="56"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Count</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="20" value="2" data-default="2"/>
+					</span>
+				</div>
+				<div class="knob" data-value="2"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Jitter</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="98%" data-default="98%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="98"></div>
+			</div>
+		</div>
+
+
+		<div class="field-group" data-for="color-dynamics">
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">FG / BG</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Hue</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Saturation</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Brightness</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="36%" data-default="36%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="36"></div>
+			</div>
 		</div>
 
 
 		<div class="field-group" data-for="tip-transfer">
-			Tip Transfer
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Opacity</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option select has-input" data-options="fieldset-inline-menubox" data-match="//BrushJitterControl">
+					<span class="label">Control</span>
+					<span class="value">Off</span>
+					<span class="extra-input hidden">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="100" data-default="100"/>
+					</span>
+				</div>
+			</div>
+
+			<div class="divider"></div>
+
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Flow</span>
+					<span class="value">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-default="0%" data-suffix="%"/>
+					</span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option select has-input" data-options="fieldset-inline-menubox" data-match="//BrushJitterControl">
+					<span class="label">Control</span>
+					<span class="value">Off</span>
+					<span class="extra-input hidden">
+						<input type="text" name="field-1" data-min="0" data-max="100" value="100" data-default="100"/>
+					</span>
+				</div>
+			</div>
 		</div>
 
 		<div class="preview">
