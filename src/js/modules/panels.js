@@ -1,12 +1,22 @@
 
 const Panels = {
+	init() {
+		// init sub objects
+		Object.keys(this)
+			.filter(i => !["init"].includes(i))
+			.map(i => this[i]({
+				type: "init-panel",
+				el: window.find(`div[data-box="${i}"]`),
+			}));
+	},
+	// panel sub objects
 	actions(event) {
 		let APP = decoshop,
 			Self = Panels,
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	adjustments(event) {
@@ -15,7 +25,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	brush(event) {
@@ -48,7 +58,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	character(event) {
@@ -81,7 +91,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	gallery(event) {
@@ -90,20 +100,28 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	glyphs(event) {
 		let APP = decoshop,
 			Self = Panels,
+			val,
 			el;
 		// console.log(event);
 		switch (event.type) {
+			case "init-panel":
+				val = [...Array(96)].map((e, i) => `<b data-c="${String.fromCharCode(i+33)}"></b>`);
+				event.el.find(`.glyph-list`).html(val.join(""));
+				break;
 			case "toggle-glyph-background":
+				el = event.el.parents(`div[data-box="glyphs"]`);
 				if (event.el.hasClass("down")) {
 					event.el.removeClass("down");
+					el.find(`.glyph-list`).data({ invert: 1 });
 				} else {
 					event.el.addClass("down");
+					el.find(`.glyph-list`).data({ invert: 0 });
 				}
 				break;
 		}
@@ -130,7 +148,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	history(event) {
@@ -139,7 +157,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	info(event) {
@@ -148,7 +166,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	layer(event) {
@@ -157,7 +175,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	layers(event) {
@@ -166,7 +184,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	memory(event) {
@@ -175,7 +193,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	navigator(event) {
@@ -184,7 +202,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	notes(event) {
@@ -193,7 +211,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	paragraph(event) {
@@ -214,7 +232,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	tool(event) {
@@ -223,7 +241,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	properties(event) {
@@ -232,7 +250,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	styles(event) {
@@ -241,7 +259,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 	swatches(event) {
@@ -250,7 +268,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "some-event": break;
+			case "init-panel": break;
 		}
 	},
 };

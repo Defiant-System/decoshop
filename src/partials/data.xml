@@ -251,6 +251,28 @@
 		<i type="option" name="TIFF" value="3"/>
 		<i type="option" name="TGA" value="4"/>
 	</ExportFormats>
+	<GlyphFontFamily>
+		<i type="option" value="0" name="DejaVu Sans"/>
+	</GlyphFontFamily>
+	<GlyphFontStyle>
+		<i type="option" value="0" name="Condensed"/>
+		<i type="option" value="1" name="Oblique"/>
+		<i type="option" value="2" name="Extra Light"/>
+		<i type="option" value="3" name="Book"/>
+		<i type="option" value="4" name="Bold"/>
+	</GlyphFontStyle>
+	<GlyphFontGroups>
+		<i type="option" value="0" name="All Glyphs (6252)"/>
+		<i type="option" value="1" name="Basic Latin, Latin 1 (95)"/>
+		<i type="option" value="2" name="Latin Extended-A (128)"/>
+		<i type="option" value="3" name="Latin Extended-B (208)"/>
+		<i type="option" value="4" name="Punctuations (125)"/>
+		<i type="option" value="5" name="Greek (135)"/>
+		<i type="option" value="6" name="Cyrillic (256)"/>
+		<i type="option" value="7" name="Hebrew (54)"/>
+		<i type="option" value="8" name="Arabic (165)"/>
+		<i type="option" value="9" name="Emoji (364)"/>
+	</GlyphFontGroups>
 	<BrushJitterControl>
 		<i type="option" name="Off" value="0"/>
 		<i type="option" name="Fade" value="1"/>

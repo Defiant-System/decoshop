@@ -53,6 +53,8 @@ const decoshop = {
 		// init sub objects
 		UI.init();
 		Tabs.init();
+		Panels.init();
+		Dialogs.init();
 		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 		// parses base64 items in "data.xml"
 		this.dispatch({ type: "parse-base64" });
