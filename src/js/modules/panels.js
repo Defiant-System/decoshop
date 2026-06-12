@@ -193,7 +193,16 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-panel": break;
+			case "init-panel":
+				break;
+			case "toggle-child-rows":
+				el = event.el.parent();
+				if (el.hasClass("expanded")) {
+					el.removeClass("expanded");
+				} else {
+					el.addClass("expanded");
+				}
+				break;
 		}
 	},
 	navigator(event) {
