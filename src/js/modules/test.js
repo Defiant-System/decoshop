@@ -14,7 +14,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 
 
-		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool`).get(8).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.sidebar-extras .tool`).get(13).trigger("click"), 500);
 		
 		// setTimeout(() => APP.els.content.find(`.field[data-click="select-tip-options"] > div`).get(4).trigger("click"), 800);
 
