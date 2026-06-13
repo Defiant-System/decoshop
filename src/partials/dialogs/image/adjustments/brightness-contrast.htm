@@ -11,7 +11,7 @@
 					<span class="label">Brightness</span>
 					<span class="value"><input type="text" name="brightness" value="0" data-min="-150" data-max="150" data-default="0"></span>
 				</div>
-				<div class="pan-knob" data-change="set-brightness"></div>
+				<div class="pan-knob" data-value="0" data-change="set-brightness"></div>
 			</div>
 			
 			<div class="field-row has-knob">
@@ -19,7 +19,16 @@
 					<span class="label">Contrast</span>
 					<span class="value"><input type="text" name="contrast" value="0" data-min="-100" data-max="100" data-default="0"></span>
 				</div>
-				<div class="pan-knob" data-change="set-contrast"></div>
+				<div class="pan-knob" data-value="0" data-change="set-contrast"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Legacy</span>
+					<div class="toggler" data-value="off">
+						<span>Use</span>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="buttons">

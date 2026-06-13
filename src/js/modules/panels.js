@@ -259,7 +259,13 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-panel": break;
+			case "init-panel":
+				event.el.find(`div[data-for]`).map(elem => {
+					let el = $(elem),
+						dlg = window.find(`.dialog-box[data-dlg="${el.data("for")}"] .dlg-content .fields`);
+					event.el.find(`div[data-for="${el.data("for")}"]`).html(dlg.html());
+				});
+				break;
 		}
 	},
 	styles(event) {

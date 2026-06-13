@@ -110,7 +110,7 @@
 			<Menu name="Color Lookup&#8230;" click="open-dialog" arg="dlgColorLookup"/>
 			<Menu type="divider"/>
 			<Menu name="Invert" click="filter-render" arg="invert"/>
-			<Menu name="Posterize"/>
+			<Menu name="Posterize" click="open-dialog" arg="dlgPosterize"/>
 			<Menu name="Threshold&#8230;" click="open-dialog" arg="dlgThreshold"/>
 			<Menu name="Gradient Map&#8230;" click="open-dialog" arg="dlgGradientMap"/>
 			<Menu name="Selective Color&#8230;" click="open-dialog" arg="dlgSelectiveColor"/>
@@ -298,7 +298,7 @@
 		<Menu name="Save Selection"/>
 	</Menu>
 	<Menu name="Filter">
-		<Menu name="Last Filter"/>
+		<Menu name="Last Filter" disabled="1"/>
 		<Menu type="divider"/>
 		<Menu name="Filter Gallery&#8230;" click="open-dialog" arg="dlgFilterGallery"/>
 		<Menu name="Lens Correction&#8230;" click="open-dialog" arg="dlgLensCorrection"/>

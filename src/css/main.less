@@ -2599,7 +2599,106 @@ content {
 
 						&[data-box="properties"] {
 							.properties-wrapper {
-								// TODO
+								min-height: 160px;
+								padding: 0;
+
+								.panel-head {
+									padding: 7px 0 0;
+									text-align: center;
+								}
+
+								.divider {
+									margin-top: 7px;
+									margin-bottom: 7px;
+								}
+
+								.opt-group {
+									display: inline-block;
+									font-size: 0;
+									border-radius: 12px;
+									background: #0002;
+									box-shadow: 0 0 0 1px #0004;
+
+									li {
+										display: inline-block;
+										background: #eff3;
+										color: #fff8;
+										text-shadow: 0 1px 0 #0003;
+										font-size: 11px;
+										padding: 3px 7px 4px;
+										margin-right: 1px;
+
+										&:not(.active) {
+											cursor: pointer;
+										}
+
+										&:first-child {
+											border-radius: 11px 0 0 11px;
+											padding-left: 9px;
+											padding-right: 6px;
+										}
+
+										&:last-child {
+											border-radius: 0 11px 11px 0;
+											padding-left: 6px;
+											padding-right: 9px;
+											margin-right: 0;
+										}
+
+										&.active {
+											background: #0001;
+											color: #fffa;
+										}
+
+										&.disabled {
+											background: #eff2;
+											color: #fff5;
+											pointer-events: none;
+										}
+									}
+								}
+
+								div[data-apply="mask"] {
+									display: none;
+								}
+
+								div[data-apply="shape"] {
+									display: none;
+								}
+
+								div[data-apply="layer"] {
+									&[data-show="dlgBrightnessContrast"] div[data-for="dlgBrightnessContrast"] { display: block; }
+									&[data-show="dlgLevels"] div[data-for="dlgLevels"] { display: block; }
+									&[data-show="dlgCurves"] div[data-for="dlgCurves"] { display: block; }
+									&[data-show="dlgExposure"] div[data-for="dlgExposure"] { display: block; }
+									&[data-show="dlgVibrance"] div[data-for="dlgVibrance"] { display: block; }
+									&[data-show="dlgHueSaturation"] div[data-for="dlgHueSaturation"] { display: block; }
+									&[data-show="dlgColorBalance"] div[data-for="dlgColorBalance"] { display: block; }
+									&[data-show="dlgBlackWhite"] div[data-for="dlgBlackWhite"] { display: block; }
+									&[data-show="dlgPhotoFilter"] div[data-for="dlgPhotoFilter"] { display: block; }
+									&[data-show="dlgChannelMixer"] div[data-for="dlgChannelMixer"] { display: block; }
+									&[data-show="dlgColorLookup"] div[data-for="dlgColorLookup"] { display: block; }
+									&[data-show="dlgInvert"] div[data-for="dlgInvert"] { display: block; }
+									&[data-show="dlgPosterize"] div[data-for="dlgPosterize"] { display: block; }
+									&[data-show="dlgThreshold"] div[data-for="dlgThreshold"] { display: block; }
+									&[data-show="dlgGradientMap"] div[data-for="dlgGradientMap"] { display: block; }
+									&[data-show="dlgSelectiveColor"] div[data-for="dlgSelectiveColor"] { display: block; }
+									&[data-show="dlgReplaceColor"] div[data-for="dlgReplaceColor"] { display: block; }
+								}
+
+								div[data-for] {
+									display: none;
+									padding: 0 7px;
+
+									h2 {
+										font-weight: 400;
+										font-size: 11px;
+										text-shadow: 0 1px 0 #0119;
+										text-transform: uppercase;
+
+										i { display: none; }
+									}
+								}
 							}
 						}
 

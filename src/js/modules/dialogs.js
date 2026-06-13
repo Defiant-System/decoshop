@@ -2449,6 +2449,24 @@ const Dialogs = {
 				break;
 		}
 	},
+	dlgPosterize(event) {
+		let APP = decoshop,
+			Self = Dialogs,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			// run once app opens
+			case "init-dialog": break;
+			// standard dialog events
+			case "dlg-open":
+			case "dlg-ok":
+			case "dlg-reset":
+			case "dlg-preview":
+			case "dlg-close":
+				UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPosterize" });
+				break;
+		}
+	},
 	dlgReplaceColor(event) {
 		let APP = decoshop,
 			Self = Dialogs,
