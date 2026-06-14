@@ -114,13 +114,8 @@ const Tabs = {
 		// update option in menubar
 		window.menuBar.update(`//MenuBar//Menu[@arg="${id}"]`, {"is-checked": "1"});
 
-		// skip rest if this function is called from "open"
-		if (Projector.file && Projector.file._file.id === id) return;
-
 		// reference to active file
 		let file = this._stack.find(f => f._file.id === id);
 
-		Projector.reset(file);
-		Projector.render();
 	}
 };

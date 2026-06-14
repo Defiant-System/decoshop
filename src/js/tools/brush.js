@@ -32,7 +32,6 @@
 	},
 	dispatch(event) {
 		let APP = decoshop,
-			// Proj = Projector,
 			// File = Proj.file,
 			Self = APP.tools.brush,
 			name,
@@ -187,7 +186,6 @@
 	},
 	brushTool(event) {
 		let APP = decoshop,
-			// Proj = Projector,
 			image;
 
 		switch (event.type) {

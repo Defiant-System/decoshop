@@ -98,8 +98,6 @@
 						callback: () => {
 							// reset start view
 							APP.els.content.removeClass("files-open");
-							// if has files open, focus it
-							// Projector.file.render();
 						}
 					});
 				} else karaqu.shell("win -c");
@@ -137,8 +135,6 @@
 					.then(exec => APP.dispatch(exec.result));
 				break;
 			case "anim-hide-view":
-				// temp solution - until "loading" view
-				// Projector.ctx.clear();
 				// transition work view
 				APP.els.content.cssSequence("seq-hide-blank-view", "transitionend", sEl => {
 					if (sEl[0] === APP.els.content[0]) {

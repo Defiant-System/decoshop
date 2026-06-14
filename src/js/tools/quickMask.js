@@ -17,8 +17,7 @@
 	},
 	dispatch(event) {
 		let APP = decoshop,
-			Proj = Projector,
-			File = Proj.file,
+			File = APP.file,
 			Self = APP.tools.quickMask;
 
 		switch (event.type) {
