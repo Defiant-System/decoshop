@@ -22,7 +22,7 @@ const UI = {
 
 		// bind event handlers
 		this.content.on("click", ".option .value, .inline-menu", this.dispatch);
-		this.content.on("mousedown mouseup", "[data-ui], [data-dlg]", this.dispatch);
+		this.content.on("mousedown mouseup", "[data-ui], [data-dlg], [data-for]", this.dispatch);
 	},
 	async dispatch(event) {
 		let APP = decoshop,
@@ -90,6 +90,8 @@ const UI = {
 					if (el.hasClass("active")) return;
 					el.parent().find(".active").removeClass("active");
 					el.addClass("active");
+				} else if (el.parents("[data-for]").length) {
+					return Self.doPanel(event);
 				} else if (el.parents("[data-dlg]").length) {
 					return Self.doDialog(event);
 				} else if (Self.menu) {
@@ -166,8 +168,17 @@ const UI = {
 					val = Math.round(((parseInt(el.text() || "0", 10) - min) / (max - min)) * 100),
 					offset = val + event.clientY,
 					_min = Math.min,
-					_max = Math.max;
-				Self.drag = { el, bEl, kEl, dId, min, max, type, offset, suffix, _min, _max };
+					_max = Math.max,
+					func = Dialogs[dId];
+
+				// this might be panel element
+				if (!dEl.length) {
+					dEl = el.parents("[data-for]");
+					dId = dEl.data("for");
+					func = Adjustments[dId]
+				}
+
+				Self.drag = { el, bEl, kEl, min, max, type, offset, suffix, func, _min, _max };
 
 				// reset knob
 				kEl.data({ value: val });
@@ -195,11 +206,11 @@ const UI = {
 				Drag.value = value;
 				
 				// proxy changed value
-				Dialogs[Drag.dId]({ type: Drag.type, value: Drag.value });
+				Drag.func({ type: Drag.type, value: Drag.value });
 				break;
 			case "mouseup":
 				// proxy changed value
-				Dialogs[Drag.dId]({ type: `after:${Drag.type}`, value: Drag.value });
+				Drag.func({ type: `after:${Drag.type}`, value: Drag.value });
 				// hide knob-bubble
 				Drag.bEl.cssSequence("close", "animationend", el => el.addClass("hidden").removeClass("close"));
 				// unbind event handlers
@@ -561,13 +572,68 @@ const UI = {
 				break;
 		}
 	},
+	doPanel(event) {
+		let Self = UI,
+			Drag = Self.drag,
+			file,
+			value,
+			dEl,
+			el;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				el = $(event.target);
+				let ux = el.data("ux");
+
+				switch (true) {
+					case el.hasClass("toggler"):
+						return el.data("value") === "on"
+								? el.data({ value: "off" })
+								: el.data({ value: "on" });
+					case el.hasClass("color-box"):
+						return Self.doColorBox(event);
+					case el.hasClass("hue-bar"):
+						return Self.doHueBar(event);
+					case ux === "dlg-knob":
+						return Self.doDialogKnobValue(event);
+					case ux === "dlg-bars":
+						return Self.doDialogBars(event);
+					case ux === "gc-track":
+					case ux === "gap-handle":
+					case ux === "gam-handle":
+					case ux === "gcm-handle":
+					case ux === "gcp-handle":
+						return Self.doGradientSlider(event);
+					case ux === "br-track":
+					case ux === "br-handle":
+						return Self.doRange(event);
+					case ux === "r-handle":
+					case ux === "r-min":
+					case ux === "r-max":
+						return Self.doDblRange(event);
+					case ux === "qr-handle":
+					case ux === "qr-min":
+					case ux === "qrm-handle":
+					case ux === "qrm-min":
+					case ux === "qrm-max":
+					case ux === "qr-max":
+						return Self.doQRange(event);
+					case el.hasClass("knob"):
+					case el.hasClass("pan-knob"):
+						return Self.doDialogKnob(event);
+					case el.parent().hasClass("covered"):
+						return Self.dispatch({ type: "mousedown", target: el.parent()[0] });
+				}
+		}
+	},
 	doDialog(event) {
 		let Self = UI,
 			Drag = Self.drag,
 			file,
-			layer,
-			pixels,
-			copy,
+			// layer,
+			// pixels,
+			// copy,
 			value,
 			dEl,
 			el;
@@ -1181,6 +1247,13 @@ const UI = {
 					},
 					src = pEl.find(".value input"),
 					isPanKnob = el.hasClass("pan-knob");
+
+				// this might be panel element
+				if (!dlg.dEl.length) {
+					dlg.dEl = el.parents("[data-for]");
+					dlg.func = Adjustments[dlg.dEl.data("for")]
+				}
+
 				// references needed for drag'n drop
 				Self.drag = {
 					el,

@@ -6,6 +6,7 @@
 @import "modules/ui.js"
 @import "modules/tabs.js"
 @import "modules/panels.js"
+@import "modules/adjustments.js"
 @import "modules/dialogs.js"
 
 @import "./modules/test.js"
@@ -54,6 +55,7 @@ const decoshop = {
 		UI.init();
 		Tabs.init();
 		Panels.init();
+		Adjustments.init();
 		Dialogs.init();
 		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 		// parses base64 items in "data.xml"
