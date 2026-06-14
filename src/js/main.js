@@ -182,7 +182,6 @@ const decoshop = {
 	blankView: @import "modules/blank-view.js",
 	statusbar: @import "modules/statusbar.js",
 	sidebar: @import "modules/sidebar.js",
-	extras: @import "modules/extras.js",
 	tools: @import "tools/index.js",
 };
 

@@ -25,7 +25,18 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-panel": break;
+			case "init-panel":
+				break;
+			case "select-adjustment":
+				el = $(event.target);
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+				// show correct content in panel
+				APP.sidebar.els.extras.find(`.properties-wrapper div[data-apply="layer"]`).data({ show: el.data("target") });
+				// TEMP: open corresponding dialog for visual comparison
+				APP.els.content.find(`.dialog-box.showing`).removeClass("showing");
+				APP.dispatch({ type: "open-dialog", arg: el.data("target") });
+				break;
 		}
 	},
 	brush(event) {

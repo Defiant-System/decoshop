@@ -124,7 +124,7 @@ content {
 	}
 
 	.workspace {
-		.sidebar-extras {
+		.extras-bar {
 			opacity: 1;
 			transition: opacity @blankViewAnim ease-in-out,
 						right @blankViewAnim ease-in-out;
@@ -147,7 +147,7 @@ content {
 		.tools-options-bar,
 		.blank-view.blank-content,
 		.cvs-wrapper,
-		.workspace .sidebar-extras,
+		.workspace .extras-bar,
 		.workspace .sidebar-wrapper,
 		.workspace .status-bar {
 			transition-delay: 0s;
@@ -186,7 +186,7 @@ content {
 		.workspace {
 			visibility: hidden;
 
-			.sidebar-extras {
+			.extras-bar {
 				opacity: 0;
 				right: -73px;
 				transition-delay: 0s;
@@ -221,7 +221,7 @@ content {
 		}
 
 		.workspace {
-			.sidebar-extras {
+			.extras-bar {
 				opacity: 0;
 				right: -73px;
 				transition-delay: 0s;
@@ -261,7 +261,7 @@ content {
 		.workspace {
 			visibility: visible;
 
-			.sidebar-extras {
+			.extras-bar {
 				opacity: 0;
 				transition-delay: @blankViewAnim;
 			}
@@ -688,25 +688,25 @@ content {
 			opacity: 0.75;
 		}
 
-		&[data-target="brightness-contrast"] { background-image: url(~/icons/tool-brightness-contrast.png); }
-		&[data-target="levels"]              { background-image: url(~/icons/tool-levels.png); }
-		&[data-target="curves"]              { background-image: url(~/icons/tool-curves.png); }
-		&[data-target="exposure"]            { background-image: url(~/icons/tool-exposure.png); }
-		&[data-target="vibrance"]            { background-image: url(~/icons/tool-vibrance.png); }
+		&[data-target="dlgBrightnessContrast"] { background-image: url(~/icons/tool-brightness-contrast.png); }
+		&[data-target="dlgLevels"]   { background-image: url(~/icons/tool-levels.png); }
+		&[data-target="dlgCurves"]   { background-image: url(~/icons/tool-curves.png); }
+		&[data-target="dlgExposure"] { background-image: url(~/icons/tool-exposure.png); }
+		&[data-target="dlgVibrance"] { background-image: url(~/icons/tool-vibrance.png); }
 		
-		&[data-target="hue-saturation"]      { background-image: url(~/icons/tool-hue-saturation.png); }
-		&[data-target="color-balance"]       { background-image: url(~/icons/tool-color-balance.png); }
-		&[data-target="black-white"]         { background-image: url(~/icons/tool-black-white.png); }
-		&[data-target="photo-filter"]        { background-image: url(~/icons/tool-photo-filter.png); }
-		&[data-target="channel-mixer"]       { background-image: url(~/icons/tool-channel-mixer.png); }
-		&[data-target="color-lookup"]        { background-image: url(~/icons/tool-color-lookup.png); }
+		&[data-target="dlgHueSaturation"] { background-image: url(~/icons/tool-hue-saturation.png); }
+		&[data-target="dlgColorBalance"]  { background-image: url(~/icons/tool-color-balance.png); }
+		&[data-target="dlgBlackWhite"]    { background-image: url(~/icons/tool-black-white.png); }
+		&[data-target="dlgPhotoFilter"]   { background-image: url(~/icons/tool-photo-filter.png); }
+		&[data-target="dlgChannelMixer"]  { background-image: url(~/icons/tool-channel-mixer.png); }
+		&[data-target="dlgColorLookup"]   { background-image: url(~/icons/tool-color-lookup.png); }
 
-		&[data-target="invert"]              { background-image: url(~/icons/tool-invert.png); }
-		&[data-target="posterize"]           { background-image: url(~/icons/tool-posterize.png); }
-		&[data-target="threshold"]           { background-image: url(~/icons/tool-threshold.png); }
-		&[data-target="gradient-map"]        { background-image: url(~/icons/tool-gradient-map.png); }
-		&[data-target="selective-color"]     { background-image: url(~/icons/tool-selective-color.png); }
-		&[data-target="replace-color"]       { background-image: url(~/icons/tool-replace-color.png); }
+		&[data-target="dlgInvert"]         { background-image: url(~/icons/tool-invert.png); }
+		&[data-target="dlgPosterize"]      { background-image: url(~/icons/tool-posterize.png); }
+		&[data-target="dlgThreshold"]      { background-image: url(~/icons/tool-threshold.png); }
+		&[data-target="dlgGradientMap"]    { background-image: url(~/icons/tool-gradient-map.png); }
+		&[data-target="dlgSelectiveColor"] { background-image: url(~/icons/tool-selective-color.png); }
+		&[data-target="dlgReplaceColor"]   { background-image: url(~/icons/tool-replace-color.png); }
 
 		&[data-target="info"]         { background-image: url(~/icons/tool-info.png); }
 		&[data-target="histogram"]    { background-image: url(~/icons/tool-histogram.png); }
@@ -2697,7 +2697,7 @@ content {
 
 								div[data-for] {
 									display: none;
-									padding: 0 7px 3px;
+									padding: 0 9px 5px;
 
 									h2 {
 										font-weight: 400;
@@ -2717,14 +2717,14 @@ content {
 
 										&.has-input {
 											height: 73px;
-											padding-top: 7px;
+											padding-top: 9px;
 
 											&:before {
 												content: "";
 												position: absolute;
 												left: 0;
 												right: 0;
-												top: -1px;
+												top: 3px;
 												height: 1px;
 												background: linear-gradient(90deg, #aff0, #aff3, #aff0);
 												filter: drop-shadow(0 -1px 0 #011c);
@@ -2790,8 +2790,8 @@ content {
 													}
 
 													&.icon-1 { left: 0px; background-image: url(~/icons/tool-pipette-dark.png); }
-													&.icon-2 { left: 67px; background-image: url(~/icons/tool-pipette-mid.png); }
-													&.icon-3 { left: 135px; background-image: url(~/icons/tool-pipette-light.png); }
+													&.icon-2 { left: 69px; background-image: url(~/icons/tool-pipette-mid.png); }
+													&.icon-3 { left: 137px; background-image: url(~/icons/tool-pipette-light.png); }
 
 													&:hover:before {
 														background-color:  #fee2;
@@ -2813,29 +2813,55 @@ content {
 													text-align: center;
 
 													&[data-id="input-1"] { left: 23px; }
-													&[data-id="input-2"] { left: 44px; }
-													&[data-id="input-3"] { left: 66px; }
+													&[data-id="input-2"] { left: 45px; }
+													&[data-id="input-3"] { left: 69px; }
 
 													&[data-id="output-1"] { width: 53px; left: 0; }
-													&[data-id="output-2"] { width: 53px; left: 84px; }
+													&[data-id="output-2"] { width: 53px; left: 80px; }
 												}
 											}
 										}
 									}
 
+									.graph.levels {
+										--clr1: #dee1;
+										--clr2: #cee3;
+										--bW1: 48px;
+										height: 143px;
+										margin-bottom: 9px;
+										background-image:
+											repeating-linear-gradient(90deg,
+												transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+												var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+											),
+											repeating-linear-gradient(0deg,
+												transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+												var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+											),
+											repeating-linear-gradient(90deg,
+												var( --clr2 ) 0px, var( --clr2 ) 1px,
+												transparent 1px, transparent 100%
+											),
+											repeating-linear-gradient(0deg,
+												transparent 0, transparent calc( 100% - 1px ),
+												var( --clr2 ) calc( 100% - 1px ), var( --clr2 ) 100%,
+											);
+										background-position: 4px -4px;
+									}
+
 									.slider-handles {
 										position: relative;
 										top: -6px;
-										left: 5px;
+										left: 4px;
 										height: 15px;
 										width: 273px;
 									}
 
 									.slider {
 										position: relative;
-										top: 3px;
+										top: 0;
 										left: 5px;
-										width: 273px;
+										width: 269px;
 										height: 21px;
 										margin-bottom: 7px;
 
@@ -2868,7 +2894,7 @@ content {
 										&[data-range="lightness"] {
 											.handle {
 												--v1: 0px;
-												--v2: 273px;
+												--v2: 269px;
 											}
 										}
 									}
@@ -2884,40 +2910,14 @@ content {
 										filter: drop-shadow(0 1px 1px #1337);
 										cursor: ew-resize;
 										--v1: 0px;
-										--v2: 143px;
-										--v3: 273px;
+										--v2: 139px;
+										--v3: 269px;
 
 										&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
 										&[data-for="input-2"] { left: var( --v2 ); }
 										&[data-for="input-3"] { left: var( --v3 ); background-image: url(~/icons/icon-slider-light-handle.png); }
 										&[data-for="output-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
 										&[data-for="output-2"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
-									}
-
-									.graph.levels {
-										--clr1: #dee1;
-										--clr2: #cee3;
-										--bW1: 48px;
-										height: 148px;
-										margin-bottom: 9px;
-										background-image:
-											repeating-linear-gradient(90deg,
-												transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-												var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-											),
-											repeating-linear-gradient(0deg,
-												transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-												var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-											),
-											repeating-linear-gradient(90deg,
-												var( --clr2 ) 0px, var( --clr2 ) 1px,
-												transparent 1px, transparent 100%
-											),
-											repeating-linear-gradient(0deg,
-												transparent 0, transparent calc( 100% - 1px ),
-												var( --clr2 ) calc( 100% - 1px ), var( --clr2 ) 100%,
-											);
-										background-position: 5px -5px;
 									}
 								}
 							}
@@ -3206,7 +3206,7 @@ content {
 			}
 		}
 
-		.sidebar-extras {
+		.extras-bar {
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -3998,8 +3998,25 @@ content {
 					.tool {
 						border-radius: 3px;
 
-						&:hover {
+						&:not(.active):hover {
 							background-color: #1124;
+						}
+
+						&.active {
+							&:before {
+								content: "";
+								background: #0114;
+								position: absolute;
+								top: -3px;
+								left: -3px;
+								right: -3px;
+								bottom: -3px;
+								border-radius: 2px;
+							}
+
+							&:after {
+								opacity: .75;
+							}
 						}
 					}
 				}
