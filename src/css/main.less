@@ -1221,7 +1221,7 @@ content {
 				input {
 					background: transparent;
 					border: 0;
-					padding: 2px 1px 0px;
+					padding: 2px 1px 1px;
 					height: 20px;
 					color: inherit;
 					font-size: 11px;
@@ -1903,7 +1903,7 @@ content {
 								input {
 									background: transparent;
 									border: 0;
-									padding: 2px 1px 0px;
+									padding: 2px 1px 1px;
 									height: 20px;
 									color: inherit;
 									font-size: 11px;
@@ -2611,7 +2611,6 @@ content {
 								min-height: 131px;
 								padding: 0;
 
-								div[data-apply] { display: none; }
 								&[data-tab="layer"] div[data-apply="layer"] { display: block; }
 								&[data-tab="mask"] div[data-apply="mask"] { display: block; }
 								&[data-tab="shape"] div[data-apply="shape"] { display: block; }
@@ -2702,38 +2701,9 @@ content {
 									&[data-show="dlgReplaceColor"] div[data-for="dlgReplaceColor"] { display: block; }
 								}
 
-								div[data-for] {
+								div[data-apply] {
 									display: none;
 									padding: 0 9px 11px;
-
-									h2 {
-										position: relative;
-										font-weight: 400;
-										font-size: 11px;
-										text-shadow: 0 1px 0 #0119;
-										text-transform: uppercase;
-										padding-left: 23px;
-										margin: 11px 0 3px;
-
-										&:before,
-										&:after {
-											content: "";
-											position: absolute;
-											top: 4px;
-											left: 0;
-											width: 7px;
-											height: 7px;
-											background: #677;
-											transform: rotate(45deg);
-											filter: drop-shadow(1px 1px 0 #1227);
-										}
-
-										&:after {
-											left: 10px;
-										}
-
-										i { display: none; }
-									}
 
 									.field-row {
 										&.has-graph {
@@ -2826,6 +2796,40 @@ content {
 												}
 											}
 										}
+									}
+								}
+
+								div[data-for] {
+									display: none;
+									padding: 0 9px 11px;
+
+									h2 {
+										position: relative;
+										font-weight: 400;
+										font-size: 11px;
+										text-shadow: 0 1px 0 #0119;
+										text-transform: uppercase;
+										padding-left: 23px;
+										margin: 11px 0 3px;
+
+										&:before,
+										&:after {
+											content: "";
+											position: absolute;
+											top: 4px;
+											left: 0;
+											width: 7px;
+											height: 7px;
+											background: #677;
+											transform: rotate(45deg);
+											filter: drop-shadow(1px 1px 0 #1227);
+										}
+
+										&:after {
+											left: 10px;
+										}
+
+										i { display: none; }
 									}
 								}
 

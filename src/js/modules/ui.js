@@ -22,7 +22,7 @@ const UI = {
 
 		// bind event handlers
 		this.content.on("click", ".option .value, .inline-menu", this.dispatch);
-		this.content.on("mousedown mouseup", "[data-ui], [data-dlg], [data-for]", this.dispatch);
+		this.content.on("mousedown mouseup", "[data-ui], [data-dlg], .box-body", this.dispatch);
 	},
 	async dispatch(event) {
 		let APP = decoshop,
@@ -90,7 +90,7 @@ const UI = {
 					if (el.hasClass("active")) return;
 					el.parent().find(".active").removeClass("active");
 					el.addClass("active");
-				} else if (el.parents("[data-for]").length) {
+				} else if (el.parents(".box-body").length) {
 					return Self.doPanel(event);
 				} else if (el.parents("[data-dlg]").length) {
 					return Self.doDialog(event);
@@ -1247,13 +1247,16 @@ const UI = {
 					},
 					src = pEl.find(".value input"),
 					isPanKnob = el.hasClass("pan-knob");
-
-				// this might be panel element
+				// might be panel element
 				if (!dlg.dEl.length) {
 					dlg.dEl = el.parents("[data-for]");
 					dlg.func = Adjustments[dlg.dEl.data("for")]
 				}
-
+				// finally test for panel
+				if (!dlg.dEl.length) {
+					dlg.dEl = el.parents("[data-box]");
+					dlg.func = Panels[dlg.dEl.data("box")]
+				}
 				// references needed for drag'n drop
 				Self.drag = {
 					el,

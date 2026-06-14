@@ -32,7 +32,30 @@
 		</div>
 
 		<div data-apply="mask">
-			TODO: mask
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Density</span>
+					<span class="value"><input type="text" name="brightness" value="255" data-min="0" data-max="255" data-default="255"></span>
+				</div>
+				<div class="knob" data-value="255"></div>
+			</div>
+			
+			<div class="field-row has-knob">
+				<div class="option input">
+					<span class="label">Feather</span>
+					<span class="value"><input type="text" name="contrast" value="0" data-min="0" data-max="500" data-default="0" data-suffix="px"></span>
+				</div>
+				<div class="knob" data-value="0"></div>
+			</div>
+
+			<div class="field-row">
+				<div class="option">
+					<span class="label">Invert</span>
+					<div class="toggler" data-value="off">
+						<span>Apply</span>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div data-apply="shape">
