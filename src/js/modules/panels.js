@@ -277,6 +277,13 @@ const Panels = {
 					event.el.find(`div[data-for="${el.data("for")}"]`).html(dlg.html());
 				});
 				break;
+			case "select-property-tab":
+				el = $(event.target).parents("?li");
+				if (!el.length) return;
+				event.el.find("> .active").removeClass("active");
+				el.addClass("active");
+				el.parents("[data-tab]").data({ tab: el.data("id") });
+				break;
 		}
 	},
 	styles(event) {

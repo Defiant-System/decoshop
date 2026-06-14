@@ -1828,7 +1828,7 @@ content {
 									transition: opacity 500ms;
 									top: -1px;
 									margin-bottom: -3px;
-									filter: brightness(1.35);
+									filter: brightness(1.5) saturate(3);
 								}
 
 								&:hover .pan-knob,
@@ -2611,6 +2611,11 @@ content {
 								min-height: 131px;
 								padding: 0;
 
+								div[data-apply] { display: none; }
+								&[data-tab="layer"] div[data-apply="layer"] { display: block; }
+								&[data-tab="mask"] div[data-apply="mask"] { display: block; }
+								&[data-tab="shape"] div[data-apply="shape"] { display: block; }
+
 								.panel-head {
 									padding: 7px 0 0;
 									text-align: center;
@@ -2670,11 +2675,11 @@ content {
 								}
 
 								div[data-apply="mask"] {
-									display: none;
+									// display: none;
 								}
 
 								div[data-apply="shape"] {
-									display: none;
+									// display: none;
 								}
 
 								div[data-apply="layer"] {
