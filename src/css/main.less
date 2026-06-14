@@ -2700,10 +2700,29 @@ content {
 									padding: 0 9px 5px;
 
 									h2 {
+										position: relative;
 										font-weight: 400;
 										font-size: 11px;
 										text-shadow: 0 1px 0 #0119;
 										text-transform: uppercase;
+										padding-left: 23px;
+
+										&:before,
+										&:after {
+											content: "";
+											position: absolute;
+											top: 4px;
+											left: 0;
+											width: 7px;
+											height: 7px;
+											background: #677;
+											transform: rotate(45deg);
+											filter: drop-shadow(1px 1px 0 #1227);
+										}
+
+										&:after {
+											left: 10px;
+										}
 
 										i { display: none; }
 									}
@@ -2752,9 +2771,6 @@ content {
 											}
 
 											.value {
-												// background: transparent;
-												// padding: 0;
-
 												> i {
 													position: absolute;
 													top: 0;
@@ -2826,7 +2842,7 @@ content {
 									.graph.levels {
 										--clr1: #dee1;
 										--clr2: #cee3;
-										--bW1: 48px;
+										--bW1: 45px;
 										height: 143px;
 										margin-bottom: 9px;
 										background-image:
@@ -2910,7 +2926,7 @@ content {
 										filter: drop-shadow(0 1px 1px #1337);
 										cursor: ew-resize;
 										--v1: 0px;
-										--v2: 139px;
+										--v2: 134px;
 										--v3: 269px;
 
 										&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }

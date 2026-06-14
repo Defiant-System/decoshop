@@ -17,7 +17,7 @@ let Test = {
 		setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(6).trigger("click"), 500);
 
 		setTimeout(() => APP.els.content.find(`.box-head div[data-content="adjustments"]`).trigger("click"), 520);
-		setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgLevels"]`).trigger("click"), 750);
+		setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgBrightnessContrast"]`).trigger("click"), 750);
 		
 		// setTimeout(() => APP.els.content.find(`.field[data-click="select-tip-options"] > div`).get(4).trigger("click"), 800);
 
