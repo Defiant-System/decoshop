@@ -185,7 +185,32 @@
 
 	&[data-dlg="dlgWarp"] {
 		.dlg-content {
-			
+			.field-row {
+				.option {
+					&[data-match="//WarpStyles"] .value {
+						min-width: 117px;
+					}
+
+					.value.prefix-icon {
+						padding-left: 29px;
+
+						i {
+							position: absolute;
+							top: 2px;
+							left: 5px;
+							width: 17px;
+							height: 17px;
+							background-size: 17px 17px;
+
+							&:after {
+								// opacity: .75;
+								background-size: contain;
+								filter: drop-shadow(0 1px 0 #eff3);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 

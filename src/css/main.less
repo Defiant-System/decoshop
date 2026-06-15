@@ -890,7 +890,22 @@ content {
 		&.icon-new              { background-image: url(~/icons/icon-new.png); }
 		&.icon-clipboard        { background-image: url(~/icons/icon-clipboard.png); }
 
-
+		&.icon-warp-none        { background-image: url(~/icons/icon-warp-none.png); }
+		&.icon-warp-arc         { background-image: url(~/icons/icon-warp-arc.png); }
+		&.icon-warp-arc-lower   { background-image: url(~/icons/icon-warp-arc-lower.png); }
+		&.icon-warp-arc-upper   { background-image: url(~/icons/icon-warp-arc-upper.png); }
+		&.icon-warp-arch        { background-image: url(~/icons/icon-warp-arch.png); }
+		&.icon-warp-bulge       { background-image: url(~/icons/icon-warp-bulge.png); }
+		&.icon-warp-shell-lower { background-image: url(~/icons/icon-warp-shell-lower.png); }
+		&.icon-warp-shell-upper { background-image: url(~/icons/icon-warp-shell-upper.png); }
+		&.icon-warp-flag        { background-image: url(~/icons/icon-warp-flag.png); }
+		&.icon-warp-wave        { background-image: url(~/icons/icon-warp-wave.png); }
+		&.icon-warp-fish        { background-image: url(~/icons/icon-warp-fish.png); }
+		&.icon-warp-rise        { background-image: url(~/icons/icon-warp-rise.png); }
+		&.icon-warp-fisheye     { background-image: url(~/icons/icon-warp-fisheye.png); }
+		&.icon-warp-inflate     { background-image: url(~/icons/icon-warp-inflate.png); }
+		&.icon-warp-squeeze     { background-image: url(~/icons/icon-warp-squeeze.png); }
+		&.icon-warp-twist       { background-image: url(~/icons/icon-warp-twist.png); }
 
 		&.icon-stop     { background-image: url(~/icons/icon-stop.png); }
 		&.icon-record   { background-image: url(~/icons/icon-record.png); }
@@ -3763,19 +3778,31 @@ content {
 									padding: 1px 0 0 7px;
 
 									.icon {
-										// background-color: rgba(#011, .175);
 										width: 20px;
-										height: 20px;
+										height: 19px;
 										display: inline-block;
-										margin: 0 3px 0 0;
+										margin: 1px 3px 0 0;
 										border-radius: 2px;
 										cursor: pointer;
 
+										&:before {
+											content: "";
+											display: none;
+											position: absolute;
+											top: -1px;
+											right: -1px;
+											left: -1px;
+											bottom: -1px;
+											border-radius: inherit;
+											background: #0115;
+										}
+
 										&:after {
-											top: 3px;
-											left: 3px;
-											width: 15px;
-											height: 15px;
+											top: 2px;
+											left: 2px;
+											width: 17px;
+											height: 17px;
+											background-size: 17px auto;
 										}
 
 										&.disabled {
@@ -3783,11 +3810,19 @@ content {
 											opacity: .65;
 										}
 
+										&:not(.disabled):hover {
+											&:before {
+												display: block;
+											}
+										}
+
 										&.active {
-											background-color: rgba(#011, .2);
+											&:before {
+												display: block;
+											}
 
 											&:after {
-												filter: invert() brightness(2) drop-shadow(0 1px 0 rgba(0,0,0,0.4));
+												filter: invert() brightness(2) drop-shadow(0 1px 0 #0116);
 												opacity: .65;
 											}
 										}
@@ -3848,22 +3883,43 @@ content {
 
 									.icon {
 										// background-color: rgba(#011, .175);
-										width: 20px;
-										height: 20px;
+										width: 19px;
+										height: 19px;
 										display: inline-block;
-										margin: 0 3px 0 0;
+										margin: 1px 3px 0 0;
 										border-radius: 2px;
 										cursor: pointer;
+
+										&:before {
+											content: "";
+											display: none;
+											position: absolute;
+											top: -1px;
+											right: -1px;
+											left: 0;
+											bottom: 0;
+											border-radius: inherit;
+											background: #0115;
+										}
 
 										&:after {
 											top: 3px;
 											left: 3px;
 											width: 15px;
 											height: 15px;
+											background-size: 15px auto;
+										}
+
+										&:not(.disabled):hover {
+											&:before {
+												display: block;
+											}
 										}
 
 										&.active {
-											background-color: rgba(#011, .2);
+											&:before {
+												display: block;
+											}
 
 											&:after {
 												filter: invert() brightness(2) drop-shadow(0 1px 0 rgba(0,0,0,0.4));
@@ -4494,7 +4550,7 @@ content {
 
 						.thumbnail {
 							&:before { border-color: #011e; }
-							&:after { border-color: #effa; }
+							&:after { border-color: #effc; }
 						}
 
 						.name { color: #deee; }
@@ -4503,9 +4559,32 @@ content {
 					&[data-layer="shape"] {
 						.thumbnail {
 							&:before {
-								background: #eff url(~/icons/icon-vector-layer.png) no-repeat;
-								background-position: 12px 12px;
+								background: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc 0),
+											linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc 0),
+											#fff;
+								background-repeat: repeat, repeat;
+								background-position: 0px 0, 4px 4px;
+								background-origin: padding-box, padding-box;
+								background-clip: padding-box, padding-box;
+								background-size: 8px 8px, 8px 8px;
+							}
+
+							i {
+								background: #eff url(~/icons/icon-vector-layer.png) 0 0 no-repeat;
 								background-size: 13px auto;
+								width: 14px;
+								height: 14px;
+							}
+						}
+					}
+
+					&[data-layer="smart"] {
+						.thumbnail {
+							i {
+								background: #eff url(~/icons/icon-smart-layer.png) 0 0 no-repeat;
+								background-size: 12px 13px;
+								width: 14px;
+								height: 15px;
 							}
 						}
 					}
@@ -4513,53 +4592,19 @@ content {
 					&[data-layer="text"] {
 						.thumbnail {
 							&:before {
-								background: #eff url(~/icons/tool-glyphs.png) no-repeat;
-								background-position: 3px 4px;
+								background: url(~/icons/tool-glyphs.png) 50% 50% no-repeat;
 								background-size: 17px auto;
-								filter: contrast(1.15);
+								filter: contrast(1.15) invert(1) drop-shadow(0 1px 0 #0115);
+								border-color: #0110;
 							}
-						}
-					}
 
-					&[data-layer="smart"] {
-						.thumbnail {
-							&:before {
-								background: url(~/icons/icon-new.png) no-repeat;
-								background-position: 13px 4px;
-								background-size: 17px auto;
-							}
+							i { display: none; }
 						}
 					}
 
 					&[data-layer="image"] {
-						
-					}
-
-					> div {
-						display: inline-block;
-						vertical-align: middle;
-						font-size: 12px;
-						color: rgba(#dee, .65);
-						text-shadow: 0 1px 0 rgba(#000, .25);
-					}
-
-					.name {
-						flex: 1;
-						padding: 8px 0 0 7px;
-
-						.icon-vector-layer {
-							width: 13px;
-							height: 13px;
-							margin: 0 11px 0 5px;
-
-							&:after {
-								top: 2px;
-								left: -5px;
-								width: inherit;
-								height: inherit;
-								background-size: 13px 13px;
-								opacity: 1;
-							}
+						.thumbnail {
+							i { display: none; }
 						}
 					}
 
@@ -4590,6 +4635,17 @@ content {
 							box-sizing: content-box;
 						}
 
+						i {
+							// background: #e55;
+							position: absolute;
+							bottom: calc( calc( var(--tH) - var(--h) - 4px ) * .5 );
+							right: calc( calc( var(--tW) - var(--w) - 4px ) * .5 );
+							width: 15px;
+							height: 15px;
+							z-index: 1;
+							border: 1px solid #011;
+						}
+
 						canvas {
 							background: #eff1;
 							width: 100%;
@@ -4597,8 +4653,35 @@ content {
 							/* temp START */
 							background: 50% 50% / contain no-repeat;
 							background-image: var(--bg);
-							// background-size: 100% auto;
 							/* temp END */
+						}
+					}
+
+					> div {
+						display: inline-block;
+						vertical-align: middle;
+						font-size: 12px;
+						color: rgba(#dee, .65);
+						text-shadow: 0 1px 0 rgba(#000, .25);
+					}
+
+					.name {
+						flex: 1;
+						padding: 8px 0 0 7px;
+
+						.icon-vector-layer {
+							width: 13px;
+							height: 13px;
+							margin: 0 11px 0 5px;
+
+							&:after {
+								top: 2px;
+								left: -5px;
+								width: inherit;
+								height: inherit;
+								background-size: 13px 13px;
+								opacity: 1;
+							}
 						}
 					}
 

@@ -501,6 +501,7 @@
 					<xsl:when test="@type = 'divider'"><hr/></xsl:when>
 					<xsl:when test="@type = 'option'">
 						<div class="option">
+							<xsl:if test="@icon"><i><xsl:attribute name="class">icon <xsl:value-of select="@icon"/></xsl:attribute></i></xsl:if>
 							<xsl:attribute name="data-value"><xsl:choose>
 								<xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
 								<xsl:otherwise><xsl:value-of select="@name"/></xsl:otherwise>
