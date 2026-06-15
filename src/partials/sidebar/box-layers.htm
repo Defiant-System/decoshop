@@ -36,7 +36,8 @@
 
 	</div>
 	<div class="box-content-wrapper">
-		<div class="box-content-list">
+		<div class="box-content-list" data-click="select-layer">
+			<!--
 			<div class="group">
 				<div class="row">
 					<div class="icon icon-folder"></div>
@@ -59,15 +60,28 @@
 					<div class="fx-applied"></div>
 				</div>
 			</div>
+			-->
 				
-			<div class="row">
+			<div class="row" data-layer="shape">
 				<div class="thumbnail"><canvas></canvas></div>
-				<div class="name">Background Copy</div>
+				<div class="name">Shape Layer</div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility"></div>
+			</div>
+				
+			<div class="row" data-layer="text">
+				<div class="thumbnail"><canvas></canvas></div>
+				<div class="name">Text Layer</div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility"></div>
+			</div>
+				
+			<div class="row" data-layer="image" style="--bg: url(/cdn/img/2d-samples/robert-collins.jpg); --w: 28px; --h: 20px;">
+				<div class="thumbnail"><canvas></canvas></div>
+				<div class="name">Smart Object</div>
 				<div class="icon icon-eye-on" data-click="toggle-visibility"></div>
 				<div class="fx-applied"></div>
 			</div>
 			
-			<div class="row">
+			<div class="row" data-layer="image" style="--bg: url(/cdn/img/2d-samples/matthew-brodeur.jpg); --w: 22px; --h: 28px;">
 				<div class="thumbnail"><canvas></canvas></div>
 				<div class="name">Background</div>
 				<div class="icon icon-eye-on" data-click="toggle-visibility"></div>

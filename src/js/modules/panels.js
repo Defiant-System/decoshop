@@ -180,15 +180,6 @@ const Panels = {
 			case "init-panel": break;
 		}
 	},
-	layer(event) {
-		let APP = decoshop,
-			Self = Panels,
-			el;
-		// console.log(event);
-		switch (event.type) {
-			case "init-panel": break;
-		}
-	},
 	layers(event) {
 		let APP = decoshop,
 			Self = Panels,
@@ -196,6 +187,12 @@ const Panels = {
 		// console.log(event);
 		switch (event.type) {
 			case "init-panel": break;
+			case "select-layer":
+				el = $(event.target).parents("?.row");
+				if (!el.length) return;
+				event.el.find(".active").removeClass("active");
+				el.addClass("active");
+				break;
 		}
 	},
 	memory(event) {
@@ -204,8 +201,7 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-panel":
-				break;
+			case "init-panel": break;
 			case "toggle-child-rows":
 				el = event.el.parent();
 				if (el.hasClass("expanded")) {

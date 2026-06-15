@@ -396,7 +396,6 @@ const UI = {
 					dEl = pEl.parents(".dialog-box"),
 					value = +pEl.cssProp("--val"),
 					newValue = +pEl.cssProp("--val"),
-					target = dEl.find(`[data-id="${pEl.data("target")}"]`),
 					type = pEl.data("change"),
 					offset = {
 						x: +el.prop("offsetLeft") - event.clientX,
@@ -408,6 +407,14 @@ const UI = {
 					min = 0,
 					max = +pEl.prop("offsetWidth"),
 					func = Dialogs[dEl.data("dlg")];
+
+				// this might be panel element
+				if (!dEl.length) {
+					dEl = el.parents("[data-for]");
+					func = Adjustments[dEl.data("for")]
+				}
+				// get target elements for value update
+				let target = dEl.find(`[data-id="${pEl.data("target")}"]`);
 				// drag related info
 				Self.drag = { el, pEl, func, type, target, value, newValue, range, offset, min, max };
 
