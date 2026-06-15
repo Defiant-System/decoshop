@@ -251,6 +251,10 @@
 		<i type="option" name="TIFF" value="3"/>
 		<i type="option" name="TGA" value="4"/>
 	</ExportFormats>
+	<WarpOrientations>
+		<i type="option" value="0" name="Horizontal"/>
+		<i type="option" value="1" name="Vertical"/>
+	</WarpOrientations>
 	<GlyphFontFamily>
 		<i type="option" value="0" name="DejaVu Sans"/>
 	</GlyphFontFamily>
