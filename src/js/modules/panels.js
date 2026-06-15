@@ -34,8 +34,8 @@ const Panels = {
 				// show correct content in panel
 				APP.sidebar.els.extras.find(`.properties-wrapper div[data-apply="layer"]`).data({ show: el.data("target") });
 				// TEMP: open corresponding dialog for visual comparison
-				// APP.els.content.find(`.dialog-box.showing`).removeClass("showing");
-				// APP.dispatch({ type: "open-dialog", arg: el.data("target") });
+				APP.els.content.find(`.dialog-box.showing`).removeClass("showing");
+				APP.dispatch({ type: "open-dialog", arg: el.data("target") });
 				break;
 		}
 	},

@@ -73,7 +73,7 @@ content {
 	&.cover,
 	&.no-dlg-cursor,
 	&.no-cursor {
-		&:after {
+		&:after--- { // TODO: remove "---"
 			content: "";
 			position: absolute;
 			top: 0;
@@ -2703,7 +2703,7 @@ content {
 
 								div[data-apply] {
 									display: none;
-									padding: 0 9px 11px;
+									padding: 0 0 11px 7px;
 
 									.field-row {
 										&.has-graph {
@@ -2801,7 +2801,7 @@ content {
 
 								div[data-for] {
 									display: none;
-									padding: 0 9px 11px;
+									padding: 0 9px 11px 2px;
 
 									h2 {
 										position: relative;
@@ -2833,7 +2833,13 @@ content {
 									}
 								}
 
+								div[data-for="dlgInvert"] {
+									padding: 0 0 3px 2px;
+								}
+
 								div[data-for="dlgChannelMixer"] {
+									padding: 0 0 3px 2px;
+
 									.field-row {
 										&.has-basic-range {
 											.option {
@@ -2863,9 +2869,11 @@ content {
 								}
 
 								div[data-for="dlgColorBalance"] {
+									padding: 0 0 3px 2px;
+
 									.field-row {
 										&.has-range {
-											height: 127px;
+											height: 119px;
 
 											.option {
 												height: 37px;
@@ -2916,6 +2924,8 @@ content {
 								}
 
 								div[data-for="dlgHueSaturation"] {
+									padding: 0 0 3px 2px;
+
 									.field-row {
 										&.has-ranges-tools {
 											margin: 23px 0 5px;
@@ -2974,7 +2984,7 @@ content {
 								}
 
 								div[data-for="dlgCurves"] {
-									padding-bottom: 19px;
+									padding: 0 0 11px 2px;
 									
 									.field-row {
 										&.has-graph {
@@ -3002,11 +3012,16 @@ content {
 										left: -13px;
 									}
 
+									.range-v {
+										left: 4px;
+										width: 252px;
+									}
+
 									.graph.curves {
 										--clr1: #dee1;
 										--clr2: #cee3;
 										--bW1: 42px;
-										left: 13px;
+										left: 14px;
 										width: 260px;
 										height: 260px;
 										margin-bottom: 11px;
@@ -3032,6 +3047,8 @@ content {
 								}
 
 								div[data-for="dlgLevels"] {
+									padding: 0 9px 1px 2px;
+
 									.field-row {
 										.option {
 											height: 37px;
@@ -3109,7 +3126,7 @@ content {
 													&[data-id="input-3"] { left: 69px; }
 
 													&[data-id="output-1"] { width: 53px; left: 0; }
-													&[data-id="output-2"] { width: 53px; left: 80px; }
+													&[data-id="output-2"] { width: 53px; left: 78px; }
 												}
 											}
 										}
@@ -3146,14 +3163,14 @@ content {
 										top: -6px;
 										left: 4px;
 										height: 15px;
-										width: 273px;
+										width: 271px;
 									}
 
 									.slider {
 										position: relative;
 										top: 0;
-										left: 5px;
-										width: 269px;
+										left: 4px;
+										width: 270px;
 										height: 21px;
 										margin-bottom: 7px;
 
@@ -3186,7 +3203,7 @@ content {
 										&[data-range="lightness"] {
 											.handle {
 												--v1: 0px;
-												--v2: 269px;
+												--v2: 270px;
 											}
 										}
 									}
@@ -5395,8 +5412,6 @@ content {
 	.range-v {
 		position: absolute;
 		bottom: -34px;
-		left: 5px;
-		width: 250px;
 
 		&:before {
 			content: "";
