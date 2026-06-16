@@ -199,6 +199,11 @@ const Panels = {
 				break;
 			case "select-layer":
 				el = $(event.target);
+				// toggle visibility
+				if (el.hasClass("icon-eye-on")) {
+					el.toggleClass("icon-eye-off", el.hasClass("icon-eye-off"));
+					return;
+				}
 				// toggle row
 				if (el.hasClass("icon-folder")) {
 					let gEl = el.parents(".group");

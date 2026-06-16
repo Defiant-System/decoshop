@@ -108,8 +108,8 @@
 						<div class="mask"><canvas></canvas></div>
 					</xsl:if>
 					<div class="name"><xsl:value-of select="@name"/></div>
-					<div class="icon icon-eye-on" data-click="toggle-visibility">
-						<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+					<div class="icon icon-eye-on">
+						<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
 					</div>
 				</div>
 				<xsl:for-each select="./*">
@@ -130,8 +130,8 @@
 					<div class="mask"><canvas></canvas></div>
 				</xsl:if>
 				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on" data-click="toggle-visibility">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				<div class="icon icon-eye-on">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
 				</div>
 				<div class="fx-applied"></div>
 			</div>
@@ -144,8 +144,8 @@
 					<div class="mask"><canvas></canvas></div>
 				</xsl:if>
 				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on" data-click="toggle-visibility">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				<div class="icon icon-eye-on">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
 				</div>
 			</div>
 		</xsl:when>
@@ -157,8 +157,8 @@
 					<div class="mask"><canvas></canvas></div>
 				</xsl:if>
 				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on" data-click="toggle-visibility">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				<div class="icon icon-eye-on">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
 				</div>
 			</div>
 		</xsl:when>
@@ -175,8 +175,8 @@
 					<div class="mask"><canvas></canvas></div>
 				</xsl:if>
 				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on" data-click="toggle-visibility">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				<div class="icon icon-eye-on">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
 				</div>
 			</div>
 		</xsl:otherwise>
