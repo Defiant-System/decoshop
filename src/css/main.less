@@ -4505,9 +4505,60 @@ content {
 
 				.group {
 					position: relative;
-					height: 33px;
-					overflow: hidden;
+					// height: 33px;
+					// overflow: hidden;
 					--tc: #566;
+
+					> div:not(:first-child) {
+						opacity: 0;
+						height: 0;
+						overflow: hidden;
+						border-bottom-width: 0;
+						transition: opacity 100ms ease-in-out,
+									height 100ms ease-in-out;
+					}
+
+					> div:last-child {
+						&:before {
+							content: "";
+							position: absolute;
+							top: -1px;
+							left: 9px;
+							width: 3px;
+							height: 15px;
+							z-index: 1;
+							background: var(--tc);
+						}
+
+						&:after {
+							content: "";
+							position: absolute;
+							top: 13px;
+							left: 7px;
+							width: 7px;
+							height: 7px;
+							z-index: 1;
+							background: var(--tc);
+							border-radius: 50%;
+						}
+					}
+
+					.group {
+						&:not(:last-child) {
+							position: relative;
+
+							&:before {
+								content: "";
+								position: absolute;
+								top: -1px;
+								bottom: 0px;
+								left: 9px;
+								width: 3px;
+								z-index: 1;
+								background: var(--tc);
+							}
+						}
+					}
 
 					> .row {
 						&:not(:first-child) {
@@ -4518,8 +4569,7 @@ content {
 							content: "";
 							position: absolute;
 							top: -1px;
-							// bottom: 33px;
-							left: 12px;
+							left: 9px;
 							width: 3px;
 							height: inherit;
 							z-index: 1;
@@ -4530,14 +4580,14 @@ content {
 							&:before {
 								content: "";
 								top: 21px;
-								height: 11px;
+								height: 0;
 							}
 							
 							&:after {
 								content: "";
 								position: absolute;
 								top: 9px;
-								left: 7px;
+								left: 4px;
 								width: 13px;
 								height: 13px;
 								z-index: 1;
@@ -4560,41 +4610,27 @@ content {
 								}
 							}
 						}
-
-						&:last-child {
-							&:after {
-								content: "";
-								position: absolute;
-								top: 13px;
-								left: 10px;
-								width: 7px;
-								height: 7px;
-								z-index: 1;
-								background: var(--tc);
-								border-radius: 50%;
-							}
-						}
 					}
 
 					> .group {
 						> .row {
-							padding-left: 23px;
+							padding-left: 21px;
 
-							&:not(:first-child) {
-								padding-left: 39px;
-							}
-
-							&:before {
-								left: 30px;
-							}
-							
 							&:not(:first-child) {
 								padding-left: 37px;
 							}
 
+							&:before {
+								left: 25px;
+							}
+							
+							&:not(:first-child) {
+								padding-left: 35px;
+							}
+
 							&:first-child {
 								&:after {
-									left: 25px;
+									left: 20px;
 								}
 							}
 
@@ -4604,16 +4640,29 @@ content {
 								}
 
 								&:after {
-									left: 28px;
+									left: 23px;
 								}
 							}
 						}
 					}
 
 					&.expanded {
-						height: auto;
+						> div {
+							opacity: 1;
+							height: 33px;
+							overflow: visible;
+							border-bottom-width: 1px;
+
+							&.group {
+								height: calc-size(auto, size);
+							}
+						}
 
 						> .row:first-child {
+							&:before {
+								height: 11px;
+							}
+
 							&[data-layer="folder"] {
 								.icon-folder {
 									background-image: url(~/icons/icon-folder-open.png);
@@ -4683,12 +4732,6 @@ content {
 						.name { color: #deee; }
 					}
 
-					&[data-layer="folder"] {
-						.icon-folder {
-
-						}
-					}
-
 					&[data-layer="shape"] {
 						.thumbnail {
 							&:before {
@@ -4743,8 +4786,8 @@ content {
 
 					.thumbnail {
 						position: relative;
-						max-width: var(--tW);
-						max-height: var(--tH);
+						width: var(--tW);
+						height: var(--tH);
 
 						&:before,
 						&:after {
@@ -4821,7 +4864,7 @@ content {
 					.icon {
 						width: 23px;
 						height: 17px;
-						margin: 7px 9px 0 7px;
+						margin: 7px 5px 0 7px;
 
 						&:after {
 							left: 3px;
@@ -4830,7 +4873,7 @@ content {
 						}
 
 						&.icon-folder {
-							left: 9px;
+							left: 6px;
 						}
 
 						&.icon-eye-on,

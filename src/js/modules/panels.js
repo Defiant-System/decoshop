@@ -183,15 +183,25 @@ const Panels = {
 	layers(event) {
 		let APP = decoshop,
 			Self = Panels,
+			rEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
 			case "init-panel": break;
 			case "select-layer":
-				el = $(event.target).parents("?.row");
-				if (!el.length) return;
-				event.el.find(".active").removeClass("active");
-				el.addClass("active");
+				el = $(event.target);
+
+				if (el.hasClass("icon-folder")) {
+					let gEl = el.parents(".group");
+					gEl.toggleClass("expanded", gEl.hasClass("expanded"));
+					return;
+				}
+
+				rEl = el.parents("?.row");
+				if (rEl) {
+					event.el.find(".active").removeClass("active");
+					rEl.addClass("active");
+				}
 				break;
 		}
 	},
