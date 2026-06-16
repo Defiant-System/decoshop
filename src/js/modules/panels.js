@@ -194,7 +194,7 @@ const Panels = {
 					target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
 				}).then((el) => {
 					// temp
-					el.find(".row").get(1).trigger("click");
+					el.find(".row:nth(6) .name").trigger("click");
 				});
 				break;
 			case "select-layer":
@@ -211,6 +211,9 @@ const Panels = {
 					event.el.find(".active").removeClass("active");
 					rEl.addClass("active");
 				}
+				// select mask
+				event.el.find(".mask-active").removeClass("mask-active");
+				if (el.hasClass("mask")) rEl.addClass("mask-active");
 				break;
 		}
 	},

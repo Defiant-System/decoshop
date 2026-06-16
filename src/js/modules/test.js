@@ -17,7 +17,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
 
 
-		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(6).trigger("click"), 500);
+		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(3).trigger("click"), 500);
 
 		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="adjustments"]`).trigger("click"), 520);
 		// setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgHueSaturation"]`).trigger("click"), 750);

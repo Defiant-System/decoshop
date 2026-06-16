@@ -9,7 +9,7 @@
 		<meta name="license" value="AGPL-3.0"/>
 		<meta name="repository" value="https://github.com/Defiant-System/decoshop"/>
 		<meta name="width" value="1180" min="920"/>
-		<meta name="height" value="920" min="660"/>
+		<meta name="height" value="990" min="660"/>
 		<meta name="top" value="140"/>
 		<meta name="left" value="60"/>
 		<meta name="headless" value="true" theme="dark"/>
