@@ -87,6 +87,82 @@
 </xsl:template>
 
 
+<xsl:template name="layers-list">
+	<div class="box-content-list" data-click="select-layer">
+		<xsl:for-each select="./*">
+			<xsl:call-template name="layers-list-row"/>
+		</xsl:for-each>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="layers-list-row">
+	<xsl:choose>
+		<xsl:when test="@type = 'group'">
+			<div class="group">
+				<xsl:if test="@expanded"><xsl:attribute name="class">group expanded</xsl:attribute></xsl:if>
+				<div class="row" data-layer="folder">
+					<div class="icon icon-folder"></div>
+					<div class="name"><xsl:value-of select="@name"/></div>
+					<div class="icon icon-eye-on" data-click="toggle-visibility">
+						<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+					</div>
+				</div>
+				<xsl:for-each select="./*">
+					<xsl:call-template name="layers-list-row"/>
+				</xsl:for-each>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'smart'">
+			<div class="row" data-layer="smart">
+				<xsl:attribute name="style">
+					--bg: url(<xsl:value-of select="@bg"/>);
+					--w: <xsl:value-of select="@w"/>px;
+					--h: <xsl:value-of select="@h"/>px;
+				</xsl:attribute>
+				<div class="thumbnail"><canvas></canvas><i></i></div>
+				<div class="name"><xsl:value-of select="@name"/></div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				</div>
+				<div class="fx-applied"></div>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'shape'">
+			<div class="row" data-layer="shape">
+				<div class="thumbnail"><canvas></canvas><i></i></div>
+				<div class="name"><xsl:value-of select="@name"/></div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				</div>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'text'">
+			<div class="row" data-layer="text">
+				<div class="thumbnail"><canvas></canvas><i></i></div>
+				<div class="name"><xsl:value-of select="@name"/></div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				</div>
+			</div>
+		</xsl:when>
+		<xsl:otherwise>
+			<div class="row" data-layer="image">
+				<xsl:attribute name="style">
+					--bg: url(<xsl:value-of select="@bg"/>);
+					--w: <xsl:value-of select="@w"/>px;
+					--h: <xsl:value-of select="@h"/>px;
+				</xsl:attribute>
+				<div class="thumbnail"><canvas></canvas><i></i></div>
+				<div class="name"><xsl:value-of select="@name"/></div>
+				<div class="icon icon-eye-on" data-click="toggle-visibility">
+					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-off</xsl:attribute></xsl:if>
+				</div>
+			</div>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
 
 <xsl:template name="preset-brush-list">
 	<ul class="preset-list">

@@ -1,4 +1,20 @@
 <Data>
+	<TempLayers>
+		<i type="group" name="Landscape" expanded="1">
+			<i type="smart" name="Flower" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="20"/>
+			<i type="shape" name="Star Shape" hidden="1"/>
+			<i type="group" name="Sub folder">
+				<i type="text" name="Some Text"/>
+			</i>
+			<i type="text" name="Some Text 1"/>
+		</i>
+		<i type="group" name="Folder">
+			<i type="text" name="Some Text 2"/>
+		</i>
+		<i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="28" fx="1"/>
+		<i type="image" name="Flower" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="20"/>
+	</TempLayers>
+
 	<Presets>
 		<i width="600" height="400" icon="file-image" bg="#f1f1f1" bg-name="White" name="Landscape, 3 x 2"/>
 		<i width="500" height="300" icon="file-image" bg="#111111" bg-name="Black" name="Landscape, 5 x 3"/>

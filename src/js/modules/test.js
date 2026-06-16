@@ -14,7 +14,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
-		setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
+		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
 
 
 		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(6).trigger("click"), 500);

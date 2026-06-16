@@ -187,16 +187,25 @@ const Panels = {
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "init-panel": break;
+			case "init-panel":
+				window.render({
+					template: "layers-list",
+					match: "//TempLayers",
+					target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
+				}).then((el) => {
+					// temp
+					el.find(".row").get(1).trigger("click");
+				});
+				break;
 			case "select-layer":
 				el = $(event.target);
-
+				// toggle row
 				if (el.hasClass("icon-folder")) {
 					let gEl = el.parents(".group");
 					gEl.toggleClass("expanded", gEl.hasClass("expanded"));
 					return;
 				}
-
+				// select row
 				rEl = el.parents("?.row");
 				if (rEl) {
 					event.el.find(".active").removeClass("active");
