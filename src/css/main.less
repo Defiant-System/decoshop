@@ -4505,9 +4505,126 @@ content {
 
 				.group {
 					position: relative;
+					height: 33px;
+					overflow: hidden;
+					--tc: #566;
+
+					> .row {
+						&:not(:first-child) {
+							padding-left: 19px;
+						}
+						
+						&:before {
+							content: "";
+							position: absolute;
+							top: -1px;
+							// bottom: 33px;
+							left: 12px;
+							width: 3px;
+							height: inherit;
+							z-index: 1;
+							background: var(--tc);
+						}
+
+						&:first-child {
+							&:before {
+								content: "";
+								top: 21px;
+								height: 11px;
+							}
+							
+							&:after {
+								content: "";
+								position: absolute;
+								top: 9px;
+								left: 7px;
+								width: 13px;
+								height: 13px;
+								z-index: 1;
+								background: var(--tc);
+								border-radius: 50%;
+								cursor: pointer;
+							}
+
+							.icon-folder {
+								&:before {
+									content: "";
+									position: absolute;
+									top: 3px;
+									left: -13px;
+									width: 11px;
+									height: 11px;
+									z-index: 2;
+									background: url(/app/ant/decoshop/icons/tool-actions.png) 2px 1px / 9px 9px no-repeat;
+									filter: invert(1) brightness(1.5) drop-shadow(0 1px 0 #011a);
+								}
+							}
+						}
+
+						&:last-child {
+							&:after {
+								content: "";
+								position: absolute;
+								top: 13px;
+								left: 10px;
+								width: 7px;
+								height: 7px;
+								z-index: 1;
+								background: var(--tc);
+								border-radius: 50%;
+							}
+						}
+					}
+
+					> .group {
+						> .row {
+							padding-left: 23px;
+
+							&:not(:first-child) {
+								padding-left: 39px;
+							}
+
+							&:before {
+								left: 30px;
+							}
+							
+							&:not(:first-child) {
+								padding-left: 37px;
+							}
+
+							&:first-child {
+								&:after {
+									left: 25px;
+								}
+							}
+
+							&:last-child {
+								&:before {
+									height: 15px;
+								}
+
+								&:after {
+									left: 28px;
+								}
+							}
+						}
+					}
 
 					&.expanded {
-						> .row:not(:first-child):before { margin: 0 0 0 29px; }
+						height: auto;
+
+						> .row:first-child {
+							&[data-layer="folder"] {
+								.icon-folder {
+									background-image: url(~/icons/icon-folder-open.png);
+
+									&:before {
+										transform: rotate(90deg);
+										filter: invert(1) brightness(1.5) drop-shadow(1px 0 0 #011a);
+									}
+								}
+							}
+						}
 					}
 				}
 
@@ -4564,6 +4681,12 @@ content {
 						}
 
 						.name { color: #deee; }
+					}
+
+					&[data-layer="folder"] {
+						.icon-folder {
+
+						}
 					}
 
 					&[data-layer="shape"] {
@@ -4704,6 +4827,10 @@ content {
 							left: 3px;
 							width: 17px;
 							height: 17px;
+						}
+
+						&.icon-folder {
+							left: 9px;
 						}
 
 						&.icon-eye-on,
