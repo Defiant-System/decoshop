@@ -58,6 +58,14 @@
 				// select tool option
 				Self[Self._active].dispatch({ type: "select-option", arg: event.el.data("arg") });
 				break;
+			default:
+				if (event.target) {
+					el = $(event.target).parents("?[data-area]");
+					if (el.length) {
+						name = el.data("area");
+						if (Self[name]) return Self[name].dispatch(event);
+					}
+				}
 		}
 	},
 	marquee   : @import "marquee.js",

@@ -3755,8 +3755,8 @@ content {
 							content: "";
 							position: absolute;
 							top: -1px;
-							left: 58px;
-							width: 214px;
+							left: 53px;
+							width: 219px;
 							border-bottom: 1px solid #1227;
 						}
 
@@ -3951,14 +3951,24 @@ content {
 						.row {
 							padding: 0 7px;
 
+							// TEMP
+							&:nth-child(1) canvas {  }
+							&:nth-child(2) canvas { filter: grayscale(1); }
+							&:nth-child(3) canvas { filter: grayscale(1) brightness(1.1) contrast(1.5); }
+							&:nth-child(4) canvas { filter: grayscale(1) brightness(1.2) contrast(.85); }
+
 							.icon {
 								margin: 7px 0 0 0;
 							}
 						}
 
-						.thumbnail canvas {
-							filter: drop-shadow(0 0px 1px #0116);
-							// background: rgba(255,255,255,.1);
+						.thumbnail {
+							margin: 0 5px 0 3px;
+
+							canvas {
+								filter: drop-shadow(0 0px 1px #0116);
+								// background: rgba(255,255,255,.1);
+							}
 						}
 
 						.icon {
