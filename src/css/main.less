@@ -5766,48 +5766,48 @@ content {
 				}
 			}
 		}
+	}
 
-		ul.opt-group {
+	ul.opt-group {
+		display: inline-block;
+		font-size: 0;
+		border-radius: 12px;
+		background: #0002;
+		box-shadow: 0 0 0 1px #0004;
+
+		li {
 			display: inline-block;
-			font-size: 0;
-			border-radius: 12px;
-			background: #0002;
-			box-shadow: 0 0 0 1px #0004;
+			background: #eff3;
+			color: #fff8;
+			text-shadow: 0 1px 0 #0003;
+			font-size: 11px;
+			padding: 3px 7px;
+			margin-right: 1px;
 
-			li {
-				display: inline-block;
-				background: #eff3;
-				color: #fff8;
-				text-shadow: 0 1px 0 #0003;
-				font-size: 11px;
-				padding: 3px 7px;
-				margin-right: 1px;
+			&:not(.active) {
+				cursor: pointer;
+			}
 
-				&:not(.active) {
-					cursor: pointer;
-				}
+			&:first-child {
+				border-radius: 11px 0 0 11px;
+				padding-left: 9px;
+				padding-right: 6px;
+			}
 
-				&:first-child {
-					border-radius: 11px 0 0 11px;
-					padding-left: 9px;
-					padding-right: 6px;
-				}
+			&:last-child {
+				border-radius: 0 11px 11px 0;
+				padding-left: 6px;
+				padding-right: 9px;
+				margin-right: 0;
+			}
 
-				&:last-child {
-					border-radius: 0 11px 11px 0;
-					padding-left: 6px;
-					padding-right: 9px;
-					margin-right: 0;
-				}
-
-				&.active {
-					background: #0001;
-					color: #fffa;
-				}
+			&.active {
+				background: #0001;
+				color: #fffa;
 			}
 		}
 	}
-
+		
 	.option-bar {
 		// background: #0112;
 		position: relative;

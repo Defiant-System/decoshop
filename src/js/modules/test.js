@@ -11,7 +11,7 @@ let Test = {
 		setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
-		// setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
@@ -28,7 +28,7 @@ let Test = {
 		/* 
 		 * 
 		 */
-		// setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerPanelOptions" }), 600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLayerPanelOptions" }), 600);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
