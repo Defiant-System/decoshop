@@ -14,16 +14,30 @@
 				<fx name="Drop Shadow"/>
 			</i>
 		</i> -->
-		<i type="group" name="Folder" expanded="1">
+		<!-- <i type="group" name="Folder" expanded="1">
 			<i type="text" name="Some Text 2"/>
 			<i type="group" name="Sub folder 1" expanded="1">
-				<i type="text" name="Some Text Very long name here"/>
 				<i type="group" name="Sub folder 2" expanded="1">
 					<i type="group" name="Sub folder 3" expanded="1">
+						<i type="group" name="Sub folder 4" expanded="1">
+							<i type="text" name="Some Text Very long name here"/>
+						</i>
 						<i type="text" name="Some Text Very long name here"/>
 					</i>
 				</i>
+				<i type="text" name="Some Text Very long name here"/>
 			</i>
+		</i> -->
+
+		<i type="group" name="Folder" expanded="1">
+			<i type="text" name="Some Text 1"/>
+			<i type="group" name="Folder 1" expanded="1">
+				<i type="group" name="Folder 4" />
+				<i type="group" name="Folder 3">
+					<i type="text" name="Some Text 2"/>
+				</i>
+			</i>
+			<i type="group" name="Folder 2" />
 		</i>
 
 		<i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="29" mask="shape-1">

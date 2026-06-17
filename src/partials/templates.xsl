@@ -103,6 +103,7 @@
 				<xsl:attribute name="class">group 
 					<xsl:if test="@expanded">expanded </xsl:if>
 					<xsl:if test="@hidden">hidden </xsl:if>
+					<xsl:if test="count(./i) = 0">empty </xsl:if>
 				</xsl:attribute>
 				<div class="row" data-layer="folder">
 					<div class="layer-row-body">
@@ -120,7 +121,7 @@
 						<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 					</div>
 				</div>
-				<xsl:for-each select="./*">
+				<xsl:for-each select="./i">
 					<xsl:call-template name="layers-list-row"/>
 				</xsl:for-each>
 			</div>

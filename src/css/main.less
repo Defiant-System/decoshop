@@ -4467,6 +4467,7 @@ content {
 					}
 
 					.group {
+						&.empty > .row:first-child:before { display: none; }
 						&:not(:last-child) {
 							position: relative;
 
@@ -4530,12 +4531,15 @@ content {
 									z-index: 2;
 									background: url(/app/ant/decoshop/icons/tool-actions.png) 2px 1px / 9px 9px no-repeat;
 									filter: invert(1) brightness(1.5) drop-shadow(0 1px 0 #011a);
+									transition: transform 120ms ease-in-out;
 								}
 							}
 						}
 					}
 
 					> .group {
+						&:not(:last-child):before { left: 9px; }
+
 						> div:last-child {
 							&:before { left: 25px; }
 							&:after { left: 23px; }
@@ -4543,29 +4547,62 @@ content {
 
 						> .row {
 							> .layer-row-body { padding-left: 21px; }
-
 							&:before { left: 25px; }
 							&:not(:first-child) .layer-row-body { padding-left: 35px; }
-
 							&:first-child:after { left: 20px; }
 							&:last-child:after { left: 23px; }
+							&:last-child[data-layer="folder"]:after { left: 20px; }
 						}
 
 						> .group {
-								&:not(:last-child) {
-									&:before {
-										left: 25px;
-									}
-								}
+							&:not(:last-child):before { left: 25px; }
+
+							> div:last-child {
+								&:before { left: 42px; }
+								&:after { left: 40px; }
+							}
 
 							> .row {
 								> .layer-row-body { padding-left: 38px; }
-
 								&:before { left: 42px; }
 								&:not(:first-child) .layer-row-body { padding-left: 52px; }
-
 								&:first-child:after { left: 37px; }
 								&:last-child:after { left: 40px; }
+								&:last-child[data-layer="folder"]:after { left: 37px; }
+							}
+
+							> .group {
+								&:not(:last-child):before { left: 59px; }
+
+								> div:last-child {
+									&:before { left: 59px; }
+									&:after { left: 57px; }
+								}
+
+								> .row {
+									> .layer-row-body { padding-left: 55px; }
+									&:before { left: 59px; }
+									&:not(:first-child) .layer-row-body { padding-left: 69px; }
+									&:first-child:after { left: 54px; }
+									&:last-child:after { left: 57px; }
+									&:last-child[data-layer="folder"]:after { left: 54px; }
+								}
+
+								> .group {
+									> div:last-child {
+										&:before { left: 76px; }
+										&:after { left: 74px; }
+									}
+									
+									> .row {
+										> .layer-row-body { padding-left: 72px; }
+										&:before { left: 76px; }
+										&:not(:first-child) .layer-row-body { padding-left: 86px; }
+										&:first-child:after { left: 71px; }
+										&:last-child:after { left: 74px; }
+										&:last-child[data-layer="folder"]:after { left: 71px; }
+									}
+								}
 							}
 						}
 					}
