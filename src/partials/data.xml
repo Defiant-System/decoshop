@@ -1,18 +1,27 @@
 <Data>
 	<TempLayers>
-		<i type="group" name="Landscape" expanded="1">
-			<i type="smart" name="Flower" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="20" mask="shape-1"/>
-			<i type="shape" name="Star Shape Very long name here" hidden="1" mask="shape-1"/>
-			<i type="group" name="Sub folder" expanded="1">
+		<!-- <i type="group" name="Landscape" expanded="1">
+			<i type="smart" name="Flower1" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="21"/>
+			<i type="shape" name="Star Shape Very long name here" hidden="1"/>
+			<i type="group" name="Sub folder" hidden="1">
 				<i type="text" name="Some Text Very long name here"/>
 			</i>
-			<i type="text" name="Some Text 1" mask="shape-1"/>
+			<i type="text" name="Some Text 1"/>
 		</i>
 		<i type="group" name="Folder" mask="shape-1">
 			<i type="text" name="Some Text 2"/>
+		</i> -->
+
+		<i type="text" name="Some Text">
+			<fx name="Inner Shadow"/>
+			<fx name="Inner Glow" hidden="1"/>
+			<fx name="Color Overlay"/>
+			<fx name="Gradient Overlay"/>
+			<fx name="Drop Shadow"/>
 		</i>
-		<i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="28" mask="shape-1" fx="1"/>
-		<i type="image" name="Flower" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="20" mask="shape-1"/>
+
+		<i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="29" mask="shape-1"/>
+		<i type="image" name="Background" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="21"/>
 	</TempLayers>
 
 	<Presets>

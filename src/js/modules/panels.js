@@ -183,6 +183,7 @@ const Panels = {
 	layers(event) {
 		let APP = decoshop,
 			Self = Panels,
+			gEl,
 			rEl,
 			el;
 		// console.log(event);
@@ -194,25 +195,27 @@ const Panels = {
 					target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
 				}).then((el) => {
 					// temp
-					el.find(".row:nth(6) .name").trigger("click");
+					// el.find(".row:nth(6) .name").trigger("click");
+					el.find(".row:nth(0)").addClass("fx-expand");
 				});
 				break;
 			case "select-layer":
 				el = $(event.target);
+				rEl = el.parents("?.row");
+				gEl = el.parents(".group");
 				// toggle visibility
 				if (el.hasClass("icon-eye-on")) {
+					if (rEl.index() === 0) gEl.toggleClass("hidden", el.hasClass("icon-eye-off"));
 					el.toggleClass("icon-eye-off", el.hasClass("icon-eye-off"));
 					return;
 				}
 				// toggle row
 				if (el.hasClass("icon-folder")) {
-					let gEl = el.parents(".group");
 					gEl.toggleClass("expanded", gEl.hasClass("expanded"));
 					return;
 				}
 				// select row
-				rEl = el.parents("?.row");
-				if (rEl) {
+				if (rEl.length) {
 					event.el.find(".active").removeClass("active");
 					rEl.addClass("active");
 				}

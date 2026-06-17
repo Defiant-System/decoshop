@@ -4421,6 +4421,16 @@ content {
 					position: relative;
 					--tc: #566;
 
+					&.hidden {
+						> div:not(:first-child) {
+							> .icon.icon-eye-on,
+							> .icon.icon-eye-off {
+								opacity: .35;
+								visibility: visible;
+							}
+						}
+					}
+
 					> div:not(:first-child) {
 						opacity: 0;
 						height: 0;
@@ -4525,14 +4535,13 @@ content {
 					}
 
 					> .group {
-
 						> div:last-child {
 							&:before { left: 25px; }
 							&:after { left: 23px; }
 						}
 
 						> .row {
-							padding-left: 21px;
+							> .layer-row-body { padding-left: 21px; }
 
 							&:before { left: 25px; }
 							&:not(:first-child) { padding-left: 35px; }
@@ -4554,7 +4563,7 @@ content {
 								}
 
 							> .row {
-								padding-left: 40px;
+								.layer-row-body { padding-left: 40px; }
 
 								&:before { left: 42px; }
 								&:not(:first-child) { padding-left: 52px; }
@@ -4590,8 +4599,10 @@ content {
 							&[data-layer="folder"] {
 								.icon-folder {
 									background-image: url(~/icons/icon-folder-open.png);
+									left: 7px;
 
 									&:before {
+										left: -14px;
 										transform: rotate(90deg);
 										filter: invert(1) brightness(1.5) drop-shadow(1px 0 0 #011a);
 									}
@@ -4603,10 +4614,10 @@ content {
 
 				.row {
 					position: relative;
-					display: flex;
-					height: 33px;
-					padding: 0 29px 0 5px;
 					border-bottom: 1px solid rgba(#011, .35);
+					font-size: 12px;
+					color: rgba(#dee, .65);
+					text-shadow: 0 1px 0 rgba(#000, .25);
 					--w: 26px;
 					--h: 26px;
 					--tW: 32px;
@@ -4629,6 +4640,13 @@ content {
 								visibility: visible;
 							}
 						}
+					}
+
+					> .layer-row-body {
+						position: relative;
+						padding: 0 29px 0 5px;
+						height: 33px;
+						display: flex;
 					}
 
 					&.off {
@@ -4798,9 +4816,6 @@ content {
 					> div {
 						display: inline-block;
 						vertical-align: middle;
-						font-size: 12px;
-						color: rgba(#dee, .65);
-						text-shadow: 0 1px 0 rgba(#000, .25);
 					}
 
 					.name {
@@ -4890,6 +4905,43 @@ content {
 							left: -15px;
 							width: 13px;
 							filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
+						}
+					}
+
+					&.fx-expand {
+						height: auto;
+
+						.layer-row-body {
+							border-bottom: 1px dashed #bcc2;
+						}
+					}
+
+					ul.fx-list {
+						list-style: none;
+						padding: 3px 0 3px 27px;
+
+						li {
+							display: flex;
+							padding: 1px 0 3px 13px;
+
+							&.fx-header {
+								padding-left: 0;
+							}
+
+							.icon {
+								width: 17px;
+								height: 17px;
+								margin: 0 3px 0 0;
+								opacity: .75;
+								visibility: visible;
+
+								&:after { left: 0; }
+							}
+
+							.fx-name {
+								flex: 1;
+								padding-top: 1px
+							}
 						}
 					}
 				}

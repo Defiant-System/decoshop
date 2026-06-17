@@ -99,17 +99,25 @@
 <xsl:template name="layers-list-row">
 	<xsl:choose>
 		<xsl:when test="@type = 'group'">
-			<div class="group">
-				<xsl:if test="@expanded"><xsl:attribute name="class">group expanded</xsl:attribute></xsl:if>
+			<div>
+				<xsl:attribute name="class">group 
+					<xsl:if test="@expanded">expanded </xsl:if>
+					<xsl:if test="@hidden">hidden </xsl:if>
+				</xsl:attribute>
 				<div class="row" data-layer="folder">
-					<div class="icon icon-folder"></div>
-					<xsl:if test="@mask">
-						<i class="icon-mask-link"></i>
-						<div class="mask"><canvas></canvas></div>
-					</xsl:if>
-					<div class="name"><xsl:value-of select="@name"/></div>
-					<div class="icon icon-eye-on">
-						<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
+					<div class="layer-row-body">
+						<div class="icon icon-folder"></div>
+						<xsl:if test="@mask">
+							<i class="icon-mask-link"></i>
+							<div class="mask"><canvas></canvas></div>
+						</xsl:if>
+						<div class="name"><xsl:value-of select="@name"/></div>
+						<i>
+							<xsl:attribute name="class">icon icon-eye-on 
+								<xsl:if test="@hidden">icon-eye-off</xsl:if>
+							</xsl:attribute>
+						</i>
+						<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 					</div>
 				</div>
 				<xsl:for-each select="./*">
@@ -124,42 +132,20 @@
 					--w: <xsl:value-of select="@w"/>px;
 					--h: <xsl:value-of select="@h"/>px;
 				</xsl:attribute>
-				<div class="thumbnail"><canvas></canvas><i></i></div>
-				<xsl:if test="@mask">
-					<i class="icon-mask-link"></i>
-					<div class="mask"><canvas></canvas></div>
-				</xsl:if>
-				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
-				</div>
-				<div class="fx-applied"></div>
+				<xsl:call-template name="layer-row-body"/>
+				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>
 		</xsl:when>
 		<xsl:when test="@type = 'shape'">
 			<div class="row" data-layer="shape">
-				<div class="thumbnail"><canvas></canvas><i></i></div>
-				<xsl:if test="@mask">
-					<i class="icon-mask-link"></i>
-					<div class="mask"><canvas></canvas></div>
-				</xsl:if>
-				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
-				</div>
+				<xsl:call-template name="layer-row-body"/>
+				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>
 		</xsl:when>
 		<xsl:when test="@type = 'text'">
 			<div class="row" data-layer="text">
-				<div class="thumbnail"><canvas></canvas><i></i></div>
-				<xsl:if test="@mask">
-					<i class="icon-mask-link"></i>
-					<div class="mask"><canvas></canvas></div>
-				</xsl:if>
-				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
-				</div>
+				<xsl:call-template name="layer-row-body"/>
+				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
@@ -169,18 +155,47 @@
 					--w: <xsl:value-of select="@w"/>px;
 					--h: <xsl:value-of select="@h"/>px;
 				</xsl:attribute>
-				<div class="thumbnail"><canvas></canvas><i></i></div>
-				<xsl:if test="@mask">
-					<i class="icon-mask-link"></i>
-					<div class="mask"><canvas></canvas></div>
-				</xsl:if>
-				<div class="name"><xsl:value-of select="@name"/></div>
-				<div class="icon icon-eye-on">
-					<xsl:if test="@hidden"><xsl:attribute name="class">icon icon-eye-on icon-eye-off</xsl:attribute></xsl:if>
-				</div>
+				<xsl:call-template name="layer-row-body"/>
+				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>
 		</xsl:otherwise>
 	</xsl:choose>
+</xsl:template>
+
+
+<xsl:template name="layer-row-body">
+	<div class="layer-row-body">
+		<div class="thumbnail"><canvas></canvas><i></i></div>
+		<xsl:if test="@mask">
+			<i class="icon-mask-link"></i>
+			<div class="mask"><canvas></canvas></div>
+		</xsl:if>
+		<div class="name"><xsl:value-of select="@name"/></div>
+		<i>
+			<xsl:attribute name="class">icon icon-eye-on 
+				<xsl:if test="@hidden">icon-eye-off</xsl:if>
+			</xsl:attribute>
+		</i>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="layer-row-fx">
+	<xsl:if test="count(./fx)">
+		<div class="fx-applied"></div>
+		<ul class="fx-list">
+			<li class="fx-header">
+				<i class="icon icon-eye-on"></i>
+				<div class="fx-name">Effects</div>
+			</li>
+			<xsl:for-each select="./*">
+			<li>
+				<i class="icon icon-eye-on"></i>
+				<div class="fx-name"><xsl:value-of select="@name"/></div>
+			</li>
+			</xsl:for-each>
+		</ul>
+	</xsl:if>
 </xsl:template>
 
 
