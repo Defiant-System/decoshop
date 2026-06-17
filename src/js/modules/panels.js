@@ -195,8 +195,8 @@ const Panels = {
 					target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
 				}).then((el) => {
 					// temp
-					// el.find(".row:nth(6) .name").trigger("click");
-					el.find(".row:nth(0)").addClass("fx-expand");
+					el.find(".row:nth(2) .name").trigger("click");
+					// el.find(".row:nth(0)").addClass("fx-expand");
 				});
 				break;
 			case "select-layer":
@@ -207,6 +207,15 @@ const Panels = {
 				if (el.hasClass("icon-eye-on")) {
 					if (rEl.index() === 0) gEl.toggleClass("hidden", el.hasClass("icon-eye-off"));
 					el.toggleClass("icon-eye-off", el.hasClass("icon-eye-off"));
+
+					if (el.parent().hasClass("fx-header")) {
+						let fxList = el.parents(".fx-list");
+						fxList.toggleClass("disabled", !el.hasClass("icon-eye-off"));
+					}
+					return;
+				}
+				if (el.hasClass("fx-applied")) {
+					rEl.toggleClass("fx-expand", rEl.hasClass("fx-expand"));
 					return;
 				}
 				// toggle row

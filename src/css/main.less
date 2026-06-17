@@ -646,7 +646,8 @@ content {
 		height: 35px;
 		opacity: 0.5;
 		cursor: pointer;
-		margin-right: 3px;
+		margin-left: 1px;
+		margin-right: 1px;
 		transition: opacity 80ms ease-in-out;
 
 		&:after {
@@ -4483,7 +4484,7 @@ content {
 					}
 
 					> .row {
-						&:not(:first-child) {
+						&:not(:first-child) .layer-row-body {
 							padding-left: 21px;
 						}
 						
@@ -4544,15 +4545,10 @@ content {
 							> .layer-row-body { padding-left: 21px; }
 
 							&:before { left: 25px; }
-							&:not(:first-child) { padding-left: 35px; }
+							&:not(:first-child) .layer-row-body { padding-left: 35px; }
 
-							&:first-child {
-								&:after { left: 20px; }
-							}
-
-							&:last-child {
-								&:after { left: 23px; }
-							}
+							&:first-child:after { left: 20px; }
+							&:last-child:after { left: 23px; }
 						}
 
 						> .group {
@@ -4563,29 +4559,26 @@ content {
 								}
 
 							> .row {
-								.layer-row-body { padding-left: 40px; }
+								> .layer-row-body { padding-left: 38px; }
 
 								&:before { left: 42px; }
-								&:not(:first-child) { padding-left: 52px; }
+								&:not(:first-child) .layer-row-body { padding-left: 52px; }
 
-								&:first-child {
-									&:after { left: 37px; }
-								}
-
-								&:last-child {
-									&:after { left: 40px; }
-								}
+								&:first-child:after { left: 37px; }
+								&:last-child:after { left: 40px; }
 							}
 						}
 					}
 
 					&.expanded {
-						> div {
+						> div:not(:first-child) {
 							opacity: 1;
 							height: 33px;
 							overflow: visible;
 							border-bottom-width: 1px;
 
+
+							&.fx-expand,
 							&.group {
 								height: calc-size(auto, size);
 							}
@@ -4629,12 +4622,12 @@ content {
 								color: rgba(#dee, .8);
 							}
 
-							.icon:after {
+							.layer-row-body .icon:after {
 								//opacity: 0.75;
 							}
 						}
 						
-						.icon {
+						.layer-row-body .icon {
 							&.icon-eye-on {
 								opacity: 1;
 								visibility: visible;
@@ -4645,7 +4638,7 @@ content {
 					> .layer-row-body {
 						position: relative;
 						padding: 0 29px 0 5px;
-						height: 33px;
+						height: 32px;
 						display: flex;
 					}
 
@@ -4664,8 +4657,6 @@ content {
 					}
 
 					&.active {
-						background-color: #4557;
-
 						&.mask-active {
 							.thumbnail {
 								&:before { border-color: #0110; }
@@ -4676,6 +4667,10 @@ content {
 								&:before { border-color: #011e; }
 								&:after { border-color: #effc; }
 							}
+						}
+						
+						.layer-row-body {
+							background-color: #4557;
 						}
 
 						.thumbnail {
@@ -4882,9 +4877,9 @@ content {
 						background: rgba(#788, .45);
 						position: absolute;
 						top: 0;
-						bottom: 0;
 						right: 0;
 						width: 11px;
+						height: 32px;
 						cursor: pointer;
 
 						&:before,
@@ -4896,7 +4891,7 @@ content {
 							bottom: 0;
 							left: 2px;
 							width: 7px;
-							filter: invert() brightness(5) drop-shadow(0 1px 0 rgba(#000, .4));
+							filter: invert(1) brightness(5) drop-shadow(0 1px 0 rgba(#000, .4));
 							opacity: .5;
 						}
 
@@ -4904,43 +4899,72 @@ content {
 							background-image: url(~/icons/icon-layer-fx.png);
 							left: -15px;
 							width: 13px;
-							filter: invert() drop-shadow(0 1px 0 rgba(#000, .4));
+							filter: invert(1) drop-shadow(0 1px 0 rgba(#000, .4));
 						}
 					}
 
 					&.fx-expand {
-						height: auto;
+						height: calc-size(auto, size);
 
-						.layer-row-body {
-							border-bottom: 1px dashed #bcc2;
+						.fx-applied {
+							&:after {
+								transform: rotate(180deg);
+								filter: invert(1) brightness(5) drop-shadow(0 -1px 0 rgba(#000, .4));
+							}
+						}
+
+						ul.fx-list {
+							height: calc-size(auto, size);
+							padding-top: 3px;
+							padding-bottom: 3px;
+							border-top: 1px dashed #bcc1;
 						}
 					}
 
 					ul.fx-list {
 						list-style: none;
-						padding: 3px 0 3px 27px;
+						padding: 0 0 0 27px;
+						height: 0;
+						overflow: hidden;
+						transition: height 100ms ease-in-out,
+									padding 100ms ease-in-out;
+
+						&.disabled {
+							li:not(:first-child) {
+								opacity: .5;
+							}
+						}
 
 						li {
-							display: flex;
 							padding: 1px 0 3px 13px;
+							font-size: 0;
 
 							&.fx-header {
 								padding-left: 0;
 							}
 
 							.icon {
+								vertical-align: top;
+								display: inline-block;
 								width: 17px;
 								height: 17px;
 								margin: 0 3px 0 0;
-								opacity: .75;
+								opacity: 1;
 								visibility: visible;
 
 								&:after { left: 0; }
+
+								&[class*="icon-eye-off"] + .fx-name {
+									opacity: .5;
+								}
 							}
 
 							.fx-name {
-								flex: 1;
-								padding-top: 1px
+								font-size: 12px;
+								vertical-align: top;
+								display: inline-block;
+								padding-top: 1px;
+								cursor: pointer;
 							}
 						}
 					}

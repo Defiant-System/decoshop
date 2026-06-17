@@ -190,7 +190,11 @@
 			</li>
 			<xsl:for-each select="./*">
 			<li>
-				<i class="icon icon-eye-on"></i>
+				<i>
+					<xsl:attribute name="class">icon icon-eye-on 
+						<xsl:if test="@hidden">icon-eye-off</xsl:if>
+					</xsl:attribute>
+				</i>
 				<div class="fx-name"><xsl:value-of select="@name"/></div>
 			</li>
 			</xsl:for-each>
