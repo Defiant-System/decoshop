@@ -182,7 +182,7 @@
 				<Menu name="Clear"/>
 			</Menu>
 			<Menu type="divider"/>
-			<Menu name="Scale Effects"/>
+			<Menu name="Scale Effects&#8230;" click="open-dialog" arg="dlgScaleEffects"/>
 			<Menu name="Create Layers"/>
 		</Menu>
 		<Menu type="divider"/>

@@ -792,6 +792,11 @@ const UI = {
 				break;
 		}
 	},
+	doFontFamily(event) {
+		let APP = decoshop,
+			Self = UI,
+			el;
+	},
 	doBrushTips(event) {
 		let APP = decoshop,
 			Self = UI,

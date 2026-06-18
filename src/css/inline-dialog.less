@@ -5124,6 +5124,27 @@
 			transition: height 100ms ease-in-out,
 						opacity 100ms ease-in-out;
 
+			&.has-check-lines {
+				height: 79px;
+
+				> .option {
+					> .value {
+						background: transparent;
+						padding-left: 1px;
+						padding-top: 0;
+
+						&:before,
+						&:after { display: none; }
+
+						.option.check {
+							display:  block;
+							padding-top: 1px;
+							height: 23px;
+						}
+					}
+				}
+			}
+
 			&.hidden {
 				height: 0;
 				opacity: 0;

@@ -444,6 +444,15 @@
 </xsl:template>
 
 
+<xsl:template name="pop-font-selector">
+	<div class="inline-menubox" data-ui="doFontFamily">
+		<div class="inline-content font-list">
+			test
+		</div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="pop-brush-tips">
 	<div class="inline-menubox" data-ui="doBrushTips">
 		<div class="inline-content brush-tips">

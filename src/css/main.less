@@ -73,7 +73,7 @@ content {
 	&.cover,
 	&.no-dlg-cursor,
 	&.no-cursor {
-		&:after--- { // TODO: remove "---"
+		&:after { // TODO: remove "---"
 			content: "";
 			position: absolute;
 			top: 0;
@@ -3801,7 +3801,7 @@ content {
 										width: 19px;
 										height: 19px;
 										display: inline-block;
-										margin: 1px 3px 0 0;
+										margin: 2px 3px 0 0;
 										border-radius: 2px;
 										cursor: pointer;
 
@@ -3818,7 +3818,7 @@ content {
 										}
 
 										&:after {
-											top: 3px;
+											top: 2px;
 											left: 3px;
 											width: 15px;
 											height: 15px;
@@ -3978,7 +3978,7 @@ content {
 							height: 23px;
 
 							&:first-child {
-								.field .group:last-child {
+								.field .fld-group:last-child {
 									position: absolute;
 									top: 3px;
 									left: 70px;
@@ -4016,7 +4016,7 @@ content {
 								}
 							}
 
-							.group > div {
+							.fld-group > div {
 								padding-top: 2px;
 								padding-bottom: 3px;
 							}
@@ -4340,7 +4340,7 @@ content {
 						}
 					}
 
-					.group {
+					.fld-group {
 						white-space: nowrap;
 						color: rgba(#bcc, .35);
 						font-size: 0;
@@ -5772,7 +5772,7 @@ content {
 		display: inline-block;
 		font-size: 0;
 		border-radius: 12px;
-		background: #0002;
+		background: #0004;
 		box-shadow: 0 0 0 1px #0004;
 
 		li {

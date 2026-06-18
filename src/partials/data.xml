@@ -643,6 +643,42 @@
 		<i type="option" name="Circles"/>
 		<i type="option" name="Grid"/>
 	</FeatherModes>
+	<FontFamily>
+		<f name="Serif" filter="group:serif" is-checked="1"/>
+		<f name="Sans-serif" filter="group:sans-serif" is-checked="1"/>
+		<f name="Monospace" filter="group:monospace" is-checked="1"/>
+		<f name="Script" filter="group:script"/>
+		<f type="divider"/>
+		<f name="American Typewriter" group="serif"/>
+		<f name="Andale Mono" group="monospace"/>
+		<f name="Arial" group="sans-serif"/>
+		<f name="Arial Black" group="sans-serif"/>
+		<f name="Arial Narrow" group="sans-serif"/>
+		<f name="Baskerville" group="serif"/>
+		<f name="Bradley Hand" group="script"/>
+		<f name="Brush Script MS" group="script"/>
+		<f name="Comic Sans MS" group="script"/>
+		<f name="Copperplate Gothic" group="sans-serif"/>
+		<f name="Courier" group="monospace"/>
+		<f name="Courier New" group="monospace"/>
+		<f name="Didot" group="serif"/>
+		<f name="Garamond" group="serif"/>
+		<f name="Impact" group="sans-serif"/>
+		<f name="Georgia" group="serif"/>
+		<f name="Gill Sans" group="sans-serif"/>
+		<f name="Helvetica" group="sans-serif"/>
+		<f name="Luminari" group="script"/>
+		<f name="Lucida Console" group="monospace"/>
+		<f name="Monaco" group="monospace"/>
+		<f name="Optima" group="sans-serif"/>
+		<f name="Palatino" group="serif"/>
+		<f name="Verdana" group="sans-serif"/>
+		<f name="Tahoma" group="sans-serif"/>
+		<f name="Rockwell" group="serif"/>
+		<f name="Tahoma" group="sans-serif"/>
+		<f name="Times New Roman" group="serif"/>
+		<f name="Trebuchet MS" group="sans-serif"/>
+	</FontFamily>
 	<TipShapes>
 		<i name="hard-round" size="20" hardness="100" roundness="100" angle="0"/>
 		<i name="soft-round" size="37" hardness="0" roundness="50" angle="78"/>
