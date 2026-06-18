@@ -5,6 +5,9 @@ const UI = {
 		this.doc = $(document);
 		this.content = window.find("content");
 
+		// set id on font entries
+		window.bluePrint.selectNodes(`//Fonts/f`).map((xFont, i) => xFont.setAttribute("_id", `m${i+1}`));
+
 		let dlg = window.find(`.dialog-box[data-dlg="dlgColors"]`);
 		this.els = {
 			iHue: dlg.find(`input[name="color-hsl-hue"]`),
@@ -792,10 +795,43 @@ const UI = {
 				break;
 		}
 	},
-	doFontFamily(event) {
+	doFontExplorer(event) {
 		let APP = decoshop,
 			Self = UI,
 			el;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				el = $(event.target);
+
+				switch (el.data("ux")) {
+					case "toggle-filter":
+						el.toggleClass("active", el.hasClass("active"));
+						Self.doFontExplorer({ type: "apply-filters" });
+						break;
+				}
+
+				break;
+			// custom events
+			case "set-initial-value":
+				break;
+			case "apply-filters":
+				// identify filtering criterias
+				let pEl = APP.els.content.find(`.inline-menubox[data-ui="doFontExplorer"]`),
+					filters = pEl.find(`.opt-group li.active`).map(e => `@group="${$(e).data("arg")}"`),
+					match = `//Fonts/f[${filters.join(" or ")}]`;
+				// render matches in virtual dom
+				window.render({ template: "font-entry", match, vdom: true })
+					.then(list => {
+						pEl.find(".list-wrapper > div").map(elem => {
+							let mEl = $(elem),
+								isMatch = list.find(`div[_id="${mEl.attr("_id")}"]`).length;
+							mEl.toggleClass("hidden", isMatch);
+						});
+					});
+				break;
+		}
 	},
 	doBrushTips(event) {
 		let APP = decoshop,

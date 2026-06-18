@@ -445,10 +445,40 @@
 
 
 <xsl:template name="pop-font-selector">
-	<div class="inline-menubox" data-ui="doFontFamily">
-		<div class="inline-content font-list">
-			test
+	<div class="inline-menubox" data-ui="doFontExplorer">
+		<div class="inline-content font-explorer">
+			<div class="selectors">
+
+				<div class="fld-search">
+					<input type="text" placeholder="Font name..."/>
+				</div>
+				<div class="fld-options">
+					<ul class="opt-group">
+						<li data-ux="toggle-filter" data-arg="serif" class="active"><i class="icon icon-font-serif" title="Serif"></i></li>
+						<li data-ux="toggle-filter" data-arg="sans-serif" class="active"><i class="icon icon-font-sans-serif" title="Sans-serif"></i></li>
+						<li data-ux="toggle-filter" data-arg="monospace" class="active"><i class="icon icon-font-monospace" title="Monospace"></i></li>
+						<li data-ux="toggle-filter" data-arg="script"><i class="icon icon-font-script" title="Script"></i></li>
+					</ul>
+				</div>
+
+			</div>
+			<div class="list">
+				<div class="list-wrapper">
+					<xsl:for-each select="./f">
+						<xsl:call-template name="font-entry" />
+					</xsl:for-each>
+				</div>
+			</div>
 		</div>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="font-entry">
+	<div>
+		<xsl:attribute name="_id"><xsl:value-of select="@_id"/></xsl:attribute>
+		<xsl:attribute name="style">--x: <xsl:value-of select="@x"/>; --y: <xsl:value-of select="@y"/>;</xsl:attribute>
+		<xsl:value-of select="@name"/>
 	</div>
 </xsl:template>
 
