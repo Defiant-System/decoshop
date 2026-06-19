@@ -12,7 +12,8 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
 		setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
-		setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).trigger("click"), 600);
+		setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
+		setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);

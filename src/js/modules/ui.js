@@ -64,8 +64,16 @@ const UI = {
 
 				// position menubox
 				rect = this.getBoundingClientRect();
-				top = rect.top - window.top + rect.height + 9;
-				left = rect.left - window.left + (rect.width >> 1) - (Self.menu[0].offsetWidth >> 1);
+				switch (el.data("pos")) {
+					case "right":
+						Self.menu.addClass("arrow-left");
+						top = rect.top - window.top - 9;
+						left = rect.left - window.left + rect.width + 11;
+						break;
+					default:
+						top = rect.top - window.top + rect.height + 9;
+						left = rect.left - window.left + (rect.width >> 1) - (Self.menu[0].offsetWidth >> 1);
+				}
 				Self.menu.css({ top, left });
 
 				// set inital value - by associated event handler

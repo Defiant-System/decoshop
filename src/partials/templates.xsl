@@ -460,6 +460,9 @@
 						<li data-ux="toggle-filter" data-arg="script"><i class="icon icon-font-script" title="Script"></i></li>
 					</ul>
 				</div>
+				<div class="fld-menu inline-menu" data-pos="right" data-options="fieldset-inline-menubox" data-match="//FontsExtendedMenu">
+					<i class="icon icon-burger"></i>
+				</div>
 
 			</div>
 			<div class="list">

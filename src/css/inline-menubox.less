@@ -14,6 +14,24 @@
 		animation: popup-hide 120ms linear forwards;
 	}
 
+	&.arrow-left {
+		&:before {
+			top: 9px;
+			left: -10px;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 11px solid rgba(0,0,0,.45);
+		}
+
+		&:after {
+			top: 9px;
+			left: -9px;
+			border-top: 9px solid transparent;
+			border-bottom: 9px solid transparent;
+			border-right: 10px solid #607272;
+		}
+	}
+
 	&.arrow-below {
 		.inline-content {
 			padding-bottom: 5px;
@@ -381,6 +399,47 @@
 				    		}
 				    	}
 			    	}
+			    }
+
+			    .fld-menu {
+			    	position: relative;
+			    	width: 21px;
+			    	height: 21px;
+			    	margin-left: 5px;
+			    	cursor: pointer;
+
+			    	&.opened:before,
+			    	&:hover:before {
+			    		content: "";
+			    		position: absolute;
+			    		top: 0;
+			    		left: 0;
+			    		right: 0;
+			    		bottom: 0;
+			    		border-radius: 2px;
+			    		background: #0113;
+			    	}
+
+			    	i {
+			    		&:after {
+			    			top: 2px;
+			    		}
+			    	}
+
+					// &:after {
+					// 	content: "";
+					// 	position: absolute;
+					// 	top: 0;
+					// 	left: 0;
+					// 	opacity: 0.4;
+					// 	background-image: url(~/icons/icon-burger.png);
+					// 	background-size: contain;
+					// 	background-repeat: no-repeat;
+					// 	background-position: 50% 50%;
+					// 	filter: invert() drop-shadow(0 1px 0 #00000050);
+					// 	width: 17px;
+					// 	height: 17px;
+					// }
 			    }
 			}
 
