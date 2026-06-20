@@ -643,44 +643,58 @@
 		<i type="option" name="Circles"/>
 		<i type="option" name="Grid"/>
 	</FeatherModes>
-	<FontsExtendedMenu>
-		<i type="option" name="Serif" is-checked="1"/>
-		<i type="option" name="Sans-serif" is-checked="1"/>
-		<i type="option" name="Monospace" is-checked="1"/>
-		<i type="option" name="Script" is-checked="1"/>
+	<FontsExtendedMenu select="multi">
+		<i type="option" id="2" name="Blackletter"/>
+		<i type="option" id="3" name="Calligraphic"/>
+		<i type="option" id="4" name="Comic"/>
+		<i type="option" id="5" name="Dingbat"/>
+		<i type="option" id="6" name="Display"/>
+		<i type="option" id="7" name="Grunge"/>
+		<i type="option" id="8" name="Handdrawn"/>
+		<i type="option" id="9" name="Monospace" is-checked1="1"/>
+		<i type="option" id="10" name="Novelty"/>
+		<i type="option" id="11" name="Pixel"/>
+		<i type="option" id="12" name="Programming"/>
+		<i type="option" id="13" name="Retro"/>
+		<i type="option" id="14" name="Sans Serif" is-checked1="1"/>
+		<i type="option" id="15" name="Script"/>
+		<i type="option" id="16" name="Serif" is-checked="1"/>
+		<i type="option" id="17" name="Slab Serif"/>
+		<i type="option" id="18" name="Stencil"/>
+		<i type="option" id="19" name="Typewriter"/>
 		<i type="divider"/>
-		<i type="option" name="Upload font&#8230;"/>
+		<i type="option" value="upload" name="Upload font&#8230;"/>
 	</FontsExtendedMenu>
 	<Fonts>
-		<f x="0" y="0" name="American Typewriter" group="serif"/>
-		<f x="0" y="1" name="Andale Mono" group="monospace"/>
-		<f x="0" y="2" name="Arial" group="sans-serif"/>
-		<f x="0" y="3" name="Arial Black" group="sans-serif"/>
-		<f x="0" y="4" name="Arial Narrow" group="sans-serif"/>
-		<f x="0" y="5" name="Baskerville" group="serif"/>
-		<f x="0" y="6" name="Bradley Hand" group="script"/>
-		<f x="0" y="7" name="Brush Script MS" group="script"/>
-		<f x="0" y="8" name="Comic Sans MS" group="script"/>
-		<f x="0" y="9" name="Copperplate Gothic" group="sans-serif"/>
-		<f x="1" y="0" name="Courier" group="monospace"/>
-		<f x="1" y="1" name="Courier New" group="monospace"/>
-		<f x="1" y="2" name="Didot" group="serif"/>
-		<f x="1" y="3" name="Garamond" group="serif"/>
-		<f x="1" y="4" name="Impact" group="sans-serif"/>
-		<f x="1" y="5" name="Georgia" group="serif"/>
-		<f x="1" y="6" name="Gill Sans" group="sans-serif"/>
-		<f x="1" y="7" name="Helvetica" group="sans-serif"/>
-		<f x="1" y="8" name="Luminari" group="script"/>
-		<f x="1" y="9" name="Lucida Console" group="monospace"/>
-		<f x="2" y="0" name="Monaco" group="monospace"/>
-		<f x="2" y="1" name="Optima" group="sans-serif"/>
-		<f x="2" y="2" name="Palatino" group="serif"/>
-		<f x="2" y="3" name="Verdana" group="sans-serif"/>
-		<f x="2" y="4" name="Tahoma" group="sans-serif"/>
-		<f x="2" y="5" name="Rockwell" group="serif"/>
-		<f x="2" y="6" name="Tahoma" group="sans-serif"/>
-		<f x="2" y="7" name="Times New Roman" group="serif"/>
-		<f x="2" y="8" name="Trebuchet MS" group="sans-serif"/>
+		<f x="0" y="0" name="American Typewriter" c="16"/>
+		<f x="0" y="1" name="Andale Mono" c="9"/>
+		<f x="0" y="2" name="Arial" c="14"/>
+		<f x="0" y="3" name="Arial Black" c="14"/>
+		<f x="0" y="4" name="Arial Narrow" c="14"/>
+		<f x="0" y="5" name="Baskerville" c="16"/>
+		<f x="0" y="6" name="Bradley Hand" c="15"/>
+		<f x="0" y="7" name="Brush Script MS" c="15"/>
+		<f x="0" y="8" name="Comic Sans MS" c="15"/>
+		<f x="0" y="9" name="Copperplate Gothic" c="14"/>
+		<f x="1" y="0" name="Courier" c="9"/>
+		<f x="1" y="1" name="Courier New" c="9"/>
+		<f x="1" y="2" name="Didot" c="16"/>
+		<f x="1" y="3" name="Garamond" c="16"/>
+		<f x="1" y="4" name="Impact" c="14"/>
+		<f x="1" y="5" name="Georgia" c="16"/>
+		<f x="1" y="6" name="Gill Sans" c="14"/>
+		<f x="1" y="7" name="Helvetica" c="14"/>
+		<f x="1" y="8" name="Luminari" c="15"/>
+		<f x="1" y="9" name="Lucida Console" c="9"/>
+		<f x="2" y="0" name="Monaco" c="9"/>
+		<f x="2" y="1" name="Optima" c="14"/>
+		<f x="2" y="2" name="Palatino" c="16"/>
+		<f x="2" y="3" name="Verdana" c="14"/>
+		<f x="2" y="4" name="Tahoma" c="14"/>
+		<f x="2" y="5" name="Rockwell" c="16"/>
+		<f x="2" y="6" name="Tahoma" c="14"/>
+		<f x="2" y="7" name="Times New Roman" c="16"/>
+		<f x="2" y="8" name="Trebuchet MS" c="14"/>
 	</Fonts>
 	<TipShapes>
 		<i name="hard-round" size="20" hardness="100" roundness="100" angle="0"/>

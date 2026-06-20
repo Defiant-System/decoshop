@@ -10,6 +10,10 @@
 	transform-origin: 50% 0;
 	animation: popup-bubble 120ms linear forwards;
 
+	&.push-back {
+		z-index: 98;
+	}
+
 	&.pop-hide {
 		animation: popup-hide 120ms linear forwards;
 	}
@@ -28,7 +32,7 @@
 			left: -9px;
 			border-top: 9px solid transparent;
 			border-bottom: 9px solid transparent;
-			border-right: 10px solid #607272;
+			border-right: 10px solid #647676;
 		}
 	}
 
@@ -49,6 +53,22 @@
 			bottom: -9px;
 			border-bottom: 0;
 			border-top: 10px solid #415050;
+		}
+	}
+
+	&[data-select="multi"] {
+		.inline-content {
+			.option {
+				&.selected {
+					cursor: pointer;
+
+					&:not(.disabled):hover {
+						background: #69e;
+						color: #eff;
+						text-shadow: 0 1px 0 #249;
+					}
+				}
+			}
 		}
 	}
 
@@ -830,9 +850,6 @@
 			}
 
 			&.selected {
-				//background: #899;
-				//color: #eff;
-				// text-shadow: 0 1px 0 #249;
 				cursor: default;
 
 				&:before {

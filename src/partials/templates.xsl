@@ -454,13 +454,13 @@
 				</div>
 				<div class="fld-options">
 					<ul class="opt-group">
-						<li data-ux="toggle-filter" data-arg="serif" class="active"><i class="icon icon-font-serif" title="Serif"></i></li>
-						<li data-ux="toggle-filter" data-arg="sans-serif" class="active"><i class="icon icon-font-sans-serif" title="Sans-serif"></i></li>
-						<li data-ux="toggle-filter" data-arg="monospace" class="active"><i class="icon icon-font-monospace" title="Monospace"></i></li>
-						<li data-ux="toggle-filter" data-arg="script"><i class="icon icon-font-script" title="Script"></i></li>
+						<li data-ux="toggle-filter" data-arg="16" class="active"><i class="icon icon-font-serif" title="Serif"></i></li>
+						<li data-ux="toggle-filter" data-arg="14" class="active"><i class="icon icon-font-sans-serif" title="Sans-serif"></i></li>
+						<li data-ux="toggle-filter" data-arg="9" class="active"><i class="icon icon-font-monospace" title="Monospace"></i></li>
+						<li data-ux="toggle-filter" data-arg="1"><i class="icon icon-font-script" title="Script"></i></li>
 					</ul>
 				</div>
-				<div class="fld-menu inline-menu" data-pos="right" data-options="fieldset-inline-menubox" data-match="//FontsExtendedMenu">
+				<div class="fld-menu inline-menu" data-change="apply-filters" data-pos="right" data-options="fieldset-inline-menubox" data-match="//FontsExtendedMenu">
 					<i class="icon icon-burger"></i>
 				</div>
 
@@ -653,14 +653,21 @@
 
 <xsl:template name="fieldset-inline-menubox">
 	<div class="inline-menubox" data-ui="doSelectbox">
+		<xsl:if test="@select = 'multi'">
+			<xsl:attribute name="data-select">multi</xsl:attribute>
+		</xsl:if>
 		<div class="inline-content">
 			<xsl:for-each select="./*">
 				<xsl:choose>
 					<xsl:when test="@type = 'divider'"><hr/></xsl:when>
 					<xsl:when test="@type = 'option'">
-						<div class="option">
+						<div>
+							<xsl:attribute name="class">option 
+								<xsl:if test="@is-checked = 1">selected</xsl:if>
+							</xsl:attribute>
 							<xsl:if test="@icon"><i><xsl:attribute name="class">icon <xsl:value-of select="@icon"/></xsl:attribute></i></xsl:if>
 							<xsl:attribute name="data-value"><xsl:choose>
+								<xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
 								<xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
 								<xsl:otherwise><xsl:value-of select="@name"/></xsl:otherwise>
 							</xsl:choose></xsl:attribute>

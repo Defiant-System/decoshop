@@ -68,7 +68,7 @@ const UI = {
 					case "right":
 						Self.menu.addClass("arrow-left");
 						top = rect.top - window.top - 9;
-						left = rect.left - window.left + rect.width + 11;
+						left = rect.left - window.left + rect.width + 10;
 						break;
 					default:
 						top = rect.top - window.top + rect.height + 9;
@@ -81,6 +81,11 @@ const UI = {
 
 				// prevent mouse from triggering mouseover
 				APP.els.content.addClass("cover");
+
+				let srcMenu = Self.srcEl.parents(".inline-menubox");
+				if (srcMenu.length) {
+					Self.srcMenu = srcMenu.addClass("push-back");
+				}
 
 				let dEl = Self.srcEl.parents(".dialog-box");
 				if (dEl.length) Self.dEl = dEl.addClass("covered");
@@ -95,7 +100,7 @@ const UI = {
 					// forward event to fitting handler
 					Self[this.dataset.ui](event);
 					// handles event differently for brush menu box
-					if (this.dataset.ui === "doBrushTips") return;
+					if (this.dataset.ui === "doBrushTips" || this.dataset.select === "multi") return;
 				} else if (el.parents("ul.opt-group").length) {
 					// event handling option-group
 					if (el.hasClass("active")) return;
@@ -105,6 +110,8 @@ const UI = {
 					return Self.doPanel(event);
 				} else if (el.parents("[data-dlg]").length) {
 					return Self.doDialog(event);
+				} else if (Self.srcMenu) {
+					Self.dispatch({ type: "clear-submenu" });
 				} else if (Self.menu) {
 					// clean up
 					Self.menu.remove();
@@ -123,6 +130,22 @@ const UI = {
 					Self.srcEl.removeClass("opened");
 					Self.srcEl = false;
 				}
+				break;
+			// custom event
+			case "clear-submenu":
+				Self.srcMenu.removeClass("push-back");
+				Self.menu.remove();
+				Self.menu = Self.srcMenu;
+				// clean up
+				delete Self.srcMenu;
+				break;
+			case "clear-menu":
+				// clean up
+				Self.menu.remove();
+				// uncover app UI
+				APP.els.content.removeClass("cover");
+				// unbind event handler
+				Self.doc.off("mousedown", Self.dispatch);
 				break;
 			default:
 				// forward route events
@@ -824,10 +847,19 @@ const UI = {
 			// custom events
 			case "set-initial-value":
 				break;
+			case "upload-font":
+				Self.dispatch({ type: "clear-submenu" });
+				Self.dispatch({ type: "clear-menu" });
+				break;
 			case "apply-filters":
+				if (event.values.includes("upload")) {
+					return Self.doFontExplorer({ type: "upload-font" });
+				}
 				// identify filtering criterias
 				let pEl = APP.els.content.find(`.inline-menubox[data-ui="doFontExplorer"]`),
-					filters = pEl.find(`.opt-group li.active`).map(e => `@group="${$(e).data("arg")}"`),
+					filters = event.values
+							? event.values.map(e => `@c="${e}"`)
+							: pEl.find(`.opt-group li.active`).map(e => `@c="${$(e).data("arg")}"`),
 					match = `//Fonts/f[${filters.join(" or ")}]`;
 				// render matches in virtual dom
 				window.render({ template: "font-entry", match, vdom: true })
@@ -1058,9 +1090,21 @@ const UI = {
 			case "mousedown":
 				el = $(event.target);
 				if (!el.hasClass("option")) el = el.parents(".option");
-				// selected option - UI update
-				el.parent().find(".selected").removeClass("selected");
-				el.addClass("selected");
+
+				let isMultiSelect = el.parents(`[data-select="multi"]`).length;
+				if (isMultiSelect) {
+					el.toggleClass("selected", el.hasClass("selected"));
+					data = {
+						type: Self.srcEl.data("change"),
+						el: Self.srcEl,
+						values: el.parent().find(".selected").map(el => el.getAttribute("data-value")),
+					};
+					return APP.dispatch(data);
+				} else {
+					// selected option - UI update
+					el.parent().find(".selected").removeClass("selected");
+					el.addClass("selected");
+				}
 
 				data = {
 					type: Self.srcEl.data("change"),
@@ -1071,6 +1115,7 @@ const UI = {
 				};
 				if (data.old === data.value || !data.value) {
 					// clean up
+					Self.srcEl.removeClass("opened");
 					Self.srcEl = false;
 					Self.menu.remove();
 					return;
@@ -1081,6 +1126,7 @@ const UI = {
 				// update source element
 				Self.srcEl.find(".value").html(data.text);
 				// clean up
+				Self.srcEl.removeClass("opened");
 				Self.srcEl = false;
 				Self.menu.remove();
 				break;
