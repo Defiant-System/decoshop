@@ -466,7 +466,7 @@
 
 			</div>
 			<div class="list">
-				<div class="list-wrapper">
+				<div class="list-wrapper" data-click="select-font">
 					<xsl:for-each select="./f">
 						<xsl:call-template name="font-entry" />
 					</xsl:for-each>

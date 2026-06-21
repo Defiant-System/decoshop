@@ -14,6 +14,9 @@
 		let xSamples = window.bluePrint.selectSingleNode(`//Samples`);
 		this.xRecent = window.settings.getItem("recents") || xList.documentElement;
 
+		// parses base64 items in "data.xml"
+		// this.dispatch({ type: "parse-base64" });
+
 		Promise.all(this.xRecent.selectNodes("./*").map(async xItem => {
 				let filepath = xItem.getAttribute("filepath"),
 					check = await karaqu.shell(`fs -f '${filepath}'`);
@@ -37,7 +40,7 @@
 				this.els.btnClipboard = target.find(`.btn[data-click="new-from-clipboard"]`);
 				this.els.btnClose = target.find(`.btn[data-click="close-view"]`);
 				// reset content view "animations"
-				setTimeout(() => decoshop.els.content.removeClass("no-anim"), 500);
+				setTimeout(() => decoshop.els.content.removeClass("no-anim"), 1000);
 			});
 	},
 	dispatch(event) {
@@ -110,7 +113,7 @@
 					type: "anim-hide-view",
 					callback: () => {
 						let name = el.data("url");
-						APP.dispatch({ type: "load-samples", names: [name.slice(name.lastIndexOf("/")+1)] });
+						APP.statusbar.dispatch({ type: "load-samples", names: [name.slice(name.lastIndexOf("/")+1)] });
 					}
 				});
 				break;
@@ -165,6 +168,32 @@
 				if (xExist) xExist.parentNode.removeChild(xExist);
 				// insert new entry at first position
 				Self.xRecent.insertBefore(xFile, Self.xRecent.firstChild);
+				break;
+
+			case "parse-base64":
+				let xNode = window.bluePrint.selectSingleNode(`//*[@base64]`),
+					img = new Image;
+				// exit if all is processed
+				if (!xNode) return;
+				
+				// put base64 in image
+				img.onload = () => {
+					// put image in canvas to create blob
+					let { cvs, ctx } = Misc.createCanvas(img.width, img.height);
+					ctx.drawImage(img, 0, 0);
+					// image to blob
+					ctx.canvas.toBlob(async blob => {
+						let name = `${xNode.getAttribute("name").sha1()}.png`;
+						await window.cache.set({ name, blob });
+						xNode.setAttribute("path", name);
+						// clean up node
+						xNode.removeAttribute("base64");
+						// parse next
+						Self.dispatch({ type: "parse-base64" });
+					});
+				};
+				// start processing
+				img.src = xNode.getAttribute("base64");
 				break;
 		}
 	}

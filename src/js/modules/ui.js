@@ -101,6 +101,8 @@ const UI = {
 					Self[this.dataset.ui](event);
 					// handles event differently for brush menu box
 					if (this.dataset.ui === "doBrushTips" || this.dataset.select === "multi") return;
+					
+					return;
 				} else if (el.parents("ul.opt-group").length) {
 					// event handling option-group
 					if (el.hasClass("active")) return;
@@ -111,7 +113,7 @@ const UI = {
 				} else if (el.parents("[data-dlg]").length) {
 					return Self.doDialog(event);
 				} else if (Self.srcMenu) {
-					Self.dispatch({ type: "clear-submenu" });
+					return Self.dispatch({ type: "clear-submenu" });
 				} else if (Self.menu) {
 					// clean up
 					Self.menu.remove();
@@ -133,6 +135,7 @@ const UI = {
 				break;
 			// custom event
 			case "clear-submenu":
+				if (Self.srcEl) Self.srcEl.removeClass("opened");
 				Self.srcMenu.removeClass("push-back");
 				Self.menu.remove();
 				Self.menu = Self.srcMenu;
@@ -847,12 +850,20 @@ const UI = {
 			// custom events
 			case "set-initial-value":
 				break;
+			case "select-font":
+				el = $(event.target);
+				console.log("selected font: ", el.text());
+				// close inline menu
+				Self.dispatch({ type: "clear-menu" });
+				break;
 			case "upload-font":
 				Self.dispatch({ type: "clear-submenu" });
 				Self.dispatch({ type: "clear-menu" });
+				// trigger upload flow
+				console.log("trigger upload flow");
 				break;
 			case "apply-filters":
-				if (event.values.includes("upload")) {
+				if (event.values?.includes("upload")) {
 					return Self.doFontExplorer({ type: "upload-font" });
 				}
 				// identify filtering criterias

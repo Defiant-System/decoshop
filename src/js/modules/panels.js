@@ -195,7 +195,7 @@ const Panels = {
 					target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
 				}).then((el) => {
 					// temp
-					el.find(".row:nth(2) .name").trigger("click");
+					el.find(".row:nth(0) .name").trigger("click");
 					// el.find(".row:nth(0)").addClass("fx-expand");
 				});
 				break;

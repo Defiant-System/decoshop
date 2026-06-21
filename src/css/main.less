@@ -3923,13 +3923,13 @@ content {
 				}
 
 				.navigator-wrapper {
+					--w: 198px;
+					--h: 137px;
 					position: relative;
 					margin: 8px auto 7px;
-					height: 137px;
 					max-width: 260px;
-					/* temp START */
-					width: 198px;
-					/* temp END */
+					width: var(--w);
+					height: var(--h);
 
 					&.hidden {
 						.nav-cvs,
@@ -3944,9 +3944,9 @@ content {
 
 					canvas.nav-cvs {
 						box-shadow: 0 0 0 1px rgba(#011, .65);
-						/* temp START */
-						width: 198px;
-						height: 137px;
+						width: var(--w);
+						height: var(--h);
+						/* temp START * /
 						background: url(/cdn/img/2d-samples/robert-collins.jpg) 50% 50% no-repeat;
 						background-size: 100% auto;
 						/* temp END */
@@ -3962,10 +3962,8 @@ content {
 						background: transparent;
 						border: 2px solid #ff4a4a;
 						cursor: move;
-						/* temp START */
-						width: 198px;
-						height: 137px;
-						/* temp END */
+						width: var(--w);
+						height: var(--h);
 					}
 				}
 
@@ -5244,7 +5242,7 @@ content {
 			border-radius: 5px;
 		}
 
-		/* temp START */
+		/* temp START * /
 		&:after {
 			content: "";
 			background: url(/cdn/img/2d-samples/robert-collins.jpg) 10% 59% no-repeat;
