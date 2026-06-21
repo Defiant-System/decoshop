@@ -3,24 +3,24 @@ class File {
 	constructor(fsFile, opt={}) {
 		// save reference to original FS file
 		this._file = fsFile;
-
+		this.id = fsFile.id;
+		this.xNode = $.nodeFromString(`<i id="${this.id}" name="${this.base}" />`);
 	}
 
-	render(opt={}) {
-		
+	get base() {
+		return this._file.base;
 	}
 
 	dispatch(event) {
-		let APP = keane,
+		let APP = decoshop,
 			Self = this,
 			el;
 		//console.log(event);
 		switch (event.type) {
 			// system event
-			case "window.resize":
+			case "file.focus":
 				break;
-			// custom events
-			case "resize-file":
+			case "file.blur":
 				break;
 		}
 	}

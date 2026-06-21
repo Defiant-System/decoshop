@@ -113,7 +113,7 @@
 					type: "anim-hide-view",
 					callback: () => {
 						let name = el.data("url");
-						APP.statusbar.dispatch({ type: "load-samples", names: [name.slice(name.lastIndexOf("/")+1)] });
+						APP.statusbar.dispatch({ type: "load-sample", names: [name.slice(name.lastIndexOf("/")+1)] });
 					}
 				});
 				break;
@@ -126,7 +126,7 @@
 						let width = +el.data("width"),
 							height = +el.data("height");
 						// set up workspace
-						APP.dispatch({ type: "setup-workspace", width, height });
+						APP.statusbar.dispatch({ type: "setup-workspace", width, height });
 					}
 				});
 				break;

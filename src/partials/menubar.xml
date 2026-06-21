@@ -445,6 +445,7 @@
 		<Menu name="Style"/>
 		<Menu name="Swatches" check-group="sidebar-middle"/>
 		<Menu name="Tool Presets"/>
+		<Menu type="divider"/>
 	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
