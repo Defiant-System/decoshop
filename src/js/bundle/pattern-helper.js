@@ -1280,3 +1280,278 @@ PatternHelper.at$ = function(l) {
 	};
 	return y
 };
+
+
+	function es() {}
+	es.hf = function(l) {
+		return JSON.parse(JSON.stringify(l))
+	};
+	es._k = function(l) {
+		var d = es.hf(es.age),
+			G = d.Brsh.v;
+		if (l != null) {
+			delete G.Hrdn;
+			G.classID = "sampledBrush";
+			G.Nm = {
+				t: "TEXT",
+				v: "layer.png"
+			}, G.sampledData = {
+				t: "TEXT",
+				v: l
+			}
+		}
+		return d
+	};
+	es.age = {
+		classID: "brushPreset",
+		Nm: {
+			t: "TEXT",
+			v: "Custom Brush"
+		},
+		Brsh: {
+			t: "Objc",
+			v: {
+				classID: "computedBrush",
+				Dmtr: {
+					t: "UntF",
+					v: {
+						type: "#Pxl",
+						val: 15
+					}
+				},
+				Hrdn: {
+					t: "UntF",
+					v: {
+						type: "#Prc",
+						val: 100
+					}
+				},
+				Angl: {
+					t: "UntF",
+					v: {
+						type: "#Ang",
+						val: 0
+					}
+				},
+				Rndn: {
+					t: "UntF",
+					v: {
+						type: "#Prc",
+						val: 100
+					}
+				},
+				Spcn: {
+					t: "UntF",
+					v: {
+						type: "#Prc",
+						val: 25
+					}
+				},
+				Intr: {
+					t: "bool",
+					v: !0
+				},
+				flipX: {
+					t: "bool",
+					v: !1
+				},
+				flipY: {
+					t: "bool",
+					v: !1
+				}
+			}
+		},
+		useTipDynamics: {
+			t: "bool",
+			v: !1
+		},
+		useScatter: {
+			t: "bool",
+			v: !1
+		},
+		dualBrush: {
+			t: "Objc",
+			v: {
+				classID: "dualBrush",
+				useDualBrush: {
+					t: "bool",
+					v: !1
+				}
+			}
+		},
+		brushGroup: {
+			t: "Objc",
+			v: {
+				classID: "brushGroup",
+				useBrushGroup: {
+					t: "bool",
+					v: !1
+				}
+			}
+		},
+		useTexture: {
+			t: "bool",
+			v: !1
+		},
+		usePaintDynamics: {
+			t: "bool",
+			v: !1
+		},
+		useColorDynamics: {
+			t: "bool",
+			v: !1
+		},
+		Wtdg: {
+			t: "bool",
+			v: !1
+		},
+		Nose: {
+			t: "bool",
+			v: !1
+		},
+		Rpt: {
+			t: "bool",
+			v: !1
+		}
+	};
+	es.HW = {};
+	es.HW.check = function(l) {
+		var d = es.HW.jV;
+		for (var A = 0; A < d.length; A++)
+			if (l[d[A]] == null) l[d[A]] = JSON.parse(es.HW.vB[d[A]]);
+		var G = [];
+		for (var A = 0; A < d.length; A++) G.push(d[A]);
+		var b = es.HW.a0k;
+		for (var A = 0; A < b.length; A++) {
+			var V = b[A][0],
+				Q = b[A][1],
+				t = !0;
+			for (var I = 0; I < V.length; I++) t = t && l[V[I]].v == !0;
+			if (t)
+				for (var I = 0; I < Q.length; I++) {
+					if (l[Q[I]] == null) console.log("Missing conditional parameter " + Q[I]);
+					else G.push(Q[I])
+				}
+		}
+		for (var y in l)
+			if (G.indexOf(y) == -1) console.log("Extra parameter " + y);
+		l = l.Brsh.v;
+		d = es.HW.Q_.jV;
+		for (var A = 0; A < d.length; A++)
+			if (l[d[A]] == null) l[d[A]] = JSON.parse(es.HW.Q_.vB[d[A]]);
+		G = [];
+		for (var A = 0; A < d.length; A++)
+			if (l[d[A]]) G.push(d[A]);
+			else console.log("Missing default parameter " + d[A]);
+		b = es.HW.Q_.awh[l.classID];
+		for (var A = 0; A < b.length; A++)
+			if (l[b[A]] == null && b[A] != "dtipsGridSize" && b[A] != "dtipsErodibleTipHeightMap" && l.acH != 1) console.log("Missing conditional parameter " + b[A]);
+			else G.push(b[A]);
+		for (var y in l)
+			if (G.indexOf(y) == -1) console.log("Extra parameter " + y)
+	};
+	es.HW.awH = function(l) {
+		var d = es.HW.a0k;
+		for (var A = 0; A < d.length; A++) {
+			var G = d[A][0],
+				b = d[A][1],
+				V = !0;
+			for (var Q = 0; Q < G.length; Q++) V = V && l[G[Q]] && l[G[Q]].v == !0;
+			if (V) {
+				for (var Q = 0; Q < b.length; Q++)
+					if (l[b[Q]] == null) {
+						l[b[Q]] = JSON.parse(es.HW.vB[b[Q]])
+					}
+			} else
+				for (var Q = 0; Q < b.length; Q++)
+					if (l[b[Q]] != null) {
+						delete l[b[Q]]
+					}
+		}
+	};
+	es.HW.Q_ = {};
+	es.HW.Q_.jV = "classID Dmtr Angl Spcn Intr flipX flipY".split(" ");
+	es.HW.Q_.vB = {
+		flipX: "{\"t\":\"bool\",\"v\":false}",
+		flipY: "{\"t\":\"bool\",\"v\":false}"
+	};
+	es.HW.Q_.awh = {
+		computedBrush: ["Hrdn", "Rndn"],
+		sampledBrush: ["Nm", "Rndn", "sampledData"],
+		dBrush: "Shp Dnst Lngt clumping thickness stiffness physics".split(" "),
+		dTips: "dtipsType Shp dtipsLengthRatio dtipsHardness dtipsGridSize dtipsErodibleTipHeightMap physics dtipsAirbrushCutoffAngle dtipsAirbrushGranularity dtipsAirbrushStreakiness dtipsAirbrushSplatSize dtipsAirbrushSplatCount".split(" ")
+	};
+	es.HW.a0k = [
+		[
+			["useTipDynamics"], "flipX flipY brushProjection minimumDiameter minimumRoundness tiltScale szVr angleDynamics roundnessDynamics".split(" ")
+		],
+		[
+			["usePaintDynamics"],
+			["prVr", "opVr", "wtVr", "mxVr"]
+		],
+		[
+			["useBrushPose"], "overridePoseAngle overridePoseTiltX overridePoseTiltY overridePosePressure brushPosePressure brushPoseTiltX brushPoseTiltY brushPoseAngle".split(" ")
+		],
+		[
+			["useTexture"], "TxtC interpretation textureBlendMode textureDepth minimumDepth textureDepthDynamics Txtr textureScale InvT textureBrightness textureContrast".split(" ")
+		],
+		[
+			["useColorDynamics"], "clVr H Strt Brgh purity colorDynamicsPerTip".split(" ")
+		],
+		[
+			["useScatter"],
+			["Cnt", "countDynamics", "bothAxes", "scatterDynamics"]
+		],
+		[
+			["useScatter", "bothAxes"],
+			["Spcn"]
+		]
+	];
+	es.HW.jV = "classID Nm Brsh useTipDynamics usePaintDynamics useColorDynamics useScatter useTexture useBrushSize useBrushPose Wtdg Nose Rpt dualBrush brushGroup".split(" ");
+	es.HW.vB = {
+		useBrushSize: "{\"t\":\"bool\",\"v\":false}",
+		useBrushPose: "{\"t\":\"bool\",\"v\":false}",
+		brushGroup: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brushGroup\",\"useBrushGroup\":{\"t\":\"bool\",\"v\":false}}}",
+		flipX: "{\"t\":\"bool\",\"v\":false}",
+		flipY: "{\"t\":\"bool\",\"v\":false}",
+		brushProjection: "{\"t\":\"bool\",\"v\":false}",
+		minimumDiameter: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}",
+		minimumRoundness: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":25}}",
+		tiltScale: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":200}}",
+		szVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		angleDynamics: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		roundnessDynamics: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		prVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		opVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		wtVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		mxVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		overridePoseAngle: "{\"t\":\"bool\",\"v\":false}",
+		overridePoseTiltX: "{\"t\":\"bool\",\"v\":true}",
+		overridePoseTiltY: "{\"t\":\"bool\",\"v\":true}",
+		overridePosePressure: "{\"t\":\"bool\",\"v\":true}",
+		brushPosePressure: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":9}}",
+		brushPoseTiltX: "{\"t\":\"long\",\"v\":0}",
+		brushPoseTiltY: "{\"t\":\"long\",\"v\":0}",
+		brushPoseAngle: "{\"t\":\"long\",\"v\":0}",
+		TxtC: "{\"t\":\"bool\",\"v\":false}",
+		interpretation: "{\"t\":\"bool\",\"v\":true}",
+		textureBlendMode: "{\"t\":\"enum\",\"v\":{\"BlnM\":\"CBrn\"}}",
+		textureDepth: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":37}}",
+		minimumDepth: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":97}}",
+		textureDepthDynamics: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		Txtr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"Ptrn\",\"Nm\":{\"t\":\"TEXT\",\"v\":\"$$$/Presets/Patterns/Patterns_pat/Laidhorizontal=Laid-horizontal\"},\"Idnt\":{\"t\":\"TEXT\",\"v\":\"52a93427-f5d6-1172-a989-8dc82a43aa51\"}}}",
+		textureScale: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":99}}",
+		InvT: "{\"t\":\"bool\",\"v\":false}",
+		textureBrightness: "{\"t\":\"long\",\"v\":14}",
+		textureContrast: "{\"t\":\"long\",\"v\":100}",
+		Cnt: "{\"t\":\"doub\",\"v\":4}",
+		countDynamics: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":98}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		bothAxes: "{\"t\":\"bool\",\"v\":false}",
+		scatterDynamics: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":56}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		clVr: "{\"t\":\"Objc\",\"v\":{\"classID\":\"brVr\",\"bVTy\":{\"t\":\"long\",\"v\":0},\"fStp\":{\"t\":\"long\",\"v\":100},\"jitter\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}},\"Mnm\":{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}}}",
+		H: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}",
+		Strt: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}",
+		Brgh: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":36}}",
+		purity: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}",
+		colorDynamicsPerTip: "{\"t\":\"bool\",\"v\":false}"
+	};

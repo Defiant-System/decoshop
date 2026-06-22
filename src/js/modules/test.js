@@ -9,6 +9,19 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
+
+		// Open PSD file (same flow as File > Open from URL)
+		setTimeout(() => {
+			let event = new Action(ActionTypes.E.L, true);
+			event.data = {
+				a: ActionTypes.$.ub,
+				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
+				// Oo: { url: "~/img/combo.webp" }
+				Oo: { url: "~/img/font-sheet.png" }
+			};
+			pp.dispatch(event);
+		}, 500);
+
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
 		// setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);
