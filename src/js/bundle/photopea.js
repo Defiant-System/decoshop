@@ -317,8 +317,8 @@ function PhotopeaApp() {
 	// console.log( this.h );
 	// console.log( ActionTypes.E.g5, this.ah4, this );
 
-	document.body.addEventListener("keydown", this.D3.bind(this), !1);
-	window.addEventListener("keyup", this.M1.bind(this), !1);
+	// document.body.addEventListener("keydown", this.D3.bind(this), !1);
+	// window.addEventListener("keyup", this.M1.bind(this), !1);
 	window.addEventListener("paste", this.adG.bind(this), !1);
 	window.addEventListener("copy", this.avj.bind(this), !1);
 
@@ -326,10 +326,10 @@ function PhotopeaApp() {
 		if (j.ctrlKey) j.preventDefault()
 	}, { passive: !1 });
 
-	window.addEventListener("beforeinstallprompt", function(j) {
-		if (window.innerWidth > 400) j.preventDefault();
-		this.fB.sv = j
-	}.bind(this));
+	// window.addEventListener("beforeinstallprompt", function(j) {
+	// 	if (window.innerWidth > 400) j.preventDefault();
+	// 	this.fB.sv = j
+	// }.bind(this));
 	// edited by hbi
 	// if (window.location.href.indexOf("photopea.com") != -1 && "serviceWorker" in navigator) {
 
@@ -379,7 +379,7 @@ PhotopeaApp.prototype.pp = function(l) {
 		a: ActionTypes.$.QT,
 		Oo: l ? l : "done"
 	};
-	this.dispatch(d)
+	this.dispatch(d);
 };
 
 PhotopeaApp.prototype.ash = function() {
@@ -394,12 +394,15 @@ PhotopeaApp.prototype.ash = function() {
 			languageManager.loadLanguageByCode(G, this.vg)
 		}
 	}
-	if (!this.QG()) {
-		var b = s.getLicenseLevel();
-		if (b == 0) this.axZ = !0;
-		if (b == 2) this.fB.ki = !1;
-		if (b != 1 && Math.random() < .002) s.sendOnlinePing()
-	}
+	// if (!this.QG()) {
+	// 	var b = s.getLicenseLevel();
+	// 	if (b == 0) this.axZ = !0;
+	// 	if (b == 2) this.fB.ki = !1;
+	// 	if (b != 1 && Math.random() < .002) s.sendOnlinePing()
+	// }
+	this.a5d();
+	this.S7();
+	/*
 	if (!this.fB.ki) {
 		this.a5d();
 		this.S7()
@@ -409,6 +412,7 @@ PhotopeaApp.prototype.ash = function() {
 		V.open("GET", "~/rsrc/doms.json");
 		V.send()
 	}
+	*/
 	this.w4 = !0;
 	this.pp()
 };
@@ -1421,10 +1425,10 @@ PhotopeaApp.prototype.$e = function(l) {
 	if (d == ActionTypes.$.WM) {
 		ScriptingEngine.runScript(l.data.nM, this)
 	}
-	// if (d == ActionTypes.$.QT) {
-	// 	if (window.parent != window) window.parent.postMessage(l.data.Oo, "*");
-	// 	this.gP.em(l.data.Oo)
-	// }
+	if (d == ActionTypes.$.QT) {
+		// if (window.parent != window) window.parent.postMessage(l.data.Oo, "*");
+		this.gP.em(l.data.Oo)
+	}
 	if (d == ActionTypes.$.B_) {
 		var dY = parseFloat(l.data.GU);
 		if (this.fB.J_.indexOf(dY) == -1) {

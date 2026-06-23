@@ -1433,8 +1433,8 @@ PatternHelper.at$ = function(l) {
 					else G.push(Q[I])
 				}
 		}
-		for (var y in l)
-			if (G.indexOf(y) == -1) console.log("Extra parameter " + y);
+		// for (var y in l)
+		// 	if (G.indexOf(y) == -1) console.log("Extra parameter " + y); // hbi
 		l = l.Brsh.v;
 		d = es.HW.Q_.jV;
 		for (var A = 0; A < d.length; A++)
@@ -1447,8 +1447,8 @@ PatternHelper.at$ = function(l) {
 		for (var A = 0; A < b.length; A++)
 			if (l[b[A]] == null && b[A] != "dtipsGridSize" && b[A] != "dtipsErodibleTipHeightMap" && l.acH != 1) console.log("Missing conditional parameter " + b[A]);
 			else G.push(b[A]);
-		for (var y in l)
-			if (G.indexOf(y) == -1) console.log("Extra parameter " + y)
+		// for (var y in l)
+		// 	if (G.indexOf(y) == -1) console.log("Extra parameter " + y); // hbi
 	};
 	es.HW.awH = function(l) {
 		var d = es.HW.a0k;

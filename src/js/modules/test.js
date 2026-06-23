@@ -16,8 +16,8 @@ let Test = {
 			event.data = {
 				a: ActionTypes.$.ub,
 				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
-				// Oo: { url: "~/img/combo.webp" }
-				Oo: { url: "~/img/font-sheet.png" }
+				Oo: { url: "~/img/combo.webp" }
+				// Oo: { url: "~/img/font-sheet.png" }
 			};
 			pp.dispatch(event);
 		}, 500);

@@ -249,7 +249,7 @@ CommandPalette.prototype.az1 = function (l) {
 	}
 	this.iO();
 	var _local4714 = l.target;
-	while (_local4714 != this.LV && _local4714 != document.body) _local4714 = _local4714.parentNode;
+	// while (_local4714 != this.LV && _local4714 != document.body) _local4714 = _local4714.parentNode; // hbi
 	if (_local4714 != this.LV) this.EP();
 };
 

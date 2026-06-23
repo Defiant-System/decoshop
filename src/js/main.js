@@ -63,8 +63,8 @@
 // 	PatternHelper,
 // } = await window.fetch("~/js/bundle.js");
 
-const pp = new PhotopeaApp;
 
+const pp = new PhotopeaApp;
 
 const DefaultSettings = {
 	guides: {
