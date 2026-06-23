@@ -8964,8 +8964,13 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		d.stroke();
 	}
 	d.restore();
+
+	// hbi: render rulers
+	_local4162.bI = true;
+
 	if (_local4162.bI) {
 		if (l.u.C5 == null || l.u.C5.width != l.u.Vm.m || l.u.XF.height != l.u.Vm.n) {
+			l.u.X7 = d.createImageData(PixelUtil.y0.mT, PixelUtil.y0.mT);
 			l.u.C5 = d.createImageData(l.u.Vm.m, PixelUtil.y0.mT);
 			l.u.XF = d.createImageData(PixelUtil.y0.mT, l.u.Vm.n);
 		}
@@ -8991,13 +8996,17 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		if (_local4247.SF == 4) _local4271 *= _local4154 / _local4156;
 		var _local4282 = [_local4273.N * _local4271, new Point2D(_local4273.R.x + (_local4157 + _local4178 * _local4271 - _local4178), _local4273.R.y + (_local4158 + _local4177 * _local4271 - _local4177))],
 			_local4228 = this.zS.YE;
-		PixelUtil.y0.abA(_local4273, _local4270["--text-color"], _local4270["--bg-input"], Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
+		// PixelUtil.y0.abA(_local4273, _local4270["--text-color"], _local4270["--bg-input"], Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
+		PixelUtil.y0.rulers(_local4273, Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
 		var _local4169 = LayerCanvasPanel.ae$(_local4273.N, NamedTabPanel.ut([1, 1, 1, 1]), l.m, l.n);
 		NamedTabPanel._f(l.u.XF.data);
 		NamedTabPanel._f(l.u.C5.data);
-		d.putImageData(l.u.XF, 0, 0);
-		d.putImageData(l.u.C5, 0, 0);
-		d.putImageData(_local4169, 0, l.u.Vm.n - _local4169.height);
+		NamedTabPanel._f(l.u.X7.data);
+		d.putImageData(l.u.XF, 0, 72); // left ruler
+		d.putImageData(l.u.C5, 0, 72); // top ruler
+		d.putImageData(l.u.X7, 0, 72); // ruler corner
+		// zoom percentage and "width x height"
+		d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
 	}
 	if (l.I.P4.length != 0) {
 		for (var _local4150 = 0; _local4150 < l.I.P4.length; _local4150++) {
@@ -12782,6 +12791,491 @@ ZoomToolOptions.prototype.acX = function (l) {
 		Z: l.target == this.xD ? "pixel" : "fitscr"
 	};
 	this.dispatch(_local4539);
+};
+
+function WarpDistortionPanel(l, d, G) {
+	UIComponent.call(this);
+	if (l == null) l = !1;
+	if (d == null) d = !1;
+	if (G == null) G = !1;
+	this.aew = d;
+	this.$V = null;
+	this.XZ = new WarpStyleButton([12, 22], G);
+	this.XZ.parent = this;
+	this.XZ.addListener(ActionTypes.E.A, this.B5, this);
+	this.NW = new DropdownMenu([22, 0], [
+	[22, 4, 0],
+	[22, 4, 1]]
+	);
+	this.NW.addListener(ActionTypes.E.A, this.B5, this);
+	var _local1010 = l ? RangeDropInput : RangeInput;
+	this.gT = new _local1010([22, 1], -100, 100, "%");
+	this.eV = new _local1010("Horizontal Distortion:", -100, 100, "%");
+	this.la = new _local1010("Vertical Distortion:", -100, 100, "%");
+	this.gT.parent = this.eV.parent = this.la.parent = this;
+	this.gT.addListener(ActionTypes.E.A, this.B5, this);
+	this.eV.addListener(ActionTypes.E.A, this.B5, this);
+	this.la.addListener(ActionTypes.E.A, this.B5, this);
+}
+WarpDistortionPanel.prototype = new UIComponent();
+WarpDistortionPanel.prototype.refresh = function () {
+	this.XZ.refresh();
+	this.NW.refresh();
+	this.gT.refresh();
+	var _local1011 = this.aew ? 1 : 100;
+	this.eV.setLabel("Hoizontal Distortion".substring(0, _local1011) + ":");
+	this.la.setLabel("Vertical Distortion".substring(0, _local1011) + ":");
+};
+WarpDistortionPanel.prototype.B5 = function () {
+	var _local1014 = this.$V,
+		_local1013 = this.XZ.b(),
+		_local1012 = _local1014.warpStyle.v.warpStyle;
+	if (_local1013 == "warpCustom") PixelUtil.textWarp.VH(PixelUtil.textWarp.js(_local1014), _local1014);else
+	delete _local1014.customEnvelopeWarp;
+	_local1014.warpStyle.v.warpStyle = this.XZ.b();
+	_local1014.warpRotate.v.Ornt = ["Hrzn", "Vrtc"][this.NW.b()];
+	_local1014.warpValue.v = this.gT.b();
+	_local1014.warpPerspective.v = this.eV.b();
+	_local1014.warpPerspectiveOther.v = this.la.b();
+	if (_local1013 == "warpNone" || _local1013 == "warpCustom") {
+		_local1014.warpValue.v = 0;
+		_local1014.warpPerspective.v = 0;
+		_local1014.warpPerspectiveOther.v = 0;
+	} else if (_local1012 == "warpNone" || _local1012 == "warpCustom") _local1014.warpValue.v = 50;
+	this.dispatch(new Action(ActionTypes.E.A, !1));
+	this.c(_local1014);
+};
+WarpDistortionPanel.prototype.b = function (l) {
+	return JSON.parse(JSON.stringify(this.$V));
+};
+WarpDistortionPanel.prototype.c = function (l) {
+	this.$V = JSON.parse(JSON.stringify(l));
+	this.XZ.c(l.warpStyle.v.warpStyle);
+	this.NW.c(l.warpRotate.v.Ornt == "Hrzn" ? 0 : 1);
+	this.gT.c(l.warpValue.v);
+	this.eV.c(l.warpPerspective.v);
+	this.la.c(l.warpPerspectiveOther.v);
+	var _local1018 = l.warpStyle.v.warpStyle,
+		_local1016 = _local1018 == "warpNone" || _local1018 == "warpCustom",
+		_local1017 = [this.NW, this.gT, this.eV, this.la];
+	for (var _local1015 = 0; _local1015 < _local1017.length; _local1015++)
+	if (_local1016) _local1017[_local1015].disable();else
+	_local1017[_local1015].enable();
+};
+
+function LayerCanvasPanel(l) {
+	UIComponent.call(this);
+	this.acM = {};
+	this.e = s.createElement("div");
+	this.Gq = l;
+	this.OG = null;
+	this.oS = new Point2D(0, 0);
+	this.tn = "position:relative;overflow:hidden;background-color:var(--bg-canvas);";
+	this.A$ = null;
+	this.HX = new s.CursorPreview(this.e);
+	this.uH("grab");
+	this.T = s.createElement("canvas", "canv");
+	this.e.appendChild(this.T);
+	this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+	this.ajn = null;
+	this._Y = null;
+	this.V3 = null;
+	this.yL = 0;
+	this.TK = 0;
+	this.KV = 0;
+	this.aqP = this.agc.bind(this);
+	this.axg = null;
+	this.u = new DocumentViewState({
+		m: 1,
+		n: 1
+	});
+	this.S3 = null;
+	this.e6 = null;
+	this.s$ = [];
+	this.aaJ = 0;
+	this.Fs = 0;
+	this.ask = this.JO.bind(this);
+	this.a8o = this.D2.bind(this);
+	this.a6Z = this.qd.bind(this);
+	this.anX = this.Uh.bind(this);
+	this.a2j = 0;
+	this.Bf = null;
+	this.agv(this.T);
+	this.t0(this);
+}
+LayerCanvasPanel.prototype = new UIComponent();
+LayerCanvasPanel.prototype.a9O = function (l) {
+	this.acM = l;
+	this.LO();
+};
+LayerCanvasPanel.a9m = function (l) {
+	var _local1019 = new KeyboardHandler(!0);
+	if (l >= 0) _local1019.sm("Space");
+	if (l >= 1) {
+		_local1019.sm("ControlLeft");
+		if (l == 2) _local1019.sm("AltLeft");
+	}
+	return _local1019;
+};
+LayerCanvasPanel.prototype.o9 = function (l) {
+	var _local1022 = this.A$,
+		_local1020 = null;
+	if (l.l(KeyboardHandler.Mm)) {
+		_local1020 = "grab";
+		if (l.l(KeyboardHandler.wz)) {
+			_local1020 = "zoom-in";
+			if (l.l(KeyboardHandler.Jm)) _local1020 = "zoom-out";
+		}
+	}
+	this.OG = _local1020;
+	if (_local1020) _local1022 = _local1020;
+	this.HX.setSource(_local1022, this.tn);
+	if (l.l(KeyboardHandler.wz)) {
+		var _local1021 = 0;
+		if (l.l(KeyboardHandler.W$)) _local1021 = 1;
+		if (l.l(KeyboardHandler.Zw)) _local1021 = -1;
+		if (_local1021 != 0) {
+			this.h7(new Point2D(this.T.width / 2, this.T.height / 2), _local1021 == 1);
+		}
+	}
+};
+LayerCanvasPanel.prototype.uH = function (l) {
+	this.A$ = l;
+	if (this.OG) return;
+	this.HX.setSource(l, this.tn);
+};
+LayerCanvasPanel.prototype.agv = function (l) {
+	s.addPointerDown(l, this.ask);
+	s.preventTouchAndGesture(l);
+	l.addEventListener("wheel", this.anX, !1);
+};
+LayerCanvasPanel.prototype.t0 = function (l) {
+	l.addListener("viewchange", this.aaZ, this);
+};
+LayerCanvasPanel.prototype.aaZ = function (l) {
+	var _local1024 = this.u.N,
+		_local1023 = l.currentTarget.KI();
+	this.u.N = _local1023.N;
+	this.u.R = _local1023.R.clone();
+	if (_local1024 != _local1023.N) this.Pu();
+	this.LO();
+};
+LayerCanvasPanel.prototype.KI = function () {
+	return {
+		N: this.u.N,
+		R: this.u.R
+	};
+};
+LayerCanvasPanel.prototype.c = function (l, d) {
+	var _local1025 = l[0].uA;
+	if (this._Y != null && this._Y[0].uA.XB(_local1025)) {} else {
+		this.u.Kv = {
+			m: _local1025.m,
+			n: _local1025.n
+		};
+		this.u.R = new Point2D(0, 0);
+		this.u.N = 1;
+	}
+	this._Y = l;
+	this.Pu();
+	this.dU();
+	this.yL = 0;
+	this.TK = 0;
+	this.KV = d == null ? 0 : d;
+	this.agc();
+};
+LayerCanvasPanel.prototype.Uh = function (l) {
+	l.preventDefault();
+	if (l.deltaY == 0 || Date.now() - this.a2j < 100) return;
+	var _local1026 = s.getEventPositionInElement(l);
+	_local1026.x = s.getDevicePixelRatio() * _local1026.x;
+	_local1026.y = s.getDevicePixelRatio() * _local1026.y;
+	this.a2j = Date.now();
+	this.h7(_local1026, l.deltaY < 0);
+};
+LayerCanvasPanel.prototype.h7 = function (l, d) {
+	f.gU.p8(this.u, l, d);
+	this.a1o();
+};
+LayerCanvasPanel.prototype.kn = function () {
+	var _local1028 = this.u,
+		_local1027 = _local1028.Kv;
+	this.u.N = f.gU.agP(_local1027.m, _local1027.n, _local1028.Vm.m, _local1028.Vm.n);
+	this.a1o();
+};
+LayerCanvasPanel.prototype.a1o = function () {
+	this.Pu();
+	this.dispatch(new Action("viewchange"));
+	this.dispatch(new Action("zoom"));
+};
+LayerCanvasPanel.prototype.Pu = function () {
+	this.V3 = [];
+	var _local1033 = this.u.N;
+	if (this._Y == null) return;
+	for (var _local1029 = 0; _local1029 < this._Y.length; _local1029++) {
+		var _local1032 = this._Y[_local1029],
+			_local1030 = new Uint8Array(_local1032.data),
+			_local1031;
+		if (_local1033 >= 1) _local1031 = {
+			QI: _local1030,
+			rect: _local1032.uA
+		};else
+		_local1031 = PixelUtil.buildRgbaPyramid(_local1030, _local1032.uA, _local1033);
+		this.V3.push(_local1031);
+	}
+};
+LayerCanvasPanel.prototype.dU = function () {
+	clearTimeout(this.axg);
+};
+LayerCanvasPanel.prototype.LO = function () {
+	if (this._Y == null || !s.isInDocument(this.T)) return;
+	var _local1054 = this.ajn,
+		_local1049 = this.T.width,
+		_local1036 = this.T.height,
+		_local1057,_local1043;
+	if (_local1054 == null || _local1054.width != _local1049 || _local1054.height != _local1036) {
+		_local1054 = this.ajn = this.k_.createImageData(_local1049, _local1036);
+		console.log("creating image data");
+	}
+	var _local1048 = this._Y[this.yL],
+		_local1044 = this.V3[this.yL],
+		_local1041 = this.u,
+		_local1058 = _local1041.Kv,
+		_local1038 = _local1041.Vm,
+		_local1059 = _local1038.m,
+		_local1050 = _local1038.n,
+		_local1040 = _local1058.m * _local1041.N,
+		_local1042 = _local1058.n * _local1041.N,
+		_local1039 = Math.round((_local1059 - _local1040) / 2 + _local1041.R.x),
+		_local1055 = Math.round((_local1050 - _local1042) / 2 + _local1041.R.y);
+	if (_local1041.N <= 1) {
+		_local1043 = _local1044.rect.clone();
+		_local1043.x = _local1039;
+		_local1043.y = _local1055;
+		_local1040 = _local1043.m;
+		_local1042 = _local1043.n;
+		_local1057 = _local1044.QI;
+	} else {
+		var _local1052 = 1 / _local1041.N,
+			_local1051 = new Rect(Math.floor((_local1038.x - _local1039) * _local1052), Math.floor((_local1038.y - _local1055) * _local1052), Math.ceil(_local1038.m * _local1052) + 1, Math.ceil(_local1038.n * _local1052) + 1),
+			_local1046 = new Rect(0, 0, _local1051.m * _local1041.N, _local1051.n * _local1041.N);
+		_local1046.x = _local1051.x * _local1041.N + _local1039;
+		_local1046.y = _local1051.y * _local1041.N + _local1055;
+		if (_local1041.xL == null || _local1041.xL.length != _local1051.O() * 4) {
+			_local1041.xL = PixelUtil.allocBytes(_local1051.O() * 4);
+		}
+		if (_local1041.Je == null || _local1041.Je.length != _local1046.O() * 4) {
+			_local1041.Je = PixelUtil.allocBytes(_local1046.O() * 4);
+		}
+		PixelUtil.andMaskUint32(_local1041.xL, 0);
+		PixelUtil.blitRgbaRect(_local1044.QI, _local1044.rect, _local1041.xL, _local1051);
+		PixelUtil.scale.Pf(_local1041.xL, _local1051.m, _local1051.n, _local1041.Je, _local1046.m, _local1046.n, _local1041.N);
+		_local1057 = _local1041.Je;
+		_local1043 = _local1046;
+	}
+	var _local1053 = new Uint8Array(_local1054.data.buffer);
+	PixelUtil.fillCheckerboard(_local1053, _local1059, _local1050, 8, -_local1039, -_local1055);
+	PixelUtil.blend.compositeBlend("norm", _local1057, _local1043, _local1053, _local1038, _local1038, 1);
+	var _local1035 = this.k_;
+	_local1035.setTransform(1, 0, 0, 1, 0, 0);
+	_local1035.putImageData(_local1054, 0, 0);
+	_local1035.clearRect(_local1039 - 1e3, _local1055, 1e3, _local1042);
+	_local1035.clearRect(_local1039 + _local1040, _local1055, 1e3, _local1042);
+	_local1035.clearRect(_local1039 - 1e3, _local1055 - 1e3, _local1040 + 2e3, 1e3);
+	_local1035.clearRect(_local1039 - 1e3, _local1055 + _local1042, _local1040 + 2e3, 1e3);
+	var _local1034 = LayerCanvasPanel.ae$(_local1041.N, "#ffffff");
+	_local1035.putImageData(_local1034, 0, _local1041.Vm.n - _local1034.height);
+	var _local1056 = this.acM,
+		_local1041 = this.u;
+	if (_local1056) {
+		var _local1037 = NamedTabPanel.ut([.1, .5, 1, 1]),
+			_local1045 = NamedTabPanel.ut([1, 0, 0, 1]),
+			_local1047 = _local1041.Gb(!1);
+		_local1047.hI();
+		_local1035.save();
+		_local1035.setTransform(_local1047.aS, _local1047.k, _local1047.S5, _local1047.Qd, _local1047.cI, _local1047.xu);
+		_local1035.strokeStyle = _local1045;
+		if (_local1056.abP) {
+			NamedTabPanel.US(_local1056.abP, null, _local1035);
+			_local1035.lineWidth = 1 / _local1041.N;
+			_local1035.stroke();
+		}
+		_local1035.strokeStyle = _local1037;
+		_local1035.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
+		if (_local1056.Bt) {
+			NamedTabPanel.US(_local1056.Bt, null, _local1035);
+			_local1035.lineWidth = 1 / _local1041.N;
+			_local1035.stroke();
+		}
+		if (_local1056.jf) {
+			NamedTabPanel.aoJ(_local1056.jf, _local1035, _local1041, .5);
+			_local1035.lineWidth = 2 / _local1041.N;
+			_local1035.stroke();
+			_local1035.fill();
+		}
+		_local1035.restore();
+	}
+	_local1035.getImageData(0, 0, 1, 1);
+};
+LayerCanvasPanel.a92 = "";
+LayerCanvasPanel.akC = null;
+LayerCanvasPanel.ae$ = function (l, d, G, b) {
+	if (G == null) {
+		G = 0;
+		b = 0;
+	}
+	var _local1065 = G + " \xD7 " + b,
+		_local1063 = "z" + l + "," + d + "," + G + "," + b;
+	if (_local1063 == LayerCanvasPanel.a92) return LayerCanvasPanel.akC;
+	var _local1069 = Math.round(50 * s.getDevicePixelRatio()),
+		_local1060 = Math.round(18 * s.getDevicePixelRatio()),
+		_local1070 = G == 0 ? 0 : Math.round((_local1065.length + 2) * _local1060 * .35),
+		_local1066 = s.createElement("canvas"),
+		_local1062 = _local1066.getContext("2d", { willReadFrequently: true });
+	_local1066.width = _local1069 + _local1070;
+	_local1066.height = _local1060;
+	_local1062.fillStyle = "rgba(1,1,1,1)";
+	_local1062.fillRect(0, 0, _local1069, _local1060);
+	if (G != 0) _local1062.fillRect(_local1069 + 2, 0, _local1070, _local1060);
+	_local1062.font = Math.round(11 * s.getDevicePixelRatio()) + "px monospace";
+	_local1062.fillStyle = d;
+	var _local1064 = l * 100;
+	if (_local1064 < 100) _local1064 = _local1064.toFixed(2);
+	else {
+		_local1064 = Math.round(_local1064);
+	}
+	_local1064 = _local1064 + "%";
+	var _local1061 = _local1062.measureText(_local1064).width;
+	_local1062.fillText(_local1064, (_local1069 - _local1061) / 2, Math.round(_local1060 * .7));
+	if (G != 0) {
+		var _local1067 = _local1062.measureText(_local1065).width;
+		_local1062.fillText(_local1065, _local1069 + (_local1070 - _local1067) / 2 + 1, Math.round(_local1060 * .7));
+	}
+	var _local1068 = _local1062.getImageData(0, 0, _local1069 + _local1070, _local1060);
+	LayerCanvasPanel.a92 = _local1063;
+	LayerCanvasPanel.akC = _local1068;
+	return _local1068;
+};
+LayerCanvasPanel.prototype.agc = function () {
+	var _local1076 = this._Y,
+		_local1075 = _local1076.length,
+		_local1071 = this.yL,
+		_local1074 = this._Y[_local1071],
+		_local1073 = (_local1071 + 1) % _local1075;
+	this.LO();
+	if (_local1075 != 1 && _local1076[_local1073].uA.XB(_local1074.uA)) {
+		var _local1072 = _local1074.ia ? parseInt(_local1074.ia.split(",").pop()) : 30;
+		if (_local1072 == 0) _local1072 = 16;
+		if (_local1073 == 0) this.TK++;
+		if (this.KV == 0 || this.TK < this.KV) this.axg = setTimeout(this.aqP, _local1072);
+	}
+	this.yL = _local1073;
+};
+LayerCanvasPanel.prototype.resize = function (l, d) {
+	if (l <= 0 || d <= 0) return;
+	var _local1077 = Math.floor(l * s.getDevicePixelRatio()),
+		_local1078 = Math.floor(d * s.getDevicePixelRatio());
+	this.u.Vm = new Rect(0, 0, _local1077, _local1078);
+	this.T.width = _local1077;
+	this.T.height = _local1078;
+	this.T.setAttribute("style", "width:" + _local1077 / s.getDevicePixelRatio() + "px; height:" + _local1078 / s.getDevicePixelRatio() + "px; display:block;");
+	this.LO();
+};
+LayerCanvasPanel.prototype.TE = function (l) {
+	var _local1081 = -1,
+		_local1080 = this.s$;
+	for (var _local1079 = 0; _local1079 < _local1080.length; _local1079++)
+	if (_local1080[_local1079].pointerId == l.pointerId) _local1081 = _local1079;
+	return _local1081;
+};
+LayerCanvasPanel.prototype.JO = function (l) {
+	var _local1083 = this.TE(l),
+		_local1082 = this.s$;
+	if (_local1083 != -1) _local1082[_local1083] = l;else
+	_local1082.push(l);
+	if (_local1082.length == 1) {
+		this.Bf = l.target;
+		s.addPointerMove(window, this.a8o);
+		s.addPointerUp(window, this.a6Z);
+		this.S3 = s.getEventPositionInElement(l, this.T);
+		this.S3.x *= s.getDevicePixelRatio();
+		this.S3.y *= s.getDevicePixelRatio();
+		this.oS = this.S3;
+		this.e6 = this.u.R.clone();
+		if (this.Gq && this.Bf == this.T && !this.OG) this.dispatch(new Action("mousedown"));
+	} else this.aaJ = this.Fs = Point2D.yZ(s.getEventPositionInElement(_local1082[0], this.T), s.getEventPositionInElement(_local1082[1], this.T));
+};
+LayerCanvasPanel.prototype.D2 = function (l) {
+	var _local1091 = this.TE(l),
+		_local1084 = this.s$;
+	if (_local1091 != -1) _local1084[_local1091] = l;
+	var _local1090 = this.u,
+		_local1088 = this.OG,
+		_local1095 = this._Y[this.yL].uA.clone();
+	_local1095.m *= _local1090.N;
+	_local1095.n *= _local1090.N;
+	var _local1085 = s.getEventPositionInElement(l, this.T);
+	_local1085.x *= s.getDevicePixelRatio();
+	_local1085.y *= s.getDevicePixelRatio();
+	this.oS = _local1085;
+	if (this.Gq && this.Bf == this.T && !_local1088) this.dispatch(new Action("mousemove"));else
+	if (_local1088 == "grab" || _local1088 == null) {
+		if (_local1084.length > 1) {
+			var _local1096 = s.getEventPositionInElement(_local1084[0], this.T),
+				_local1092 = s.getEventPositionInElement(_local1084[1], this.T),
+				_local1087 = new Point2D(s.getDevicePixelRatio() * (_local1096.x + _local1092.x) / 2, s.getDevicePixelRatio() * (_local1096.y + _local1092.y) / 2),
+				_local1089 = Point2D.yZ(_local1096, _local1092),
+				_local1086 = null;
+			if (_local1089 > this.Fs + 50) {
+				this.Fs += 50;
+				_local1086 = !0;
+			}
+			if (_local1089 < this.Fs - 50) {
+				this.Fs -= 50;
+				_local1086 = !1;
+			}
+			if (_local1086 != null) this.h7(_local1087, _local1086);
+			return;
+		} else {
+			var _local1093 = _local1085.x - this.S3.x,
+				_local1094 = _local1085.y - this.S3.y;
+			_local1090.R.x = this.e6.x + Math.round(_local1093);
+			_local1090.R.y = this.e6.y + Math.round(_local1094);
+		}
+		this.dispatch(new Action("viewchange"));
+	}
+};
+LayerCanvasPanel.prototype.qd = function (l) {
+	var _local1100 = this.TE(l),
+		_local1097 = this.s$;
+	_local1097.splice(_local1100, 1);
+	if (_local1097.length == 0) {
+		s.removePointerMove(window, this.a8o);
+		s.removePointerUp(window, this.a6Z);
+		var _local1099 = this.OG;
+		if (l.detail > 1) {
+			this.u.N = 1;
+			this.u.R.T6(0, 0);
+			this.LO();
+		}
+		if (this.Gq && this.Bf == this.T && !this.OG) this.dispatch(new Action("mouseup"));else
+		{
+			if (_local1099 == "zoom-in" || _local1099 == "zoom-out") this.h7(this.oS, _local1099 == "zoom-in");
+		}
+	} else {
+		var _local1098 = this.S3 = s.getEventPositionInElement(_local1097[0], this.T);
+		_local1098.x *= s.getDevicePixelRatio();
+		_local1098.y *= s.getDevicePixelRatio();
+	}
+};
+LayerCanvasPanel.prototype.KE = function (l) {
+	var _local1101 = this.oS;
+	if (l) {
+		_local1101 = s.getEventPositionInElement(l, this.T);
+		_local1101.x *= s.getDevicePixelRatio();
+		_local1101.y *= s.getDevicePixelRatio();
+	}
+	return this.u.Zx(_local1101.x, _local1101.y);
 };
 
 function TypeToolOptions(l, d) {

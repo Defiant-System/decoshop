@@ -24,8 +24,20 @@ let Test = {
 			pp.dispatch(event);
 		}, 500);
 
+		// setTimeout(() => {
+		// 	let doc = pp.fk();
+		// 	if (!doc) return;
+		// 	let u = doc.u,
+		// 		dpr = s.getDevicePixelRatio(),
+		// 		panX = 300 * dpr - u.Vm.m / 2,
+		// 		panY = 500 * dpr - u.Vm.n / 2;
+		// 	u.R.T6(panX, panY);
+		// 	doc.bV = true;
+		// 	// pp.update();
+		// }, 1500);
+
 		// stops RAF
-		setTimeout(() => { decoshop._stopped = true; }, 2000);
+		// setTimeout(() => { decoshop._stopped = true; }, 2000);
 		
 
 

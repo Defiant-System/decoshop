@@ -25,7 +25,7 @@ function BaseAppUI(l) {
 	d.appendChild(this.Nf.e);
 	this.addListener(ActionTypes.E.L, this.$e, this);
 	this.aB = this.io.bind(this);
-	window.requestAnimationFrame(this.aB)
+	// window.requestAnimationFrame(this.aB)
 }
 
 BaseAppUI.prototype = new UIComponent;
@@ -2367,6 +2367,16 @@ PhotopeaApp.prototype.aly = function(l) {
 		a: "auto",
 		nx: 2
 	}
+	// hbi - setting canvas center origo
+	let doc = this.fk();
+	// if (!doc) return;
+	let u = doc.u,
+		dpr = s.getDevicePixelRatio(),
+		panX = 500 * dpr - u.Vm.m / 2,
+		panY = 530 * dpr - u.Vm.n / 2;
+	u.R.T6(panX, panY);
+	doc.bV = true;
+	this.update();
 };
 
 PhotopeaApp.prototype.fk = function() {
