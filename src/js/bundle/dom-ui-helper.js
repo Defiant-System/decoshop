@@ -1,4 +1,3456 @@
 
+
+function PointerInputHandler(l) {
+	UIComponent.call(this);
+	this.s$ = [];
+	this.MI = !1;
+	this.agQ = 0;
+	this.YE = {
+		x: 0,
+		y: 0,
+		oW: !1
+	};
+	this.Qj = l;
+	this.aw_ = this.JO.bind(this);
+	this.Vz = this.D2.bind(this);
+	this.a5i = this.qd.bind(this);
+	s.addPointerDown(l, this.aw_);
+	s.addPointerMove(l, this.Vz);
+	l.addEventListener("wheel", this.Uh.bind(this), !1);
+	l.addEventListener("contextmenu", this.ap5.bind(this), !1);
+	var _local0 = this.agd.bind(this);
+	l.addEventListener("gesturestart", _local0, !1);
+	l.addEventListener("gesturechange", _local0, !1);
+	l.addEventListener("gestureend", _local0, !1);
+	s.preventTouchAndGesture(l);
+}
+PointerInputHandler.prototype = new UIComponent();
+PointerInputHandler.prototype.agd = function (l) {
+	if (l.type == "gesturestart") this.l9 = l.scale;
+	if (l.type == "gesturechange") {
+		var _local10 = new Action("mouse", !0);
+		_local10.action = "scroll";
+		_local10.Bd = !0;
+		this.aO(l, _local10);
+		var _local1 = (this.l9 - l.scale) / this.l9;
+		_local10.tc = new Point2D(0, 100 * _local1);
+		this.l9 = l.scale;
+		this.dispatch(_local10);
+	}
+};
+PointerInputHandler.prototype.TE = function (l) {
+	var _local13 = -1,
+		_local12 = this.s$;
+	for (var _local11 = 0; _local11 < _local12.length; _local11++)
+	if (_local12[_local11].pointerId == l.pointerId) _local13 = _local11;
+	return _local13;
+};
+PointerInputHandler.k$ = function (l) {
+	var _local15 = l.pointerType,
+		_local14 = window.__kb;
+	return _local15 == "touch" && _local14.l(KeyboardHandler.a3K);
+};
+PointerInputHandler.prototype.JO = function (l) {
+	if (PointerInputHandler.k$(l)) return;
+	var _local18 = this.TE(l);
+	if (_local18 != -1) this.s$[_local18] = l;else
+	this.s$.push(l);
+	if (this.s$.length == 1) {
+		this.agQ = Date.now();
+		var _local16 = l.button != null && l.button != 0 ? l.which == 2 ? "idown" : "rdown" : "down",
+			_local17 = new Action("mouse", !0);
+		_local17.action = _local16;
+		this.aO(l, _local17);
+		this.dispatch(_local17);
+		s.removePointerMove(this.Qj, this.Vz);
+		s.addPointerMove(window, this.Vz);
+		s.addPointerUp(window, this.a5i);
+	}
+	if (this.s$.length == 2) {
+		if (Date.now() - this.agQ < 100) {
+			var _local17 = new Action("mouse", !0);
+			_local17.action = "cancellast";
+			this.aO(l, _local17);
+			this.dispatch(_local17);
+		}
+		this.MI = !0;
+	}
+	if (this.s$.length == 2) this.au7("multidown");
+};
+PointerInputHandler.prototype.D2 = function (l) {
+	if (PointerInputHandler.k$(l)) return;
+	var _local20 = this.TE(l);
+	if (_local20 != -1) this.s$[_local20] = l;
+	if (this.s$.length > 1) {
+		this.au7("multimove");
+	}
+	if (this.MI) return;
+	if (this.s$.length == 1 && _local20 == -1) return;
+	var _local19 = new Action("mouse", !0);
+	_local19.action = "move";
+	this.aO(l, _local19);
+	this.dispatch(_local19);
+};
+PointerInputHandler.prototype.qd = function (l) {
+	if (PointerInputHandler.k$(l)) return;
+	var _local23 = this.s$;
+	_local23 = this.s$ = [];
+	if (_local23.length == 0) {
+		var _local21 = l.button != null && l.button > 0 ? l.which == 2 ? "iup" : "rup" : "up",
+			_local22 = new Action("mouse", !0);
+		_local22.action = _local21;
+		this.aO(l, _local22);
+		this.dispatch(_local22);
+		s.removePointerMove(window, this.Vz);
+		s.removePointerUp(window, this.a5i);
+		s.addPointerMove(this.Qj, this.Vz);
+		this.MI = !1;
+	}
+};
+PointerInputHandler.prototype.Uh = function (l) {
+	l.preventDefault();
+	if (l.deltaX == 0 && l.deltaY == 0) return;
+	var _local24 = new Action("mouse", !0);
+	_local24.action = "scroll";
+	_local24.Bd = l.ctrlKey;
+	this.aO(l, _local24);
+	this.dispatch(_local24);
+};
+PointerInputHandler.prototype.ap5 = function (l) {
+	s.stopAndPreventHandler(l);
+	if (s.isTouchEvent(l)) {
+		var _local25 = new Action("mouse", !0);
+		this.aO(l, _local25);
+		_local25.action = "rdown";
+		this.dispatch(_local25);
+		_local25.action = "rup";
+		this.dispatch(_local25);
+	}
+};
+PointerInputHandler.prototype.au7 = function (l) {
+	var _local31 = this.s$,
+		_local27 = s.getDevicePixelRatio(),
+		_local30 = [];
+	for (var _local26 = 0; _local26 < _local31.length; _local26++) {
+		var _local29 = _local30[_local26] = s.getEventPositionInElement(_local31[_local26], this.Qj);
+		_local29.x *= _local27;
+		_local29.y *= _local27;
+	}
+	var _local28 = new Action("mouse", !0);
+	_local28.action = l;
+	_local28.Cs = _local30;
+	if (_local31.length == 2) this.dispatch(_local28);
+};
+PointerInputHandler.prototype.aO = function (l, d, G) {
+	var _local34 = this.s$.length != 0;
+	if (d.action != "up") {
+		var _local33 = s.getDevicePixelRatio();
+		if (G == null) G = s.getEventPositionInElement(l, this.Qj);
+		this.YE = d.OJ = {
+			x: _local33 * G.x,
+			y: _local33 * G.y,
+			oW: _local34
+		};
+		var _local32 = s.getEventPositionInElement(l, document.body);
+		d.OJ.pf = _local32.x;
+		d.OJ.pi = _local32.y;
+	} else this.YE = d.OJ = {
+		x: this.YE.x,
+		y: this.YE.y,
+		oW: _local34
+	};
+	d.OJ.uT = .5;
+	if (l.pressure != null && l.pressure != 0) d.OJ.uT = l.pressure;
+	if (l.pointerType == "mouse") d.OJ.uT *= 2;
+	d.OJ.a71 = l.pointerType;
+	if (l.deltaX != null) {
+		var _local35 = l.deltaMode == 0 ? 1 : 40;
+		d.tc = new Point2D(l.deltaX * _local35, l.deltaY * _local35);
+	}
+};
+
+
+function ContextPanel(l, d, G) {
+	UIComponent.call(this);
+	this.G$ = null;
+	this.as0 = this.qd.bind(this);
+	this.ab7 = this.oj.bind(this);
+	this.akL = this.afp.bind(this);
+	this.a4H = this.a1I.bind(this);
+	this.Ru = [];
+	this.lT = [];
+	this.DA = [];
+	this.abO = [];
+	this.e = s.createElement("div", "contextpanel " + (G ? "cp_dark" : "cp_trsp"));
+	this.e.addEventListener("contextmenu", s.preventDefaultHandler, !1);
+	this.wb = null;
+	this.cA = 0;
+	this.iV = l;
+	this.E0 = d;
+	this.Kf = [];
+	for (var _local36 = 0; _local36 < l.length; _local36++) {
+		var _local40 = s.createElement("div", "enab");
+		this.lT.push(_local40);
+		this.e.appendChild(_local40);
+		var _local39 = l[_local36].e2;
+		if (_local39) {
+			if (_local39.startsWith("#")) {
+				var _local38 = s.createElement("span");
+				_local38.setAttribute("style", "display:inline-block; width:16px; height:16px; vertical-align:middle; margin:0 5px 0 -3px; border-radius:4px; background-color:" + _local39);
+				_local40.appendChild(_local38);
+			} else _local40.innerHTML = s.getIconImgHtml(l[_local36].e2, null, "thumb");
+		} else {
+			var _local42 = s.createElement("span", "check");
+			this.abO.push(_local42);
+			_local40.appendChild(_local42);
+		}
+		var _local37 = s.createElement("span", "label");
+		_local37.textContent = languageManager.get(l[_local36].name);
+		_local40.appendChild(_local37);
+		this.DA.push(_local37);
+		if (l[_local36].xX) this.e.appendChild(s.createElement("hr"));
+		if (l[_local36].C0 || l[_local36].sub) {
+			var _local43 = _local40.CM = s.createElement("span", "right");
+			_local40.appendChild(_local43);
+			if (l[_local36].C0) _local43.textContent = KeyboardHandler.nc(l[_local36].C0);else
+			if (l[_local36].sub) _local43.innerHTML = "<svg height='10px' width='6px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 1 L 5 5 L 1 9'/></svg>";
+		}
+		_local40.addEventListener("click", this.as0, !1);
+		_local40.addEventListener("mouseover", this.ab7, !0);
+		_local40.addEventListener("mouseout", this.akL, !0);
+		if (l[_local36].sub) {
+			var _local41 = new ContextPanel(l[_local36].sub, d ? d[_local36].sub : null);
+			_local41.parent = this;
+			this.Kf.push(_local41);
+			_local41.addListener("select", this.ayV, this);
+		} else this.Kf.push(null);
+	}
+}
+
+ContextPanel.prototype = new UIComponent();
+
+ContextPanel.prototype.avV = function (l) {
+	s.clearChildren(this.e);
+	for (var _local44 = 0; _local44 < l.length; _local44++)
+	if (l[_local44] != 0 && l[_local44] != null) {
+		this.e.appendChild(this.lT[_local44]);
+		if (l[_local44] != 1 && this.Kf[_local44]) this.Kf[_local44].avV(l[_local44]);
+	}
+};
+
+ContextPanel.prototype.refresh = function () {
+	var _local46 = this.iV;
+	for (var _local45 = 0; _local45 < _local46.length; _local45++) {
+		if (_local46[_local45].title) this.lT[_local45].title = languageManager.get(_local46[_local45].title);
+		this.DA[_local45].textContent = languageManager.get(_local46[_local45].name) + (_local46[_local45].pR ? "..." : "");
+	}
+	for (var _local45 = 0; _local45 < this.Kf.length; _local45++)
+	if (this.Kf[_local45]) this.Kf[_local45].refresh();
+};
+
+ContextPanel.prototype.update = function (l, d) {
+	var _local48 = this.iV,
+		_local51 = window.innerWidth < 450 ? "none" : "inline";
+	for (var _local47 = 0; _local47 < _local48.length; _local47++) {
+		var _local50 = this.lT[_local47];
+		if (_local50.CM && !this.Kf[_local47]) _local50.CM.style.display = _local51;
+		if (_local48[_local47].p) {
+			var _local49 = _local48[_local47].p(l, d, _local47);
+			if (_local49.p != null) this.lT[_local47].className = _local49.p ? "enab" : "disab";
+			if (_local49.iH != null) this.DA[_local47].textContent = _local49.iH;
+			if (_local49.Zj != null) this.abO[_local47].innerHTML = _local49.Zj ? "<svg height='10px' width='10px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 5 L 4 8 L 9 2'/></svg>" : "";
+			if (_local49.W != null) this.E0[_local47] = _local49.W;
+		}
+	}
+	for (var _local47 = 0; _local47 < this.Kf.length; _local47++)
+	if (this.Kf[_local47]) this.Kf[_local47].update(l, d);
+};
+
+ContextPanel.prototype.sz = function () {
+	return this.Ru;
+};
+
+ContextPanel.prototype.qd = function (l) {
+	if (l.button != 0) return;
+	var _local52 = this.lT.indexOf(l.currentTarget);
+	if (this.Kf[_local52]) {
+		this.cA = _local52;
+		this.a1I();
+	} else {
+		if (this.E0) {
+			var _local54 = this.E0[_local52],
+				_local53 = new Action(_local54.Y, !0);
+			_local53.G = _local54.G;
+			_local53.data = _local54.W;
+			this.dispatch(_local53);
+		}
+		this.G$ = null;
+		this.Ru = [_local52];
+		this.dispatch(new Action("select", !1));
+		var _local53 = new Action(ActionTypes.E.L, !0);
+		_local53.data = {
+			a: ActionTypes.$.xt
+		};
+		this.dispatch(_local53);
+	}
+};
+
+ContextPanel.prototype.oj = function (l) {
+	var _local55 = this.lT.indexOf(l.currentTarget);
+	this.N2();
+	this.cA = _local55;
+	this.wb = setTimeout(this.a4H, 300);
+};
+
+ContextPanel.prototype.afp = function (l) {
+	this.N2();
+};
+
+ContextPanel.prototype.N2 = function () {
+	if (this.wb) {
+		clearTimeout(this.wb);
+		this.wb = null;
+	}
+};
+
+ContextPanel.prototype.a1I = function () {
+	this.N2();
+	var _local56 = this.cA;
+	if (this.G$) this.G$.a9d();
+	if (this.Kf[_local56] == null) return;
+	this.G$ = this.Kf[_local56];
+	var _local58 = this.lT[_local56].getBoundingClientRect(),
+		_local57 = new Action(ActionTypes.E.L, !0);
+	_local57.data = {
+		a: ActionTypes.$.dY,
+		A3: this.Kf[_local56],
+		x: _local58.left + _local58.width + 2,
+		y: _local58.top
+	};
+	this.dispatch(_local57);
+};
+
+ContextPanel.prototype.a9d = function () {
+	for (var _local59 = 0; _local59 < this.Kf.length; _local59++)
+	if (this.Kf[_local59]) this.Kf[_local59].a9d();
+	var _local60 = new Action(ActionTypes.E.L, !0);
+	_local60.data = {
+		a: ActionTypes.$.qH,
+		A3: this
+	};
+	this.dispatch(_local60);
+};
+
+ContextPanel.prototype.ayV = function (l) {
+	var _local61 = this.Kf.indexOf(l.target);
+	this.Ru = [_local61].concat(l.target.sz());
+	this.dispatch(new Action("select", !1));
+};
+
+
+
+function CheckboxControl(l, d, G) {
+	UIComponent.call(this);
+	this.e = s.createElement("span", "fitem cbox");
+	if (d == null) d = !0;
+	if (G == null) G = "flabel";
+	var _local62 = "cb" + s.getNextId();
+	this.I6 = s.createElement("input", "");
+	this.I6.setAttribute("type", "checkbox");
+	this.I6.setAttribute("id", _local62);
+	this.e.appendChild(this.I6);
+	this.$w = l;
+	this.oG = s.createElement("label", G);
+	if (d) this.oG.setAttribute("for", _local62);
+	this.e.appendChild(this.oG);
+	this.refresh();
+	this.I6.addEventListener("change", this.oi.bind(this), !1);
+}
+CheckboxControl.prototype = new UIComponent();
+CheckboxControl.prototype.ap2 = function () {
+	return this.$w;
+};
+CheckboxControl.prototype.setLabel = function (l) {
+	this.oG.textContent = l;
+};
+CheckboxControl.prototype.refresh = function () {
+	var _local63 = this.$w;
+	if (typeof _local63 == "string" && _local63.startsWith("<")) this.oG.innerHTML = _local63;else
+	this.oG.textContent = languageManager.get(_local63);
+};
+CheckboxControl.prototype.Nu = function () {
+	this.I6.checked = !0;
+};
+CheckboxControl.prototype.kL = function () {
+	this.I6.checked = !1;
+};
+CheckboxControl.prototype.dB = function () {
+	return this.I6.checked;
+};
+CheckboxControl.prototype.c = function (l) {
+	this.I6.checked = l;
+};
+CheckboxControl.prototype.b = CheckboxControl.prototype.dB;
+CheckboxControl.prototype.oi = function (l) {
+	this.dispatch(new Action(ActionTypes.E.A, !1));
+};
+
+
+
+
+function DropdownMenu(l, d, G) {
+	UIComponent.call(this);
+	if (!d) return;
+	this.Lq = 0;
+	this.$w = l;
+	this.CI = null;
+	this.aor = G;
+	this.EF = [];
+	var _local105 = "dd" + s.getNextId();
+	this.e = s.createElement("span", "fitem ddmenu");
+	if (l) {
+		this.IL = s.createElement("label", "flabel");
+		this.e.appendChild(this.IL);
+		this.IL.setAttribute("for", _local105);
+	}
+	this.I6 = s.createElement("select");
+	this.I6.setAttribute("id", _local105);
+	this.e.appendChild(this.I6);
+	this.I6.addEventListener("change", this.oi.bind(this), !1);
+
+	function _local104(Q) {
+		var _local106 = 0;
+		if (KeyboardHandler._Q(Q.code, KeyboardHandler.ZZ)) _local106 = 1;
+		if (KeyboardHandler._Q(Q.code, KeyboardHandler.Wz)) _local106 = -1;
+		if (_local106 != 0) Q.stopPropagation();
+	}
+	this.I6.addEventListener("keydown", _local104, !1);
+	this.I6.addEventListener("keyup", _local104, !1);
+	this.ES = [];
+	this.i$ = null;
+	this.b3(d, G);
+	this.refresh();
+}
+DropdownMenu.prototype = new UIComponent();
+DropdownMenu.prototype.setLabel = function (l) {
+	this.$w = l;
+	this.refresh();
+};
+DropdownMenu.prototype.refresh = function () {
+	this.updateLabel();
+	if (this.i$) this.b3(this.i$, this.aor);
+	this.c(this.Lq);
+};
+DropdownMenu.prototype.b = function () {
+	return this.Lq;
+};
+DropdownMenu.prototype.b3 = function (l, d) {
+	s.clearChildren(this.I6);
+	var _local108 = [],
+		_local111 = 0;
+	if (d) {
+		_local108.push(d[0]);
+		for (var _local107 = 1; _local107 < d.length; _local107++) _local108.push(_local108[_local107 - 1] + d[_local107]);
+	}
+	this.i$ = l;
+	this.CI = [];
+	this.aor = d;
+	for (var _local107 = 0; _local107 < l.length; _local107++) {
+		var _local110 = s.createElement("option");
+		if (this.EF.indexOf(_local107) != -1) _local110.setAttribute("disabled", "");
+		_local110.textContent = languageManager.get(l[_local107]);
+		_local110.setAttribute("value", _local107);
+		this.I6.appendChild(_local110);
+		this.ES.push(_local110);
+		this.CI.push(_local107 + _local111);
+		if (_local108.indexOf(_local107 + 1) != -1 && _local107 != l.length - 1) {
+			var _local109 = s.createElement("option");
+			_local109.setAttribute("disabled", "");
+			_local109.textContent = "";
+			this.I6.appendChild(_local109);
+			_local111++;
+		}
+	}
+};
+DropdownMenu.prototype.a27 = function (A) {
+	var _local113 = this.EF,
+		_local112 = _local113.indexOf(A);
+	if (_local112 == -1) _local113.push(A);
+	this.refresh();
+};
+DropdownMenu.prototype.aAz = function (A) {
+	var _local115 = this.EF,
+		_local114 = _local115.indexOf(A);
+	if (_local114 != -1) _local115.splice(_local114, 1);
+	this.refresh();
+};
+DropdownMenu.prototype.c = function (l) {
+	this.Lq = l;
+	this.I6.selectedIndex = this.CI[l];
+};
+DropdownMenu.prototype.oi = function (l) {
+	this.Lq = this.CI.indexOf(this.I6.selectedIndex);
+	this.dispatch(new Action(ActionTypes.E.A, !1));
+};
+DropdownMenu.prototype.KY = function () {
+	this.I6.focus();
+};
+
+
+
+function ToolbarColumn(l, d) {
+	SidebarColumnBase.call(this, "toolbar");
+	this.e.removeChild(this.p1);
+	this.eN = s.createElement("div", "tools");
+	this.e.appendChild(this.eN);
+	this.df = null;
+	this.QN = null;
+	this.ao3 = d;
+	this.ax = null;
+	this.aiU = -1;
+	this.ay2 = {};
+	this.asE = l;
+	this.d = null;
+	this.k3 = null;
+	this.Pd = null;
+	this.FW = null;
+	this.PK = new ForeBackColorSwatch;
+	this.PK.e.style.marginTop = "5px";
+	this.PK.e.style.marginBottom = "3px";
+	this.PK.parent = this;
+	this.kg = new ToolbarButton(s.getIconImgHtml("lrs/mask"), !1, [6, 6, 1]);
+	this.kg.addListener("click", function(Q) {
+		var t = new Action(ActionTypes.E.v, !0);
+		t.G = f.Da;
+		t.data = {
+			a: "qmask"
+		};
+		this.dispatch(t)
+	}, this);
+	var G = new MultiOptionBox(null, ["Ctrl", "Alt", "Shift", "No Touch"], !0, null, null, !0);
+	G.addListener(ActionTypes.E.A, this.a5E, this);
+	var b = s.createElement("span", "rangecontFloat form padded");
+	b.appendChild(G.e);
+	b.setAttribute("style", "position:absolute; width:119px; z-index:2;  padding-right:0px; ");
+	var V = this.e;
+	this.acK = [!1, !1, !1, !1];
+	this.hs = new ToolbarButton(s.getIconImgHtml("kb"), !1, "Virtual Keys");
+	this.hs.addListener("click", function(Q) {
+		var t = this.hs.e.getBoundingClientRect();
+		b.style.top = t.top - 110 + "px";
+		b.style.left = t.left + t.width + 8 + "px";
+		if (s.isInDocument(b)) {
+			s.hideWithTransition({
+				e: b
+			}, V)
+		} else {
+			V.appendChild(b);
+			s.showWithTransition({
+				e: b
+			})
+		}
+	}, this)
+}
+ToolbarColumn.prototype = new SidebarColumnBase;
+ToolbarColumn.prototype.a5E = function(l) {
+	var d = l.target.b();
+	this.hs.c(d[0] || d[1] || d[2] || d[3]);
+	var G = new Action(ActionTypes.E.L, !0);
+	for (var A = 0; A < 4; A++) {
+		if (d[A] != this.acK[A]) {
+			G.data = {
+				a: ActionTypes.$.agL,
+				oW: d[A],
+				an9: ["ControlLeft", "AltLeft", "ShiftLeft", "NoTouch"][A]
+			};
+			this.dispatch(G)
+		}
+	}
+	this.acK = d.slice(0)
+};
+ToolbarColumn.prototype.aam = function(l, d) {
+	this.ax = d;
+	if (l == null || l.g.length == 0 || l.B[l.g[0]] == null) return;
+	var G = l.kg() != null,
+		b = l.u.MX,
+		V = l.B[l.g[0]].ht,
+		Q = V == 1 || V == 3 || G || b[0] + b[1] + b[2] == 1;
+	this.PK.atT(Q);
+	this.kg.c(G)
+};
+ToolbarColumn.prototype.akt = function(l, d) {
+	var G = l.length,
+		b = [];
+	for (var A = 0; A < G; A++) b[A] = l[A].slice(0);
+	l = b;
+	var V = [1, 2, 4, 5, 7, 8, 7, 9, 11, 12, 14, 15, 14, 16, 10, 11, 1, 3, 17, 18, 7, 6, 13, 14],
+		Q = Math.min(V.length / 2, G - d);
+	for (var A = 0; A < Q; A++) {
+		var t = V[2 * A],
+			I = V[2 * A + 1];
+		l[t] = l[t].concat(l[I]);
+		l[I] = null
+	}
+	for (var A = 0; A < l.length; A++)
+		if (l[A] == null) {
+			l.splice(A, 1);
+			A--
+		}
+	return l
+};
+ToolbarColumn.prototype.adz = function(l, d) {
+	for (var A = 0; A < d.length; A++)
+		for (var G = 0; G < d[A].length; G++)
+			if (d[A][G].G.id == l) return A
+};
+ToolbarColumn.prototype.agr = function(l) {
+	var d = this.asE;
+	this.k3 = [];
+	this.Pd = [];
+	this.FW = [];
+	this.d = [];
+	var G = d.vu;
+	if (l != null && this.ao3) G = this.akt(G, l);
+	var b = this.df;
+	if (b) {
+		var V = [];
+		for (var A = 0; A < G.length; A++) {
+			var Q = [];
+			for (var t = 0; t < G[A].length; t++) {
+				var I = G[A][t];
+				if (b == null || b.indexOf(parseInt(I.G.id)) != -1) Q.push(I)
+			}
+			if (Q.length > 0) V.push(Q)
+		}
+		G = V
+	}
+	for (var A = 0; A < G.length; A++) {
+		var y = [],
+			e = this.k3.length,
+			M = null,
+			R = -1;
+		for (var t = 0; t < G[A].length; t++) {
+			var I = G[A][t].G,
+				J = this.adz(I.id, d.vu),
+				n = d.keys[J];
+			if (n == KeyboardHandler.Zi && t == 1) n = KeyboardHandler.xA;
+			this.d.push(I);
+			var r = new ToolButton(I.name, n, I.mq, this.k3.length, A, G[A].length > 1);
+			this.k3.push(r);
+			var T = this.ay2[I.id];
+			if (T == null) T = 0;
+			if (T > R) {
+				R = T;
+				M = r
+			}
+			r.addListener(ActionTypes.E.A, this.oi, this);
+			r.addListener("mover", this.oj, this);
+			y.push({
+				name: I.name,
+				e2: I.mq,
+				C0: n ? n.hy : ""
+			})
+		}
+		this.Pd.push(M);
+		this.FW.push(y.length == 1 ? null : [y, e])
+	}
+};
+ToolbarColumn.prototype.resize = function(l, d) {
+	var G = this.Tq = d,
+		b = 32;
+	if (1 < s.getDevicePixelRatio() && s.getDevicePixelRatio() < 1.5) b = 18 + 14 * (1 / s.getDevicePixelRatio());
+	var V = 39 + 23,
+		Q = Math.floor((G - V) / b);
+	if (Q != this.aiU) {
+		this.aiU = Q;
+		this.agr(Q);
+		this.fr()
+	}
+	var t = this.Pd.length * b + V,
+		I = Math.min(1, G / t);
+	if (.75 <= I) {
+		this.eN.setAttribute("style", "width:34px; transform-origin: top left; transform: scale(" + I + "," + I + ");");
+		this.e.setAttribute("style", "height:" + (d - 2) + "px;")
+	} else {
+		G -= 4;
+		this.eN.setAttribute("style", "height: " + G + "px;  width:" + Math.ceil(t / G) * 34 + "px");
+		this.e.setAttribute("style", "")
+	}
+};
+ToolbarColumn.prototype.refresh = function() {
+	if (this.d == null) return;
+	for (var A = 0; A < this.k3.length; A++) this.k3[A].refresh()
+};
+ToolbarColumn.prototype.oi = function(l) {
+	var d = new Action(ActionTypes.E.L, !0);
+	d.data = {
+		a: ActionTypes.$.yb,
+		G: this.d[l.id].id
+	};
+	this.dispatch(d)
+};
+ToolbarColumn.prototype.aju = function(l) {
+	var d = l.target.a48 + l.target.sz()[0];
+	this.k3[d].qd(null, !0)
+};
+ToolbarColumn.prototype.oj = function(l) {
+	var d = this.ax,
+		G = new Action(ActionTypes.E.L, !0);
+	G.data = {
+		a: ActionTypes.$.xt
+	};
+	this.dispatch(G);
+	var b = l.target,
+		V = this.FW[b.vv];
+	if (V == null) return;
+	var Q = new ContextPanel(V[0], null, !0);
+	Q.a48 = V[1];
+	Q.vv = b.vv;
+	Q.addListener("select", this.aju, this);
+	Q.parent = this;
+	Q.refresh();
+	var t = b.e.getBoundingClientRect(),
+		G = new Action(ActionTypes.E.L, !0);
+	G.data = {
+		a: ActionTypes.$.dY,
+		A3: Q,
+		x: t.left + t.width + 8,
+		y: t.top
+	};
+	if (d == null || !(d.l(KeyboardHandler.Mm) || d.l(KeyboardHandler.wz))) this.dispatch(G)
+};
+ToolbarColumn.prototype.fr = function(l) {
+	if (l == null) l = this.QN;
+	this.QN = l;
+	if (this.d == null) return;
+	this.ay2[l] = Date.now();
+	var d = -1;
+	for (var A = 0; A < this.d.length; A++)
+		if (this.d[A].id == l) d = A;
+	for (var A = 0; A < this.k3.length; A++) {
+		var G = this.k3[A];
+		G.a72(d == A)
+	}
+	if (d == -1) return;
+	this.Pd[this.k3[d].vv] = this.k3[d];
+	s.clearChildren(this.eN);
+	var b = this.Pd;
+	for (var A = 0; A < b.length; A++) {
+		this.eN.appendChild(b[A].e)
+	}
+	if (!this.ao3) return;
+	this.eN.appendChild(this.PK.e);
+	if (this.Tq > 640) this.eN.appendChild(this.kg.e);
+	this.eN.appendChild(this.hs.e)
+};
+ToolbarColumn.prototype.BM = function(l, d) {
+	if (d == PsdResourceTypes.Wx && l.df) {
+		this.df = l.df;
+		this.agr();
+		this.fr()
+	}
+	this.PK.ah9(l.Y7, l.GF)
+};
+
+
+function SidebarColumnBase(l) {
+	UIComponent.call(this);
+	if (l == null) return;
+	this.iJ = null;
+	this.Tq = null;
+	this.e = s.createElement("div", "sbar " + l);
+	this.p1 = new s.createElement("div", "top");
+	this.p1.innerHTML = "> <";
+	this.e.appendChild(this.p1);
+	this._h = 1;
+	// this.p1.addEventListener("click", this.a2b.bind(this), !1)
+}
+SidebarColumnBase.prototype = new UIComponent;
+SidebarColumnBase.prototype.a2b = function(l) {
+	if (this.iJ != null && this.iJ < 500 && this._h == 0) return;
+	if (this._h == 0) this.sS(!0);
+	else this.collapse(!0)
+};
+SidebarColumnBase.prototype.arM = function(l) {
+	this._h = l;
+	this.p1.innerHTML = this._h == 0 ? "< >" : "> <"
+};
+SidebarColumnBase.prototype.aae = function() {
+	var l = new Action(ActionTypes.E.L, !0);
+	l.data = {
+		a: ActionTypes.$.to
+	};
+	this.dispatch(l)
+};
+SidebarColumnBase.prototype.sS = function(l) {
+	this.arM(1);
+	if (l) this.aae()
+};
+SidebarColumnBase.prototype.collapse = function(l) {
+	this.arM(0);
+	if (l) this.aae()
+};
+SidebarColumnBase.prototype.TL = function() {
+	return this._h == 1
+};
+
+function VerticalSidebarColumn(l, d) {
+	SidebarColumnBase.call(this, "vcolumn");
+	this.NG = l;
+	this.asM = d;
+	this.nD();
+	this.BC = s.createElement("div");
+	this.BC.setAttribute("style", "cursor:default;");
+	this.anY = this.a3B.bind(this);
+	this.aj3 = this.a0u.bind(this);
+	this.a3W = this.azN.bind(this);
+	s.addPointerDown(this.e, this.anY);
+	this.e.appendChild(this.BC);
+	this.Ki = s.createElement("div");
+	this.BC.appendChild(this.Ki);
+	this.r0 = -1;
+	this.aca = s.createElement("div", "float");
+	var G = this.Yg = s.createElement("canvas", "gsicon"),
+		b = Math.round(12 * s.getDevicePixelRatio());
+	G.width = G.height = b;
+	var V = G.getContext("2d", { willReadFrequently: true });
+	V.moveTo(2, 2);
+	V.lineTo(b - 2, b - 2);
+	V.moveTo(2, 7);
+	V.lineTo(b - 7, b - 2);
+	V.stroke();
+	this.Yg.setAttribute("style", "position:absolute; bottom:0;  left:0;  cursor:nesw-resize;");
+	s.preventTouchAndGesture(this.Yg);
+	s.addPointerDown(this.Yg, this.anY);
+	s.setCanvasCssSizeForDpr(G);
+	this.xY = [];
+	this.rd = [];
+	this.a7L = null;
+	this.$W = null;
+	this.abt = 0
+}
+VerticalSidebarColumn.prototype = new SidebarColumnBase;
+VerticalSidebarColumn.prototype.a3B = function(l) {
+	var d = l.target == this.Yg;
+	if (!d) {
+		if (l.target != this.e) return;
+		if (!this.TL()) return
+	} else {
+		var G = this.xY[this.r0]._F;
+		G.style.pointerEvents = "none";
+		var b = G.getBoundingClientRect();
+		this.a7L = [b.width, b.height];
+		this.rd[this.r0] = [b.width, b.height]
+	}
+	l.stopPropagation();
+	this.$W = s.getEventPositionInElement(l, document.body);
+	this.abt = this.NG;
+	s.addPointerMove(document, this.aj3);
+	s.addPointerUp(document, this.a3W)
+};
+VerticalSidebarColumn.prototype.a0u = function(l) {
+	var d = s.getEventPositionInElement(l, document.body);
+	if (this.TL()) {
+		this.NG = this.abt + this.$W.x - d.x;
+		this.nD()
+	} else {
+		var G = this.rd[this.r0],
+			b = this.a7L;
+		G[0] = b[0] + this.$W.x - d.x;
+		G[1] = b[1] + d.y - this.$W.y
+	}
+	var V = new Action(ActionTypes.E.L, !0);
+	V.data = {
+		a: ActionTypes.$.to
+	};
+	this.dispatch(V)
+};
+VerticalSidebarColumn.prototype.azN = function(l) {
+	if (!this.TL()) {
+		var d = this.xY[this.r0]._F;
+		d.style.pointerEvents = "auto"
+	}
+	s.removePointerMove(document, this.aj3);
+	s.removePointerUp(document, this.a3W)
+};
+VerticalSidebarColumn.prototype.ayf = function(l) {
+	l.addListener("showFloat", this.a7Z, this);
+	l.addListener("hideFloat", this.Lb, this);
+	this.xY.push(l);
+	l.parent = this;
+	this.BC.appendChild(l.e)
+};
+VerticalSidebarColumn.prototype.akg = function(A) {
+	var l = this.xY[A];
+	l.removeEventListener("showFloat", this.a7Z, this);
+	l.removeEventListener("hideFloat", this.Lb, this);
+	this.xY.splice(A, 1);
+	l.parent = null;
+	this.BC.removeChild(l.e)
+};
+VerticalSidebarColumn.prototype.aoj = function() {
+	return this.xY.length
+};
+VerticalSidebarColumn.prototype.AH = function() {
+	for (var A = 0; A < this.xY.length; A++) this.xY[A].AH()
+};
+VerticalSidebarColumn.prototype.a7Z = function(l) {
+	this.AH();
+	var d = this.aca;
+	this.Ki.appendChild(d);
+	this.r0 = this.xY.indexOf(l.currentTarget);
+	var G = this.xY[this.r0]._F;
+	s.clearChildren(d);
+	d.appendChild(G);
+	d.appendChild(this.Yg);
+	this.resize(this.iJ, this.Tq)
+};
+VerticalSidebarColumn.prototype.Lb = function(l) {
+	this.AH();
+	if (this.r0 != -1) {
+		this.Ki.removeChild(this.aca);
+		this.r0 = -1
+	}
+};
+VerticalSidebarColumn.prototype.nD = function() {
+	function l(d) {
+		return Math.round(d * s.getDevicePixelRatio()) / s.getDevicePixelRatio()
+	}
+	this.e.setAttribute("style", "width: " + this.NG + "px; border-left-width:" + l(4) + "px; cursor:ew-resize;")
+};
+VerticalSidebarColumn.prototype.sS = function(l) {
+	this.nD();
+	this.Lb();
+	for (var A = 0; A < this.xY.length; A++) this.xY[A].sS();
+	SidebarColumnBase.prototype.sS.call(this, l)
+};
+VerticalSidebarColumn.prototype.collapse = function(l) {
+	this.e.removeAttribute("style");
+	for (var A = 0; A < this.xY.length; A++) this.xY[A].collapse();
+	SidebarColumnBase.prototype.collapse.call(this, l)
+};
+VerticalSidebarColumn.aoR = 11;
+VerticalSidebarColumn.prototype.resize = function(l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	d -= VerticalSidebarColumn.aoR;
+	var G = this.xY.length;
+	if (G == 0) return;
+	if (!this.TL()) {
+		var b = d < 400 ? d : 400 + (d - 400) * .5;
+		for (var A = 0; A < G; A++) {
+			var V = this.xY[A],
+				Q = this.rd[A];
+			V.resize(Q ? Q[0] : this.NG, Q ? Q[1] : b)
+		}
+	} else {
+		var t = d;
+		for (var A = 0; A < G; A++) {
+			var V = this.xY[A],
+				I = V.aeM();
+			if (A == G - 1) {
+				I = t;
+				V.e.style.borderBottom = "none"
+			}
+			V.resize(this.NG, I);
+			t -= I + 4
+		}
+	}
+};
+
+
+function ForeBackColorSwatch() {
+	UIComponent.call(this);
+	this.K2 = !1;
+	this.qn = 20;
+	this.auo = 10;
+	this.D$ = 0;
+	this.K2 = !1;
+	this.gl = {
+		o: 255,
+		J: 0,
+		k: 0
+	};
+	this.H3 = {
+		o: 0,
+		J: 0,
+		k: 0
+	};
+	this.e = s.createElement("canvas");
+	this.VP();
+	s.preventTouchAndGesture(this.e);
+	s.addPointerDown(this.e, this.TC.bind(this));
+}
+ForeBackColorSwatch.prototype = new UIComponent();
+ForeBackColorSwatch.prototype.atT = function (l) {
+	if (this.K2 == l) return;
+	this.K2 = l;
+	this.VP();
+};
+ForeBackColorSwatch.prototype.refresh = function () {};
+ForeBackColorSwatch.prototype.ah9 = function (l, d) {
+	function _local308(b) {
+		return {
+			o: b >> 16 & 255,
+			J: b >> 8 & 255,
+			k: b & 255
+		};
+	}
+	if (l != null) this.gl = _local308(l);
+	if (d != null) this.H3 = _local308(d);
+	this.VP();
+};
+ForeBackColorSwatch.prototype.TC = function (l) {
+	var _local313 = s.getEventPositionInElement(l, this.e),
+		_local309 = _local313.x * s.getDevicePixelRatio(),
+		_local312 = _local313.y * s.getDevicePixelRatio(),
+		_local311 = this.qn,
+		_local310 = this.auo,
+		_local314 = 0;
+	if (_local309 < _local310 && _local312 < _local310) {
+		_local314 = 0;
+	} else if (_local309 > _local311 - _local310 && _local312 > _local311 - _local310) {
+		_local314 = 1;
+	} else if (_local309 < _local310) {
+		_local314 = 2;
+	} else {
+		_local314 = 3;
+	}
+	this.BN(_local314);
+};
+ForeBackColorSwatch.prototype.BN = function (l) {
+	var _local316 = new Action(ActionTypes.E.L, !0);
+	if (l > 1) _local316.data = {
+		a: ActionTypes.$.kI,
+		Oo: PsdResourceTypes.K5,
+		y3: l
+	};else
+	{
+		this.D$ = l;
+		var _local315 = l == 0 ? this.gl : this.H3;
+		_local316.data = {
+			a: ActionTypes.$.SN,
+			GU: "colorpicker",
+			_A: _local315.o << 16 | _local315.J << 8 | _local315.k,
+			qF: this.Y_.bind(this)
+		};
+	}
+	this.dispatch(_local316);
+};
+ForeBackColorSwatch.prototype.Y_ = function (l) {
+	var _local317 = new Action(ActionTypes.E.L, !0);
+	_local317.data = {
+		a: ActionTypes.$.kI,
+		Oo: PsdResourceTypes.K5,
+		y3: this.D$,
+		Z: l
+	};
+	this.dispatch(_local317);
+};
+ForeBackColorSwatch.prototype.VP = function () {
+	var _local329 = this.e,
+		_local327 = _local329.getContext("2d", { willReadFrequently: true }),
+		_local319 = s.getDevicePixelRatio(),
+		_local325 = "#aaaaaa",
+		_local323 = .62;
+	s.setCanvasSizeForDpr(_local329, 34, 34);
+	_local329.setAttribute("style", _local329.getAttribute("style") + ";cursor:pointer");
+	var _local326 = this.qn = _local329.width,
+		_local331 = this.auo = Math.round(_local326 * _local323);
+
+	function _local320(r, T) {
+		var _local335 = r.o,
+			_local334 = r.J,
+			_local333 = r.k;
+		if (T) _local335 = _local334 = _local333 = Math.round(PixelUtil.luminanceRgb(_local335, _local334, _local333));
+		var _local336 = _local335 << 16 | _local334 << 8 | _local333;
+		return "#" + PixelUtil.intToHex6(_local336);
+	}
+
+	function _local332(d, r, T, j, g, Y) {
+		d.beginPath();
+		if (j >= Y * 2 && g >= Y * 2) {
+			d.moveTo(r + Y, T);
+			d.lineTo(r + j - Y, T);
+			d.quadraticCurveTo(r + j, T, r + j, T + Y);
+			d.lineTo(r + j, T + g - Y);
+			d.quadraticCurveTo(r + j, T + g, r + j - Y, T + g);
+			d.lineTo(r + Y, T + g);
+			d.quadraticCurveTo(r, T + g, r, T + g - Y);
+			d.lineTo(r, T + Y);
+			d.quadraticCurveTo(r, T, r + Y, T);
+		}
+		d.closePath();
+	}
+
+	function _local328(r, T, t, j, g) {
+		_local327.strokeStyle = g ? g : "black";
+		_local327.fillStyle = j;
+		_local332(_local327, r + .5, T + .5, t - 1, t - 1, t * .2);
+		_local327.fill();
+		_local327.stroke();
+	}
+	_local328(_local326 - _local331, _local326 - _local331, _local331, _local320(this.H3, this.K2));
+	_local328(0, 0, _local331, _local320(this.gl, this.K2));
+	var _local322 = _local326 - _local331,
+		_local324 = Math.round(_local322 * _local323);
+	_local328(_local326 - _local324, _local322 - _local324, _local324, "white", _local325);
+	_local328(_local326 - _local322, 0, _local324, "black", _local325);
+	_local327.save();
+	_local327.fillStyle = _local325;
+	_local327.translate(0, _local326);
+	_local327.rotate(-Math.PI / 2);
+	_local322 = _local326 - _local331;
+	var _local321 = Math.round(_local322 * .28),
+		_local330 = Math.round(_local322 * .25);
+	for (var _local318 = 0; _local318 < 2; _local318++) {
+		_local327.fillRect(_local321, _local321, _local322 - _local321, 1);
+		_local327.beginPath();
+		_local327.moveTo(_local322 - _local330, _local321 + .5 - _local330);
+		_local327.lineTo(_local322, _local321 + .5);
+		_local327.lineTo(_local322 - _local330, _local321 + .5 + _local330);
+		_local327.closePath();
+		_local327.fill();
+		_local327.transform(0, 1, 1, 0, 0, 0);
+	}
+	_local327.restore();
+};
+
+
+function MultiOptionBox(l, d, G, b, V, Q) {
+	UIComponent.call(this);
+	this.e = s.createElement("span", "fitem mbox");
+	this.axT = G;
+	this.az$ = V;
+	if (l) {
+		this.$w = l;
+		this.oG = s.createElement("label", "flabel");
+		this.e.appendChild(this.oG);
+	}
+	this.jr = d;
+	this.pK = [];
+	for (var _local129 = 0; _local129 < d.length; _local129++) {
+		var _local130 = G ? new ToolbarButton(d[_local129], !1, b ? b[_local129] : null, !1, Q) : new CheckboxControl(d[_local129], !0, "");
+		_local130.addListener(G ? "click" : ActionTypes.E.A, this.oi, this);
+		this.pK.push(_local130);
+		this.e.appendChild(_local130.e);
+	}
+	this.refresh();
+}
+MultiOptionBox.prototype = new UIComponent();
+MultiOptionBox.prototype.c = function (l) {
+	for (var _local131 = 0; _local131 < this.jr.length; _local131++) this.pK[_local131].c(l[_local131]);
+};
+MultiOptionBox.prototype.b = function () {
+	var _local133 = [];
+	for (var _local132 = 0; _local132 < this.jr.length; _local132++) _local133[_local132] = this.pK[_local132].b();
+	return _local133;
+};
+MultiOptionBox.prototype.refresh = function () {
+	if (this.$w) this.oG.innerHTML = languageManager.get(this.$w) + ": ";
+	var _local135 = this.pK;
+	for (var _local134 = 0; _local134 < _local135.length; _local134++) {
+		_local135[_local134].refresh();
+		if (_local134 == _local135.length - 1) _local135[_local134].e.style.marginRight = "0px";
+	}
+};
+MultiOptionBox.prototype.oi = function (l) {
+	var _local136 = this.pK.indexOf(l.currentTarget),
+		_local138 = this.pK[_local136];
+	if (this.axT) _local138.c(!_local138.b());
+	if (this.az$) {
+		var _local137 = _local138.b();
+		for (var _local136 = 0; _local136 < this.pK.length; _local136++) this.pK[_local136].c(!1);
+		_local138.c(_local137);
+	}
+	this.dispatch(new Action(ActionTypes.E.A, !1));
+};
+
+
+
+function ToolbarButton(l, d, G, b, V) {
+	UIComponent.call(this);
+	this.Eg = !1;
+	this.e = s.createElement("button", "fitem" + (d ? " spread" : "") + (b ? " bbtn" : ""));
+	this.$w = l;
+	this.pd = G;
+	this.refresh();
+	var _local64 = V && window.PointerEvent ? "pointerup" : "click";
+	// console.log(this.e);
+	this.e.addEventListener(_local64, this.ec.bind(this), !1);
+}
+
+ToolbarButton.prototype = new UIComponent();
+
+ToolbarButton.prototype.refresh = function () {
+	var _local67 = this.e,
+		_local66 = this.$w,
+		_local65 = this.pd;
+	if (typeof _local66 == "string" && (_local66.startsWith("<img") || _local66.startsWith("<svg") || _local66.startsWith("<span"))) {
+		if (!this.Eg) {
+			_local67.innerHTML = _local66;
+			_local67.setAttribute("style", "padding:2px");
+			this.Eg = !0;
+		}
+	} else _local67.textContent = languageManager.get(_local66);
+	if (_local65) {
+		_local67.setAttribute("title", languageManager.get(_local65));
+	}
+};
+
+ToolbarButton.prototype.arb = function (l) {
+	this.e.setAttribute("title", l);
+};
+
+ToolbarButton.prototype.ec = function (l) {
+	this.dispatch(new Action("click", !1));
+};
+
+ToolbarButton.prototype.Nu = function () {
+	s.addClass(this.e, "bactive");
+};
+
+ToolbarButton.prototype.kL = function () {
+	s.removeClass(this.e, "bactive");
+};
+
+ToolbarButton.prototype.setLabel = function (l, d) {
+	if (l && l != this.$w) {
+		this.$w = l;
+		this.Eg = !1;
+	}
+	if (d) this.pd = d;
+	this.refresh();
+};
+
+ToolbarButton.prototype.c = function (l) {
+	if (l) this.Nu();else
+	this.kL();
+};
+
+ToolbarButton.prototype.dB = function () {
+	return this.e.getAttribute("class").indexOf("bactive") != -1;
+};
+
+ToolbarButton.prototype.b = function () {
+	return this.dB();
+};
+
+
+
+function PanelTabBase(l, d, G, b) {
+	UIComponent.call(this);
+	this.name = l;
+	this.amM = G;
+	this.kR = b;
+	this.PT = s.createElement("div", "");
+	this.PT.setAttribute("draggable", "true");
+	this.DK = s.createElement("div", "pbody");	
+	this.wZ = new ToolbarButton("", !1, "");
+	this.wZ.parent = this;
+	this.a8x = s.createElement("span", "cross gsicon");
+	this.c1 = s.createElement("span", "label");
+	if (!this.a7f) return; // hbi
+	var _local3351 = this.a7f.bind(this);
+	this.PT.addEventListener("mousedown", this.av_.bind(this), !1);
+	this.PT.addEventListener("contextmenu", _local3351, !1);
+	this.wZ.e.addEventListener("contextmenu", _local3351, !1);
+	this.a8x.addEventListener("mousedown", this.gV.bind(this), !1);
+	this.PT.appendChild(this.c1);
+	if (d) this.PT.appendChild(this.a8x);
+	this.Lq = !1;
+	this.c1.textContent = l;
+}
+
+PanelTabBase.prototype = new UIComponent();
+
+PanelTabBase.prototype.xI = function () {
+	return null;
+};
+
+PanelTabBase.prototype.refresh = function () {
+	var _local3359 = languageManager.get(this.name),
+		_local3357 = !1,
+		_local3352 = this.iJ == 0 ? 22 : Math.round(2 + this.iJ / 50);
+	if (_local3359.endsWith(" *")) {
+		_local3357 = !0;
+		_local3359 = _local3359.slice(0, _local3359.length - 2);
+		_local3352 -= 2;
+	}
+	var _local3356 = _local3359.length > _local3352;
+	this.c1.textContent = _local3356 ? _local3359.slice(0, _local3352 - 2) : _local3359;
+	if (_local3356)
+	for (var _local3355 = 0; _local3355 < 2; _local3355++) {
+		var _local3354 = s.createElement("span");
+		_local3354.textContent = _local3359.charAt(_local3352 - 2 + _local3355);
+		_local3354.setAttribute("style", "opacity:" + (.6 - _local3355 * .4));
+		this.c1.appendChild(_local3354);
+	}
+	if (_local3357) {
+		var _local3354 = s.createElement("span");
+		_local3354.textContent = " *";
+		this.c1.appendChild(_local3354);
+	}
+	var _local3360 = _local3359.split(" "),
+		_local3353 = _local3360.length == 2 ? _local3360[0].substring(0, 2) + _local3360[1][0] : _local3359.substring(0, 3);
+	if (_local3353.charCodeAt(0) >= 11776) _local3353 = _local3353.substring(0, 1);
+	var _local3361 = this.amM;
+	if (_local3361 == null) this.wZ.setLabel(_local3353, _local3359);else
+	{
+		var _local3358;
+		if (_local3361.startsWith("---")) _local3358 = "<img src=\"" + PIMG[_local3361.slice(3)] + "\" class=\"autoscale gsicon\" style=\"margin:2px 4px;\"/>";else
+		if (_local3361.startsWith("===")) _local3358 = "<img src=\"" + _local3361.slice(3) + "\" class=\"autoscale gsicon\" style=\"margin:2px 4px;\"/>";else
+		if (_local3361.indexOf("\"") == -1) _local3358 = "<img src=\"" + _local3361 + "\" alt=\"" + s.escapeHtml(_local3359).replace(/"/g, "&quot;") + "\" height=\"18\" width=\"18\" loading=\"lazy\" style=\"margin:1px 3px;\" />";
+		this.wZ.setLabel(_local3358, _local3359);
+	}
+};
+
+PanelTabBase.prototype.enable = function () {
+	this.DK.className = "pbody";
+};
+
+PanelTabBase.prototype.disable = function () {
+	this.DK.className = "pbody disabled";
+};
+
+PanelTabBase.prototype.BM = function (l, d) {};
+
+PanelTabBase.prototype.Yw = function (l, d, G) {};
+
+PanelTabBase.prototype.em = function (l) {};
+
+PanelTabBase.prototype.resize = function (l, d) {};
+
+PanelTabBase.prototype.Pl = function (l) {
+	this.name = l;
+	this.refresh();
+};
+
+PanelTabBase.prototype.KN = function () {};
+
+PanelTabBase.prototype.av_ = function (l) {
+	if (l.button == 0) this.dispatch(new Action("select", !1));
+};
+
+PanelTabBase.prototype.a7f = function (l) {
+	s.stopAndPreventHandler(l);
+	if (this.kR != null && isNaN(this.kR)) return;
+	var _local3364 = s.getEventPositionInElement(l, document.body),
+		_local3362 = this.Rk;
+	if (_local3362 == null) {
+		_local3362 = this.Rk = new ContextPanel([{
+			name: "Close"
+		}]);
+		this.Rk.addListener("select", this.gV, this);
+	}
+	_local3362.update(null);
+	_local3362.refresh();
+	_local3362.parent = this;
+	var _local3363 = new Action(ActionTypes.E.L, !0);
+	_local3363.data = {
+		a: ActionTypes.$.dY,
+		A3: _local3362,
+		x: _local3364.x + 1,
+		y: _local3364.y + 1
+	};
+	this.dispatch(_local3363);
+};
+
+PanelTabBase.prototype.pN = function () {
+	this.gV({});
+};
+
+PanelTabBase.prototype.gV = function (l) {
+	if (l.stopPropagation) l.stopPropagation();
+	if (this.kR != null && !isNaN(this.kR)) {
+		var _local3365 = new Action(ActionTypes.E.L, !0);
+		_local3365.data = {
+			a: ActionTypes.$.qH,
+			A3: this.Rk
+		};
+		this.dispatch(_local3365);
+		_local3365.data = {
+			a: ActionTypes.$.kI,
+			Oo: PsdResourceTypes.X2,
+			Z: parseFloat(this.kR),
+			pb: "del"
+		};
+		this.dispatch(_local3365);
+	} else if (this.ah$()) this.dispatch(new Action(ActionTypes.E.Ax, !1));
+};
+
+PanelTabBase.prototype.ah$ = function (l) {
+	return !0;
+};
+
+PanelTabBase.prototype.dJ = function (l, d, G, b, V) {};
+
+PanelTabBase.prototype.JP = function (l, d, G, b, V) {};
+
+PanelTabBase.prototype.Nl = function (l, d, G, b, V) {};
+
+PanelTabBase.di = function (l, d, G) {
+	if (l.childElementCount != 0) return;
+	var _local3367 = l.textContent;
+	this.M1 = this.auP.bind(this);
+	this.a6e = this.a0b.bind(this);
+	this.sd = d;
+	this.apP = G;
+	this.Qj = l;
+	this.afZ = _local3367;
+	var _local3366 = s.createElement("input", "");
+	_local3366.setAttribute("type", "text");
+	_local3366.setAttribute("size", "10");
+	_local3366.setAttribute("value", _local3367);
+	s.clearChildren(l);
+	l.appendChild(_local3366);
+	_local3366.select();
+	_local3366.focus();
+	s.addKeydownBlocker(l);
+	l.addEventListener("keyup", this.M1, !1);
+	document.body.addEventListener("mousedown", this.a6e, !1);
+};
+
+PanelTabBase.di.prototype.auP = function (l) {
+	var _local3369 = KeyboardHandler._Q,
+		_local3368 = _local3369(l.code, KeyboardHandler.lm);
+	if (_local3369(l.code, KeyboardHandler.mp) || _local3368) this.azL(_local3368);
+};
+
+PanelTabBase.di.prototype.a0b = function (l) {
+	var _local3370 = l.target;
+	if (_local3370.tagName && _local3370.tagName.toLowerCase() == "input") return;
+	this.azL(!0);
+};
+
+PanelTabBase.di.prototype.azL = function (l) {
+	var _local3372 = this.Qj,
+		_local3371 = _local3372.firstChild.value;
+	_local3372.removeEventListener("keyup", this.M1);
+	document.body.removeEventListener("mousedown", this.a6e);
+	if (this.apP || l && _local3371 != "" && _local3371 != this.afZ) {
+		this.sd(_local3371);
+	} else {
+		s.clearChildren(_local3372);
+		_local3372.textContent = this.afZ;
+	}
+};
+
+PanelTabBase.xA = {
+	lv: "0",
+	agA: "1",
+	yS: "2",
+	aoQ: "3",
+	a7r: "4",
+	uB: "5",
+	CSS: "6",
+	CV: "7",
+	ax2: "8",
+	a46: "9",
+	alU: "10",
+	abR: "11",
+	afm: "12",
+	K5: "13",
+	qa: "14",
+	aAh: "15",
+	aan: "16",
+	fe: "17",
+	auV: "18",
+	al9: "19",
+	al6: "20",
+	G9: "21",
+	avR: "22",
+	atY: "23"
+};
+
+
+function PanelContainer(l) {
+UIComponent.call(this);
+this.u7 = PanelContainer.u7++;
+	this.SB = l;
+	this.a9a = this.a6v.bind(this);
+	this.azi = this.aqE.bind(this);
+	this.avU = this.r5.bind(this);
+	this.aqm = this.agR.bind(this);
+	this.aye = this.a0Z.bind(this);
+	this.ait = this.ado.bind(this);
+	this.gm = 0;
+	this.amD = 0;
+	this.aqA = 0;
+	this.e = s.createElement("div", "panelblock");
+	this._F = s.createElement("div", "block");
+	this.ar = s.createElement("div", "collapsed");
+	this.e.appendChild(this._F);
+	this.Lq = -1;
+	this.Is = !0;
+	this.lH = s.createElement("div", "panelhead");
+	this._F.appendChild(this.lH);
+	this.A5(this.lH);
+	this._W = new ToolbarButton("\u2261");
+	this._W.e.setAttribute("style", "position:absolute; right:0;");
+	this._W.addListener("click", this.awl, this);
+	this.jo = s.createElement("div", "body");
+	this._F.appendChild(this.jo);
+	this.k3 = [];
+	this.bN = null;
+	this.jM = null
+}
+PanelContainer.u7 = 0;
+PanelContainer.prototype = new UIComponent;
+PanelContainer.DV = 26.1;
+PanelContainer.prototype.awl = function(l) {
+	var d = this.k3[this.Lq].xI(),
+		G = l.currentTarget.e.getBoundingClientRect();
+	d.refresh();
+	d.update();
+	d.parent = this;
+	var b = new Action(ActionTypes.E.L, !0);
+	b.data = {
+		a: ActionTypes.$.dY,
+		A3: d,
+		x: G.left,
+		y: G.top + G.height + 2
+	};
+	this.dispatch(b)
+};
+PanelContainer.prototype.tO = function(l) {
+	var d = this._F,
+		G = this.lH,
+		b = this.jo;
+	if (s.isInDocument(G)) d.removeChild(G);
+	if (s.isInDocument(b)) d.removeChild(b);
+	if (l == 0) d.appendChild(G);
+	d.appendChild(b);
+	this.aqA = l
+};
+PanelContainer.Ht = function(l) {
+	l.stopPropagation();
+	l.preventDefault()
+};
+PanelContainer.prototype.a6v = function(l) {
+	var d = l.dataTransfer.types;
+	if (d[1] != null && d[1] != this.u7 + "") return;
+	PanelContainer.Ht(l);
+	var hZ = l.currentTarget;
+	if (l.target == hZ) s.addClass(hZ, "highlight")
+};
+PanelContainer.prototype.aqE = function(l) {
+	PanelContainer.Ht(l);
+	var hZ = l.currentTarget;
+	if (l.target == hZ) s.removeClass(hZ, "highlight")
+};
+PanelContainer.prototype.A5 = function(l) {
+	// edit: binding event handler
+	l.addEventListener("dragenter", this.a9a, !1);
+	l.addEventListener("dragleave", this.azi, !1);
+	l.addEventListener("dragover", PanelContainer.Ht, !1);
+	l.addEventListener("drop", this.avU, !1);
+	l.addEventListener("dragstart", function(d) {
+		d.dataTransfer.setData("Text", "--panel");
+		d.dataTransfer.setData(this.u7 + "", "")
+	}.bind(this), !1)
+};
+PanelContainer.prototype.r5 = function(l) {
+	this.azi(l);
+	var d = null,
+		hZ = l.currentTarget,
+		G = this.abm(hZ);
+	
+	if (hZ == this.jo && this.Lq != -1) d = this.Lq;
+	else if (hZ == this.lH) d = null;
+	else if (G != -1) d = G;
+
+	var b = l.dataTransfer.getData("Text");
+	if (b == "" || b.startsWith("http")) {
+		s.handleDataTransferDrop(l, this, d);
+	} else if (b == "--panel") {
+		var V = s.getEventPositionInElement(l, hZ),
+			Q = this.k3,
+			t = Q.slice(0),
+			A = this.Lq,
+			I = G == -1 ? Q.length : V.x < hZ.getBoundingClientRect().width / 2 ? G : G + 1;
+		if (A == I || A + 1 == I || hZ == this.jo) return;
+		var y = A < I ? I - 1 : I,
+			e = Q[A];
+		Q.splice(A, 1);
+		Q.splice(y, 0, e);
+		s.clearChildren(this.lH);
+		for (var M = 0; M < Q.length; M++) this.lH.appendChild(Q[M].PT);
+		this.AT(y);
+		var R = [];
+		for (var A = 0; A < Q.length; A++) R[A] = t.indexOf(Q[A]);
+		var J = new Action("shuffleItems", !1);
+		J.data = {
+			aqF: R
+		};
+		this.dispatch(J)
+	} else if (d != null && this instanceof WorkspacePanelContainer) {
+		var J = new Action(ActionTypes.E.L, !0);
+		J.data = {
+			a: ActionTypes.$.a3e,
+			aph: d
+		};
+		this.dispatch(J)
+	}
+};
+PanelContainer.prototype.XQ = function() {
+	return null
+};
+PanelContainer.prototype.aee = function() {
+	if (this.XQ()) {
+		this.lH.style.padding = "0px";
+		this.jM = this.XQ();
+		this.jo.appendChild(this.jM);
+		this.HX.setEnabled(!1);
+		var l = new Action(ActionTypes.E.L, !0);
+		l.data = {
+			a: ActionTypes.$.Mc,
+			Z: 1
+		};
+		this.dispatch(l)
+	}
+};
+PanelContainer.prototype.a5I = function() {
+	if (this.jM) {
+		this.lH.style.padding = "";
+		this.jo.removeChild(this.jM);
+		this.jM = null;
+		this.HX.setEnabled(!0);
+		var l = new Action(ActionTypes.E.L, !0);
+		l.data = {
+			a: ActionTypes.$.Mc,
+			Z: 0
+		};
+		this.dispatch(l)
+	}
+};
+PanelContainer.prototype.abm = function(l) {
+	var d = this.k3;
+	for (var A = 0; A < d.length; A++)
+		if (d[A].PT == l) return A;
+	return -1
+};
+PanelContainer.prototype.AH = function() {
+	for (var A = 0; A < this.k3.length; A++) this.k3[A].wZ.kL()
+};
+PanelContainer.prototype.ZF = function() {
+	return this.Lq
+};
+PanelContainer.prototype.sS = function() {
+	if (this.Is) return;
+	this.Is = !0;
+	this.e.removeChild(this.ar);
+	this.e.appendChild(this._F)
+};
+PanelContainer.prototype.collapse = function() {
+	if (!this.Is) return;
+	this.Is = !1;
+	this.e.appendChild(this.ar);
+	this.e.removeChild(this._F)
+};
+PanelContainer.prototype.DV = function() {
+	var l = 0;
+	if (this.aqA == 0) {
+		l = this.lH.getBoundingClientRect().height + 1;
+		l = Math.max(l, PanelContainer.DV)
+	}
+	return l
+};
+PanelContainer.prototype.aeM = function() {
+	return this.DV() + this.jo.getBoundingClientRect().height
+};
+PanelContainer.prototype.resize = function(l, d) {
+	this.lH.style.maxWidth = l + "px";
+	var G = this.DV();
+	// if (this.Lq != -1) this.k3[this.Lq].resize(l, d - G); // hbi
+	return d - G
+};
+PanelContainer.prototype.BM = function(l, d) {
+	if (this.Lq != -1) this.k3[this.Lq].BM(l, d)
+};
+PanelContainer.prototype.Yw = function(l, d, G) {
+	this.k3[this.Lq].Yw(l, d, G)
+};
+PanelContainer.prototype.$J = function(l) {
+	this.a5I();
+	if (this.k3.indexOf(l) != -1) {
+		this.AT(this.k3.indexOf(l));
+		return
+	}
+	l.parent = this;
+	this.k3.push(l);
+	this.lH.appendChild(l.PT);
+	l.PT.addEventListener("mouseover", this.aqm, !1);
+	this.A5(l.PT);
+	this.ar.appendChild(l.wZ.e);
+	l.wZ.addListener("click", this.ajN, this);
+	// l.addListener("select", this.axL, this);
+	// l.addListener(ActionTypes.E.Ax, this.azD, this);
+	this.AT(this.k3.length - 1)
+};
+PanelContainer.prototype.agR = function(l) {
+	if (l.buttons == 0) return;
+	var d = l.currentTarget,
+		G = d,
+		A = 0;
+	while ((G = G.previousSibling) != null) A++;
+	this.amD = A;
+	d.addEventListener("mouseout", this.aye, !1);
+	this.gm = setTimeout(this.ait, 700)
+};
+PanelContainer.prototype.a0Z = function(l) {
+	var d = l.currentTarget,
+		G = d,
+		A = 0;
+	while ((G = G.previousSibling) != null) A++;
+	d.removeEventListener("mouseout", this.aye);
+	clearTimeout(this.gm)
+};
+PanelContainer.prototype.ado = function(l) {
+	this.dispatch(new Action(ActionTypes.E.azc, !1))
+};
+PanelContainer.prototype.arO = function(l) {
+	return this.amD
+};
+PanelContainer.prototype.cd = function(A) {
+	var l = new Action(ActionTypes.E.Ax, !1);
+	l.data = {
+		iu: A
+	};
+	this.dispatch(l);
+	var d = this.k3[A];
+	this.k3.splice(A, 1);
+	this.lH.removeChild(d.PT);
+	this.ar.removeChild(d.wZ.e);
+	d.PT.className = "";
+	d.wZ.removeEventListener("click", this.ajN, this);
+	d.wZ.kL();
+	d.removeEventListener("activate", this.axL);
+	d.removeEventListener(ActionTypes.E.Ax, this.azD);
+	var G = this.Lq;
+	if (A < G) G--;
+	else if (A == G && A == this.k3.length) G--;
+	this.AT(G);
+	if (this.k3.length == 0) this.aee()
+};
+PanelContainer.prototype.a5B = function() {
+	return this.k3.length
+};
+PanelContainer.prototype.pN = function() {
+	if (this.k3.length != 0) this.k3[this.Lq].pN()
+};
+PanelContainer.prototype.AT = function(l, d) {
+	if (d == null) d = !0;
+	for (var A = 0; A < this.k3.length; A++) this.k3[A].PT.className = "";
+	if (this.bN) this.jo.removeChild(this.bN);
+	this.bN = null;
+	this.Lq = l;
+	if (l == -1) return;
+	var G = this.k3[this.Lq];
+	this.bN = G.DK;
+	this.jo.appendChild(G.DK);
+	G.PT.className = "active";
+	if (!this.Is) {
+		this.dispatch(new Action("showFloat"));
+		this.k3[l].wZ.Nu()
+	}
+	if (d) this.dispatch(new Action(ActionTypes.E.A, !1));
+	// G.KN(); // hbi
+	var b = this._W.e;
+	if (b.parentNode) this.lH.removeChild(b);
+	// if (G.xI()) this.lH.appendChild(b);
+	var V = new Action(ActionTypes.E.L, !0);
+	V.data = {
+		a: ActionTypes.$.to
+	};
+	this.dispatch(V)
+};
+PanelContainer.prototype.axL = function(l) {
+	if (this.SB && !this.SB.a3S()) return;
+	var A = this.k3.indexOf(l.currentTarget);
+	this.AT(A)
+};
+PanelContainer.prototype.azD = function(l) {
+	if (this.SB && !this.SB.a3S()) return;
+	var A = this.k3.indexOf(l.currentTarget);
+	this.cd(A)
+};
+PanelContainer.prototype.ajN = function(l) {
+	var d = this.k3.indexOf(l.currentTarget.parent);
+	if (this.k3[d].wZ.dB()) this.dispatch(new Action("hideFloat"));
+	else this.AT(d)
+};
+PanelContainer.prototype.apq = function(l) {
+	this.dispatch(l)
+};
+
+
+
+function StoragePanel(l) {
+	UIComponent.call(this);
+	this.Dy = l;
+	this.GL = 0;
+	this.agX = !1;
+	this.I_ = l ? new StoragePanel.IU() : null;
+	this.e = s.createElement("div", "flexrow storageset");
+	this.e.style.background = "var(--bg-panel)";
+	this.SS = s.createElement("div");
+	this.e.appendChild(this.SS);
+	this.CM = s.createElement("div");
+	this.e.appendChild(this.CM);
+	this.VS = [];
+	var _local1188 = Storage.list.length;
+	if (l) _local1188++;
+	var _local1186 = this.ps.bind(this);
+	for (var _local1185 = 0; _local1185 < _local1188; _local1185++) {
+		var _local1187 = s.createElement("div");
+		this.VS.push(_local1187);
+		this.SS.appendChild(_local1187);
+		_local1187.addEventListener("click", _local1186, !1);
+	}
+	this.ps(null, 0);
+}
+StoragePanel.prototype = new UIComponent();
+StoragePanel.N0 = [];
+StoragePanel.yx = function (l) {
+	StoragePanel.N0.push(l);
+	l.VP();
+};
+StoragePanel.Ky = function () {
+	var _local1189 = StoragePanel.N0;
+	_local1189.pop();
+	_local1189[_local1189.length - 1].VP();
+};
+StoragePanel.prototype.VP = function () {
+	this.ps(null, this.GL);
+};
+StoragePanel.prototype.BM = function (l, d) {
+	if (!l.ki && !this.agX) {
+		var _local1191 = this.Dy ? 2 : 1;
+		for (var _local1190 = _local1191; _local1190 < this.VS.length; _local1190++) this.SS.removeChild(this.VS[_local1190]);
+		this.agX = !0;
+		if (this.Dy) this.I_.BM(l, d);
+	}
+	if (this.Ny) this.Ny.BM(l, d);
+};
+StoragePanel.prototype.refresh = function () {
+	if (this.Dy) this.I_.refresh();
+	if (this.Ny) this.Ny.refresh();
+};
+StoragePanel.prototype.ps = function (l, d) {
+	var _local1193 = this.VS,
+		_local1194;
+	if (d == null) d = _local1193.indexOf(l.currentTarget);
+	this.GL = d;
+	for (var _local1192 = 0; _local1192 < _local1193.length; _local1192++) s.removeClass(_local1193[_local1192], "active");
+	s.addClass(_local1193[d], "active");
+	if (this.Dy) d--;
+	s.clearChildren(this.CM);
+	if (d == -1) _local1194 = this.I_;else
+	_local1194 = Storage.WU(d);
+	this.Ny = _local1194;
+	_local1194.parent = this;
+	this.CM.appendChild(_local1194.e);
+	this.resize(this.iJ, this.Tq);
+	this.refresh();
+};
+StoragePanel.prototype.resize = function (l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	var _local1196 = l < 850,
+		_local1199 = _local1196 ? 50 : 200,
+		_local1198 = Storage.list;
+	if (this.Dy) _local1198 = [
+	["Home", null, "strg/home"]].
+	concat(_local1198);
+	for (var _local1195 = 0; _local1195 < _local1198.length; _local1195++) {
+		var _local1197 = this.VS[_local1195],
+			_local1200 = "padding: 8px " + (_local1196 ? 13 : 36) + "px; cursor:pointer;";
+		_local1197.setAttribute("style", _local1200);
+		_local1197.innerHTML = "<img style=\"margin:0 10px -6px 0; width:22px;\" class=\"gsicon\" src=\"" + PIMG[_local1198[_local1195][2]] + "\" /> " + (_local1196 ? "" : _local1198[_local1195][0]);
+	}
+	this.e.style.width = l + "px";
+	this.e.style.height = d + "px";
+	this.SS.style.width = _local1199 + "px";
+	this.SS.style.paddingTop = "32px";
+	if (this.Ny) this.Ny.resize(l - _local1199, d);
+};
+StoragePanel.IU = function () {
+	var _local1210 = this.e = s.createElement("div");
+	_local1210.style.background = "var(--bg-canvas)";
+	var _local1208 = this.BC = s.createElement("div");
+	_local1210.appendChild(_local1208);
+	var _local1202 = s.createElement("style");
+	_local1210.appendChild(_local1202);
+	_local1202.textContent = `.bhover       { transition: background 0.2s ease-in-out;  background:rgba(255,255,255,0   );}
+						 .bhover:hover { transition: background 0.2s ease-in-out;  background:rgba(255,255,255,0.05);}`;
+	for (var _local1201 = 0; _local1201 < 2; _local1201++) {
+		var _local1207 = s.createElement("div"),
+			_local1202 = "filter: drop-shadow(4px 6px 4px rgba(0,0,0,0.25)); ";
+		_local1208.appendChild(_local1207);
+		if (_local1201 == 0) _local1202 += "padding: 12px 0px";
+		if (_local1201 == 1) _local1202 += "position:absolute;  bottom:0;";
+		_local1207.setAttribute("style", _local1202);
+		var _local1206 = s.createElement("img");
+		_local1207.appendChild(_local1206);
+		_local1206.setAttribute("src", PIMG[_local1201 == 0 ? "logo" : "bottom"]);
+		if (_local1201 == 0) this.hh = _local1206;else
+		this.a1M = _local1206;
+		if (_local1201 == 0) this.aoy = _local1207;else
+		this.axa = _local1207;
+	}
+	this.VS = [];
+	_local1202 = "display:inline-block;  font-size:1.25em; border:1px solid #aaa;  border-radius:6px;  margin:20px 0 0 20px;";
+	var _local1205 = this.br.bind(this);
+	for (var _local1201 = 0; _local1201 < 3; _local1201++) {
+		var _local1211 = s.createElement("span", "bhover");
+		this.VS.push(_local1211);
+		_local1211.setAttribute("style", _local1202 + "cursor:pointer; padding:12px;");
+		_local1211.addEventListener("click", _local1205, !1);
+		_local1208.appendChild(_local1211);
+	}
+	s.appendBr(_local1208);
+	s.appendBr(_local1208);
+	var _local1211 = s.createElement("div");
+	_local1211.setAttribute("style", _local1202 + "width:min(80%,556px);  padding:60px 0;  text-align:center; opacity:0.3;");
+	_local1211.textContent = "Drop any files here";
+	_local1208.appendChild(_local1211);
+	this.T = s.createElement("canvas");
+	this.T.setAttribute("style", "position:absolute;top:0;pointer-events:none; mix-blend-mode: screen;");
+	this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+	this.ayM = PixelUtil.allocBytes(4);
+	_local1210.appendChild(this.T);
+	var _local1203 = new Date().getDate(),
+		_local1212 = new Date().getMonth();
+	if (_local1212 == 11 && _local1203 > 20 || _local1212 == 0 && _local1203 < 10) {
+		var _local1209 = Math.random() < .5,
+			_local1204 = {
+				o: 255,
+				J: 255,
+				k: 255
+			};
+		if (!_local1209) {
+			_local1204 = PixelUtil.hsbToRgb(Math.random(), Math.random() * .7, 1);
+			_local1204.o *= 255;
+			_local1204.J *= 255;
+			_local1204.k *= 255;
+		}
+		this.ZX = [
+		Math.round(1048575 * Math.random()), _local1209 ? .05 : .02, Math.round(4 + Math.random() * 8), 1, _local1209 ? 3 : 15, _local1204, 0, !0, _local1209, _local1209 ? 1 : .2, 3];
+		this.atx = _local1209 ? .1 : .2;
+		this.aB = this.io.bind(this);
+		window.requestAnimationFrame(this.aB);
+	}
+};
+StoragePanel.IU.prototype = new UIComponent();
+StoragePanel.IU.prototype.io = function () {
+	window.requestAnimationFrame(this.aB);
+	if (!s.isInDocument(this.e)) return;
+	var _local1217 = this.ayM,
+		_local1216 = this.T,
+		_local1213 = this.k_,
+		_local1215 = _local1216.width,
+		_local1214 = _local1216.height;
+	this.ZX[6] = Date.now() * .001 * this.atx;
+	PixelUtil.fd.Q6(_local1217, _local1215, _local1214, this.ZX, !0);
+	_local1213.putImageData(new ImageData(new Uint8ClampedArray(_local1217.buffer), _local1215, _local1214), 0, 0);
+};
+StoragePanel.IU.prototype.br = function (l) {
+	var _local1218 = this.VS.indexOf(l.currentTarget),
+		_local1219 = new Action(ActionTypes.E.L, !0);
+	if (_local1218 == 0) {
+		_local1219.data = {
+			a: ActionTypes.$.SN,
+			GU: "newproject"
+		};
+	}
+	if (_local1218 == 1) {
+		_local1219.data = {
+			a: ActionTypes.$.Um
+		};
+	}
+	if (_local1218 == 2) {
+		_local1219.data = {
+			a: ActionTypes.$.SN,
+			GU: "res0"
+		};
+	}
+	this.dispatch(_local1219);
+};
+StoragePanel.IU.prototype.refresh = function () {
+	var _local1224 = this.VS,
+		_local1223 = [
+		"\u2605 New Project",
+		"\uD83E\uDC7F Open From Computer",
+		"\u25A3 PSD Templates"];
+
+	for (var _local1220 = 0; _local1220 < _local1224.length; _local1220++) _local1224[_local1220].textContent = _local1223[_local1220];
+	// for (var A = 0; A < l.length; A++) l[A].textContent = G[A] + "\u2000" + languageManager.get(d[A]);
+	var _local1222 = "logo",
+		_local1221 = new Date();
+	if (_local1221.getMonth() == 3 && _local1221.getDate() == 1) _local1222 = "logo_cucumber";
+	this.hh.setAttribute("src", PIMG[_local1222]);
+	this.a1M.setAttribute("src", PIMG["bottom"]);
+};
+StoragePanel.IU.prototype.resize = function (l, d) {
+	var _local1225 = Math.min(d * 1.5, Math.min(l, 600));
+	s.setCanvasSizeForDpr(this.T, l, _local1225 * .26);
+	var _local1227 = this.T.width,
+		_local1226 = this.T.height;
+	this.ayM = PixelUtil.allocBytes(_local1227 * _local1226 * 4);
+	this.e.style.width = l + "px";
+	this.e.style.height = d + "px";
+	this.axa.style.width = l + "px";
+	this.BC.style.marginLeft = Math.max(0, Math.round((l + 200 - 600) / 2) - 200) + "px";
+	this.hh.style.width = _local1225 + "px";
+	this.a1M.style.width = _local1225 + "px";
+};
+StoragePanel.IU.prototype.BM = function (l, d) {
+	if (!l.ki && this.VS[2].parent) this.BC.removeChild(this.VS[2]);
+};
+
+
+
+function Storage(l) {
+	UIComponent.call(this);
+	var _local1236 = this.e = s.createElement("div", "storage");
+	s.addKeydownBlocker(_local1236);
+	_local1236.addEventListener("drop", this.aft.bind(this), !1);
+	var _local1229 = this.a1B = s.createElement("style");
+	_local1236.appendChild(_local1229);
+	_local1236.setAttribute("tabindex", "0");
+	_local1236.style.outline = "none";
+	_local1236.addEventListener("keydown", this.amL.bind(this), !1);
+	this.Xx = this.acw.bind(this);
+	this.BK = 0;
+	var _local1235 = s.createElement("div");
+	_local1236.appendChild(_local1235);
+	var _local1234 = this.ad7.bind(this);
+	this.NU = s.createElement("div", "bar");
+	_local1235.appendChild(this.NU);
+	this.ae = s.createElement("div", "fls scrollable");
+	_local1235.appendChild(this.ae);
+	this.Ox = s.createElement("div");
+	_local1235.appendChild(this.Ox);
+	this.Ox.setAttribute("style", "position:absolute; bottom:0;  background-color:white; padding: 2px 8px 0px 8px;");
+	this.wf = s.createElement("div", "bar");
+	this.wf.textContent = "Name: ";
+	var _local1232 = this.KW = s.createElement("input");
+	_local1232.setAttribute("type", "text");
+	this.wf.appendChild(_local1232);
+	var _local1238 = this.ej = s.createElement("div", "btn");
+	_local1238.textContent = "Save";
+	this.wf.appendChild(_local1238);
+	s.addPointerUp(_local1238, _local1234);
+	s.addPointerDown(this.ae, this.Xx);
+	this.jH = 0;
+	this.BH = l;
+	var _local1230 = this.a7E.bind(this),
+		_local1239 = this.agl = s.createElement("div");
+	_local1239.setAttribute("style", "text-align:center; font-size:1.6em");
+	var _local1237 = s.createElement("img");
+	_local1239.appendChild(_local1237);
+	s.appendBr(_local1239);
+	_local1237.setAttribute("src", PIMG[Storage.list[this.BH][2]]);
+	_local1237.setAttribute("style", "opacity:0.5;  width:25%; cursor:pointer;");
+	s.addPointerUp(_local1237, _local1230);
+	this.iM = s.createElement("div", "btn");
+	_local1239.appendChild(this.iM);
+	s.addPointerUp(this.iM, _local1230);
+	this.uc = new ContextPanel([{
+		name: [6, 20]
+	}, {
+		name: [5, 2],
+		C0: [KeyboardHandler.wz, KeyboardHandler.AR],
+		p: function () {
+			return {
+				p: Storage.af != null
+			};
+		}
+	}]);
+	this.uc.parent = this;
+	this.uc.addListener("select", this.arF, this);
+	this.ae.addEventListener("contextmenu", this.Xx);
+	this.a9Q = s.createElement("span");
+	this.G3 = s.createElement("span");
+	this.G3.setAttribute("style", "position:absolute; right:0; top:5px;");
+	this.u9 = [];
+	this.qg = [];
+	for (var _local1228 = 0; _local1228 < 3; _local1228++) {
+		var _local1231 = s.createElement("div", "btn");
+		this.u9.push(_local1231);
+		this.a9Q.appendChild(_local1231);
+		s.addPointerUp(_local1231, _local1234);
+		_local1231.textContent = ["\u2B9C", "\u2B9E", "\uD83E\uDC09"][_local1228];
+	}
+	for (var _local1228 = 0; _local1228 < 5; _local1228++) {
+		var _local1231 = s.createElement("div", "btn");
+		this.qg.push(_local1231);
+		this.G3.appendChild(_local1231);
+		s.addPointerUp(_local1231, _local1234);
+	}
+	window.addEventListener("message", this.aoo.bind(this), !1);
+	this.aw2 = !1;
+	this.qw = 0;
+	setInterval(this.aa8.bind(this), 300);
+	this.Eg();
+	var _local1233 = this.aiZ = document.createElement("input");
+	_local1233.setAttribute("type", "file");
+	_local1233.addEventListener("change", this.aft.bind(this), !1);
+	document.body.appendChild(_local1233);
+	_local1233.setAttribute("style", "display:none");
+	_local1233.setAttribute("multiple", "");
+}
+Storage.prototype = new UIComponent();
+Storage.Vt = !1;
+Storage.prototype.aft = function (l) {
+	l.stopPropagation();
+	l.preventDefault();
+	var _local1243 = l.dataTransfer ? l.dataTransfer.files : l.target.files;
+	this.abg = _local1243.length;
+	for (var _local1240 = 0; _local1240 < _local1243.length; _local1240++) {
+		var _local1241 = _local1243[_local1240],
+			_local1242 = new FileReader();
+		_local1242.Ul = _local1241;
+		_local1242.onload = this.aai.bind(this);
+		_local1242.readAsArrayBuffer(_local1241);
+	}
+};
+Storage.prototype.aai = function (l) {
+	var _local1244 = Storage.af;
+	if (_local1244 == null) _local1244 = Storage.af = {};
+	_local1244[l.target.Ul.name] = l.target.result;
+	this.abg--;
+	if (this.abg == 0) this.II();
+};
+Storage.prototype.BM = function (l, d) {
+	var _local1245 = Storage.list[this.BH][3],
+		_local1246 = premiumSession.getCurrentUserRecord();
+	if (_local1245) {
+		if (this.qw == 1 && s.isInDocument(this.e) && _local1246 != null) {
+			this.Eg();
+		}
+		if (this.qw == 2 && _local1246 == null) {
+			this.zM("forget", "");
+		}
+	}
+};
+Storage.prototype.aa8 = function () {
+	var _local1248 = s.isInDocument(this.e),
+		_local1247 = this.aw2;
+	if (_local1248 && !_local1247) {
+		history.pushState(null, null, location.href);
+		window.onpopstate = function () {
+			history.go(1);
+		};
+	}
+	if (!_local1248 && _local1247) {
+		window.onpopstate = function () {};
+		history.go(-1);
+	}
+	this.aw2 = _local1248;
+};
+Storage.prototype.Eg = function () {
+	if (this.Wh) document.body.removeChild(this.Wh);
+	this.WI = [
+	[]];
+
+	this._U = 0;
+	this.ase = {
+		"/": []
+	};
+	this.ayP = "";
+	this._t = null;
+	this.$c = [];
+	this.iX = [];
+	this.adR = [];
+	this.abW = null;
+	var _local1250 = "code/storages/" + Storage.list[this.BH][1],
+		_local1249 = this.Wh = s.createElement("iframe");
+	_local1249.setAttribute("src", _local1250);
+	_local1249.setAttribute("style", "display:none");
+	document.body.appendChild(_local1249);
+};
+Storage.prototype.WY = function () {
+	return this.ase[this.PM()];
+};
+Storage.prototype.Ph = function (l) {
+	this.ase[this.PM()] = l;
+};
+Storage.WU = function (A) {
+	var _local1251 = Storage.nE[A];
+	if (_local1251 == null) _local1251 = Storage.nE[A] = new Storage(A);
+	return _local1251;
+};
+Storage.nE = [];
+Storage.WV = 0;
+Storage.aiV = "";
+Storage.dk = function (l, d) {
+	Storage.WV = l;
+	Storage.aiV = d;
+	var _local1253 = Storage.nE;
+	for (var _local1252 = 0; _local1252 < _local1253.length; _local1252++)
+	if (_local1253[_local1252]) _local1253[_local1252].VP();
+};
+Storage.asH = [200 * (1 << 20), 2e3 * (1 << 20)];
+Storage.HI = 0;
+Storage.Yy = 2;
+Storage.OI = 0;
+Storage.list = [
+["This Device", "deviceStorage.html", "strg/tdevice", !1, "Give Photopea a direct access to a specific folder in your device."],
+["PeaDrive", "peadriveStorage.html", "strg/peadrive", !0, "A cloud storage system from Photopea."],
+["Dropbox", "dropboxStorage.html", "strg/dropbox", !1, "Give Photopea a direct access to your DropBox."],
+["OneDrive", "onedriveStorage.html", "strg/onedrive", !1, "Give Photopea a direct access to your OneDrive."],
+["Google Drive", "googledriveStorage.html?mode=0", "strg/gdrive", !1, "Give Photopea a direct access to your Google Drive."],
+["Shared Drives", "googledriveStorage.html?mode=1", "strg/gdrive", !1, "Give Photopea a direct access to Shared Drives in your Google Drive."],
+["Private Folder", "googledriveStorage.html?mode=3", "strg/gdrive", !1, "Let's make a folder \"Photopea\" in your Google Drive (we will have access only to that folder)."]];
+
+Storage.a8E = function (l) {
+	for (var _local1254 = 0; _local1254 < Storage.nE.length; _local1254++) {
+		if (Storage.nE[_local1254] && Storage.nE[_local1254].Wh.contentWindow == l) return !0;
+	}
+	return !1;
+};
+Storage.prototype.amL = function (l) {
+	if (l.target.tagName == "INPUT") return;
+	var _local1261 = KeyboardHandler;
+	if (_local1261._Q(l.code, _local1261.HD) && this.PM().length != 0) this.asx();else
+	if (l.ctrlKey) {
+		if (_local1261._Q(l.code, _local1261.$)) {
+			var _local1256 = [];
+			this.Ph(_local1256);
+			for (var _local1255 = 0; _local1255 < this._t.length; _local1255++) _local1256.push(_local1255);
+			this.Jk();
+		}
+		if (_local1261._Q(l.code, _local1261.nA)) this.ao(2);
+		if (_local1261._Q(l.code, _local1261.AR)) this.II();
+	} else if (_local1261._Q(l.code, _local1261.lm)) {
+		var _local1260 = this.WY();
+		if (_local1260.length != 0) this.ak4(_local1260[0]);
+	} else if (_local1261._Q(l.code, _local1261.kJ)) {
+		this._U = Math.max(this._U - 1, 0);
+		this.ke();
+	} else {
+		var _local1259 = 0;
+		for (var _local1255 = 65; _local1255 <= 90; _local1255++)
+		if (l.code == "Key" + String.fromCharCode(_local1255)) _local1259 = _local1255;
+		if (_local1259 != 0) {
+			var _local1258 = String.fromCharCode(_local1259).toLowerCase(),
+				_local1263 = [],
+				_local1257 = this._t,
+				_local1264;
+			for (var _local1255 = 0; _local1255 < _local1257.length; _local1255++)
+			if (_local1257[_local1255][0][0].toLowerCase() == _local1258) _local1263.push(_local1255);
+			if (_local1263.length == 0) return;
+			var _local1260 = this.WY();
+			if (_local1260.length == 0) _local1264 = _local1263[0];else
+			{
+				var _local1262 = _local1263.indexOf(_local1260[0]);
+				if (_local1262 == -1) {
+					_local1264 = _local1263[0];
+					for (var _local1255 = 0; _local1255 < _local1263.length; _local1255++)
+					if (_local1263[_local1255] > _local1260[0]) {
+						_local1264 = _local1263[_local1255];
+						break;
+					}
+				} else _local1264 = _local1263[(_local1262 + 1) % _local1263.length];
+			}
+			this.Ph([_local1264]);
+			this.Jk(!0);
+		}
+	}
+};
+Storage.prototype.resize = function (l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	this.e.style.width = l + "px";
+	this.e.style.height = d + "px";
+	var _local1265 = l - 30,
+		_local1266 = Math.floor(_local1265 / 230),
+		_local1265 = Math.floor(_local1265 / _local1266) - 70;
+	this.a1B.textContent = ".storage .tile .name {  width:" + _local1265 + "px;  }";
+	this.KW.style.width = l - 140 + "px";
+	this.ae.style.width = this.NU.style.width = l - 20 + "px";
+	this.ae.style.height = d - 70 - (Storage.WV == 0 ? 0 : 45) + "px";
+};
+Storage.prototype.a7E = function () {
+	this.ke();
+};
+Storage.prototype.ke = function () {
+	this.zM("show", this.PM());
+};
+Storage.prototype.PM = function (l) {
+	var _local1268 = this.WI[this._U],
+		_local1267 = "/" + _local1268.join("/");
+	if (l && _local1268.length != 0) _local1267 += "/";
+	return _local1267;
+};
+Storage.prototype.ad7 = function (l) {
+	var _local1275 = l.currentTarget,
+		_local1270 = this._U,
+		_local1274 = this.u9.indexOf(_local1275),
+		_local1273 = this.qg.indexOf(_local1275);
+	if (_local1274 >= 0 && !this.a19(_local1274)) return;
+	if (_local1274 == 0) {
+		this._U = Math.max(_local1270 - 1, 0);
+		this.ke();
+	}
+	if (_local1274 == 1) {
+		this._U = Math.min(_local1270 + 1, this.WI.length - 1);
+		this.ke();
+	}
+	if (_local1274 == 2) {
+		var _local1272 = this.WI[_local1270 + 1] = this.WI[_local1270].slice(0);
+		_local1272.pop();
+		this._U++;
+		this.WI = this.WI.slice(0, this._U + 1);
+		this.ke();
+	}
+	if (_local1273 == 0) {
+		var _local1277 = document.createEvent("MouseEvents");
+		_local1277.initMouseEvent("click", !0, !0, document.defaultView, 1, 0, 0, 0, 0, !1, !1, !1, !1, 0, null);
+		this.aiZ.dispatchEvent(_local1277);
+	}
+	if (_local1273 == 1) {
+		Storage.HI = (Storage.HI + 1) % 2;
+		this.VP();
+	}
+	if (_local1273 == 2) {
+		Storage.Yy = (Storage.Yy + 1) % 3;
+		this.VP();
+	}
+	if (_local1273 == 3) {
+		Storage.OI = (Storage.OI + 1) % 3;
+		this.VP();
+	}
+	if (_local1273 == 4) {
+		this.zM("forget", "");
+	}
+	if (_local1275 == this.ej) {
+		var _local1271 = this.KW.value.trim(),
+			_local1278 = this._t,
+			_local1276 = -1;
+		if (!_local1271.toLowerCase().endsWith("psd")) {
+			alert("File Name has to end with \".psd\".");
+			return;
+		}
+		for (var _local1269 = 0; _local1269 < _local1278.length; _local1269++)
+		if (_local1278[_local1269][0] == _local1271) _local1276 = _local1269;
+		if (_local1276 != -1) {
+			this.XE("Do you really want to replace \"" + _local1271 + "\"?", this.alQ.bind(this));
+		} else this.alQ();
+	}
+};
+
+Storage.prototype.alQ = function () {
+	var _local1280 = this.KW.value.trim(),
+		_local1279 = [this.BH, this.PM(!0) + _local1280];
+	this.G7({
+		a: ActionTypes.$.asn,
+		O2: _local1279
+	});
+	this.dispatch(new Action("canclose", !0));
+};
+Storage.prototype.II = function () {
+	if (Storage.af == null) return;
+	this.G7({
+		a: ActionTypes.$.B8,
+		wh: "Uploading ..."
+	});
+	this.BK = 4;
+	hC.WU(2, this.Wh, [this.PM(), Storage.af, this._t], null, this.a75.bind(this));
+};
+Storage.prototype.a75 = function (l) {
+	this.BK = 0;
+	this.G7({
+		a: ActionTypes.$.jn,
+		wh: "Uploading ..."
+	});
+	this.ke();
+};
+Storage.prototype.arF = function (l) {
+	var _local1288 = l.target.sz();
+	if (l.target == this.uc) {
+		if (_local1288[0] == 0) {
+			var _local1282 = ["New Folder", -1, 0];
+			this._t.push(_local1282);
+			this.VP();
+			var _local1281 = this._t.indexOf(_local1282),
+				_local1287 = this.$c[_local1281].querySelector(".name");
+			var _local1286 = new PanelTabBase.di(_local1287, function (R) {
+				this.G7({
+					a: ActionTypes.$.B8,
+					wh: "Save ..."
+				});
+				var _local1292 = this.PM(!0) + R + "/";
+				this.zM("save", _local1292);
+			}.bind(this), !0);
+		} else this.II();
+	} else {
+		if (_local1288[0] == 0) {
+			this.ao(2);
+		} else if (_local1288[0] == 1) {
+			var _local1281 = this.WY()[0],
+				_local1285 = this._t[_local1281],
+				_local1287 = this.$c[_local1281].querySelector(".name");
+			_local1287.innerHTML = _local1285[0];
+			var _local1286 = new PanelTabBase.di(_local1287, function (R) {
+				R = R.trim();
+				var _local1294 = this._t;
+				for (var _local1293 = 0; _local1293 < _local1294.length; _local1293++)
+				if (_local1294[_local1293][0] == R) {
+					alert("Item with such name already exists.");
+					this.VP();
+					return;
+				}
+				var _local1295 = this.PM(!0) + _local1285[0] + ":" + R;
+				this.zM("rename", _local1295);
+			}.bind(this));
+		} else if (_local1288[0] == 2) {
+			this.ao(3);
+		} else if (_local1288[0] == 3) this.asx();else
+		if (_local1288[0] == 4) {
+			this.ao(1);
+		} else {
+			var _local1290 = this._t[this.WY()[0]],
+				_local1283 = Storage.d6(_local1290),
+				_local1291 = _local1283[_local1288[1]],
+				_local1289 = _local1291[0],
+				_local1284 = this.R$().pop()[1];
+			if (Storage.av7(_local1290, _local1289) != -1) {
+				this.zM("share", _local1284 + ":" + _local1289 + ":-1");
+				alert("Unshared.");
+			} else {
+				this.zM("share", _local1284 + ":" + _local1289 + ":" + _local1288[2]);
+				alert("Shared.");
+			}
+		}
+	}
+};
+Storage.av7 = function (l, d) {
+	var _local1296 = l[4];
+	if (_local1296 == null) return -1;
+	if (_local1296.indexOf(d + ":0") != -1) return 0;
+	if (_local1296.indexOf(d + ":1") != -1) return 1;
+	return -1;
+};
+Storage.prototype.asx = function () {
+	var _local1297 = this.WY();
+	this.XE("Do you really want to delete " + (_local1297.length == 1 ? "\"" + this._t[_local1297[0]][0] + "\"" : "these files") + "?", this.i8.bind(this));
+};
+Storage.prototype.XE = function (l, d) {
+	var _local1298 = {
+		a: ActionTypes.$.SN,
+		GU: "confirm",
+		Z: l,
+		Fk: d
+	};
+	this.G7(_local1298);
+};
+Storage.prototype.ao = function (l) {
+	this.BK = l;
+	if (1 < l) this.G7({
+		a: ActionTypes.$.B8,
+		wh: "Downloading ..."
+	});else
+	this.G7({
+		a: ActionTypes.$.B8,
+		wh: "Getting info ..."
+	});
+	hC.WU(0, this.Wh, this.PM(), this.R$(!0), this.a0H.bind(this));
+};
+Storage.prototype.a0H = function (l) {
+	if (this.BK == 1) {
+		var _local1302 = 0,
+			_local1299 = 0;
+		for (var _local1301 in l) {
+			var _local1300 = l[_local1301];
+			_local1302 += _local1300[1];
+			_local1299++;
+		}
+		this.XE(_local1299 + " files, " + SaveForWebDialog.fa(_local1302) + " in total.", function () {});
+		this.G7({
+			a: ActionTypes.$.jn,
+			wh: "Getting info ..."
+		});
+		this.BK = 0;
+	}
+	if (1 < this.BK) hC.WU(1, this.Wh, l, null, this.aeE.bind(this));
+};
+Storage.prototype.aeE = function (l) {
+	if (1 < this.BK) {
+		if (1 < this.BK) this.G7({
+			a: ActionTypes.$.jn,
+			wh: "Downloading ..."
+		});
+		var _local1306 = {},
+			_local1303 = this.PM(!0);
+		for (var _local1305 in l) _local1306[_local1305.slice(_local1303.length)] = l[_local1305];
+		if (this.BK == 2) {
+			Storage.af = _local1306;
+			alert("Copied to a clipboard");
+		}
+		if (this.BK == 3) {
+			var _local1304 = Object.keys(l);
+			if (_local1304.length == 1) ClipboardHandler.save(l[_local1304[0]].buffer, _local1304[0].split("/").pop());else
+			ClipboardHandler.save(UZIP.encode(_local1306), _local1303 == "/" ? "files.zip" : this.PM().split("/").pop() + ".zip");
+		}
+	}
+	this.BK = 0;
+};
+Storage.af = null;
+Storage.prototype.i8 = function () {
+	this.G7({
+		a: ActionTypes.$.B8,
+		wh: "Delete ..."
+	});
+	this.iX = this.R$();
+	this.Jw();
+};
+Storage.prototype.Jw = function () {
+	if (this.iX.length == 0) {
+		this.G7({
+			a: ActionTypes.$.jn,
+			wh: "Delete[5, 4] ..."
+		});
+		this.Ph([]);
+		this.ke();
+	} else this.zM("delete", this.iX.pop()[1]);
+};
+Storage.prototype.R$ = function (l) {
+	var _local1311 = [],
+		_local1308 = this.PM(!0),
+		_local1310 = this.WY();
+	for (var _local1307 = 0; _local1307 < _local1310.length; _local1307++) {
+		var _local1309 = this._t[_local1310[_local1307]];
+		if (l) _local1311.push(_local1309[0]);else
+		_local1311.push([this.BH, _local1308 + _local1309[0]]);
+	}
+	return _local1311;
+};
+Storage.prototype.zM = function (l, d) {
+	s.addClass(this.e, "disabled");
+	this.ayP = l;
+	if (Storage.Vt) console.log(Math.floor(Date.now() / 1e3), "{\"code\": \"" + l + "\", \"prm\": " + JSON.stringify(d) + "  }");
+	this.Wh.contentWindow.postMessage("{\"code\": \"" + l + "\", \"prm\": " + JSON.stringify(d) + "  }", "*");
+};
+Storage.prototype.aoo = function (l) {
+	if (l.source != this.Wh.contentWindow || this.BK != 0) return;
+	s.removeClass(this.e, "disabled");
+	if (typeof l.data == "string") {
+		if (Storage.Vt) console.log("==", Math.floor(Date.now() / 1e3), l.data);
+		var _local1321 = JSON.parse(l.data),
+			_local1313 = _local1321.code,
+			_local1320 = _local1321.prm,
+			_local1319 = this.ayP,
+			_local1317 = Storage.list[this.BH][3];
+		if (_local1313 == "ready") {
+			if (_local1317 && !_local1320) {
+				var _local1325 = premiumSession.getCurrentUserRecord();
+				var _local1314 = premiumSession.$O(),
+					_local1326 = _local1314.acc;
+				if (_local1325 == null) {
+					this.qw = 1;
+					alert("Log in to use this storage (press Account at the top).");
+					this.sp();
+					return;
+				}
+				var _local1322 = [],
+					_local1316 = _local1325.wantToJoin;
+				for (var _local1318 in _local1316) _local1322.push(parseInt(_local1318.slice(1)));
+				var _local1315 = [],
+					_local1323 = _local1325.inTeams;
+				for (var _local1312 = 0; _local1312 < _local1323.length; _local1312++) _local1315.push(_local1323[_local1312][2]);
+				var _local1324 = {
+					uid: _local1325.id,
+					limit: Storage.asH[premiumSession.hasActiveEntitlement() ? 1 : 0],
+					inTeams: _local1315,
+					myTeams: _local1322
+				};
+				_local1324.secret = _local1326 && _local1326.pds ? _local1326.pds : "";
+				this.zM("login", _local1324);
+				return;
+			}
+			if (_local1317) this.qw = 2;
+			if (_local1317 && _local1321.secret) {
+				var _local1314 = premiumSession.$O(),
+					_local1326 = _local1314.acc;
+				if (_local1326 == null) _local1326 = _local1314.acc = {};
+				_local1326.pds = _local1321.secret;
+				premiumSession.saveRecordLocally(_local1314);
+			}
+			if (_local1320) this.ke();else
+			this.sp();
+		} else if (_local1313 != "0") {
+			if (_local1319 == "save") this.G7({
+				a: ActionTypes.$.jn,
+				wh: "Save ..."
+			});
+			if (_local1319 == "delete") this.Jw();
+			alert(_local1320);
+			this.VP();
+		} else if (_local1319 == "show") {
+			this._t = _local1320;
+			this.VP();
+		} else if (_local1319 == "save") {
+			this.G7({
+				a: ActionTypes.$.jn,
+				wh: "Save ..."
+			});
+			this.ke();
+		} else if (_local1319 == "delete") {
+			this.Jw();
+		} else if (_local1319 == "forget") {
+			if (_local1317) this.sp();else
+			this.Eg();
+		} else if (_local1319 == "rename" || _local1319 == "share") {
+			this.ke();
+		} else throw _local1313;
+	} else {
+		if (Storage.Vt) console.log(Math.floor(Date.now() / 1e3, "==", "ArrayBuffer[]"));
+		this.G7({
+			a: ActionTypes.$.ajq,
+			O2: this.R$()[0],
+			XO: l.data
+		});
+		this.G7({
+			a: ActionTypes.$.jn,
+			wh: "Opening ..."
+		});
+	}
+};
+Storage.prototype.sp = function () {
+	s.clearChildren(this.NU);
+	s.clearChildren(this.ae);
+	s.clearChildren(this.Ox);
+	this.ae.appendChild(this.agl);
+};
+Storage.prototype.a19 = function (A) {
+	if (A == 0) return this._U > 0;
+	if (A == 1) return this._U < this.WI.length - 1;
+	if (A == 2) return this.PM() != "/";
+};
+Storage.prototype.VP = function () {
+	var _local1350 = Storage.list[this.BH][3],
+		_local1345 = this._t,
+		_local1331 = Storage.Yy,
+		_local1344 = Storage.HI,
+		_local1339 = Storage.OI;
+	if (_local1345 == null) return;
+	_local1345.sort(function (p, c) {
+		var _local1358 = p[1] == -1 ? 1 : 5,
+			_local1357 = c[1] == -1 ? 1 : 5,
+			_local1359 = 0;
+		if (Math.min(_local1358, _local1357) == 1 && _local1358 != _local1357) return _local1358 - _local1357;else
+		if (_local1358 == 1 || _local1331 == 0) _local1359 = p[0].toLowerCase() < c[0].toLowerCase() ? -1 : 1;else
+		if (_local1331 == 1) _local1359 = p[1] - c[1];else
+		if (_local1331 == 2) _local1359 = p[2] - c[2];
+		if (_local1344 == 1) _local1359 = -_local1359;
+		if (p[0] == "Shared") _local1359 = -1;
+		if (c[0] == "Shared") _local1359 = 1;
+		return _local1359;
+	});
+	var _local1336 = this.ae,
+		_local1355 = this.NU,
+		_local1333 = this.WI[this._U];
+	s.clearChildren(_local1336);
+	s.clearChildren(_local1355);
+	this.$c = [];
+	for (var _local1327 = 0; _local1327 < 3; _local1327++)
+	if (this.a19(_local1327)) s.removeClass(this.u9[_local1327], "disabled");else
+	s.addClass(this.u9[_local1327], "disabled");
+	_local1355.appendChild(this.a9Q);
+	_local1355.appendChild(this.G3);
+	var _local1356 = s.createElement("span");
+	_local1356.textContent = "/";
+	_local1355.appendChild(_local1356);
+	for (var _local1327 = 0; _local1327 < _local1333.length; _local1327++) {
+		var _local1356 = s.createElement("span");
+		_local1356.textContent = _local1333[_local1327];
+		_local1355.appendChild(_local1356);
+		var _local1356 = s.createElement("span");
+		_local1356.textContent = "/";
+		_local1355.appendChild(_local1356);
+	}
+	var _local1346 = ["tile", "icon", "litm"][_local1339];
+	for (var _local1327 = 0; _local1327 < _local1345.length; _local1327++) {
+		var _local1335 = _local1345[_local1327],
+			_local1337 = _local1335[1] == -1,
+			_local1334 = _local1337 ? "" : SaveForWebDialog.fa(_local1335[1]),
+			_local1352 = s.createElement("div", "cont " + _local1346),
+			_local1332 = !1;
+		_local1336.appendChild(_local1352);
+		this.$c.push(_local1352);
+		_local1352.setAttribute("title", _local1335[0] + (_local1337 ? "" : "\nSize: " + _local1334 + "\nDate Modified: " + new Date(_local1335[2] * 1e3).toLocaleString().replaceAll(". ", ".")));
+		var _local1354 = s.createElement("img");
+		_local1354.setAttribute("src", _local1337 ? Storage.aeh : _local1335[3] ? _local1335[3] : Storage.Ul);
+		if (!_local1337 && _local1335[3]) _local1354.setAttribute("style", "box-shadow: 1px 1px 2.5px rgba(0,0,0, .4);");
+		var _local1338 = s.createElement("span", "name"),
+			_local1348 = _local1335[0];
+		if (_local1346 == "icon" && _local1348.length > 30) _local1348 = _local1348.slice(0, 24) + ".." + _local1348.slice(_local1348.length - 5);
+		if (_local1350 && _local1333.length == 1 && _local1333[0] == "Shared") {
+			var _local1347 = Storage.d6(),
+				_local1341 = parseInt(_local1348.slice(5));
+			for (var _local1349 = 0; _local1349 < _local1347.length; _local1349++)
+			if (_local1347[_local1349][0] == _local1341) _local1348 = _local1347[_local1349][1];
+		}
+		_local1338.textContent = _local1348;
+		_local1352.appendChild(_local1354);
+		_local1352.appendChild(_local1338);
+		if (_local1346 != "icon" && !_local1337) {
+			if (_local1346 == "tile") s.appendBr(_local1338);
+			var _local1330 = s.createElement("span");
+			_local1330.textContent = _local1334;
+			_local1330.style.opacity = "0.8";
+			(_local1346 == "tile" ? _local1338 : _local1352).appendChild(_local1330);
+		}
+		var _local1329 = _local1335[0].split("."),
+			_local1353 = (_local1329.length == 1 ? "" : _local1329.pop()).toUpperCase();
+		if (_local1350 && _local1335[0] == "Shared" && _local1333.length == 0) {
+			_local1332 = !0;
+			_local1353 = "\u21E7";
+		}
+		if (_local1346 != "litm" && (!_local1337 && _local1335[3] == null || _local1332)) {
+			var _local1340 = s.createElement("span", "ext");
+			_local1340.textContent = _local1353;
+			var _local1342 = Storage.K6[_local1353];
+			_local1340.style.backgroundColor = _local1342 ? _local1342 : Storage.awW(_local1353);
+			_local1352.appendChild(_local1340);
+		}
+		s.addPointerDown(_local1352, this.Xx);
+		_local1352.addEventListener("contextmenu", this.Xx);
+	}
+	this.Jk();
+	var _local1328 = this.wf.parentNode != null,
+		_local1343 = Storage.WV,
+		_local1351 = this.e;
+	if (_local1328 && _local1343 == 0) _local1351.removeChild(this.wf);
+	if (!_local1328 && _local1343 == 1) _local1351.appendChild(this.wf);
+	this.resize(this.iJ, this.Tq);
+	this.refresh();
+};
+Storage.prototype.Jk = function (l) {
+	var _local1366 = this.$c,
+		_local1361 = this._t,
+		_local1365 = this.WY(),
+		_local1364 = !1,
+		_local1363 = 0;
+	for (var _local1360 = 0; _local1360 < _local1366.length; _local1360++) {
+		var _local1368 = _local1361[_local1360],
+			_local1362 = _local1368[1] == -1,
+			_local1369 = _local1366[_local1360];
+		if (Storage.WV == 1 && !_local1362 && !_local1368[0].toLowerCase().endsWith(".psd")) _local1369.style.display = "none";else
+		_local1369.style.display = "auto";
+		if (_local1365.indexOf(_local1360) == -1) s.removeClass(_local1369, "active");else
+		{
+			if (_local1362) _local1364 = !0;else
+			_local1363 += _local1368[1];
+			s.addClass(_local1369, "active");
+			if (l) _local1369.scrollIntoView({
+				block: "center",
+				behavior: "smooth"
+			});
+		}
+	}
+	var _local1367 = _local1364 ? "" : SaveForWebDialog.fa(_local1363);
+	this.Ox.textContent = _local1365.length == 0 ? "" : _local1365.length + " item" + (_local1365.length == 1 ? "" : "s") + " selected\u2001" + _local1367;
+	this.KW.value = _local1365.length == 1 && !_local1364 ? _local1361[_local1365[0]][0] : Storage.aiV;
+};
+Storage.prototype.ak4 = function (A) {
+	var _local1372 = this._t[A];
+	if (_local1372[1] == -1) {
+		var _local1371 = this.WI[this._U].slice(0);
+		_local1371.push(_local1372[0]);
+		this._U++;
+		this.WI[this._U] = _local1371;
+		this.WI = this.WI.slice(0, this._U + 1);
+		this.Ph([]);
+		this.ke();
+	} else if (Storage.WV == 0) {
+		this.G7({
+			a: ActionTypes.$.B8,
+			wh: "Opening ..."
+		});
+		this.dispatch(new Action("canclose", !0));
+		var _local1370 = this.PM(!0) + _local1372[0];
+		this.zM("load", _local1370);
+	}
+};
+Storage.prototype.refresh = function () {
+	var _local1375 = Storage.Yy,
+		_local1374 = Storage.HI,
+		_local1373 = Storage.OI;
+	this.qg[0].textContent = "Upload";
+	this.qg[1].textContent = ["\uD83E\uDC0B", "\uD83E\uDC09"][_local1374];
+	this.qg[2].textContent = languageManager.get([
+	[12, 48],
+	[12, 14, 0], "Date"][
+	_local1375]);
+	this.qg[3].textContent = languageManager.get(["Tiles", "Icons", [25, 3, 1]][_local1373]);
+	this.qg[4].textContent = "\u2716";
+	this.iM.innerHTML = languageManager.get([
+	[23, 6], Storage.list[this.BH][0]]
+	) + "<br/><small><small>" + Storage.list[this.BH][4] + "</small></small>";
+	this.BM();
+};
+Storage.prototype.acw = function (l) {
+	this.G7({
+		a: ActionTypes.$.xt
+	});
+	if (s.isInDocument(this.agl)) return;
+	if (l.button == 3 || l.button == 4) {
+		if (Date.now() - this.aui > 50) {
+			var _local1385 = this._U;
+			if (l.button == 3) this._U = Math.max(_local1385 - 1, 0);else
+			this._U = Math.min(_local1385 + 1, this.WI.length - 1);
+			this.ke();
+		}
+		this.aui = Date.now();
+		return;
+	}
+	l.stopPropagation();
+	var _local1376 = this.$c.indexOf(l.currentTarget);
+	if (l.type == "contextmenu") {
+		if (this._t == null) return;
+		l.preventDefault();
+		var _local1377 = this.uc;
+		if (_local1376 != -1) {
+			var _local1384 = [{
+				name: [5, 1],
+				C0: [KeyboardHandler.wz, KeyboardHandler.nA]
+			}, {
+				name: [6, 37]
+			}, {
+				name: "Download",
+				xX: !0
+			}, {
+				name: [5, 4],
+				C0: [KeyboardHandler.HD]
+			}, {
+				name: "Properties"
+			}];
+			if (Storage.list[this.BH][3]) {
+				var _local1383 = this._t[_local1376],
+					_local1381 = Storage.d6(_local1383);
+				if (_local1381.length != 0) {
+					var _local1389 = [];
+					for (var _local1378 = 0; _local1378 < _local1381.length; _local1378++) {
+						var _local1390 = [],
+							_local1386 = _local1381[_local1378],
+							_local1380 = Storage.av7(_local1383, _local1386[0]);
+						if (_local1380 != -1) _local1390.push({
+							name: "Unshare"
+						});else
+						_local1390.push({
+							name: "Allow Read"
+						}, {
+							name: "Allow Read & Write"
+						});
+						_local1389.push({
+							name: _local1386[1] + ["", " (R)", " (R,W)"][_local1380 + 1],
+							sub: _local1390
+						});
+					}
+					_local1384.push({
+						name: "Share With",
+						sub: _local1389
+					});
+				}
+			}
+			_local1377 = new ContextPanel(_local1384);
+			_local1377.parent = this;
+			_local1377.addListener("select", this.arF, this);
+		}
+		_local1377.parent = this;
+		_local1377.refresh();
+		_local1377.update();
+		this.G7({
+			a: ActionTypes.$.dY,
+			A3: _local1377,
+			x: l.clientX + 4,
+			y: l.clientY
+		});
+		return;
+	}
+	var _local1382 = this.WY(),
+		_local1379 = _local1382.indexOf(_local1376);
+	if (l.button != 0 && _local1379 != -1) return;
+	if (l.target == this.ae) this.Ph([]);else
+	{
+		if (l.ctrlKey) {
+			if (_local1379 == -1) _local1382.push(_local1376);else
+			_local1382.splice(_local1379, 1);
+		} else if (l.shiftKey && _local1382.length != 0) {
+			var _local1378 = _local1382[0];
+			if (_local1378 < _local1376) {
+				var _local1387 = _local1376;
+				_local1376 = _local1378;
+				_local1378 = _local1387;
+			}
+			_local1382 = [];
+			this.Ph(_local1382);
+			for (var _local1388 = _local1376; _local1388 <= _local1378; _local1388++) _local1382.push(_local1388);
+		} else {
+			this.Ph([_local1376]);
+			if (Date.now() - this.jH < 300 && _local1382.length != 0 && _local1382[0] == _local1376) {
+				this.ak4(_local1376);
+				this.jH = 0;
+			}
+		}
+	}
+	this.jH = Date.now();
+	this.Jk();
+};
+Storage.prototype.G7 = function (l) {
+	var _local1391 = new Action(ActionTypes.E.L, !0);
+	_local1391.data = l;
+	this.dispatch(_local1391);
+};
+Storage.d6 = function (l) {
+	var _local1397 = [],
+		_local1393 = [],
+		_local1396 = premiumSession.$O(),
+		_local1395 = _local1396.acc.tstart;
+	if (_local1395)
+	for (var _local1392 = 0; _local1392 < _local1395.length; _local1392++) {
+		_local1397.push([_local1395[_local1392][2], _local1395[_local1392][0]]);
+		_local1393.push(_local1395[_local1392][2]);
+	}
+	var _local1394 = premiumSession.getCurrentUserRecord();
+	_local1395 = _local1394.inTeams;
+	if (_local1395)
+	for (var _local1392 = 0; _local1392 < _local1395.length; _local1392++) {
+		_local1397.push([_local1395[_local1392][2], _local1395[_local1392][0]]);
+		_local1393.push(_local1395[_local1392][2]);
+	}
+	if (l && l[4]) {
+		for (var _local1392 = 0; _local1392 < l[4].length; _local1392++) {
+			var _local1398 = parseInt(l[4][_local1392].split(":")[0]);
+			if (_local1393.indexOf(_local1398) == -1) _local1397.push([_local1398, "Team " + _local1398]);
+		}
+	}
+	return _local1397;
+};
+Storage.prototype.akx = function (l, d) {
+	this.G7({
+		a: ActionTypes.$.B8,
+		wh: "Save ..."
+	});
+	this.zM("save", l);
+	if (Storage.Vt) console.log(Math.floor(Date.now() / 1e3), "ArrayBuffer[]");
+	this.Wh.contentWindow.postMessage(d, "*");
+};
+Storage.K6 = {
+	PDF: "#ff2222",
+	PSD: "#005599",
+	PSB: "#005599"
+};
+Storage.awW = function (l) {
+	l = l.toLowerCase();
+	var _local1400 = 0;
+	for (var _local1399 = 0; _local1399 < l.length; _local1399++) _local1400 += l.charCodeAt(_local1399) * 613 << 8 * _local1399;
+	return "#" + PixelUtil.intToHex6(_local1400 & 16777215);
+};
+Storage.aeh = "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIGJhc2VQcm9maWxlPSJ0aW55LXBzIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODggNDEwIiB3aWR0aD0iNDg4IiBoZWlnaHQ9IjQxMCI+PHRpdGxlPmZvbGRlci1zdmc8L3RpdGxlPjxzdHlsZT50c3BhbiB7IHdoaXRlLXNwYWNlOnByZSB9LnNocDAgeyBmaWxsOiAjZGJiMDY1IH0gLnNocDEgeyBmaWxsOiAjOTY3YTQ0IH0gLnNocDIgeyBmaWxsOiAjZjVjZTg1IH0gPC9zdHlsZT48cGF0aCBjbGFzcz0ic2hwMCIgZD0iTTcuMiA0MDMuNEw3LjIgNi42TDEzOC45NSA2LjZMMTc3LjM1IDQ1TDQ4MC44IDQ1TDQ4MC44IDQwMy40TDcuMiA0MDMuNFoiIC8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGFzcz0ic2hwMSIgZD0iTTE0MS42IDAuMkwxODAgMzguNkw0ODcuMiAzOC42TDQ4Ny4yIDQwOS44TDAuOCA0MDkuOEwwLjggMC4yTDE0MS42IDAuMlpNMTMuNiAxM0wxMy42IDM5N0w0NzQuNCAzOTdMNDc0LjQgNTEuNEwxNzQuNyA1MS40TDEzNi4zIDEzTDEzLjYgMTNaIiAvPjxnID48cGF0aCBjbGFzcz0ic2hwMiIgZD0iTTcuMiA0MDMuNEw3LjIgNzAuNkwxNDMuNTMgNzAuNkwxODEuOTMgNDVMNDgwLjggNDVMNDgwLjggNDAzLjRMNy4yIDQwMy40WiIgLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsYXNzPSJzaHAxIiBkPSJNNDg3LjIgMzguNkw0ODcuMiA0MDkuOEwwLjggNDA5LjhMMC44IDY0LjJMMTQxLjYgNjQuMkwxODAgMzguNkw0ODcuMiAzOC42Wk0xODMuODggNTEuNEwxNDUuNDggNzdMMTMuNiA3N0wxMy42IDM5N0w0NzQuNCAzOTdMNDc0LjQgNTEuNEwxODMuODggNTEuNFoiIC8+PC9nPjwvc3ZnPg==";
+Storage.Ul = "data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIGJhc2VQcm9maWxlPSJ0aW55LXBzIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNDggNDI0IiB3aWR0aD0iMzQ4IiBoZWlnaHQ9IjQyNCI+PHRpdGxlPmZpbGUtc3ZnPC90aXRsZT48c3R5bGU+dHNwYW4geyB3aGl0ZS1zcGFjZTpwcmUgfS5zaHAwIHsgZmlsbDogI2ZmZmZmZiB9IC5zaHAxIHsgZmlsbDogI2M3ZDdlMiB9IC5zaHAyIHsgZmlsbDogIzQ1NGI1NCB9IDwvc3R5bGU+PHBhdGggY2xhc3M9InNocDAiIGQ9Ik0yOTYgNDEyTDUyIDQxMkMzMCA0MTIgMTIgMzk0IDEyIDM3MkwxMiA1MkMxMiAzMCAzMCAxMiA1MiAxMkwyOTYgMTJDMzE4IDEyIDMzNiAzMCAzMzYgNTJMMzM2IDM3MkMzMzYgMzk0IDMxOCA0MTIgMjk2IDQxMloiIC8+PHBhdGggY2xhc3M9InNocDEiIGQ9Ik01MiA1MkwyOTYgNTJMMjk2IDExMkw1MiAxMTJMNTIgNTJaTTI3MiAxOTJMNjggMTkyQzYxLjIgMTkyIDU2IDE4Ni44IDU2IDE4MEM1NiAxNzMuMiA2MS4yIDE2OCA2OCAxNjhMMjcyIDE2OEMyNzguOCAxNjggMjg0IDE3My4yIDI4NCAxODBDMjg0IDE4Ni44IDI3OC44IDE5MiAyNzIgMTkyWk0yNzIgMjUyTDY4IDI1MkM2MS4yIDI1MiA1NiAyNDYuOCA1NiAyNDBDNTYgMjMzLjIgNjEuMiAyMjggNjggMjI4TDI3MiAyMjhDMjc4LjggMjI4IDI4NCAyMzMuMiAyODQgMjQwQzI4NCAyNDYuOCAyNzguOCAyNTIgMjcyIDI1MlpNMTc0IDMxMkw2OCAzMTJDNjEuMiAzMTIgNTYgMzA2LjggNTYgMzAwQzU2IDI5My4yIDYxLjIgMjg4IDY4IDI4OEwxNzQgMjg4QzE4MC44IDI4OCAxODYgMjkzLjIgMTg2IDMwMEMxODYgMzA2LjggMTgwLjggMzEyIDE3NCAzMTJaIiAvPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xhc3M9InNocDIiIGQ9Ik0yOTYgNDI0TDUyIDQyNEMyMy4yIDQyNCAwIDQwMC44IDAgMzcyTDAgNTJDMCAyMy4yIDIzLjIgMCA1MiAwTDI5NiAwQzMyNC44IDAgMzQ4IDIzLjIgMzQ4IDUyTDM0OCAzNzJDMzQ4IDQwMC44IDMyNC44IDQyNCAyOTYgNDI0Wk01MiAyNEMzNi40IDI0IDI0IDM2LjQgMjQgNTJMMjQgMzcyQzI0IDM4Ny42IDM2LjQgNDAwIDUyIDQwMEwyOTYgNDAwQzMxMS42IDQwMCAzMjQgMzg3LjYgMzI0IDM3MkwzMjQgNTJDMzI0IDM2LjQgMzExLjYgMjQgMjk2IDI0TDUyIDI0WiIgLz48L3N2Zz4=";
+
+
+
+function WorkspacePanelContainer(l) {
+	PanelContainer.call(this, l);
+	this.iJ = 0;
+	this.Tq = 0;
+	s.addPointerUp(this.lH, this.acV.bind(this));
+	this.R9 = 0;
+	this.alN = this.afu.bind(this);
+	this.A5(this.jo);
+	this.qq = ["default;"];
+	this.HX = new s.CursorPreview(this.jo);
+	this.od = new StoragePanel(!0);
+	this.od.parent = this;
+	this.Ix = this.od.e;
+	StoragePanel.yx(this.od)
+}
+WorkspacePanelContainer.prototype = new PanelContainer;
+WorkspacePanelContainer.prototype.acV = function(l) {
+	if (l.target != this.lH) return;
+	var d = this.R9;
+	this.R9 = Date.now();
+	if (Date.now() - d > 300) return;
+	var G = new Action(ActionTypes.E.L, !0);
+	G.data = {
+		a: ActionTypes.$.SN,
+		GU: "newproject"
+	};
+	this.dispatch(G)
+};
+WorkspacePanelContainer.prototype.uH = function(l, d) {
+	if (d) this.qq.push(l);
+	else {
+		var G = this.qq.length - 1;
+		if (this.qq[G] == l) return;
+		this.qq[G] = l
+	}
+	this.LN()
+};
+WorkspacePanelContainer.prototype.a0x = function() {
+	this.qq.pop();
+	this.LN()
+};
+WorkspacePanelContainer.prototype.LN = function() {
+	var l = this.qq[this.qq.length - 1];
+	this.HX.setSource(l, this.tn)
+};
+WorkspacePanelContainer.prototype.BM = function(l, d) {
+	PanelContainer.prototype.BM.call(this, l, d);
+	this.od.BM(l, d);
+	if (!l.ki) {}
+};
+WorkspacePanelContainer.prototype.refresh = function() {
+	PanelContainer.prototype.refresh.call(this);
+	this.od.refresh()
+};
+WorkspacePanelContainer.prototype.Yw = function(l, d) {
+	for (var A = 0; A < d.length; A++) {
+		var G = d[A];
+		this.k3[A].Pl(G.name + (G.hasUnsavedChanges() ? " *" : ""))
+	}
+	PanelContainer.prototype.Yw.call(this, l, d)
+};
+WorkspacePanelContainer.prototype.XQ = function() {
+	return this.Ix
+};
+WorkspacePanelContainer.prototype.resize = function(l, d) {
+	if (this.k3.length == 0) d += PanelContainer.DV - 1;
+	this.iJ = l;
+	this.Tq = d;
+	d = PanelContainer.prototype.resize.call(this, l, d);
+	this.tn = "height:" + d + "px; width:" + l + "px; overflow:hidden; position:relative;";
+	this.LN();
+	this.od.resize(l, d)
+};
+WorkspacePanelContainer.prototype.$J = function(l) {
+	PanelContainer.prototype.$J.call(this, l);        
+	l.PT.addEventListener("click", this.alN, !1)
+};
+WorkspacePanelContainer.prototype.cd = function(A) {
+	var l = this.k3[A];
+	s.removePointerUp(l.PT, this.alN);
+	PanelContainer.prototype.cd.call(this, A)
+};
+WorkspacePanelContainer.prototype.afu = function(l) {
+	var d = this.R9;
+	this.R9 = Date.now();
+	if (Date.now() - d > 300) return;
+	var G = this.abm(l.currentTarget),
+		b = this.k3[G].Kv.name,
+		V = new Action(ActionTypes.E.L, !0),
+		Q = {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.w0
+			}
+		};
+	V.data = {
+		a: ActionTypes.$.SN,
+		GU: "namewindow",
+		mS: b.slice(0, b.length - 4),
+		P7: Q
+	};
+	this.dispatch(V)
+};
+
+
+
+function PanelListContainer() {
+	UIComponent.call(this);
+	this.mN = null;
+	this.rD = PanelListContainer.Ho;
+	this.akd = "";
+	this.e = s.createElement("div", "rightbar");
+	this.Z8 = [new VerticalSidebarColumn(300), new VerticalSidebarColumn(268, !0)];
+	this.xY = [new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer];
+	this.aa6 = []
+}
+PanelListContainer.prototype = new UIComponent;
+PanelListContainer.prototype.refresh = function() {
+	var l = this.rD;
+	// for (var A = 0; A < l.length; A++) l[A].A3.refresh(); // hbi
+};
+// hbi: disabled
+PanelListContainer.Ho = [{
+	A3: new ActionsPanel,
+	Ju: 3
+// }, {
+// 	A3: new AdjustmentsPanel,
+// 	Ju: 1
+// }, {
+// 	A3: new BrushPanel,
+// 	Ju: 4
+// }, {
+// 	A3: new ChannelsPanel,
+// 	Ju: 2
+// }, {
+// 	A3: new CharacterParagraphPanel(!0),
+// 	Ju: 5
+// }, {
+// 	A3: new ColorPanel,
+// 	Ju: 0
+// }, {
+// 	A3: new GlyphsPanel,
+// 	Ju: 5
+// }, {
+// 	A3: new HistogramPanel,
+// 	Ju: 3
+// }, {
+// 	A3: new HistoryPanel,
+// 	Ju: 0
+// }, {
+// 	A3: new InfoPanel,
+// 	Ju: 3
+// }, {
+// 	A3: new LayersPanel,
+// 	Ju: 2
+// }, {
+// 	A3: new LayerCompsPanel,
+// 	Ju: 4
+// }, {
+// 	A3: new NavigatorPanel,
+// 	Ju: 3
+// }, {
+// 	A3: new NotesPanel,
+// 	Ju: 5
+// }, {
+// 	A3: new CharacterParagraphPanel(!1),
+// 	Ju: 5
+// }, {
+// 	A3: new PathsPanel,
+// 	Ju: 2
+// }, {
+// 	A3: new PropertiesPanel,
+// 	Ju: 3
+// }, {
+// 	A3: new StylePanel,
+// 	Ju: 1
+// }, {
+// 	A3: new SwatchesPanel,
+// 	Ju: 0
+// }, {
+// 	A3: new ToolPresetsPanel,
+// 	Ju: 5
+// }, {
+// 	A3: new CssPanel,
+// 	Ju: 6,
+// 	ME: !0
+// }, {
+// 	A3: new GuideGuyPanel,
+// 	Ju: 6,
+// 	ME: !0
+// }, {
+// 	A3: new MemoryPanel,
+// 	Ju: 6,
+// 	ME: !0
+}];
+(function() {
+	var l = [{
+		id: PanelTabBase.xA.aas,
+		name: "Gallery",
+		url: "plugins/gallery.html",
+		icon: "===data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAB5QTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtyhvagAAAAp0Uk5TAP+mc4pfC+rILiKk3cQAAALjSURBVHic7dq/bxMxFAdwKy1HM16up4QtDCDYkv8gTIgtZWGNWMpIJKhgLAtriyrx71Lnh8/2e76c3/tOxW9olUb56Fvf3bPPOWNKlSpVqtSxPv6uIfXj1d77hOFs/bTeGc6r68UjuESCjTHPkF5dr801FrwxV1iwNS+x4MRs7a+3iNP5j5Vmxv5sEN7+fJnuwDkGHFlrB95hwLEDNxiwciDGM+Zpgw9v6vrXBxg4fr+/Lr6F54cYrNz1OtlAQK/Hf0eAI78bzPVgdRu0l40avAgblhdRCEYddKIFySS0VoJkErpRgmTO6P5nETiOPa+disBzCq5U4HMKflWB9xR8oQLfUfBSBTILA3eYReAtBWcqkHrd5ws4rOAHBX7aMCe2Ww2KwHsK6i49eHOAty94g4VPAfhJSjGNngUj7ko+0e/OYXoPMwrB+WDwcIIs4r9XQcSMxdJy/4kTEb2AJ0B3p08iChecy+NnLslboiWxtxWxIm9KFu1em6IRBbcVwcDTiHz1gUEfHXo/3QNGTYoe6FwwavQDI6bB6OryG4AMJD2v1YFMmx8UMQkyU+WgiCmQjGAU8Tx14FMgu9nkRUz0ySTIBvQipvpkEkzshrmIhxFmIvJgIqCL2NMneTC5XXeItIxenwKTAQ8RvT5JIrJgz35iGwRkInJgT0BacUQOzNrwjCMyYFZAEpEBM3dk21NgZsC4CVEwe8u47QeZPpgVkYCCPe2mD8weQVuLHlC06d6kQcEIRhEjUPitQJsCP8s8P2IIMvetuREDUHSIo4gBqPhepeVARcAuogdW4hG01VDwi8ZzETtQF9CtwjtQGfAYsQPVX501ISi+SLpaB6ByBG21AYioNRps0aA90FiwQYOPEcFggwbrBRps0GBdwAIW8AmBW6w3la8z+Zrhn7e5woIt/pkl4d1JqlbqpWFYs40xf5GgfdZtvMV50zvVLRSt1/ul8QPqccF4X7tUqVKl/uf6BxTPzN+MDvNvAAAAAElFTkSuQmCC"
+	}];
+	for (var A = 0; A < l.length; A++) {
+		PanelListContainer.Ho.push({
+			A3: new PluginTabPanel(l[A], 100 + A),
+			Ju: 6,
+			ME: !0
+		})
+	}
+}());
+PanelListContainer.prototype.ak7 = function(l) {
+	for (var A = 0; A < l.length; A++) {
+		var d = l[A],
+			G = new PluginTabPanel(d, "plg_" + d.name);
+		this.rD.push({
+			A3: G,
+			Ju: 6
+		});
+		this.aa6.push(G.kR)
+	}
+	this.VP()
+};
+PanelListContainer.prototype.BM = function(l, d) {
+	this.mN = l;
+	var G = this.rD;
+	// hbi
+	// for (var A = 0; A < G.length; A++) G[A].A3.BM(l, d);
+	if (d == PsdResourceTypes.X2 || d == PsdResourceTypes.Wx) this.VP()
+};
+PanelListContainer.prototype.em = function(l) {
+	var d = this.rD;
+	for (var A = 0; A < d.length; A++) d[A].A3.em(l)
+};
+PanelListContainer.prototype.resize = function(l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	this.VP();
+	this.Z8[0].resize(l, d);
+	this.Z8[1].resize(l, d)
+};
+PanelListContainer.prototype.VP = function() {
+	var l = this.mN,
+		d = this.iJ,
+		G = this.Tq;
+	if (l == null || d == 0) return;
+	var b = l.J_.concat(this.aa6),
+		V = d < 500 || d < 700 && d < G,
+		Q = JSON.stringify(b) + "," + V;
+	if (Q != this.akd) {
+		this.akd = Q;
+		s.clearChildren(this.e);
+		var t = [];
+		for (var A = 0; A < this.Z8.length; A++) {
+			var I = this.Z8[A];
+			t[A] = I.TL();
+			while (I.aoj() != 0) I.akg(0);
+			I.sS()
+		}
+		var y = [];
+		for (var A = 0; A < this.xY.length; A++) {
+			var e = this.xY[A];
+			e.sS();
+			while (e.a5B() != 0) e.cd(0);
+			y.push(0)
+		}
+		for (var A = 0; A < b.length; A++) {
+			var M = this.abu(b[A].toString());
+			if (M == null) continue;
+			this.xY[M.Ju].$J(M.A3);
+			this.xY[M.Ju].AT(0);
+			y[M.Ju]++
+		}
+		var R = [];
+		for (var A = 0; A < y.length; A++) {
+			if (y[A] == 0) continue;
+			var J = A < 3 || V ? 1 : 0,
+				I = this.Z8[J];
+			I.parent = this;
+			I.ayf(this.xY[A]);
+			R[J] = !0
+		}
+		for (var A = 0; A < this.Z8.length; A++)
+			if (R[A]) this.e.appendChild(this.Z8[A].e);
+		this.Z8[0].collapse();
+		if (d < 700 || this.mN.compact || !t[1]) {
+			this.Z8[1].collapse()
+		}
+		var n = new Action(ActionTypes.E.L, !0);
+		n.data = {
+			a: ActionTypes.$.to
+		};
+		this.dispatch(n)
+	}
+};
+PanelListContainer.prototype.abu = function(l) {
+	for (var A = 0; A < this.rD.length; A++)
+		if (this.rD[A].A3.kR == l) return this.rD[A]
+};
+PanelListContainer.prototype.aoY = function(l) {
+	var d = this.abu(l);
+	this.xY[d.Ju].$J(d.A3)
+};
+PanelListContainer.prototype.Yw = function(l, d, G) {
+	var b = this.rD;
+	// for (var A = 0; A < b.length; A++) b[A].A3.Yw(l, d, G); // hbi
+};
+PanelListContainer.prototype.dJ = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.dJ(l, d, G, b, V)
+};
+PanelListContainer.prototype.JP = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.JP(l, d, G, b, V)
+};
+PanelListContainer.prototype.Nl = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.Nl(l, d, G, b, V)
+};
+
+
+
+var ThemeManager = {};
+ThemeManager.applyTheme = function(A) {
+	var l = ThemeManager.themes[A],
+		d = document.documentElement.style,
+		b = 1;
+	d.setProperty("--base", "#" + PixelUtil.intToHex6(l["--base"]));
+	d.setProperty("--bg-panel", "#" + PixelUtil.intToHex6(l["--bg-panel"]));
+	d.setProperty("--bg-canvas", "#" + PixelUtil.intToHex6(l["--bg-canvas"]));
+	d.setProperty("--bg-input", "#" + PixelUtil.intToHex6(l["--bg-input"]));
+	d.setProperty("--bg-bbtn", "#" + PixelUtil.intToHex6(l["--bg-bbtn"]));
+	d.setProperty("--bg-bbtnOver", "#" + PixelUtil.intToHex6(l["--bg-bbtnOver"]));
+	d.setProperty("--brdr", "#" + PixelUtil.intToHex6(l["--brdr"]));
+	d.setProperty("--text-color", "#" + PixelUtil.intToHex6(l["--text-color"]));
+	d.setProperty("--brdrLgt", "rgba(255,255,255," + l["--brdrLgt"] + ")");
+	d.setProperty("--brdrDrk", "rgba(  0,  0,  0," + l["--brdrDrk"] + ")");
+	d.setProperty("--alphaDark", "" + l["--alphaDark"]);
+	d.setProperty("--gs-invert", "" + l["--gs-invert"]);
+	d.setProperty("--accent", "#" + PixelUtil.intToHex6(l["--accent"]));
+	var G = l["--sh-clr"];
+	d.setProperty("--sh-clr", "rgba(" + (G >> 16) + "," + (G >> 8 & 255) + "," + (G & 255) + ", 0.45)");
+	d.setProperty("--absc", "" + l["--absc"]);
+	d.setProperty("--abs255", "" + l["--abs255"]);
+	if (1 < s.getDevicePixelRatio() && s.getDevicePixelRatio() < 1.5) b = 1 / s.getDevicePixelRatio();
+	d.setProperty("--img20", 20 * b + "px");
+	d.setProperty("--img18", 18 * b + "px");
+	d.setProperty("--img15", 15 * b + "px");
+	if (PIMG != null) {
+		var V = "lrs/eye lrs/square lrs/arrow_down lrs/arrow_right lrs/chain lrs/link lrs/linkX lrs/clipping lrs/lock lrs/fx lrs/folder cross tools/cshape checkmark".split(" ");
+		for (var A = 0; A < V.length; A++) {
+			var Q = V[A],
+				t = Q.split("/").pop(),
+				I = PIMG["__" + Q] == null ? l["--gs-invert"] : "0";
+			d.setProperty("--icon_" + t, "url(" + PIMG[Q] + ")");
+			d.setProperty("--icon_" + t + "_invrt", I)
+		}
+	}
+	var y = document.querySelector("meta[name=theme-color]");
+	if (y) y.setAttribute("content", "#" + PixelUtil.intToHex6(l["--base"]))
+};
+(function() {
+	var l = 3441398,
+		d = 3441398;
+	ThemeManager.themes = [{
+		name: "Light Grey",
+		"--base": 14737632,
+		"--bg-panel": 11579568,
+		"--bg-canvas": 11579568,
+		"--bg-input": 16777215,
+		"--bg-bbtn": 15921906,
+		"--bg-bbtnOver": 16777215,
+		"--brdrLgt": .5,
+		"--brdrDrk": .4,
+		"--alphaDark": .12,
+		"--text-color": 3749943,
+		"--gs-invert": .22,
+		"--brdr": 11579568,
+		"--sh-clr": 16777215,
+		"--absc": 1,
+		"--abs255": 255,
+		"--accent": d
+	}, {
+		name: "Dark Grey",
+		"--base": 4671303,
+		"--bg-panel": 2434341,
+		"--bg-canvas": 2434341,
+		"--bg-input": 2434341,
+		"--bg-bbtn": 6118749,
+		"--bg-bbtnOver": 6974058,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 14013909,
+		"--gs-invert": .78,
+		"--brdr": 2434341,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Blue",
+		"--base": 4212048,
+		"--bg-panel": 2435637,
+		"--bg-canvas": 2434341,
+		"--bg-input": 2435637,
+		"--bg-bbtn": 6316138,
+		"--bg-bbtnOver": 6974074,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 15790330,
+		"--gs-invert": .88,
+		"--brdr": 2435637,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Dark Blue",
+		"--base": 2237745,
+		"--bg-panel": 1513761,
+		"--bg-canvas": 1513761,
+		"--bg-input": 1513761,
+		"--bg-bbtn": 3554128,
+		"--bg-bbtnOver": 3158085,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 12303291,
+		"--gs-invert": .8,
+		"--brdr": 1513761,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Purple",
+		"--base": 4931153,
+		"--bg-panel": 3287605,
+		"--bg-canvas": 2434341,
+		"--bg-input": 3287605,
+		"--bg-bbtn": 6840430,
+		"--bg-bbtnOver": 7694970,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 15790330,
+		"--gs-invert": .88,
+		"--brdr": 3287605,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Black",
+		"--base": 3487029,
+		"--bg-panel": 1710618,
+		"--bg-canvas": 1710618,
+		"--bg-input": 1710618,
+		"--bg-bbtn": 5263440,
+		"--bg-bbtnOver": 5921370,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 13421772,
+		"--gs-invert": .7,
+		"--brdr": 1710618,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "White",
+		"--base": 16250871,
+		"--bg-panel": 14737632,
+		"--bg-canvas": 14737632,
+		"--bg-input": 16777215,
+		"--bg-bbtn": 14737632,
+		"--bg-bbtnOver": 14079702,
+		"--brdrLgt": .2,
+		"--brdrDrk": .2,
+		"--alphaDark": .065,
+		"--text-color": 3355443,
+		"--gs-invert": .18,
+		"--brdr": 14737632,
+		"--sh-clr": 16777215,
+		"--absc": 1,
+		"--abs255": 255,
+		"--accent": d
+	}]
+}());
+
+
+
 function ModalDialogBase(l, d) {
 	UIComponent.call(this);
 	if (l == null) return;
@@ -2180,476 +5632,6 @@ MoveToolOptions.prototype.lx = function () {
 };
 
 
-function ContextPanel(l, d, G) {
-	UIComponent.call(this);
-	this.G$ = null;
-	this.as0 = this.qd.bind(this);
-	this.ab7 = this.oj.bind(this);
-	this.akL = this.afp.bind(this);
-	this.a4H = this.a1I.bind(this);
-	this.Ru = [];
-	this.lT = [];
-	this.DA = [];
-	this.abO = [];
-	this.e = s.createElement("div", "contextpanel " + (G ? "cp_dark" : "cp_trsp"));
-	this.e.addEventListener("contextmenu", s.preventDefaultHandler, !1);
-	this.wb = null;
-	this.cA = 0;
-	this.iV = l;
-	this.E0 = d;
-	this.Kf = [];
-	for (var _local36 = 0; _local36 < l.length; _local36++) {
-		var _local40 = s.createElement("div", "enab");
-		this.lT.push(_local40);
-		this.e.appendChild(_local40);
-		var _local39 = l[_local36].e2;
-		if (_local39) {
-			if (_local39.startsWith("#")) {
-				var _local38 = s.createElement("span");
-				_local38.setAttribute("style", "display:inline-block; width:16px; height:16px; vertical-align:middle; margin:0 5px 0 -3px; border-radius:4px; background-color:" + _local39);
-				_local40.appendChild(_local38);
-			} else _local40.innerHTML = s.getIconImgHtml(l[_local36].e2, null, "thumb");
-		} else {
-			var _local42 = s.createElement("span", "check");
-			this.abO.push(_local42);
-			_local40.appendChild(_local42);
-		}
-		var _local37 = s.createElement("span", "label");
-		_local37.textContent = languageManager.get(l[_local36].name);
-		_local40.appendChild(_local37);
-		this.DA.push(_local37);
-		if (l[_local36].xX) this.e.appendChild(s.createElement("hr"));
-		if (l[_local36].C0 || l[_local36].sub) {
-			var _local43 = _local40.CM = s.createElement("span", "right");
-			_local40.appendChild(_local43);
-			if (l[_local36].C0) _local43.textContent = KeyboardHandler.nc(l[_local36].C0);else
-			if (l[_local36].sub) _local43.innerHTML = "<svg height='10px' width='6px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 1 L 5 5 L 1 9'/></svg>";
-		}
-		_local40.addEventListener("click", this.as0, !1);
-		_local40.addEventListener("mouseover", this.ab7, !0);
-		_local40.addEventListener("mouseout", this.akL, !0);
-		if (l[_local36].sub) {
-			var _local41 = new ContextPanel(l[_local36].sub, d ? d[_local36].sub : null);
-			_local41.parent = this;
-			this.Kf.push(_local41);
-			_local41.addListener("select", this.ayV, this);
-		} else this.Kf.push(null);
-	}
-}
-
-ContextPanel.prototype = new UIComponent();
-
-ContextPanel.prototype.avV = function (l) {
-	s.clearChildren(this.e);
-	for (var _local44 = 0; _local44 < l.length; _local44++)
-	if (l[_local44] != 0 && l[_local44] != null) {
-		this.e.appendChild(this.lT[_local44]);
-		if (l[_local44] != 1 && this.Kf[_local44]) this.Kf[_local44].avV(l[_local44]);
-	}
-};
-
-ContextPanel.prototype.refresh = function () {
-	var _local46 = this.iV;
-	for (var _local45 = 0; _local45 < _local46.length; _local45++) {
-		if (_local46[_local45].title) this.lT[_local45].title = languageManager.get(_local46[_local45].title);
-		this.DA[_local45].textContent = languageManager.get(_local46[_local45].name) + (_local46[_local45].pR ? "..." : "");
-	}
-	for (var _local45 = 0; _local45 < this.Kf.length; _local45++)
-	if (this.Kf[_local45]) this.Kf[_local45].refresh();
-};
-
-ContextPanel.prototype.update = function (l, d) {
-	var _local48 = this.iV,
-		_local51 = window.innerWidth < 450 ? "none" : "inline";
-	for (var _local47 = 0; _local47 < _local48.length; _local47++) {
-		var _local50 = this.lT[_local47];
-		if (_local50.CM && !this.Kf[_local47]) _local50.CM.style.display = _local51;
-		if (_local48[_local47].p) {
-			var _local49 = _local48[_local47].p(l, d, _local47);
-			if (_local49.p != null) this.lT[_local47].className = _local49.p ? "enab" : "disab";
-			if (_local49.iH != null) this.DA[_local47].textContent = _local49.iH;
-			if (_local49.Zj != null) this.abO[_local47].innerHTML = _local49.Zj ? "<svg height='10px' width='10px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 5 L 4 8 L 9 2'/></svg>" : "";
-			if (_local49.W != null) this.E0[_local47] = _local49.W;
-		}
-	}
-	for (var _local47 = 0; _local47 < this.Kf.length; _local47++)
-	if (this.Kf[_local47]) this.Kf[_local47].update(l, d);
-};
-
-ContextPanel.prototype.sz = function () {
-	return this.Ru;
-};
-
-ContextPanel.prototype.qd = function (l) {
-	if (l.button != 0) return;
-	var _local52 = this.lT.indexOf(l.currentTarget);
-	if (this.Kf[_local52]) {
-		this.cA = _local52;
-		this.a1I();
-	} else {
-		if (this.E0) {
-			var _local54 = this.E0[_local52],
-				_local53 = new Action(_local54.Y, !0);
-			_local53.G = _local54.G;
-			_local53.data = _local54.W;
-			this.dispatch(_local53);
-		}
-		this.G$ = null;
-		this.Ru = [_local52];
-		this.dispatch(new Action("select", !1));
-		var _local53 = new Action(ActionTypes.E.L, !0);
-		_local53.data = {
-			a: ActionTypes.$.xt
-		};
-		this.dispatch(_local53);
-	}
-};
-
-ContextPanel.prototype.oj = function (l) {
-	var _local55 = this.lT.indexOf(l.currentTarget);
-	this.N2();
-	this.cA = _local55;
-	this.wb = setTimeout(this.a4H, 300);
-};
-
-ContextPanel.prototype.afp = function (l) {
-	this.N2();
-};
-
-ContextPanel.prototype.N2 = function () {
-	if (this.wb) {
-		clearTimeout(this.wb);
-		this.wb = null;
-	}
-};
-
-ContextPanel.prototype.a1I = function () {
-	this.N2();
-	var _local56 = this.cA;
-	if (this.G$) this.G$.a9d();
-	if (this.Kf[_local56] == null) return;
-	this.G$ = this.Kf[_local56];
-	var _local58 = this.lT[_local56].getBoundingClientRect(),
-		_local57 = new Action(ActionTypes.E.L, !0);
-	_local57.data = {
-		a: ActionTypes.$.dY,
-		A3: this.Kf[_local56],
-		x: _local58.left + _local58.width + 2,
-		y: _local58.top
-	};
-	this.dispatch(_local57);
-};
-
-ContextPanel.prototype.a9d = function () {
-	for (var _local59 = 0; _local59 < this.Kf.length; _local59++)
-	if (this.Kf[_local59]) this.Kf[_local59].a9d();
-	var _local60 = new Action(ActionTypes.E.L, !0);
-	_local60.data = {
-		a: ActionTypes.$.qH,
-		A3: this
-	};
-	this.dispatch(_local60);
-};
-
-ContextPanel.prototype.ayV = function (l) {
-	var _local61 = this.Kf.indexOf(l.target);
-	this.Ru = [_local61].concat(l.target.sz());
-	this.dispatch(new Action("select", !1));
-};
-
-
-function ToolbarButton(l, d, G, b, V) {
-	UIComponent.call(this);
-	this.Eg = !1;
-	this.e = s.createElement("button", "fitem" + (d ? " spread" : "") + (b ? " bbtn" : ""));
-	this.$w = l;
-	this.pd = G;
-	this.refresh();
-	var _local64 = V && window.PointerEvent ? "pointerup" : "click";
-	// console.log(this.e);
-	this.e.addEventListener(_local64, this.ec.bind(this), !1);
-}
-
-ToolbarButton.prototype = new UIComponent();
-
-ToolbarButton.prototype.refresh = function () {
-	var _local67 = this.e,
-		_local66 = this.$w,
-		_local65 = this.pd;
-	if (typeof _local66 == "string" && (_local66.startsWith("<img") || _local66.startsWith("<svg") || _local66.startsWith("<span"))) {
-		if (!this.Eg) {
-			_local67.innerHTML = _local66;
-			_local67.setAttribute("style", "padding:2px");
-			this.Eg = !0;
-		}
-	} else _local67.textContent = languageManager.get(_local66);
-	if (_local65) {
-		_local67.setAttribute("title", languageManager.get(_local65));
-	}
-};
-
-ToolbarButton.prototype.arb = function (l) {
-	this.e.setAttribute("title", l);
-};
-
-ToolbarButton.prototype.ec = function (l) {
-	this.dispatch(new Action("click", !1));
-};
-
-ToolbarButton.prototype.Nu = function () {
-	s.addClass(this.e, "bactive");
-};
-
-ToolbarButton.prototype.kL = function () {
-	s.removeClass(this.e, "bactive");
-};
-
-ToolbarButton.prototype.setLabel = function (l, d) {
-	if (l && l != this.$w) {
-		this.$w = l;
-		this.Eg = !1;
-	}
-	if (d) this.pd = d;
-	this.refresh();
-};
-
-ToolbarButton.prototype.c = function (l) {
-	if (l) this.Nu();else
-	this.kL();
-};
-
-ToolbarButton.prototype.dB = function () {
-	return this.e.getAttribute("class").indexOf("bactive") != -1;
-};
-
-ToolbarButton.prototype.b = function () {
-	return this.dB();
-};
-
-
-function PanelTabBase(l, d, G, b) {
-	UIComponent.call(this);
-	this.name = l;
-	this.amM = G;
-	this.kR = b;
-	this.PT = s.createElement("div", "");
-	this.PT.setAttribute("draggable", "true");
-	this.DK = s.createElement("div", "pbody");
-	this.wZ = new ToolbarButton("", !1, "");
-	this.wZ.parent = this;
-	this.a8x = s.createElement("span", "cross gsicon");
-	this.c1 = s.createElement("span", "label");
-	var _local3351 = this.a7f.bind(this);
-	this.PT.addEventListener("mousedown", this.av_.bind(this), !1);
-	this.PT.addEventListener("contextmenu", _local3351, !1);
-	this.wZ.e.addEventListener("contextmenu", _local3351, !1);
-	this.a8x.addEventListener("mousedown", this.gV.bind(this), !1);
-	this.PT.appendChild(this.c1);
-	if (d) this.PT.appendChild(this.a8x);
-	this.Lq = !1;
-	this.c1.textContent = l;
-}
-
-PanelTabBase.prototype = new UIComponent();
-
-PanelTabBase.prototype.xI = function () {
-	return null;
-};
-
-PanelTabBase.prototype.refresh = function () {
-	var _local3359 = languageManager.get(this.name),
-		_local3357 = !1,
-		_local3352 = this.iJ == 0 ? 22 : Math.round(2 + this.iJ / 50);
-	if (_local3359.endsWith(" *")) {
-		_local3357 = !0;
-		_local3359 = _local3359.slice(0, _local3359.length - 2);
-		_local3352 -= 2;
-	}
-	var _local3356 = _local3359.length > _local3352;
-	this.c1.textContent = _local3356 ? _local3359.slice(0, _local3352 - 2) : _local3359;
-	if (_local3356)
-	for (var _local3355 = 0; _local3355 < 2; _local3355++) {
-		var _local3354 = s.createElement("span");
-		_local3354.textContent = _local3359.charAt(_local3352 - 2 + _local3355);
-		_local3354.setAttribute("style", "opacity:" + (.6 - _local3355 * .4));
-		this.c1.appendChild(_local3354);
-	}
-	if (_local3357) {
-		var _local3354 = s.createElement("span");
-		_local3354.textContent = " *";
-		this.c1.appendChild(_local3354);
-	}
-	var _local3360 = _local3359.split(" "),
-		_local3353 = _local3360.length == 2 ? _local3360[0].substring(0, 2) + _local3360[1][0] : _local3359.substring(0, 3);
-	if (_local3353.charCodeAt(0) >= 11776) _local3353 = _local3353.substring(0, 1);
-	var _local3361 = this.amM;
-	if (_local3361 == null) this.wZ.setLabel(_local3353, _local3359);else
-	{
-		var _local3358;
-		if (_local3361.startsWith("---")) _local3358 = "<img src=\"" + PIMG[_local3361.slice(3)] + "\" class=\"autoscale gsicon\" style=\"margin:2px 4px;\"/>";else
-		if (_local3361.startsWith("===")) _local3358 = "<img src=\"" + _local3361.slice(3) + "\" class=\"autoscale gsicon\" style=\"margin:2px 4px;\"/>";else
-		if (_local3361.indexOf("\"") == -1) _local3358 = "<img src=\"" + _local3361 + "\" alt=\"" + s.escapeHtml(_local3359).replace(/"/g, "&quot;") + "\" height=\"18\" width=\"18\" loading=\"lazy\" style=\"margin:1px 3px;\" />";
-		this.wZ.setLabel(_local3358, _local3359);
-	}
-};
-
-PanelTabBase.prototype.enable = function () {
-	this.DK.className = "pbody";
-};
-
-PanelTabBase.prototype.disable = function () {
-	this.DK.className = "pbody disabled";
-};
-
-PanelTabBase.prototype.BM = function (l, d) {};
-
-PanelTabBase.prototype.Yw = function (l, d, G) {};
-
-PanelTabBase.prototype.em = function (l) {};
-
-PanelTabBase.prototype.resize = function (l, d) {};
-
-PanelTabBase.prototype.Pl = function (l) {
-	this.name = l;
-	this.refresh();
-};
-
-PanelTabBase.prototype.KN = function () {};
-
-PanelTabBase.prototype.av_ = function (l) {
-	if (l.button == 0) this.dispatch(new Action("select", !1));
-};
-
-PanelTabBase.prototype.a7f = function (l) {
-	s.stopAndPreventHandler(l);
-	if (this.kR != null && isNaN(this.kR)) return;
-	var _local3364 = s.getEventPositionInElement(l, document.body),
-		_local3362 = this.Rk;
-	if (_local3362 == null) {
-		_local3362 = this.Rk = new ContextPanel([{
-			name: "Close"
-		}]);
-		this.Rk.addListener("select", this.gV, this);
-	}
-	_local3362.update(null);
-	_local3362.refresh();
-	_local3362.parent = this;
-	var _local3363 = new Action(ActionTypes.E.L, !0);
-	_local3363.data = {
-		a: ActionTypes.$.dY,
-		A3: _local3362,
-		x: _local3364.x + 1,
-		y: _local3364.y + 1
-	};
-	this.dispatch(_local3363);
-};
-
-PanelTabBase.prototype.pN = function () {
-	this.gV({});
-};
-
-PanelTabBase.prototype.gV = function (l) {
-	if (l.stopPropagation) l.stopPropagation();
-	if (this.kR != null && !isNaN(this.kR)) {
-		var _local3365 = new Action(ActionTypes.E.L, !0);
-		_local3365.data = {
-			a: ActionTypes.$.qH,
-			A3: this.Rk
-		};
-		this.dispatch(_local3365);
-		_local3365.data = {
-			a: ActionTypes.$.kI,
-			Oo: PsdResourceTypes.X2,
-			Z: parseFloat(this.kR),
-			pb: "del"
-		};
-		this.dispatch(_local3365);
-	} else if (this.ah$()) this.dispatch(new Action(ActionTypes.E.Ax, !1));
-};
-
-PanelTabBase.prototype.ah$ = function (l) {
-	return !0;
-};
-
-PanelTabBase.prototype.dJ = function (l, d, G, b, V) {};
-
-PanelTabBase.prototype.JP = function (l, d, G, b, V) {};
-
-PanelTabBase.prototype.Nl = function (l, d, G, b, V) {};
-
-PanelTabBase.di = function (l, d, G) {
-	if (l.childElementCount != 0) return;
-	var _local3367 = l.textContent;
-	this.M1 = this.auP.bind(this);
-	this.a6e = this.a0b.bind(this);
-	this.sd = d;
-	this.apP = G;
-	this.Qj = l;
-	this.afZ = _local3367;
-	var _local3366 = s.createElement("input", "");
-	_local3366.setAttribute("type", "text");
-	_local3366.setAttribute("size", "10");
-	_local3366.setAttribute("value", _local3367);
-	s.clearChildren(l);
-	l.appendChild(_local3366);
-	_local3366.select();
-	_local3366.focus();
-	s.addKeydownBlocker(l);
-	l.addEventListener("keyup", this.M1, !1);
-	document.body.addEventListener("mousedown", this.a6e, !1);
-};
-
-PanelTabBase.di.prototype.auP = function (l) {
-	var _local3369 = KeyboardHandler._Q,
-		_local3368 = _local3369(l.code, KeyboardHandler.lm);
-	if (_local3369(l.code, KeyboardHandler.mp) || _local3368) this.azL(_local3368);
-};
-
-PanelTabBase.di.prototype.a0b = function (l) {
-	var _local3370 = l.target;
-	if (_local3370.tagName && _local3370.tagName.toLowerCase() == "input") return;
-	this.azL(!0);
-};
-
-PanelTabBase.di.prototype.azL = function (l) {
-	var _local3372 = this.Qj,
-		_local3371 = _local3372.firstChild.value;
-	_local3372.removeEventListener("keyup", this.M1);
-	document.body.removeEventListener("mousedown", this.a6e);
-	if (this.apP || l && _local3371 != "" && _local3371 != this.afZ) {
-		this.sd(_local3371);
-	} else {
-		s.clearChildren(_local3372);
-		_local3372.textContent = this.afZ;
-	}
-};
-
-PanelTabBase.xA = {
-	lv: "0",
-	agA: "1",
-	yS: "2",
-	aoQ: "3",
-	a7r: "4",
-	uB: "5",
-	CSS: "6",
-	CV: "7",
-	ax2: "8",
-	a46: "9",
-	alU: "10",
-	abR: "11",
-	afm: "12",
-	K5: "13",
-	qa: "14",
-	aAh: "15",
-	aan: "16",
-	fe: "17",
-	auV: "18",
-	al9: "19",
-	al6: "20",
-	G9: "21",
-	avR: "22",
-	atY: "23"
-};
 
 
 
@@ -11290,4 +14272,673 @@ FilterEffectPanel.matc = function () {
 	};
 	return _local1934;
 }();
+
+var BrushPanel = function () {
+	function _local3435() {
+		PanelTabBase.call(this, "Brush", !1, "---panels/brush", PanelTabBase.xA.CV);
+		this.Q_ = null;
+		this.mN = null;
+	}
+	_local3435.prototype = new PanelTabBase("");
+	_local3435.prototype.Eg = function () {
+		var _local3439 = s.createElement("div", "");
+		this.DK.appendChild(_local3439);
+		this.ms = s.createElement("div", "bordered cell");
+		this.ms.setAttribute("style", "width:10em; height:28.5em;");
+		_local3439.appendChild(this.ms);
+		this.k3 = [];
+		this.Ob = null;
+		this.DB = [];
+		var _local3438 = this.ahl.bind(this);
+		this.J_ = [
+		new _local3432("basic"),
+		new _local3432("useTipDynamics"),
+		new _local3432("useScatter"),
+		new _local3432("useColorDynamics"),
+		new _local3432("usePaintDynamics")];
+
+		for (var _local3436 = 0; _local3436 < this.J_.length; _local3436++) {
+			var _local3441 = s.createElement("div", "listitem"),
+				_local3437 = this.J_[_local3436],
+				_local3440 = null;
+			_local3437.parent = this;
+			_local3437.addListener("brushchange", this.ako, this);
+			var _local3442 = _local3437.tZ;
+			if (_local3436 == 0) {
+				this.Ob = new LabelItem(_local3442);
+				_local3441.appendChild(this.Ob.e);
+			} else {
+				_local3440 = new CheckboxControl(_local3442, !1);
+				_local3440.addListener(ActionTypes.E.A, this.an$, this);
+				_local3441.appendChild(_local3440.e);
+			}
+			this.DB.push(_local3440);
+			this.ms.appendChild(_local3441);
+			this.k3.push(_local3441);
+			_local3441.addEventListener("click", _local3438, !1);
+		}
+		this.DM = s.createElement("div", "cell padded");
+		_local3439.appendChild(this.DM);
+		this.setItem(0);
+		this.T = s.createElement("canvas");
+		this.T.height = 10;
+		_local3439.appendChild(this.T);
+		this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+		this.LO();
+	};
+	_local3435.prototype.resize = function (V, Q) {
+		if (this.iJ == V) return;
+		this.iJ = V;
+		this.Tq = Q;
+		this.LO();
+	};
+	_local3435.prototype.KN = function () {
+		if (!s.isInDocument(this.DK)) return;
+		if (this.ms) {
+			this.LO();
+			return;
+		}
+		this.Eg();
+		this.refresh();
+		this.BM(this.mN, PsdResourceTypes.Wx);
+	};
+	_local3435.prototype.refresh = function () {
+		PanelTabBase.prototype.refresh.call(this);
+		if (this.ms == null) return;
+		this.Ob.refresh();
+		for (var _local3443 = 1; _local3443 < this.DB.length; _local3443++) this.DB[_local3443].refresh();
+		for (var _local3443 = 0; _local3443 < this.J_.length; _local3443++) this.J_[_local3443].refresh();
+	};
+	_local3435.prototype.ako = function (V) {
+		var _local3445 = this.J_.indexOf(V.currentTarget),
+			_local3446 = JSON.parse(JSON.stringify(this.J_[_local3445].Q_)),
+			_local3444 = new Action(ActionTypes.E.L, !0);
+		_local3444.data = {
+			a: ActionTypes.$.kI,
+			Oo: PsdResourceTypes.Sq,
+			Q_: _local3446
+		};
+		this.dispatch(_local3444);
+	};
+	_local3435.prototype.an$ = function (V) {
+		this.am1(this.DB.indexOf(V.currentTarget), V.currentTarget.dB());
+	};
+	_local3435.prototype.ahl = function (V) {
+		var _local3447 = this.k3.indexOf(V.currentTarget);
+		if (V.target.tagName.toLowerCase() == "input") return;
+		if (this.DB[_local3447] && !this.DB[_local3447].dB()) {
+			this.DB[_local3447].Nu();
+			this.am1(_local3447, !0);
+		}
+		this.setItem(_local3447);
+	};
+	_local3435.prototype.am1 = function (V, Q) {
+		this.J_[V].aj$(Q);
+	};
+	_local3435.prototype.setItem = function (V) {
+		for (var _local3448 = 0; _local3448 < this.J_.length; _local3448++) this.k3[_local3448].className = "listitem";
+		if (this.DM.firstChild) this.DM.removeChild(this.DM.firstChild);
+		this.k3[V].className = "listitem selected";
+		this.DM.appendChild(this.J_[V].e);
+	};
+	_local3435.prototype.BM = function (V, Q) {
+		this.mN = V;
+		if (this.ms == null) return;
+		for (var _local3449 = 0; _local3449 < this.J_.length; _local3449++) this.J_[_local3449].BM(V, Q);
+		if (Q == PsdResourceTypes.Sq || Q == PsdResourceTypes.Wx) {
+			this.Q_ = V.pO.Em;
+			this.LO();
+		}
+		if (Q == PsdResourceTypes.K5) this.LO();
+	};
+	_local3435.prototype.LO = function () {
+		if (this.Q_) this.enable();else
+		{
+			this.disable();
+			return;
+		}
+		if (!s.isInDocument(this.DK)) return;
+		var _local3455 = this.mN;
+		for (var _local3450 = 0; _local3450 < this.J_.length; _local3450++) {
+			this.J_[_local3450].c(this.Q_);
+			if (this.DB[_local3450]) this.DB[_local3450].c(this.J_[_local3450].dB());
+		}
+		var _local3453 = JSON.parse(JSON.stringify(this.Q_));
+		_local3453.Brsh.v.Dmtr.v.val = Math.min(_local3453.Brsh.v.Dmtr.v.val, 50);
+		s.setCanvasSizeForDpr(this.T, this.iJ, 80);
+		var _local3457 = new Rect(0, 0, this.T.width, this.T.height),
+			_local3451 = this.mN.pO,
+			_local3458 = new iU(_local3453, _local3451 ? _local3451.BF : null, _local3451 ? _local3451.yO : null, {
+				uh: 1
+			}, _local3455.Y7, _local3455.GF, _local3457, null, 0),
+			_local3456 = _local3457.n / 2,
+			_local3452 = _local3457.m - _local3456 * 2;
+		_local3458.moveTo(_local3456, _local3456);
+		for (var _local3450 = 0; _local3450 <= _local3452; _local3450 += 10) _local3458.lineTo(_local3456 + _local3450, _local3456 + 20 * Math.sin(2 * Math.PI * _local3450 / _local3452));
+		_local3458.finish();
+		var _local3454 = this.k_.createImageData(_local3457.m, _local3457.n);
+		PixelUtil.blitRgbaRect(_local3458.XI(), _local3458.Pa(), _local3454.data, _local3457);
+		this.k_.putImageData(_local3454, 0, 0);
+	};
+
+	function _local3434(V) {
+		UIComponent.call(this);
+		V = V.split(".")[0];
+		this.oz = V;
+		var _local3460 = this.e = s.createElement("span"),
+			_local3461 = ["Off", "Fade"];
+		_local3461.push(V == "angleDynamics" ? "Direction" : "Pen Pressure");
+		var _local3459 = this.HA = new DropdownMenu("Control", _local3461);
+		_local3459.addListener(ActionTypes.E.A, this.Rx, this);
+		_local3460.appendChild(_local3459.e);
+		var _local3462 = this.att = new RangeDropInput(null, 0, 100, null, null, null, !0);
+		_local3462.c(50);
+		_local3462.addListener(ActionTypes.E.A, this.Rx, this);
+	}
+	_local3434.prototype = new UIComponent();
+	_local3434.prototype.c = function (V) {
+		V = V < 2 ? V : 2;
+		this.HA.c(V);
+		this.VP();
+	};
+	_local3434.prototype.b = function () {
+		var _local3464 = this.HA.b(),
+			_local3463 = this.oz;
+		_local3464 = _local3464 <= 1 ? _local3464 : _local3463 == "angleDynamics" ? 6 : 2;
+		return _local3464;
+	};
+	_local3434.prototype.Rx = function (V) {
+		this.VP();
+		V.target = V.currentTarget = this;
+		this.dispatch(V);
+	};
+	_local3434.prototype.VP = function (V) {
+		this.att.setEnabled(this.HA.b() == 1);
+	};
+
+	function _local3432(V) {
+		UIComponent.call(this);
+		this.e = s.createElement("div");
+		this.Q_ = null;
+		var _local3467 = ["basic", "useTipDynamics", "useScatter", "useColorDynamics", "usePaintDynamics"].indexOf(V);
+		this.tZ = [
+		[15, 0],
+		[15, 1],
+		[15, 2],
+		[15, 3], "Transfer"][
+		_local3467];
+		this.WV = V;
+		this.k7 = {};
+		this.ayw = null;
+		var _local3468 = ["--br Brsh.Dmtr Brsh.Angl Brsh.Rndn Brsh.Hrdn Brsh.Spcn".split(" "), "szVr.jitter szVr.bVTy szVr.fStp minimumDiameter angleDynamics.jitter angleDynamics.bVTy angleDynamics.fStp roundnessDynamics.jitter minimumRoundness".split(" "), ["scatterDynamics.jitter", "Cnt", "countDynamics.jitter"],
+		["clVr.jitter", "H", "Strt", "Brgh"], "opVr.jitter opVr.bVTy opVr.fStp prVr.jitter prVr.bVTy prVr.fStp".split(" ")][
+		_local3467];
+		for (var _local3465 = 0; _local3465 < _local3468.length; _local3465++) {
+			var _local3466 = _local3468[_local3465],
+				_local3469;
+			if (_local3466 == "--br") {
+				_local3469 = new BrushPickerButton();
+				this.e.appendChild(_local3469.Sc.firstChild);
+			} else if (_local3466 == "Brsh.Dmtr") _local3469 = new RangeInput("Size", 1, 1e3, " px", 0, !0);else
+			if (_local3466 == "Brsh.Angl") _local3469 = new RangeInput("Angle", 0, 359, " \xB0");else
+			if (_local3466 == "Brsh.Rndn") _local3469 = new RangeInput("Roundness", 0, 100, " %");else
+			if (_local3466 == "Brsh.Hrdn") _local3469 = new RangeInput("Hardness", 0, 100, " %");else
+			if (_local3466 == "Brsh.Spcn") _local3469 = new RangeInput("Spacing", 1, 300, " %");else
+			if (_local3466 == "szVr.jitter") _local3469 = new RangeInput("Size Jitter", 0, 100, "%");else
+			if (_local3466 == "minimumDiameter") _local3469 = new RangeInput("Minimal Diameter", 0, 100, "%");else
+			if (_local3466 == "angleDynamics.jitter") _local3469 = new RangeInput("Angle Jitter", 0, 100, "%");else
+			if (_local3466.endsWith("bVTy")) _local3469 = new _local3434(_local3466);else
+			if (_local3466.endsWith("fStp")) _local3469 = new RangeDropInput(null, 0, 100, null, null, null, !0);else
+			if (_local3466 == "roundnessDynamics.jitter") _local3469 = new RangeInput("Roundness Jitter", 0, 100, "%");else
+			if (_local3466 == "minimumRoundness") _local3469 = new RangeInput("Minimal Roundness", 1, 100, "%");else
+			if (_local3466 == "scatterDynamics.jitter") _local3469 = new RangeInput("Position Jitter", 0, 1e3, " %");else
+			if (_local3466 == "Cnt") _local3469 = new RangeInput("Count", 1, 20);else
+			if (_local3466 == "countDynamics.jitter") _local3469 = new RangeInput("Count Jitter", 0, 100, " %");else
+			if (_local3466 == "clVr.jitter") _local3469 = new RangeInput("Foreground/Background Jitter", 0, 100, " %");else
+			if (_local3466 == "H") _local3469 = new RangeInput("Hue Jitter", 0, 100, " %");else
+			if (_local3466 == "Strt") _local3469 = new RangeInput("Saturation Jitter", 0, 100, " %");else
+			if (_local3466 == "Brgh") _local3469 = new RangeInput("Brightness Jitter", 0, 100, " %");else
+			if (_local3466 == "opVr.jitter") _local3469 = new RangeInput("Opacity Jitter", 0, 100, " %");else
+			if (_local3466 == "prVr.jitter") _local3469 = new RangeInput("Flow Jitter", 0, 100, " %");else
+			throw _local3466;
+			this.k7[_local3466] = _local3469;
+			_local3469.parent = this;
+			_local3469.addListener(ActionTypes.E.A, this.Rx, this);
+		}
+	}
+	_local3432.prototype = new UIComponent();
+	_local3432.prototype.a1G = function () {
+		this.dispatch(new Action("brushchange"));
+	};
+	_local3432.prototype.c = function (V) {
+		this.Q_ = JSON.parse(JSON.stringify(V));
+		this.e.className = this.dB() ? "" : "disabled";
+		this.LO();
+	};
+	_local3432.prototype.refresh = function () {
+		for (var _local3470 in this.k7) this.k7[_local3470].refresh();
+	};
+	_local3432.prototype.dB = function () {
+		return !0;
+	};
+	_local3432.prototype.BM = function (V, Q) {
+		if (Q == PsdResourceTypes.CV || Q == PsdResourceTypes.Wx) {
+			var _local3471 = this.k7["--br"];
+			if (_local3471) _local3471.Z2(V.pO);
+		}
+	};
+	_local3432.prototype.Rx = function (V) {
+		var _local3475 = V.target,
+			_local3472 = this.k7,
+			_local3478;
+		for (var _local3477 in _local3472)
+		if (_local3472[_local3477] == _local3475) _local3478 = _local3477;
+		if (_local3478 == "--br") {
+			var _local3474 = new Action(ActionTypes.E.L, !0);
+			_local3474.data = {
+				a: ActionTypes.$.kI,
+				Oo: PsdResourceTypes.Sq,
+				Q_: _local3475.b()
+			};
+			this.dispatch(_local3474);
+		} else {
+			var _local3476 = _local3433(this.Q_, _local3478),
+				_local3473 = _local3475.b();
+			if (_local3476) {
+				if (_local3478.endsWith("bVTy") || _local3478.endsWith("fStp") || _local3478 == "Cnt") _local3476.v = _local3473;else
+				_local3476.v.val = _local3473;
+				this.a1G();
+			}
+		}
+	};
+	_local3432.prototype.LO = function () {
+		var _local3484 = this.Q_,
+			_local3482 = _local3484.Brsh.v.classID,
+			_local3486 = this.k7,
+			_local3479 = _local3482 != this.ayw;
+		this.ayw = _local3482;
+		if (_local3479) {
+			s.clearChildren(this.e);
+			for (var _local3487 in _local3486) {
+				if (_local3482 != "computedBrush" && _local3482 != "sampledBrush" && _local3487 == "Brsh.Rndn") continue;
+				if (_local3482 != "computedBrush" && _local3487 == "Brsh.Hrdn") continue;
+				var _local3485 = _local3486[_local3487],
+					_local3481 = _local3485.e;
+				if (_local3487 == "--br") {
+					_local3481 = _local3485.FO.e;
+					_local3481.style.width = "auto";
+				}
+				this.e.appendChild(_local3481);
+			}
+		}
+		for (var _local3487 in _local3486) {
+			if (_local3487 == "--br") continue;
+			var _local3483 = _local3433(_local3484, _local3487),
+				_local3480;
+			if (_local3483) {
+				if (_local3487.endsWith("bVTy") || _local3487.endsWith("fStp") || _local3487 == "Cnt") _local3480 = _local3483.v;else
+				_local3480 = _local3483.v.val;
+				_local3486[_local3487].c(_local3480);
+				if (_local3487.endsWith("fStp")) _local3486[_local3487].setEnabled(_local3433(_local3484, _local3487.split(".")[0] + ".bVTy").v == 1);
+			}
+		}
+	};
+	_local3432.prototype.dB = function () {
+		var _local3488 = this.WV;
+		return _local3488 == "basic" ? !0 : this.Q_[_local3488].v;
+	};
+	_local3432.prototype.aj$ = function (V) {
+		var _local3489 = this.WV;
+		if (_local3489 == "basic") return;
+		this.Q_[_local3489].v = V;
+		es.HW.awH(this.Q_);
+		this.a1G();
+	};
+
+	function _local3433(V, Q) {
+		var _local3491 = Q.split(".");
+		V = V[_local3491[0]];
+		for (var _local3490 = 1; _local3490 < _local3491.length; _local3490++) {
+			if (V == null) return V;
+			V = V.v[_local3491[_local3490]];
+		}
+		return V;
+	}
+	return _local3435;
+}();
+
+
+
+function ActionsPanel() {
+	PanelTabBase.call(this, "Actions", !1, "---panels/actions", PanelTabBase.xA.abR);
+	this.mN = null;
+	this.au = [0, 0];
+}
+ActionsPanel.prototype = new PanelTabBase("");
+ActionsPanel.prototype.Eg = function () {
+	if (!s.isInDocument(this.DK) || this.pa) return;
+	this.pa = s.createElement("div", "padded scrollable");
+	this.pa.setAttribute("style", "width:260px;  height:260px");
+	this.DK.appendChild(this.pa);
+	this.addListener(ActionTypes.E.A, this.bL, this);
+	this.S8 = s.createElement("div", "lpfoot");
+	this.DK.appendChild(this.S8);
+	this.VS = [];
+	var _local3380 = "<svg  class=\"miniscale gsicon\" viewBox=\"0 0 15 15\" width=\"15\" height=\"15\" fill=\"black\">",
+		_local3379 = "</svg>",
+		_local3374 = _local3380 + "<path d=\"M14,6 L10,6 L10,0 L4,0 L4,6 L0,6 L7,13 L14,6 L14,6 Z M0,14 L0,16 L14,16 L14,14 Z\" />" + _local3379,
+		_local3378 = _local3380 + "<path d=\"M0,0 L15,7.5 L0,15 Z\" />" + _local3379;
+	this.afD = _local3380 + "<circle cx=\"7.5\" cy=\"7.5\" r=\"7.5\" />" + _local3379;
+	this.aeI = _local3380 + "<path d=\"M1,1 L14,1 L14,14 L1,14 Z\" />" + _local3379;
+	var _local3377 = [this.afD, _local3378, "lrs/folder", "lrs/newlayer", "lrs/bin", _local3374],
+		_local3376 = [
+		[15, 8, 0],
+		[5, 8],
+		[15, 8, 1],
+		[15, 8, 2],
+		[5, 4],
+		[1, 2]];
+
+	for (var _local3373 = 0; _local3373 < _local3377.length; _local3373++) {
+		var _local3381 = _local3377[_local3373];
+		if (1 < _local3373 && _local3373 != _local3377.length - 1) _local3381 = "<img src=\"" + PIMG[_local3377[_local3373]] + "\" class=\"miniscale gsicon\" />";
+		var _local3375 = new ToolbarButton(_local3381, !1, _local3376[_local3373]);
+		_local3375.addListener("click", this.a0X, this);
+		this.S8.appendChild(_local3375.e);
+		this.VS.push(_local3375);
+	}
+	this.VP();
+};
+ActionsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	if (this.pa == null) return;
+	for (var _local3382 = 0; _local3382 < this.VS.length; _local3382++) this.VS[_local3382].refresh();
+};
+ActionsPanel.prototype.a0X = function (l) {
+	var _local3383 = this.VS.indexOf(l.currentTarget),
+		_local3390 = this.au,
+		_local3384 = this.mN,
+		_local3389 = _local3384.rJ;
+	if (_local3383 == 0) {
+		var _local3388,_local3387 = _local3384.X4;
+		if (_local3389.length == 0) {
+			alert("Create an Action Set first.");
+			return;
+		}
+		if (_local3390.length < 2) {
+			alert("Select a target action first.");
+			return;
+		}
+		if (_local3387 == null) {
+			_local3388 = this.aeI;
+			_local3387 = this.au;
+		} else {
+			_local3388 = this.afD;
+			_local3387 = null;
+		}
+		this.VS[0].setLabel(_local3388);
+		_local3384.X4 = _local3387;
+	} else if (_local3383 == 1) this.are();else
+	if (_local3383 == 2 || _local3383 == 3) {
+		var _local3392 = {
+			Il: "Action Set " + _local3389.length,
+			Vm: [],
+			exp: !0
+		};
+		if (_local3383 == 2 || _local3389.length == 0) {
+			_local3390 = [_local3389.length];
+			_local3389.push(_local3392);
+		}
+		if (_local3383 == 3) {
+			var _local3385 = _local3389[_local3390[0]].Vm;
+			_local3390 = [_local3390[0], _local3385.length];
+			_local3385.push({
+				Il: "Action " + _local3385.length,
+				color: 0,
+				Vm: [],
+				a0c: !1,
+				shift: !1,
+				exp: !0,
+				sy: _local3385.length
+			});
+		}
+		this.au = _local3390;
+		this.VP();
+	} else if (_local3383 == 4) {
+		var _local3393;
+		if (_local3390.length == 1) _local3393 = _local3389;else
+		if (_local3390.length == 2) _local3393 = _local3389[_local3390[0]].Vm;else
+		_local3393 = _local3389[_local3390[0]].Vm[_local3390[1]].Vm;
+		var _local3391 = _local3390.length - 1;
+		_local3393.splice(_local3390[_local3391], 1);
+		if (_local3393.length == 0) _local3390.pop();else
+
+		while (_local3390[_local3391] >= _local3393.length) _local3390[_local3391]--;
+		if (_local3390.length == 0) _local3390.push(0);
+		this.VP();
+	} else if (_local3383 == 5) {
+		if (_local3389.length == 0) {
+			alert("No Actions Present.");
+			return;
+		}
+		var _local3386 = new Action(ActionTypes.E.L, !0);
+		_local3386.data = {
+			a: ActionTypes.$.Bs,
+			abe: PsdResourceTypes.v,
+			yD: _local3390[0]
+		};
+		this.dispatch(_local3386);
+	}
+};
+ActionsPanel.prototype.bL = function (l) {
+	var _local3397 = this.mN.rJ,
+		_local3394 = l.data.a,
+		_local3396 = l.data.Ow;
+	if (_local3394 == "sel") this.au = _local3396;
+	if (_local3394 == "fold") {
+		if (_local3396.length == 1) _local3397[_local3396[0]].exp = !_local3397[_local3396[0]].exp;else
+		_local3397[_local3396[0]].Vm[_local3396[1]].exp = !_local3397[_local3396[0]].Vm[_local3396[1]].exp;
+	}
+	if (_local3394 == "enab") {
+		var _local3395 = _local3397[_local3396[0]].Vm[_local3396[1]].Vm[_local3396[2]];
+		_local3395.p = !_local3395.p;
+	}
+	if (_local3394 == "nchange") {
+		if (_local3396.length == 1) _local3397[_local3396[0]].Il = l.data.Xu;else
+		_local3397[_local3396[0]].Vm[_local3396[1]].Il = l.data.Xu;
+	}
+	this.VP();
+};
+ActionsPanel.prototype.Yw = ActionsPanel.prototype.KN = function () {
+	this.Eg();
+};
+ActionsPanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	if (this.pa == null) return;
+	if (d == PsdResourceTypes.v || d == PsdResourceTypes.Wx) this.VP();
+};
+ActionsPanel.prototype.VP = function () {
+	if (this.mN == null) return;
+	s.clearChildren(this.pa);
+	var _local3405 = this.mN.rJ;
+	if (_local3405.length == 0) return;
+	var _local3404 = JSON.stringify(this.au);
+	for (var _local3398 = 0; _local3398 < _local3405.length; _local3398++) {
+		var _local3399 = _local3405[_local3398],
+			_local3403 = new ActionsPanel.$X([_local3398], _local3404, _local3399.exp, _local3399.Il.split("=").pop());
+		_local3403.parent = this;
+		this.pa.appendChild(_local3403.e);
+		if (!_local3399.exp) continue;
+		for (var _local3402 = 0; _local3402 < _local3399.Vm.length; _local3402++) {
+			var _local3401 = _local3399.Vm[_local3402],
+				_local3403 = new ActionsPanel.$X([_local3398, _local3402], _local3404, _local3401.exp, _local3401.Il.split("=").pop());
+			_local3403.parent = this;
+			this.pa.appendChild(_local3403.e);
+			if (!_local3401.exp) continue;
+			for (var _local3406 = 0; _local3406 < _local3401.Vm.length; _local3406++) {
+				var _local3400 = _local3401.Vm[_local3406],
+					_local3403 = new ActionsPanel.$X([_local3398, _local3402, _local3406], _local3404, null, languageManager.get(PsdDescriptorHelper.ahE(_local3400)), _local3400.p);
+				_local3403.parent = this;
+				this.pa.appendChild(_local3403.e);
+			}
+		}
+	}
+};
+ActionsPanel.prototype.are = function () {
+	var _local3411 = this.mN.rJ,
+		_local3410 = this.au;
+	if (_local3411.length == 0) {
+		alert("No Actions Present");
+		return;
+	}
+	if (_local3410.length == 1) {
+		alert("Select an Action first");
+		return;
+	}
+	if (this.mN.X4 != null) {
+		alert("You can not apply actions while recording actions");
+		return;
+	}
+	if (_local3410.length == 1) _local3410.push(0);
+	var _local3407 = _local3411[_local3410[0]],
+		_local3409 = _local3407.Vm[_local3410[1]],
+		_local3408 = new Action(ActionTypes.E.L, !0);
+	_local3408.data = {
+		a: ActionTypes.$.du,
+		X9: [_local3409.Il, _local3407.Il]
+	};
+	this.dispatch(_local3408);
+};
+ActionsPanel.$X = function (l, d, G, b, V) {
+	UIComponent.call(this);
+	this.Ow = l;
+	var _local3414 = this.Ow.length - 1;
+	this.e = s.createElement("div", "layeritem" + (JSON.stringify(l) == d ? " selected" : ""));
+	this.lg = s.createElement("div", "head");
+	this.e.appendChild(this.lg);
+	this.lg.setAttribute("style", "height:24px");
+	this.Ld = s.createElement("div", "headL");
+	this.lg.appendChild(this.Ld);
+	if (_local3414 != 0) {
+		var _local3416 = s.createElement("div");
+		_local3416.style.width = _local3414 * 20 + "px";
+		this.Ld.appendChild(_local3416);
+	}
+	if (G != null) {
+		var _local3412 = this.avf = s.createElement("div", G ? "open" : "closed");
+		this.Ld.appendChild(_local3412);
+	} else {
+		var _local3417 = this.a3L = s.createElement("div", "cmark");
+		_local3417.setAttribute("style", "background-size:12px 12px; opacity:" + (V ? 1 : .3));
+		this.Ld.appendChild(_local3417);
+	}
+	if (_local3414 == 0) {
+		var _local3415 = s.createElement("div", "folder");
+		this.Ld.appendChild(_local3415);
+	}
+	var _local3413 = this.c1 = s.createElement("div", "label");
+	_local3413.textContent = b;
+	this.Ld.appendChild(_local3413);
+	this.e.addEventListener("mouseup", this.O5.bind(this), !1);
+};
+ActionsPanel.$X.prototype = new UIComponent();
+ActionsPanel.$X.prototype.O5 = function (l) {
+	if (l.detail == 1 && l.target.tagName.toLowerCase() != "input") {
+		var _local3420 = "sel";
+		if (l.target == this.avf) _local3420 = "fold";
+		if (l.target == this.a3L) _local3420 = "enab";
+		var _local3418 = new Action(ActionTypes.E.A, !0);
+		_local3418.data = {
+			a: _local3420,
+			Ow: this.Ow
+		};
+		this.dispatch(_local3418);
+	} else if (this.Ow.length < 3) var _local3419 = new PanelTabBase.di(this.c1, this.sd.bind(this));
+};
+ActionsPanel.$X.prototype.sd = function (l) {
+	var _local3421 = new Action(ActionTypes.E.A, !0);
+	_local3421.data = {
+		a: "nchange",
+		Xu: l,
+		Ow: this.Ow
+	};
+	this.dispatch(_local3421);
+};
+
+function AdjustmentsPanel() {
+	PanelTabBase.call(this, "Adjustments", !1, "---lrs/adj", PanelTabBase.xA.auV);
+}
+AdjustmentsPanel.prototype = new PanelTabBase("");
+AdjustmentsPanel.prototype.Eg = function () {
+	if (!s.isInDocument(this.DK) || this.VS) return;
+	this.DK.setAttribute("style", "text-align:center;  padding:6px; min-width:220px");
+	this.VS = [];
+	var _local3422 = 0;
+	for (var _local3424 in LayerEffectsHelper.names) {
+		var _local3423 = new ToolbarButton("<img src=\"" + PIMG["adj/" + _local3424] + "\" class=\"autoscale gsicon\" style=\"margin:4px 4px;\"/>", !1, LayerEffectsHelper.names[_local3424]);
+		_local3423.addListener("click", this.adx, this);
+		this.VS.push(_local3423);
+		this.DK.appendChild(_local3423.e);
+		if (_local3422 == 4 || _local3422 == 10) s.appendBr(this.DK);
+		_local3422++;
+	}
+	this.refresh();
+};
+AdjustmentsPanel.prototype.Yw = function () {
+	this.Eg();
+};
+AdjustmentsPanel.prototype.KN = function () {
+	this.Eg();
+};
+AdjustmentsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	if (this.VS == null) return;
+	for (var _local3425 = 0; _local3425 < this.VS.length; _local3425++) this.VS[_local3425].refresh();
+};
+AdjustmentsPanel.prototype.adx = function (l) {
+	var _local3428 = this.VS.indexOf(l.target),
+		_local3426 = LayerStyleDialog.ye()[_local3428],
+		_local3427 = new Action(_local3426.Y, !0);
+	_local3427.data = _local3426.W;
+	this.dispatch(_local3427);
+};
+
+
+function PluginTabPanel(l, d) {
+	PanelTabBase.call(this, l.name, !1, l.icon, d);
+	this.az4 = l;
+}
+PluginTabPanel.prototype = new PanelTabBase("");
+PluginTabPanel.prototype.Eg = function () {
+	var _local4362 = this.DK,
+		_local4361 = this.az4;
+	if (!s.isInDocument(_local4362) || this.SE) return;
+	var _local4360 = this.SE = s.createElement("iframe");
+	_local4360.setAttribute("src", _local4361.url);
+	this.DK.appendChild(_local4360);
+};
+PluginTabPanel.prototype.KN = PluginTabPanel.prototype.Yw = function () {
+	this.Eg();
+};
+PluginTabPanel.prototype.em = function (l) {
+	if (s.isInDocument(this.SE)) this.SE.contentWindow.postMessage(l, "*");
+};
+PluginTabPanel.prototype.resize = function (l, d) {
+	if (this.SE == null) return;
+	this.SE.setAttribute("style", "width:" + l + "px; height:" + d + "px");
+};
+
+
+function ConfigBar() {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "confbar");
+}
+ConfigBar.prototype = new UIComponent();
+ConfigBar.prototype.ajt = function (l) {
+	l.parent = this;
+	s.clearChildren(this.e);
+	this.e.appendChild(l.e);
+};
+
+
 

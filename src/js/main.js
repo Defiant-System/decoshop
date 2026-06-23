@@ -15,9 +15,12 @@
 
 // to be part of bundle
 @import "bundle/ext/upng.js"
+@import "bundle/ext/uzip.js"
+@import "bundle/dbs.js"
 
 @import "bundle/rect.js"
 @import "bundle/point-2d.js"
+@import "bundle/matrix-2d.js"
 @import "bundle/event-emitter.js"
 @import "bundle/ui-component.js"
 @import "bundle/base-app-ui.js"
@@ -44,6 +47,8 @@
 @import "bundle/psd-descriptor-helper.js"
 @import "bundle/psd-resource-types.js"
 @import "bundle/riff-chunk-parser.js"
+@import "bundle/filter-helper.js"
+@import "bundle/text-style-helper.js"
 @import "bundle/action.js"
 
 @import "bundle/dom-ui-helper.js"

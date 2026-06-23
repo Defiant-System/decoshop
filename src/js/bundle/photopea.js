@@ -332,6 +332,8 @@ function PhotopeaApp() {
 	}.bind(this));
 	// edited by hbi
 	// if (window.location.href.indexOf("photopea.com") != -1 && "serviceWorker" in navigator) {
+
+	/*
 		navigator.serviceWorker.register("sw.js", {
 			scope: "./"
 		}).then(function(j) {
@@ -345,6 +347,8 @@ function PhotopeaApp() {
 		}).catch(function(j) {
 			console.log("Registration failed with " + j)
 		})
+	*/
+
 	// }
 	this.AQ = 0;
 	this.Mt = [];
@@ -363,7 +367,7 @@ function PhotopeaApp() {
 	T.appendChild(this.QB.e);
 	T.appendChild(this.gD.e);
 	T.appendChild(this.gP.e);
-	this.DE.SP({ url: "rsrc/basic/basic.zip" });
+	this.DE.SP({ url: "~/rsrc/basic.zip" });
 	this.fr(f.$C);
 	premiumSession.initSession(this.ash.bind(this))
 }
@@ -379,7 +383,7 @@ PhotopeaApp.prototype.pp = function(l) {
 };
 
 PhotopeaApp.prototype.ash = function() {
-	s.global.setTimeout(this.ayt.bind(this), Math.pow(Math.PI, 8) + s.global.Math.random() * 1e4);
+	s.global.setTimeout(this.ayt.bind(this), Math.pow(Math.PI, 8) + Math.random() * 1e4);
 	var l = premiumSession.$O();
 	if (l != null && l.globals != null) this.I2(l.globals);
 	else {
@@ -400,9 +404,9 @@ PhotopeaApp.prototype.ash = function() {
 		this.a5d();
 		this.S7()
 	} else {
-		var V = s.createTypedArrayWithRandomKind(s.global.XMLHttpRequest);
+		var V = s.createTypedArrayWithRandomKind(XMLHttpRequest);
 		V.addEventListener("load", this.awJ.bind(this));
-		V.open("GET", "papi/doms.json");
+		V.open("GET", "~/rsrc/doms.json");
 		V.send()
 	}
 	this.w4 = !0;
@@ -411,8 +415,8 @@ PhotopeaApp.prototype.ash = function() {
 
 PhotopeaApp.prototype.awJ = function(l) {
 	var d = JSON.parse(l.target.response),
-		G = s.global.Date.now() / 1e3,
-		b = s.global.document.referrer,
+		G = Date.now() / 1e3,
+		b = document.referrer,
 		V = !1;
 	for (var Q in d)
 		if (Q.indexOf(".") != -1 && b.indexOf(Q) != -1 && parseInt(d[Q]) > G) V = !0;
@@ -661,9 +665,9 @@ PhotopeaApp.prototype.resize = function(l, d) {
 	d = Math.floor(d);
 	var G = "hideCap",
 		b = "style",
-		V = s.global.document,
-		Q = Math.max(l, window.screen.width),
-		t = Math.max(d, window.screen.height),
+		V = document,
+		Q = Math.max(l, window.innerWidth),
+		t = Math.max(d, window.innerHeight),
 		R = 0;
 	if (this.TQ == null) this.TQ = Math.min(Q, t) < 500 || Q < 750 ? 0 : Q < 1600 ? 1 : 2;
 	var I = this.TQ,
@@ -716,7 +720,7 @@ PhotopeaApp.prototype.resize = function(l, d) {
 	this.fc[b].width = (I == 0 ? l : 6 * Math.pow(10, 2)) + n;
 	if (s.isInDocument(this.QB.e)) this.QB.resize(l, J);
 	this.gP.resize(l, J);
-	this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J)
+	// this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J) // hbi
 };
 
 PhotopeaApp.prototype.aob = function(l, d) {
@@ -1417,10 +1421,10 @@ PhotopeaApp.prototype.$e = function(l) {
 	if (d == ActionTypes.$.WM) {
 		ScriptingEngine.runScript(l.data.nM, this)
 	}
-	if (d == ActionTypes.$.QT) {
-		if (window.parent != window) window.parent.postMessage(l.data.Oo, "*");
-		this.gP.em(l.data.Oo)
-	}
+	// if (d == ActionTypes.$.QT) {
+	// 	if (window.parent != window) window.parent.postMessage(l.data.Oo, "*");
+	// 	this.gP.em(l.data.Oo)
+	// }
 	if (d == ActionTypes.$.B_) {
 		var dY = parseFloat(l.data.GU);
 		if (this.fB.J_.indexOf(dY) == -1) {
@@ -2290,7 +2294,6 @@ PhotopeaApp.prototype.aly = function(l) {
 	else l.U();
 	l.a00 = !1;
 	this.Mt.push(l);
-	console.log(1111, this.gD.$J);
 	this.gD.$J(new NamedTabPanel(l));
 	l.i_ = !0;
 	l.uK = !0;
