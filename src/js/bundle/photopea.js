@@ -1,4 +1,64 @@
 
+function BaseAppUI(l) {
+	UIComponent.call(this);
+	if (l) return;
+	// ThemeManager.applyTheme(1);
+	this.e = s.createElement("div", "flexrow app");
+	this.X8 = s.createElement("div");
+	this.e.appendChild(this.X8);
+	this.Ib = new KeyboardHandler;
+	/*
+	window.addEventListener("blur", function(G) {
+		this.Ib.reset()
+	}.bind(this), !1);
+	*/
+	window.addEventListener("resize", this.e3.bind(this), !1);
+	var d = this.X8;
+	this.dx = new DialogManager;
+	this.dx.parent = this;
+	d.appendChild(this.dx.e);
+	this.i2 = new CommandPalette;
+	this.i2.parent = this;
+	d.appendChild(this.i2.e);
+	this.Nf = new LinkBar(!0);
+	this.Nf.parent = this;
+	d.appendChild(this.Nf.e);
+	this.addListener(ActionTypes.E.L, this.$e, this);
+	this.aB = this.io.bind(this);
+	window.requestAnimationFrame(this.aB)
+}
+
+BaseAppUI.prototype = new UIComponent;
+BaseAppUI.prototype.io = function(l) {
+	if (decoshop._stopped) return;
+
+	this.fA();
+	window.requestAnimationFrame(this.aB)
+};
+
+BaseAppUI.prototype.refresh = function() {};
+BaseAppUI.prototype.e3 = function(l) {
+	var d = window.innerWidth,
+		G = window.innerHeight;
+	this.resize(d, G)
+};
+
+BaseAppUI.prototype.resize = function(l, d) {
+	this.i2.resize(l, d);
+	this.dx.resize(l, d)
+};
+
+BaseAppUI.prototype.$e = function(l) {
+	var d = l.data.a;
+	if (d == ActionTypes.$.dY) this.i2.awF(l.data);
+	if (d == ActionTypes.$.qH) this.i2.a9X(l.data);
+	if (d == ActionTypes.$.B8) this.i2.a5C(l.data.wh);
+	if (d == ActionTypes.$.jn) this.i2.acm(l.data.wh);
+	if (d == ActionTypes.$.xt) this.i2.iO()
+};
+
+
+
 function PhotopeaApp() {
 	BaseAppUI.call(this);
 
@@ -602,7 +662,6 @@ PhotopeaApp.prototype.a5d = function() {
 			var M = this.DE;
 			J.setConsumer(function(n) {
 				var r = n.files;
-				console.log(r);
 				for (var A = 0; A < r.length; A++) {
 					var T = r[A];
 					T.getFile().then(function(j) {
@@ -724,7 +783,8 @@ PhotopeaApp.prototype.resize = function(l, d) {
 	this.fc[b].width = (I == 0 ? l : 6 * Math.pow(10, 2)) + n;
 	if (s.isInDocument(this.QB.e)) this.QB.resize(l, J);
 	this.gP.resize(l, J);
-	// this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J) // hbi
+	this.gD.resize(window.innerWidth, window.innerHeight);
+	// this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J); // hbi
 };
 
 PhotopeaApp.prototype.aob = function(l, d) {
@@ -1176,7 +1236,6 @@ PhotopeaApp.prototype.$e = function(l) {
 					iw = iw >>> 1;
 					hn = hn >>> 1
 				}
-			console.log(iw, hn);
 			if (l.data.oE == "psd") iv = FormatHandler.h9(b, "psd", 0, 0, [!0, !0, !0, !1, !0]);
 			else if (l.data.oE == "png") iv = FormatHandler.h9(b, "png", iw, hn);
 			else {
@@ -1336,7 +1395,6 @@ PhotopeaApp.prototype.$e = function(l) {
 		ClipboardHandler.save(G.raw.buffer, G.bf)
 	}
 	if (d == ActionTypes.$.ajq) {
-		console.log(l.data);
 		ClipboardHandler.oy({
 			name: l.data.O2[1].split("/").pop(),
 			O2: l.data.O2
@@ -1749,7 +1807,6 @@ PhotopeaApp.prototype.$e = function(l) {
 					fset: ip.Fr.XH
 				});
 			cH.onerror = function(l) {
-				console.log(l);
 				alert("Storing failed. Browser says: " + l.target.error.message, 7e3)
 			}
 		}
@@ -2289,7 +2346,9 @@ PhotopeaApp.prototype.aly = function(l) {
 		WebGLContext.checkMaxTextureSize(Math.max(l.m, l.n));
 		for (var A = 0; A < l.B.length; A++) {
 			var b = l.B[A];
-			if (b.Eo()) WebGLContext.checkMaxTextureSize(Math.max(b.rect.m, b.rect.n))
+			if (b.Eo()) {
+				WebGLContext.checkMaxTextureSize(Math.max(b.rect.m, b.rect.n))
+			}
 		}
 	}
 	l.vp();
@@ -2531,8 +2590,11 @@ PhotopeaApp.prototype.update = function(l) {
 			if (G[b].G.Ew) G[b].G.Ew(d, this, this.fB, this.Ib)
 		}
 	}
-	if (d.Gg)
-		if (WebGLContext.webglAvailable) WebGLContext.checkMaxTextureSize(Math.max(d.m, d.n));
+	if (d.Gg) {
+		if (WebGLContext.webglAvailable) {
+			WebGLContext.checkMaxTextureSize(Math.max(d.m, d.n));
+		}
+	}
 	if (d.Gg) {
 		d.Po()
 	}

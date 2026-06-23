@@ -15,12 +15,19 @@ let Test = {
 			let event = new Action(ActionTypes.E.L, true);
 			event.data = {
 				a: ActionTypes.$.ub,
+				Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
+				// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
 				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
-				Oo: { url: "~/img/combo.webp" }
+				// Oo: { url: "~/img/combo.webp" }
 				// Oo: { url: "~/img/font-sheet.png" }
 			};
 			pp.dispatch(event);
 		}, 500);
+
+		// stops RAF
+		setTimeout(() => { decoshop._stopped = true; }, 2000);
+		
+
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);

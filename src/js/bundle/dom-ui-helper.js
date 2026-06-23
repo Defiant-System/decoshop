@@ -1713,19 +1713,13 @@ function PanelTabBase(l, d, G, b) {
 	this.wZ.parent = this;
 	this.a8x = s.createElement("span", "cross gsicon");
 	this.c1 = s.createElement("span", "label");
-	if (!this.a7f) return; // hbi
 	var _local3351 = this.a7f.bind(this);
 	this.PT.addEventListener("mousedown", this.av_.bind(this), !1);
 	this.PT.addEventListener("contextmenu", _local3351, !1);
 	this.wZ.e.addEventListener("contextmenu", _local3351, !1);
 	this.a8x.addEventListener("mousedown", this.gV.bind(this), !1);
-	// this.PT.appendChild(this.c1);
-
-	if (l === "combo.psd") {
-		window.find(`.cvs-wrapper`)[0].appendChild(this.DK);
-	}
-	
-	// if (d) this.PT.appendChild(this.a8x);
+	this.PT.appendChild(this.c1);
+	if (d) this.PT.appendChild(this.a8x);
 	this.Lq = !1;
 	this.c1.textContent = l;
 }
@@ -2130,7 +2124,10 @@ PanelContainer.prototype.aeM = function() {
 PanelContainer.prototype.resize = function(l, d) {
 	this.lH.style.maxWidth = l + "px";
 	var G = this.DV();
-	if (this.Lq != -1) this.k3[this.Lq].resize(l, d - G); // hbi
+	if (this.Lq != -1) {
+		// this.k3[this.Lq].resize(l, d - G);
+		this.k3[this.Lq].resize(l, d);
+	}
 	return d - G
 };
 PanelContainer.prototype.BM = function(l, d) {
@@ -8298,10 +8295,16 @@ NamedTabPanel.prototype.resize = function (l, d) {
 NamedTabPanel.prototype.KN = function () {
 	var _local4072 = this.DK.firstChild,
 		_local4071 = NamedTabPanel.wn,
-		_local4069 = WebGLContext.webglAvailable && this.Kv.add.fvec == null;
-	if (!_local4069 && _local4072 == WebGLContext.getCanvas() || _local4069 && _local4072 == _local4071.Lp) this.DK.removeChild(_local4072);
-	var _local4070 = _local4069 ? WebGLContext.getCanvas() : _local4071.Lp;
-	if (!s.isInDocument(_local4070)) this.DK.appendChild(_local4070);
+		isWebGL = WebGLContext.webglAvailable && this.Kv.add.fvec == null;
+	if (!isWebGL && _local4072 == WebGLContext.getCanvas() || isWebGL && _local4072 == _local4071.Lp) this.DK.removeChild(_local4072);
+	var workCvs = isWebGL ? WebGLContext.getCanvas() : _local4071.Lp;
+
+	let el = window.find(`.cvs-wrapper`)[0];
+	el.appendChild(workCvs);
+	
+	// if (!s.isInDocument(workCvs)) {
+	// 	this.DK.appendChild(workCvs);
+	// }
 };
 
 NamedTabPanel.prototype.VP = function () {
@@ -8314,7 +8317,6 @@ NamedTabPanel.prototype.VP = function () {
 
 NamedTabPanel.prototype.a5_ = function () {
 	if (WebGLContext.webglAvailable && NamedTabPanel.Nz == null) {
-		console.log("1111 webgl");
 		var _local4096 = NamedTabPanel.Nz = [],
 			_local4091 = [0, 2, 8, 32, 128];
 		for (var _local4075 = 0; _local4075 < 5; _local4075++) _local4096[_local4075] = [new NamedTabPanel.Js(!1, _local4091[_local4075], !1), new NamedTabPanel.Js(!0, _local4091[_local4075], !1)];

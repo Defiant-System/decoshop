@@ -23,7 +23,6 @@
 @import "bundle/matrix-2d.js"
 @import "bundle/event-emitter.js"
 @import "bundle/ui-component.js"
-@import "bundle/base-app-ui.js"
 @import "bundle/export-helper.js"
 @import "bundle/style-helper.js"
 @import "bundle/font-helper.js"

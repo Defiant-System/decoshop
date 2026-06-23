@@ -3545,6 +3545,7 @@ content {
 			right: 273px;
 			width: 37px;
 			font-size: 0;
+			z-index: 12;
 			border-left: 1px solid rgba(#011, .65);
 			border-right: 1px solid rgba(#011, .65);
 			background-color: rgba(#344,.8);
@@ -5259,13 +5260,18 @@ content {
 		/* temp END */
 	
 		canvas {
+			background: #f002;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			border-radius: inherit;
+			
 			&.canvas {
 				position: absolute;
 				top: 0;
 				left: 0;
-				z-index: 2;
 				// cursor: crosshair;
-				border-radius: 5px;
 			}
 		}
 	}
