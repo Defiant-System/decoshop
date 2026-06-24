@@ -29484,9 +29484,9 @@ PixelUtil.y0.axs = function(l, d) {
 	ctx.font = `${h}px Arial`;
 	var t = "0 1 2 3 4 5 6 7 8 9 -".split(" ");
 	for (var A = 0; A < t.length; A++) {
-		ctx.fillStyle = "#222";
+		ctx.fillStyle = "#282828";
 		ctx.fillRect(0, 0, w, h);
-		ctx.fillStyle = "#696969";
+		ctx.fillStyle = "#707070";
 		ctx.fillText(t[A], 0, h);
 		PixelUtil.y0.qG[t[A]] = ctx.getImageData(0, 0, w, h).data;
 	}
@@ -29561,9 +29561,9 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 	var viewportWidth = viewState.Vm.m,
 		viewportHeight = viewState.Vm.n,
 		rulerThicknessPx = PixelUtil.y0.mT,
-		bgColor = 0x242424,
-		textColor = 0x696969,
-		lineColor = 0x444444,
+		bgColor = 0x282828,
+		textColor = 0x6d6d6d,
+		lineColor = 0x494949,
 		borderColor = 0x1e1e1e;
 
 	PixelUtil.y0.axs(textColor, bgColor);
@@ -95045,6 +95045,7 @@ NamedTabPanel.prototype.KN = function () {
 	if (!isWebGL && _local4072 == WebGLContext.getCanvas() || isWebGL && _local4072 == _local4071.Lp) this.DK.removeChild(_local4072);
 	var workCvs = isWebGL ? WebGLContext.getCanvas() : _local4071.Lp;
 
+	// hbi
 	if (!workCvs.parentNode) {
 		let el = PP.window.find(`.cvs-wrapper`)[0];
 		el.appendChild(workCvs);

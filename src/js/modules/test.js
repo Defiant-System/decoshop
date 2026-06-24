@@ -15,9 +15,9 @@ let Test = {
 			let event = new Action(ActionTypes.E.L, true);
 			event.data = {
 				a: ActionTypes.$.ub,
-				// Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
+				Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
 				// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
-				Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
+				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
 				// Oo: { url: "~/img/combo.webp" }
 				// Oo: { url: "~/img/font-sheet.png" }
 			};

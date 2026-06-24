@@ -8299,6 +8299,7 @@ NamedTabPanel.prototype.KN = function () {
 	if (!isWebGL && _local4072 == WebGLContext.getCanvas() || isWebGL && _local4072 == _local4071.Lp) this.DK.removeChild(_local4072);
 	var workCvs = isWebGL ? WebGLContext.getCanvas() : _local4071.Lp;
 
+	// hbi
 	if (!workCvs.parentNode) {
 		let el = PP.window.find(`.cvs-wrapper`)[0];
 		el.appendChild(workCvs);
