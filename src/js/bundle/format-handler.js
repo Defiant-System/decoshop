@@ -36,16 +36,20 @@ FormatHandler.RT = {
 		})
 	},
 	get: function(l, d) {
-		var G = BINDB[l],
-			b = Date.now(),
-			V = atob(G[1]),
-			Q = V.length,
-			t = new Uint8Array(Q);
-		for (var A = 0; A < Q; A++) t[A] = V.charCodeAt(A);
-		if (G[0] != 0) {
-			var I = new Uint8Array(G[0]);
-			UZIP.inflateRaw(t, I);
-			t = I
+		var t = BINDB_DATA[l];
+		if (t == null) {
+			var G = BINDB[l];
+			if (G && G.length === 2 && typeof G[1] === "string") {
+				var V = atob(G[1]),
+					Q = V.length;
+				t = new Uint8Array(Q);
+				for (var A = 0; A < Q; A++) t[A] = V.charCodeAt(A);
+				if (G[0] != 0) {
+					var I = new Uint8Array(G[0]);
+					UZIP.inflateRaw(t, I);
+					t = I
+				}
+			} else throw "BINDB missing: " + l
 		}
 		if (d) {
 			var y = FormatHandler.aJ(t.buffer);
@@ -988,6 +992,7 @@ FormatHandler.na.aua = function(l, d) {
 	var r = e.slice(n, n + t * 4);
 	return r
 };
+
 (function() {
 	var l = FormatHandler.RT.get("wasm/jpg").buffer;
 	// if (window.WebAssembly == null) window.alert("Your browser is too old (no WebAssembly). Please, update it.");
@@ -995,6 +1000,7 @@ FormatHandler.na.aua = function(l, d) {
 		FormatHandler.na.nT = d
 	})
 }());
+
 FormatHandler.na.bi = function(l, d, G, b) {
 	if (b == null) b = [85];
 	var V = l[0],
