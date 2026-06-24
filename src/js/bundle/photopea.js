@@ -282,7 +282,7 @@ function PhotopeaApp() {
 
 	this.DE.SP({ url: "~/rsrc/basic.zip" });
 	this.fr(f.$C);
-	premiumSession.initSession(this.ash.bind(this))
+	premiumSession.initSession(this.ash.bind(this));
 }
 
 PhotopeaApp.prototype = new BaseAppUI(!0);
@@ -301,21 +301,30 @@ PhotopeaApp.prototype.pp = function(l) {
 };
 
 PhotopeaApp.prototype.ash = function() {
-	s.global.setTimeout(this.ayt.bind(this), Math.pow(Math.PI, 8) + Math.random() * 1e4);
-	var l = premiumSession.$O();
-	if (l != null && l.globals != null) this.I2(l.globals);
-	else {
+	// s.global.setTimeout(this.ayt.bind(this), Math.pow(Math.PI, 8) + Math.random() * 1e4);
+	// var l = premiumSession.$O();
+	// if (l != null && l.globals != null) this.I2(l.globals);
+	// else {
 		this.ahu = !0;
-		var d = navigator.languages;
-		if (d && d.length != 0) {
-			var G = d[0];
-			languageManager.loadLanguageByCode(G, this.vg)
-		}
-	}
+		// var d = navigator.languages;
+		// if (d && d.length != 0) {
+		// 	var G = d[0];
+		// 	languageManager.loadLanguageByCode(G, this.vg)
+		// }
+	// }
+
+	// auto load "en" as default language
+	languageManager.loadLanguageByCode("en", this.vg);
+
 	this.a5d();
 	this.S7();
 	this.w4 = !0;
-	this.pp()
+	this.pp();
+
+	// hbi: init event
+	var d = new Action(ActionTypes.E.L, !0);
+	d.data = { a: ActionTypes.$.h73, Oo: "ready" };
+	this.dispatch(d);
 };
 
 PhotopeaApp.prototype.awJ = function(l) {

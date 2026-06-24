@@ -70,6 +70,7 @@ let ActionTypes = {
 		V7: "48",        // command palette
 		du: "49",        // play descriptor action
 		azm: "50",       // paste special (text / paths / layers)
-		Mc: "51"         // fullscreen or theme
+		Mc: "51",        // fullscreen or theme
+		h73: "52"        // app init
 	}
 };

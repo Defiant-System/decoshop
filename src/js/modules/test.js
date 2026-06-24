@@ -9,20 +9,34 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
+		PP.addEventListener(ActionTypes.E.L, event => {
+			if (event.data.a === ActionTypes.$.h73) {
 
-		// Open PSD file (same flow as File > Open from URL)
-		setTimeout(() => {
-			let event = new Action(ActionTypes.E.L, true);
-			event.data = {
-				a: ActionTypes.$.ub,
-				Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
-				// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
-				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
-				// Oo: { url: "~/img/combo.webp" }
-				// Oo: { url: "~/img/font-sheet.png" }
-			};
-			PP.dispatch(event);
-		}, 1500);
+				setTimeout(() => {
+					// Open PSD file (same flow as File > Open from URL)
+					let action = new Action(ActionTypes.E.L, true);
+					action.data = {
+						a: ActionTypes.$.ub,
+						Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
+						// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
+						// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
+						// Oo: { url: "~/img/combo.webp" }
+						// Oo: { url: "~/img/font-sheet.png" }
+					};
+					PP.dispatch(action);
+				}, 500);
+
+			}
+		});
+
+		PP.addEventListener(ActionTypes.E.A, event => {
+			console.log(2222, event);
+		});
+
+		// var doc = window.pp.fk();
+		// var history = doc.history;
+		// var currentIndex = doc.historyIndex;
+		// var currentState = doc.history[doc.historyIndex];
 
 		// setTimeout(() => {
 		// 	let doc = PP.fk();
