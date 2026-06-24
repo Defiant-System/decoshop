@@ -14372,7 +14372,7 @@ PixelUtil.rect.a7S = function(l, d) {
 
 PixelUtil.y0 = function() {};
 
-PixelUtil.y0.mT = Math.floor(18 * window.devicePixelRatio);
+PixelUtil.y0.mT = Math.floor(17 * window.devicePixelRatio);
 
 PixelUtil.y0.qG = {};
 
@@ -14419,20 +14419,22 @@ PixelUtil.y0.ahx = function(l, d, G, b) {
 PixelUtil.y0.axs = function(l, d) {
 	var G = l + "," + d;
 	if (PixelUtil.y0.qG.clr == G) return;
-	var b = Math.round(PixelUtil.y0.mT * .5);
-	PixelUtil.y0.m2 = b;
-	var V = document.createElement("canvas");
-	V.width = V.height = b;
-	var Q = V.getContext("2d", { willReadFrequently: true });
-	// Q.font = b * 1.15 + "px monospace";
-	Q.font = `9px Arial`;
+	var w = 6;
+	var h = 8;
+	PixelUtil.y0.m3 = w;
+	PixelUtil.y0.m2 = h;
+	var cvs = document.createElement("canvas");
+	var ctx = cvs.getContext("2d", { willReadFrequently: true });
+	cvs.width = w;
+	cvs.height = h;
+	ctx.font = `${h}px Arial`;
 	var t = "0 1 2 3 4 5 6 7 8 9 -".split(" ");
 	for (var A = 0; A < t.length; A++) {
-		Q.fillStyle = "#222";// + PixelUtil.intToHex6(d);
-		Q.fillRect(0, 0, b, b);
-		Q.fillStyle = "#666";// + PixelUtil.intToHex6(l);
-		Q.fillText(t[A], 0, b);
-		PixelUtil.y0.qG[t[A]] = Q.getImageData(0, 0, b, b).data
+		ctx.fillStyle = "#222";
+		ctx.fillRect(0, 0, w, h);
+		ctx.fillStyle = "#696969";
+		ctx.fillText(t[A], 0, h);
+		PixelUtil.y0.qG[t[A]] = ctx.getImageData(0, 0, w, h).data
 	}
 	PixelUtil.y0.qG.clr = G
 };
@@ -14467,7 +14469,7 @@ PixelUtil.y0.a3j = function(l, lineColor, borderColor, bgColor) {
 		y = PixelUtil.allocBytes(I * PixelUtil.y0.mT * 4),
 		bgPixel = 0xff000000 | bgColor;
 	PixelUtil.andMaskUint32(y, bgPixel);
-	for (var A = 0; A < PixelUtil.y0.mT; A++) PixelUtil.y0.YH(y, 4 * A * I, borderColor);
+	for (var A = 0; A < PixelUtil.y0.mT; A++) PixelUtil.y0.YH(y, 4 * A * I, lineColor);
 	for (var A = 0; A < I; A++) PixelUtil.y0.YH(y, 4 * ((PixelUtil.y0.mT - 1) * I + A), borderColor);
 	if (b == 2) V = 2;
 	if (b == 5) V = 5;
@@ -14484,7 +14486,9 @@ PixelUtil.y0.a3j = function(l, lineColor, borderColor, bgColor) {
 
 PixelUtil.y0.ad2 = function(l, d, G, b, V) {
 	var d = Math.round(d);
-	for (var Q = Math.round(PixelUtil.y0.mT * b); Q < PixelUtil.y0.mT - 1; Q++) PixelUtil.y0.YH(l, 4 * (Q * G + d), V)
+	for (var Q = Math.round(PixelUtil.y0.mT * b); Q < PixelUtil.y0.mT - 1; Q++) {
+		PixelUtil.y0.YH(l, 4 * (Q * G + d), V);
+	}
 };
 
 PixelUtil.y0.YH = function(l, d, G) {
@@ -14503,10 +14507,10 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 	var viewportWidth = viewState.Vm.m,
 		viewportHeight = viewState.Vm.n,
 		rulerThicknessPx = PixelUtil.y0.mT,
-		bgColor = 0x222222,
+		bgColor = 0x242424,
 		textColor = 0x696969,
 		lineColor = 0x444444,
-		borderColor = 0x283838;
+		borderColor = 0x1e1e1e;
 
 	PixelUtil.y0.axs(textColor, bgColor);
 	
@@ -14524,16 +14528,13 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		// Ruler corner square (top-left): fill with bg, 1px outline in text color.
 		if (viewState.X7) {
 			var cornerPixels = viewState.X7.data,
-				cornerSize = rulerThicknessPx,
 				bgPixel = 0xff000000 | bgColor;
 			PixelUtil.andMaskUint32(cornerPixels, bgPixel);
 			var cornerPixels32 = new Uint32Array(cornerPixels.buffer);
-			for (var cornerX = 0; cornerX < cornerSize; cornerX++) {
-				cornerPixels32[(cornerSize - 1) * cornerSize + cornerX] = lineColor;
+			for (var i = 0; i < rulerThicknessPx; i++) {
+				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = lineColor;
+				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = lineColor;
 			};
-			for (var cornerY = 0; cornerY < cornerSize; cornerY++) {
-				cornerPixels32[cornerY * cornerSize + cornerSize - 1] = lineColor;
-			}
 		}
 
 		var tickStrip = this.a3j(viewState.N, lineColor, borderColor, bgColor),
@@ -14557,17 +14558,23 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		var rulerPixels = isHorizontal ? viewState.C5.data : viewState.XF.data,
 			rulerBounds = new Rect(0, 0, isHorizontal ? viewportWidth : rulerThicknessPx, isHorizontal ? rulerThicknessPx : viewportHeight),
 			tickBlitRect = new Rect(0, 0, isHorizontal ? tickStepScreenPxCeil : rulerThicknessPx, isHorizontal ? rulerThicknessPx : tickStepScreenPxCeil),
-			digitBlitRect = new Rect(isHorizontal ? 0 : 1, isHorizontal ? 0 : 0, PixelUtil.y0.m2, PixelUtil.y0.m2),
+			digitBlitRect = new Rect(isHorizontal ? 0 : 2, isHorizontal ? -1 : 0, PixelUtil.y0.m3, PixelUtil.y0.m2),
 			tickCount = (isHorizontal ? tickEndDocX - tickStartDocX : tickEndDocY - tickStartDocY) / tickStrip.step;
 		for (var tickIndex = 0; tickIndex < tickCount; tickIndex++) {
-			if (isHorizontal) tickBlitRect.x = Math.round(tickStartScreen.x + tickIndex * tickStepScreenPx);
-			else tickBlitRect.y = Math.round(tickStartScreen.y + tickIndex * tickStepScreenPx);
+			if (isHorizontal) {
+				tickBlitRect.x = Math.round(tickStartScreen.x + tickIndex * tickStepScreenPx);
+			} else {
+				tickBlitRect.y = Math.round(tickStartScreen.y + tickIndex * tickStepScreenPx);
+			}
 			PixelUtil.blitRgbaRect(tickStrip.Wq, tickBlitRect, rulerPixels, rulerBounds, tickBlitRect);
 			// Horizontal: document X; vertical: document Y (absolute value, origin at top-left).
 			var tickLabel = Math.abs(isHorizontal ? tickStartDocX + tickIndex * tickStrip.step : tickStartDocY + tickIndex * tickStrip.step).toString(10);
 			for (var digitIndex = 0; digitIndex < tickLabel.length; digitIndex++) {
-				if (isHorizontal) digitBlitRect.x = tickBlitRect.x + 2 + digitIndex * Math.round(PixelUtil.y0.m2 * .8);
-				else digitBlitRect.y = tickBlitRect.y + 2 + digitIndex * Math.round(PixelUtil.y0.m2 * 1.15);
+				if (isHorizontal) {
+					digitBlitRect.x = tickBlitRect.x + 3 + digitIndex * Math.round(PixelUtil.y0.m2 * .8);
+				} else {
+					digitBlitRect.y = tickBlitRect.y + 2 + digitIndex * Math.round(PixelUtil.y0.m2 * 1.15);
+				}
 				var digitPixels = PixelUtil.y0.qG[tickLabel[digitIndex]];
 				PixelUtil.blitRgbaRect(digitPixels, digitBlitRect, rulerPixels, rulerBounds, digitBlitRect)
 			}
@@ -14591,79 +14598,6 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
 			leftRulerPixels32[cursorScreenY * rulerThicknessPx + crosshairIndex] = crosshairColor;
 		}
-	}
-};
-
-PixelUtil.y0.abA = function(viewState, textColor, bgColor, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
-	var viewportWidth = viewState.Vm.m,
-		viewportHeight = viewState.Vm.n,
-		rulerThicknessPx = PixelUtil.y0.mT,
-		textR = textColor >> 16 & 255,
-		textG = textColor >> 8 & 255,
-		textB = textColor & 255;
-	// Tick marks slightly dimmer than labels; pre-render digit glyphs at 80% text brightness.
-	var tickColor = Math.round(textR * .6) << 16 | Math.round(textG * .6) << 8 | Math.round(textB * .6);
-	PixelUtil.y0.axs(Math.round(textR * .8) << 16 | Math.round(textG * .8) << 8 | Math.round(textB * .8), bgColor);
-	var savedZoom = viewState.N,
-		savedOrigin = viewState.R,
-		savedAy = viewState.Ay;
-	for (var axis = 0; axis < 2; axis++) {
-		var isHorizontal = axis == 0,
-			axisTransform = isHorizontal ? horizAxisTransform : vertAxisTransform;
-		// Temporarily adopt this axis scale/origin so Zx/dN map screen <-> document units correctly.
-		viewState.N = axisTransform[0];
-		viewState.R = axisTransform[1];
-		viewState.Ay = 0;
-		var tickStrip = this.a3j(viewState.N, tickColor, bgColor),
-			viewMinDoc = viewState.Zx(0, 0),
-			viewMaxDoc = viewState.Zx(viewportWidth, viewportHeight),
-			// Document-space bounds snapped to tick grid.
-			tickStartDocX = Math.floor(viewMinDoc.x / tickStrip.step) * tickStrip.step,
-			tickEndDocX = Math.ceil(viewMaxDoc.x / tickStrip.step) * tickStrip.step,
-			tickStartDocY = Math.floor(viewMinDoc.y / tickStrip.step) * tickStrip.step,
-			tickEndDocY = Math.ceil(viewMaxDoc.y / tickStrip.step) * tickStrip.step,
-			tickStartScreen = viewState.dN(tickStartDocX, tickStartDocY),
-			tickEndScreen = viewState.dN(tickEndDocX, tickStartDocY),
-			tickStepScreenPx = tickStrip.step * viewState.N,
-			tickStepScreenPxCeil = Math.ceil(tickStepScreenPx);
-		// Vertical ruler reuses the horizontal tick bitmap, rotated via canvas.
-		if (!isHorizontal) {
-			var horizTickStrip = tickStrip.Wq;
-			tickStrip.Wq = PixelUtil.allocBytes(horizTickStrip.length * 4);
-			PixelUtil.canvas.Bo(horizTickStrip, tickStrip.Wq, tickStepScreenPxCeil, rulerThicknessPx)
-		}
-		var rulerPixels = isHorizontal ? viewState.C5.data : viewState.XF.data,
-			rulerBounds = new Rect(0, 0, isHorizontal ? viewportWidth : rulerThicknessPx, isHorizontal ? rulerThicknessPx : viewportHeight),
-			tickBlitRect = new Rect(0, 0, isHorizontal ? tickStepScreenPxCeil : rulerThicknessPx, isHorizontal ? rulerThicknessPx : tickStepScreenPxCeil),
-			digitBlitRect = new Rect(isHorizontal ? 0 : Math.round(rulerThicknessPx * .2), isHorizontal ? Math.round(rulerThicknessPx * .08) : 0, PixelUtil.y0.m2, PixelUtil.y0.m2),
-			tickCount = (isHorizontal ? tickEndDocX - tickStartDocX : tickEndDocY - tickStartDocY) / tickStrip.step;
-		for (var tickIndex = 0; tickIndex < tickCount; tickIndex++) {
-			if (isHorizontal) tickBlitRect.x = Math.round(tickStartScreen.x + tickIndex * tickStepScreenPx);
-			else tickBlitRect.y = Math.round(tickStartScreen.y + tickIndex * tickStepScreenPx);
-			PixelUtil.blitRgbaRect(tickStrip.Wq, tickBlitRect, rulerPixels, rulerBounds, tickBlitRect);
-			// Horizontal: document X; vertical: document Y (absolute value, origin at top-left).
-			var tickLabel = (isHorizontal ? tickStartDocX + tickIndex * tickStrip.step : Math.abs(tickStartDocY + tickIndex * tickStrip.step)).toString(10);
-			for (var digitIndex = 0; digitIndex < tickLabel.length; digitIndex++) {
-				if (isHorizontal) digitBlitRect.x = tickBlitRect.x + 3 + digitIndex * Math.round(PixelUtil.y0.m2 * .8);
-				else digitBlitRect.y = tickBlitRect.y + 3 + digitIndex * Math.round(PixelUtil.y0.m2 * 1.15);
-				var digitPixels = PixelUtil.y0.qG[tickLabel[digitIndex]];
-				PixelUtil.blitRgbaRect(digitPixels, digitBlitRect, rulerPixels, rulerBounds, digitBlitRect)
-			}
-		}
-	}
-	viewState.N = savedZoom;
-	viewState.R = savedOrigin;
-	viewState.Ay = savedAy;
-	// Crosshair notch on each ruler at the current pointer position.
-	var crosshairLen = Math.floor(rulerThicknessPx * .6),
-		topRulerPixels32 = new Uint32Array(viewState.C5.data.buffer),
-		leftRulerPixels32 = new Uint32Array(viewState.XF.data.buffer),
-		crosshairColor = textR < 128 ? 4278190080 : 4294967295;
-	if (0 < cursorScreenX && cursorScreenX < viewportWidth) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) topRulerPixels32[crosshairIndex * viewportWidth + cursorScreenX] = crosshairColor;
-	}
-	if (0 < cursorScreenY && cursorScreenY < viewportHeight) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) leftRulerPixels32[cursorScreenY * rulerThicknessPx + crosshairIndex] = crosshairColor
 	}
 };
 

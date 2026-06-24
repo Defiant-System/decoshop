@@ -8996,7 +8996,6 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		if (_local4247.SF == 4) _local4271 *= _local4154 / _local4156;
 		var _local4282 = [_local4273.N * _local4271, new Point2D(_local4273.R.x + (_local4157 + _local4178 * _local4271 - _local4178), _local4273.R.y + (_local4158 + _local4177 * _local4271 - _local4177))],
 			_local4228 = this.zS.YE;
-		// PixelUtil.y0.abA(_local4273, _local4270["--text-color"], _local4270["--bg-input"], Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
 		PixelUtil.y0.rulers(_local4273, Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
 		var _local4169 = LayerCanvasPanel.ae$(_local4273.N, NamedTabPanel.ut([1, 1, 1, 1]), l.m, l.n);
 		NamedTabPanel._f(l.u.XF.data);
