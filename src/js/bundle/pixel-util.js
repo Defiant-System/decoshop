@@ -14423,10 +14423,7 @@ PixelUtil.y0.axs = function(l, d) {
 	var h = 8;
 	PixelUtil.y0.m3 = w;
 	PixelUtil.y0.m2 = h;
-	var cvs = document.createElement("canvas");
-	var ctx = cvs.getContext("2d", { willReadFrequently: true });
-	cvs.width = w;
-	cvs.height = h;
+	var { cvs, ctx } = Misc.createCanvas(w, h);
 	ctx.font = `${h}px Arial`;
 	var t = "0 1 2 3 4 5 6 7 8 9 -".split(" ");
 	for (var A = 0; A < t.length; A++) {
@@ -15422,6 +15419,23 @@ PixelUtil.presetThumb.u_ = function(l, d) {
 };
 
 PixelUtil.presetThumb.Gx = function(l, d, G) {
+	var { cvs, ctx } = Misc.createCanvas(d, G);
+	var Q = PixelUtil.presetThumb.d_(l, 256);
+	ctx.scale(d / 255, G / 255);
+	ctx.fillStyle = "#fff";
+	ctx.fillRect(0, 0, 255, 255);
+	ctx.fillStyle = "#333";
+	ctx.beginPath();
+	ctx.moveTo(0, 255);
+	for (var A = 0; A < Q.length; A++) ctx.lineTo(A, 255 - Q[A]);
+	ctx.lineTo(255, 255);
+	ctx.closePath();
+	ctx.fill();
+	return cvs.toDataURL()
+};
+
+/* ORGINAL
+PixelUtil.presetThumb.Gx = function(l, d, G) {
 	var b = document.createElement("canvas");
 	b.width = d;
 	b.height = G;
@@ -15439,6 +15453,7 @@ PixelUtil.presetThumb.Gx = function(l, d, G) {
 	V.fill();
 	return b.toDataURL()
 };
+*/
 
 PixelUtil.style = {};
 
