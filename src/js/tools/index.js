@@ -14,7 +14,7 @@
 		// init sub objects
 		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 
-		// select a tool
+		// select first tool
 		this.els.toolBar.find(".tool:nth(0)").trigger("click");
 	},
 	dispatch(event) {

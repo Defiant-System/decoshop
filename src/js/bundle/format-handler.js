@@ -289,7 +289,7 @@ FormatHandler.ap_ = function() {
 		t.src = "data:" + V + ";base64," + FormatHandler.zR(b)
 	}
 	return G
-}();
+};
 FormatHandler.Tz = function(l, d, G, b, V) {
 	var Q = FormatHandler.CY(l, d, G, b, V),
 		t = FormatHandler.LE(Q);
@@ -992,14 +992,6 @@ FormatHandler.na.aua = function(l, d) {
 	var r = e.slice(n, n + t * 4);
 	return r
 };
-
-(function() {
-	var l = FormatHandler.RT.get("wasm/jpg").buffer;
-	// if (window.WebAssembly == null) window.alert("Your browser is too old (no WebAssembly). Please, update it.");
-	WebAssembly.instantiate(l).then(function(d) {
-		FormatHandler.na.nT = d
-	})
-}());
 
 FormatHandler.na.bi = function(l, d, G, b) {
 	if (b == null) b = [85];
@@ -1828,13 +1820,7 @@ FormatHandler.zV.bi = function(l, d, G, b) {
 	M(R, 4, J - 8);
 	return R.data.slice(0, J).buffer
 };
-(function() {
-	var l = FormatHandler.RT.get("wasm/webp").buffer;
-	WebAssembly.instantiate(l).then(function(d) {
-		var G = d.instance.exports;
-		FormatHandler.zV.exp = G
-	})
-}());
+
 FormatHandler.zV.gR = function(l) {
 	var d = new Uint8Array(l),
 		G = FormatHandler.zV.amH,
@@ -2258,7 +2244,7 @@ FormatHandler.aAB = function() {
 		bi: l,
 		amE: G
 	}
-}();
+};
 FormatHandler.st = {};
 
 FormatHandler.st.bi = function(l, d, G, b) {
@@ -3075,7 +3061,7 @@ var i5 = function() {
 	return {
 		Cd: l
 	}
-}();
+};
 FormatHandler.ZA = {};
 
 FormatHandler.ZA.zm = !0;
@@ -3398,7 +3384,7 @@ FormatHandler.SM.gR = function() {
 		return W
 	}
 	return R
-}();
+};
 FormatHandler.lG = {};
 
 FormatHandler.lG.zm = !1;
@@ -3617,7 +3603,7 @@ FormatHandler.a6t = function() {
 		Lz: !0,
 		gR: b
 	}
-}();
+};
 FormatHandler.a3C = function() {
 	var l, d = [],
 		G = !1,
@@ -3780,7 +3766,7 @@ FormatHandler.a3C = function() {
 		Lz: !0,
 		gR: R
 	}
-}();
+};
 FormatHandler.p$ = {};
 
 FormatHandler.p$.gR = function(l) {
@@ -4239,7 +4225,7 @@ FormatHandler.a6Y = function() {
 	return {
 		gR: G
 	}
-}();
+};
 FormatHandler.pl = {};
 
 FormatHandler.pl.gR = function(l) {
@@ -4672,7 +4658,7 @@ FormatHandler.tI.gR = function() {
 		return b
 	}
 	return Q
-}();
+};
 
 FormatHandler.R5 = {};
 
@@ -4680,13 +4666,7 @@ FormatHandler.R5.zm = !0;
 FormatHandler.R5.gR = function(l, d, G) {
 	cp.Cd(l, d, G)
 };
-(function() {
-	var l = FormatHandler.RT.get("wasm/zstd").buffer;
-	WebAssembly.instantiate(l).then(function(d) {
-		var G = d.instance.exports;
-		FormatHandler.R5.aqZ = G
-	})
-}());
+
 FormatHandler.R5.OY = function(l, d) {
 	var G = FormatHandler.R5.aqZ,
 		b = l.length,
@@ -5044,7 +5024,7 @@ FormatHandler.sZ.gR = function() {
 		return [P, h]
 	}
 	return i
-}();
+};
 FormatHandler.AL = {};
 
 FormatHandler.AL.zm = !0;
@@ -5935,6 +5915,6 @@ FormatHandler.Wb.gR = function() {
 		U.strokeStyleLineCapType.v.strokeStyleLineCapType = "strokeStyleRoundCap"
 	}
 	return J
-}();
+};
 
 

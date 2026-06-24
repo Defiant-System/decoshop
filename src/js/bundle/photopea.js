@@ -38,8 +38,9 @@ BaseAppUI.prototype.io = function(l) {
 
 BaseAppUI.prototype.refresh = function() {};
 BaseAppUI.prototype.e3 = function(l) {
-	var d = window.innerWidth,
-		G = window.innerHeight;
+	if (!window.PP) return;
+	var d = PP.window.innerWidth,
+		G = PP.window.innerHeight;
 	this.resize(d, G)
 };
 
@@ -387,7 +388,7 @@ function PhotopeaApp() {
 	}, { passive: !1 });
 
 	// window.addEventListener("beforeinstallprompt", function(j) {
-	// 	if (window.innerWidth > 400) j.preventDefault();
+	// 	if (PP.window.innerWidth > 400) j.preventDefault();
 	// 	this.fB.sv = j
 	// }.bind(this));
 	// edited by hbi
@@ -433,6 +434,11 @@ function PhotopeaApp() {
 }
 
 PhotopeaApp.prototype = new BaseAppUI(!0);
+
+PhotopeaApp.prototype.init = function(w) {
+	this.window = w;
+};
+
 PhotopeaApp.prototype.pp = function(l) {
 	var d = new Action(ActionTypes.E.L);
 	d.data = {
@@ -724,13 +730,14 @@ PhotopeaApp.prototype.QG = function() {
 };
 
 PhotopeaApp.prototype.resize = function(l, d) {
+	if (!PP) return;
 	l = Math.floor(l);
 	d = Math.floor(d);
 	var G = "hideCap",
 		b = "style",
 		V = document,
-		Q = Math.max(l, window.innerWidth),
-		t = Math.max(d, window.innerHeight),
+		Q = Math.max(l, PP.window.innerWidth),
+		t = Math.max(d, PP.window.innerHeight),
 		R = 0;
 	if (this.TQ == null) this.TQ = Math.min(Q, t) < 500 || Q < 750 ? 0 : Q < 1600 ? 1 : 2;
 	var I = this.TQ,
@@ -783,7 +790,7 @@ PhotopeaApp.prototype.resize = function(l, d) {
 	this.fc[b].width = (I == 0 ? l : 6 * Math.pow(10, 2)) + n;
 	if (s.isInDocument(this.QB.e)) this.QB.resize(l, J);
 	this.gP.resize(l, J);
-	this.gD.resize(window.innerWidth, window.innerHeight);
+	this.gD.resize(PP.window.innerWidth, PP.window.innerHeight);
 	// this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J); // hbi
 };
 

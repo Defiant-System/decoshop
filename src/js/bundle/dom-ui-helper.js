@@ -250,7 +250,7 @@ ContextPanel.prototype.refresh = function () {
 
 ContextPanel.prototype.update = function (l, d) {
 	var _local48 = this.iV,
-		_local51 = window.innerWidth < 450 ? "none" : "inline";
+		_local51 = PP.window.innerWidth < 450 ? "none" : "inline";
 	for (var _local47 = 0; _local47 < _local48.length; _local47++) {
 		var _local50 = this.lT[_local47];
 		if (_local50.CM && !this.Kf[_local47]) _local50.CM.style.display = _local51;
@@ -6712,7 +6712,7 @@ ModalDialogBase.prototype.a2C = function (l) {
 	var _local1953 = this.e.parentNode,
 		_local1950 = s.getEventPositionInElement(l, _local1953),
 		_local1952 = Math.round(_local1950.x - this.$L.x),
-		_local1951 = _local1953.offsetTop + Math.max(0, Math.min(window.innerHeight - 36, Math.round(_local1950.y - this.$L.y)));
+		_local1951 = _local1953.offsetTop + Math.max(0, Math.min(PP.window.innerHeight - 36, Math.round(_local1950.y - this.$L.y)));
 	this.aeF = new Point2D(_local1952, _local1951);
 	this.e.style.left = _local1952 + "px";
 	this.e.style.top = _local1951 + "px";
@@ -8299,8 +8299,12 @@ NamedTabPanel.prototype.KN = function () {
 	if (!isWebGL && _local4072 == WebGLContext.getCanvas() || isWebGL && _local4072 == _local4071.Lp) this.DK.removeChild(_local4072);
 	var workCvs = isWebGL ? WebGLContext.getCanvas() : _local4071.Lp;
 
-	let el = window.find(`.cvs-wrapper`)[0];
-	el.appendChild(workCvs);
+	if (!workCvs.parentNode) {
+		let el = PP.window.find(`.cvs-wrapper`)[0];
+		el.appendChild(workCvs);
+		PP.e3();
+		PP.resize();
+	}
 	
 	// if (!s.isInDocument(workCvs)) {
 	// 	this.DK.appendChild(workCvs);

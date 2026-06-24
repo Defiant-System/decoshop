@@ -13,57 +13,13 @@
 @import "./modules/test.js"
 
 
-// to be part of bundle
-@import "bundle/ext/upng.js"
-@import "bundle/ext/uzip.js"
-@import "bundle/dbs.js"
 
-@import "bundle/rect.js"
-@import "bundle/point-2d.js"
-@import "bundle/matrix-2d.js"
-@import "bundle/event-emitter.js"
-@import "bundle/ui-component.js"
-@import "bundle/export-helper.js"
-@import "bundle/style-helper.js"
-@import "bundle/font-helper.js"
-@import "bundle/format-handler.js"
-@import "bundle/keyboard-handler.js"
-@import "bundle/clipboard-handler.js"
-@import "bundle/link-bar.js"
-@import "bundle/command-palette.js"
-@import "bundle/dialog-manager.js"
-@import "bundle/language-manager.js"
-@import "bundle/app-state.js"
-@import "bundle/pixel-util.js"
-@import "bundle/webgl-context.js";
-@import "bundle/pattern-helper.js";
-@import "bundle/lab-color-data.js"
-@import "bundle/layer-record.js"
-@import "bundle/layer-effects-helper.js"
-@import "bundle/history-state.js"
-@import "bundle/document-view-state.js"
-@import "bundle/psd-document.js"
-@import "bundle/psd-descriptor-helper.js"
-@import "bundle/psd-resource-types.js"
-@import "bundle/riff-chunk-parser.js"
-@import "bundle/filter-helper.js"
-@import "bundle/text-style-helper.js"
-@import "bundle/action.js"
+let {
+	PP,
+	Action,
+	ActionTypes,
+} = await window.fetch("~/js/bundle.js");
 
-@import "bundle/dom-ui-helper.js"
-
-@import "bundle/photopea.js"
-
-
-// let {
-// 	Rect,
-// 	WebGLContext,
-// 	PixelUtil,
-// 	PatternHelper,
-// } = await window.fetch("~/js/bundle.js");
-
-
-const pp = new PhotopeaApp;
 
 const DefaultSettings = {
 	guides: {
@@ -96,6 +52,7 @@ const decoshop = {
 			handleBox: window.find(".handle-box"),
 		};
 		// init sub objects
+		PP.init(window);
 		UI.init();
 		Panels.init();
 		Adjustments.init();

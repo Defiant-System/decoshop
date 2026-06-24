@@ -14419,7 +14419,7 @@ PixelUtil.y0.ahx = function(l, d, G, b) {
 PixelUtil.y0.axs = function(l, d) {
 	var G = l + "," + d;
 	if (PixelUtil.y0.qG.clr == G) return;
-	var w = 6;
+	var w = 5;
 	var h = 8;
 	PixelUtil.y0.m3 = w;
 	PixelUtil.y0.m2 = h;

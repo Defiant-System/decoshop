@@ -15,17 +15,17 @@ let Test = {
 			let event = new Action(ActionTypes.E.L, true);
 			event.data = {
 				a: ActionTypes.$.ub,
-				Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
+				// Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
 				// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
-				// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
+				Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
 				// Oo: { url: "~/img/combo.webp" }
 				// Oo: { url: "~/img/font-sheet.png" }
 			};
-			pp.dispatch(event);
-		}, 500);
+			PP.dispatch(event);
+		}, 1500);
 
 		// setTimeout(() => {
-		// 	let doc = pp.fk();
+		// 	let doc = PP.fk();
 		// 	if (!doc) return;
 		// 	let u = doc.u,
 		// 		dpr = s.getDevicePixelRatio(),
@@ -33,7 +33,7 @@ let Test = {
 		// 		panY = 500 * dpr - u.Vm.n / 2;
 		// 	u.R.T6(panX, panY);
 		// 	doc.bV = true;
-		// 	// pp.update();
+		// 	// PP.update();
 		// }, 1500);
 
 		// stops RAF
@@ -41,7 +41,7 @@ let Test = {
 		
 
 
-		// setTimeout(() => APP.els.content.find(`.tool[data-content="type"]`).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.tool-hand`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
 		// setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);
 

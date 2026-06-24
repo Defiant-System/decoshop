@@ -9,6 +9,7 @@
 		let APP = decoshop,
 			Self = APP.tools.move,
 			el;
+		// console.log(event);
 		switch (event.type) {
 			// custom events
 			case "select-option":

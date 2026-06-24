@@ -15,10 +15,6 @@ var BINDB = {
 };
 
 var BINDB_DATA = {};
-await Promise.all(Object.keys(BINDB).map(async key => {
-	let res = await window.fetch(BINDB[key], { responseType: "arrayBuffer" });
-	BINDB_DATA[key] = new Uint8Array(res.arrayBuffer);
-}));
 
 
 var PIMG = {
