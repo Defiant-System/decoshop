@@ -9,34 +9,55 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
+
 		PP.addEventListener(ActionTypes.E.L, event => {
-			if (event.data.a === ActionTypes.$.h73) {
-
-				setTimeout(() => {
-					// Open PSD file (same flow as File > Open from URL)
-					let action = new Action(ActionTypes.E.L, true);
-					action.data = {
-						a: ActionTypes.$.ub,
-						Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
-						// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
-						// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
-						// Oo: { url: "~/img/combo.webp" }
-						// Oo: { url: "~/img/font-sheet.png" }
-					};
-					PP.dispatch(action);
-				}, 500);
-
+			switch (event.data.a) {
+				case ActionTypes.$.h73: // APP init
+					setTimeout(() => {
+						// Open PSD file (same flow as File > Open from URL)
+						let action = new Action(ActionTypes.E.L, true);
+						action.data = {
+							a: ActionTypes.$.ub,
+							Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
+							// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
+							// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
+							// Oo: { url: "/cdn/img/2d-samples/girl.psd" }
+							// Oo: { url: "~/img/combo.webp" }
+							// Oo: { url: "~/img/font-sheet.png" }
+						};
+						PP.dispatch(action);
+					}, 300);
+					break;
+				case ActionTypes.$.ub: // open file (URL / path)
+					setTimeout(() => {
+						var doc = PP.fk();
+						console.log(doc);
+					}, 1);
+					break;
+				default:
+					// console.log(1111, event);
 			}
 		});
 
-		PP.addEventListener(ActionTypes.E.A, event => {
-			console.log(2222, event);
+		PP.addEventListener(ActionTypes.E.v, event => {
+					console.log(event);
+			// switch (event.data.a) {
+			// 	case ActionTypes.$.ub: // file open
+			// 		console.log(event);
+
+			// 		// var doc = PP.fk();
+			// 		// var history = doc.history;
+			// 		// var currentIndex = doc.historyIndex;
+			// 		// var currentState = doc.history[doc.historyIndex];
+
+			// 		console.log( event.target.fk() );
+
+			// 		break;
+			// 	default:
+			// 		// console.log(event);
+			// }
 		});
 
-		// var doc = window.pp.fk();
-		// var history = doc.history;
-		// var currentIndex = doc.historyIndex;
-		// var currentState = doc.history[doc.historyIndex];
 
 		// setTimeout(() => {
 		// 	let doc = PP.fk();

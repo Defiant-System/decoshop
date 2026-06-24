@@ -99677,6 +99677,7 @@ PhotopeaApp.prototype.aly = function(l) {
 		a: "auto",
 		nx: 2
 	};
+	
 	// hbi - setting canvas center origo
 	let doc = this.fk();
 	let u = doc.u,
