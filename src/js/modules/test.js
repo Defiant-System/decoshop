@@ -29,35 +29,30 @@ let Test = {
 					}, 300);
 					break;
 				case ActionTypes.$.ub: // open file (URL / path)
+
+					// hbi - setting canvas center origo
 					setTimeout(() => {
-						var doc = PP.fk();
-						console.log(doc);
-					}, 1);
+						let doc = PP.fk(),
+							dpr = window.devicePixelRatio,
+							panX = 500 * dpr - doc.u.Vm.m / 2,
+							panY = 530 * dpr - doc.u.Vm.n / 2;
+						doc.u.R.T6(panX, panY);
+						doc.bV = true;
+						PP.update();
+
+
+						// hbi - read from history
+						console.log( 2222, languageManager.get(doc.history[0].name) );
+
+						// let history = doc.history;
+						// let currentIndex = doc.historyIndex;
+						// let currentState = doc.history[doc.historyIndex];
+					}, 100);
 					break;
 				default:
 					// console.log(1111, event);
 			}
 		});
-
-		PP.addEventListener(ActionTypes.E.v, event => {
-					console.log(event);
-			// switch (event.data.a) {
-			// 	case ActionTypes.$.ub: // file open
-			// 		console.log(event);
-
-			// 		// var doc = PP.fk();
-			// 		// var history = doc.history;
-			// 		// var currentIndex = doc.historyIndex;
-			// 		// var currentState = doc.history[doc.historyIndex];
-
-			// 		console.log( event.target.fk() );
-
-			// 		break;
-			// 	default:
-			// 		// console.log(event);
-			// }
-		});
-
 
 		// setTimeout(() => {
 		// 	let doc = PP.fk();

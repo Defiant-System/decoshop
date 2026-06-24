@@ -80,5 +80,6 @@ module.exports = {
 	PP,
 	Action,
 	ActionTypes,
+	languageManager,
 	Misc,
 };

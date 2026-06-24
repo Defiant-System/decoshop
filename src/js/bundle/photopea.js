@@ -663,7 +663,7 @@ PhotopeaApp.prototype.aaR = function(l) {
 				FZ: !0
 			}
 		};
-		this.dispatch(d)
+		this.dispatch(d);
 	}
 };
 
@@ -2154,22 +2154,13 @@ PhotopeaApp.prototype.aly = function(l) {
 	l.i_ = !0;
 	l.uK = !0;
 	this.awP();
-	var y = new Action(ActionTypes.E.v);
-	y.G = f.Qi;
-	y.data = {
-		a: "auto",
-		nx: 2
-	};
-	
-	// hbi - setting canvas center origo
-	let doc = this.fk();
-	let u = doc.u,
-		dpr = s.getDevicePixelRatio(),
-		panX = 500 * dpr - u.Vm.m / 2,
-		panY = 530 * dpr - u.Vm.n / 2;
-	u.R.T6(panX, panY);
-	doc.bV = true;
-	this.update();
+
+	// var y = new Action(ActionTypes.E.v);
+	// y.G = f.Qi;
+	// y.data = {
+	// 	a: "auto",
+	// 	nx: 2
+	// };
 };
 
 PhotopeaApp.prototype.fk = function() {

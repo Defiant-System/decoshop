@@ -176,10 +176,10 @@ ClipboardHandler.prototype.anB = function (l, d) {
 };
 
 ClipboardHandler.prototype.SP = function (l) {
-	if (l.url.indexOf("photopea.com#i") != -1 || l.url.indexOf("photopea.com/#i") != -1) {
-		this.wq(l.url.split("#i").pop());
-		return;
-	}
+	// if (l.url.indexOf("photopea.com#i") != -1 || l.url.indexOf("photopea.com/#i") != -1) {
+	// 	this.wq(l.url.split("#i").pop());
+	// 	return;
+	// }
 	this.a6b.push(l);
 	this.aov();
 };
