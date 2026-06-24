@@ -80,4 +80,5 @@ module.exports = {
 	PP,
 	Action,
 	ActionTypes,
+	Misc,
 };

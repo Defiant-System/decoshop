@@ -3,7 +3,6 @@
 
 @import "classes/file.js"
 
-@import "modules/misc.js"
 @import "modules/color.js"
 @import "modules/ui.js"
 @import "modules/panels.js"
@@ -18,6 +17,7 @@ let {
 	PP,
 	Action,
 	ActionTypes,
+	Misc,
 } = await window.fetch("~/js/bundle.js");
 
 

@@ -5435,8 +5435,8 @@ f.Pq = function() {
 			}
 		}
 	});
-	this.pz = new ContextPanel(l);
-	this.pz.addListener("select", this.Ux, this)
+	// this.pz = new ContextPanel(l);
+	// this.pz.addListener("select", this.Ux, this)
 };
 f.Pq.prototype = new f.AbstractTool;
 f.AbstractTool.prototype.Q0 = function(l) {
@@ -5893,8 +5893,8 @@ f.Pq.prototype.h_ = function(l, d, G, b, V) {
 		y.push({
 			name: "Share ..."
 		});
-		t = this.DM = new ContextPanel(y);
-		t.addListener("select", this.oB, this)
+		// t = this.DM = new ContextPanel(y);
+		// t.addListener("select", this.oB, this)
 	}
 	t.parent = d;
 	t.refresh();
@@ -7695,48 +7695,48 @@ f.gU = function() {
 	this.lU = 0;
 	this.e6 = null;
 	this.ahm = 0;
-	this.pz = new ContextPanel([{
-		name: [8, 0],
-		C0: "Ctrl + +"
-	}, {
-		name: [8, 1],
-		C0: "Ctrl + -",
-		xX: !0
-	}, {
-		name: [20, 3],
-		C0: "Ctrl + 0"
-	}, {
-		name: ["VAR0: 100%", [20, 2]],
-		C0: "Ctrl + 1"
-	}], [{
-		Y: ActionTypes.E.v,
-		G: f.t7,
-		W: {
-			a: "zoom",
-			K$: !0
-		}
-	}, {
-		Y: ActionTypes.E.v,
-		G: f.t7,
-		W: {
-			a: "zoom",
-			K$: !1
-		}
-	}, {
-		Y: ActionTypes.E.v,
-		G: f.t7,
-		W: {
-			a: "adapt",
-			Z: "fitscr"
-		}
-	}, {
-		Y: ActionTypes.E.v,
-		G: f.t7,
-		W: {
-			a: "adapt",
-			Z: "pixel"
-		}
-	}])
+	// this.pz = new ContextPanel([{
+	// 	name: [8, 0],
+	// 	C0: "Ctrl + +"
+	// }, {
+	// 	name: [8, 1],
+	// 	C0: "Ctrl + -",
+	// 	xX: !0
+	// }, {
+	// 	name: [20, 3],
+	// 	C0: "Ctrl + 0"
+	// }, {
+	// 	name: ["VAR0: 100%", [20, 2]],
+	// 	C0: "Ctrl + 1"
+	// }], [{
+	// 	Y: ActionTypes.E.v,
+	// 	G: f.t7,
+	// 	W: {
+	// 		a: "zoom",
+	// 		K$: !0
+	// 	}
+	// }, {
+	// 	Y: ActionTypes.E.v,
+	// 	G: f.t7,
+	// 	W: {
+	// 		a: "zoom",
+	// 		K$: !1
+	// 	}
+	// }, {
+	// 	Y: ActionTypes.E.v,
+	// 	G: f.t7,
+	// 	W: {
+	// 		a: "adapt",
+	// 		Z: "fitscr"
+	// 	}
+	// }, {
+	// 	Y: ActionTypes.E.v,
+	// 	G: f.t7,
+	// 	W: {
+	// 		a: "adapt",
+	// 		Z: "pixel"
+	// 	}
+	// }])
 };
 f.gU.prototype = new f.AbstractTool;
 f.gU.prototype.h_ = function(l, d, G, b, V) {
@@ -11716,13 +11716,13 @@ f.UA.prototype.h_ = function(l, d, G, b, V) {
 	l.Ci = [t];
 	l.uK = !0;
 	if (this.pz == null) {
-		this.pz = new ContextPanel([{
-			name: [5, 4]
-		}, {
-			name: [8, 11, 1],
-			pR: !0
-		}]);
-		this.pz.addListener("select", this.Ux, this)
+		// this.pz = new ContextPanel([{
+		// 	name: [5, 4]
+		// }, {
+		// 	name: [8, 11, 1],
+		// 	pR: !0
+		// }]);
+		// this.pz.addListener("select", this.Ux, this)
 	}
 	var I = this.pz;
 	I.parent = d;

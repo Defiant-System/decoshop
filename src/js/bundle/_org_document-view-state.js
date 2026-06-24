@@ -1,5 +1,4 @@
 
-
 function PointerInputHandler(l) {
 	UIComponent.call(this);
 	this.s$ = [];
@@ -171,61 +170,60 @@ PointerInputHandler.prototype.aO = function (l, d, G) {
 
 
 function ContextPanel(l, d, G) {
-	console.log("ContextPanel");
-	// UIComponent.call(this);
-	// this.G$ = null;
-	// this.as0 = this.qd.bind(this);
-	// this.ab7 = this.oj.bind(this);
-	// this.akL = this.afp.bind(this);
-	// this.a4H = this.a1I.bind(this);
-	// this.Ru = [];
-	// this.lT = [];
-	// this.DA = [];
-	// this.abO = [];
-	// this.e = s.createElement("div", "contextpanel " + (G ? "cp_dark" : "cp_trsp"));
-	// this.e.addEventListener("contextmenu", s.preventDefaultHandler, !1);
-	// this.wb = null;
-	// this.cA = 0;
-	// this.iV = l;
-	// this.E0 = d;
-	// this.Kf = [];
-	// for (var _local36 = 0; _local36 < l.length; _local36++) {
-	// 	var _local40 = s.createElement("div", "enab");
-	// 	this.lT.push(_local40);
-	// 	this.e.appendChild(_local40);
-	// 	var _local39 = l[_local36].e2;
-	// 	if (_local39) {
-	// 		if (_local39.startsWith("#")) {
-	// 			var _local38 = s.createElement("span");
-	// 			_local38.setAttribute("style", "display:inline-block; width:16px; height:16px; vertical-align:middle; margin:0 5px 0 -3px; border-radius:4px; background-color:" + _local39);
-	// 			_local40.appendChild(_local38);
-	// 		} else _local40.innerHTML = s.getIconImgHtml(l[_local36].e2, null, "thumb");
-	// 	} else {
-	// 		var _local42 = s.createElement("span", "check");
-	// 		this.abO.push(_local42);
-	// 		_local40.appendChild(_local42);
-	// 	}
-	// 	var _local37 = s.createElement("span", "label");
-	// 	_local37.textContent = languageManager.get(l[_local36].name);
-	// 	_local40.appendChild(_local37);
-	// 	this.DA.push(_local37);
-	// 	if (l[_local36].xX) this.e.appendChild(s.createElement("hr"));
-	// 	if (l[_local36].C0 || l[_local36].sub) {
-	// 		var _local43 = _local40.CM = s.createElement("span", "right");
-	// 		_local40.appendChild(_local43);
-	// 		if (l[_local36].C0) _local43.textContent = KeyboardHandler.nc(l[_local36].C0);else
-	// 		if (l[_local36].sub) _local43.innerHTML = "<svg height='10px' width='6px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 1 L 5 5 L 1 9'/></svg>";
-	// 	}
-	// 	_local40.addEventListener("click", this.as0, !1);
-	// 	_local40.addEventListener("mouseover", this.ab7, !0);
-	// 	_local40.addEventListener("mouseout", this.akL, !0);
-	// 	if (l[_local36].sub) {
-	// 		var _local41 = new ContextPanel(l[_local36].sub, d ? d[_local36].sub : null);
-	// 		_local41.parent = this;
-	// 		this.Kf.push(_local41);
-	// 		_local41.addListener("select", this.ayV, this);
-	// 	} else this.Kf.push(null);
-	// }
+	UIComponent.call(this);
+	this.G$ = null;
+	this.as0 = this.qd.bind(this);
+	this.ab7 = this.oj.bind(this);
+	this.akL = this.afp.bind(this);
+	this.a4H = this.a1I.bind(this);
+	this.Ru = [];
+	this.lT = [];
+	this.DA = [];
+	this.abO = [];
+	this.e = s.createElement("div", "contextpanel " + (G ? "cp_dark" : "cp_trsp"));
+	this.e.addEventListener("contextmenu", s.preventDefaultHandler, !1);
+	this.wb = null;
+	this.cA = 0;
+	this.iV = l;
+	this.E0 = d;
+	this.Kf = [];
+	for (var _local36 = 0; _local36 < l.length; _local36++) {
+		var _local40 = s.createElement("div", "enab");
+		this.lT.push(_local40);
+		this.e.appendChild(_local40);
+		var _local39 = l[_local36].e2;
+		if (_local39) {
+			if (_local39.startsWith("#")) {
+				var _local38 = s.createElement("span");
+				_local38.setAttribute("style", "display:inline-block; width:16px; height:16px; vertical-align:middle; margin:0 5px 0 -3px; border-radius:4px; background-color:" + _local39);
+				_local40.appendChild(_local38);
+			} else _local40.innerHTML = s.getIconImgHtml(l[_local36].e2, null, "thumb");
+		} else {
+			var _local42 = s.createElement("span", "check");
+			this.abO.push(_local42);
+			_local40.appendChild(_local42);
+		}
+		var _local37 = s.createElement("span", "label");
+		_local37.textContent = languageManager.get(l[_local36].name);
+		_local40.appendChild(_local37);
+		this.DA.push(_local37);
+		if (l[_local36].xX) this.e.appendChild(s.createElement("hr"));
+		if (l[_local36].C0 || l[_local36].sub) {
+			var _local43 = _local40.CM = s.createElement("span", "right");
+			_local40.appendChild(_local43);
+			if (l[_local36].C0) _local43.textContent = KeyboardHandler.nc(l[_local36].C0);else
+			if (l[_local36].sub) _local43.innerHTML = "<svg height='10px' width='6px'  fill='none' stroke-width='1.35' stroke='currentColor'><path d='M 1 1 L 5 5 L 1 9'/></svg>";
+		}
+		_local40.addEventListener("click", this.as0, !1);
+		_local40.addEventListener("mouseover", this.ab7, !0);
+		_local40.addEventListener("mouseout", this.akL, !0);
+		if (l[_local36].sub) {
+			var _local41 = new ContextPanel(l[_local36].sub, d ? d[_local36].sub : null);
+			_local41.parent = this;
+			this.Kf.push(_local41);
+			_local41.addListener("select", this.ayV, this);
+		} else this.Kf.push(null);
+	}
 }
 
 ContextPanel.prototype = new UIComponent();
@@ -933,6 +931,261 @@ ButtonGroupMenu.Ze = function (l, d, G) {
 ButtonGroupMenu.nv = s.createElement("canvas");
 
 
+function ToolbarColumn(l, d) {
+	SidebarColumnBase.call(this, "toolbar");
+	this.e.removeChild(this.p1);
+	this.eN = s.createElement("div", "tools");
+	this.e.appendChild(this.eN);
+	this.df = null;
+	this.QN = null;
+	this.ao3 = d;
+	this.ax = null;
+	this.aiU = -1;
+	this.ay2 = {};
+	this.asE = l;
+	this.d = null;
+	this.k3 = null;
+	this.Pd = null;
+	this.FW = null;
+	this.PK = new ForeBackColorSwatch;
+	this.PK.e.style.marginTop = "5px";
+	this.PK.e.style.marginBottom = "3px";
+	this.PK.parent = this;
+	this.kg = new ToolbarButton(s.getIconImgHtml("lrs/mask"), !1, [6, 6, 1]);
+	this.kg.addListener("click", function(Q) {
+		var t = new Action(ActionTypes.E.v, !0);
+		t.G = f.Da;
+		t.data = {
+			a: "qmask"
+		};
+		this.dispatch(t)
+	}, this);
+	var G = new MultiOptionBox(null, ["Ctrl", "Alt", "Shift", "No Touch"], !0, null, null, !0);
+	G.addListener(ActionTypes.E.A, this.a5E, this);
+	var b = s.createElement("span", "rangecontFloat form padded");
+	b.appendChild(G.e);
+	b.setAttribute("style", "position:absolute; width:119px; z-index:2;  padding-right:0px; ");
+	var V = this.e;
+	this.acK = [!1, !1, !1, !1];
+	this.hs = new ToolbarButton(s.getIconImgHtml("kb"), !1, "Virtual Keys");
+	this.hs.addListener("click", function(Q) {
+		var t = this.hs.e.getBoundingClientRect();
+		b.style.top = t.top - 110 + "px";
+		b.style.left = t.left + t.width + 8 + "px";
+		if (s.isInDocument(b)) {
+			s.hideWithTransition({
+				e: b
+			}, V)
+		} else {
+			V.appendChild(b);
+			s.showWithTransition({
+				e: b
+			})
+		}
+	}, this)
+}
+ToolbarColumn.prototype = new SidebarColumnBase;
+ToolbarColumn.prototype.a5E = function(l) {
+	var d = l.target.b();
+	this.hs.c(d[0] || d[1] || d[2] || d[3]);
+	var G = new Action(ActionTypes.E.L, !0);
+	for (var A = 0; A < 4; A++) {
+		if (d[A] != this.acK[A]) {
+			G.data = {
+				a: ActionTypes.$.agL,
+				oW: d[A],
+				an9: ["ControlLeft", "AltLeft", "ShiftLeft", "NoTouch"][A]
+			};
+			this.dispatch(G)
+		}
+	}
+	this.acK = d.slice(0)
+};
+ToolbarColumn.prototype.aam = function(l, d) {
+	this.ax = d;
+	if (l == null || l.g.length == 0 || l.B[l.g[0]] == null) return;
+	var G = l.kg() != null,
+		b = l.u.MX,
+		V = l.B[l.g[0]].ht,
+		Q = V == 1 || V == 3 || G || b[0] + b[1] + b[2] == 1;
+	this.PK.atT(Q);
+	this.kg.c(G)
+};
+ToolbarColumn.prototype.akt = function(l, d) {
+	var G = l.length,
+		b = [];
+	for (var A = 0; A < G; A++) b[A] = l[A].slice(0);
+	l = b;
+	var V = [1, 2, 4, 5, 7, 8, 7, 9, 11, 12, 14, 15, 14, 16, 10, 11, 1, 3, 17, 18, 7, 6, 13, 14],
+		Q = Math.min(V.length / 2, G - d);
+	for (var A = 0; A < Q; A++) {
+		var t = V[2 * A],
+			I = V[2 * A + 1];
+		l[t] = l[t].concat(l[I]);
+		l[I] = null
+	}
+	for (var A = 0; A < l.length; A++)
+		if (l[A] == null) {
+			l.splice(A, 1);
+			A--
+		}
+	return l
+};
+ToolbarColumn.prototype.adz = function(l, d) {
+	for (var A = 0; A < d.length; A++)
+		for (var G = 0; G < d[A].length; G++)
+			if (d[A][G].G.id == l) return A
+};
+ToolbarColumn.prototype.agr = function(l) {
+	var d = this.asE;
+	this.k3 = [];
+	this.Pd = [];
+	this.FW = [];
+	this.d = [];
+	var G = d.vu;
+	if (l != null && this.ao3) G = this.akt(G, l);
+	var b = this.df;
+	if (b) {
+		var V = [];
+		for (var A = 0; A < G.length; A++) {
+			var Q = [];
+			for (var t = 0; t < G[A].length; t++) {
+				var I = G[A][t];
+				if (b == null || b.indexOf(parseInt(I.G.id)) != -1) Q.push(I)
+			}
+			if (Q.length > 0) V.push(Q)
+		}
+		G = V
+	}
+	for (var A = 0; A < G.length; A++) {
+		var y = [],
+			e = this.k3.length,
+			M = null,
+			R = -1;
+		for (var t = 0; t < G[A].length; t++) {
+			var I = G[A][t].G,
+				J = this.adz(I.id, d.vu),
+				n = d.keys[J];
+			if (n == KeyboardHandler.Zi && t == 1) n = KeyboardHandler.xA;
+			this.d.push(I);
+			var r = new ToolButton(I.name, n, I.mq, this.k3.length, A, G[A].length > 1);
+			this.k3.push(r);
+			var T = this.ay2[I.id];
+			if (T == null) T = 0;
+			if (T > R) {
+				R = T;
+				M = r
+			}
+			r.addListener(ActionTypes.E.A, this.oi, this);
+			r.addListener("mover", this.oj, this);
+			y.push({
+				name: I.name,
+				e2: I.mq,
+				C0: n ? n.hy : ""
+			})
+		}
+		this.Pd.push(M);
+		this.FW.push(y.length == 1 ? null : [y, e])
+	}
+};
+ToolbarColumn.prototype.resize = function(l, d) {
+	var G = this.Tq = d,
+		b = 32;
+	if (1 < s.getDevicePixelRatio() && s.getDevicePixelRatio() < 1.5) b = 18 + 14 * (1 / s.getDevicePixelRatio());
+	var V = 39 + 23,
+		Q = Math.floor((G - V) / b);
+	if (Q != this.aiU) {
+		this.aiU = Q;
+		this.agr(Q);
+		this.fr()
+	}
+	var t = this.Pd.length * b + V,
+		I = Math.min(1, G / t);
+	if (.75 <= I) {
+		this.eN.setAttribute("style", "width:34px; transform-origin: top left; transform: scale(" + I + "," + I + ");");
+		this.e.setAttribute("style", "height:" + (d - 2) + "px;")
+	} else {
+		G -= 4;
+		this.eN.setAttribute("style", "height: " + G + "px;  width:" + Math.ceil(t / G) * 34 + "px");
+		this.e.setAttribute("style", "")
+	}
+};
+ToolbarColumn.prototype.refresh = function() {
+	if (this.d == null) return;
+	for (var A = 0; A < this.k3.length; A++) this.k3[A].refresh()
+};
+ToolbarColumn.prototype.oi = function(l) {
+	var d = new Action(ActionTypes.E.L, !0);
+	d.data = {
+		a: ActionTypes.$.yb,
+		G: this.d[l.id].id
+	};
+	this.dispatch(d)
+};
+ToolbarColumn.prototype.aju = function(l) {
+	var d = l.target.a48 + l.target.sz()[0];
+	this.k3[d].qd(null, !0)
+};
+ToolbarColumn.prototype.oj = function(l) {
+	var d = this.ax,
+		G = new Action(ActionTypes.E.L, !0);
+	G.data = {
+		a: ActionTypes.$.xt
+	};
+	this.dispatch(G);
+	var b = l.target,
+		V = this.FW[b.vv];
+	if (V == null) return;
+	var Q = new ContextPanel(V[0], null, !0);
+	Q.a48 = V[1];
+	Q.vv = b.vv;
+	Q.addListener("select", this.aju, this);
+	Q.parent = this;
+	Q.refresh();
+	var t = b.e.getBoundingClientRect(),
+		G = new Action(ActionTypes.E.L, !0);
+	G.data = {
+		a: ActionTypes.$.dY,
+		A3: Q,
+		x: t.left + t.width + 8,
+		y: t.top
+	};
+	if (d == null || !(d.l(KeyboardHandler.Mm) || d.l(KeyboardHandler.wz))) this.dispatch(G)
+};
+ToolbarColumn.prototype.fr = function(l) {
+	if (l == null) l = this.QN;
+	this.QN = l;
+	if (this.d == null) return;
+	this.ay2[l] = Date.now();
+	var d = -1;
+	for (var A = 0; A < this.d.length; A++)
+		if (this.d[A].id == l) d = A;
+	for (var A = 0; A < this.k3.length; A++) {
+		var G = this.k3[A];
+		G.a72(d == A)
+	}
+	if (d == -1) return;
+	this.Pd[this.k3[d].vv] = this.k3[d];
+	s.clearChildren(this.eN);
+	var b = this.Pd;
+	for (var A = 0; A < b.length; A++) {
+		this.eN.appendChild(b[A].e)
+	}
+	if (!this.ao3) return;
+	this.eN.appendChild(this.PK.e);
+	if (this.Tq > 640) this.eN.appendChild(this.kg.e);
+	this.eN.appendChild(this.hs.e)
+};
+ToolbarColumn.prototype.BM = function(l, d) {
+	if (d == PsdResourceTypes.Wx && l.df) {
+		this.df = l.df;
+		this.agr();
+		this.fr()
+	}
+	this.PK.ah9(l.Y7, l.GF)
+};
+
+
 function SidebarColumnBase(l) {
 	UIComponent.call(this);
 	if (l == null) return;
@@ -1546,14 +1799,14 @@ PanelTabBase.prototype.a7f = function (l) {
 	var _local3364 = s.getEventPositionInElement(l, document.body),
 		_local3362 = this.Rk;
 	if (_local3362 == null) {
-		// _local3362 = this.Rk = new ContextPanel([{
-		// 	name: "Close"
-		// }]);
-		// this.Rk.addListener("select", this.gV, this);
+		_local3362 = this.Rk = new ContextPanel([{
+			name: "Close"
+		}]);
+		this.Rk.addListener("select", this.gV, this);
 	}
-	// _local3362.update(null);
-	// _local3362.refresh();
-	// _local3362.parent = this;
+	_local3362.update(null);
+	_local3362.refresh();
+	_local3362.parent = this;
 	var _local3363 = new Action(ActionTypes.E.L, !0);
 	_local3363.data = {
 		a: ActionTypes.$.dY,
@@ -2268,19 +2521,19 @@ function Storage(l) {
 	this.iM = s.createElement("div", "btn");
 	_local1239.appendChild(this.iM);
 	s.addPointerUp(this.iM, _local1230);
-	// this.uc = new ContextPanel([{
-	// 	name: [6, 20]
-	// }, {
-	// 	name: [5, 2],
-	// 	C0: [KeyboardHandler.wz, KeyboardHandler.AR],
-	// 	p: function () {
-	// 		return {
-	// 			p: Storage.af != null
-	// 		};
-	// 	}
-	// }]);
-	// this.uc.parent = this;
-	// this.uc.addListener("select", this.arF, this);
+	this.uc = new ContextPanel([{
+		name: [6, 20]
+	}, {
+		name: [5, 2],
+		C0: [KeyboardHandler.wz, KeyboardHandler.AR],
+		p: function () {
+			return {
+				p: Storage.af != null
+			};
+		}
+	}]);
+	this.uc.parent = this;
+	this.uc.addListener("select", this.arF, this);
 	this.ae.addEventListener("contextmenu", this.Xx);
 	this.a9Q = s.createElement("span");
 	this.G3 = s.createElement("span");
@@ -3068,13 +3321,13 @@ Storage.prototype.acw = function (l) {
 					});
 				}
 			}
-			// _local1377 = new ContextPanel(_local1384);
-			// _local1377.parent = this;
-			// _local1377.addListener("select", this.arF, this);
+			_local1377 = new ContextPanel(_local1384);
+			_local1377.parent = this;
+			_local1377.addListener("select", this.arF, this);
 		}
-		// _local1377.parent = this;
-		// _local1377.refresh();
-		// _local1377.update();
+		_local1377.parent = this;
+		_local1377.refresh();
+		_local1377.update();
 		this.G7({
 			a: ActionTypes.$.dY,
 			A3: _local1377,
@@ -3623,16 +3876,16 @@ function ChannelsPanel() {
 	[17, 2], "Save Selection as Channel", [5, 3],
 	[5, 4]],
 	this.lM, this.S8, this.vR.bind(this), this.DS.bind(this));
-	// this.PK = new ContextPanel([{
-	// 	name: "Merge Channels",
-	// 	pR: !0
-	// }], [{
-	// 	Y: ActionTypes.E.L,
-	// 	W: {
-	// 		a: ActionTypes.$.SN,
-	// 		GU: "mergechannels"
-	// 	}
-	// }]);
+	this.PK = new ContextPanel([{
+		name: "Merge Channels",
+		pR: !0
+	}], [{
+		Y: ActionTypes.E.L,
+		W: {
+			a: ActionTypes.$.SN,
+			GU: "mergechannels"
+		}
+	}]);
 }
 ChannelsPanel.prototype = new PanelTabBase("");
 ChannelsPanel.prototype.xI = function () {
@@ -4330,15 +4583,15 @@ function HistoryPanel() {
 	this.lastClickedHistoryIndex = -1; // last clicked list item index (avoid duplicate actions)
 	this.historyListItems = []; // HistoryPanelListItem instances
 	this.b_ = "";
-	// this.PK = new ContextPanel([{
-	// 	name: "Clear History"
-	// }], [{
-	// 	Y: ActionTypes.E.v,
-	// 	G: f.lv,
-	// 	W: {
-	// 		a: "h_clear"
-	// 	}
-	// }]);
+	this.PK = new ContextPanel([{
+		name: "Clear History"
+	}], [{
+		Y: ActionTypes.E.v,
+		G: f.lv,
+		W: {
+			a: "h_clear"
+		}
+	}]);
 }
 HistoryPanel.prototype = new PanelTabBase("");
 HistoryPanel.prototype.xI = function () {
@@ -4445,7 +4698,7 @@ HistogramPanel.prototype.VP = function () {
 	this.y9.c(_local3501, _local3504);
 };
 HistogramPanel.prototype.BM = function (l, d) {
-	// this.y9.EB(ThemeManager.themes[l.j$]["--text-color"]);
+	this.y9.EB(ThemeManager.themes[l.j$]["--text-color"]);
 };
 HistogramPanel.prototype.refresh = function () {
 	PanelTabBase.prototype.refresh.call(this);
@@ -6206,6 +6459,181 @@ StrokeStyleButton.prototype.a9R = function (l, d, G, b) {
 
 
 
+
+var ThemeManager = {};
+ThemeManager.applyTheme = function(A) {
+	var l = ThemeManager.themes[A],
+		d = document.documentElement.style,
+		b = 1;
+	// hbi
+	// d.setProperty("--base", "#" + PixelUtil.intToHex6(l["--base"]));
+	// d.setProperty("--bg-panel", "#" + PixelUtil.intToHex6(l["--bg-panel"]));
+	// d.setProperty("--bg-canvas", "#" + PixelUtil.intToHex6(l["--bg-canvas"]));
+	// d.setProperty("--bg-input", "#" + PixelUtil.intToHex6(l["--bg-input"]));
+	// d.setProperty("--bg-bbtn", "#" + PixelUtil.intToHex6(l["--bg-bbtn"]));
+	// d.setProperty("--bg-bbtnOver", "#" + PixelUtil.intToHex6(l["--bg-bbtnOver"]));
+	// d.setProperty("--brdr", "#" + PixelUtil.intToHex6(l["--brdr"]));
+	// d.setProperty("--text-color", "#" + PixelUtil.intToHex6(l["--text-color"]));
+	// d.setProperty("--brdrLgt", "rgba(255,255,255," + l["--brdrLgt"] + ")");
+	// d.setProperty("--brdrDrk", "rgba(  0,  0,  0," + l["--brdrDrk"] + ")");
+	// d.setProperty("--alphaDark", "" + l["--alphaDark"]);
+	// d.setProperty("--gs-invert", "" + l["--gs-invert"]);
+	// d.setProperty("--accent", "#" + PixelUtil.intToHex6(l["--accent"]));
+	// var G = l["--sh-clr"];
+	// d.setProperty("--sh-clr", "rgba(" + (G >> 16) + "," + (G >> 8 & 255) + "," + (G & 255) + ", 0.45)");
+	// d.setProperty("--absc", "" + l["--absc"]);
+	// d.setProperty("--abs255", "" + l["--abs255"]);
+	// if (1 < s.getDevicePixelRatio() && s.getDevicePixelRatio() < 1.5) b = 1 / s.getDevicePixelRatio();
+	// d.setProperty("--img20", 20 * b + "px");
+	// d.setProperty("--img18", 18 * b + "px");
+	// d.setProperty("--img15", 15 * b + "px");
+	// if (PIMG != null) {
+	// 	var V = "lrs/eye lrs/square lrs/arrow_down lrs/arrow_right lrs/chain lrs/link lrs/linkX lrs/clipping lrs/lock lrs/fx lrs/folder cross tools/cshape checkmark".split(" ");
+	// 	for (var A = 0; A < V.length; A++) {
+	// 		var Q = V[A],
+	// 			t = Q.split("/").pop(),
+	// 			I = PIMG["__" + Q] == null ? l["--gs-invert"] : "0";
+	// 		d.setProperty("--icon_" + t, "url(" + PIMG[Q] + ")");
+	// 		d.setProperty("--icon_" + t + "_invrt", I)
+	// 	}
+	// }
+	// var y = document.querySelector("meta[name=theme-color]");
+	// if (y) y.setAttribute("content", "#" + PixelUtil.intToHex6(l["--base"]))
+};
+(function() {
+	var l = 3441398,
+		d = 3441398;
+	ThemeManager.themes = [{
+		name: "Light Grey",
+		"--base": 14737632,
+		"--bg-panel": 11579568,
+		"--bg-canvas": 11579568,
+		"--bg-input": 16777215,
+		"--bg-bbtn": 15921906,
+		"--bg-bbtnOver": 16777215,
+		"--brdrLgt": .5,
+		"--brdrDrk": .4,
+		"--alphaDark": .12,
+		"--text-color": 3749943,
+		"--gs-invert": .22,
+		"--brdr": 11579568,
+		"--sh-clr": 16777215,
+		"--absc": 1,
+		"--abs255": 255,
+		"--accent": d
+	}, {
+		name: "Dark Grey",
+		"--base": 4671303,
+		"--bg-panel": 2434341,
+		"--bg-canvas": 2434341,
+		"--bg-input": 2434341,
+		"--bg-bbtn": 6118749,
+		"--bg-bbtnOver": 6974058,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 14013909,
+		"--gs-invert": .78,
+		"--brdr": 2434341,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Blue",
+		"--base": 4212048,
+		"--bg-panel": 2435637,
+		"--bg-canvas": 2434341,
+		"--bg-input": 2435637,
+		"--bg-bbtn": 6316138,
+		"--bg-bbtnOver": 6974074,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 15790330,
+		"--gs-invert": .88,
+		"--brdr": 2435637,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Dark Blue",
+		"--base": 2237745,
+		"--bg-panel": 1513761,
+		"--bg-canvas": 1513761,
+		"--bg-input": 1513761,
+		"--bg-bbtn": 3554128,
+		"--bg-bbtnOver": 3158085,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 12303291,
+		"--gs-invert": .8,
+		"--brdr": 1513761,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Purple",
+		"--base": 4931153,
+		"--bg-panel": 3287605,
+		"--bg-canvas": 2434341,
+		"--bg-input": 3287605,
+		"--bg-bbtn": 6840430,
+		"--bg-bbtnOver": 7694970,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 15790330,
+		"--gs-invert": .88,
+		"--brdr": 3287605,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "Black",
+		"--base": 3487029,
+		"--bg-panel": 1710618,
+		"--bg-canvas": 1710618,
+		"--bg-input": 1710618,
+		"--bg-bbtn": 5263440,
+		"--bg-bbtnOver": 5921370,
+		"--brdrLgt": .15,
+		"--brdrDrk": .6,
+		"--alphaDark": .25,
+		"--text-color": 13421772,
+		"--gs-invert": .7,
+		"--brdr": 1710618,
+		"--sh-clr": 0,
+		"--absc": 0,
+		"--abs255": 0,
+		"--accent": l
+	}, {
+		name: "White",
+		"--base": 16250871,
+		"--bg-panel": 14737632,
+		"--bg-canvas": 14737632,
+		"--bg-input": 16777215,
+		"--bg-bbtn": 14737632,
+		"--bg-bbtnOver": 14079702,
+		"--brdrLgt": .2,
+		"--brdrDrk": .2,
+		"--alphaDark": .065,
+		"--text-color": 3355443,
+		"--gs-invert": .18,
+		"--brdr": 14737632,
+		"--sh-clr": 16777215,
+		"--absc": 1,
+		"--abs255": 255,
+		"--accent": d
+	}]
+}());
+
+
+
 function ModalDialogBase(l, d) {
 	UIComponent.call(this);
 	if (l == null) return;
@@ -6302,6 +6730,99 @@ ModalDialogBase.prototype.a6i = function (l) {
 		var _local1954 = this.parent;
 		if (_local1954 && _local1954.tx && _local1954.tx.indexOf(this) != -1) this.close();
 	} else this.close();
+};
+
+function InfoPanel() {
+	PanelTabBase.call(this, "Info", !1, "---panels/info", PanelTabBase.xA.aoQ);
+	this.DK.setAttribute("style", "min-width:240px;");
+	this.KP = null;
+	this.mN = null;
+	var _local3710 = this.pK = [];
+	for (var _local3709 = 0; _local3709 < 3; _local3709++) {
+		var _local3705 = s.createElement("div", "marged row");
+		this.DK.appendChild(_local3705);
+		var _local3708 = s.createElement("div", "cell");
+		_local3708.setAttribute("style", "width:10em");
+		_local3705.appendChild(_local3708);
+		var _local3707 = s.createElement("div", "cell");
+		_local3707.setAttribute("style", "width:10em");
+		_local3705.appendChild(_local3707);
+		for (var _local3704 = 0; _local3704 < (_local3709 == 2 ? 3 : 4); _local3704++) {
+			var _local3706 = new LabelItem("");
+			_local3710.push(_local3706);
+			_local3706.c(0);
+			_local3706.e.style.padding = "0";
+			var _local3711 = _local3709 != 1 || _local3704 < 2 ? _local3708 : _local3707;
+			_local3711.appendChild(_local3706.e);
+			s.appendBr(_local3711);
+		}
+		if (_local3709 < 2) s.appendHr(this.DK);
+	}
+	this.Nt = _local3710[4];
+	this.lw = _local3710[5];
+	this.SU = _local3710[6];
+	this.it = _local3710[7];
+}
+InfoPanel.prototype = new PanelTabBase("");
+InfoPanel.prototype.JP = function (l, d, G, b, V) {
+	if (!s.isInDocument(this.DK) || l == null) return;
+	var _local3716 = l.u.Zx(V.x, V.y),
+		_local3721 = new Point2D(Math.floor(_local3716.x), Math.floor(_local3716.y));
+	if (!V.oW) {
+		var _local3713 = 0,
+			_local3722 = 0,
+			_local3718 = 0,
+			_local3715 = 0,
+			_local3717 = this.pK;
+		if (!V.oW && !l.ajH() && new Rect(0, 0, l.m - 1, l.n - 1).xC(_local3721)) {
+			var _local3714 = l.LT(),
+				_local3712 = l.m * _local3721.y + _local3721.x << 2;
+			_local3713 = _local3714[_local3712 + 0];
+			_local3722 = _local3714[_local3712 + 1];
+			_local3718 = _local3714[_local3712 + 2];
+			_local3715 = _local3714[_local3712 + 3];
+		}
+		_local3717[0].c("R: " + _local3713);
+		_local3717[1].c("G: " + _local3722);
+		_local3717[2].c("B: " + _local3718);
+		_local3717[3].c("A: " + _local3715);
+		var _local3719 = PixelUtil.rgbToHsv(_local3713, _local3722, _local3718);
+		_local3717[8].c("H: " + Math.round(_local3719.Tq * 360) + "\xB0");
+		_local3717[9].c("S: " + Math.round(_local3719.Lm * 100) + "%");
+		_local3717[10].c("B: " + Math.round(_local3719.k * 100 / 255) + "%");
+	}
+	var _local3720 = l.u.N > 1 ? new Point2D(_local3716.x, _local3716.y) : _local3721;
+	this.Nt.c("X: " + PixelUtil.y0.ij(_local3720.x, l.m7, G, l.m));
+	this.lw.c("Y: " + PixelUtil.y0.ij(_local3720.y, l.m7, G, l.n));
+	this.XK();
+};
+InfoPanel.prototype.XK = function () {
+	var _local3726 = this.KP,
+		_local3725 = this.mN,
+		_local3723 = 0,
+		_local3724 = 0;
+	if (_local3726 && _local3725) {
+		if (_local3726.u.M9) {
+			_local3723 = _local3726.u.M9.m;
+			_local3724 = _local3726.u.M9.n;
+		} else if (_local3726.P) {
+			_local3723 = _local3726.P.rect.m;
+			_local3724 = _local3726.P.rect.n;
+		}
+		_local3723 = PixelUtil.y0.ij(Math.abs(_local3723), _local3726.m7, _local3725, _local3726.m);
+		_local3724 = PixelUtil.y0.ij(Math.abs(_local3724), _local3726.m7, _local3725, _local3726.n);
+	}
+	this.SU.c("Width".charAt(0) + ": " + _local3723);
+	this.it.c("Height".charAt(0) + ": " + _local3724);
+};
+InfoPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	this.XK();
+};
+InfoPanel.prototype.Yw = function (l, d, G) {
+	this.KP = l;
+	this.mN = G;
+	this.XK();
 };
 
 
@@ -6703,6 +7224,34 @@ LayerStyleDialog.ye = function (l) {
 };
 
 
+function ArtboardToolOptions() {
+	ToolOptionsBase.call(this);
+	this.MP = new ArtboardBackgroundPanel();
+	this.MP.addListener(ActionTypes.E.A, this.Ak, this);
+	this.body.appendChild(this.MP.e);
+}
+
+ArtboardToolOptions.prototype = new ToolOptionsBase();
+
+ArtboardToolOptions.prototype.lx = function () {
+	this.MP.refresh();
+};
+
+ArtboardToolOptions.prototype.Ak = function (l) {
+	var _local4424 = new Action(ActionTypes.E.L, !0);
+	_local4424.data = {
+		a: ActionTypes.$.kl,
+		G: this.G,
+		Oo: this.MP.az7()
+	};
+	this.dispatch(_local4424);
+};
+
+ArtboardToolOptions.prototype.IF = function (l) {
+	this.MP.akE(l.Ye);
+};
+
+
 
 function ToolOptionsBase() {
 	UIComponent.call(this);
@@ -6874,6 +7423,814 @@ MoveToolOptions.prototype.lx = function () {
 	}
 };
 
+
+
+function GuideGuyPanel() {
+	PanelTabBase.call(this, "Guide Guy", !1, "---panels/guideguy", PanelTabBase.xA.aAh);
+	this.KP = null;
+	this.HA = new DropdownMenu(null, PixelUtil.y0.Fc);
+}
+GuideGuyPanel.prototype = new PanelTabBase("");
+GuideGuyPanel.prototype.Eg = function () {
+	this.pK = [];
+	var _local3933 = s.createElement("div", "form padded");
+	this.DK.appendChild(_local3933);
+	_local3933.setAttribute("style", "width:200px");
+	this.DK.appendChild(_local3933);
+	var _local3931 = s.createElement("canvas"),
+		_local3923 = _local3931.getContext("2d", { willReadFrequently: true });
+	_local3931.width = _local3931.height = 160;
+	var _local3930 = [32, 0, 16, 160, 0, 32, 160, 16, 0, 112, 160, 16],
+		_local3929 = "Margin Left,Margin Top,Margin Right,Margin Bottom,Column Count,Row Count,Column Width,Row Height,Column Gap,Row Gap".split(","),
+		_local3927 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	_local3933.appendChild(this.HA.e);
+	for (var _local3922 = 0; _local3922 < 10; _local3922++) {
+		_local3923.clearRect(0, 0, 160, 160);
+		_local3923.setTransform(1, 0, 0, 1, 80, 80);
+		_local3923.rotate((_local3922 & 3) * Math.PI / 2);
+		_local3923.translate(-80, -80);
+		_local3923.fillStyle = "rgba(0,0,0,0.3)";
+		if (_local3922 < 4) {
+			for (var _local3934 = 0; _local3934 < 12; _local3934 += 4) {
+				_local3923.fillStyle = _local3934 == 0 ? "#000000" : "rgba(0,0,0,0.3)";
+				_local3923.fillRect(_local3930[_local3934], _local3930[_local3934 + 1], _local3930[_local3934 + 2], _local3930[_local3934 + 3]);
+			}
+		} else if (_local3922 < 6) {
+			var _local3924 = 8 * 6;
+			_local3923.fillRect(0, 0, _local3924, 160);
+			_local3923.fillRect(8 * 7, 0, _local3924, 160);
+			_local3923.fillStyle = "#000000";
+			_local3923.fillRect(8 * 14, 0, _local3924, 160);
+		} else if (_local3922 < 8) {
+			_local3923.fillRect(0, 0, 16, 160);
+			_local3923.fillRect(160 - 16, 0, 16, 160);
+			_local3923.fillRect(32, 0, 160 - 64, 160);
+			_local3923.fillStyle = "#000000";
+			_local3923.fillRect(32, 80 - 8, 160 - 64, 8 * 1);
+		} else {
+			_local3923.fillRect(0, 0, 8 * 7, 160);
+			_local3923.fillRect(8 * 13, 0, 160, 160);
+			_local3923.fillStyle = "#000000";
+			_local3923.fillRect(8 * 7, 80 - 8, 8 * 6, 8 * 1);
+		}
+		var _local3935 = "<img src=\"" + _local3931.toDataURL() + "\" class=\"autoscale gsicon\" /> ",
+			_local3932 = new RangeDropInput(_local3935, 0, 200, null, _local3922 == 4 || _local3922 == 5 ? 0 : 2, null, null, 4, _local3929[_local3922]);
+		_local3932.parent = this;
+		_local3932.addListener(ActionTypes.E.A, this.a1t, this);
+		_local3932.c(_local3927[_local3922]);
+		_local3932.refresh();
+		this.pK.push(_local3932);
+		_local3933.appendChild(_local3932.e);
+	}
+	var _local3926 = [
+	"Add Guides",
+	"Clear Guides"];
+
+	this.VS = [];
+	for (var _local3922 = 0; _local3922 < _local3926.length; _local3922++) {
+		var _local3928 = new ToolbarButton(_local3926[_local3922], !0, null, !0);
+		this.VS.push(_local3928);
+		_local3928.addListener("click", this.Ab, this);
+		_local3933.appendChild(_local3928.e);
+	}
+	for (var _local3922 = 0; _local3922 < 6; _local3922++) {
+		_local3923.setTransform(1, 0, 0, 1, 80, 80);
+		_local3923.rotate(Math.floor(_local3922 / 3) * Math.PI / 2);
+		_local3923.translate(-80, -80);
+		_local3923.clearRect(0, 0, 160, 160);
+		_local3923.fillStyle = "rgba(0,0,0,0.3)";
+		_local3923.fillRect(0, 0, 160, 160);
+		_local3923.clearRect(16, 16, 128, 128);
+		_local3923.fillStyle = "#000000";
+		var _local3925 = _local3922 % 3;
+		_local3923.fillRect([0, 9, 18][_local3925] * 8, 0, 16, 160);
+		var _local3935 = "<img src=\"" + _local3931.toDataURL() + "\" class=\"autoscale gsicon\" /> ",
+			_local3928 = new ToolbarButton(_local3935, !1, null, !1);
+		this.VS.push(_local3928);
+		_local3928.addListener("click", this.Ab, this);
+		_local3933.appendChild(_local3928.e);
+	}
+};
+GuideGuyPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	this.HA.refresh();
+	if (this.pK == null) return;
+	for (var _local3936 = 0; _local3936 < this.VS.length; _local3936++) this.VS[_local3936].refresh();
+};
+GuideGuyPanel.prototype.a1t = function (l) {
+	var _local3942 = this.pK,
+		_local3938 = _local3942.indexOf(l.target),
+		_local3941 = Math.floor(_local3938 / 2),
+		_local3940 = _local3938 & 1,
+		_local3939 = [];
+	for (var _local3937 = 0; _local3937 < 4; _local3937++) _local3939.push(_local3942[2 * _local3937 + _local3940].b());
+	var _local3943 = -1;
+	if (_local3941 == 2 && _local3939[2] != 0 && _local3939[3] != 0 && _local3939[4] != 0) _local3943 = 4;
+	if (_local3941 == 3 && _local3939[3] != 0 && _local3939[2] != 0 && _local3939[4] != 0) _local3943 = 4;
+	if (_local3941 == 4 && _local3939[4] != 0 && _local3939[2] != 0 && _local3939[3] != 0) _local3943 = 3;
+	if (_local3943 != -1) _local3942[2 * _local3943 + _local3940].c(0);
+};
+GuideGuyPanel.prototype.Ab = function (l) {
+	var _local3952 = this.KP,
+		_local3945 = this.VS.indexOf(l.target),
+		_local3951 = [
+		[],
+		[]];
+
+	if (_local3952 == null) return;
+	var _local3950 = _local3952.P ? _local3952.P.rect : new Rect(0, 0, _local3952.m, _local3952.n),
+		_local3948 = _local3950.m,
+		_local3954 = _local3950.n;
+	if (_local3945 == 0) {
+		var _local3946 = [
+			[],
+			[]],
+
+			_local3955 = this.HA.b();
+		for (var _local3944 = 0; _local3944 < this.pK.length; _local3944++) {
+			var _local3953 = this.pK[_local3944].b();
+			_local3953 = PixelUtil.y0.Sw(_local3953, _local3952.m7, _local3952.m, _local3955);
+			_local3946[_local3944 & 1].push(_local3953);
+		}
+		var _local3947 = [GuideGuyPanel.azS(_local3946[0], _local3950.x, _local3950.x + _local3948), GuideGuyPanel.azS(_local3946[1], _local3950.y, _local3950.y + _local3954)];
+		_local3951 = GuideGuyPanel.sO(_local3947);
+		f.Pq.eF(_local3951, _local3952.Ww());
+	} else if (_local3945 == 1) {} else {
+		_local3945 -= 2;
+		var _local3949 = Math.floor(_local3945 / 3),
+			_local3947 = [
+			[],
+			[]];
+
+		_local3947[_local3949].push([_local3950.x, _local3950.x + _local3948 / 2, _local3950.x + _local3948, _local3950.y, _local3950.y + _local3954 / 2, _local3950.y + _local3954][_local3945]);
+		_local3951 = GuideGuyPanel.sO(_local3947);
+		f.Pq.eF(_local3951, _local3952.Ww());
+	}
+	this.aw7(_local3951);
+};
+GuideGuyPanel.sO = function (l) {
+	var _local3959 = [],
+		_local3957 = [];
+	for (var _local3958 = 0; _local3958 < 2; _local3958++)
+	for (var _local3956 = 0; _local3956 < l[_local3958].length; _local3956++) {
+		_local3959.push([_local3958, l[_local3958][_local3956]]);
+		_local3957.push(-1);
+	}
+	return [_local3959, _local3957];
+};
+GuideGuyPanel.prototype.auH = function (l) {
+	var _local3960 = this.a16.indexOf(l.target);
+};
+GuideGuyPanel.prototype.aw7 = function (l) {
+	var _local3961 = new Action(ActionTypes.E.v, !0);
+	_local3961.G = f.$C;
+	_local3961.data = {
+		a: "gids",
+		jh: l
+	};
+	this.dispatch(_local3961);
+};
+GuideGuyPanel.azS = function (l, d, G) {
+	var _local3966 = [],
+		_local3965 = l[2],
+		_local3964 = l[3],
+		_local3967 = l[4],
+		_local3963 = 0;
+	if (_local3965 == 0) _local3963++;
+	if (_local3964 == 0) _local3963++;
+	if (_local3967 == 0) _local3963++;
+	if (_local3963 > 1 && _local3965 == 0 && _local3964 == 0) {
+		if (l[0] != 0) _local3966.push(d + l[0]);
+		if (l[1] != 0) _local3966.push(G - l[1]);
+		return _local3966;
+	}
+	var _local3968 = G - d - l[0] - l[1];
+	if (_local3965 == 0) {
+		if (_local3967 == 0) {
+			_local3965 = Math.floor(_local3968 / _local3964);
+			_local3967 = (_local3968 - _local3965 * _local3964) / (_local3965 - 1);
+		} else {
+			_local3965 = 1;
+			while (_local3964 * _local3965 + _local3967 * (_local3965 - 1) + _local3964 + _local3967 <= _local3968) _local3965++;
+		}
+	} else if (_local3965 != 0 && _local3964 != 0) {
+		if (_local3965 * _local3964 > _local3968) _local3965 = Math.floor(_local3968 / _local3964);
+		_local3967 = (_local3968 - _local3965 * _local3964) / (_local3965 - 1);
+	}
+	_local3966.push(d + l[0], G - l[1]);
+	var _local3964 = (_local3968 - _local3967 * (_local3965 - 1)) / _local3965;
+	for (var _local3962 = 1; _local3962 < _local3965; _local3962++) {
+		if (_local3967 == 0) _local3966.push(d + l[0] + _local3962 * _local3964);else
+		_local3966.push(d + l[0] + _local3962 * _local3964 + (_local3962 - 1) * _local3967, d + l[0] + _local3962 * _local3964 + _local3962 * _local3967);
+	}
+	return _local3966;
+};
+GuideGuyPanel.prototype.Yw = function (l, d, G) {
+	this.KP = l;
+};
+GuideGuyPanel.prototype.KN = function () {
+	if (s.isInDocument(this.DK) && this.pK == null) this.Eg();
+	this.refresh();
+};
+GuideGuyPanel.prototype.BM = function (l) {
+	this.HA.c(l.hq.SF);
+};
+
+function PropertiesPanel() {
+	PanelTabBase.call(this, "Properties", !1, "---panels/properties", PanelTabBase.xA.uB);
+	this.apJ = null;
+	this.v0 = null;
+	this.mN = null;
+	this.adU = -1;
+	this.pa = null;
+}
+PropertiesPanel.prototype = new PanelTabBase("");
+PropertiesPanel.prototype.resize = function (l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	l = l - 16;
+	d = d - 12;
+	var _local3970 = this.pa;
+	if (_local3970) {
+		_local3970.style.width = l + "px";
+		_local3970.style.height = d + "px";
+		for (var _local3969 = 0; _local3969 < 3; _local3969++) this.MW[_local3969].resize(l - 12, d);
+	}
+};
+PropertiesPanel.prototype.Eg = function () {
+	this.pa = s.createElement("div", "padded scrollable");
+	this.DK.appendChild(this.pa);
+	var _local3973 = s.createElement("span");
+	this.pa.appendChild(_local3973);
+	this.c2 = [
+	new ToolbarButton("Layer"),
+	new ToolbarButton("Mask"),
+	new ToolbarButton("Live Shape")];
+
+	for (var _local3971 = 0; _local3971 < this.c2.length; _local3971++) {
+		var _local3972 = this.c2[_local3971];
+		_local3972.addListener("click", this.amZ, this);
+		_local3973.appendChild(_local3972.e);
+		if (_local3971 == 2) _local3972.e.style.marginRight = "0";
+	}
+	this.pa.appendChild(s.createElement("hr"));
+	this.Yz = new PropertiesPanel.Tv();
+	this.Yz.parent = this;
+	this.Z_ = new PropertiesPanel.tK();
+	this.Z_.parent = this;
+	this.i0 = new PropertiesPanel.Iy();
+	this.i0.parent = this;
+	this.MW = [this.Yz, this.Z_, this.i0];
+	this.pa.appendChild(this.Yz.e);
+	this.resize(this.iJ, this.Tq);
+};
+PropertiesPanel.prototype.amZ = function (l) {
+	var _local3974 = this.c2.indexOf(l.currentTarget);
+	this.Fu(_local3974);
+	this.a9H(_local3974 == 1 ? this.Z_.Ih : -1);
+};
+PropertiesPanel.prototype.Fu = function (l) {
+	for (var _local3975 = 0; _local3975 < 3; _local3975++) {
+		this.c2[_local3975].kL();
+		var _local3976 = this.MW[_local3975].e;
+		if (_local3976.parentNode == this.pa && _local3975 != l) this.pa.removeChild(_local3976);
+		if (_local3976.parentNode != this.pa && _local3975 == l) this.pa.appendChild(_local3976);
+	}
+	this.c2[l].Nu();
+};
+PropertiesPanel.prototype.a9H = function (l) {
+	var _local3980 = this.v0.g[0],
+		_local3977 = this.v0.B[_local3980],
+		_local3979 = l + 1;
+	if (l == 1 && _local3977.VM) return;
+	var _local3978 = new Action(ActionTypes.E.v, !0);
+	_local3978.G = f.yS;
+	if (l != 1 && _local3977.VM) {
+		_local3978.data = {
+			a: LayerRecord.bj,
+			j: _local3980,
+			VY: 2
+		};
+		this.dispatch(_local3978);
+	}
+	_local3978.data = {
+		a: LayerRecord.bj,
+		j: _local3980,
+		VY: _local3979
+	};
+	this.dispatch(_local3978);
+};
+PropertiesPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	if (this.pa == null) return;
+	this.Yw(this.v0);
+	for (var _local3981 = 0; _local3981 < 3; _local3981++) {
+		this.c2[_local3981].refresh();
+		this.MW[_local3981].refresh();
+	}
+};
+PropertiesPanel.prototype.KN = function () {
+	if (!s.isInDocument(this.DK)) return;
+	if (this.pa == null) {
+		this.Eg();
+		this.BM(this.mN, PsdResourceTypes.Wx);
+		this.Yw(this.apJ);
+		this.refresh();
+	}
+};
+PropertiesPanel.prototype.Yw = function (l) {
+	this.apJ = l;
+	if (this.pa == null) return;
+	this.Yz.Yw(l);
+	this.Z_.Yw(l);
+	this.i0.Yw(l);
+	if (l == null || l.g.length == 0 || l.B[l.g[0]] == null) {
+		s.addClass(this.DK, "disabled");
+		this.v0 = null;
+		return;
+	} else s.removeClass(this.DK, "disabled");
+	var _local3988 = l.g[0],
+		_local3983 = l.B[_local3988],
+		_local3987 = l.LW(),
+		_local3986 = _local3987[0],
+		_local3985 = _local3987[1];
+	if (_local3985.length != 0) {
+		var _local3990 = _local3986[_local3985[0]],
+			_local3984 = _local3990.add.vogk,
+			_local3991 = !1;
+		if (_local3984)
+		for (var _local3982 = 0; _local3982 < _local3984.length; _local3982++) {
+			var _local3989 = _local3984[_local3982].v;
+			if (!PixelUtil.X.TJ(_local3989)) continue;
+			_local3991 = !0;
+			_local3988 = _local3990.sy;
+		}
+	}
+	_local3988 += "," + _local3991;
+	if (l != this.v0 || this.adU != _local3988) {
+		this.v0 = l;
+		this.adU = _local3988;
+		if (_local3991) this.Fu(2);else
+		if (_local3983.ht < 1 && !_local3983.VM || LayerEffectsHelper.detectAdjustmentKey(_local3983.add)) this.Fu(0);else
+		this.Fu(1);
+	}
+	this.c2[1].setEnabled(this.Z_.Ih != -1);
+	this.c2[2].setEnabled(_local3991);
+};
+PropertiesPanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	if (this.Yz) this.Yz.BM(l, d);
+	if (this.i0) this.i0.BM(l, d);
+};
+PropertiesPanel.Tv = function () {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "form");
+	this.aac = new LabelItem("Hello");
+	this.xT = new ToolbarButton("Reset", null, null, !0);
+	this.xT.e.style.auj = "right";
+	this.xT.addListener("click", this.Jx, this);
+	this.e.appendChild(this.aac.e);
+	this.e.appendChild(this.xT.e);
+	this.tb = null;
+	this.Ik = null;
+	this.v0 = null;
+	this.mN = null;
+	this.a33 = -1;
+	this.av6 = null;
+	this.nK = null;
+	this.A4 = new BoundsInput(0, !0, !0);
+	this.A4.parent = this;
+	this.A4.addListener(ActionTypes.E.A, this.am7, this);
+	this.e.appendChild(this.A4.e);
+	this.vk = new ColorSwatch(!0);
+	this.vk.parent = this;
+	this.vk.addListener(ActionTypes.E.A, this.a0j, this);
+	this._6 = s.createElement("div", "marged hiline");
+	this._6.appendChild(this.vk.e);
+	this.P$ = new LayerStyleOptionRow("GrFl", !0);
+	this.P$.parent = this;
+	this.P$.addListener(ActionTypes.E.A, this.a21, this);
+	this.RM = s.createElement("div", "marged hiline");
+	var _local3996 = "Grad Rvrs Type Algn Angl Dthr Scl Ofst".split(" ");
+	for (var _local3992 = 0; _local3992 < _local3996.length; _local3992++) {
+		var _local3995 = this.P$.k7[_local3996[_local3992]].e;
+		this.RM.appendChild(_local3995);
+	}
+	this.bx = new LayerStyleOptionRow("patternFill", !0);
+	this.bx.parent = this;
+	this.bx.addListener(ActionTypes.E.A, this.a8t, this);
+	this.iC = s.createElement("div", "marged hiline");
+	var _local3996 = ["Ptrn", "Angl", "Scl", "Algn", "phase"];
+	for (var _local3992 = 0; _local3992 < _local3996.length; _local3992++) {
+		var _local3995 = this.bx.k7[_local3996[_local3992]].e;
+		this.iC.appendChild(_local3995);
+	}
+	this.n1 = {};
+	for (var _local3993 in LayerEffectsHelper.names) {
+		if (FilterEffectPanel[_local3993] == null) continue;
+		this.n1[_local3993] = new FilterEffectPanel[_local3993]();
+		this.n1[_local3993].addListener(ActionTypes.E.A, this.as5, this);
+		this.n1[_local3993].parent = this;
+	}
+	var _local3994 = this.aoT = s.createElement("div", "marged hiline");
+	this.Ls = new BoundsInput(0, !0);
+	_local3994.appendChild(this.Ls.e);
+	this.Ls.addListener(ActionTypes.E.A, this.Ak, this);
+	this.ayW = null;
+	this.MP = new ArtboardBackgroundPanel();
+	this.MP.parent = this;
+	this.MP.addListener(ActionTypes.E.A, this.Ak, this);
+	_local3994.appendChild(this.MP.e);
+};
+PropertiesPanel.Tv.prototype = new UIComponent();
+PropertiesPanel.Tv.prototype.am7 = function (l) {
+	var _local4000 = this.A4.b(),
+		_local3997 = this.nK,
+		_local3999 = new Rect(_local4000[0], _local4000[1], _local4000[2], _local4000[3]);
+	if (_local3999.XB(_local3997)) return;
+	this.nK = _local3999;
+	var _local3998 = new Action(ActionTypes.E.v, !0);
+	if (_local3997.m == _local3999.m && _local3997.n == _local3999.n) {
+		_local3998.G = f.$C;
+		_local3998.data = {
+			a: "trsl",
+			wS: _local3999.x - _local3997.x,
+			ui: _local3999.y - _local3997.y
+		};
+	} else {
+		_local3998.G = f.qK;
+		_local3998.data = {
+			a: "scl",
+			Il: [2, 4],
+			Z: new Point2D(_local3999.m / _local3997.m, _local3999.n / _local3997.n),
+			BL: 0
+		};
+	}
+	this.dispatch(_local3998);
+};
+PropertiesPanel.Tv.prototype.resize = function (l, d) {
+	var _local4001 = this.n1;
+	for (var _local4002 in _local4001) _local4001[_local4002].resize(l, d);
+};
+PropertiesPanel.Tv.prototype.Jx = function (l) {
+	var _local4005 = this.v0,
+		_local4003 = _local4005.B[_local4005.g[0]],
+		_local4004 = LayerEffectsHelper.detectAdjustmentKey(_local4003.add);
+	this.Ik.c(FilterHelper.oT(_local4004));
+	this.as5();
+};
+PropertiesPanel.Tv.prototype.refresh = function () {
+	for (var _local4006 in this.n1) this.n1[_local4006].refresh();
+	this.P$.refresh();
+	this.bx.refresh();
+	this.MP.refresh();
+	this.Ls.refresh();
+	this.xT.refresh();
+	this.A4.refresh();
+};
+PropertiesPanel.Tv.prototype.Ak = function (l) {
+	var _local4011 = new Action(ActionTypes.E.v, !0),
+		_local4007 = this.Ls.b(),
+		_local4010 = this.ayW;
+	if (l.target == this.Ls && _local4007[2] == _local4010[2] && _local4007[3] == _local4010[3]) {
+		_local4011.G = f.$C;
+		_local4011.data = {
+			a: "trsl",
+			wS: _local4007[0] - _local4010[0],
+			ui: _local4007[1] - _local4010[1]
+		};
+	} else {
+		var _local4009 = LayerRecord.vI(new Rect(_local4007[0], _local4007[1], _local4007[2], _local4007[3])),
+			_local4008 = this.MP.az7();
+		_local4008.artboardRect = {
+			t: "Objc",
+			v: _local4009
+		};
+		_local4011.G = f.yS;
+		_local4011.data = {
+			a: LayerRecord.ka,
+			rX: _local4008
+		};
+	}
+	this.dispatch(_local4011);
+};
+PropertiesPanel.Tv.prototype.a0j = function (l) {
+	var _local4014 = this.v0,
+		_local4012 = _local4014.g[0];
+	if (_local4014.B[_local4012].add.SoCo == null) return;
+	var _local4013 = JSON.parse(JSON.stringify(_local4014.B[_local4012].add.SoCo));
+	_local4013.Clr.v = this.vk.b();
+	this.Sb({
+		hA: 1,
+		rU: _local4013
+	});
+};
+PropertiesPanel.Tv.prototype.a21 = function (l) {
+	var _local4016 = this.v0,
+		_local4015 = _local4016.g[0];
+	if (_local4016.B[_local4015].add.GdFl == null) return;
+	this.Sb({
+		hA: 2,
+		rU: this.P$.b()
+	});
+};
+PropertiesPanel.Tv.prototype.a8t = function (l) {
+	this.Sb({
+		hA: 3,
+		rU: this.bx.b()
+	});
+};
+PropertiesPanel.Tv.prototype.Sb = function (l) {
+	this.a88(f.yS, {
+		a: LayerRecord.sM,
+		xn: [this.v0.g[0]],
+		T3: !0,
+		Z: l
+	});
+};
+PropertiesPanel.Tv.prototype.as5 = function (l) {
+	this.a88(f.Qi, {
+		a: "edit_layer",
+		Z: this.Ik.b()
+	});
+};
+PropertiesPanel.Tv.prototype.a88 = function (l, d) {
+	var _local4017 = new Action(ActionTypes.E.v, !0);
+	_local4017.G = l;
+	_local4017.data = d;
+	this.dispatch(_local4017);
+};
+PropertiesPanel.Tv.prototype.Yw = function (l, d) {
+	var _local4018 = "Layer",
+		_local4025 = !1,
+		_local4024 = !1,
+		_local4022 = null;
+	this.v0 = l;
+	if (l && l.B.length > 0 && l.g.length != 0 && l.B[l.g[0]]) {
+		var _local4027 = l.B[l.g[0]],
+			_local4019 = LayerEffectsHelper.detectAdjustmentKey(_local4027.add);
+		if (_local4019 != null && this.n1[_local4019] != null) {
+			_local4022 = this.n1[_local4019].e;
+			this.Ik = this.n1[_local4019];
+			this.n1[_local4019].c(JSON.parse(JSON.stringify(_local4027.add[_local4019])));
+			if (l.g[0] != this.a33) {
+				var _local4028 = l.LT(l.g[0] - 1);
+				this.av6 = PixelUtil.histogramFromRgba(_local4028);
+			}
+			this.n1[_local4019].RB(this.av6);
+			_local4018 = languageManager.get(LayerEffectsHelper.names[_local4019]);
+			_local4025 = !0;
+		}
+		if (_local4019 == null && _local4027.add.artb == null) {
+			var _local4026 = this.nK = PixelUtil.vec.f1(f.NH.Pa(l));
+			_local4024 = !_local4026.W6();
+			this.A4.c([_local4026.x, _local4026.y, _local4026.m, _local4026.n], [l.m7, l.m, this.mN.hq.SF]);
+		}
+		if (_local4027.add.SoCo) {
+			_local4022 = this._6;
+			this.vk.c(_local4027.add.SoCo.Clr.v);
+			_local4018 = "Color Fill";
+		}
+		if (_local4027.add.GdFl) {
+			_local4022 = this.RM;
+			this.P$.update(l, _local4027.add.GdFl);
+			_local4018 = "Gradient Fill";
+		}
+		if (_local4027.add.PtFl) {
+			_local4022 = this.iC;
+			this.bx.update(l, _local4027.add.PtFl);
+			_local4018 = "Pattern Fill";
+		}
+		if (_local4027.add.artb) {
+			var _local4021 = _local4027.add.artb,
+				_local4023 = _local4027.dA();
+			_local4022 = this.aoT;
+			this.MP.akE(_local4021);
+			var _local4020 = this.ayW = [_local4023.x, _local4023.y, _local4023.m, _local4023.n];
+			this.Ls.c(_local4020, [l.m7, l.m, this.mN.hq.SF]);
+			_local4018 = "Artboard";
+		}
+		this.a33 = l.g[0];
+	}
+	if (_local4022 != this.tb) {
+		if (this.tb) this.e.removeChild(this.tb);
+		if (_local4022 != null) this.e.appendChild(_local4022);
+		this.tb = _local4022;
+	}
+	this.aac.c(_local4018);
+	this.xT.e.style.display = _local4025 ? "" : "none";
+	this.A4.e.style.display = _local4024 ? "" : "none";
+};
+PropertiesPanel.Tv.prototype.BM = function (l, d) {
+	this.mN = l;
+	this.P$.BM(l, d);
+	this.bx.BM(l, d);
+	if (d == PsdResourceTypes.UW) this.Yw(this.v0, l);
+	for (var _local4029 in this.n1) this.n1[_local4029].BM(l, d);
+};
+PropertiesPanel.tK = function () {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "form");
+	this.v0 = null;
+	this.Ih = 0;
+	var _local4032 = s.createElement("span", "fitem");
+	this.e.appendChild(_local4032);
+	this.c2 = [
+	new ToolbarButton("Raster Mask"),
+	new ToolbarButton("Vector Mask"),
+	new ToolbarButton("Filter Mask")];
+
+	for (var _local4030 = 0; _local4030 < this.c2.length; _local4030++) {
+		var _local4031 = this.c2[_local4030];
+		_local4031.addListener("click", this.ar8, this);
+		_local4032.appendChild(_local4031.e);
+	}
+	this.XS = new RangeInput("Density", 0, 255);
+	this.XS.addListener(ActionTypes.E.A, this.Rx, this);
+	this.e.appendChild(this.XS.e);
+	this.wk = new RangeInput("Feather", 0, 500, "px", 2, !0);
+	this.wk.addListener(ActionTypes.E.A, this.Rx, this);
+	this.e.appendChild(this.wk.e);
+	this.Hq = new ToolbarButton("Invert", null, null, !0);
+	this.Hq.addListener("click", this.awD, this);
+};
+PropertiesPanel.tK.prototype = new UIComponent();
+PropertiesPanel.tK.prototype.awD = function () {
+	var _local4033 = new Action(ActionTypes.E.v, !0);
+	_local4033.G = f.Qi;
+	_local4033.data = {
+		a: "start",
+		ce: "nvrt"
+	};
+	this.dispatch(_local4033);
+};
+PropertiesPanel.tK.prototype.Rx = function (l) {
+	var _local4036 = this.XS.b(),
+		_local4034 = this.wk.b(),
+		_local4035 = new Action(ActionTypes.E.v, !0);
+	_local4035.G = f.yS;
+	_local4035.data = {
+		a: LayerRecord.fx,
+		NT: this.v0.g[0],
+		iQ: {
+			GP: this.Ih,
+			XS: _local4036,
+			wk: _local4034
+		}
+	};
+	this.dispatch(_local4035);
+};
+PropertiesPanel.tK.prototype.refresh = function () {
+	for (var _local4037 = 0; _local4037 < this.c2.length; _local4037++) this.c2[_local4037].refresh();
+	this.XS.refresh();
+	this.wk.refresh();
+	this.Hq.refresh();
+};
+PropertiesPanel.tK.prototype.Yw = function (l) {
+	this.v0 = l;
+	this.AK();
+};
+PropertiesPanel.tK.prototype.ar8 = function (l) {
+	this.AK(this.c2.indexOf(l.currentTarget));
+	this.parent.a9H(this.Ih);
+};
+PropertiesPanel.tK.prototype.AK = function (l) {
+	var _local4044 = this.v0,
+		_local4039 = this.c2;
+	for (var _local4038 = 0; _local4038 < 3; _local4038++) {
+		var _local4043 = _local4039[_local4038];
+		_local4043.kL();
+		_local4043.disable();
+	}
+	if (_local4044 == null || _local4044.B.length == 0 || _local4044.g.length == 0 || _local4044.B[_local4044.g[0]] == null) return;
+	var _local4042 = -1,
+		_local4041 = _local4044.B[_local4044.g[0]];
+	if (_local4041.aW() && _local4041.vZ(_local4044).z != null) {
+		_local4039[2].enable();
+		_local4042 = 2;
+	}
+	if (_local4041.add.vmsk) {
+		_local4039[1].enable();
+		_local4042 = 1;
+	}
+	if (_local4041.c3()) {
+		_local4039[0].enable();
+		_local4042 = 0;
+	}
+	if (l != null) _local4042 = l;else
+	if (_local4041.VM) _local4042 = 1;else
+	if (_local4041.ht == 3) _local4042 = 2;else
+	if (_local4041.ht == 1) _local4042 = 0;
+	this.Ih = _local4042;
+	if (_local4042 == -1) {
+		this.XS.disable();
+		this.wk.disable();
+		return;
+	}
+	var _local4045 = _local4041.NM(_local4042);
+	this.XS.enable();
+	this.wk.enable();
+	this.XS.c(_local4045.XS);
+	this.wk.c(_local4045.wk);
+	_local4039[_local4042].Nu();
+	var _local4040 = this.Hq.e;
+	if (_local4042 == 0) this.e.appendChild(_local4040);else
+	if (_local4040.parentNode == this.e) this.e.removeChild(_local4040);
+};
+PropertiesPanel.Iy = function () {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "form");
+	this.KP = null;
+	this.mN = null;
+	this.Kz = -1;
+	this.A4 = new BoundsInput(0, !1);
+	this.v5 = new RangeInput([12, 15], -180, 180, "\xB0", 2);
+	this.EN = new BoundsInput(1, !0);
+	this.kV = new RangeInput([12, 94, 0], 0, 100, null, 2);
+	this.jg = new RangeInput([12, 78], 3, 30);
+	this.UJ = new ToolbarButton(["\u279C  ", [12, 76, 0]], null, null, !0);
+	this.A4.addListener(ActionTypes.E.A, this.Yo, this);
+	this.v5.addListener(ActionTypes.E.A, this.Yo, this);
+	this.EN.addListener(ActionTypes.E.A, this.Yo, this);
+	this.kV.addListener(ActionTypes.E.A, this.Yo, this);
+	this.jg.addListener(ActionTypes.E.A, this.Yo, this);
+	this.UJ.addListener("click", this.Yo, this);
+};
+PropertiesPanel.Iy.prototype = new UIComponent();
+PropertiesPanel.Iy.prototype.refresh = function () {
+	this.A4.refresh();
+	this.v5.refresh();
+	this.EN.refresh();
+	this.kV.refresh();
+	this.jg.refresh();
+};
+PropertiesPanel.Iy.prototype.Yo = function (l) {
+	var _local4051 = this.KP,
+		_local4046 = PixelUtil.X.eP(_local4051),
+		_local4050 = l.target.b(),
+		_local4049 = [this.A4, this.v5, this.EN, this.kV, this.jg, this.UJ].indexOf(l.target);
+	if (_local4049 == 0) {
+		var _local4048 = [];
+		_local4048[0] = _local4050[0];
+		_local4048[1] = _local4050[1];
+		_local4048[2] = _local4048[0] + _local4050[2];
+		_local4048[3] = _local4048[1] + _local4050[3];
+		_local4050 = _local4048;
+	}
+	if (_local4049 == 1) _local4050 = _local4050 * Math.PI / 180;
+	var _local4052 = {
+		0: 1,
+		1: 2,
+		2: 3,
+		3: 3,
+		4: 4
+	}[_local4049];
+	_local4046[_local4052] = _local4050;
+	var _local4047 = new Action(ActionTypes.E.v, !0);
+	_local4047.G = f.yS;
+	_local4047.data = {
+		a: LayerRecord.ll,
+		Z: _local4046,
+		azV: _local4049 == 5
+	};
+	this.dispatch(_local4047);
+};
+PropertiesPanel.Iy.prototype.Yw = function (l) {
+	var _local4058 = this.e;
+	this.KP = l;
+	if (l == null) return;
+	var _local4053 = this.mN,
+		_local4057 = [l.m7, l.m, _local4053.hq.SF],
+		_local4056 = PixelUtil.X.eP(l),
+		_local4055 = _local4056[0],
+		_local4059 = _local4056[1];
+	if (_local4059 == null) return;
+	var _local4054 = _local4055 != this.Kz;
+	this.Kz = _local4055;
+	if (_local4054) s.clearChildren(_local4058);
+	if (_local4054) _local4058.appendChild(this.A4.e);
+	if (_local4054) _local4058.appendChild(this.v5.e);
+	this.A4.c([_local4059[0], _local4059[1], _local4059[2] - _local4059[0], _local4059[3] - _local4059[1]], _local4057);
+	this.v5.c(_local4056[2] * 180 / Math.PI);
+	if (_local4055 == 2) {
+		if (_local4054) _local4058.appendChild(this.EN.e);
+		var _local4060 = _local4056[3];
+		this.EN.c(_local4060, _local4057);
+	}
+	if (_local4055 == 7 || _local4055 == 8) {
+		if (_local4054) _local4058.appendChild(this.kV.e);
+		this.kV.c(_local4056[3]);
+	}
+	if (_local4055 == 8) {
+		if (_local4054) _local4058.appendChild(this.jg.e);
+		this.jg.c(_local4056[4]);
+	}
+	_local4058.appendChild(this.UJ.e);
+};
+PropertiesPanel.Iy.prototype.BM = function (l, d) {
+	this.mN = l;
+	this.Yw(this.KP);
+};
 
 
 
@@ -7219,6 +8576,7 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 	var _local4174 = l.I.Y1 != null || l.I.Bt != null || l.I.Cj != null || l.I.iT.length != 0 || l.I.P4.length != 0,
 		_local4162 = this.wQ,
 		_local4247 = _local4162.hq,
+		_local4269 = ThemeManager.themes[_local4162.j$],
 		_local4184 = Math.round(12 * s.getDevicePixelRatio()),
 		_local4185 = _local4184 / l.u.N,
 		_local4274 = G.Gb(!0);
@@ -7620,7 +8978,8 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 			l.u.C5 = d.createImageData(l.u.Vm.m, PixelUtil.y0.mT);
 			l.u.XF = d.createImageData(PixelUtil.y0.mT, l.u.Vm.n);
 		}
-		var _local4157 = 0,
+		var _local4270 = ThemeManager.themes[_local4162.j$],
+			_local4157 = 0,
 			_local4158 = 0,
 			_local4156 = l.m,
 			_local4154 = l.n;
@@ -7772,6 +9131,42 @@ NamedTabPanel.Js.prototype.draw = function (l, d, G, b, V, Q, t, I, y, e, M, R, 
 };
 
 
+function BrushPencilOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "strn"]);
+}
+BrushPencilOptions.prototype = new ToolOptionsWithKeys();
+
+function BrushPaintOptions() {
+	ToolOptionsWithKeys.call(this, "brush bmode opacity flow smth prsr".split(" "));
+}
+BrushPaintOptions.prototype = new ToolOptionsWithKeys();
+
+function MixerBrushOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "bmode0", "samp", "wconf"]);
+}
+MixerBrushOptions.prototype = new ToolOptionsWithKeys();
+
+function BrushOnlyOptions() {
+	ToolOptionsWithKeys.call(this, ["brush"]);
+}
+BrushOnlyOptions.prototype = new ToolOptionsWithKeys();
+
+function BrushMainOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "bmode", "opacity", "smth", "prsr"]);
+}
+BrushMainOptions.prototype = new ToolOptionsWithKeys();
+
+function DodgeBurnOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "rng", "expo"]);
+}
+DodgeBurnOptions.prototype = new ToolOptionsWithKeys();
+
+function CloneStampOptions() {
+	ToolOptionsWithKeys.call(this, "brush bmode opacity algnd sfrom alt".split(" "));
+}
+CloneStampOptions.prototype = new ToolOptionsWithKeys();
+
+
 function ToolOptionsWithFeatures(l, d) {
 	ToolOptionsBase.call(this);
 	if (l) return;
@@ -7809,11 +9204,11 @@ ToolOptionsWithFeatures.prototype.IF = function (l) {
 		var _local4446 = aM.mI;
 		if (_local4446 == null) {
 			var _local4448 = hs.aj2(!0);
-			// _local4446 = aM.mI = new ContextPanel(_local4448.items, _local4448.iD);
+			_local4446 = aM.mI = new ContextPanel(_local4448.items, _local4448.iD);
 		}
-		// _local4446.refresh();
-		// _local4446.parent = this;
-		// _local4446.update(l.T1, l.wQ);
+		_local4446.refresh();
+		_local4446.parent = this;
+		_local4446.update(l.T1, l.wQ);
 		var _local4447 = new Action(ActionTypes.E.L, !0);
 		_local4447.data = {
 			a: ActionTypes.$.dY,
@@ -8061,6 +9456,41 @@ ToolOptionsWithKeys.prototype.S9 = function () {
 };
 
 
+function MagicWandToolOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "redge", "wconf", "sall"]);
+}
+MagicWandToolOptions.prototype = new ToolOptionsWithFeatures(!0);
+
+function PatchToolOptions() {
+	ToolOptionsWithKeys.call(this, ["setop", "patch"]);
+}
+PatchToolOptions.prototype = new ToolOptionsWithKeys();
+
+function QuickSelectionToolOptions() {
+	ToolOptionsWithKeys.call(this, ["setop"]);
+}
+QuickSelectionToolOptions.prototype = new ToolOptionsWithKeys();
+
+function QuickSelectModeOptions() {
+	ToolOptionsWithKeys.call(this, ["bmode", "opacity", "wconf", "sall"]);
+}
+QuickSelectModeOptions.prototype = new ToolOptionsWithKeys();
+
+function PolygonalLassoOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "anta", "redge"]);
+}
+PolygonalLassoOptions.prototype = new ToolOptionsWithFeatures(!0);
+
+function MagneticLassoOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "anta", "redge"]);
+}
+MagneticLassoOptions.prototype = new ToolOptionsWithFeatures(!0);
+
+function ObjectSelectToolOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "redge", "cstr"]);
+}
+ObjectSelectToolOptions.prototype = new ToolOptionsWithFeatures(!0);
+
 
 function BrushEraserOptionsBase(l) {
 	ToolOptionsBase.call(this);
@@ -8146,7 +9576,447 @@ BrushEraserOptionsBase.prototype.ats = function (l) {
 };
 
 
+function BrushEraserBrushOptions() {
+	BrushEraserOptionsBase.call(this, !1);
+}
+BrushEraserBrushOptions.prototype = new BrushEraserOptionsBase();
 
+function BrushEraserEraserOptions() {
+	BrushEraserOptionsBase.call(this, !0);
+}
+BrushEraserEraserOptions.prototype = new BrushEraserOptionsBase();
+
+function SpongeOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "rng", "expo"]);
+}
+SpongeOptions.prototype = new ToolOptionsWithKeys();
+
+function EraserBrushOptions() {
+	ToolOptionsWithKeys.call(this, "brush emode opacity flow smth prsr".split(" "));
+}
+EraserBrushOptions.prototype = new ToolOptionsWithKeys();
+
+function MixerBrushWetOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "samp", "wconf"]);
+}
+MixerBrushWetOptions.prototype = new ToolOptionsWithKeys();
+
+
+function MarqueeToolOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "anta", "redge", "cstr"]);
+}
+MarqueeToolOptions.prototype = new ToolOptionsWithFeatures(!0);
+
+function EyedropperToolOptions() {
+	ToolOptionsBase.call(this);
+	var _local4468 = this.pK = [
+	new DropdownMenu("Sample Size", ["1x1", "3x3", "5x5", "11x11", "31x31"]),
+	new DropdownMenu("Source", ["Current Layer", "Current & Below", "All Layers"]),
+	new CheckboxControl("Sampling Ring"),
+	new CheckboxControl("Zoom In")];
+	_local4468[1].c(2);
+	_local4468[2].c(!0);
+	for (var _local4466 = 0; _local4466 < _local4468.length; _local4466++) {
+		var _local4467 = _local4468[_local4466];
+		_local4467.addListener(ActionTypes.E.A, this.S9, this);
+		this.body.appendChild(_local4467.e);
+	}
+}
+EyedropperToolOptions.prototype = new ToolOptionsBase();
+EyedropperToolOptions.prototype.S9 = function (l) {
+	var _local4472 = this.pK,
+		_local4470 = [];
+	for (var _local4469 = 0; _local4469 < _local4472.length; _local4469++) _local4470[_local4469] = _local4472[_local4469].b();
+	var _local4471 = new Action(ActionTypes.E.L, !0);
+	_local4471.data = {
+		a: ActionTypes.$.kl,
+		G: this.G,
+		HS: _local4470
+	};
+	this.dispatch(_local4471);
+};
+EyedropperToolOptions.prototype.lx = function () {
+	for (var _local4473 = 0; _local4473 < this.pK.length; _local4473++) this.pK[_local4473].refresh();
+};
+
+function GradientToolOptions() {
+	ToolOptionsBase.call(this);
+	this.iB = new GradientPickerButton(!1);
+	this.iB.parent = this;
+	this.iB.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.iB.e);
+	this.iB.c(JSON.parse(LayerStyleConstants.descriptorJsonFragments.ace).v);
+	this.y8 = new DropdownMenu(null, LayerStyleConstants.gradientType.names.slice(0, 5));
+	this.y8.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.y8.e);
+	this.HV = new DropdownMenu("Blend Mode", au.YJ, au.hY);
+	this.HV.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.HV.e);
+	this.O$ = new RangeDropInput("Opacity", 0, 100, "%");
+	this.O$.parent = this;
+	this.O$.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.O$.e);
+	this.O$.c(100);
+	this.wW = new CheckboxControl("Reverse");
+	this.wW.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.wW.e);
+	this.zL = new CheckboxControl("Dither");
+	this.zL.addListener(ActionTypes.E.A, this.Rx, this);
+	this.body.appendChild(this.zL.e);
+}
+GradientToolOptions.prototype = new ToolOptionsBase();
+GradientToolOptions.prototype.lx = function () {
+	this.y8.refresh();
+	this.HV.refresh();
+	this.O$.refresh();
+	this.wW.refresh();
+	this.zL.refresh();
+};
+GradientToolOptions.prototype.BM = function (l, d) {
+	ToolOptionsBase.prototype.BM.call(this, l, d);
+	var _local4474 = d == PsdResourceTypes.K5;
+	this.iB.B$(l.Y7, l.GF);
+	if (_local4474 || d == PsdResourceTypes.Rz || d == PsdResourceTypes.Wx) this.iB.Z2(l.dR);
+};
+GradientToolOptions.prototype.Rx = function () {
+	var _local4475 = new Action(ActionTypes.E.L, !0);
+	_local4475.data = {
+		a: ActionTypes.$.kl,
+		G: this.G
+	};
+	_local4475.data.Oo = {
+		K: this.iB.b(),
+		x1: LayerStyleConstants.gradientType.types[this.y8.b()],
+		as: this.wW.dB(),
+		O_: this.zL.dB(),
+		awp: au.CP[this.HV.b()],
+		uh: this.O$.b() / 100
+	};
+	this.dispatch(_local4475);
+};
+
+
+function ColorSamplerToolOptions() {
+	ToolOptionsBase.call(this);
+	this.EC = new CheckboxControl("All Documents");
+	this.body.appendChild(this.EC.e);
+	this.EC.addListener(ActionTypes.E.A, this.S9, this);
+}
+ColorSamplerToolOptions.prototype = new ToolOptionsBase();
+ColorSamplerToolOptions.prototype.S9 = function () {
+	var _local4477 = {
+			a: ActionTypes.$.kl,
+			G: this.G,
+			In: this.EC.b()
+		},
+		_local4476 = new Action(ActionTypes.E.L, !0);
+	_local4476.data = _local4477;
+	this.dispatch(_local4476);
+};
+
+function GradientAngleToolOptions() {
+	ToolOptionsBase.call(this);
+	var _local4480 = s.createElement("span", "fitem");
+	this.body.appendChild(_local4480);
+	this.NN = [
+	new RangeDropInput("Angle", -180, 180, "\xB0"),
+	new ToolbarButton("Reset", null, null, !0)];
+
+	for (var _local4478 = 0; _local4478 < this.NN.length; _local4478++) {
+		var _local4479 = this.NN[_local4478];
+		_local4479.parent = this;
+		_local4480.appendChild(_local4479.e);
+		_local4479.addListener(_local4478 == 1 ? "click" : ActionTypes.E.A, this.bL, this);
+	}
+}
+GradientAngleToolOptions.prototype = new ToolOptionsBase();
+GradientAngleToolOptions.prototype.lx = function () {
+	for (var _local4481 = 0; _local4481 < this.NN.length; _local4481++) this.NN[_local4481].refresh();
+};
+GradientAngleToolOptions.prototype.IF = function (l) {
+	this.NN[0].c(l.cg * 180 / Math.PI);
+};
+GradientAngleToolOptions.prototype.bL = function (l) {
+	var _local4483 = this.NN.indexOf(l.target),
+		_local4482 = new Action(ActionTypes.E.L, !0);
+	_local4482.data = {
+		a: ActionTypes.$.kl,
+		G: this.G,
+		cg: _local4483 == 1 ? 0 : l.target.b() * Math.PI / 180
+	};
+	this.dispatch(_local4482);
+};
+
+function CloneStampAlignOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "algnd", "sfrom", "alt"]);
+}
+CloneStampAlignOptions.prototype = new ToolOptionsWithKeys();
+
+function RoundedRectOptions() {
+	ShapeVectorToolOptions.call(this, ["fstyle", "sstyle", "crnr", "psnap"]);
+}
+RoundedRectOptions.prototype = new ShapeVectorToolOptions();
+
+function RectangleShapeOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop cstr crad".split(" "));
+}
+RectangleShapeOptions.prototype = new ShapeVectorToolOptions();
+
+function PolygonShapeOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop cstr".split(" "));
+}
+PolygonShapeOptions.prototype = new ShapeVectorToolOptions();
+
+function PolygonStarOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop pshape sides irad crad width aopts length".split(" "));
+	this.nJ.aopts.c([!1, !0, 50, 60, 0]);
+}
+PolygonStarOptions.prototype = new ShapeVectorToolOptions();
+PolygonStarOptions.prototype.aom = function (A) {
+	var _local4594 = [
+	["sides", "crad"],
+	["sides", "irad", "crad"],
+	["width", "aopts"],
+	["length"]];
+
+	return "tmode make fstyle sstyle binop pshape".split(" ").concat(_local4594[A]);
+};
+
+function LineArrowOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop width aopts".split(" "));
+}
+LineArrowOptions.prototype = new ShapeVectorToolOptions();
+
+function CustomShapeOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop cstr shape".split(" "));
+}
+CustomShapeOptions.prototype = new ShapeVectorToolOptions();
+
+function MagicEraserOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "redge"]);
+}
+MagicEraserOptions.prototype = new ToolOptionsWithFeatures(!0);
+
+function BlurSharpenOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "qsmode", "redge"]);
+}
+BlurSharpenOptions.prototype = new ToolOptionsWithKeys();
+
+function SliceToolOptions() {
+	ToolOptionsBase.call(this);
+	this.$c = [];
+	for (var _local4595 = 0; _local4595 < 2; _local4595++) {
+		var _local4596 = new ToolbarButton(_local4595 == 0 ? "Slices from Guides" : "Divide...", null, null, !0);
+		this.$c.push(_local4596);
+		_local4596.addListener("click", this.Q3, this);
+		this.body.appendChild(_local4596.e);
+	}
+}
+SliceToolOptions.prototype = new ToolOptionsBase();
+SliceToolOptions.prototype.Q3 = function (l) {
+	var _local4597;
+	if (this.$c.indexOf(l.target) == 0) {
+		_local4597 = new Action(ActionTypes.E.g5, !0);
+		_local4597.data = {
+			kT: "make",
+			a0: {
+				__name: "Make",
+				classID: "Mk",
+				null: {
+					t: "obj ",
+					v: [{
+						t: "Clss",
+						v: {
+							classID: "slice"
+						}
+					}]
+				},
+				Usng: {
+					t: "type",
+					v: {
+						classID: "Gd"
+					}
+				}
+			}
+		};
+	} else {
+		_local4597 = new Action(ActionTypes.E.L, !0);
+		_local4597.data = {
+			a: ActionTypes.$.SN,
+			GU: "divslice"
+		};
+	}
+	this.dispatch(_local4597);
+};
+SliceToolOptions.prototype.lx = function (l) {
+	for (var _local4598 = 0; _local4598 < this.$c.length; _local4598++) this.$c[_local4598].refresh();
+};
+
+function SliceSelectToolOptions() {
+	ToolOptionsBase.call(this);
+	var _local4601 = this.hc = [
+	new ToolbarButton("\u25BC", null, null, !0),
+	new ToolbarButton("\u25B2", null, null, !0),
+	new ToolbarButton("Delete", null, null, !0),
+	new ToolbarButton("Divide...", null, null, !0)];
+
+	for (var _local4599 = 0; _local4599 < 4; _local4599++) {
+		var _local4600 = _local4601[_local4599];
+		this.body.appendChild(_local4600.e);
+		_local4600.addListener("click", this.Q3, this);
+	}
+}
+SliceSelectToolOptions.prototype = new ToolOptionsBase();
+SliceSelectToolOptions.prototype.Q3 = function (l) {
+	var _local4603 = this.hc.indexOf(l.target),
+		_local4602;
+	if (_local4603 == 3) {
+		_local4602 = new Action(ActionTypes.E.L, !0);
+		_local4602.data = {
+			a: ActionTypes.$.SN,
+			GU: "divslice"
+		};
+	} else {
+		_local4602 = new Action(ActionTypes.E.v, !0);
+		_local4602.G = f.E7;
+		_local4602.data = {
+			a: _local4603 == 2 ? "delete" : "reorder",
+			dir: _local4603 == 0 ? -1 : 1
+		};
+	}
+	this.dispatch(_local4602);
+};
+SliceSelectToolOptions.prototype.refresh = function () {
+	ToolOptionsBase.prototype.refresh.call(this);
+	for (var _local4604 = 0; _local4604 < 4; _local4604++) this.hc[_local4604].refresh();
+};
+
+function TypeToolMainOptions() {
+	ToolOptionsBase.call(this);
+	this.X3 = new TypeToolPanel();
+	this.X3.parent = this;
+	this.body.appendChild(this.X3.re.e);
+	this.body.appendChild(this.X3.rk.e);
+	this.body.appendChild(this.X3.xV.e);
+	this.body.appendChild(this.X3.rz.e);
+	var _local4484 = s.createElement("span", "fitem");
+	this.body.appendChild(_local4484);
+	_local4484.appendChild(this.X3.eM.e);
+	_local4484.appendChild(this.X3.Bx.e);
+	_local4484.appendChild(this.X3.j7.e);
+	this.E_ = new DropdownMenu("Aa", [
+	"None",
+	"Sharp",
+	"Crisp",
+	"Strong",
+	"Smooth"]
+	);
+	this.E_.addListener(ActionTypes.E.A, this.aL, this);
+	this.body.appendChild(this.E_.e);
+	this.eL = new ToolbarButton("Warp", !1, null, !0);
+	this.eL.addListener("click", this.a3N, this);
+	this.body.appendChild(this.eL.e);
+	this.P_ = new ConfirmCancelButtons();
+	this.P_.addListener("click", this.aL, this);
+}
+TypeToolMainOptions.prototype = new ToolOptionsBase();
+TypeToolMainOptions.prototype.lx = function () {
+	this.P_.refresh();
+	this.X3.refresh();
+	this.eL.refresh();
+};
+TypeToolMainOptions.prototype.a3N = function (l) {
+	var _local4486 = {
+			a: ActionTypes.$.kl,
+			G: this.G,
+			DI: "showwarp"
+		},
+		_local4485 = new Action(ActionTypes.E.L, !0);
+	_local4485.data = _local4486;
+	this.dispatch(_local4485);
+};
+TypeToolMainOptions.prototype.IF = function (l) {
+	if (l.DI == "showactive") this.body.appendChild(this.P_.e);
+	if (l.DI == "hideactive") this.body.removeChild(this.P_.e);
+	if (l.DI == "changeAA") this.E_.c(l.mz);
+	if (l.DI == "showpan") {
+		var _local4491 = [{
+				name: [0, 1],
+				xX: !0
+			}],
+			_local4487 = [{
+				Y: ActionTypes.E.v,
+				G: f.zl,
+				W: {
+					a: "editCurr",
+					ca: l.ca
+				}
+			}],
+			_local4490 = l.Zm;
+		if (l.a1w) {
+			_local4491 = [{
+				name: ["VAR0: VAR1", [0, 5],
+				[7, 0]],
+
+				xX: !0
+			}];
+			_local4487 = [{
+				Y: ActionTypes.E.g5,
+				W: f.GS.Cc(!0)
+			}];
+			var _local4489 = hs.ade();
+			_local4491 = _local4491.concat(_local4489[0]);
+			_local4487 = _local4487.concat(_local4489[1]);
+		}
+		_local4491.push({
+			name: [11, 9]
+		});
+		_local4487.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.kl,
+				G: this.G,
+				DI: "showwarp"
+			}
+		});
+		var _local4488 = new ContextPanel(_local4491, _local4487);
+		_local4488.parent = this;
+		_local4488.refresh();
+		_local4488.update(l.T1, l.wQ);
+		var _local4492 = new Action(ActionTypes.E.L, !0);
+		_local4492.data = {
+			a: ActionTypes.$.dY,
+			A3: _local4488,
+			x: _local4490.pf + 2,
+			y: _local4490.pi + 1
+		};
+		this.dispatch(_local4492);
+	}
+};
+TypeToolMainOptions.prototype.BM = function (l, d) {
+	ToolOptionsBase.prototype.BM.call(this, l, d);
+	if (d != PsdResourceTypes.Wx && d != PsdResourceTypes.o$ && d != PsdResourceTypes.jz && d != PsdResourceTypes.GG) return;
+	this.X3.c(l.XG, l.Hg, l.fL);
+};
+TypeToolMainOptions.prototype.aL = function (l) {
+	var _local4494 = {
+		a: ActionTypes.$.kl,
+		G: this.G,
+		DI: this.P_.b() ? "commit" : "cancel"
+	};
+	if (l.target == this.E_) {
+		_local4494.DI = "changeAA";
+		_local4494.mz = this.E_.b();
+	}
+	var _local4493 = new Action(ActionTypes.E.L, !0);
+	_local4493.data = _local4494;
+	this.dispatch(_local4493);
+};
+
+function LassoToolOptions() {
+	ToolOptionsWithFeatures.call(this, !1, ["binop", "feat", "anta", "redge"]);
+}
+LassoToolOptions.prototype = new ToolOptionsWithFeatures(!0);
 
 
 
@@ -8229,63 +10099,61 @@ function ShapeVectorToolOptions(l, d) {
 ShapeVectorToolOptions.prototype = new ToolOptionsBase();
 ShapeVectorToolOptions.prototype.IF = function (l) {
 	if (l.Si != null) this.nJ.binop.c(l.Si);else
-	if (l.y3 == "vals") {
-		for (var _local4546 in l.ajy) {
-			this.nJ[_local4546].c(l.ajy[_local4546]);
-		}
-	} else {
+	if (l.y3 == "vals")
+	for (var _local4546 in l.ajy) this.nJ[_local4546].c(l.ajy[_local4546]);else
+	{
 		var _local4544 = ShapeVectorToolOptions.mI;
-		// if (_local4544 == null) _local4544 = ShapeVectorToolOptions.mI = new ContextPanel([{
-		// 	name: "Remove Anchor Point",
-		// 	p: function (V) {
-		// 		var _local4547 = V ? V.LW() : null;
-		// 		return {
-		// 			p: V && _local4547[1].length != 0 && _local4547[0][_local4547[1][0]].add.vmsk.OE.length != 0
-		// 		};
-		// 	}
-		// }, {
-		// 	name: "Remove Path",
-		// 	p: function (V) {
-		// 		var _local4548 = V ? V.LW() : null;
-		// 		return {
-		// 			p: V && _local4548[1].length != 0 && _local4548[0][_local4548[1][0]].add.vmsk.g.length != 0
-		// 		};
-		// 	},
-		// 	xX: !0
-		// }, {
-		// 	name: "Make Selection"
-		// }, {
-		// 	name: [2, 3]
-		// }, {
-		// 	name: [14, 9]
-		// }], [{
-		// 	Y: ActionTypes.E.v,
-		// 	G: f.Kp,
-		// 	W: {
-		// 		a: "remove",
-		// 		S6: !0
-		// 	}
-		// }, {
-		// 	Y: ActionTypes.E.v,
-		// 	G: f.o2,
-		// 	W: {
-		// 		a: "remove"
-		// 	}
-		// }, {
-		// 	Y: ActionTypes.E.L,
-		// 	W: {
-		// 		a: ActionTypes.$.SN,
-		// 		GU: "makesel"
-		// 	}
-		// }, {
-		// 	Y: ActionTypes.E.g5,
-		// 	W: f.nr.xs(0)
-		// }, {
-		// 	Y: ActionTypes.E.g5,
-		// 	W: f.nr.xs(1)
-		// }]);
-		// _local4544.parent = this;
-		// _local4544.update(l.T1, l.wQ);
+		if (_local4544 == null) _local4544 = ShapeVectorToolOptions.mI = new ContextPanel([{
+			name: "Remove Anchor Point",
+			p: function (V) {
+				var _local4547 = V ? V.LW() : null;
+				return {
+					p: V && _local4547[1].length != 0 && _local4547[0][_local4547[1][0]].add.vmsk.OE.length != 0
+				};
+			}
+		}, {
+			name: "Remove Path",
+			p: function (V) {
+				var _local4548 = V ? V.LW() : null;
+				return {
+					p: V && _local4548[1].length != 0 && _local4548[0][_local4548[1][0]].add.vmsk.g.length != 0
+				};
+			},
+			xX: !0
+		}, {
+			name: "Make Selection"
+		}, {
+			name: [2, 3]
+		}, {
+			name: [14, 9]
+		}], [{
+			Y: ActionTypes.E.v,
+			G: f.Kp,
+			W: {
+				a: "remove",
+				S6: !0
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.o2,
+			W: {
+				a: "remove"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "makesel"
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: f.nr.xs(0)
+		}, {
+			Y: ActionTypes.E.g5,
+			W: f.nr.xs(1)
+		}]);
+		_local4544.parent = this;
+		_local4544.update(l.T1, l.wQ);
 		var _local4545 = new Action(ActionTypes.E.L, !0);
 		_local4545.data = {
 			a: ActionTypes.$.dY,
@@ -8411,6 +10279,131 @@ ShapeVectorToolOptions.prototype.BM = function (l, d) {
 	}
 };
 
+function RectangleEllipseShapeOptions() {
+	ShapeVectorToolOptions.call(this, ["tmode", "make", "fstyle", "sstyle", "binop"], !0);
+}
+RectangleEllipseShapeOptions.prototype = new ShapeVectorToolOptions();
+
+function EllipseShapeOptions() {
+	ShapeVectorToolOptions.call(this, "tmode make anta fstyle sstyle binop".split(" "));
+}
+EllipseShapeOptions.prototype = new ShapeVectorToolOptions();
+
+function PathDirectSelectOptions() {
+	ShapeVectorToolOptions.call(this, ["fstyle", "sstyle"]);
+	this.apB = null;
+	this.aqc = null;
+	this.azk = null;
+	this.Oq = new DropdownMenu("Path", ["Unite", "Subtract", "Intersect", "Exclude", "Merge"], [4]);
+	this.Pg = new ToolbarButton("\u25BC");
+	this.Pg.Nu();
+	this.Rm = new ToolbarButton("\u25B2");
+	this.Rm.Nu();
+	this.iw = [this.Oq, this.Pg, this.Rm];
+	for (var _local4566 = 0; _local4566 < this.iw.length; _local4566++) {
+		var _local4567 = this.iw[_local4566];
+		this.body.appendChild(_local4567.e);
+		_local4567.parent = this;
+		_local4567.addListener(_local4566 == 0 ? ActionTypes.E.A : "click", this.Q3, this);
+	}
+}
+PathDirectSelectOptions.prototype = new ShapeVectorToolOptions();
+PathDirectSelectOptions.prototype.IF = function (l) {
+	if (l.DI == "main") {
+		var _local4574 = this.iw,
+			_local4569 = l.N4;
+		if (_local4569) {
+			this.aqc = _local4569.clone();
+			this.azk = JSON.stringify(l.X);
+			var _local4573 = _local4569.g.slice(0),
+				_local4572 = _local4573.length;
+			for (var _local4568 = 0; _local4568 < _local4573.length; _local4568++) _local4573[_local4568]++;
+			_local4573.sort(function (y, e) {
+				return y - e;
+			});
+			_local4574[0].enable();
+			_local4574[1].setEnabled(_local4572 != 0);
+			_local4574[2].setEnabled(_local4572 != 0);
+			_local4574[0].setLabel(_local4572 == 0 ? "No Paths" : _local4572 == 1 ? "Path " + _local4573[0] : "Paths " + _local4573.slice(0, 3).join(",") + (_local4572 > 3 ? ".." : ""));
+			if (_local4572 != 0) {
+				var _local4571 = _local4569.g[0],
+					_local4575 = PixelUtil.path.W7(_local4569.i, _local4571),
+					_local4570 = _local4569.i[_local4575];
+				this.Oq.c([3, 0, 1, 2][_local4570.H$]);
+			}
+		} else
+		for (var _local4568 = 0; _local4568 < _local4574.length; _local4568++) _local4574[_local4568].disable();
+	} else ShapeVectorToolOptions.prototype.IF.call(this, l);
+};
+PathDirectSelectOptions.prototype.lx = function () {
+	ShapeVectorToolOptions.prototype.lx.call(this);
+	this.Oq.refresh();
+};
+PathDirectSelectOptions.prototype.Q3 = function (l) {
+	if (l.target == this.Oq || l.target == this.Pg || l.target == this.Rm) {
+		var _local4586 = {},
+			_local4577 = this.aqc,
+			_local4585 = _local4577.i,
+			_local4584 = _local4577.g,
+			_local4581 = PixelUtil.path.Mh(_local4585),
+			_local4592 = JSON.parse(this.azk);
+		_local4584.sort(function (Y, k) {
+			return Y - k;
+		});
+		if (l.target == this.Oq) {
+			var _local4578 = this.Oq.b();
+			if (_local4578 < 4)
+			for (var _local4576 = 0; _local4576 < _local4584.length; _local4576++) _local4585[PixelUtil.path.W7(_local4585, _local4584[_local4576])].H$ = [1, 2, 3, 0][_local4578];else
+			{
+				if (_local4581 <= 1) return;
+				_local4577.i = PixelUtil.path.FontHelper(_local4585);
+				_local4577.g = _local4577.i.length == 2 ? [] : [0];
+				_local4577.OE = [];
+				_local4592 = [PixelUtil.X.UH()];
+			}
+		} else {
+			var _local4593 = l.target == this.Pg ? -1 : 1,
+				_local4587 = [];
+			for (var _local4576 = 0; _local4576 < _local4581; _local4576++) {
+				var _local4580 = PixelUtil.path.W7(_local4585, _local4576),
+					_local4582 = _local4580 + 1 + _local4585[_local4580].length;
+				_local4587.push(_local4585.slice(_local4580, _local4582));
+			}
+			var _local4579 = _local4584.slice(0);
+			for (var _local4576 = 0; _local4576 < _local4584.length; _local4576++) _local4579[_local4576] = Math.max(_local4576, Math.min(_local4581 - 1 - (_local4584.length - 1 - _local4576), _local4579[_local4576] + _local4593));
+			if (_local4584.join(",") == _local4579.join(",")) return;
+			var _local4590 = JSON.parse(JSON.stringify(_local4592));
+			for (var _local4576 = 0; _local4576 < _local4584.length; _local4576++) {
+				var _local4591 = _local4593 == -1 ? _local4576 : _local4584.length - 1 - _local4576,
+					_local4580 = _local4584[_local4591],
+					_local4582 = _local4579[_local4591];
+				if (_local4580 != _local4582) {
+					var _local4583 = _local4587[_local4580];
+					_local4587[_local4580] = _local4587[_local4582];
+					_local4587[_local4582] = _local4583;
+					_local4583 = _local4590[_local4580];
+					_local4590[_local4580] = _local4590[_local4582];
+					_local4590[_local4582] = _local4583;
+				}
+			}
+			var _local4589 = _local4585.slice(0, 2);
+			for (var _local4576 = 0; _local4576 < _local4587.length; _local4576++) _local4589 = _local4589.concat(_local4587[_local4576]);
+			_local4577.i = _local4589;
+			_local4577.g = _local4579;
+			_local4592 = _local4590;
+		}
+		_local4586.N4 = _local4577;
+		_local4586.X = _local4592;
+		var _local4588 = new Action(ActionTypes.E.L, !0);
+		_local4588.data = {
+			a: ActionTypes.$.kl,
+			G: this.G,
+			X9: _local4586
+		};
+		this.dispatch(_local4588);
+	}
+};
+
 function ImageSet(l, d) {
 	UIComponent.call(this);
 	this.k3 = [];
@@ -8420,15 +10413,15 @@ function ImageSet(l, d) {
 	this.c5 = 0;
 	this.kv = null;
 	this.oS = new Point2D(0, 0);
-	// if (d != null) {
-	// 	this.ZU = new ContextPanel([{
-	// 		name: [6, 37]
-	// 	}, {
-	// 		name: [5, 4]
-	// 	}]);
-	// 	this.ZU.parent = this;
-	// 	this.ZU.addListener("select", this.oB, this);
-	// }
+	if (d != null) {
+		this.ZU = new ContextPanel([{
+			name: [6, 37]
+		}, {
+			name: [5, 4]
+		}]);
+		this.ZU.parent = this;
+		this.ZU.addListener("select", this.oB, this);
+	}
 	this.e = s.createElement("div", "imageset scrollable");
 	this.e.addEventListener("contextmenu", s.preventDefaultHandler, !1);
 }
@@ -8749,25 +10742,25 @@ FloatPickerControl.prototype.PH = function () {
 	return [this.b()];
 };
 FloatPickerControl.prototype.Z$ = function (l) {
-	// if (this.ZU == null) {
-	// 	this.ZU = new ContextPanel(this.afN);
-	// 	this.ZU.parent = this.hg;
-	// 	this.ZU.addListener("select", this.oB, this);
-	// }
-	// if (s.isInDocument(this.ZU.e)) return;
-	// l.stopPropagation();
-	// var _local193 = this.ZU;
-	// _local193.refresh();
-	// _local193.update(null);
-	// var _local191 = l.currentTarget.getBoundingClientRect(),
-	// 	_local192 = new Action(ActionTypes.E.L, !0);
-	// _local192.data = {
-	// 	a: ActionTypes.$.dY,
-	// 	A3: _local193,
-	// 	x: _local191.left,
-	// 	y: _local191.top + _local191.height
-	// };
-	// this.dispatch(_local192);
+	if (this.ZU == null) {
+		this.ZU = new ContextPanel(this.afN);
+		this.ZU.parent = this.hg;
+		this.ZU.addListener("select", this.oB, this);
+	}
+	if (s.isInDocument(this.ZU.e)) return;
+	l.stopPropagation();
+	var _local193 = this.ZU;
+	_local193.refresh();
+	_local193.update(null);
+	var _local191 = l.currentTarget.getBoundingClientRect(),
+		_local192 = new Action(ActionTypes.E.L, !0);
+	_local192.data = {
+		a: ActionTypes.$.dY,
+		A3: _local193,
+		x: _local191.left,
+		y: _local191.top + _local191.height
+	};
+	this.dispatch(_local192);
 };
 FloatPickerControl.prototype.Ll = function (l, d, G) {
 	if (s.isInDocument(this.hg.e)) return;
@@ -10137,7 +12130,671 @@ ToolPresetButton.Gx = function (l, d, G) {
 	return _local468;
 };
 
+function CurveEditor(l, d, G) {
+	UIComponent.call(this);
+	this.e = s.createElement("span", "fitem curveeditor");
+	this.y9 = null;
+	this.amS = 0;
+	this.Rl = "";
+	this.mode = 0;
+	this.xi = l;
+	this.auq = d;
+	this.a6U = G;
+	this.x0 = null;
+	this.AU = null;
+	this.akf = 0;
+	this.aa_ = 0;
+	this.FE = new Point2D();
+	this.Rh = this.Tk.bind(this);
+	this.IE = this.FS.bind(this);
+	this.lP = 256;
+	this.T = s.createElement("canvas");
+	this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+	s.preventTouchAndGesture(this.T);
+	this.e.appendChild(this.T);
+	this.resize(256, 256);
+	s.addPointerDown(this.T, this.Z1.bind(this));
+	this.coords = s.createElement("div");
+	this.coords.setAttribute("style", "width:250px");
+	this.e.appendChild(this.coords);
+	var _local474 = this.qx = G ? 100 : 255,
+		_local473 = null;
+	this.Nt = new RangeDropInput("X (in)", 0, _local474, _local473, 0, !1, !0);
+	this.lw = new RangeDropInput("Y (out)", 0, _local474, _local473, 0, !1, !0);
+	this.qR = new CheckboxControl([19, 3, 0]);
+	this.Nt.addListener(ActionTypes.E.A, this.cL, this);
+	this.lw.addListener(ActionTypes.E.A, this.cL, this);
+	this.qR.addListener(ActionTypes.E.A, this.cL, this);
+	this.coords.appendChild(this.Nt.e);
+	if (G) this.coords.appendChild(this.qR.e);
+	this.coords.appendChild(this.lw.e);
+}
+CurveEditor.prototype = new UIComponent();
+CurveEditor.prototype.refresh = function () {
+	this.qR.refresh();
+	this.Nt.refresh();
+	this.lw.refresh();
+};
+CurveEditor.prototype.resize = function (l, d) {
+	this.lP = Math.round(l);
+	this.k_.resetTransform();
+	s.setCanvasSizeForDpr(this.T, this.lP, this.lP, this.k_);
+	this.k_.scale(this.lP / 256, this.lP / 256);
+	if (this.x0) this.LO();
+};
+CurveEditor.prototype.cL = function (l) {
+	var _local475 = this.aiN(),
+		_local477 = this.x0[_local475],
+		_local476 = 255 / this.qx;
+	_local477.v.Hrzn.v = this.Nt.b() * _local476;
+	_local477.v.Vrtc.v = this.lw.b() * _local476;
+	if (this.a6U) _local477.v.Cnty.v = this.qR.b();
+	this.x0.sort(function (b, V) {
+		return b.v.Hrzn.v - V.v.Hrzn.v;
+	});
+	this.LO();
+	this.dispatch(new Action(ActionTypes.E.A));
+};
+CurveEditor.prototype.c = function (l, A) {
+	var _local478 = JSON.stringify(l);
+	if (_local478 == JSON.stringify(this.x0)) return;
+	this.mode = l.length == 256 ? 1 : 0;
+	this.x0 = JSON.parse(_local478);
+	if (A != null) this.AU = this.x0[A];
+	this.LO();
+};
+CurveEditor.prototype.RB = function (l, d, G) {
+	this.y9 = l;
+	this.amS = d;
+	this.Rl = G;
+	this.LO();
+};
+CurveEditor.prototype.b = function () {
+	return JSON.parse(JSON.stringify(this.x0));
+};
+CurveEditor.prototype.aiN = function () {
+	return this.x0.indexOf(this.AU);
+};
+CurveEditor.prototype.Z1 = function (l) {
+	var _local488 = 256 / this.lP,
+		_local480 = s.getEventPositionInElement(l, this.T);
+	_local480.x *= _local488;
+	_local480.y *= _local488;
+	var _local487 = _local480.x,
+		_local486 = 256 - _local480.y;
+	if (this.xi) {
+		var _local484 = _local487;
+		_local487 = 256 - _local486;
+		_local486 = _local484;
+	}
+	this.FE.T6(_local487, _local486);
+	if (this.mode == 0) {
+		var _local490 = 0,
+			_local481 = 1e9,
+			_local482;
+		for (var _local479 = 0; _local479 < this.x0.length; _local479++) {
+			var _local491 = this.x0[_local479].v,
+				_local489 = _local491.Hrzn.v - _local487,
+				_local483 = _local491.Vrtc.v - _local486,
+				_local485 = Math.sqrt(_local489 * _local489 + _local483 * _local483);
+			if (_local485 < _local481) {
+				_local481 = _local485;
+				_local490 = _local479;
+			}
+		}
+		if (_local481 < 15) _local482 = this.x0[_local490];else
+		{
+			_local482 = PixelUtil.presetThumb.yR(_local487, _local486, !0);
+			this.x0.push(_local482);
+			this.x0.sort(function (n, r) {
+				return n.v.Hrzn.v - r.v.Hrzn.v;
+			});
+		}
+		this.AU = _local482;
+		this.aa_ = this.x0.slice(0);
+	}
+	s.addPointerMove(document.body, this.Rh);
+	s.addPointerUp(document.body, this.IE);
+	this.Tk(l);
+};
+CurveEditor.prototype.Tk = function (l) {
+	var _local502 = 256 / this.lP,
+		_local492 = s.getEventPositionInElement(l, this.T);
+	_local492.x *= _local502;
+	_local492.y *= _local502;
+	var _local501 = _local492.x,
+		_local499 = 256 - _local492.y;
+	if (this.xi) {
+		var _local496 = _local501;
+		_local501 = 256 - _local499;
+		_local499 = _local496;
+	}
+	if (this.mode == 0) {
+		var _local508 = this.x0,
+			_local493 = this.AU,
+			_local509 = this.aa_,
+			_local503 = _local509.indexOf(_local493),
+			_local495 = _local508.indexOf(_local493) != -1,
+			_local497 = _local509.length - 1,
+			_local494 = _local501;
+		if (_local503 == 0) {
+			_local494 = Math.max(0, Math.min(_local509[1].v.Hrzn.v - 1, _local501));
+		} else if (_local503 == _local497) {
+			_local494 = Math.min(255, Math.max(_local509[_local497 - 1].v.Hrzn.v + 1, _local501));
+		} else {
+			var _local506 = _local501 < 0 || _local501 > 255 || _local499 < 0 || _local499 > 255;
+			if (_local501 <= _local509[_local503 - 1].v.Hrzn.v || _local501 >= _local509[_local503 + 1].v.Hrzn.v) _local506 = !0;
+			if (!_local506 && !_local495) _local508.splice(_local503, 0, _local493);
+			if (_local506 && _local495) _local508.splice(_local503, 1);
+		}
+		if (this.auq && (_local503 == 0 || _local503 == _local509.length - 1)) {} else _local493.v.Hrzn.v = Math.round(_local494);
+		_local493.v.Vrtc.v = Math.max(0, Math.min(255, Math.round(_local499)));
+	} else {
+		_local501 = Math.round(_local501);
+		_local499 = Math.round(_local499);
+		_local501 = Math.max(0, Math.min(255, _local501));
+		_local499 = Math.max(0, Math.min(255, _local499));
+		var _local507 = this.FE.x,
+			_local498 = _local501,
+			_local505 = this.FE.y,
+			_local504 = _local499;
+		if (_local501 < this.FE.x) {
+			_local498 = _local507;
+			_local507 = _local501;
+			_local504 = _local505;
+			_local505 = _local499;
+		}
+		this.x0[_local501] = _local499;
+		if (_local507 != _local498)
+		for (var _local500 = _local507; _local500 <= _local498; _local500++) this.x0[_local500] = Math.round(_local505 + (_local500 - _local507) * (_local504 - _local505) / (_local498 - _local507));
+	}
+	this.FE.T6(_local501, _local499);
+	this.LO();
+	this.dispatch(new Action(ActionTypes.E.A));
+};
+CurveEditor.prototype.FS = function (l) {
+	s.removePointerMove(document.body, this.Rh);
+	s.removePointerUp(document.body, this.IE);
+	this.dispatch(new Action(ActionTypes.E.A));
+};
+CurveEditor.prototype.LO = function () {
+	var _local517 = this.k_,
+		_local516 = this.T;
+	_local517.fillStyle = "#ffffff";
+	_local517.fillRect(0, 0, 256, 256);
+	var _local511 = 256 / _local516.width;
+	if (this.y9) {
+		_local517.save();
+		_local517.translate(0, 256);
+		_local517.scale(1, -1);
+		LevelsHistogram.ail(_local517, this.y9, 5700 / this.amS, this.Rl);
+		_local517.restore();
+	}
+	_local517.strokeStyle = "#aaaaaa";
+	_local517.lineWidth = 1 * _local511;
+	_local517.beginPath();
+	for (var _local510 = 1; _local510 < 4; _local510++) {
+		var _local515 = (Math.floor(64 * _local510 / _local511) + .5) * _local511;
+		_local517.moveTo(0, _local515);
+		_local517.lineTo(255, _local515);
+		_local517.moveTo(_local515, 0);
+		_local517.lineTo(_local515, 255);
+	}
+	_local517.stroke();
+	if (this.xi) {
+		_local517.save();
+		_local517.transform(0, 1, -1, 0, 256, 0);
+	}
+	if (this.mode == 0) {
+		var _local514 = this.x0,
+			_local513 = PixelUtil.presetThumb.d_(_local514, 256);
+		_local517.strokeStyle = "#000000";
+		_local517.beginPath();
+		_local517.moveTo(0, 255.5 - _local513[0]);
+		for (var _local510 = 0; _local510 < 256; _local510++) _local517.lineTo(_local510, 255.5 - _local513[_local510]);
+		_local517.stroke();
+		_local517.lineWidth = 2 * _local511;
+		for (var _local510 = 0; _local510 < _local514.length; _local510++) {
+			var _local518 = _local514[_local510].v;
+			_local517.fillStyle = this.AU == _local514[_local510] ? "#333" : "#fff";
+			_local517.beginPath();
+			_local517.moveTo(_local518.Hrzn.v, 255.5 - _local518.Vrtc.v);
+			_local517.arc(_local518.Hrzn.v, 255.5 - _local518.Vrtc.v, 5 * _local511, 0, 2 * Math.PI);
+			_local517.stroke();
+			_local517.fill();
+		}
+	} else {
+		var _local513 = this.x0;
+		_local517.strokeStyle = "#000000";
+		_local517.beginPath();
+		_local517.moveTo(0, 255.5 - _local513[0]);
+		for (var _local510 = 0; _local510 < 256; _local510++) _local517.lineTo(_local510, 255.5 - _local513[_local510]);
+		_local517.stroke();
+	}
+	if (this.xi) _local517.restore();
+	var _local510 = this.aiN();
+	this.coords.className = _local510 == -1 ? "disabled" : "";
+	if (_local510 == -1) return;
+	var _local518 = this.x0[_local510].v,
+		_local512 = 255 / this.qx;
+	this.Nt.c(Math.round(_local518.Hrzn.v / _local512));
+	this.lw.c(Math.round(_local518.Vrtc.v / _local512));
+	if (_local518.Cnty) this.qR.c(_local518.Cnty.v);
+};
 
+
+function GlyphsPanel() {
+	PanelTabBase.call(this, "Glyphs", !1, "---panels/glyphs", PanelTabBase.xA.al9);
+	this.mN = null;
+}
+GlyphsPanel.prototype = new PanelTabBase("");
+GlyphsPanel.prototype.Eg = function () {
+	this.Tn = new TypeToolPanel();
+	this.Tn.parent = this;
+	this.aeq = null;
+	this.aoA = null;
+	this.l5 = null;
+	this.apQ = null;
+	this.MN = Math.round(290 * s.getDevicePixelRatio());
+	this.sk = 45;
+	this.a9D = 4;
+	this.arx = this.VP.bind(this);
+	this.aeW = 0;
+	this.nd = new DropdownMenu(null, ["Hi", "Hello"]);
+	this.nd.addListener(ActionTypes.E.A, this.VP, this);
+	var _local3612 = this.pW = new ToolbarButton("-", null, null, !0);
+	_local3612.addListener("click", this.aa0, this);
+	var _local3611 = this.a5$ = new ToolbarButton("+", null, null, !0);
+	_local3611.addListener("click", this.aa0, this);
+	this.FO = new ImageSet(!1);
+	this.FO.addListener(ActionTypes.E.A, this.hm, this);
+	this.FO.e.style.height = 250 + "px";
+	var _local3610 = this.ph = s.createElement("div", "form padded");
+	this.DK.appendChild(_local3610);
+	_local3610.appendChild(this.Tn.re.e);
+	s.appendBr(_local3610);
+	_local3610.appendChild(this.nd.e);
+	_local3610.appendChild(_local3612.e);
+	_local3610.appendChild(_local3611.e);
+	this.DK.appendChild(this.FO.e);
+};
+GlyphsPanel.prototype.resize = function (l, d) {
+	if (this.iJ == l || this.Tn == null) return;
+	this.iJ = l;
+	this.MN = Math.floor((l - 13) * s.getDevicePixelRatio());
+	this.ph.setAttribute("style", "width:" + this.MN / s.getDevicePixelRatio() + "px;");
+	this.FO.e.style.height = d - 73 + "px";
+	this.VP();
+};
+GlyphsPanel.prototype.hm = function (l) {
+	var _local3618 = this.anD(),
+		_local3613 = Math.round(this.MN / _local3618);
+	_local3618 /= s.getDevicePixelRatio();
+	var _local3617 = this.FO.b()[0] * _local3613 * this.a9D,
+		_local3616 = this.FO.az3();
+	_local3617 += Math.floor(_local3616.y / _local3618) * _local3613;
+	_local3617 += Math.floor(_local3616.x / _local3618);
+	var _local3615 = this.l5[this.nd.b()];
+	if (_local3617 >= _local3615.length) return;
+	var _local3619 = _local3615[_local3617],
+		_local3614 = this.apQ[_local3619],
+		_local3620 = new Action(ActionTypes.E.v, !0);
+	_local3620.G = f.zl;
+	if (_local3614.BR.length == 0) _local3620.data = {
+		a: "insertGlyph",
+		Z: _local3617 + 1
+	};else
+	_local3620.data = {
+		a: "insertText",
+		Z: String.fromCodePoint(_local3614.BR[0])
+	};
+	this.dispatch(_local3620);
+};
+GlyphsPanel.prototype.aa0 = function (l) {
+	var _local3621 = 1.2;
+	if (l.target == this.pW) {
+		if (this.sk > 20) this.sk /= _local3621;
+	} else {
+		if (this.sk < 100) this.sk *= _local3621;
+	}
+	this.VP();
+};
+GlyphsPanel.prototype.KN = function () {
+	this.BM(this.mN);
+};
+GlyphsPanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	if (!s.isInDocument(this.DK)) return;
+	if (this.Tn == null) this.Eg();
+	this.Tn.c(l.XG, l.Hg, l.fL);
+	var _local3623 = l.XG,
+		_local3631 = _local3623.xg.Font,
+		_local3638 = 0;
+	if (_local3631 == null) return;
+	var _local3630 = _local3623.rA[_local3631].Name;
+	if (this.aeq == _local3630) return;
+	var _local3631 = l.Hg.U6(_local3630);
+	if (_local3631 == null) return;
+	var _local3627 = _local3631.maxp.numGlyphs,
+		_local3637 = this.apQ = new Array(_local3627);
+	for (var _local3622 = 0; _local3622 < _local3627; _local3622++) _local3637[_local3622] = {
+		BR: []
+	};
+	var _local3624 = Date.now(),
+		_local3632 = new Uint8Array(1048575);
+	for (var _local3622 = 0; _local3622 < 1048575; _local3622++) {
+		var _local3626 = Typr.U.codeToGlyph(_local3631, _local3622);
+		if (_local3626 != 0 && _local3626 < _local3627) {
+			_local3632[_local3622] = 1;
+			if (_local3637[_local3626].BR.length == 0) _local3638++;
+			_local3637[_local3626].BR.push(_local3622);
+		}
+	}
+	var _local3628 = GlyphsPanel.JJ,
+		_local3625 = [];
+	for (var _local3622 = 0; _local3622 < _local3628.length; _local3622++) _local3625.push([]);
+	for (var _local3626 = 1; _local3626 < _local3627; _local3626++) {
+		_local3625[0].push(_local3626);
+		var _local3635 = _local3637[_local3626].BR[0];
+		if (_local3635 == null) {
+			continue;
+		}
+		for (var _local3636 = 1; _local3636 < _local3628.length; _local3636++) {
+			var _local3629 = _local3628[_local3636].Cf;
+			for (var _local3622 = 0; _local3622 < _local3629.length; _local3622 += 2)
+			if (_local3629[_local3622] <= _local3635 && _local3635 <= _local3629[_local3622 + 1]) {
+				_local3625[_local3636].push(_local3626);
+				break;
+			}
+		}
+	}
+	this.l5 = _local3625;
+	var _local3634 = [];
+	for (var _local3622 = 0; _local3622 < _local3628.length; _local3622++) _local3634.push(_local3628[_local3622].hy + " (" + _local3625[_local3622].length + ")");
+	var _local3633 = this.nd.b();
+	this.nd.b3(_local3634);
+	this.nd.c(_local3633);
+	this.aeq = _local3630;
+	this.aoA = _local3631;
+	this.VP();
+};
+GlyphsPanel.prototype.anD = function (l) {
+	var _local3639 = Math.floor(this.MN / this.sk);
+	return Math.floor(this.MN / _local3639);
+};
+GlyphsPanel.prototype.VP = function (l) {
+	if (!s.isInDocument(this.DK) || this.l5 == null) return;
+	var _local3659 = this.l5[this.nd.b()],
+		_local3644 = _local3659.length,
+		_local3657 = this.aoA,
+		_local3652 = Typr.U,
+		_local3649 = this.anD(),
+		_local3669 = _local3649,
+		_local3646 = _local3669 * .8,
+		_local3671 = _local3669 * .8 / _local3657.head.unitsPerEm,
+		_local3660 = [],
+		_local3648 = Math.floor(this.MN / _local3649),
+		_local3650 = Math.ceil(_local3644 / _local3648),
+		_local3647 = this.a9D,
+		_local3665 = Date.now();
+	for (var _local3668 = 0; _local3668 < _local3650; _local3668 += _local3647) {
+		var _local3651 = s.createElement("canvas"),
+			_local3662 = _local3651.getContext("2d", { willReadFrequently: true });
+		_local3651.width = _local3649 * _local3648;
+		_local3651.height = _local3669 * _local3647;
+		_local3662.fillStyle = "white";
+		_local3662.fillRect(0, 0, _local3648 * _local3649, _local3669 * _local3647);
+		for (var _local3661 = 0; _local3661 < _local3647; _local3661++) {
+			for (var _local3654 = 0; _local3654 < _local3648; _local3654++) {
+				var _local3640 = _local3659[(_local3668 + _local3661) * _local3648 + _local3654];
+				if (_local3640 == null) break;
+				var _local3663 = _local3652.glyphToPath(_local3657, _local3640),
+					_local3643 = PixelUtil.vec.boundingBox(_local3663.crds);
+				_local3662.fillStyle = "#252525";
+				if (_local3643.W6()) {
+					var _local3642 = _local3657.hmtx,
+						_local3667 = [],
+						_local3656 = 170;
+					for (var _local3645 in _local3642) _local3667.push(_local3645);
+					var _local3653 = _local3642[_local3667[0]][_local3640],
+						_local3655 = _local3642[_local3667[1]][_local3640],
+						_local3641 = Math.max(_local3653, _local3655);
+					_local3663 = {
+						cmds: "M L M L M L".split(" "),
+						crds: [0, 0, _local3641, 0, 0, -_local3656, 0, _local3656, _local3641, -_local3656, _local3641, _local3656]
+					};
+					_local3643.m = _local3641;
+					_local3643.x = 0;
+					_local3662.strokeStyle = "rgba(0,255,0,1)";
+				}
+				_local3662.beginPath();
+				var _local3664 = _local3654 * _local3649 + (_local3649 - _local3643.m * _local3671) * .5 - _local3643.x * _local3671,
+					_local3666 = _local3661 * _local3669 + _local3646;
+				_local3662.translate(_local3664, _local3666);
+				_local3662.scale(_local3671, -_local3671);
+				_local3652.pathToContext(_local3663, _local3662);
+				_local3662.scale(1 / _local3671, -1 / _local3671);
+				_local3662.translate(-_local3664, -_local3666);
+				_local3643.W6() ? _local3662.stroke() : _local3662.fill();
+			}
+		}
+		_local3662.beginPath();
+		for (var _local3654 = 0; _local3654 < _local3648; _local3654++) {
+			var _local3658 = _local3654 * _local3649 + _local3649 + .5;
+			_local3662.moveTo(_local3658, 0);
+			_local3662.lineTo(_local3658, _local3669 * _local3647);
+		}
+		for (var _local3661 = 0; _local3661 < _local3647; _local3661++) {
+			var _local3670 = _local3661 * _local3669 + _local3669 + .5;
+			_local3662.moveTo(0, _local3670);
+			_local3662.lineTo(_local3648 * _local3649, _local3670);
+		}
+		_local3662.strokeStyle = "rgba(0,0,0,0.3)";
+		_local3662.stroke();
+		_local3660.push(_local3651);
+	}
+	this.FO.LR(_local3660, null, _local3649 * _local3648, _local3669 * _local3647);
+};
+GlyphsPanel.JJ = [{
+	hy: "All Glyphs"
+}, {
+	hy: "Basic Latin, Latin 1",
+	Cf: [0, 127, 128, 143]
+}, {
+	hy: "Latin Extended-A",
+	Cf: [256, 383]
+}, {
+	hy: "Latin Extended-B",
+	Cf: [384, 591]
+}, {
+	hy: "Punctuations",
+	Cf: [33, 35, 37, 39, 42, 42, 44, 44, 46, 47, 58, 59, 63, 63, 64, 64, 92, 92, 161, 161, 167, 167, 182, 183, 191, 191, 894, 894, 903, 903, 1370, 1375, 1417, 1417, 8192, 8303, 11776, 11903]
+}, {
+	hy: "Greek",
+	Cf: [880, 1023]
+}, {
+	hy: "Cyrillic",
+	Cf: [1024, 1279]
+}, {
+	hy: "Hebrew",
+	Cf: [1424, 1535]
+}, {
+	hy: "Arabic",
+	Cf: [1536, 1791]
+}, {
+	hy: "Emoji",
+	Cf: [9728, 10095, 127744, 129535]
+}];
+
+
+function RulerStraightenToolOptions() {
+	ToolOptionsBase.call(this);
+	this.mN = null;
+	this.a9 = null;
+	this.jr = [
+	new TextInput("X", null, 3.2, null, !0),
+	new TextInput("Y", null, 3.2, null, !0),
+	new TextInput("W", null, 3.2, null, !0),
+	new TextInput("H", null, 3.2, null, !0),
+	new TextInput("Angle", "\xB0", 3.7, null, !0),
+	new TextInput("Length 1", null, 3.5, null, !0),
+	new TextInput("Length 2", null, 3.5, null, !0),
+	new ToolbarButton("Straighten Layer", !1, null, !0),
+	new ToolbarButton("Clear", !1, null, !0)];
+
+	for (var _local4514 = 0; _local4514 < this.jr.length; _local4514++) {
+		var _local4515 = this.jr[_local4514];
+		this.body.appendChild(_local4515.e);
+		if (_local4514 > 6) _local4515.addListener("click", this.lZ, this);
+	}
+	this.QL = 0;
+}
+RulerStraightenToolOptions.prototype = new ToolOptionsBase();
+RulerStraightenToolOptions.prototype.lZ = function (l) {
+	var _local4518 = this.jr.indexOf(l.target) == 7,
+		_local4517 = new Action(ActionTypes.E.v, !0);
+	if (_local4518) {
+		if (this.QL == 0) return;
+		_local4517.G = f.qK;
+		_local4517.data = {
+			a: "rot",
+			Il: [2, 5],
+			Z: -this.QL
+		};
+	} else {
+		_local4517.G = f.e7;
+		for (var _local4516 = 0; _local4516 < 6; _local4516++) this.jr[_local4516].c(null);
+	}
+	this.dispatch(_local4517);
+};
+RulerStraightenToolOptions.prototype.IF = function (l) {
+	function _local4523(I, y, e) {
+		var _local4526 = Math.sqrt(Math.pow(y.x - I.x, 2) + Math.pow(y.y - I.y, 2)),
+			_local4527 = Math.sqrt(Math.pow(y.x - e.x, 2) + Math.pow(y.y - e.y, 2)),
+			_local4525 = Math.sqrt(Math.pow(e.x - I.x, 2) + Math.pow(e.y - I.y, 2));
+		return Math.acos((_local4527 * _local4527 + _local4526 * _local4526 - _local4525 * _local4525) / (2 * _local4527 * _local4526));
+	}
+	if (l == null) return;
+	this.a9 = l;
+	var _local4519 = l.afz,
+		_local4522 = l.xJ,
+		_local4521 = _local4522.x - _local4519.x,
+		_local4520 = _local4522.y - _local4519.y;
+	this.QL = -Math.atan2(_local4520, _local4521);
+	if (l.LB) this.QL = _local4523(_local4522, _local4519, l.LB);
+	var _local4524 = this.jr;
+	_local4524[0].c(this.nX(l, _local4519.x));
+	_local4524[1].c(this.nX(l, _local4519.y));
+	_local4524[2].c(this.nX(l, _local4521));
+	_local4524[3].c(this.nX(l, _local4520));
+	_local4524[4].c((this.QL * 180 / Math.PI).toFixed(2));
+	_local4524[5].c(this.nX(l, Point2D.yZ(_local4519, _local4522)));
+	if (l.LB) {
+		_local4524[6].c(this.nX(l, Point2D.yZ(_local4519, l.LB)));
+	} else _local4524[6].c("");
+};
+RulerStraightenToolOptions.prototype.nX = function (l, d) {
+	var _local4528 = PixelUtil.y0.ij(d, l.m7, this.mN, l.am2, !1);
+	return parseFloat(_local4528).toFixed(2);
+};
+RulerStraightenToolOptions.prototype.BM = function (l, d) {
+	this.mN = l;
+	this.IF(this.a9);
+};
+RulerStraightenToolOptions.prototype.lx = function () {
+	var _local4530 = this.jr;
+	for (var _local4529 = 0; _local4529 < _local4530.length; _local4529++) _local4530[_local4529].refresh();
+	s.setWidthHeightLabels(_local4530[2], _local4530[3]);
+};
+
+function PencilDetailOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "strn", "pdetail"]);
+}
+PencilDetailOptions.prototype = new ToolOptionsWithKeys();
+
+
+function CloneSourceOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "sfrom"]);
+	this.a0p = [];
+	var _local4533 = [
+	[7, 12]];
+
+	for (var _local4531 = 0; _local4531 < _local4533.length; _local4531++) {
+		var _local4532 = new ToolbarButton(_local4533[_local4531], !1, null, !0);
+		this.a0p.push(_local4532);
+		_local4532.parent = this;
+		this.body.appendChild(_local4532.e);
+		_local4532.addListener("click", this.auO, this);
+	}
+}
+CloneSourceOptions.prototype = new ToolOptionsWithKeys();
+CloneSourceOptions.prototype.auO = function (l) {
+	var _local4535 = this.a0p.indexOf(l.currentTarget),
+		_local4534 = new Action(ActionTypes.E.g5, !0);
+	_local4534.data = f.BrushToolBase.ML("contentAware");
+	this.dispatch(_local4534);
+};
+
+function BrushStrengthOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "strn"]);
+}
+BrushStrengthOptions.prototype = new ToolOptionsWithKeys();
+
+function BrushFlowOptions() {
+	ToolOptionsWithKeys.call(this, ["brush", "flow", "smode"]);
+}
+BrushFlowOptions.prototype = new ToolOptionsWithKeys();
+
+function ZoomToolOptions() {
+	ToolOptionsBase.call(this);
+	this.hI = !1;
+	var _local4536 = s.createElement("span", "fitem");
+	this.body.appendChild(_local4536);
+	this.M8 = new ButtonGroupMenu(null, [
+	"<img src=\"" + PIMG.zoomIn + "\" class=\"autoscale gsicon\" />",
+	"<img src=\"" + PIMG.zoomOut + "\" class=\"autoscale gsicon\" />"]
+	);
+	_local4536.appendChild(this.M8.e);
+	this.M8.addListener(ActionTypes.E.A, this.S9, this);
+	this.xD = new ToolbarButton("Pixel to Pixel");
+	this.body.appendChild(this.xD.e);
+	this.xD.addListener("click", this.acX, this);
+	this.pv = new ToolbarButton("Fit The Area");
+	this.body.appendChild(this.pv.e);
+	this.pv.addListener("click", this.acX, this);
+	this.EC = new CheckboxControl("All Documents");
+	this.body.appendChild(this.EC.e);
+	this.EC.addListener(ActionTypes.E.A, this.S9, this);
+}
+ZoomToolOptions.prototype = new ToolOptionsBase();
+ZoomToolOptions.prototype.lx = function () {
+	this.xD.refresh();
+	this.pv.refresh();
+};
+ZoomToolOptions.prototype.S9 = function () {
+	var _local4538 = {
+			a: ActionTypes.$.kl,
+			G: this.G,
+			K$: this.M8.b() == 0,
+			In: this.EC.b()
+		},
+		_local4537 = new Action(ActionTypes.E.L, !0);
+	_local4537.data = _local4538;
+	this.dispatch(_local4537);
+};
+ZoomToolOptions.prototype.IF = function (l) {
+	if (this.hI != l.hI) this.M8.c(1 - this.M8.b());
+	this.hI = l.hI;
+};
+ZoomToolOptions.prototype.acX = function (l) {
+	var _local4539 = new Action(ActionTypes.E.v, !0);
+	_local4539.G = f.t7;
+	_local4539.data = {
+		a: "adapt",
+		Z: l.target == this.xD ? "pixel" : "fitscr"
+	};
+	this.dispatch(_local4539);
+};
 
 function WarpDistortionPanel(l, d, G) {
 	UIComponent.call(this);
@@ -10672,10 +13329,10 @@ TypeToolOptions.prototype.IF = function (l) {
 	if (l.Zm) {
 		var _local4616 = TypeToolOptions,
 			_local4611 = this.mI;
-		// if (_local4611 == null) _local4611 = this.mI = new ContextPanel(_local4616.azf(), _local4616.ala(this.G));
-		// _local4611.refresh();
-		// _local4611.parent = this;
-		// _local4611.update(l.T1, l.wQ);
+		if (_local4611 == null) _local4611 = this.mI = new ContextPanel(_local4616.azf(), _local4616.ala(this.G));
+		_local4611.refresh();
+		_local4611.parent = this;
+		_local4611.update(l.T1, l.wQ);
 		var _local4615 = new Action(ActionTypes.E.L, !0);
 		_local4615.data = {
 			a: ActionTypes.$.dY,
@@ -10941,7 +13598,8654 @@ TypeToolOptions.ala = function (l) {
 	}];
 };
 
+function TypeToolHorizontalOptions() {
+	TypeToolOptions.call(this);
+}
+TypeToolHorizontalOptions.prototype = new TypeToolOptions(!0);
+
+function TypeToolVerticalOptions() {
+	TypeToolOptions.call(this);
+}
+TypeToolVerticalOptions.prototype = new TypeToolOptions(!0);
+
+function TypeToolWarpOptions() {
+	TypeToolOptions.call(this, !1, !0);
+}
+TypeToolWarpOptions.prototype = new TypeToolOptions(!0);
+
+
+function PuppetWarpOptions() {
+	ToolOptionsBase.call(this);
+	var _local4645 = this.gH = [
+	new DropdownMenu("Mode", ["Rigid", "Normal", "Distort"]),
+	new DropdownMenu("Density", ["Small", "Medium", "Large"]),
+	new RangeDropInput("Expand", 0, 100, "px"),
+	new CheckboxControl("Show Mesh"),
+	new ToolbarButton("\u25BC", null, null, !0),
+	new ToolbarButton("\u25B2", null, null, !0)];
+
+	for (var _local4643 = 0; _local4643 < _local4645.length; _local4643++) {
+		var _local4644 = _local4645[_local4643];
+		_local4644.parent = this;
+		this.body.appendChild(_local4644.e);
+		_local4644.addListener(_local4643 < 4 ? ActionTypes.E.A : "click", this.ayB, this);
+	}
+	this.P_ = new ConfirmCancelButtons();
+	this.P_.addListener("click", this.aL, this);
+	this.body.appendChild(this.P_.e);
+}
+PuppetWarpOptions.prototype = new ToolOptionsBase();
+PuppetWarpOptions.prototype.lx = function () {
+	var _local4647 = this.gH;
+	for (var _local4646 = 0; _local4646 < 4; _local4646++) _local4647[_local4646].refresh();
+	this.P_.refresh();
+};
+PuppetWarpOptions.prototype.IF = function (l) {
+	var l = l.Oo;
+	for (var _local4648 = 0; _local4648 < 4; _local4648++) this.gH[_local4648].c(l[_local4648]);
+};
+PuppetWarpOptions.prototype.ayB = function (l) {
+	var _local4651 = [];
+	for (var _local4649 = 0; _local4649 < 4; _local4649++) _local4651[_local4649] = this.gH[_local4649].b();
+	var _local4650 = this.gH.indexOf(l.target);
+	if (_local4650 < 4) this.DR({
+		DI: "prm",
+		Oo: _local4651
+	});else
+	this.DR({
+		DI: "moveDepth",
+		a5h: _local4650 == 5
+	});
+};
+PuppetWarpOptions.prototype.aL = function (l) {
+	this.DR({
+		DI: this.P_.b() ? "commit" : "cancel"
+	});
+};
+PuppetWarpOptions.prototype.DR = function (l) {
+	l.a = ActionTypes.$.kl;
+	l.G = this.G;
+	var _local4652 = new Action(ActionTypes.E.L, !0);
+	_local4652.data = l;
+	this.dispatch(_local4652);
+};
 
 
 
 
+function FilterEffectPanel(l) {
+	UIComponent.call(this);
+	this.JI = l;
+	this.e = s.createElement("div", "");
+	this.go = [];
+	this.cC = null;
+	this.a6x = [];
+}
+FilterEffectPanel.prototype = new UIComponent();
+FilterEffectPanel.prototype.ul = function (l) {};
+FilterEffectPanel.prototype.ZW = function () {
+	return !1;
+};
+FilterEffectPanel.prototype.resize = function (l, d) {};
+FilterEffectPanel.prototype.BM = function (l, d) {};
+FilterEffectPanel.prototype.RB = function (l) {};
+FilterEffectPanel.prototype.c = function (l, d, G, b, V, Q) {
+	var _local1465 = [],
+		_local1463 = this.go,
+		_local1466 = 0,
+		_local1464 = FilterHelper.It["s" + this.JI];
+	_local1464 ? _local1464(l, _local1465, Q) : this.KJ(l, _local1465, Q);
+	for (var _local1462 = 0; _local1462 < _local1463.length; _local1462++)
+	if (!(_local1463[_local1462] instanceof LabelItem)) _local1463[_local1462].c(_local1465[_local1466++]);
+	if (l.RndS) this.cC = l.RndS.v;
+};
+FilterEffectPanel.prototype.b = function () {
+	var _local1472 = FilterHelper.oT(this.JI),
+		_local1471 = [],
+		_local1468 = this.go,
+		_local1470 = 0;
+	for (var _local1467 = 0; _local1467 < _local1468.length; _local1467++)
+	if (!(_local1468[_local1467] instanceof LabelItem)) _local1471[_local1470++] = _local1468[_local1467].b();
+	var _local1469 = FilterHelper.It["g" + this.JI];
+	_local1469 ? _local1469(_local1472, _local1471) : this.PY(_local1472, _local1471);
+	if (_local1472.RndS) _local1472.RndS.v = this.cC;
+	return _local1472;
+};
+FilterEffectPanel.prototype.o9 = function (l) {};
+FilterEffectPanel.prototype.B5 = function (l) {
+	if (l && l.target instanceof ToolbarButton) {
+		this.cC = Math.floor(Math.random() * 4294967295);
+	}
+	var _local1478 = this.a6x;
+	for (var _local1473 = 0; _local1473 < _local1478.length; _local1473 += 2) {
+		var _local1474 = this.go[_local1478[_local1473]],
+			_local1477 = this.go[_local1478[_local1473 + 1]],
+			_local1476 = _local1474.b(),
+			_local1475 = _local1477.b();
+		if (l.target == _local1474) _local1477.c(Math.max(_local1476, _local1475));else
+		_local1474.c(Math.min(_local1476, _local1475));
+	}
+	this.dispatch(new Action(ActionTypes.E.A));
+};
+FilterEffectPanel.prototype.refresh = function () {
+	for (var _local1479 = 0; _local1479 < this.go.length; _local1479++) this.go[_local1479].refresh();
+	var _local1480 = this.adT;
+	if (_local1480) _local1480.refresh();
+};
+FilterEffectPanel.prototype.W8 = function (l) {
+	s.addClass(this.e, "form");
+	var _local1485 = this.go;
+	for (var _local1481 = 0; _local1481 < _local1485.length; _local1481++) {
+		var _local1482 = _local1485[_local1481];
+		_local1482.parent = this;
+		_local1482.addListener(ActionTypes.E.A, this.B5, this);
+		this.e.appendChild(_local1482.e);
+		if (_local1482 instanceof CheckboxControl && _local1485[_local1481 + 1] instanceof ColorSwatch) continue;
+		if (l && l.indexOf(_local1481) != -1) s.appendHr(this.e);else
+		s.appendBr(this.e);
+	}
+	var _local1484 = FilterHelper.oT(this.JI);
+	if (_local1484.RndS) {
+		var _local1483 = this.adT = new ToolbarButton("Randomize", null, null, !0);
+		this.e.appendChild(_local1483.e);
+		_local1483.addListener("click", this.B5, this);
+	}
+};
+FilterEffectPanel.prototype.ba = function () {
+	return !1;
+};
+FilterEffectPanel.prototype.dJ = function (l, d, G, b, V) {};
+FilterEffectPanel.prototype.JP = function (l, d, G, b, V) {};
+FilterEffectPanel.prototype.Nl = function (l, d, G, b, V) {};
+FilterEffectPanel.prototype.PY = function (l, d) {};
+FilterEffectPanel.prototype.KJ = function (l, d) {};
+FilterEffectPanel.prototype.Ie = function (l) {
+	var _local1487 = l.target.b().indexOf(!0) != -1,
+		_local1486 = new Action(ActionTypes.E.L, !0);
+	_local1486.Fj = !0;
+	_local1486.data = {
+		a: _local1487 ? ActionTypes.$.yb : ActionTypes.$.PN,
+		G: f.v3
+	};
+	this.dispatch(_local1486);
+	_local1486 = new Action(ActionTypes.E.v, !0);
+	_local1486.G = f.v3;
+	_local1486.Fj = !0;
+	_local1486.data = {
+		a: "supertool",
+		G: _local1487 ? this : null
+	};
+	this.dispatch(_local1486);
+};
+FilterEffectPanel.aaM = function (l) {
+	l.ba = function () {
+		return !0;
+	};
+	l.dJ = function (d, G, b, V, Q) {
+		this.Pg = !0;
+		this.amc(d, Q);
+	};
+	l.JP = function (d, G, b, V, Q) {
+		if (!this.Pg) return;
+		this.amc(d, Q);
+	};
+	l.Nl = function (d, G, b, V, Q) {
+		this.Pg = !1;
+	};
+	l.amc = function (d, G) {
+		var _local1490 = new Rect(0, 0, d.m, d.n);
+		if (d.P) _local1490 = d.P.rect;
+		var _local1489 = d.u.Zx(G.x, G.y);
+		_local1489.x -= _local1490.x;
+		_local1489.y -= _local1490.y;
+
+		function _local1488(t, I) {
+			return Math.round(Math.max(0, Math.min(100, 100 * t / I)));
+		}
+		this.go[2].c(_local1488(_local1489.x, _local1490.m));
+		this.go[3].c(_local1488(_local1489.y, _local1490.n));
+		this.B5();
+	};
+};
+FilterEffectPanel.Bokh = function () {
+	FilterEffectPanel.call(this, "Bokh");
+	this.go = [
+	new DropdownMenu("Depth Map", ["A", "b"]),
+	new RangeInput("Focal Distance", 0, 255),
+	new CheckboxControl("Invert"),
+	new DropdownMenu("Shape", ["Triangle (3)", "Square (4)", "Pentagon (5)", "Hexagon (6)", "Heptagon (7)", "Octagon (8)"]),
+	new RangeInput("Radius", 0, 100),
+	new RangeInput("Angle", 0, 360),
+	new RangeInput("Brightness", 0, 100),
+	new RangeInput("Threshold", 0, 255),
+	new RangeInput("Noise", 0, 100),
+	new ButtonGroupMenu("Distribution", ["Uniform", "Gaussian"]),
+	new CheckboxControl("Monochromatic")];
+
+	this.W8("Copy Merged");
+};
+FilterEffectPanel.Bokh.prototype = new FilterEffectPanel();
+FilterEffectPanel.Bokh.prototype.KJ = function (l, d, G) {
+	var _local1494 = ["None", "From Transparency", "Raster Mask"],
+		_local1493 = l.BkDi.v.BtDi,
+		_local1492 = l.BkDc,
+		_local1495 = 0;
+	if (_local1493 == "BeIn") _local1495 = 0;else
+	if (_local1493 == "BeIt" && _local1492.v.BtDc == "BeCt") _local1495 = 1;else
+	if (_local1493 == "BeIt" && _local1492.v.BtDc == "BeCm") _local1495 = 2;else
+	if (_local1492) _local1495 = 3 + _local1492.v;
+	var _local1496 = G && G[1];
+	if (_local1496)
+	for (var _local1491 = 0; _local1491 < _local1496.length; _local1491++) _local1494.push(_local1496[_local1491].name);
+	this.go[0].b3(_local1494, [3]);
+	d[0] = _local1495;
+	d[1] = l.BkDp.v;
+	d[2] = l.BkDs.v;
+	d[3] = parseInt(l.BkIs.v.BtIs.slice(3)) - 3;
+	d[4] = l.BkIb.v;
+	d[5] = l.BkIr.v;
+	d[6] = l.BkSb.v;
+	d[7] = l.BkSt.v;
+	d[8] = l.BkNa.v;
+	d[9] = l.BkNt.v.BtNt == "BeNu" ? 0 : 1;
+	d[10] = l.BkNm.v;
+};
+FilterEffectPanel.Bokh.prototype.PY = function (l, d) {
+	var _local1497;
+	if (d[0] == 0) {
+		_local1497 = "BeIn";
+		delete l.BkDc;
+	} else if (d[0] < 3) {
+		_local1497 = "BeIt";
+		l.BkDc = {
+			t: "enum",
+			v: {
+				BtDc: ["BeCt", "BeCm"][d[0] - 1]
+			}
+		};
+	} else {
+		_local1497 = "BeIa";
+		l.BkDc = {
+			t: "long",
+			v: d[0] - 3
+		};
+	}
+	l.BkDi.v.BtDi = _local1497;
+	l.BkDp.v = d[1];
+	l.BkDs.v = d[2];
+	l.BkIs.v.BtIs = "BeS" + (3 + d[3]);
+	l.BkIb.v = d[4];
+	l.BkIr.v = d[5];
+	l.BkSb.v = d[6];
+	l.BkSt.v = d[7];
+	l.BkNa.v = d[8];
+	l.BkNt.v.BtNt = ["BeNu", "BeNg"][d[9]];
+	l.BkNm.v = d[10];
+};
+FilterEffectPanel.oilPaint = function () {
+	FilterEffectPanel.call(this, "oilPaint");
+	this.go = [
+	new RangeInput("Radius", .1, 10, "px", !0),
+	new RangeInput("Cleanliness", 0, 10, "px", !0),
+	new RangeInput("Scale", .1, 10, null, !0),
+	new RangeInput("Bristle Detail", 0, 10, null, !0),
+	new CheckboxControl("Lighting"),
+	new RangeInput("Shine", 0, 10, null, !0),
+	new AngleInput("Angle")];
+	this.W8();
+};
+FilterEffectPanel.oilPaint.prototype = new FilterEffectPanel();
+FilterEffectPanel.oilPaint.prototype.KJ = function (l, d) {
+	var _local1499 = "stylization cleanliness brushScale microBrush lightingOn specularity".split(" ");
+	for (var _local1498 = 0; _local1498 < _local1499.length; _local1498++) d[_local1498] = l[_local1499[_local1498]].v;
+	d[6] = [l.LghD.v];
+};
+FilterEffectPanel.oilPaint.prototype.PY = function (l, d) {
+	var _local1501 = "stylization cleanliness brushScale microBrush lightingOn specularity".split(" ");
+	for (var _local1500 = 0; _local1500 < _local1501.length; _local1500++) l[_local1501[_local1500]].v = d[_local1500];
+	l.LghD.v = d[6][0];
+};
+FilterEffectPanel.TrcC = function () {
+	FilterEffectPanel.call(this, "TrcC");
+	this.go = [
+	new RangeInput("Level", 0, 255),
+	new ButtonGroupMenu("Edge", ["Down", "Up"])];
+
+	this.W8();
+};
+FilterEffectPanel.TrcC.prototype = new FilterEffectPanel();
+FilterEffectPanel.TrcC.prototype.KJ = function (l, d) {
+	d[0] = l.Lvl.v;
+	d[1] = ["Lwr", "Upr"].indexOf(l.Edg.v.CntE);
+};
+FilterEffectPanel.TrcC.prototype.PY = function (l, d) {
+	l.Lvl.v = d[0];
+	l.Edg.v.CntE = ["Lwr", "Upr"][d[1]];
+};
+FilterEffectPanel["Dfs "] = function () {
+	FilterEffectPanel.call(this, "Dfs ");
+	this.go = [new ButtonGroupMenu("Mode", ["Normal", "Darker Color", "Lighter Color", "Anisotropic"])];
+	this.W8();
+};
+FilterEffectPanel["Dfs "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Dfs "].prototype.KJ = function (l, d) {
+	d[0] = ["Nrml", "DrkO", "LghO", "anisotropic"].indexOf(l.Md.v.DfsM);
+};
+FilterEffectPanel["Dfs "].prototype.PY = function (l, d) {
+	l.Md.v.DfsM = ["Nrml", "DrkO", "LghO", "anisotropic"][d[0]];
+};
+FilterEffectPanel.Embs = function () {
+	FilterEffectPanel.call(this, "Embs");
+	this.go = [
+	new AngleInput("Angle"),
+	new RangeInput("Height", 1, 100, "px"),
+	new RangeInput("Amount", 1, 500, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.Embs.prototype = new FilterEffectPanel();
+FilterEffectPanel.Embs.prototype.KJ = function (l, d) {
+	d[0] = [l.Angl.v];
+	d[1] = l.Hght.v;
+	d[2] = l.Amnt.v;
+};
+FilterEffectPanel.Embs.prototype.PY = function (l, d) {
+	l.Angl.v = d[0][0];
+	l.Hght.v = d[1];
+	l.Amnt.v = d[2];
+};
+FilterEffectPanel["Wnd "] = function () {
+	FilterEffectPanel.call(this, "Wnd ");
+	this.go = [
+	new ButtonGroupMenu("Technique", ["Wind", "Blast", "Stagger"]),
+	new ButtonGroupMenu("Direction", ["From the Right", "From the Left"])];
+
+	this.W8();
+};
+FilterEffectPanel["Wnd "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Wnd "].prototype.KJ = function (l, d) {
+	d[0] = ["Wnd", "Blst", "Stgr"].indexOf(l.WndM.v.WndM);
+	d[1] = ["Left", "Rght"].indexOf(l.Drct.v.Drct);
+};
+FilterEffectPanel["Wnd "].prototype.PY = function (l, d) {
+	l.WndM.v.WndM = ["Wnd", "Blst", "Stgr"][d[0]];
+	l.Drct.v.Drct = ["Left", "Rght"][d[1]];
+};
+FilterEffectPanel.denoise = function () {
+	FilterEffectPanel.call(this, "denoise");
+	this.go = [
+	new RangeInput("Strength", 0, 10),
+	new RangeInput("Protect Detail", 0, 100, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.denoise.prototype = new FilterEffectPanel();
+FilterEffectPanel.denoise.prototype.KJ = function (l, d) {
+	var _local1502 = l.channelDenoise.v[0].v;
+	d[0] = _local1502.Amnt.v;
+	d[1] = _local1502.EdgF.v;
+};
+FilterEffectPanel.denoise.prototype.PY = function (l, d) {
+	var _local1503 = l.channelDenoise.v[0].v;
+	_local1503.Amnt.v = d[0];
+	_local1503.EdgF.v = d[1];
+};
+FilterEffectPanel.lightFilterGradient = function () {
+	FilterEffectPanel.call(this, "lightFilterGradient");
+	this.go = [
+	new RangeInput("Blur", 0, 100, "px", 1, !0),
+	new RangeInput("Scale", 0, 200, "%"),
+	new CheckboxControl("Invert"),
+	new RangeInput("High", 0, 100, "%"),
+	new RangeInput("Medium", 0, 100, "%"),
+	new RangeInput("Low", 0, 100, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.lightFilterGradient.prototype = new FilterEffectPanel();
+FilterEffectPanel.lightFilterGradient.prototype.KJ = function (l, d) {
+	d[0] = l.blur.v;
+	d[1] = l.textureScale.v * 100;
+	d[2] = l.Scl.v == -1;
+	var _local1504 = l.Dtl.v;
+	d[3] = _local1504[0].v * 100;
+	d[4] = _local1504[1].v * 100;
+	d[5] = _local1504[2].v * 100;
+};
+FilterEffectPanel.lightFilterGradient.prototype.PY = function (l, d) {
+	l.blur.v = d[0];
+	l.textureScale.v = d[1] / 100;
+	l.Scl.v = d[2] ? -1 : 1;
+	var _local1505 = l.Dtl.v;
+	_local1505[0].v = d[3] / 100;
+	_local1505[1].v = d[4] / 100;
+	_local1505[2].v = d[5] / 100;
+};
+FilterEffectPanel.Fbrs = function () {
+	FilterEffectPanel.call(this, "Fbrs");
+	this.go = [
+	new RangeInput("Variance", 1, 64),
+	new RangeInput("Strength", 1, 64)];
+
+	this.W8();
+};
+FilterEffectPanel.Fbrs.prototype = new FilterEffectPanel();
+FilterEffectPanel.Fbrs.prototype.KJ = function (l, d) {
+	d[0] = l.Vrnc.v;
+	d[1] = l.Strg.v;
+};
+FilterEffectPanel.Fbrs.prototype.PY = function (l, d) {
+	l.Vrnc.v = d[0];
+	l.Strg.v = d[1];
+};
+FilterEffectPanel.LnsF = function () {
+	FilterEffectPanel.call(this, "LnsF");
+	this.go = [
+	new RangeInput("Brightness", 10, 300, "%"),
+	new ButtonGroupMenu("Type", ["Lens 1", "Lens 2", "Lens 3", "Lens 4"]),
+	new RangeInput("Position X", 0, 100, "%"),
+	new RangeInput("Position Y", 0, 100, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.LnsF.prototype = new FilterEffectPanel();
+FilterEffectPanel.LnsF.prototype.KJ = function (l, d) {
+	d[0] = l.Brgh.v;
+	d[1] = ["Zm", "Nkn", "Nkn1", "PnVs"].indexOf(l.Lns.v.Lns);
+	var _local1506 = l.FlrC.v;
+	d[2] = Math.round(_local1506.Hrzn.v * 100);
+	d[3] = Math.round(_local1506.Vrtc.v * 100);
+};
+FilterEffectPanel.LnsF.prototype.PY = function (l, d) {
+	l.Brgh.v = d[0];
+	l.Lns.v.Lns = ["Zm", "Nkn", "Nkn1", "PnVs"][d[1]];
+	var _local1507 = l.FlrC.v;
+	_local1507.Hrzn.v = d[2] / 100;
+	_local1507.Vrtc.v = d[3] / 100;
+};
+FilterEffectPanel.aaM(FilterEffectPanel.LnsF.prototype);
+FilterEffectPanel.blendOptions = function () {
+	FilterEffectPanel.call(this, "blendOptions");
+	this.go.push(new DropdownMenu("Blend Mode", au.YJ, au.hY));
+	this.go.push(new RangeInput("Opacity", 0, 100, "%"));
+	this.W8();
+};
+FilterEffectPanel.blendOptions.prototype = new FilterEffectPanel();
+FilterEffectPanel.blendOptions.prototype.KJ = function (l, d) {
+	d[0] = au.Point2D.indexOf(l.Md.v.BlnM);
+	d[1] = l.Opct.v.val;
+};
+FilterEffectPanel.blendOptions.prototype.PY = function (l, d) {
+	l.Md.v.BlnM = au.Point2D[d[0]];
+	l.Opct.v.val = d[1];
+};
+FilterEffectPanel.LnCr = function () {
+	FilterEffectPanel.call(this, "LnCr");
+	this.go = [
+	new RangeInput("Amount", -100, 100),
+	new RangeInput("Scale", 10, 150, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.LnCr.prototype = new FilterEffectPanel();
+FilterEffectPanel.LnCr.prototype.KJ = function (l, d) {
+	d[0] = l.LnIa.v;
+	d[1] = l.LnSi.v;
+};
+FilterEffectPanel.LnCr.prototype.PY = function (l, d) {
+	l.LnIa.v = d[0];
+	l.LnSi.v = d[1];
+};
+FilterEffectPanel.adaptCorrect = function () {
+	FilterEffectPanel.call(this, "adaptCorrect");
+	var _local1508 = OffsetRangeInput;
+	this.go = [
+	new LabelItem("Shadows"),
+	new _local1508("Amount", 0, 100, "%"),
+	new _local1508("Tone", 0, 100, "%"),
+	new _local1508("Radius", 0, 200, "px"),
+	new LabelItem("Highlights"),
+	new _local1508("Amount", 0, 100, "%"),
+	new _local1508("Tone", 0, 100, "%"),
+	new _local1508("Radius", 0, 200, "px"),
+	new LabelItem("Adjustments"),
+	new _local1508("Color", -100, 100)];
+
+	this.W8("Adjustments");
+};
+FilterEffectPanel.adaptCorrect.prototype = new FilterEffectPanel();
+FilterEffectPanel.adaptCorrect.prototype.KJ = function (l, d) {
+	var _local1509 = l.sdwM.v;
+	d[0] = _local1509.Amnt.v.val;
+	d[1] = _local1509.Wdth.v.val;
+	d[2] = _local1509.Rds.v;
+	var _local1509 = l.hglM.v;
+	d[3] = _local1509.Amnt.v.val;
+	d[4] = _local1509.Wdth.v.val;
+	d[5] = _local1509.Rds.v;
+	d[6] = l.ClrC.v;
+};
+FilterEffectPanel.adaptCorrect.prototype.PY = function (l, d) {
+	var _local1510 = l.sdwM.v;
+	_local1510.Amnt.v.val = d[0];
+	_local1510.Wdth.v.val = d[1];
+	_local1510.Rds.v = d[2];
+	var _local1510 = l.hglM.v;
+	_local1510.Amnt.v.val = d[3];
+	_local1510.Wdth.v.val = d[4];
+	_local1510.Rds.v = d[5];
+	l.ClrC.v = d[6];
+};
+FilterEffectPanel.Flam = function () {
+	FilterEffectPanel.call(this, "Flam");
+	var _local1516 = this.go = [
+	new DropdownMenu([12, 44], [
+	"One Flame Along Path",
+	"Multiple Flames Along Path",
+	"Multiple Flames One Direction",
+	"Multiple Flames Path Directed",
+	"Multiple Flames Various Angle",
+	"Candle Light"]
+	),
+	new RangeInput("Length", 20, 1e3, "px"),
+	new CheckboxControl("Randomize Length"),
+	new RangeInput("Width", 5, 600, "px"),
+	new RangeInput("Angle", 0, 360, "\xB0"),
+	new RangeInput("Interval", 10, 200, "px"),
+	new CheckboxControl("Adapt Interval for Loops"),
+	new ColorSwatch(!1),
+	new DropdownMenu("Quality", ["1: Draft", "2: Low", "3: Medium", "4: High", "5: Fine"]),
+	new RangeInput("Turbulent", 0, 100),
+	new RangeInput("Jag", 0, 100),
+	new RangeInput("Opacity", 0, 100),
+	new RangeInput("Lines", 2, 30),
+	new RangeInput("Bottom", 0, 100),
+	new DropdownMenu("Style", ["Normal", "Violent", "Flat"]),
+	new DropdownMenu("Shape", ["Parallel", "To the center", "Spread", "Oval", "Pointing"]),
+	new CheckboxControl("Randomize Shape"),
+	new RangeInput("Random Seed", 0, 100)];
+	this.W8();
+	var _local1515 = this.e;
+	s.clearChildren(_local1515);
+	var _local1512 = new ButtonGroupMenu(null, ["Basic", "Advanced"]);
+	_local1512.addListener(ActionTypes.E.A, this.alm, this);
+	_local1515.appendChild(_local1512.e);
+	s.appendHr(_local1515);
+	var _local1514 = s.createElement("div"),
+		_local1513 = s.createElement("div");
+	this.at_ = [_local1514, _local1513];
+	_local1515.appendChild(_local1514);
+	for (var _local1511 = 0; _local1511 < _local1516.length; _local1511++) {
+		(_local1511 < 9 ? _local1514 : _local1513).appendChild(_local1516[_local1511].e);
+		if (_local1511 == 6) s.appendBr(_local1514);
+	}
+	_local1516[0].addListener(ActionTypes.E.A, this.awZ, this);
+	this.awZ();
+};
+FilterEffectPanel.Flam.prototype = new FilterEffectPanel();
+FilterEffectPanel.Flam.prototype.awZ = function (l) {
+	var _local1518 = this.go,
+		_local1517 = _local1518[0].b();
+	_local1518[1].setEnabled(_local1517 != 0 && _local1517 != 5);
+	_local1518[2].setEnabled(_local1517 != 0 && _local1517 != 5);
+	_local1518[4].setEnabled(_local1517 != 0 && _local1517 != 5 && _local1517 != 1);
+	_local1518[5].setEnabled(_local1517 != 0 && _local1517 != 5);
+	_local1518[6].setEnabled(_local1517 != 0 && _local1517 != 5);
+};
+FilterEffectPanel.Flam.prototype.alm = function (l) {
+	var _local1519 = l.target.b(),
+		_local1521 = this.at_,
+		_local1520 = this.e;
+	_local1520.removeChild(_local1521[1 - _local1519]);
+	_local1520.appendChild(_local1521[_local1519]);
+};
+FilterEffectPanel.boxblur = function () {
+	FilterEffectPanel.call(this, "boxblur");
+	this.go = [new RangeInput("Radius", 1, 200, " px")];
+	this.W8();
+};
+FilterEffectPanel.boxblur.prototype = new FilterEffectPanel();
+FilterEffectPanel.boxblur.prototype.KJ = function (l, d) {
+	d[0] = l.Rds.v.val;
+};
+FilterEffectPanel.boxblur.prototype.PY = function (l, d) {
+	l.Rds.v.val = d[0];
+};
+FilterEffectPanel.GsnB = function () {
+	FilterEffectPanel.call(this, "GsnB");
+	this.go = [new RangeInput("Radius", .1, 400, "px", 1, !0)];
+	this.W8();
+};
+FilterEffectPanel.GsnB.prototype = new FilterEffectPanel();
+FilterEffectPanel.Dila = function () {
+	FilterEffectPanel.call(this, "Dila");
+	this.go = [
+	new RangeInput("Crop", 0, 20, "px", 0),
+	new RangeInput("Radius", 0, 400, "px", 0, !0)];
+
+	this.W8();
+};
+FilterEffectPanel.Dila.prototype = new FilterEffectPanel();
+FilterEffectPanel.MtnB = function () {
+	FilterEffectPanel.call(this, "MtnB");
+	this.go = [
+	new AngleInput("Angle"),
+	new RangeInput("Distance", 1, 100, " px")];
+
+	this.W8();
+};
+FilterEffectPanel.MtnB.prototype = new FilterEffectPanel();
+FilterEffectPanel.RdlB = function () {
+	FilterEffectPanel.call(this, "RdlB");
+	this.go = [
+	new RangeInput("Amount", 1, 100),
+	new ButtonGroupMenu("Mode", ["Spin", "Zoom"]),
+	new RangeInput("Position X", 0, 100, "%"),
+	new RangeInput("Position Y", 0, 100, "%")];
+
+	this.W8();
+};
+FilterEffectPanel.RdlB.prototype = new FilterEffectPanel();
+FilterEffectPanel.RdlB.prototype.KJ = function (l, d) {
+	d[0] = l.Amnt.v;
+	d[1] = ["Spn", "Zm"].indexOf(l.BlrM.v.BlrM);
+	d[2] = l.Cntr.v.Hrzn.v * 100;
+	d[3] = l.Cntr.v.Vrtc.v * 100;
+};
+FilterEffectPanel.RdlB.prototype.PY = function (l, d) {
+	l.Amnt.v = d[0];
+	l.BlrM.v.BlrM = ["Spn", "Zm"][d[1]];
+	l.Cntr.v.Hrzn.v = d[2] / 100;
+	l.Cntr.v.Vrtc.v = d[3] / 100;
+};
+FilterEffectPanel.aaM(FilterEffectPanel.RdlB.prototype);
+
+// Filter: Displace
+FilterEffectPanel.Dspl = function () {
+	FilterEffectPanel.call(this, "Dspl");
+	this.go = [
+	new DropdownMenu("Source (Smart Object)", ["a", "b"]),
+	new RangeInput("Horizontal", -100, 100, "px"),
+	new RangeInput("Vertical", -100, 100, "px"),
+	new DropdownMenu("Undefined Area", ["Wrap Around", "Repeat Edge Pixels"])];
+
+	this.W8();
+};
+FilterEffectPanel.Dspl.prototype = new FilterEffectPanel();
+FilterEffectPanel.Dspl.prototype.KJ = function (l, d, G) {
+	this.aqC = [];
+	this.mD = [];
+	var _local1525 = -1,
+		_local1524 = G ? G[0] : null;
+	if (_local1524 == null) _local1524 = this.a1Q;else
+	this.a1Q = _local1524;
+	if (_local1524)
+	for (var _local1522 = 0; _local1522 < _local1524.length; _local1522++) {
+		var _local1523 = _local1524[_local1522];
+		this.aqC.push(_local1523.bf.trim());
+		this.mD.push(_local1523.AN);
+		if (_local1523.AN == l.DspF.v.pth) _local1525 = _local1522;
+	}
+	this.go[0].b3(this.aqC);
+	d[0] = _local1525 == -1 ? 0 : _local1525;
+	d[1] = l.HrzS.v;
+	d[2] = l.VrtS.v;
+	d[3] = ["WrpA", "RptE"].indexOf(l.UndA.v.UndA);
+};
+FilterEffectPanel.Dspl.prototype.PY = function (l, d) {
+	if (this.mD.length == 0) return;
+	l.DspF.v.pth = this.mD[d[0]];
+	l.HrzS.v = d[1];
+	l.VrtS.v = d[2];
+	l.UndA.v.UndA = ["WrpA", "RptE"][d[3]];
+};
+
+// Filter: Pinch
+FilterEffectPanel.Pnch = function () {
+	FilterEffectPanel.call(this, "Pnch");
+	this.go = [new RangeInput("Amount", -100, 100, "%")];
+	this.W8();
+};
+FilterEffectPanel.Pnch.prototype = new FilterEffectPanel();
+
+// Filter: Polar Coordinates
+FilterEffectPanel["Plr "] = function () {
+	FilterEffectPanel.call(this, "Plr ");
+	this.go = [new ButtonGroupMenu(null, ["Rect to Polar", "Polar to Rect"])];
+	this.W8();
+};
+FilterEffectPanel["Plr "].prototype = new FilterEffectPanel();
+
+// Filter: Ripple
+FilterEffectPanel.Rple = function () {
+	FilterEffectPanel.call(this, "Rple");
+	this.go = [
+	new RangeInput("Amount", -999, 999),
+	new DropdownMenu("Size", ["Small", "Medium", "Large"])];
+
+	this.W8();
+};
+FilterEffectPanel.Rple.prototype = new FilterEffectPanel();
+
+// Filter: Shear
+FilterEffectPanel["Shr "] = function () {
+	FilterEffectPanel.call(this, "Shr ");
+	this.go = [
+	new CurveEditor(!0, !0),
+	new DropdownMenu("Undefined Area", ["Wrap Around", "Repeat Edge Pixels"])];
+
+	this.W8();
+};
+FilterEffectPanel["Shr "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Shr "].prototype.KJ = function (l, d) {
+	var _local1526 = new Matrix2D(0, 255 / 127, 255 / 127, 0, -2, 128),
+		_local1527 = JSON.parse(JSON.stringify(l.ShrP.v));
+	PixelUtil.presetThumb.D(_local1527, _local1526);
+	d[0] = _local1527;
+	d[1] = ["WrpA", "RptE"].indexOf(l.UndA.v.UndA);
+};
+FilterEffectPanel["Shr "].prototype.PY = function (l, d) {
+	var _local1528 = new Matrix2D(0, 255 / 127, 255 / 127, 0, -2, 128);
+	_local1528.hI();
+	PixelUtil.presetThumb.D(d[0], _local1528);
+	l.ShrP.v = d[0];
+	l.ShrE.v = d[0].length - 1;
+	l.UndA.v.UndA = ["WrpA", "RptE"][d[1]];
+};
+
+// Filter: Spherize
+FilterEffectPanel.Sphr = function () {
+	FilterEffectPanel.call(this, "Sphr");
+	this.go = [
+	new RangeInput("Amount", -100, 100),
+	new DropdownMenu("Mode", ["Normal", "Horizontal", "Vertical"])];
+
+	this.W8();
+};
+FilterEffectPanel.Sphr.prototype = new FilterEffectPanel();
+FilterEffectPanel.Sphr.prototype.KJ = function (l, d) {
+	d[0] = l.Amnt.v;
+	d[1] = ["Nrml", "HrzO", "VrtO"].indexOf(l.SphM.v.SphM);
+};
+FilterEffectPanel.Sphr.prototype.PY = function (l, d) {
+	l.Amnt.v = d[0];
+	l.SphM.v.SphM = ["Nrml", "HrzO", "VrtO"][d[1]];
+};
+
+// Filter: Dither
+FilterEffectPanel.Dthr = function () {
+	FilterEffectPanel.call(this, "Dthr");
+	this.go = [
+	new DropdownMenu("Palette", ["Black & White", "RGB 2x2x2", "RGB 4x4x4", "RGB 8x8x4"]),
+	new ButtonGroupMenu("Method", ["None", "Floyd-Steinberg", "Bayer 4x4"])];
+
+	this.W8();
+};
+FilterEffectPanel.Dthr.prototype = new FilterEffectPanel();
+FilterEffectPanel.Dthr.prototype.KJ = function (l, d) {
+	d[0] = l.Plte.v;
+	d[1] = l.Mthd ? l.Mthd.v : 1;
+};
+FilterEffectPanel.Dthr.prototype.PY = function (l, d) {
+	l.Plte.v = d[0];
+	l.Mthd.v = d[1];
+};
+
+// Filter: Particles
+FilterEffectPanel.Part = function () {
+	FilterEffectPanel.call(this, "Part");
+	this.go = [
+	new RangeInput("Count", 0, 100, "%"),
+	new RangeInput("Size", 1, 50, "px"),
+	new RangeInput("Depth", 0, 100, "%"),
+	new RangeInput("Brightness", 10, 1e3, "%"),
+	new ColorSwatch(!0),
+	new RangeInput("Time", 0, 1, null, 3),
+	new RangeInput("Turbulence", 0, 100, "%"),
+	new CheckboxControl("Blink"),
+	new CheckboxControl("Fall")];
+	this.W8([4]);
+};
+FilterEffectPanel.Part.prototype = new FilterEffectPanel();
+FilterEffectPanel.Part.prototype.KJ = function (l, d) {
+	d[0] = l.Cont.v;
+	d[1] = l.Size.v;
+	d[2] = l.Dpth.v;
+	d[3] = l.Brgh.v;
+	d[4] = l.Clr.v;
+	d[5] = l.Time.v;
+	d[6] = l.Turb.v;
+	d[7] = l.Blnk.v;
+	d[8] = l.Fall.v;
+};
+FilterEffectPanel.Part.prototype.PY = function (l, d) {
+	l.Cont.v = d[0];
+	l.Size.v = d[1];
+	l.Dpth.v = d[2];
+	l.Brgh.v = d[3];
+	l.Clr.v = d[4];
+	l.Time.v = d[5];
+	l.Turb.v = d[6];
+	l.Blnk.v = d[7];
+	l.Fall.v = d[8];
+};
+
+// Filter: Twirl
+FilterEffectPanel.Twrl = function () {
+	FilterEffectPanel.call(this, "Twrl");
+	this.go = [new RangeInput("Angle", -999, 999)];
+	this.W8();
+};
+FilterEffectPanel.Twrl.prototype = new FilterEffectPanel();
+
+// Filter: Wave
+FilterEffectPanel.Wave = function () {
+	FilterEffectPanel.call(this, "Wave");
+	this.a6x = [1, 2, 3, 4];
+	this.go = [
+	new RangeInput("Number of Generators", 1, 100),
+	new OffsetRangeInput("Min Length", 1, 999),
+	new OffsetRangeInput("Max Length", 1, 999),
+	new OffsetRangeInput("Min Ampl.", 1, 999),
+	new OffsetRangeInput("Max Ampl.", 1, 999),
+	new OffsetRangeInput("Scale X", 1, 100, "%"),
+	new OffsetRangeInput("Scale Y", 1, 100, "%"),
+	new ButtonGroupMenu("Type", ["Sine", "Triangle", "Square"]),
+	new DropdownMenu("Undefined Area", ["Wrap Around", "Repeat Edge Pixels"])];
+
+	this.W8();
+};
+FilterEffectPanel.Wave.prototype = new FilterEffectPanel();
+
+// Filter: ZigZag
+FilterEffectPanel.ZgZg = function () {
+	FilterEffectPanel.call(this, "ZgZg");
+	this.go = [
+	new RangeInput("Amount", -100, 100),
+	new RangeInput("Ridges", 0, 20),
+	new DropdownMenu("Style", ["Around Center", "Out From Center", "Pond Ripples"])];
+
+	this.W8();
+};
+FilterEffectPanel.ZgZg.prototype = new FilterEffectPanel();
+
+// Filter: Surface Blur
+FilterEffectPanel.surfaceBlur = function () {
+	FilterEffectPanel.call(this, "surfaceBlur");
+	this.go = [
+	new RangeInput("Radius", 1, 200, " px"),
+	new RangeInput("Threshold", 1, 255, " px")];
+
+	this.W8();
+};
+FilterEffectPanel.surfaceBlur.prototype = new FilterEffectPanel();
+FilterEffectPanel.surfaceBlur.prototype.KJ = function (l, d) {
+	d[0] = l.Rds.v.val;
+	d[1] = l.Thsh.v;
+};
+FilterEffectPanel.surfaceBlur.prototype.PY = function (l, d) {
+	l.Rds.v.val = d[0];
+	l.Thsh.v = d[1];
+};
+
+FilterEffectPanel.AdNs = function () {
+	FilterEffectPanel.call(this, "AdNs");
+	this.go = [
+	new RangeInput("Amount", 0, 200, " %"),
+	new DropdownMenu("Distribution", ["Gaussian", "Uniform"]),
+	new CheckboxControl("Monochromatic")];
+	this.W8();
+};
+FilterEffectPanel.AdNs.prototype = new FilterEffectPanel();
+FilterEffectPanel.DstS = function () {
+	FilterEffectPanel.call(this, "DstS");
+	this.go = [
+	new RangeInput("Radius", 1, 200, " px"),
+	new RangeInput("Threshold", 1, 255, " px")];
+
+	this.W8();
+};
+FilterEffectPanel.DstS.prototype = new FilterEffectPanel();
+FilterEffectPanel["Mdn "] = function () {
+	FilterEffectPanel.call(this, "Mdn ");
+	this.go = [new RangeInput("Radius", 1, 200, " px")];
+	this.W8();
+};
+FilterEffectPanel["Mdn "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Mdn "].prototype.KJ = function (l, d) {
+	d[0] = l.Rds.v.val;
+};
+FilterEffectPanel["Mdn "].prototype.PY = function (l, d) {
+	l.Rds.v.val = d[0];
+};
+
+
+FilterEffectPanel.ClrH = function () {
+	FilterEffectPanel.call(this, "ClrH");
+	this.go = [new RangeInput("Radius", 4, 100, " px")];
+	for (var _local1529 = 1; _local1529 < 4; _local1529++) this.go.push(new RangeInput("Angle " + _local1529, 0, 90, " \xB0"));
+	this.W8();
+};
+FilterEffectPanel.ClrH.prototype = new FilterEffectPanel();
+FilterEffectPanel.ClrH.prototype.KJ = function (l, d) {
+	d[0] = l.Rds.v;
+	for (var _local1530 = 1; _local1530 < 4; _local1530++) d[_local1530] = l["Ang" + _local1530].v;
+};
+FilterEffectPanel.ClrH.prototype.PY = function (l, d) {
+	l.Rds.v = d[0];
+	for (var _local1531 = 1; _local1531 < 4; _local1531++) l["Ang" + _local1531].v = d[_local1531];
+};
+FilterEffectPanel.ClrH.prototype.refresh = function () {
+	var _local1533 = this.go;
+	_local1533[0].refresh();
+	for (var _local1532 = 1; _local1532 < 4; _local1532++) _local1533[_local1532].setLabel("Angle" + " " + _local1532);
+};
+
+
+FilterEffectPanel.Crst = function () {
+	FilterEffectPanel.call(this, "Crst");
+	this.go = [new RangeInput("Cell Size", 3, 100, " px")];
+	this.W8();
+};
+FilterEffectPanel.Crst.prototype = new FilterEffectPanel();
+FilterEffectPanel.Crst.prototype.KJ = function (l, d) {
+	d[0] = l.ClSz.v;
+};
+FilterEffectPanel.Crst.prototype.PY = function (l, d) {
+	l.ClSz.v = d[0];
+};
+
+
+FilterEffectPanel.Mztn = function () {
+	FilterEffectPanel.call(this, "Mztn");
+	this.go.push(new DropdownMenu("Type", "Fine Dots,Medium Dots,Grainy Dots,Coarse Dots,Short Lines,Medium Lines,Long Lines,Short Strokes,Medium Strokes,Long Strokes".split(","), "Exposure"));
+	this.mD = "FnDt MdmD GrnD CrsD ShrL MdmL LngL ShSt MdmS LngS".split(" ");
+	this.W8();
+};
+FilterEffectPanel.Mztn.prototype = new FilterEffectPanel();
+FilterEffectPanel.Mztn.prototype.KJ = function (l, d) {
+	d[0] = this.mD.indexOf(l.MztT.v.MztT);
+};
+FilterEffectPanel.Mztn.prototype.PY = function (l, d) {
+	l.MztT.v.MztT = this.mD[d[0]];
+};
+
+
+FilterEffectPanel["Msc "] = function () {
+	FilterEffectPanel.call(this, "Msc ");
+	this.go = [new RangeInput("Cell Size", 2, 200, " px")];
+	this.W8();
+};
+FilterEffectPanel["Msc "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Msc "].prototype.KJ = function (l, d) {
+	d[0] = l.ClSz.v.val;
+};
+FilterEffectPanel["Msc "].prototype.PY = function (l, d) {
+	l.ClSz.v.val = d[0];
+};
+
+
+FilterEffectPanel.Pntl = function () {
+	FilterEffectPanel.call(this, "Pntl");
+	this.go = [new RangeInput("Cell Size", 3, 100, " px")];
+	this.W8();
+};
+FilterEffectPanel.Pntl.prototype = new FilterEffectPanel();
+FilterEffectPanel.Pntl.prototype.KJ = function (l, d) {
+	d[0] = l.ClSz.v;
+};
+FilterEffectPanel.Pntl.prototype.PY = function (l, d) {
+	l.ClSz.v = d[0];
+};
+
+
+FilterEffectPanel.smartSharpen = function () {
+	FilterEffectPanel.call(this, "smartSharpen");
+	this.go = [
+	new RangeInput("Amount", 1, 200, "%"),
+	new RangeInput("Radius", 0, 200, "px", 1, !0)];
+
+	this.W8();
+};
+FilterEffectPanel.smartSharpen.prototype = new FilterEffectPanel();
+FilterEffectPanel.smartSharpen.prototype.KJ = function (l, d) {
+	d[0] = l.Amnt ? l.Amnt.v.val : 200;
+	d[1] = l.Rds ? l.Rds.v.val : 1;
+};
+FilterEffectPanel.smartSharpen.prototype.PY = function (l, d) {
+	l.Amnt.v.val = d[0];
+	l.Rds.v.val = d[1];
+};
+
+
+FilterEffectPanel.UnsM = function () {
+	FilterEffectPanel.call(this, "UnsM");
+	this.go = [
+	new RangeInput("Amount", 1, 200, " %"),
+	new RangeInput("Radius", .1, 400, "px", 1, !0),
+	new RangeInput("Threshold", 0, 255, " ")];
+
+	this.W8();
+};
+FilterEffectPanel.UnsM.prototype = new FilterEffectPanel();
+FilterEffectPanel.HghP = function () {
+	FilterEffectPanel.call(this, "HghP");
+	this.go = [new RangeInput("Radius", .1, 400, "px", 1, !0)];
+	this.W8();
+};
+FilterEffectPanel.HghP.prototype = new FilterEffectPanel();
+FilterEffectPanel.HsbP = function () {
+	FilterEffectPanel.call(this, "HsbP");
+	this.go = [
+	new ButtonGroupMenu("Input", ["RGB", "HSB", "HSL"]),
+	new ButtonGroupMenu("Output", ["RGB", "HSB", "HSL"])];
+
+	this.W8();
+};
+FilterEffectPanel.HsbP.prototype = new FilterEffectPanel();
+FilterEffectPanel["Mxm "] = function () {
+	FilterEffectPanel.call(this, "Mxm ");
+	this.go = [
+	new RangeInput("Radius", .1, 200, " px", 1, !0),
+	new DropdownMenu("Shape", ["Square", "Circle"])];
+
+	this.W8();
+};
+FilterEffectPanel["Mxm "].prototype = new FilterEffectPanel();
+FilterEffectPanel["Mnm "] = function () {
+	FilterEffectPanel.call(this, "Mnm ");
+	this.go = [
+	new RangeInput("Radius", .1, 200, " px", 1, !0),
+	new DropdownMenu("Shape", ["Square", "Circle"])];
+
+	this.W8();
+};
+FilterEffectPanel["Mnm "].prototype = new FilterEffectPanel();
+FilterEffectPanel.Ofst = function () {
+	FilterEffectPanel.call(this, "Ofst");
+	this.go = [
+	new RangeInput("Horizonal", -1024, 1024, " px"),
+	new RangeInput("Vertical", -1024, 1024, " px"),
+	new DropdownMenu("Undefined Area", ["Repeat Edge Pixels", "Set to Transparent", "Wrap Around"])];
+
+	this.W8();
+};
+FilterEffectPanel.Ofst.prototype = new FilterEffectPanel();
+FilterEffectPanel.Kale = function () {
+	FilterEffectPanel.call(this, "Kale");
+	this.go = [
+	new OffsetRangeInput("Mirrors", 2, 20),
+	new OffsetRangeInput("Angle", 0, 360, "\xB0")];
+
+	this.W8();
+};
+FilterEffectPanel.Kale.prototype = new FilterEffectPanel();
+FilterEffectPanel.Kale.prototype.KJ = function (l, d) {
+	d[0] = l.Mirr.v;
+	d[1] = l.MRot.v;
+};
+FilterEffectPanel.Kale.prototype.PY = function (l, d) {
+	l.Mirr.v = d[0];
+	l.MRot.v = d[1];
+};
+FilterEffectPanel.Rept = function () {
+	FilterEffectPanel.call(this, "Rept");
+	this.go = [
+	new OffsetRangeInput("Scale", 1, 300, " %"),
+	new OffsetRangeInput("Row Shift", -50, 50, " %"),
+	new OffsetRangeInput("Space X", -99, 200, " %"),
+	new OffsetRangeInput("Space Y", -99, 200, " %"),
+	new CheckboxControl("Auto Color"),
+	new AngleInput("Angle")];
+	this.W8();
+};
+FilterEffectPanel.Rept.prototype = new FilterEffectPanel();
+FilterEffectPanel.Rept.prototype.KJ = function (l, d) {
+	d[0] = l.Scl.v.val;
+	d[1] = l.Rsft.v.val;
+	d[2] = l.SpcX.v.val;
+	d[3] = l.SpcY.v.val;
+	d[4] = l.SpcC.v;
+	d[5] = [l.Angl.v];
+};
+FilterEffectPanel.Rept.prototype.PY = function (l, d) {
+	l.Scl.v.val = d[0];
+	l.Rsft.v.val = d[1];
+	l.SpcX.v.val = d[2];
+	l.SpcY.v.val = d[3];
+	l.SpcC.v = d[4];
+	l.Angl.v = d[5][0];
+	return l;
+};
+FilterEffectPanel.Ctoa = function () {
+	FilterEffectPanel.call(this, "Ctoa");
+	this.go = [
+	new LabelItem("Color"),
+	new ColorSwatch(!0),
+	new RangeInput("Transparency Threshold", 0, 100, " %"),
+	new RangeInput("Opacity Threshold", 0, 100, " %")];
+	this.W8();
+};
+FilterEffectPanel.Ctoa.prototype = new FilterEffectPanel();
+FilterEffectPanel.Ctoa.prototype.KJ = function (l, d) {
+	d[0] = l.Clr.v;
+	d[1] = l.Trsp.v.val;
+	d[2] = l.Opct.v.val;
+};
+FilterEffectPanel.Ctoa.prototype.PY = function (l, d) {
+	l.Clr.v = d[0];
+	l.Trsp.v.val = d[1];
+	l.Opct.v.val = d[2];
+};
+FilterEffectPanel.LqFy = function () {
+	FilterEffectPanel.call(this, "LqFy");
+	this.Fb = !1;
+	this.nt = !1;
+	this.YE = null;
+	this.azQ = null;
+	this.G = 0;
+	this.qj = -1;
+	this.d = {
+		vu: [
+		[{
+			G: {
+				id: 0,
+				name: "Smudge",
+				mq: "liq/smudge"
+			}
+		}],
+		[{
+			G: {
+				id: 1,
+				name: "Reconstruct",
+				mq: "liq/reconstruct"
+			}
+		}],
+		[{
+			G: {
+				id: 2,
+				name: "Smoothen",
+				mq: "liq/smooth"
+			}
+		}],
+		[{
+			G: {
+				id: 3,
+				name: "Twirl",
+				mq: "liq/twirl"
+			}
+		}],
+		[{
+			G: {
+				id: 4,
+				name: "Shrink",
+				mq: "liq/shrink"
+			}
+		}],
+		[{
+			G: {
+				id: 5,
+				name: "Blow",
+				mq: "liq/blow"
+			}
+		}],
+		[{
+			G: {
+				id: 6,
+				name: "Push Left",
+				mq: "liq/pleft"
+			}
+		}],
+		[{
+			G: {
+				id: 7,
+				name: "Hand",
+				mq: "tools/hand"
+			}
+		}],
+		[{
+			G: {
+				id: 8,
+				name: "Zoom In",
+				mq: "zoomIn"
+			}
+		}],
+		[{
+			G: {
+				id: 9,
+				name: "Zoom Out",
+				mq: "zoomOut"
+			}
+		}]],
+
+		keys: []
+	};
+	this.QB = new ToolbarColumn(this.d, !1);
+	this.QB.fr(0);
+	this.QB.addListener(ActionTypes.E.L, this.a2x, this);
+	this.QP = es._k();
+	this.c9 = null;
+	this.hr = [];
+	this.Jb = -1;
+	this.B7 = null;
+	this.aek = null;
+	this.J0 = null;
+	this.D5 = null;
+	this.S4 = null;
+	var _local1540 = s.createElement("div", "flexrow");
+	this.jo = _local1540;
+	this.e.appendChild(_local1540);
+	_local1540.appendChild(this.QB.e);
+	this.view = new LayerCanvasPanel(!0);
+	this.view.resize(100, 100);
+	this.view.addListener("mousedown", this.JO, this);
+	this.view.addListener("mousemove", this.D2, this);
+	this.view.addListener("mouseup", this.qd, this);
+	this.view.addListener("zoom", this.ed, this);
+	_local1540.appendChild(this.view.e);
+	var _local1539 = s.createElement("div", "form");
+	_local1540.appendChild(_local1539);
+	this.nY = _local1539;
+	_local1539.style.width = "230px";
+	this.pK = [
+	new RangeInput("Size", 0, 1e3, null, !1, !0),
+	new RangeInput("Density", 0, 100, null, !1, !1),
+	new RangeInput("Rate", 0, 100, null, !1, !1),
+	new CheckboxControl("Background"),
+	new RangeInput("Opacity", 0, 100, null, !1, !1),
+	new CheckboxControl("Preview")];
+
+	var _local1535 = this.QP.Brsh.v;
+	_local1535.Dmtr.v.val = 100;
+	var _local1538 = [100, 50, 100, !1, 100, !0];
+	for (var _local1534 = 0; _local1534 < this.pK.length; _local1534++) {
+		var _local1537 = this.pK[_local1534];
+		_local1537.c(_local1538[_local1534]);
+		if (_local1534 == 4) _local1537.disable();
+		_local1537.addListener(ActionTypes.E.A, this.ajJ, this);
+		_local1539.appendChild(_local1537.e);
+	}
+	var _local1536 = this.ay1 = new ToolbarButton("Reset", !0, null, !0);
+	_local1536.addListener("click", this.Jx, this);
+	_local1539.appendChild(_local1536.e);
+	this.abi = this.fA.bind(this);
+	this.r5 = new UIComponent();
+	this.r5.e = s.createElement("div", "floatcont");
+	this.Z0 = new ToolbarButton("Menu", !1, null, !0);
+	var _local1541 = this.Z0.e;
+	_local1541.setAttribute("style", "position:absolute; right:13px; top:47px");
+	s.addPointerDown(_local1541, this.auz.bind(this));
+};
+FilterEffectPanel.LqFy.prototype = new FilterEffectPanel();
+FilterEffectPanel.LqFy.prototype.ZW = function () {
+	return !0;
+};
+FilterEffectPanel.LqFy.prototype.ul = function (l) {
+	this.nY.appendChild(l);
+};
+FilterEffectPanel.LqFy.prototype.auz = function (l) {
+	if (s.isInDocument(this.r5.e)) return;
+	l.stopPropagation();
+	var _local1543 = this.Z0.e.getBoundingClientRect();
+	this.r5.e.appendChild(this.nY);
+	var _local1542 = new Action(ActionTypes.E.L, !0);
+	_local1542.data = {
+		a: ActionTypes.$.dY,
+		A3: this.r5,
+		x: _local1543.right + _local1543.width - 290,
+		y: _local1543.top + _local1543.height
+	};
+	this.dispatch(_local1542);
+};
+FilterEffectPanel.LqFy.prototype.o9 = function (l) {
+	this.Fb = l.l(KeyboardHandler.Jm);
+	var _local1548 = f.BrushToolBase.HK(this.QP, l);
+	if (_local1548 != null) {
+		this.QP = _local1548;
+		this.ed();
+		this.pK[0].c(_local1548.Brsh.v.Dmtr.v.val);
+	} else if (l.l(KeyboardHandler.wz) && l.l(KeyboardHandler.dr)) {
+		var _local1544 = this.hr;
+		if (l.l(KeyboardHandler.Zz)) {
+			if (this.Jb + 1 < _local1544.length) this.Jb++;
+		} else if (this.Jb > 0) this.Jb--;
+		this.c9.map = _local1544[this.Jb].slice(0);
+		this.VP(null);
+	} else if (this.G <= 6) this.view.o9(l);
+	var _local1547 = this.G,
+		_local1546 = -1,
+		_local1545 = l.l(KeyboardHandler.Jm);
+	if (_local1545 && this.qj == -1) {
+		if (_local1547 == 0) _local1546 = 1;
+		if (_local1547 == 4) _local1546 = 5;
+		if (_local1547 == 5) _local1546 = 4;
+		if (_local1546 != -1) this.qj = _local1547;
+	}
+	if (!_local1545 && this.qj != -1) {
+		_local1546 = this.qj;
+		this.qj = -1;
+	}
+	if (_local1546 != -1) {
+		this.G = _local1546;
+		this.QB.fr(this.G);
+	}
+};
+FilterEffectPanel.LqFy.prototype.a2x = function (l) {
+	if (l.data.a == ActionTypes.$.yb) {
+		var _local1549 = this.G = l.data.G;
+		this.QB.fr(this.G);
+		this.view.o9(_local1549 > 6 ? LayerCanvasPanel.a9m(_local1549 - 7) : new KeyboardHandler());
+	}
+};
+FilterEffectPanel.LqFy.prototype.ajJ = function (l) {
+	var _local1552 = l.currentTarget,
+		_local1550 = this.pK.indexOf(_local1552),
+		_local1551 = this.QP.Brsh.v;
+	if (_local1550 == 0) {
+		_local1551.Dmtr.v.val = _local1552.b();
+		this.ed();
+	}
+	this.pK[4].setEnabled(this.pK[3].b());
+	if (_local1550 > 2) this.VP(null);
+};
+FilterEffectPanel.LqFy.prototype.Zy = function () {
+	var _local1553 = this.hr;
+	this.Jb++;
+	_local1553[this.Jb] = this.c9.map.slice(0);
+	while (_local1553.length > this.Jb + 1) _local1553.pop();
+	while (_local1553.length > 50) {
+		_local1553 = _local1553.slice(1);
+		this.Jb--;
+	}
+};
+FilterEffectPanel.LqFy.prototype.JO = function (l) {
+	this.YE = this.view.KE();
+	this.azQ = new Point2D(0, 0);
+	this.nt = !0;
+	window.requestAnimationFrame(this.abi);
+};
+FilterEffectPanel.LqFy.prototype.D2 = function (l) {
+	var _local1555 = this.view.KE(),
+		_local1554 = new Point2D(_local1555.x - this.YE.x, _local1555.y - this.YE.y);
+	if (this.G == 0 || this.G == 6) this.afo(_local1554);
+	this.YE = _local1555;
+};
+FilterEffectPanel.LqFy.prototype.qd = function (l) {
+	this.Zy();
+	this.nt = !1;
+};
+FilterEffectPanel.LqFy.prototype.fA = function (l) {
+	if (this.G != 0 && this.G != 6) this.afo(new Point2D(0, 0));
+	if (this.nt) window.requestAnimationFrame(this.abi);
+};
+FilterEffectPanel.LqFy.prototype.afo = function (l) {
+	var _local1573 = this.c9,
+		_local1560 = _local1573.iJ / this.B7.m,
+		_local1572 = this.YE,
+		_local1568 = this.QP.Brsh.v,
+		_local1565 = _local1568.Dmtr.v.val,
+		_local1581 = Date.now(),
+		_local1562 = _local1573.iJ,
+		_local1582 = _local1573.Tq,
+		_local1574 = Math.sqrt(l.x * l.x + l.y * l.y),
+		_local1564 = Math.max(1, Math.ceil(_local1574 / 2)),
+		_local1566 = l.x / _local1564,
+		_local1563 = l.y / _local1564,
+		_local1578 = _local1572.clone(),
+		_local1580 = this.G,
+		_local1567 = this.pK[1].b() / 100,
+		_local1576 = this.pK[2].b() / 100,
+		_local1575 = [.005, .015, 0, 0, .2, .2, .01, .01, .05, .35, .1, .1, .005, .015],
+		_local1570 = _local1575[_local1580 * 2],
+		_local1577 = _local1575[_local1580 * 2 + 1],
+		_local1559 = (1 - _local1567) * _local1570 + _local1567 * _local1577,
+		_local1558 = _local1565 * _local1560 / 2;
+
+	for (var _local1556 = 0; _local1556 < _local1564; _local1556++) {
+		var _local1579 = [];
+		_local1578.x += _local1566;
+		_local1578.y += _local1563;
+		PixelUtil.Ad.aga(_local1573.map, _local1562, _local1582, _local1580, _local1578.x * _local1560, _local1578.y * _local1560, _local1558, _local1567, _local1576, _local1566 * _local1560, _local1563 * _local1560, _local1579, this.Fb);
+		PixelUtil.Ad.a6o(_local1562, _local1582, _local1573.map, _local1579, 2 * _local1559 * _local1576);
+	}
+	var _local1561 = new Rect(0, 0, _local1562, _local1582),
+		_local1569 = new Rect(_local1572.x * _local1560, _local1572.y * _local1560, 0, 0);
+	_local1569.rC(_local1565 * _local1560 * .5, _local1565 * _local1560 * .5);
+	var _local1571 = _local1569.clone();
+	_local1571.offset(l.x * _local1560, l.y * _local1560);
+	_local1569 = _local1569.Cw(_local1571);
+	var _local1557 = new Rect(_local1569.x / _local1560, _local1569.y / _local1560, _local1569.m / _local1560, _local1569.n / _local1560);
+	_local1557 = PixelUtil.vec.f1(_local1557).wD(this.B7);
+	this.pK[5].c(!0);
+	this.VP(_local1557);
+};
+FilterEffectPanel.LqFy.prototype.ed = function () {
+	var _local1583 = iU.$I(this.QP, null, this.view.KI().N);
+	this.view.uH(_local1583);
+};
+FilterEffectPanel.LqFy.prototype.c = function (l, d, G, b, V) {
+	G = G.clone();
+	if (d == null) return;
+	if (!b.XB(G)) {
+		var _local1585 = G.Cw(b),
+			_local1587 = PixelUtil.allocBytes(_local1585.O() * 4);
+		PixelUtil.blitRgbaRect(d, G, _local1587, _local1585);
+		d = _local1587;
+		G = _local1585;
+		var _local1584 = PixelUtil.allocBytes(_local1585.O() * 4);
+		PixelUtil.blitRgbaRect(V, b, _local1584, _local1585);
+		V = _local1584;
+	}
+	G.x = G.y = 0;
+	this.J0 = d;
+	this.aek = V;
+	this.S4 = d.slice(0);
+	this.D5 = d.slice(0);
+	this.B7 = G;
+	this.c9 = ei.Cd(new Uint8Array(l.LqMe.v).buffer);
+	var _local1588 = G.m,
+		_local1586 = G.n;
+	if (this.c9.iJ / _local1588 < .22) {
+		this.c9 = {
+			iJ: Math.floor(_local1588 / 4),
+			Tq: Math.floor(_local1586 / 4)
+		};
+		this.c9.map = new Float32Array(this.c9.iJ * this.c9.Tq * 2);
+	}
+	this.hr = [];
+	this.Jb = -1;
+	this.Zy();
+	this.VP(null);
+	this.view.kn();
+	this.ed();
+};
+FilterEffectPanel.LqFy.prototype.b = function () {
+	var _local1592 = FilterHelper.oT("LqFy"),
+		_local1591 = new Uint8Array(ei.CO(this.c9)),
+		_local1590 = [];
+	for (var _local1589 = 0; _local1589 < _local1591.length; _local1589++) _local1590.push(_local1591[_local1589]);
+	_local1592.LqMe.v = _local1590;
+	return _local1592;
+};
+FilterEffectPanel.LqFy.prototype.resize = function (l, d) {
+	this.QB.resize(l, d);
+	var _local1593 = this.Z0.e,
+		_local1594 = this.nY;
+	this.jo.appendChild(_local1594);
+	this.jo.appendChild(_local1593);
+	if (l > 450 && l - d > 200) {
+		_local1594.style.marginLeft = "1em";
+		this.jo.removeChild(_local1593);
+		this.view.resize(l - 238 - 45, d);
+	} else {
+		_local1594.style.marginLeft = "";
+		this.jo.removeChild(_local1594);
+		this.view.resize(l - 40, d);
+	}
+};
+FilterEffectPanel.LqFy.prototype.refresh = function () {
+	this.QB.refresh();
+	this.ay1.refresh();
+	for (var _local1595 = 0; _local1595 < this.pK.length; _local1595++) this.pK[_local1595].refresh();
+};
+FilterEffectPanel.LqFy.prototype.Jx = function () {
+	this.c9.map.fill(0);
+	this.Zy();
+	this.VP(null);
+};
+FilterEffectPanel.LqFy.prototype.VP = function (l) {
+	var _local1599 = this.B7,
+		_local1596 = this.J0,
+		_local1598 = this.S4,
+		_local1597 = this.c9;
+	if (this.pK[5].b()) PixelUtil.Ad.Dq(_local1596, this.D5, _local1599.m, _local1599.n, l, _local1597.map, _local1597.iJ, _local1597.Tq, 0);else
+	this.D5.set(_local1596);
+	if (this.pK[3].dB()) {
+		PixelUtil.blitRgbaRect(this.aek, _local1599, _local1598, _local1599, l ? l : _local1599);
+		PixelUtil.blend.compositeBlend("norm", this.D5, _local1599, _local1598, _local1599, l ? l : _local1599, this.pK[4].b() / 100);
+	} else PixelUtil.copyByteBuffer(this.D5, _local1598);
+	this.view.c([{
+		uA: _local1599,
+		data: _local1598.buffer
+	}]);
+};
+FilterEffectPanel.GEfc = function () {
+	FilterEffectPanel.call(this, "GEfc");
+	this.kA = 0;
+	this.hW = 0;
+	this.J0 = null;
+	this.S4 = null;
+	this.B7 = null;
+	this.mN = null;
+	this.iQ = null;
+	this.xr = 0;
+	var _local1604 = s.createElement("div", "flexrow");
+	this.jo = _local1604;
+	this.e.appendChild(_local1604);
+	this.view = new LayerCanvasPanel(null);
+	this.view.resize(100, 100);
+	_local1604.appendChild(this.view.e);
+	this.b0 = "";
+	this.Xg = 270;
+	var _local1603 = this.nS = s.createElement("div", "form scrollable");
+	_local1604.appendChild(_local1603);
+	_local1603.setAttribute("style", "width:" + this.Xg + "px;");
+	var _local1600 = this.G3 = s.createElement("div", "form");
+	_local1604.appendChild(_local1600);
+	_local1600.setAttribute("style", "width:230px;  margin:0 10px");
+	this.mw = {};
+	for (var _local1602 in TextStyleHelper.names) {
+		var _local1601 = new FilterEffectPanel.GEfc.mV(_local1602);
+		_local1601.parent = this;
+		this.mw[_local1602] = _local1601;
+		_local1601.addListener(ActionTypes.E.A, this.aAr, this);
+	}
+	this.MG = !0;
+	this.Z0 = new ToolbarButton("Menu", null, null, !0);
+	this.Z0.addListener("click", this.akQ, this);
+	_local1604.appendChild(this.Z0.e);
+	this.By = new ToolbarButton(">>", null, null, !0);
+	this.By.addListener("click", this.ahz, this);
+	_local1600.appendChild(this.By.e);
+	this.Y5 = s.createElement("div");
+	this.Y5.setAttribute("style", "margin-bottom:1.5em;  display:inline-block;  width:calc(100% - 40px);");
+	_local1600.appendChild(this.Y5);
+	this.Qt = s.createElement("div");
+	this.Qt.style.minHeight = "14em";
+	this.Qt.style.marginBottom = "1em";
+	_local1600.appendChild(this.Qt);
+	this.K0 = s.createElement("div", "lpbody scrollable");
+	this.S8 = s.createElement("div", "lpfoot");
+	_local1600.appendChild(this.K0);
+	_local1600.appendChild(this.S8);
+	this.addListener("click", this.ag7, this);
+	this.lM = [];
+	ChannelsPanel.sY([
+	[5, 3],
+	[5, 4]],
+	this.lM, this.S8, this.vR.bind(this));
+};
+FilterEffectPanel.GEfc.prototype = new FilterEffectPanel();
+FilterEffectPanel.GEfc.prototype.ZW = function () {
+	return !0;
+};
+FilterEffectPanel.GEfc.prototype.ul = function (l) {
+	this.Y5.appendChild(l);
+};
+FilterEffectPanel.GEfc.prototype.BM = function (l, d) {
+	this.mN = l;
+};
+FilterEffectPanel.GEfc.prototype.ahz = function (l) {
+	var _local1605 = this.nS.style.display != "none";
+	this.nS.style.display = _local1605 ? "none" : "";
+	this.By.setLabel(_local1605 ? "<<" : ">>");
+	this.resize();
+};
+FilterEffectPanel.GEfc.prototype.akQ = function (l) {
+	this.MG = !this.MG;
+	this.resize();
+};
+FilterEffectPanel.GEfc.prototype.resize = function (l, d) {
+	var _local1606 = this.nS.style.display != "none";
+	if (l != null) {
+		this.kA = l;
+		this.hW = d;
+		if (l < 1e3 && _local1606 || l >= 1e3 && !_local1606) {
+			this.ahz();
+			_local1606 = !_local1606;
+		}
+		this.MG = l > 600;
+	} else {
+		l = this.kA;
+		d = this.hW;
+	}
+	var _local1607 = this.MG ? 240 + (_local1606 ? this.Xg + 10 : 0) : 0;
+	if (s.isInDocument(this.G3) && !this.MG) {
+		this.jo.removeChild(this.nS);
+		this.jo.removeChild(this.G3);
+	}
+	if (!s.isInDocument(this.G3) && this.MG) {
+		this.jo.appendChild(this.nS);
+		this.jo.appendChild(this.G3);
+	}
+	this.nS.style.height = d + "px";
+	this.view.resize(l - _local1607, d);
+	this.K0.style.height = d - Math.max(this.Qt.getBoundingClientRect().height, 186) - 96 + "px";
+	this.Z0.e.setAttribute("style", "position:absolute; top:46px;  right:" + (_local1607 + 16) + "px");
+};
+FilterEffectPanel.GEfc.prototype.ax9 = function () {
+	var _local1623 = FormatHandler.RT.get("img/beach", !0)[0],
+		_local1619 = _local1623.uA,
+		_local1609 = this.nS,
+		_local1618 = Math.floor(s.getDevicePixelRatio() * (this.Xg - 40) / 3),
+		_local1616 = ~~(_local1618 * .7),
+		_local1613 = new Rect(0, 0, _local1618, _local1616),
+		_local1626 = PixelUtil.allocBytes(_local1618 * _local1616 * 4),
+		_local1610 = _local1626.slice(0),
+		_local1627 = Math.round(10 * s.getDevicePixelRatio()),
+		_local1620 = new ImageData(new Uint8ClampedArray(_local1610.buffer), _local1618, _local1616);
+	PixelUtil.blitRgbaRect(new Uint8Array(_local1623.data), _local1619, _local1626, new Rect(Math.round((_local1619.m - _local1618) / 2), Math.round((_local1619.n - _local1616) / 2), _local1618, _local1616));
+	var _local1612 = s.createElement("canvas"),
+		_local1614 = _local1612.getContext("2d", { willReadFrequently: true });
+	_local1612.width = _local1618;
+	_local1612.height = _local1616 + Math.round(_local1627 * 1.5);
+	_local1614.font = _local1627 + "px sans-serif";
+	this.$A = {};
+	var _local1611 = this.as3.bind(this);
+	for (var _local1608 = 0; _local1608 < TextStyleHelper.JJ.length; _local1608++) {
+		var _local1624 = TextStyleHelper.JJ[_local1608],
+			_local1625 = s.createElement("div");
+		_local1609.appendChild(_local1625);
+		_local1625.setAttribute("style", "background-color:rgba(0,0,0,0.2); padding:0px 8px; margin-bottom:8px");
+		_local1625.textContent = languageManager.get(_local1624);
+		for (var _local1615 in TextStyleHelper.names) {
+			var _local1622 = TextStyleHelper.names[_local1615];
+			if (_local1622[0] != _local1608) continue;
+			TextStyleHelper.Qz(_local1615, {
+				rect: _local1613,
+				buffer: _local1626
+			}, TextStyleHelper.oT(_local1615), {
+				o: 0,
+				J: 0,
+				k: 0
+			}, {
+				o: 255,
+				J: 255,
+				k: 255
+			}, {
+				rect: _local1613,
+				buffer: _local1610
+			}, {});
+			_local1614.fillStyle = "black";
+			_local1614.fillRect(0, 0, 500, 500);
+			_local1614.putImageData(_local1620, 0, 0);
+			var _local1621 = languageManager.get(_local1622[1]);
+			_local1614.fillStyle = "white";
+			_local1614.fillText(_local1621, (_local1618 - _local1614.measureText(_local1621).width) / 2, _local1616 + Math.round(_local1627 * 1.1));
+			var _local1617 = s.createElement("div");
+			_local1609.appendChild(_local1617);
+			_local1617.setAttribute("style", "display:inline-block; cursor:pointer; padding: 5px 5px 0 5px; margin-bottom:5px");
+			_local1617.addEventListener("click", _local1611, !1);
+			var _local1625 = s.createElement("img");
+			_local1617.appendChild(_local1625);
+			_local1625.setAttribute("src", _local1612.toDataURL());
+			_local1625.setAttribute("style", "width:" + _local1618 / s.getDevicePixelRatio() + "px; margin-bottom:0px;");
+			this.$A[_local1615] = _local1617;
+		}
+	}
+};
+FilterEffectPanel.GEfc.prototype.as3 = function (l) {
+	var _local1629;
+	for (var _local1628 in this.$A)
+	if (this.$A[_local1628] == l.currentTarget) this.b0 = _local1628;
+	this.aAr();
+};
+FilterEffectPanel.GEfc.prototype.vR = function (l) {
+	var _local1632 = ChannelsPanel.YO(this.lM, l),
+		_local1630 = this.iQ.GEfs.v,
+		_local1631 = _local1630[this.xr].v;
+	if (_local1632 == 0) {
+		_local1630.push(JSON.parse(JSON.stringify(_local1630[this.xr])));
+		this.xr = _local1630.length - 1;
+	} else if (_local1630.length > 1) {
+		_local1630.splice(this.xr, 1);
+		if (this.xr == _local1630.length) this.xr--;
+	}
+	this.Nv();
+	this.VP();
+};
+FilterEffectPanel.GEfc.prototype.aAr = function (l) {
+	var _local1634 = this.b0,
+		_local1633;
+	if (l == null) _local1633 = TextStyleHelper.oT(_local1634);else
+	_local1633 = this.mw[_local1634].b();
+	this.iQ.GEfs.v[this.xr].v = _local1633;
+	this.Nv();
+	this.VP();
+};
+FilterEffectPanel.GEfc.prototype.c = function (l, d, G, b, V) {
+	if (this.$A == null) this.ax9();
+	l = this.iQ = JSON.parse(JSON.stringify(l));
+	if (l.GEfs == null) l = this.iQ = {
+		__name: "Filter Gallery",
+		classID: "GEfc",
+		GEfs: {
+			t: "VlLs",
+			v: [{
+				t: "Objc",
+				v: l
+			}]
+		}
+	};
+	var _local1637 = l.GEfs.v;
+	for (var _local1635 = 0; _local1635 < _local1637.length; _local1635++)
+	if (_local1637[_local1635].v.GELv == null) _local1637[_local1635].v.GELv = {
+		t: "bool",
+		v: !0
+	};
+	this.xr = _local1637.length - 1;
+	this.Nv();
+	G = G.clone();
+	if (d == null) return;
+	if (!b.XB(G) && TextStyleHelper.dn(l).x != 0) {
+		var _local1638 = G.Cw(b),
+			_local1636 = PixelUtil.allocBytes(_local1638.O() * 4);
+		PixelUtil.blitRgbaRect(d, G, _local1636, _local1638);
+		d = _local1636;
+		G = _local1638;
+	}
+	G.x = G.y = 0;
+	this.J0 = d;
+	this.S4 = d.slice(0);
+	this.B7 = G;
+	this.VP();
+	this.view.kn();
+};
+FilterEffectPanel.GEfc.prototype.ag7 = function (l) {
+	var _local1641 = l.data,
+		_local1639 = _local1641.sy,
+		_local1640 = this.iQ.GEfs.v;
+	if (_local1641.Z6) {
+		_local1640[_local1639].v.GELv.v = !_local1640[_local1639].v.GELv.v;
+		this.VP();
+	} else this.xr = _local1639;
+	this.Nv();
+};
+FilterEffectPanel.GEfc.prototype.Nv = function () {
+	var _local1650 = this.iQ.GEfs.v,
+		_local1648 = _local1650[this.xr].v,
+		_local1643 = _local1648.GEfk.v.GEft,
+		_local1647 = this.Qt;
+	if (TextStyleHelper.names[_local1643] == null) {
+		alert("Unsupported gallery filter");
+		s.clearChildren(_local1647);
+	} else {
+		this.b0 = _local1643;
+		for (var _local1646 in this.$A) s.removeClass(this.$A[_local1646], "selected");
+		s.addClass(this.$A[_local1643], "selected");
+		var _local1645 = this.mw[_local1643];
+		_local1645.c(_local1648);
+		if (_local1647.firstChild != _local1645.e) {
+			s.clearChildren(_local1647);
+			_local1647.appendChild(_local1645.e);
+		}
+	}
+	var _local1651 = [];
+	for (var _local1642 = 0; _local1642 < _local1650.length; _local1642++) {
+		var _local1644 = _local1650[_local1642].v,
+			_local1652 = TextStyleHelper.names[_local1644.GEfk.v.GEft],
+			_local1649 = new ChannelLayerRow(_local1642, !0, !0, null, _local1652 ? _local1652[1] : "Filter", _local1642 == this.xr, _local1644.GELv.v);
+		_local1649.parent = this;
+		_local1651.push(_local1649.e);
+	}
+	s.clearChildren(this.K0);
+	_local1651.reverse();
+	for (var _local1642 = 0; _local1642 < _local1651.length; _local1642++) this.K0.appendChild(_local1651[_local1642]);
+	this.resize();
+};
+FilterEffectPanel.GEfc.prototype.b = function () {
+	return JSON.parse(JSON.stringify(this.iQ));
+};
+FilterEffectPanel.GEfc.prototype.VP = function (l) {
+	var _local1658 = this.B7,
+		_local1653 = this.J0,
+		_local1657 = this.S4,
+		_local1656 = this.b0,
+		_local1655 = this.iQ,
+		_local1659 = this.mN;
+
+	function _local1654(y) {
+		return {
+			o: y >>> 16,
+			J: y >>> 8 & 255,
+			k: y & 255
+		};
+	}
+	FilterHelper.Qz("GEfc", {
+		rect: this.B7,
+		buffer: this.J0
+	}, _local1655, _local1654(_local1659.Y7), _local1654(_local1659.GF), {
+		rect: this.B7,
+		buffer: this.S4
+	}, null);
+	this.view.c([{
+		uA: _local1658,
+		data: _local1657.buffer
+	}]);
+};
+FilterEffectPanel.GEfc.prototype.refresh = function () {
+	for (var _local1660 in this.mw) this.mw[_local1660].refresh();
+	ChannelsPanel.no(this.lM, ["lrs/newlayer", "lrs/bin"]);
+};
+FilterEffectPanel.GEfc.mV = function (l) {
+	UIComponent.call(this);
+	this.az = l;
+	this.e = s.createElement("div");
+	this.yc = {};
+	var _local1663 = TextStyleHelper.oT(l);
+	for (var _local1661 in _local1663) {
+		var _local1662 = null;
+		if (_local1661 == "__name" || _local1661 == "classID" || _local1661 == "GEfk" || _local1661 == "GELv" || ["FlRs"].indexOf(_local1661) != -1) continue;else
+		if (_local1661 == "EdgW") _local1662 = new RangeInput("Edge Width", 1, 14);else
+		if (_local1661 == "EdgB") _local1662 = new RangeInput("Edge Brightness", 0, l == "AccE" ? 50 : 20);else
+		if (_local1661 == "Smth") _local1662 = new RangeInput("Smoothness", 1, l == "Stmp" ? 50 : 15);else
+		if (_local1661 == "ClSz") _local1662 = new RangeInput("Cell Size", 3, 100);else
+		if (_local1661 == "BrdT") _local1662 = new RangeInput("Border", 1, 20);else
+		if (_local1661 == "HghS") _local1662 = new RangeInput("Strength", 0, 20);else
+		if (_local1661 == "HlSz") _local1662 = new RangeInput("Size", 1, 15);else
+		if (_local1661 == "Cntr") _local1662 = new RangeInput("Contrast", 0, l == "WtrP" ? 100 : 50);else
+		if (_local1661 == "Shrp") _local1662 = new RangeInput("Sharpness", 0, 40);else
+		if (_local1661 == "SprR") _local1662 = new RangeInput("Spray Radius", 0, 25);else
+		if (_local1661 == "LgDr") _local1662 = new RangeInput("Light/Dark Balance", 0, l == "Stmp" ? 50 : 100);else
+		if (_local1661 == "Drkn") _local1662 = new RangeInput("Darkness", 1, 50);else
+		if (_local1661 == "Dstr") _local1662 = new RangeInput("Distortion", 0, 20);else
+		if (_local1661 == "Scln") _local1662 = new RangeInput("Scale", 50, 200);else
+		if (_local1661 == "Rlf") _local1662 = new RangeInput("Relief", 0, l == "Ptch" || l == "NtPr" ? 25 : 50);else
+		if (_local1661 == "ChAm") _local1662 = new RangeInput("Thickness", 1, 7);else
+		if (_local1661 == "Pncl") _local1662 = new RangeInput("Stroke Width", 1, 30);else
+		if (_local1661 == "StrP") _local1662 = new RangeInput("Stroke Pressure", 0, 15);else
+		if (_local1661 == "PprB") _local1662 = new RangeInput("Paper Brightness", 0, 50);else
+		if (_local1661 == "BrsS") _local1662 = new RangeInput("Brush Size", 0, 10);else
+		if (_local1661 == "BrsD") _local1662 = new RangeInput("Brush Detail", 0, 10);else
+		if (_local1661 == "Txtr") _local1662 = new RangeInput("Texture", 1, 3);else
+		if (_local1661 == "Grn") _local1662 = new RangeInput("Grain", 0, 20);else
+		if (_local1661 == "HghA") _local1662 = new RangeInput("Highlight Area", 0, 20);else
+		if (_local1661 == "Intn") _local1662 = new RangeInput("Intensity", 0, 10);else
+		if (_local1661 == "Brgh") _local1662 = new RangeInput("Glow Brightness", 0, l == "WtrP" ? 100 : 50);else
+		if (_local1661 == "StrS") _local1662 = new RangeInput("Stroke Size", 1, 50);else
+		if (_local1661 == "StDt") _local1662 = new RangeInput("Stroke Detail", 1, 3);else
+		if (_local1661 == "Sftn") _local1662 = new RangeInput("Softness", 0, 10);else
+		if (_local1661 == "EdgT") _local1662 = new RangeInput("Edge Thickness", 0, 10);else
+		if (_local1661 == "EdgI") _local1662 = new RangeInput("Edge Intensity", 0, 10);else
+		if (_local1661 == "Pstr") _local1662 = new RangeInput("Posterization", 0, 6);else
+		if (_local1661 == "Dfnt") _local1662 = new RangeInput("Definition", 0, 25);else
+		if (_local1661 == "TxtC") _local1662 = new RangeInput("Texture Coverage", 0, 50);else
+		if (_local1661 == "ShdI") _local1662 = new RangeInput("Shadow Intensity", 0, 10);else
+		if (_local1661 == "DrcB") _local1662 = new RangeInput("Direction Balance", 0, 100);else
+		if (_local1661 == "Strg") _local1662 = new RangeInput("Strenth", 1, 3);else
+		if (_local1661 == "Blnc") _local1662 = new RangeInput("Balance", 0, 10);else
+		if (_local1661 == "BlcI") _local1662 = new RangeInput("Black Intensity", 0, 10);else
+		if (_local1661 == "WhtI") _local1662 = new RangeInput("White Intensity", 0, 10);else
+		if (_local1661 == "DrkI") _local1662 = new RangeInput("Dark Intensity", 0, 50);else
+		if (_local1661 == "LghI") _local1662 = new RangeInput("Light Intensity", 0, 50);else
+		if (_local1661 == "StrW") _local1662 = new RangeInput("Stroke Width", 3, 15);else
+		if (_local1661 == "Grns") _local1662 = new RangeInput("Graininess", 0, l == "NtPr" ? 20 : 10);else
+		if (_local1661 == "GlwA") _local1662 = new RangeInput("Glow Amount", 0, 20);else
+		if (_local1661 == "ClrA") _local1662 = new RangeInput("Clear Amount", 0, 20);else
+		if (_local1661 == "ChrA") _local1662 = new RangeInput("Charcoal Area", 0, 20);else
+		if (_local1661 == "ChlA") _local1662 = new RangeInput("Chalk Area", 0, 20);else
+		if (_local1661 == "FrgL") _local1662 = new RangeInput("Foreground Level", 1, 15);else
+		if (_local1661 == "BckL") _local1662 = new RangeInput("Background Level", 1, 15);else
+		if (_local1661 == "WhtL") _local1662 = new RangeInput("Background Level", 0, 50);else
+		if (_local1661 == "BlcL") _local1662 = new RangeInput("Foreground Level", 0, 50);else
+		if (_local1661 == "ImgB") _local1662 = new RangeInput("Image Balance", 0, 50);else
+		if (_local1661 == "Dnst") _local1662 = new RangeInput("Density", 0, 50);else
+		if (_local1661 == "FbrL") _local1662 = new RangeInput("Fiber Length", 3, 50);else
+		if (_local1661 == "CrcS") _local1662 = new RangeInput("Crack Sapcing", 2, 100);else
+		if (_local1661 == "CrcD") _local1662 = new RangeInput("Crack Depth", 0, 10);else
+		if (_local1661 == "CrcB") _local1662 = new RangeInput("Crack Brightness", 0, 10);else
+		if (_local1661 == "TlSz") _local1662 = new RangeInput("Tile Size", 2, 100);else
+		if (_local1661 == "GrtW") _local1662 = new RangeInput("Grout Width", 1, 15);else
+		if (_local1661 == "LghG") _local1662 = new RangeInput("Lighten Grout", 0, 10);else
+		if (_local1661 == "SqrS") _local1662 = new RangeInput("Square Size", 0, 10);else
+		if (_local1661 == "RplS") _local1662 = new RangeInput("Ripple Size", 1, 15);else
+		if (_local1661 == "RplM") _local1662 = new RangeInput("Ripple Magnitude", 0, 20);else
+		if (_local1661 == "NmbL") _local1662 = new RangeInput("Number of Levels", 2, 8);else
+		if (_local1661 == "EdgS") _local1662 = new RangeInput("Edge Simplicity", 0, 10);else
+		if (_local1661 == "EdgF") _local1662 = new RangeInput("Edge Fidelity", 1, 3);else
+		if (_local1661 == "Sz") _local1662 = l == "NGlw" ? new RangeInput("Glow Size", -24, 24) : new RangeInput("Brush Size", 1, 50);else
+		if (_local1661 == "Dtl") _local1662 = l == "Chrc" ? new RangeInput("Detail", 0, 5) : new RangeInput("Detail", 1, 15);else
+		if (_local1661 == "StrL") _local1662 = l == "InkO" ? new RangeInput("Stroke Length", 1, 50) : new RangeInput("Stroke Length", 0, 20);else
+		if (_local1661 == "TxtT") _local1662 = new DropdownMenu("Texture", "Blocks,Canvas,Frosted,Tiny Lens,Bricks,Burlap,Sandstone".split(","));else
+		if (_local1661 == "BrsT") _local1662 = new DropdownMenu("Brush Type", "Simple,Light Rough,Dark Rough,Wide Sharp,Wide Blurry,Sparkle".split(","));else
+		if (_local1661 == "Grnt") _local1662 = new DropdownMenu("Grain Type", "Regular Soft Sprinkles Clumped Contrasty Enlarged Stippled Horizontal Vertical Speckle".split(" "));else
+		if (_local1661 == "SDir") _local1662 = new DropdownMenu("Direction", ["Right Diagonal", "Horizontal", "Left Diagonal", "Vertical"]);else
+		if (_local1661 == "ScrT") _local1662 = new DropdownMenu("Pattern", ["Circle", "Dot", "Line"]);else
+		if (_local1661 == "LghD" || _local1661 == "LghP") _local1662 = new DropdownMenu("Light", "Bottom,Bottom Left,Left,Top Left,Top,Top Right,Right,Bottom Right".split(","));else
+		if (_local1661 == "Clr") _local1662 = new ColorSwatch("Glow Color");else
+		if (_local1661 == "InvT") _local1662 = new CheckboxControl("Invert");else
+		console.log(_local1661);
+		_local1662.addListener(ActionTypes.E.A, this.Rx, this);
+		_local1662.parent = this;
+		this.yc[_local1661] = _local1662;
+		this.e.appendChild(_local1662.e);
+	}
+};
+FilterEffectPanel.GEfc.mV.prototype = new UIComponent();
+FilterEffectPanel.GEfc.mV.prototype.Rx = function (l) {
+	this.dispatch(new Action(ActionTypes.E.A, !1));
+};
+FilterEffectPanel.GEfc.aiM = "Sz Dtl Shrp EdgW EdgB Smth ClSz BrdT HghS HlSz Cntr SprR StrL LgDr Drkn Dstr Scln Rlf ChAm InvT RplS RplM Pncl StrP PprB BrsS BrsD Txtr Grn HghA Intn Brgh Clr StrS StDt Sftn EdgT EdgI Pstr Dfnt TxtC ShdI DrcB Strg Blnc BlcI WhtI DrkI LghI StrW Grns GlwA ClrA ChrA ChlA FrgL BckL WhtL BlcL ImgB Dnst FbrL CrcS CrcD CrcB TlSz GrtW LghG SqrS NmbL EdgS EdgF".split(" ");
+FilterEffectPanel.GEfc.mV.prototype.c = function (l) {
+	for (var _local1665 in this.yc) {
+		var _local1664;
+		if (FilterEffectPanel.GEfc.aiM.indexOf(_local1665) != -1) _local1664 = l[_local1665].v;else
+		if (_local1665 == "TxtT") _local1664 = TextStyleHelper.N5.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "BrsT") _local1664 = TextStyleHelper.axC.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "LghD") _local1664 = TextStyleHelper.WA.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "LghP") _local1664 = TextStyleHelper.gF.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "Grnt") _local1664 = TextStyleHelper.gJ.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "ScrT") _local1664 = TextStyleHelper.pj.indexOf(l[_local1665].v[_local1665]);else
+		if (_local1665 == "SDir") _local1664 = TextStyleHelper.Kc.indexOf(l[_local1665].v.StrD);
+		this.yc[_local1665].c(_local1664);
+	}
+};
+FilterEffectPanel.GEfc.mV.prototype.b = function () {
+	var _local1668 = TextStyleHelper.oT(this.az);
+	for (var _local1667 in this.yc) {
+		var _local1666 = this.yc[_local1667].b();
+		if (FilterEffectPanel.GEfc.aiM.indexOf(_local1667) != -1) _local1668[_local1667].v = _local1666;else
+		if (_local1667 == "TxtT") _local1668[_local1667].v[_local1667] = TextStyleHelper.N5[_local1666];else
+		if (_local1667 == "BrsT") _local1668[_local1667].v[_local1667] = TextStyleHelper.axC[_local1666];else
+		if (_local1667 == "LghD") _local1668[_local1667].v[_local1667] = TextStyleHelper.WA[_local1666];else
+		if (_local1667 == "LghP") _local1668[_local1667].v[_local1667] = TextStyleHelper.gF[_local1666];else
+		if (_local1667 == "Grnt") _local1668[_local1667].v[_local1667] = TextStyleHelper.gJ[_local1666];else
+		if (_local1667 == "ScrT") _local1668[_local1667].v[_local1667] = TextStyleHelper.pj[_local1666];else
+		if (_local1667 == "SDir") _local1668[_local1667].v.StrD = TextStyleHelper.Kc[_local1666];
+	}
+	return _local1668;
+};
+FilterEffectPanel.GEfc.mV.prototype.refresh = function () {
+	for (var _local1669 in this.yc) this.yc[_local1669].refresh();
+};
+FilterEffectPanel["Adobe Camera Raw Filter"] = function (l) {
+	FilterEffectPanel.call(this, "Adobe Camera Raw Filter");
+	var _local1674 = this.e;
+	this.ayN = l;
+	this._7 = null;
+	this.an = null;
+	this.hh = null;
+	s.addClass(_local1674, "flexrow");
+	var _local1671 = s.createElement("div"),
+		_local1673 = s.createElement("div", "padded");
+	_local1674.appendChild(_local1671);
+	_local1674.appendChild(_local1673);
+	this.Fm = new LayerCanvasPanel();
+	_local1671.appendChild(this.Fm.e);
+	this.y9 = new LevelsHistogram(225);
+	this.y9.dk(4);
+	_local1673.appendChild(this.y9.e);
+	this.mk = s.createElement("div");
+	this.mk.setAttribute("style", "width:18em;");
+	_local1673.appendChild(this.mk);
+	this.adg = new LabelItem("Hi", !0);
+	this.mk.appendChild(this.adg.e);
+	this.yw = s.createElement("div", "scrollable");
+	this.mk.appendChild(this.yw);
+	this.yc = [
+	new RangeInput("Temperature", -100, 100),
+	new RangeInput("Tint", -100, 100),
+	new RangeInput("Exposure", -4, 4, null, !0),
+	new RangeInput("Contrast", -100, 100),
+	new RangeInput("Vibrance", -100, 100),
+	new RangeInput("Saturation", -100, 100)];
+
+	this.CI = "Temp Tint Ex12 Cr12 Vibr Strt".split(" ");
+	for (var _local1670 = 0; _local1670 < this.yc.length; _local1670++) {
+		var _local1672 = this.yc[_local1670];
+		_local1672.c(0);
+		_local1672.addListener(ActionTypes.E.A, this.VP, this);
+		this.yw.appendChild(_local1672.e);
+		if (_local1670 == 1 || _local1670 == 3) this.yw.appendChild(s.createElement("hr"));
+	}
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype = new FilterEffectPanel();
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.ZW = function () {
+	return !0;
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.ul = function (l) {
+	this.mk.appendChild(l);
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.BM = function (l, d) {
+	this.y9.EB(ThemeManager.themes[l.j$]["--text-color"]);
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.c = function (l, d, G, b, V) {
+	this.iQ = l;
+	var _local1679 = G.m,
+		_local1682 = G.n,
+		_local1676 = _local1679 * _local1682;
+	this.adg.c(_local1679 + " x " + _local1682 + ", " + (_local1679 * _local1682 / 1e6).toFixed(1) + " MPx");
+	this.B7 = G;
+	this.an = new Float32Array(_local1679 * _local1682 * 3);
+	this.hh = new Uint8Array(_local1679 * _local1682 * 4);
+	this.hh.fill(255);
+	if (d instanceof Float32Array) this._7 = d;else
+	{
+		var _local1683 = this._7 = new Float32Array(_local1679 * _local1682 * 3);
+		for (var _local1675 = 0; _local1675 < _local1676; _local1675++) {
+			var _local1681 = _local1675 * 3,
+				_local1678 = _local1675 * 4;
+			_local1683[_local1681 + 0] = d[_local1678 + 0] * (1 / 255);
+			_local1683[_local1681 + 1] = d[_local1678 + 1] * (1 / 255);
+			_local1683[_local1681 + 2] = d[_local1678 + 2] * (1 / 255);
+		}
+	}
+	var _local1680 = this.CI;
+	for (var _local1675 = 0; _local1675 < _local1680.length; _local1675++) {
+		var _local1677 = _local1680[_local1675];
+		this.yc[_local1675].c(l[_local1677] ? l[_local1677].v : 0);
+	}
+	this.VP(null, !0);
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.b = function (l) {
+	if (l) return this.hh;
+	return JSON.parse(JSON.stringify(this.iQ));
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.arV = function () {
+	this._7 = null;
+	this.an = null;
+	this.hh = null;
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.VP = function (l, d) {
+	var _local1685 = this.CI;
+	for (var _local1684 = 0; _local1684 < _local1685.length; _local1684++) {
+		var _local1691 = _local1685[_local1684];
+		this.iQ[_local1691] = {
+			t: _local1691 == "Ex12" ? "doub" : "long",
+			v: this.yc[_local1684].b()
+		};
+	}
+	var _local1690 = this.B7,
+		_local1688 = _local1690.O();
+	cL(this._7, _local1690.m, _local1690.n, this.an, this.iQ, this.ayN);
+	var _local1693 = Date.now(),
+		_local1686 = this.an,
+		_local1694 = this.hh;
+	for (var _local1684 = 0; _local1684 < _local1688; _local1684++) {
+		var _local1692 = _local1684 * 3,
+			_local1687 = _local1684 * 4;
+		_local1694[_local1687 + 0] = ~~(.5 + _local1686[_local1692 + 0] * 255);
+		_local1694[_local1687 + 1] = ~~(.5 + _local1686[_local1692 + 1] * 255);
+		_local1694[_local1687 + 2] = ~~(.5 + _local1686[_local1692 + 2] * 255);
+	}
+	console.log(Date.now() - _local1693, "integer conversion");
+	_local1693 = Date.now();
+	var _local1689 = PixelUtil.histogramFromRgba(_local1694, Math.max(1, Math.floor(_local1688 / 2e5)));
+	this.y9.c(_local1689);
+	console.log(Date.now() - _local1693, "histogram done");
+	_local1693 = Date.now();
+	this.Fm.c([{
+		uA: _local1690,
+		data: _local1694.buffer
+	}]);
+	if (d) this.Fm.kn();
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.resize = function (l, d) {
+	this.at0 = l - 248;
+	this.aaf = d;
+	this.Fm.resize(this.at0, this.aaf);
+	this.yw.style.height = d - 236 + "px";
+};
+FilterEffectPanel["Adobe Camera Raw Filter"].prototype.refresh = function () {
+	for (var _local1695 = 0; _local1695 < this.yc.length; _local1695++) this.yc[_local1695].refresh();
+};
+FilterEffectPanel.blnc = function () {
+	FilterEffectPanel.call(this);
+	var _local1698 = this.e;
+	this.Et = null;
+	this.Oe = new DropdownMenu("Rangle", ["Shadows", "Midtones", "Highlights"]);
+	this.Oe.addListener(ActionTypes.E.A, this.VP, this);
+	_local1698.appendChild(this.Oe.e);
+	this.I3 = [];
+	for (var _local1696 = 0; _local1696 < 3; _local1696++) {
+		var _local1697 = new RangeInput(["VAR0 - VAR1", LayerEffectsHelper.cmykChannels[_local1696], LayerEffectsHelper.rgbChannels[_local1696]], -100, 100);
+		_local1697.addListener(ActionTypes.E.A, this.B5, this);
+		this.I3.push(_local1697);
+		_local1698.appendChild(_local1697.e);
+	}
+	this.aI = new CheckboxControl("Preserve Luminosity");
+	this.aI.addListener(ActionTypes.E.A, this.B5, this);
+	_local1698.appendChild(this.aI.e);
+};
+FilterEffectPanel.blnc.prototype = new FilterEffectPanel();
+FilterEffectPanel.blnc.prototype.refresh = function () {
+	this.Oe.refresh();
+	for (var _local1699 = 0; _local1699 < 3; _local1699++) this.I3[_local1699].refresh();
+	this.aI.refresh();
+};
+FilterEffectPanel.blnc.prototype.c = function (l) {
+	this.Et = JSON.parse(JSON.stringify(l));
+	this.VP();
+};
+FilterEffectPanel.blnc.prototype.b = function (l) {
+	var _local1702 = ["ShdL", "MdtL", "HghL"],
+		_local1701 = this.Et[_local1702[this.Oe.b()]].v;
+	for (var _local1700 = 0; _local1700 < 3; _local1700++) _local1701[_local1700].v = this.I3[_local1700].b();
+	this.Et.PrsL.v = this.aI.b();
+	return JSON.parse(JSON.stringify(this.Et));
+};
+FilterEffectPanel.blnc.prototype.VP = function (l) {
+	var _local1705 = ["ShdL", "MdtL", "HghL"],
+		_local1704 = this.Et[_local1705[this.Oe.b()]].v;
+	for (var _local1703 = 0; _local1703 < 3; _local1703++) this.I3[_local1703].c(_local1704[_local1703].v);
+	this.aI.c(this.Et.PrsL.v);
+};
+
+// Filter: Brightness/Contrast
+FilterEffectPanel.brit = function () {
+	FilterEffectPanel.call(this, "brit");
+	this.go.push(new RangeInput("Brightness", -150, 150, ""));
+	this.go.push(new RangeInput("Contrast", -100, 100, ""));
+	this.go.push(new CheckboxControl("Use Legacy"));
+	this.W8();
+};
+FilterEffectPanel.brit.prototype = new FilterEffectPanel();
+FilterEffectPanel.curv = function () {
+	FilterEffectPanel.call(this);
+	this.value = null;
+	this.G_ = null;
+	this.mN = null;
+	var _local1706 = this.e;
+	this.Bm = new DropdownMenu("Preset", ["basic", "advanced"]);
+	this.Bm.addListener(ActionTypes.E.A, this.a2u, this);
+	_local1706.appendChild(this.Bm.e);
+	s.appendBr(_local1706);
+	this.zA = new DropdownMenu("Channel", ["RGB", "Red", "Green", "Blue"]);
+	this.zA.addListener(ActionTypes.E.A, this.LO, this);
+	_local1706.appendChild(this.zA.e);
+	this.jR = new DropdownMenu(null, ["Spline", "Sketch"]);
+	this.jR.addListener(ActionTypes.E.A, this.a2u, this);
+	_local1706.appendChild(this.jR.e);
+	this.ppConfig = new AutoEnhanceOptions();
+	this.ppConfig.parent = this;
+	this.ppConfig.addListener(ActionTypes.E.A, this.tl, this);
+	_local1706.appendChild(this.ppConfig.e);
+	s.appendBr(_local1706);
+	this.Td = new CurveEditor();
+	this.Td.addListener(ActionTypes.E.A, this.j2, this);
+	_local1706.appendChild(this.Td.e);
+	this.G5 = null;
+	this.a1c = 0;
+	this.Q4 = 0;
+	s.appendBr(_local1706);
+	this.uL = new MultiOptionBox("Sample from image", ButtonGroupMenu.Ze(["-\u2195", "#000000", "#888888", "#ffffff"]), !0, null, !0);
+	this.uL.addListener(ActionTypes.E.A, this.Ie, this);
+	this.uL.e.style.marginRight = "0";
+	_local1706.appendChild(this.uL.e);
+};
+FilterEffectPanel.curv.prototype = new FilterEffectPanel();
+FilterEffectPanel.curv.prototype.BM = function (l, d) {
+	if (d == PsdResourceTypes.Wx || d == PsdResourceTypes.X5) {
+		var _local1708 = l.w1,
+			_local1709 = ["Default"];
+		for (var _local1707 = 0; _local1707 < _local1708.length; _local1707++) _local1709.push(_local1708[_local1707].presetFileName.v);
+		_local1709.push("Custom");
+		this.Bm.b3(_local1709, [1, _local1708.length, 1]);
+		this.mN = l;
+	}
+};
+FilterEffectPanel.curv.prototype.resize = function (l, d) {
+	this.Td.resize(l, d);
+};
+FilterEffectPanel.curv.prototype.refresh = function () {
+	this.zA.refresh();
+	this.Td.refresh();
+};
+FilterEffectPanel.curv.prototype.gz = function () {
+	this.Bm.c(this.mN.w1.length + 1);
+};
+FilterEffectPanel.curv.prototype.a2u = function (l) {
+	if (l.target == this.Bm) {
+		var _local1716 = this.Bm.b(),
+			_local1711 = this.mN.w1,
+			_local1715;
+		if (_local1716 == 0) _local1715 = FilterHelper.oT("curv");else
+		if (_local1716 - 1 < _local1711.length) _local1715 = JSON.parse(JSON.stringify(_local1711[_local1716 - 1]));else
+		return;
+		this.c(_local1715);
+		this.B5();
+		return;
+	}
+	this.gz();
+	var _local1714 = cb.RX(this.value, 0),
+		_local1713 = _local1714.length == 256 ? 1 : 0,
+		_local1717 = this.jR.b();
+	if (_local1713 == _local1717) return;
+	var _local1715 = FilterHelper.oT("curv");
+	if (_local1717 == 1) {
+		var _local1712 = [];
+		for (var _local1710 = 0; _local1710 < 256; _local1710++) _local1712.push(_local1710);
+		cb.fZ(_local1715, 0, _local1712);
+	}
+	this.c(_local1715);
+	this.B5();
+};
+FilterEffectPanel.curv.prototype.j2 = function () {
+	this.gz();
+	cb.fZ(this.value, this.zA.b(), this.Td.b());
+	this.B5();
+};
+FilterEffectPanel.curv.prototype.LO = function () {
+	var _local1720 = this.zA.b(),
+		_local1719 = cb.RX(this.value, _local1720),
+		_local1718 = _local1719.length == 256 ? 1 : 0;
+	this.jR.c(_local1718);
+	if (this.G_) this.Td.RB(this.G_[_local1720], this.G_[4] * [1, .33, .33, .33][_local1720], ["#ccc", "#fcc", "#cfc", "#ccf"][_local1720]);
+	this.Td.c(_local1719);
+};
+FilterEffectPanel.curv.prototype.ba = function () {
+	return !0;
+};
+FilterEffectPanel.curv.prototype.dJ = function (l, d, G, b, V) {
+	var _local1725 = this.value;
+	this.value = FilterHelper.oT("curv");
+	this.B5();
+	var _local1730 = f.lS.dh(l, V, 1),
+		_local1722 = this.G5 = [_local1730 >>> 16 & 255, _local1730 >>> 8 & 255, _local1730 & 255];
+	this.a1c = V.y;
+	var _local1731 = this.uL.b().indexOf(!0);
+	if (_local1731 == 0) {
+		var _local1727 = (_local1722[0] + _local1722[1] + _local1722[2]) / 3,
+			_local1724 = this.zA.b(),
+			_local1726 = cb.RX(_local1725, _local1724),
+			_local1723 = _local1724 == 0 ? _local1727 : _local1722[_local1724 - 1],
+			_local1728 = -1;
+		for (var _local1721 = 0; _local1721 < _local1726.length; _local1721++)
+		if (_local1726[_local1721].v.Hrzn.v == _local1723) _local1728 = _local1721;
+		if (_local1728 == -1) {
+			var _local1729 = JSON.parse(JSON.stringify(_local1726[0]));
+			_local1729.v.Hrzn.v = _local1723;
+			_local1729.v.Vrtc.v = _local1723;
+			_local1726.push(_local1729);
+			_local1726.sort(function (T, j) {
+				return T.v.Hrzn.v - j.v.Hrzn.v;
+			});
+			cb.fZ(_local1725, _local1724, _local1726);
+			this.Q4 = _local1726.indexOf(_local1729);
+		} else this.Q4 = _local1728;
+	}
+	this.c(_local1725);
+	this.B5();
+};
+FilterEffectPanel.curv.prototype.JP = function (l, d, G, b, V) {
+	if (this.G5 == null) return;
+	if (this.uL.b().indexOf(!0) == 0) {
+		var _local1733 = this.value,
+			_local1734 = this.zA.b(),
+			_local1732 = cb.RX(_local1733, _local1734),
+			_local1735 = _local1732[this.Q4];
+		_local1735.v.Vrtc.v = Math.max(0, Math.min(255, Math.round(_local1735.v.Hrzn.v + (this.a1c - V.y))));
+		cb.fZ(_local1733, _local1734, _local1732);
+		this.c(_local1733);
+		this.B5();
+	}
+};
+FilterEffectPanel.curv.prototype.Nl = function (l, d, G, b, V) {
+	var _local1739 = this.value,
+		_local1742 = this.G5,
+		_local1737 = (_local1742[0] + _local1742[1] + _local1742[2]) / 3,
+		_local1743 = this.uL.b().indexOf(!0) - 1;
+	if (_local1743 <= -1) {} else
+	for (var _local1736 = 0; _local1736 < 3; _local1736++) {
+		var _local1741 = cb.RX(_local1739, 1 + _local1736);
+		if (_local1743 == 0) _local1741[0].v.Hrzn.v = _local1742[_local1736];
+		if (_local1743 == 1) {
+			var _local1738 = Math.log(_local1742[_local1736] / 255) / Math.log(_local1737 / 255),
+				_local1740 = Math.min(999, Math.max(10, Math.round(100 * _local1738)));
+			if (_local1741.length == 2) _local1741.splice(1, 0, JSON.parse(JSON.stringify(_local1741[0])));
+			_local1741[1].v.Hrzn.v = 127 - Math.log(_local1740 / 100) * 127;
+			_local1741[1].v.Vrtc.v = 127;
+		}
+		if (_local1743 == 2) _local1741[_local1741.length - 1].v.Hrzn.v = _local1742[_local1736];
+		cb.fZ(_local1739, 1 + _local1736, _local1741);
+	}
+	this.c(_local1739);
+	this.B5();
+	this.gz();
+	this.G5 = null;
+};
+FilterEffectPanel.curv.prototype.c = function (l) {
+	this.value = l;
+	this.LO();
+};
+FilterEffectPanel.curv.prototype.RB = function (l) {
+	this.G_ = l;
+	this.LO();
+};
+FilterEffectPanel.curv.prototype.b = function (l) {
+	return JSON.parse(JSON.stringify(this.value));
+};
+FilterEffectPanel.curv.prototype.tl = function () {
+	var _local1751 = this.ppConfig.b(),
+		_local1750 = this.G_,
+		_local1745 = this.value,
+		_local1749 = PixelUtil.levelsFromHistogram(_local1751, _local1750);
+	for (var _local1744 = 0; _local1744 < 4; _local1744++) {
+		var _local1748 = _local1749[_local1744][0],
+			_local1747 = _local1749[_local1744][1],
+			_local1752 = _local1749[_local1744][2],
+			_local1746 = [PixelUtil.presetThumb.yR(_local1748, 0, !0), PixelUtil.presetThumb.yR(_local1747, 255, !0)];
+		if (_local1752 != null) _local1746.splice(1, 0, PixelUtil.presetThumb.yR(128, _local1752, !0));
+		cb.fZ(_local1745, _local1744, _local1746);
+	}
+	this.LO();
+	this.B5();
+};
+FilterEffectPanel.expA = function () {
+	FilterEffectPanel.call(this, "expA");
+	this.go.push(new RangeInput("Exposure", -20, 20, null, 2, !0));
+	this.go.push(new RangeInput("Offset", -.5, .5, null, 2));
+	this.go.push(new RangeInput("Gamma Correction", .01, 9.99, null, 2, !0));
+	this.W8();
+};
+FilterEffectPanel.expA.prototype = new FilterEffectPanel();
+FilterEffectPanel.expA.prototype.KJ = function (l, d) {
+	d[0] = l.Exps.v;
+	d[1] = l.Ofst ? l.Ofst.v : 0;
+	d[2] = l.gammaCorrection ? l.gammaCorrection.v : 1;
+};
+FilterEffectPanel.expA.prototype.PY = function (l, d) {
+	l.Exps = {
+		t: "doub",
+		v: d[0]
+	};
+	l.Ofst = {
+		t: "doub",
+		v: d[1]
+	};
+	l.gammaCorrection = {
+		t: "doub",
+		v: d[2]
+	};
+};
+FilterEffectPanel.grdm = function () {
+	FilterEffectPanel.call(this, "grdm");
+	this.go.push(new GradientPickerButton(!0, null, !0));
+	this.go.push(new CheckboxControl("Reverse"));
+	this.W8();
+};
+FilterEffectPanel.grdm.prototype = new FilterEffectPanel();
+FilterEffectPanel.grdm.prototype.KJ = function (l, d) {
+	d[0] = l.Grad.v;
+	d[1] = l.Rvrs ? l.Rvrs.v : !1;
+};
+FilterEffectPanel.grdm.prototype.PY = function (l, d) {
+	l.Grad.v = d[0];
+	l.Rvrs = {
+		t: "bool",
+		v: d[1]
+	};
+};
+FilterEffectPanel.grdm.prototype.BM = function (l, d) {
+	this.go[0].B$(l.Y7, l.GF);
+	if (d == PsdResourceTypes.Wx || d == PsdResourceTypes.K5 || d == PsdResourceTypes.Rz) this.go[0].Z2(l.dR);
+};
+FilterEffectPanel.selc = function () {
+	FilterEffectPanel.call(this);
+	var _local1756 = this.e;
+	this.iq = [];
+	this.cf = null;
+	this.Oe = new DropdownMenu("Colors", LayerEffectsHelper.colorRanges.concat(["White", "Neutral", "Black"]));
+	this.Oe.addListener(ActionTypes.E.A, this.Rx, this);
+	_local1756.appendChild(this.Oe.e);
+	s.appendBr(_local1756);
+	for (var _local1753 = 0; _local1753 < 4; _local1753++) {
+		// hbi edit
+		var _local1755 = ["Cyan", "Magenta", "Yellow", "Black"],
+			_local1754 = new RangeInput(_local1755[_local1753], -100, 100, "%");
+		_local1754.addListener(ActionTypes.E.A, this.Rx, this);
+		this.iq.push(_local1754);
+		_local1756.appendChild(_local1754.e);
+	}
+	this.rt = new CheckboxControl("Absolute");
+	_local1756.appendChild(this.rt.e);
+	this.rt.addListener(ActionTypes.E.A, this.Rx, this);
+};
+FilterEffectPanel.selc.prototype = new FilterEffectPanel();
+FilterEffectPanel.selc.prototype.refresh = function () {
+	this.Oe.refresh();
+	this.rt.refresh();
+	for (var _local1757 = 0; _local1757 < 4; _local1757++) this.iq[_local1757].refresh();
+};
+FilterEffectPanel.selc.prototype.c = function (l) {
+	this.cf = JSON.parse(JSON.stringify(l));
+	this.VP();
+};
+FilterEffectPanel.selc.prototype.b = function (l) {
+	return JSON.parse(JSON.stringify(this.cf));
+};
+FilterEffectPanel.selc.prototype.Rx = function (l) {
+	if (l.target != this.Oe) {
+		var _local1760 = this.cf,
+			_local1759 = [];
+		for (var _local1758 = 0; _local1758 < 4; _local1758++) _local1759[_local1758] = this.iq[_local1758].b();
+		iX.fZ(_local1760, this.Oe.b(), _local1759);
+		_local1760.Mthd = {
+			t: "enum",
+			v: {
+				CrcM: this.rt.b() ? "Absl" : "Rltv"
+			}
+		};
+	}
+	this.VP();
+	this.B5();
+};
+FilterEffectPanel.selc.prototype.VP = function () {
+	var _local1763 = this.cf,
+		_local1762 = iX.RX(_local1763, this.Oe.b());
+	for (var _local1761 = 0; _local1761 < 4; _local1761++) this.iq[_local1761].c(_local1762[_local1761]);
+	this.rt.c(_local1763.Mthd ? _local1763.Mthd.v.CrcM == "Absl" : !1);
+};
+
+// Adjustments: Black & White
+FilterEffectPanel.blwh = function () {
+	FilterEffectPanel.call(this, "blwh");
+	this.go.push(new CheckboxControl([12, 11]));
+	this.go.push(new ColorSwatch(!0));
+	for (var _local1764 = 0; _local1764 < 6; _local1764++) this.go.push(new RangeInput(LayerEffectsHelper.colorRanges[_local1764], -200, 300));
+	this.W8();
+};
+FilterEffectPanel.blwh.prototype = new FilterEffectPanel();
+FilterEffectPanel.blwh.prototype.KJ = function (l, d) {
+	d[0] = l.useTint.v;
+	d[1] = l.tintColor.v;
+	var _local1766 = "Rd Yllw Grn Cyn Bl Mgnt".split(" ");
+	for (var _local1765 = 0; _local1765 < 6; _local1765++) d[2 + _local1765] = l[_local1766[_local1765]].v;
+};
+FilterEffectPanel.blwh.prototype.PY = function (l, d) {
+	l.useTint.v = d[0];
+	l.tintColor.v = d[1];
+	var _local1768 = "Rd Yllw Grn Cyn Bl Mgnt".split(" ");
+	for (var _local1767 = 0; _local1767 < 6; _local1767++) l[_local1768[_local1767]].v = d[2 + _local1767];
+};
+
+// Adjustments: Hue/Saturation
+FilterEffectPanel.hue2 = function () {
+	FilterEffectPanel.call(this);
+	this.value = null;
+	this.q4 = null;
+	this.aen = null;
+	this.Qx = [
+	[0, 0, 0],
+	[0, 50, 0]];
+
+	var _local1772 = this.e;
+	this.uL = new MultiOptionBox(null, ["\u2194"], !0, ["Click and drag in image to change saturation"], !0);
+	this.uL.addListener(ActionTypes.E.A, this.amC, this);
+	this.uL.addListener(ActionTypes.E.A, this.Ie, this);
+	_local1772.appendChild(this.uL.e);
+	var _local1771 = this.go = [
+	new DropdownMenu("Range", ["Master", "Red", "Yellow", "Green", "Cyan", "Blue", "Magenta"]),
+	new RangeInput("Hue", -180, 180),
+	new RangeInput("Saturation", -100, 100),
+	new RangeInput("Lightness", -100, 100),
+	new CheckboxControl("Colorize")];
+
+	for (var _local1769 = 0; _local1769 < _local1771.length; _local1769++) {
+		var _local1770 = _local1771[_local1769];
+		_local1770.addListener(ActionTypes.E.A, _local1769 == 0 ? this.LO : this.a6H, this);
+		_local1772.appendChild(_local1770.e);
+	}
+	this.Oe = _local1771[0];
+	this.Fx = _local1771[1];
+	this.ly = _local1771[2];
+	this.k5 = _local1771[3];
+	this.Cz = _local1771[4];
+	this.Pe = new MultiOptionBox("Sample Hue", ["<img src=\"" + PIMG["tools/eyedropper"] + "\" class=\"autoscale gsicon\" />", "+", "-"], !0, null, !0);
+	this.Pe.addListener(ActionTypes.E.A, this.amC, this);
+	this.Pe.addListener(ActionTypes.E.A, this.Ie, this);
+	this.Pe.e.style.marginLeft = "20px";
+	_local1772.appendChild(this.Pe.e);
+	this.MJ = s.createElement("div");
+	_local1772.appendChild(this.MJ);
+	this.Rh = this.Tk.bind(this);
+	this.IE = this.FS.bind(this);
+	this.T = s.createElement("canvas");
+	this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+	this.UY = null;
+	s.preventTouchAndGesture(this.T);
+	s.setCanvasSizeForDpr(this.T, 282, 18);
+	_local1772.appendChild(this.T);
+	s.addPointerDown(this.T, this.Z1.bind(this));
+};
+FilterEffectPanel.hue2.prototype = new FilterEffectPanel();
+FilterEffectPanel.hue2.prototype.resize = function (l, d) {
+	s.setCanvasSizeForDpr(this.T, Math.round(l), 18);
+	if (this.value) this.LO();
+};
+FilterEffectPanel.hue2.prototype.amC = function (l) {
+	var _local1773 = l.target.b().indexOf(!0);
+	if (_local1773 == -1) return;
+	if (l.target == this.uL) this.Pe.c([!1, !1, !1]);else
+	this.uL.c([!1, !1, !1]);
+};
+FilterEffectPanel.hue2.prototype.Z1 = function (l) {
+	if (this.Oe.b() == 0 || this.Cz.b()) return;
+	var _local1781 = s.getEventPositionInElement(l, this.T).x / (this.T.width / s.getDevicePixelRatio()),
+		_local1778 = 1e6;
+
+	function _local1775(R, J, n) {
+		return R < J && J < n || n < R && (R < J || J < n);
+	}
+	var _local1780 = this.fK(),
+		_local1779 = -1;
+	for (var _local1774 = 0; _local1774 < 4; _local1774++) {
+		var _local1783 = Math.abs(_local1781 - (_local1780[_local1774] + _local1774 * 1e-5));
+		if (_local1783 < _local1778) {
+			_local1778 = _local1783;
+			_local1779 = _local1774;
+		}
+	}
+	if (_local1778 > .025) {
+		_local1779 = -1;
+		var _local1776 = _local1780[0],
+			_local1784 = _local1780[1],
+			_local1782 = _local1780[2],
+			_local1777 = _local1780[3];
+		if (_local1775(_local1776, _local1781, _local1784)) _local1779 = 4;
+		if (_local1775(_local1784, _local1781, _local1782)) _local1779 = 5;
+		if (_local1775(_local1782, _local1781, _local1777)) _local1779 = 6;
+	}
+	if (_local1779 == -1) return;
+	this.UY = _local1779;
+	s.addPointerMove(document.body, this.Rh);
+	s.addPointerUp(document.body, this.IE);
+};
+FilterEffectPanel.hue2.prototype.Tk = function (l) {
+	var _local1791 = s.getEventPositionInElement(l, this.T).x / (this.T.width / s.getDevicePixelRatio()),
+		_local1786 = this.fK(),
+		_local1790 = this.UY;
+	for (var _local1785 = 1; _local1785 < 4; _local1785++)
+	if (_local1786[_local1785] < _local1786[_local1785 - 1]) {
+		_local1786[_local1785] += 1;
+	}
+	if (_local1790 < 4) {
+		var _local1789 = 1e6,
+			_local1788 = 0;
+		for (var _local1785 = -20; _local1785 < 20; _local1785++) {
+			var _local1792 = Math.abs(_local1786[_local1790] - (_local1791 + _local1785));
+			if (_local1792 < _local1789) {
+				_local1789 = _local1792;
+				_local1788 = _local1785;
+			}
+		}
+		_local1791 += _local1788;
+		_local1786[_local1790] = _local1791;
+		for (var _local1785 = _local1790 + 1; _local1785 < 4; _local1785++)
+		if (_local1786[_local1785] < _local1786[_local1785 - 1]) {
+			_local1786[_local1785] = _local1786[_local1785 - 1];
+		}
+		for (var _local1785 = _local1790 - 1; _local1785 >= 0; _local1785--)
+		if (_local1786[_local1785] > _local1786[_local1785 + 1]) {
+			_local1786[_local1785] = _local1786[_local1785 + 1];
+		}
+	} else {
+		var _local1787 = _local1791 - (_local1786[_local1790 - 4] + _local1786[_local1790 - 3]) / 2;
+		if (_local1787 < -.5) _local1787 += 1;
+		if (_local1790 == 4) {
+			_local1786[0] += _local1787;
+			_local1786[1] += _local1787;
+			_local1786[2] = Math.max(_local1786[1], _local1786[2]);
+			_local1786[3] = Math.max(_local1786[1], _local1786[3]);
+		}
+		if (_local1790 == 5)
+		for (var _local1785 = 0; _local1785 < 4; _local1785++) _local1786[_local1785] += _local1787;
+		if (_local1790 == 6) {
+			_local1786[2] += _local1787;
+			_local1786[3] += _local1787;
+			_local1786[0] = Math.min(_local1786[0], _local1786[2]);
+			_local1786[1] = Math.min(_local1786[1], _local1786[2]);
+		}
+	}
+	for (var _local1785 = 1; _local1785 < 4; _local1785++)
+	if (_local1786[_local1785] < _local1786[_local1785 - 1]) throw "e";
+	this.a9n(_local1786);
+	this.LO();
+	this.B5();
+};
+FilterEffectPanel.hue2.prototype.FS = function (l) {
+	s.removePointerMove(document.body, this.Rh);
+	s.removePointerUp(document.body, this.IE);
+};
+FilterEffectPanel.hue2.prototype.refresh = function () {
+	for (var _local1793 = 0; _local1793 < this.go.length; _local1793++) this.go[_local1793].refresh();
+};
+FilterEffectPanel.hue2.prototype.a6H = function (l) {
+	var _local1798 = this.value.Clrz.v = this.Cz.b();
+	if (_local1798) this.Oe.c(0);
+	if (l && l.target == this.Cz) {
+		var _local1794 = _local1798 ? 1 : 0;
+		this.Qx[1 - _local1794] = d8.RX(this.value, 0);
+		var _local1797 = this.Qx[_local1794];
+		d8.fZ(this.value, 0, _local1797);
+		if (this.Oe.b() == 0) {
+			this.Fx.c(_local1797[0]);
+			this.ly.c(_local1797[1]);
+			this.k5.c(_local1797[2]);
+		}
+	}
+	var _local1796 = this.Oe.b(),
+		_local1795 = d8.RX(this.value, _local1796),
+		_local1797 = _local1796 == 0 ? _local1795 : _local1795.I3;
+	_local1797[0] = this.Fx.b();
+	var _local1799 = this.ly.b();
+	_local1797[1] = _local1798 ? Math.max(0, _local1799) : _local1799;
+	_local1797[2] = this.k5.b();
+	d8.fZ(this.value, _local1796, _local1795);
+	this.LO();
+	this.B5();
+};
+FilterEffectPanel.hue2.prototype.LO = function () {
+	var _local1813 = this.Oe.b(),
+		_local1810 = this.value.Clrz ? this.value.Clrz.v : !1;
+	this.Cz.c(_local1810);
+	this.Oe.setEnabled(!_local1810);
+	this.Pe.setEnabled(!_local1810 && _local1813 != 0);
+	var _local1801 = d8.RX(this.value, _local1813),
+		_local1809 = _local1813 == 0 ? _local1801 : _local1801.I3;
+	this.Fx.c(_local1809[0]);
+	this.ly.c(_local1809[1]);
+	this.k5.c(_local1809[2]);
+	var _local1808 = this.T.width,
+		_local1805 = this.T.height,
+		_local1816 = this.k_;
+	_local1816.clearRect(0, 0, _local1808, _local1805);
+	if (_local1810 || _local1813 == 0) {
+		this.MJ.innerHTML = "";
+		return;
+	}
+	var _local1802 = _local1801.mE;
+	this.MJ.innerHTML = _local1802[0] + "\xB0 / " + _local1802[1] + "\xB0<span style=\"float:right\">" + _local1802[2] + "\xB0 \\ " + _local1802[3] + "\xB0</span>";
+	var _local1817 = PixelUtil.allocBytes(_local1808 * 4);
+	ColorMapCanvas.ayQ(_local1817, 1, _local1808, -1, .5);
+	var _local1811 = new ImageData(new Uint8ClampedArray(_local1817.buffer), _local1808, 1),
+		_local1804 = Math.round(_local1805 / 4);
+	for (var _local1800 = 0; _local1800 < _local1804; _local1800++) _local1816.putImageData(_local1811, 0, _local1800);
+
+	function _local1806(g, Y, k) {
+		_local1816.fillStyle = k;
+		var _local1818 = _local1804 * 2;
+		if (g <= Y) _local1816.fillRect(g * _local1808, _local1818, (Y - g) * _local1808, _local1804);else
+		{
+			_local1816.fillRect(0, _local1818, Y * _local1808, _local1804);
+			_local1816.fillRect(g * _local1808, _local1818, (1 - g) * _local1808, _local1804);
+		}
+	}
+	var _local1803 = this.fK();
+	_local1806(_local1803[0], _local1803[1], "#888888");
+	_local1806(_local1803[1], _local1803[2], "#cccccc");
+	_local1806(_local1803[2], _local1803[3], "#888888");
+	_local1816.fillStyle = "#ffffff";
+	_local1816.lineWidth = 1;
+	_local1816.beginPath();
+	var _local1814 = _local1804 + .5,
+		_local1815 = 4 * _local1804 + .5;
+	for (var _local1800 = 0; _local1800 < 4; _local1800++) {
+		var _local1807 = Math.floor(_local1808 * _local1803[_local1800]) + .5,
+			_local1812 = (_local1800 < 2 ? -1 : 1) * _local1804 * (_local1800 == 1 || _local1800 == 2 ? 1 : 2);
+		_local1816.moveTo(_local1807, _local1814);
+		_local1816.lineTo(_local1807, _local1815);
+		_local1816.lineTo(_local1807 + _local1812, _local1815);
+		_local1816.lineTo(_local1807 + _local1812, _local1804 + _local1804 + .5);
+		_local1816.closePath();
+	}
+	_local1816.fill();
+	_local1816.stroke();
+};
+FilterEffectPanel.hue2.prototype.fK = function () {
+	var _local1821 = this.Oe.b(),
+		_local1820 = d8.RX(this.value, _local1821).mE;
+	for (var _local1819 = 0; _local1819 < 4; _local1819++) _local1820[_local1819] = (1000.5 + _local1820[_local1819] / 360) % 1;
+	return _local1820;
+};
+FilterEffectPanel.hue2.prototype.a9n = function (l) {
+	var _local1824 = this.Oe.b(),
+		_local1823 = d8.RX(this.value, _local1824);
+	for (var _local1822 = 0; _local1822 < 4; _local1822++) _local1823.mE[_local1822] = Math.round(36e3 + (l[_local1822] - .5) * 360) % 360;
+	d8.fZ(this.value, _local1824, _local1823);
+};
+FilterEffectPanel.hue2.prototype.ba = function () {
+	return !0;
+};
+FilterEffectPanel.hue2.prototype.anP = function () {
+	var _local1826 = this.uL.b().indexOf(!0),
+		_local1825 = this.Pe.b().indexOf(!0);
+	return _local1826 != -1 ? _local1826 : _local1825 != -1 ? _local1825 + 1 : -1;
+};
+FilterEffectPanel.hue2.prototype.dJ = function (l, d, G, b, V) {
+	var _local1830 = this.anP();
+	if (_local1830 == -1) return;
+	var _local1836 = this.value;
+	this.value = FilterHelper.oT("hue2");
+	this.B5();
+	var _local1827 = f.lS.dh(l, V, 1);
+	this.c(_local1836);
+	var _local1837 = [_local1827 >>> 16 & 255, _local1827 >>> 8 & 255, _local1827 & 255],
+		_local1833 = PixelUtil.rgbToHsb(_local1837[0] / 255, _local1837[1] / 255, _local1837[2] / 255);
+	if (_local1830 == 0) {
+		this.Oe.c(1 + Math.round(_local1833.Tq * 6) % 6);
+	} else {
+		var _local1829 = this.fK(),
+			_local1831 = .5 + _local1833.Tq,
+			_local1828 = 1 / 12,
+			_local1834 = _local1829[1],
+			_local1835 = _local1829[2];
+		if (_local1835 < _local1834) {
+			_local1835++;
+			if (_local1831 < _local1834 && _local1831 + 1 - _local1835 < _local1834 - _local1831) _local1831++;
+		}
+		var _local1832 = _local1834 <= _local1831 && _local1831 <= _local1835;
+		if (_local1830 == 1) {
+			_local1834 = _local1831 - _local1828 / 2;
+			_local1835 = _local1831 + _local1828 / 2;
+		} else if (_local1830 == 2 && !_local1832) {
+			_local1834 = Math.min(_local1831, _local1834);
+			_local1835 = Math.max(_local1831, _local1835);
+		} else if (_local1830 == 3 && _local1832) {
+			if (_local1831 - _local1834 < _local1835 - _local1831) _local1834 = _local1831;else
+			_local1835 = _local1831;
+		}
+		_local1829 = [_local1834 - _local1828, _local1834, _local1835, _local1835 + _local1828];
+		this.a9n(_local1829);
+	}
+	this.B5();
+	this.q4 = V.x;
+	this.aen = this.ly.b();
+};
+FilterEffectPanel.hue2.prototype.JP = function (l, d, G, b, V) {
+	var _local1838 = this.anP();
+	if (_local1838 == -1) return;
+	if (_local1838 == 0) {
+		if (this.q4 != null) {
+			var _local1839 = V.x - this.q4;
+			_local1839 = Math.max(-100, Math.min(100, this.aen + .5 * _local1839));
+			this.ly.c(_local1839);
+			this.a6H();
+		}
+	}
+};
+FilterEffectPanel.hue2.prototype.Nl = function (l, d, G, b, V) {
+	this.q4 = null;
+};
+FilterEffectPanel.hue2.prototype.c = function (l) {
+	this.value = JSON.parse(JSON.stringify(l));
+	var _local1840 = this.value.Clrz ? this.value.Clrz.v : !1;
+	this.Qx[_local1840 ? 1 : 0] = d8.RX(this.value, 0);
+	this.LO();
+};
+FilterEffectPanel.hue2.prototype.b = function (l) {
+	return JSON.parse(JSON.stringify(this.value));
+};
+
+// Adjustments: Levels
+FilterEffectPanel.levl = function () {
+	function _local1841() {
+		FilterEffectPanel.call(this);
+		this.value = null;
+		this.G_ = null;
+		this.wT = [new Point2D(0, 0), new Point2D(0, 0), new Point2D(0, 0), new Point2D(0, 0), new Point2D(0, 0)];
+		this.Qs = -1;
+		this.Rh = this.Tk.bind(this);
+		this.IE = this.FS.bind(this);
+		var _local1847 = this.e;
+		this.zA = new DropdownMenu("Channel", ["RGB", "Red", "Green", "Blue"]);
+		this.zA.addListener(ActionTypes.E.A, this.LO, this);
+		_local1847.appendChild(this.zA.e);
+		this.ppConfig = new AutoEnhanceOptions();
+		this.ppConfig.parent = this;
+		this.ppConfig.addListener(ActionTypes.E.A, this.tl, this);
+		_local1847.appendChild(this.ppConfig.e);
+		var _local1843 = s.createElement("div", "");
+		_local1847.appendChild(_local1843);
+		var _local1846 = s.createElement("div", "");
+		_local1847.appendChild(_local1846);
+		this.T = s.createElement("canvas");
+		_local1843.appendChild(this.T);
+		this.k_ = this.T.getContext("2d", { willReadFrequently: true });
+		this.ab = new Point2D(256, 120);
+		this.T.setAttribute("style", "display:block");
+		s.preventTouchAndGesture(this.T);
+		s.addPointerDown(this.T, this.Z1.bind(this));
+		this.NJ = s.createElement("canvas", "");
+		_local1846.appendChild(this.NJ);
+		this.I1 = this.NJ.getContext("2d", { willReadFrequently: true });
+		this.BY = new Point2D(this.ab.x, 40);
+		this.NJ.setAttribute("style", "display:block");
+		s.preventTouchAndGesture(this.NJ);
+		s.addPointerDown(this.NJ, this.anG.bind(this));
+		var _local1845 = this.a_ = [];
+		for (var _local1842 = 0; _local1842 < 5; _local1842++) {
+			var _local1844 = new TextInput(null, null, 3);
+			_local1845.push(_local1844);
+			_local1844.addListener(ActionTypes.E.A, this.ayb, this);
+			(_local1842 < 2 || _local1842 == 4 ? _local1843 : _local1846).appendChild(_local1844.e);
+		}
+		_local1843.appendChild(_local1845[1].e);
+		this.uL = new MultiOptionBox("Sample from image", ButtonGroupMenu.Ze(["#000000", "#888888", "#ffffff"]), !0, null, !0);
+		this.uL.addListener(ActionTypes.E.A, this.Ie, this);
+		_local1847.appendChild(this.uL.e);
+		this.resize(250, 100);
+	}
+	_local1841.prototype = new FilterEffectPanel();
+	_local1841.prototype.tl = function () {
+		var _local1854 = this.ppConfig.b(),
+			_local1849 = this.G_,
+			_local1853 = this.value,
+			_local1852 = PixelUtil.levelsFromHistogram(_local1854, _local1849);
+		for (var _local1848 = 0; _local1848 < 4; _local1848++) {
+			var _local1851 = _local1852[_local1848][0],
+				_local1856 = _local1852[_local1848][1],
+				_local1850 = _local1852[_local1848][2],
+				_local1857 = [PixelUtil.presetThumb.yR(_local1851, 0, !0), PixelUtil.presetThumb.yR(_local1856, 255, !0)];
+			if (_local1850 != null) _local1857.splice(1, 0, PixelUtil.presetThumb.yR(128, _local1850, !0));
+			var _local1855 = [~~_local1851, ~~_local1856, 0, 255, _local1850 == null ? 100 : ~~(100 + .75 * 100 * (_local1850 - 128) / 128)];
+			hg.fZ(_local1853, _local1848, _local1855);
+		}
+		this.LO();
+		this.B5();
+	};
+	_local1841.prototype.resize = function (d, G) {
+		d += 6;
+		this.ab.x = this.BY.x = d;
+		s.setCanvasSizeForDpr(this.T, d, this.ab.y, this.k_);
+		s.setCanvasSizeForDpr(this.NJ, d, this.BY.y, this.I1);
+		var _local1858 = this.a_;
+		_local1858[3].e.setAttribute("style", "margin-left: " + (d - 104) + "px");
+		_local1858[4].e.setAttribute("style", "margin: 0 " + (d / 2 - 74) + "px");
+		if (this.value) this.LO();
+	};
+	_local1841.prototype.refresh = function () {
+		this.zA.refresh();
+	};
+	_local1841.prototype.ayb = function (d) {
+		var _local1860 = [];
+		for (var _local1859 = 0; _local1859 < 5; _local1859++) {
+			var _local1863 = 255,
+				_local1862 = 1;
+			if (_local1859 == 4) {
+				_local1863 = 999;
+				_local1862 = 100;
+			}
+			var _local1861 = parseFloat(this.a_[_local1859].b());
+			_local1860[_local1859] = Math.max(0, Math.min(_local1863, _local1861 * _local1862));
+		}
+		hg.fZ(this.value, this.zA.b(), _local1860);
+		this.LO();
+		this.B5();
+	};
+	_local1841.prototype.LO = function (d) {
+		var _local1865 = this.ab.x,
+			_local1874 = this.ab.y,
+			_local1872 = this.zA.b(),
+			_local1869 = this.k_;
+		_local1869.clearRect(0, 0, _local1865, _local1874);
+		_local1869.fillStyle = "#cccccc";
+		_local1869.fillRect(8, 8, _local1865 - 16, _local1874 - 16 - 8);
+		if (this.G_) {
+			var _local1880 = this.G_[0].slice(0),
+				_local1879 = 0;
+			if (_local1872 == 0) {
+				_local1880.fill(0);
+				var _local1866 = JSON.parse(JSON.stringify(this.value));
+				hg.fZ(_local1866, 0, [0, 255, 0, 255, 100]);
+				var _local1881 = LayerEffectsHelper.buildEffect("levl", _local1866),
+					_local1875 = [_local1881.mK, _local1881._J, _local1881.xm];
+				for (var _local1868 = 0; _local1868 < 3; _local1868++) {
+					var _local1870 = this.G_[1 + _local1868],
+						_local1867 = _local1875[_local1868];
+					for (var _local1864 = 0; _local1864 < 256; _local1864++) _local1880[_local1867[_local1864]] += _local1870[_local1864];
+				}
+			}
+			var _local1878 = _local1872 == 0 ? _local1880 : this.G_[_local1872];
+			for (var _local1864 = 0; _local1864 < _local1878.length; _local1864++) _local1879 += _local1878[_local1864];
+			_local1869.fillStyle = "#333333";
+			_local1869.beginPath();
+			_local1869.moveTo(8, _local1874 - 16);
+			for (var _local1864 = 0; _local1864 < 256; _local1864++) {
+				var _local1871 = 55 * _local1878[_local1864] / _local1879;
+				_local1869.lineTo(8 + _local1864 / 256 * (_local1865 - 16), Math.max(8, _local1874 - 16 - _local1874 * _local1871));
+			}
+			_local1869.lineTo(_local1865 - 8, _local1874 - 16);
+			_local1869.closePath();
+			_local1869.fill();
+		}
+		var _local1877 = hg.RX(this.value, _local1872);
+		for (var _local1864 = 0; _local1864 < 5; _local1864++) this.a_[_local1864].c(_local1877[_local1864] / (_local1864 == 4 ? 100 : 1));
+		this.wT[0].T6(8 + _local1877[0] / 255 * (_local1865 - 16), _local1874 - 14);
+		this.wT[1].T6(8 + _local1877[1] / 255 * (_local1865 - 16), _local1874 - 14);
+		var _local1876 = Math.log(_local1877[4] / 100) / Math.log(9.99);
+		_local1876 = .5 - _local1876 / 2;
+		this.wT[4].T6(this.wT[0].x + _local1876 * (this.wT[1].x - this.wT[0].x), _local1874 - 14);
+		this.B4(_local1869, this.wT[0], "#000000");
+		this.B4(_local1869, this.wT[1], "#ffffff");
+		this.B4(_local1869, this.wT[4], "#777777");
+		var _local1865 = this.BY.x,
+			_local1874 = this.BY.y;
+		_local1869 = this.I1;
+		_local1869.clearRect(0, 0, _local1865, _local1874);
+		var _local1873 = _local1869.createLinearGradient(0, 0, _local1865 - 16, 0);
+		_local1873.addColorStop(0, "black");
+		_local1873.addColorStop(1, "white");
+		_local1869.fillStyle = _local1873;
+		_local1869.fillRect(8, 8, _local1865 - 16, 16);
+		this.wT[2].T6(8 + _local1877[2] / 255 * (_local1865 - 16), _local1874 - 14);
+		this.wT[3].T6(8 + _local1877[3] / 255 * (_local1865 - 16), _local1874 - 14);
+		this.B4(_local1869, this.wT[2], "#000000");
+		this.B4(_local1869, this.wT[3], "#ffffff");
+	};
+	_local1841.prototype.B4 = function (d, G, b) {
+		d.fillStyle = b;
+		d.fillRect(G.x - 5, G.y, 10, 10);
+	};
+	_local1841.prototype.Z1 = function (d) {
+		var _local1882 = s.getEventPositionInElement(d, this.T),
+			_local1883 = this.aep([0, 1, 4], _local1882);
+		if (_local1883 != -1) this.Qs = _local1883;
+		this.ab9();
+	};
+	_local1841.prototype.anG = function (d) {
+		var _local1884 = s.getEventPositionInElement(d, this.NJ),
+			_local1885 = this.aep([2, 3], _local1884);
+		if (_local1885 != -1) this.Qs = _local1885;
+		this.ab9();
+	};
+	_local1841.prototype.aep = function (d, G) {
+		var _local1889 = -1,
+			_local1888 = 1e9;
+		for (var _local1886 = 0; _local1886 < d.length; _local1886++) {
+			var _local1887 = Math.abs(this.wT[d[_local1886]].x - G.x);
+			if (_local1887 < _local1888) {
+				_local1888 = _local1887;
+				_local1889 = d[_local1886];
+			}
+		}
+		return _local1888 < 16 ? _local1889 : -1;
+	};
+	_local1841.prototype.ab9 = function (d) {
+		if (this.Qs == -1) return;
+		s.addPointerMove(document.body, this.Rh);
+		s.addPointerUp(document.body, this.IE);
+	};
+	_local1841.prototype.Tk = function (d) {
+		var _local1890 = hg.RX(this.value, this.zA.b()),
+			_local1893 = s.getEventPositionInElement(d, this.Qs == 2 && this.Qs == 3 ? this.NJ : this.T),
+			_local1892 = 255 * (_local1893.x - 8) / (this.ab.x - 16);
+		_local1892 = Math.max(0, Math.min(255, _local1892));
+		if (this.Qs == 0) _local1892 = Math.min(_local1892, _local1890[1] - 2);
+		if (this.Qs == 1) _local1892 = Math.max(_local1892, _local1890[0] + 2);
+		if (this.Qs != 4) _local1890[this.Qs] = Math.round(_local1892);else
+		{
+			var _local1891 = (_local1892 - _local1890[0]) / (_local1890[1] - _local1890[0]);
+			_local1891 = 1 - 2 * _local1891;
+			_local1891 = Math.pow(9.99, _local1891);
+			_local1890[4] = Math.min(999, Math.max(10, Math.round(_local1891 * 100)));
+		}
+		hg.fZ(this.value, this.zA.b(), _local1890);
+		this.LO();
+		this.B5();
+	};
+	_local1841.prototype.FS = function (d) {
+		s.removePointerMove(document.body, this.Rh);
+		s.removePointerUp(document.body, this.IE);
+		this.Qs = -1;
+	};
+	_local1841.prototype.ba = function () {
+		return !0;
+	};
+	_local1841.prototype.Nl = function (d, G, b, V, Q) {
+		var _local1899 = this.value,
+			_local1895 = this.uL.b().indexOf(!0);
+		if (_local1895 == -1) return;
+		this.value = FilterHelper.oT("levl");
+		this.B5();
+		var _local1900 = f.lS.dh(d, Q, 1),
+			_local1898 = [_local1900 >>> 16 & 255, _local1900 >>> 8 & 255, _local1900 & 255];
+		for (var _local1894 = 0; _local1894 < 3; _local1894++) {
+			var _local1896 = hg.RX(_local1899, 1 + _local1894);
+			if (_local1895 == 0) _local1896[0] = _local1898[_local1894];
+			if (_local1895 == 1) {
+				var _local1897 = Math.log(_local1898[_local1894] / 255) / Math.log((_local1898[0] + _local1898[1] + _local1898[2]) * .333 / 255);
+				_local1896[4] = Math.min(999, Math.max(10, Math.round(100 * _local1897)));
+			}
+			if (_local1895 == 2) _local1896[1] = _local1898[_local1894];
+			hg.fZ(_local1899, 1 + _local1894, _local1896);
+		}
+		this.c(_local1899);
+		this.B5();
+	};
+	_local1841.prototype.c = function (d) {
+		this.value = d;
+		this.LO();
+	};
+	_local1841.prototype.RB = function (d) {
+		this.G_ = d;
+		this.LO();
+	};
+	_local1841.prototype.b = function (d) {
+		return JSON.parse(JSON.stringify(this.value));
+	};
+	return _local1841;
+}();
+FilterEffectPanel.phfl = function () {
+	FilterEffectPanel.call(this, "phfl");
+	this.go.push(new ColorSwatch());
+	this.go.push(new RangeInput("Density", 0, 100, "%"));
+	this.go.push(new CheckboxControl("Preserve Luminosity"));
+	this.W8();
+};
+FilterEffectPanel.phfl.prototype = new FilterEffectPanel();
+FilterEffectPanel.phfl.prototype.KJ = function (l, d) {
+	d[0] = l.Clr.v;
+	d[1] = l.Dnst.v;
+	d[2] = l.PrsL.v;
+};
+FilterEffectPanel.phfl.prototype.PY = function (l, d) {
+	var _local1901 = PixelUtil.color.sampleGradientColor(d[0]),
+		_local1903 = l.Clr.v,
+		_local1902 = PixelUtil.rgbToLab(_local1901.o, _local1901.J, _local1901.k);
+	_local1903.Lmnc.v = _local1902.Hm;
+	_local1903.A.v = _local1902.aS;
+	_local1903.B.v = _local1902.k;
+	l.Dnst.v = d[1];
+	l.PrsL.v = d[2];
+};
+FilterEffectPanel.vibA = function () {
+	FilterEffectPanel.call(this, "vibA");
+	this.go.push(new RangeInput("Vibrance", -100, 100, null));
+	this.go.push(new RangeInput("Saturation", -100, 100, null));
+	this.W8();
+};
+FilterEffectPanel.vibA.prototype = new FilterEffectPanel();
+FilterEffectPanel.vibA.prototype.KJ = function (l, d) {
+	d[0] = l.vibrance ? l.vibrance.v : 0;
+	d[1] = l.Strt ? l.Strt.v : 0;
+};
+FilterEffectPanel.vibA.prototype.PY = function (l, d) {
+	l.vibrance.v = d[0];
+	l.Strt.v = d[1];
+};
+FilterEffectPanel.thrs = function () {
+	FilterEffectPanel.call(this, "thrs");
+	this.go.push(new RangeInput("Threshold", 1, 255, null));
+	this.W8();
+};
+FilterEffectPanel.thrs.prototype = new FilterEffectPanel();
+FilterEffectPanel.thrs.prototype.KJ = function (l, d) {
+	d[0] = l.Lvl.v;
+};
+FilterEffectPanel.thrs.prototype.PY = function (l, d) {
+	l.Lvl.v = d[0];
+};
+FilterEffectPanel.mixr = function () {
+	FilterEffectPanel.call(this);
+	var _local1906 = this.e;
+	this.iq = [];
+	this.cf = null;
+	this.Oe = new DropdownMenu("Channel", ["Red", "Green", "Blue"]);
+	this.a7Q = !1;
+	this.Oe.addListener(ActionTypes.E.A, this.Rx, this);
+	_local1906.appendChild(this.Oe.e);
+	s.appendBr(_local1906);
+	this.Mo = new CheckboxControl([12, 60]);
+	_local1906.appendChild(this.Mo.e);
+	this.Mo.addListener(ActionTypes.E.A, this.Rx, this);
+	for (var _local1904 = 0; _local1904 < 4; _local1904++) {
+		var _local1905 = new RangeInput(["Red", "Green", "Blue", "Total"][_local1904], -200, 200, "%");
+		_local1905.addListener(ActionTypes.E.A, this.Rx, this);
+		this.iq.push(_local1905);
+		_local1906.appendChild(_local1905.e);
+	}
+};
+FilterEffectPanel.mixr.prototype = new FilterEffectPanel();
+FilterEffectPanel.mixr.prototype.refresh = function () {
+	this.Oe.refresh();
+	this.Mo.refresh();
+	for (var _local1907 = 0; _local1907 < 4; _local1907++) this.iq[_local1907].refresh();
+};
+FilterEffectPanel.mixr.prototype.c = function (l) {
+	this.cf = JSON.parse(JSON.stringify(l));
+	this.VP();
+};
+FilterEffectPanel.mixr.prototype.b = function (l) {
+	return JSON.parse(JSON.stringify(this.cf));
+};
+FilterEffectPanel.mixr.prototype.Rx = function (l) {
+	if (l.target != this.Oe) {
+		var _local1910 = LayerEffectsHelper.parseChannelMixerDescriptor(this.cf);
+		if (l.target == this.Mo) {
+			_local1910.Mo = this.Mo.b();
+			if (_local1910.Mo) _local1910.Z = [40, 40, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];else
+			_local1910.Z = [100, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0];
+		} else {
+			var _local1909 = (_local1910.Mo ? 0 : this.Oe.b()) * 5,
+				_local1908 = this.iq.indexOf(l.target);
+			_local1910.Z[_local1909 + (_local1908 < 3 ? _local1908 : 4)] = l.target.b();
+		}
+		this.cf = LayerEffectsHelper.buildChannelMixerDescriptor(_local1910);
+	}
+	this.VP();
+	this.B5();
+};
+FilterEffectPanel.mixr.prototype.VP = function () {
+	var _local1913 = LayerEffectsHelper.parseChannelMixerDescriptor(this.cf);
+	if (_local1913.Mo != this.a7Q) this.Oe.b3(_local1913.Mo ? [
+	[13, 1, 7]] :
+	LayerEffectsHelper.rgbChannels);
+	this.a7Q = _local1913.Mo;
+	this.Mo.c(_local1913.Mo);
+	var _local1912 = (_local1913.Mo ? 0 : this.Oe.b()) * 5;
+	for (var _local1911 = 0; _local1911 < 4; _local1911++) this.iq[_local1911].c(_local1913.Z[_local1912 + (_local1911 < 3 ? _local1911 : 4)]);
+};
+FilterEffectPanel.post = function () {
+	FilterEffectPanel.call(this, "post");
+	this.go.push(new RangeInput("Levels", 2, 255, null));
+	this.W8();
+};
+FilterEffectPanel.post.prototype = new FilterEffectPanel();
+FilterEffectPanel.post.prototype.KJ = function (l, d) {
+	d[0] = l.Lvls.v;
+};
+FilterEffectPanel.post.prototype.PY = function (l, d) {
+	l.Lvls.v = d[0];
+};
+FilterEffectPanel.clrL = function () {
+	FilterEffectPanel.call(this, "clrL");
+	this.go.push(new ICCProfileButton("LUTs"));
+	this.W8();
+};
+FilterEffectPanel.clrL.prototype = new FilterEffectPanel();
+FilterEffectPanel.clrL.prototype.KJ = function (l, d) {
+	d[0] = l;
+};
+FilterEffectPanel.clrL.prototype.PY = function (l, d) {
+	var _local1914 = d[0];
+	for (var _local1915 in _local1914) l[_local1915] = _local1914[_local1915];
+};
+FilterEffectPanel.clrL.prototype.BM = function (l, d) {
+	if (d == PsdResourceTypes.Wx || d == PsdResourceTypes.Qo) this.go[0].Z2(l.a8v);
+};
+FilterEffectPanel.rplc = function () {
+	FilterEffectPanel.call(this, "rplc");
+	this.go.push(new RangeInput("Fuzziness", 0, 200));
+	this.go.push(new ColorSwatch());
+	this.go.push(new RangeInput("Hue", -180, 180));
+	this.go.push(new RangeInput("Saturation", -100, 100));
+	this.go.push(new RangeInput("Lightness", -100, 100));
+	this.W8();
+};
+FilterEffectPanel.rplc.prototype = new FilterEffectPanel();
+FilterEffectPanel.rplc.prototype.KJ = function (l, d) {
+	d[0] = l.Fzns.v;
+	d[1] = l.Mxm.v;
+	d[2] = l.H.v;
+	d[3] = l.Strt.v;
+	d[4] = l.Lght.v;
+};
+FilterEffectPanel.rplc.prototype.PY = function (l, d) {
+	function _local1916(V, Q) {
+		Q.Lmnc.v = V.Hm;
+		Q.A.v = V.aS;
+		Q.B.v = V.k;
+	}
+	l.Fzns.v = d[0];
+	l.H.v = d[2];
+	l.Strt.v = d[3];
+	l.Lght.v = d[4];
+	var _local1918 = PixelUtil.color.sampleGradientColor(d[1]),
+		_local1917 = PixelUtil.rgbToLab(_local1918.o, _local1918.J, _local1918.k);
+	_local1916(_local1917, l.Mnm.v);
+	_local1916(_local1917, l.Mxm.v);
+};
+FilterEffectPanel.fade = function () {
+	FilterEffectPanel.call(this, "fade");
+	this.go.push(new RangeInput("Opacity", 0, 100, "%"));
+	this.go.push(new DropdownMenu("Blend Mode", au.YJ, au.hY));
+	this.W8();
+};
+FilterEffectPanel.fade.prototype = new FilterEffectPanel();
+FilterEffectPanel.fade.prototype.KJ = function (l, d) {
+	d[0] = l.Opct.v.val;
+	d[1] = au.Point2D.indexOf(l.Md.v.BlnM);
+};
+FilterEffectPanel.fade.prototype.PY = function (l, d) {
+	l.Opct.v.val = d[0];
+	l.Md.v.BlnM = au.Point2D[d[1]];
+};
+FilterEffectPanel.aply = function () {
+	var _local1922 = au.Point2D.concat(["Add", "Sbtr"]);
+	_local1922.splice(21, 1);
+	var _local1921 = au.YJ.concat([
+	[15, 10, 28],
+	[15, 10, 21]]
+	);
+	_local1921.splice(21, 1);
+	var _local1919 = au.hY.slice(0);
+	_local1919[4]--;
+
+	function _local1920() {
+		FilterEffectPanel.call(this, "aply");
+		this.go.push(new DropdownMenu("Layer", []));
+		this.go.push(new DropdownMenu("Channel", ["RGB", "Red", "Green", "Blue", "Transparency"]));
+		this.go.push(new CheckboxControl("Invert"));
+		this.go.push(new DropdownMenu("Blend Mode", _local1921, _local1919));
+		this.go.push(new RangeInput("Opacity", 0, 100, "%"));
+		this.go.push(new RangeDropInput("Scale", 1, 2, null, 2));
+		this.go.push(new RangeDropInput("Offset", -255, 255));
+		this.go.push(new CheckboxControl("Preserve Transparency"));
+		this.W8([2]);
+		this.VC = null;
+	}
+	_local1920.prototype = new FilterEffectPanel();
+	_local1920.prototype.KJ = function (V, Q, t) {
+		if (t) {
+			var _local1924 = t[2].B,
+				_local1928 = this.VC = [];
+			for (var _local1923 = 0; _local1923 < _local1924.length; _local1923++) {
+				var _local1927 = _local1924[_local1923].getName();
+				_local1928.push(_local1927.length < 30 ? _local1927 : _local1927.slice(0, 27) + "...");
+			}
+			_local1928.reverse();
+			this.go[0].b3([
+			[5, 7]].
+			concat(_local1928), [1, _local1928.length]);
+		} else var _local1928 = this.VC;
+		V = V.With.v;
+		var _local1925 = V.T.v;
+		Q[0] = _local1925[1].t == "name" ? 1 + _local1928.indexOf(_local1925[1].v.val) : 0;
+		Q[1] = ["RGB", "Rd", "Grn", "Bl", "Trsp"].indexOf(_local1925[0].v.enum);
+		Q[2] = V.Invr.v;
+		var _local1926 = V.Clcl.v.Clcn;
+		Q[3] = _local1922.indexOf(_local1926);
+		Q[4] = V.Opct.v.val;
+		Q[5] = V.Scl.v;
+		Q[6] = V.Ofst.v;
+		Q[7] = V.PrsT.v;
+	};
+	_local1920.prototype.PY = function (V, Q) {
+		V = V.With.v;
+		var _local1930 = V.T.v;
+		if (Q[0] == 0) _local1930[1] = {
+			t: "Enmr",
+			v: {
+				classID: "Lyr",
+				typeID: "Ordn",
+				enum: "Mrgd"
+			}
+		};else
+		_local1930[1] = {
+			t: "name",
+			v: {
+				classID: "Lyr",
+				val: this.VC[Q[0] - 1]
+			}
+		};
+		_local1930[0].v.enum = ["RGB", "Rd", "Grn", "Bl", "Trsp"][Q[1]];
+		V.Invr.v = Q[2];
+		var _local1929 = V.Clcl.v.Clcn = _local1922[Q[3]];
+		V.Opct.v.val = Q[4];
+		V.Scl.v = Q[5];
+		V.Ofst.v = Q[6];
+		V.PrsT.v = Q[7];
+		var _local1931 = _local1929 == "Add" || _local1929 == "Sbtr";
+		this.go[5].setEnabled(_local1931);
+		this.go[6].setEnabled(_local1931);
+	};
+	return _local1920;
+}();
+FilterEffectPanel.matc = function () {
+	var _local1936,_local1935,_local1932 = 0;
+
+	function _local1934() {
+		FilterEffectPanel.call(this, "matc");
+		this.go.push(new RangeInput("Luminance", 1, 200));
+		this.go.push(new RangeInput("Color Intensity", 1, 200));
+		this.go.push(new RangeInput("Fade", 0, 100, "%"));
+		this.go.push(new CheckboxControl("Neutralize"));
+		this.go.push(new DropdownMenu("Source", []));
+		this.go.push(new DropdownMenu("Layer", []));
+		this.W8("Step Forward");
+	}
+
+	function _local1933(Q, t) {
+		Q.go[5].b3([
+		[5, 7]].
+		concat(t), [1, t.length]);
+	}
+	_local1934.prototype = new FilterEffectPanel();
+	_local1934.prototype.KJ = function (Q, t, I) {
+		_local1932 = 0;
+		t[0] = Q.Lght.v;
+		t[1] = Q.ClrR.v;
+		t[2] = Q.Fade.v;
+		t[3] = Q.neutralizeColor ? Q.neutralizeColor.v : !1;
+		t[4] = t[5] = 0;
+		var _local1946 = Q.Srce;
+		if (_local1946) _local1946 = _local1946.v;
+		if (I) {
+			_local1936 = [];
+			_local1935 = [];
+			var _local1942 = I[2],
+				_local1939 = I[3];
+			for (var _local1937 = 0; _local1937 < _local1939.length; _local1937++) {
+				var _local1940 = _local1939[_local1937];
+				_local1936.push(_local1940.name);
+				var _local1938 = _local1940.B,
+					_local1944 = [];
+				_local1935.push(_local1944);
+				for (var _local1945 = 0; _local1945 < _local1938.length; _local1945++) _local1944.push(_local1938[_local1945].getName());
+				_local1944.reverse();
+			}
+			this.go[4].b3([
+			[13, 1, 0]].
+			concat(_local1936), [1, _local1936.length]);
+			var _local1941 = _local1939.indexOf(_local1942);
+			if (_local1946) _local1941 = _local1936.indexOf(_local1946[1].v.val);
+			_local1933(this, _local1935[_local1941]);
+		}
+		if (_local1946) {
+			var _local1943 = _local1936.indexOf(_local1946[1].v.val);
+			t[3] = _local1932 = 1 + _local1943;
+			if (_local1946[0].t == "name") t[4] = 1 + _local1935[_local1943].indexOf(_local1946[0].v.val);
+		}
+	};
+	_local1934.prototype.PY = function (Q, t) {
+		Q.Lght.v = t[0];
+		Q.ClrR.v = t[1];
+		Q.Fade.v = t[2];
+		Q.neutralizeColor.v = t[3];
+		if (t[4] == 0) {
+			Q.noReference = {
+				t: "bool",
+				v: !0
+			};
+			delete Q.Srce;
+		} else {
+			if (t[4] != _local1932) {
+				_local1932 = t[4];
+				_local1933(this, _local1935[t[4] - 1]);
+			}
+			delete Q.noReference;
+			var _local1947 = {
+					t: "Enmr",
+					v: {
+						classID: "Lyr",
+						typeID: "Ordn",
+						enum: "Mrgd"
+					}
+				},
+				_local1948 = _local1935[t[4] - 1];
+			if (t[5] != 0) _local1947 = {
+				t: "name",
+				v: {
+					classID: "Lyr",
+					val: _local1948[t[5] - 1]
+				}
+			};
+			Q.Srce = {
+				t: "obj ",
+				v: [_local1947, {
+					t: "name",
+					v: {
+						classID: "Dcmn",
+						val: _local1936[t[4] - 1]
+					}
+				}]
+			};
+		}
+	};
+	return _local1934;
+}();
+
+
+function LayerCompsPanel() {
+	PanelTabBase.call(this, "Layer Comps", !1, "---panels/layercomps", PanelTabBase.xA.ax2);
+	this.DK.setAttribute("style", "min-width:240px;");
+	this.v0 = null;
+	this.WG = -1;
+	this.Yb = [];
+	this.jo = s.createElement("div", "scrollable");
+	this.jo.style.height = "160px";
+	this.DK.appendChild(this.jo);
+	this.S8 = s.createElement("div", "lpfoot");
+	this.DK.appendChild(this.S8);
+	this.VS = [];
+	var _local4307 = ["<svg  class=\"miniscale gsicon\" viewBox=\"0 0 15 15\" width=\"15\" height=\"15\" fill=\"black\"><path d=\"M14,6 L10,6 L10,0 L4,0 L4,6 L0,6 L7,13 L14,6 L14,6 Z M0,14 L0,16 L14,16 L14,14 Z\" /></svg>", "reload", "lrs/newlayer", "lrs/bin"],
+		_local4306 = ["Layer Comps to Files", [5, 10],
+		[5, 3],
+		[5, 4]];
+
+	for (var _local4303 = 0; _local4303 < _local4307.length; _local4303++) {
+		var _local4304 = _local4307[_local4303];
+		if (_local4303 > 0) _local4304 = "<img src=\"" + PIMG[_local4307[_local4303]] + "\" class=\"miniscale gsicon\" />";
+		var _local4305 = new ToolbarButton(_local4304, !1, _local4306[_local4303]);
+		_local4305.addListener("click", this.azr, this);
+		this.S8.appendChild(_local4305.e);
+		this.VS.push(_local4305);
+	}
+}
+LayerCompsPanel.prototype = new PanelTabBase("");
+LayerCompsPanel.prototype.resize = function (l, d) {
+	this.DK.setAttribute("style", "width:" + (l - 2) + "px;");
+	this.jo.style.height = d - 28 + "px";
+};
+LayerCompsPanel.prototype.zh = function (l) {
+	var _local4308 = new Action(ActionTypes.E.v, !0);
+	_local4308.data = l;
+	_local4308.G = f.X6;
+	this.dispatch(_local4308);
+};
+LayerCompsPanel.atk = `var opts = new ExportOptionsSaveForWeb();
+opts.format = SaveDocumentType.PNG;
+opts.PNG8 = false;
+opts.quality = 100;
+var doc = app.activeDocument;
+var lc = doc.layerComps;
+if(lc.length==0) alert("No layer comps.");
+else {
+	var stat = doc.historyStates.length - 1;
+	for(var i=0; i<lc.length; i++) {
+		lc[i].apply();
+		pngFile = new File(lc[i].name +".png");
+		app.activeDocument.exportDocument(pngFile, ExportType.SAVEFORWEB, opts);
+	}
+	doc.activeHistoryState = doc.historyStates[stat];
+}`;
+LayerCompsPanel.prototype.azr = function (l) {
+	var _local4309 = this.VS.indexOf(l.currentTarget) - 1;
+	if (_local4309 == -1) {
+		var _local4310 = new Action(ActionTypes.E.L, !0);
+		_local4310.data = {
+			a: ActionTypes.$.WM,
+			nM: LayerCompsPanel.atk
+		};
+		this.dispatch(_local4310);
+		return;
+	}
+	if (_local4309 != 1)
+	if (this.WG == -1) return;
+	this.zh({
+		a: ["updLC", "addLC", "delLC"][_local4309],
+		sy: this.WG
+	});
+	if (_local4309 == 2) this.WG = -1;
+};
+LayerCompsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	for (var _local4311 = 0; _local4311 < this.VS.length; _local4311++) this.VS[_local4311].refresh();
+};
+LayerCompsPanel.prototype.Yw = function (l) {
+	if (l == null) s.addClass(this.DK, "disabled");else
+	s.removeClass(this.DK, "disabled");
+	this.v0 = l;
+	s.clearChildren(this.jo);
+	if (l == null) return;
+	var _local4316 = l.MV.lastAppliedComp ? l.MV.lastAppliedComp.v : 0,
+		_local4313 = l.MV.list.v.slice(0);
+	_local4313.unshift({
+		v: {
+			Nm: {
+				v: "Last Document State"
+			},
+			compID: {
+				v: 0
+			},
+			capturedInfo: {
+				v: 0
+			}
+		}
+	});
+	for (var _local4312 = 0; _local4312 < _local4313.length; _local4312++) {
+		var _local4315 = _local4313[_local4312].v,
+			_local4314 = new LayerCompRow(_local4315.Nm.v, _local4315.compID.v, _local4315.capturedInfo.v, _local4316, this.WG);
+		_local4314.addListener("activate", this.O5, this);
+		_local4314.parent = this;
+		this.jo.appendChild(_local4314.e);
+		this.Yb.push(_local4314);
+	}
+};
+LayerCompsPanel.prototype.O5 = function (l) {
+	this.WG = l.currentTarget.sy;
+	this.Yw(this.v0);
+};
+
+function LayerCompRow(l, A, d, G, b) {
+	UIComponent.call(this);
+	this.sy = A;
+	this.e = s.createElement("div", "head listitem" + (A == b ? " selected" : ""));
+	var _local4320 = A == G,
+		_local4319 = new ToolbarButton(_local4320 ? "\u2713" : "\u2014");
+	if (_local4320) _local4319.Nu();
+	this.e.appendChild(_local4319.e);
+	_local4319.addListener("click", this.rq, this);
+	var _local4322 = this.c1 = s.createElement("span");
+	_local4322.textContent = l;
+	this.e.appendChild(_local4322);
+	this.VS = [];
+	if (A != 0) {
+		this.e.addEventListener("mouseup", this.O5.bind(this), !1);
+		this.axU = s.createElement("span", "headR");
+		this.e.appendChild(this.axU);
+		var _local4317 = ["lrs/eye", "pos", "lrs/fx"],
+			_local4323 = ["Visibility", "Position", "Appearance"];
+		for (var _local4321 = 0; _local4321 < _local4317.length; _local4321++) {
+			var _local4318 = new ToolbarButton("<img src=\"" + PIMG[_local4317[_local4321]] + "\" class=\"autoscale gsicon\" />", !1, _local4323[_local4321]);
+			if ((d >> _local4321 & 1) == 0) _local4318.e.setAttribute("style", "opacity:0.3");
+			_local4318.addListener("click", this.ax_, this);
+			this.axU.appendChild(_local4318.e);
+			this.VS.push(_local4318);
+		}
+	}
+}
+LayerCompRow.prototype = new UIComponent();
+LayerCompRow.prototype.O5 = function (l) {
+	if (l.target != this.c1 && l.target != this.e) return;
+	if (l.detail == 1) this.dispatch(new Action("activate", !1));else
+	{
+		var _local4324 = new PanelTabBase.di(this.c1, this.sd.bind(this));
+	}
+};
+LayerCompRow.prototype.ax_ = function (l) {
+	var _local4325 = this.VS.indexOf(l.currentTarget);
+	this.zh({
+		a: "editLC",
+		aqX: _local4325,
+		sy: this.sy
+	});
+};
+LayerCompRow.prototype.sd = function (l) {
+	this.zh({
+		a: "editLC",
+		Xu: l,
+		sy: this.sy
+	});
+};
+LayerCompRow.prototype.rq = function (l) {
+	this.zh({
+		a: "setLC",
+		sy: this.sy
+	});
+};
+LayerCompRow.prototype.zh = function (l) {
+	var _local4326 = new Action(ActionTypes.E.v, !0);
+	_local4326.data = l;
+	_local4326.G = f.X6;
+	this.dispatch(_local4326);
+};
+
+
+function NavigatorPanel() {
+	PanelTabBase.call(this, "Navigator", !1, "---panels/navigator", PanelTabBase.xA.afm);
+	var _local4328 = s.createElement("div", "padded");
+	_local4328.setAttribute("style", "min-width:15em");
+	this.DK.appendChild(_local4328);
+	var _local4327 = s.createElement("div");
+	_local4328.appendChild(_local4327);
+	_local4327.setAttribute("style", "cursor:grab;");
+	this.T = s.createElement("canvas");
+	this.T.width = 100;
+	_local4327.appendChild(this.T);
+	s.preventTouchAndGesture(this.T);
+	s.addPointerDown(this.T, this.TC.bind(this));
+	this.yT = new OffsetRangeInput(null, 2, 6400, "%", null, !0);
+	this.yT.addListener(ActionTypes.E.A, this.asq, this);
+	_local4328.appendChild(this.yT.e);
+	this.a3A = this.w7.bind(this);
+	this.ach = this.ha.bind(this);
+	this.KP = null;
+	this.EI = null;
+	this.Pg = !1;
+}
+NavigatorPanel.prototype = new PanelTabBase("");
+NavigatorPanel.prototype.resize = function (l, d) {
+	this.VP();
+};
+NavigatorPanel.prototype.asq = function (l) {
+	var _local4332 = this.yT.b(),
+		_local4329 = this.KP,
+		_local4331 = _local4332 / 100;
+	if (.8 < _local4331 && _local4331 < 1.2) _local4331 = 1;else
+	if (1.8 < _local4331) _local4331 = Math.round(_local4331);
+	var _local4330 = new Action(ActionTypes.E.v, !0);
+	_local4330.G = f.t7;
+	_local4330.data = {
+		a: "zoom",
+		N: _local4331
+	};
+	this.dispatch(_local4330);
+};
+NavigatorPanel.prototype.TC = function (l) {
+	var _local4333 = this.KP;
+	if (_local4333 == null) return;
+	this.Pg = !0;
+	s.addPointerMove(window, this.a3A);
+	s.addPointerUp(window, this.ach);
+};
+NavigatorPanel.prototype.w7 = function (l) {
+	var _local4339 = s.getEventPositionInElement(l, this.T),
+		_local4334 = this.KP,
+		_local4338 = this.T.width,
+		_local4337 = this.T.height,
+		_local4336 = (_local4339.x * s.getDevicePixelRatio() - _local4338 / 2) / _local4338,
+		_local4341 = (_local4339.y * s.getDevicePixelRatio() - _local4337 / 2) / _local4337,
+		_local4335 = s.getDevicePixelRatio() * _local4334.u.N,
+		_local4342 = Math.round(-_local4334.u.N * _local4334.m * _local4336),
+		_local4340 = Math.round(-_local4334.u.N * _local4334.n * _local4341);
+	f.Mi.if(_local4334, _local4342, _local4340);
+};
+NavigatorPanel.prototype.ha = function (l) {
+	s.removePointerMove(window, this.a3A);
+	s.removePointerUp(window, this.ach);
+	this.Pg = !1;
+};
+NavigatorPanel.prototype.Yw = function (l) {
+	if (l == null && this.KP != null) this.T.width = 100;
+	this.KP = l;
+	this.VP();
+};
+NavigatorPanel.prototype.a6_ = function () {
+	var _local4346 = 300 * s.getDevicePixelRatio(),
+		_local4345 = 0,
+		_local4343 = this.KP,
+		_local4344 = [_local4343.LT(), new Rect(0, 0, _local4343.m, _local4343.n)];
+	PixelUtil.pyramidDownsampleRgba(_local4344);
+	while (Math.max(_local4344[_local4345 + 1].m, _local4344[_local4345 + 1].n) > _local4346) {
+		_local4345 += 2;
+	}
+	this.EI = _local4344.slice(_local4345);
+};
+NavigatorPanel.prototype.VP = function () {
+	var _local4357 = this.KP;
+	if (_local4357 == null || _local4357.u.N == 0) return;
+	var _local4355 = _local4357.u;
+	if (!s.isInDocument(this.DK)) return;
+	this.yT.c(_local4355.N * 100);
+	if (!this.Pg) this.a6_();
+	var _local4347 = this.EI[0],
+		_local4354 = this.EI[1],
+		_local4353 = _local4354.m,
+		_local4351 = _local4354.n,
+		_local4358 = this.T;
+	_local4358.width = _local4353;
+	_local4358.height = _local4351;
+	s.setElementSizePx(_local4358, _local4353, _local4351);
+	var _local4348 = _local4358.getContext("2d", { willReadFrequently: true }),
+		_local4359 = _local4348.createImageData(_local4353, _local4351);
+	PixelUtil.copyByteBuffer(_local4347, _local4359.data);
+	_local4348.putImageData(_local4359, 0, 0);
+	_local4348.getImageData(0, 0, 1, 1);
+	var _local4356 = _local4355.Vm,
+		_local4350 = _local4355.Zx(_local4356.x, _local4356.y),
+		_local4352 = _local4355.Zx(_local4356.x + _local4356.m, _local4356.y + _local4356.n),
+		_local4349 = _local4353 / _local4357.m;
+	_local4348.scale(_local4349, _local4349);
+	_local4348.lineWidth = 4 / _local4349;
+	_local4348.strokeStyle = "#ff0000";
+	_local4348.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
+};
+NavigatorPanel.prototype.BM = function (l, d) {};
+NavigatorPanel.prototype.KN = function () {
+	this.VP();
+};
+
+
+function NotesPanel() {
+	PanelTabBase.call(this, "Notes", !1, "---panels/notes", PanelTabBase.xA.avR);
+	this.DK.setAttribute("style", "min-width:240px;");
+	var _local4413 = s.createElement("div", "padded");
+	this.DK.appendChild(_local4413);
+	this.r3 = new TextInput("Author");
+	_local4413.appendChild(this.r3.e);
+	this.e8 = s.createElement("textarea");
+	s.addKeydownBlocker(this.e8);
+	_local4413.appendChild(this.e8);
+	var _local4412 = new ToolbarButton("<<", null, null, !0);
+	_local4413.appendChild(_local4412.e);
+	this.af2 = _local4412;
+	var _local4410 = new ToolbarButton(">>", null, null, !0);
+	_local4413.appendChild(_local4410.e);
+	_local4412.addListener("click", this.W9, this);
+	_local4410.addListener("click", this.W9, this);
+	var _local4411 = this.a5n = new LabelItem("");
+	_local4413.appendChild(_local4411.e);
+}
+NotesPanel.prototype = new PanelTabBase("");
+NotesPanel.prototype.W9 = function (l) {
+	var _local4418 = l.target == this.af2 ? -1 : 1,
+		_local4414 = this.KP,
+		_local4417 = _local4414.add.Anno;
+	if (_local4417 == null) return;
+	var _local4416 = _local4417.length,
+		_local4415 = _local4414.u.$m;
+	_local4414.u.$m = (_local4415 + _local4418 + _local4416) % _local4416;
+	_local4414.bV = !0;
+	this.VP();
+};
+NotesPanel.prototype.VP = function () {
+	var _local4422 = this.KP;
+	if (_local4422 == null) return;
+	var _local4421 = _local4422.add.Anno;
+	if (_local4421 == null || _local4421.length == 0) return;
+	var _local4419 = _local4422.u.$m,
+		_local4420 = _local4421[_local4419];
+	this.e8.value = _local4420[4];
+	this.a5n.c(_local4419 + 1 + " / " + _local4421.length);
+	this.r3.c(_local4420[3]);
+};
+NotesPanel.prototype.resize = function (l, d) {
+	if (this.iJ == l) return;
+	this.iJ = l;
+	d = Math.min(d, 200);
+	this.e8.setAttribute("style", "display:block;tab-size:4;  margin:0; font-family:monospace; width:" + (l - 10) + "px; height:" + (d - 66) + "px");
+};
+NotesPanel.prototype.Yw = function (l, d, G) {
+	this.KP = l;
+	this.VP();
+};
+
+
+
+function LayersPanel() {
+	PanelTabBase.call(this, "Layers", !1, "---panels/layers", PanelTabBase.xA.yS);
+	this.$E = null;
+	this.Yb = [];
+	this.Kv = null;
+	this.z8 = null;
+	this.lg = s.createElement("div", "lphead");
+	this.jo = s.createElement("div", "lpbody scrollable");
+	// this.jo.addEventListener("scroll", this.axz.bind(this), !1);
+	this.S8 = s.createElement("div", "lpfoot");
+	var _local3730 = this.a9i = s.createElement("span");
+	_local3730.setAttribute("style", "display:inline-block; height:26px");
+	this.lg.appendChild(_local3730);
+	this.ru = new DropdownMenu(null, au.YJ, au.hY);
+	this.ru.addListener(ActionTypes.E.A, this.a5p, this);
+	this.lg.appendChild(this.ru.e);
+	this.eR = new RangeDropInput("Opacity", 0, 100, "%", 0);
+	this.eR.addListener(ActionTypes.E.A, this.aoS, this);
+	this.eR.parent = this;
+	this.lg.appendChild(this.eR.e);
+	this.__ = new MultiOptionBox("Lock", [
+	"<img src=\"" + PIMG.trsp3 + "\" class=\"miniscale gsicon\" />",
+	"<img src=\"" + PIMG["tools/brush"] + "\" class=\"miniscale gsicon\" />",
+	"<img src=\"" + PIMG.pos + "\" class=\"miniscale gsicon\" />",
+	"<img src=\"" + PIMG["lrs/lock"] + "\" class=\"miniscale gsicon\" />"],
+	!0, ["Transparency", "Pixels", "Position", "All"]);
+	this.__.addListener(ActionTypes.E.A, this.asd, this);
+	this.lg.appendChild(this.__.e);
+	this.z2 = new RangeDropInput("Fill", 0, 100, "%", 0);
+	this.z2.addListener(ActionTypes.E.A, this.afg, this);
+	this.z2.parent = this;
+	this.lg.appendChild(this.z2.e);
+	this.lM = [];
+	this.sY();
+	this.DK.appendChild(this.lg);
+	this.DK.appendChild(this.jo);
+	this.jo.addEventListener("dragover", function (V) {
+		V.preventDefault();
+	}, !1);
+	this.jo.addEventListener("dragenter", s.stopAndPreventHandler, !1);
+	this.jo.addEventListener("drop", this.aA6.bind(this), !1);
+	this.DK.appendChild(this.S8);
+	this.DK.addEventListener("contextmenu", s.stopAndPreventHandler, !1);
+	this.addListener("rclick", this.a2r, this);
+	var _local3729 = function (V, Q, A) {
+		return {
+			Zj: this.Nj[A] == 1
+		};
+	}.bind(this);
+	this.aeZ = new ContextPanel([
+	{ name: "Filter", p: _local3729 },
+	{ name: "Blending Options", p: _local3729 },
+	{ name: "Lock", p: _local3729, xX: !0 },
+	{ name: "Long-tap as a right click", p: _local3729, xX: !0 },
+	{ name: "\u2796 Thumbnail Size" },
+	{ name: "\u2795 Thumbnail Size" },
+	{ name: "Thumbnails by Layer",
+		p: function () {
+			return {
+				Zj: LayerTreeNode.iR == 0,
+				p: !0
+			};
+		}
+	},
+	{ name: "Thumbnails by Document",
+		p: function () {
+			return {
+				Zj: LayerTreeNode.iR == 1,
+				p: !0
+			};
+		}
+	}]);
+	this.aeZ.addListener("select", this.a0_, this);
+	this.Nj = [0, 1, 1, 0];
+	var _local3727 = window.localStorage;
+	if (_local3727) {
+		var _local3728 = _local3727.getItem("lpOpt");
+		if (_local3728) {
+			_local3728 = JSON.parse(_local3728);
+			this.Nj = _local3728[0];
+			LayerTreeNode.hC = _local3728[1];
+			LayerTreeNode.iR = _local3728[2];
+		}
+	}
+	this.a0_();
+}
+LayersPanel.prototype = new PanelTabBase("");
+LayersPanel.prototype.nh = function () {
+	if (this.aje) return;
+	var _local3732 = LayerStyleDialog.bb(!0),
+		_local3731 = LayerStyleDialog.bQ(!0);
+	this.aje = new ContextPanel(_local3732, _local3731);
+	var _local3732 = [
+		{ name: "Blending Options" },
+		{ name: "Select Pixels", xX: !0 },
+		{ name: "Duplicate Layer" },
+		{ name: "Duplicate Into ..." },
+		{ name: "Delete", xX: !0 },
+		{ name: "Convert to Smart Object" },
+		{ name: "New Smart Obj. via Copy",
+			p: function (G) {
+				return {
+					p: G.B[G.g[0]].add.SoLd != null
+				};
+			},
+			xX: !0
+		},
+		{ name: "Rasterize", p: LayersPanel.a51 },
+		{ name: "Rasterize Layer Style",
+			p: function (G) {
+				var _local3733 = G.B[G.g[0]];
+				return {
+					p: _local3733.add.lmfx != null && !_local3733.IQ()
+				};
+			}
+		},
+		{ name: "Convert to Shape",
+			xX: !0,
+			p: function (G) {
+				var _local3734 = G.B[G.g[0]];
+				return {
+					p: _local3734.add.TySh != null
+				};
+			}
+		},
+		{
+			name: "",
+			xX: !0,
+			p: function (G) {
+				var _local3737 = G.B[G.g[0]],
+					_local3736 = _local3737.add.TySh,
+					_local3735 = _local3736 ? _local3736.zC : null;
+				return {
+					p: _local3736 != null && _local3735.Curve == null,
+					iH: _local3736 && dt.WK(_local3735) == 0 ? "Convert to Paragraph Text" : "Convert to Point Text"
+				};
+			}
+		},
+		LayersPanel.a1S(!1),
+		LayerStyleDialog.a1T(),
+		{
+			name: "Merge Layers",
+			p: function (G) {
+				var _local3738 = G == null ? 0 : G.g.length;
+				return {
+					p: _local3738 != 0 && (_local3738 != 1 || G.g[0] != 0),
+					iH: _local3738 > 1 || _local3738 == 1 && G.B[G.g[0]].IQ() ? "Merge Layers" : "Merge Down"
+				};
+			}
+		},
+		{ name: "Flatten Image", xX: !0 },
+		{ name: "Color",
+			sub: function () {
+				var _local3740 = [];
+				for (var _local3739 = 0; _local3739 < LayerPanelRow.J2.length; _local3739++) _local3740.push({
+					name: [13, 1, _local3739],
+					e2: "#" + PixelUtil.intToHex6(LayerPanelRow.J2[_local3739])
+				});
+				return _local3740;
+			}()
+		}],
+		_local3731 = [{
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "layerstyle"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.Da,
+			W: {
+				a: "fromlayer",
+				X9: [null, 0, 0]
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.ZY
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "duplinto"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.Qe
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "newPlacedLayer"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.zY
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "rasterizeLayer",
+				a0: {
+					classID: "rasterizeLayer",
+					null: PsdDescriptorHelper.Fw("Lyr", !0)
+				}
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.pL
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.aon
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.zl,
+			W: {
+				a: "switchPntPrgr"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.Gk
+			}
+		}, LayerStyleDialog.asB(), {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "mergeLayersNew",
+				a0: {
+					__name: "Merge Layers",
+					classID: "Mrg2"
+				}
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "flattenImage"
+			}
+		}, {
+			sub: function () {
+				var _local3742 = [];
+				for (var _local3741 = 0; _local3741 < 8; _local3741++) _local3742.push({
+					Y: ActionTypes.E.v,
+					G: f.yS,
+					W: {
+						a: LayerRecord.dZ,
+						anr: _local3741
+					}
+				});
+				return _local3742;
+			}()
+		}];
+
+	this.DM = new ContextPanel(_local3732, _local3731);
+
+	var _local3732 = [
+		{
+			name: "Add Filter Mask",
+			p: function (G) {
+				var _local3743 = G.B[G.g[0]];
+				return {
+					p: _local3743.vZ(G).z == null
+				};
+			}
+		},
+		{ name: "Clear Smart Filters" }],
+
+		_local3731 = [
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.ev } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.OL } }];
+
+
+	this.a7F = new ContextPanel(_local3732, _local3731);
+
+	var _local3732 = [
+		{
+			name: "enab/disab",
+			p: function (G) {
+				return {
+					iH: G.B[G.g[0]].c3().isEnabled ? "Disable Raster Mask" : "Enable Raster Mask"
+				};
+			}
+		},
+		{ name: "Delete Raster Mask" },
+		{
+			name: "Apply",
+			p: function (G) {
+				return {
+					p: G.T8(!1, !0)
+				};
+			}
+		}],
+		_local3731 = [
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.sF } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.uU } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.n9 } }];
+
+
+	this.a3R = new ContextPanel(_local3732, _local3731);
+
+	var _local3732 = [
+		{
+			name: "enab/disab",
+			p: function (G) {
+				return {
+					iH: G.B[G.g[0]].vZ(G).z.isEnabled ? "Disable Filter Mask" : "Enable Filter Mask"
+				};
+			}
+		},
+		{ name: "Delete Filter Mask" }],
+
+		_local3731 = [
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.W0 } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.V2 } }];
+
+
+	this.aj8 = new ContextPanel(_local3732, _local3731);
+
+	var _local3732 = [{
+			name: "enab/disab",
+			p: function (G) {
+				return {
+					iH: G.B[G.g[0]].add.vmsk.isEnabled ? "Disable Vector Mask" : "Enable Vector Mask"
+				};
+			}
+		},
+		{ name: "Delete Vector Mask" },
+		{ name: "Rasterize" }],
+
+		_local3731 = [
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.dD } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.W1 } },
+		{ Y: ActionTypes.E.v, G: f.yS, W: { a: LayerRecord.g_ } }];
+
+	this.ajc = new ContextPanel(_local3732, _local3731);
+	this.alw = new ContextPanel(LayerStyleDialog.alE(!0), LayerStyleDialog.ye(!0));
+	this.aoa = new ContextPanel(LayerStyleDialog.bb(), LayerStyleDialog.bQ());
+};
+LayersPanel.prototype.axz = function (l) {
+	var _local3747 = this.jo.scrollTop - 600;
+	for (var _local3744 = 0; _local3744 < this.Yb.length; _local3744++) {
+		var _local3745 = this.Yb[_local3744],
+			_local3746 = _local3745.Xl;
+		if (_local3747 < _local3745.Xl) _local3745.ast();
+		if (_local3745.Xl > _local3747 + this.Tq + 600) break;
+	}
+};
+LayersPanel.prototype.xI = function () {
+	return this.aeZ;
+};
+LayersPanel.prototype.a0_ = function (l) {
+	var _local3753 = this.Nj;
+	if (l) {
+		var _local3749 = l.target.sz(),
+			_local3748 = _local3749[0];
+		if (_local3748 < 4) _local3753[_local3748] = 1 - _local3753[_local3748];else
+		if (_local3748 < 6) {
+			if (_local3748 == 4 && LayerTreeNode.hC - 10 >= 10) LayerTreeNode.hC -= 10;
+			if (_local3748 == 5 && LayerTreeNode.hC + 10 <= 200) LayerTreeNode.hC += 10;
+			if (this.Kv) this.Kv.i_ = !0;
+		} else {
+			if (_local3748 == 6) LayerTreeNode.iR = 0;
+			if (_local3748 == 7) LayerTreeNode.iR = 1;
+			if (this.Kv) this.Kv.i_ = !0;
+		}
+		var _local3752 = window.localStorage;
+		if (_local3752) _local3752.setItem("lpOpt", JSON.stringify([_local3753, LayerTreeNode.hC, LayerTreeNode.iR]));
+	}
+	if (_local3753[0] == 1) this.aqN();
+	var _local3751 = [
+	[{ e: this.a9i }],
+	[this.ru, this.eR],
+	[this.__, this.z2]];
+
+	for (var _local3748 = 0; _local3748 < 3; _local3748++) {
+		for (var _local3750 = 0; _local3750 < _local3751[_local3748].length; _local3750++) {
+			_local3751[_local3748][_local3750].e.style.display = _local3753[_local3748] == 1 ? "inline-block" : "none";
+		}
+	}
+	this.resize(this.iJ, this.Tq);
+};
+LayersPanel.prototype.axk = function () {
+	var _local3756 = this.mR;
+	if (_local3756 == null) return !1;
+	if (_local3756.b()) {
+		var _local3755 = this.xa.b(),
+			_local3754 = this.fq[_local3755].b();
+		if (_local3755 == 0) return _local3754.indexOf(!0) != -1;
+		if (_local3755 == 1) return _local3754 != "";
+	}
+	return !1;
+};
+LayersPanel.a1S = function (l) {
+	var _local3758 = function (b) {
+			var _local3759 = b != null && b.g.length != 0 && b.B[b.g[0]].usesClippingMask;
+			return {
+				Zj: _local3759,
+				p: b != null && b.Hz(b.g[0]),
+				W: {
+					Y: ActionTypes.E.g5,
+					W: {
+						kT: _local3759 ? "ungroup" : "groupEvent",
+						a0: {
+							classID: _local3759 ? "Ungr" : "GrpL",
+							null: PsdDescriptorHelper.Fw("Lyr", !0)
+						}
+					}
+				}
+			};
+		},
+		_local3757 = {
+			name: [6, 6, 0],
+			xX: !0,
+			p: _local3758
+		};
+	if (l) _local3757.C0 = [KeyboardHandler.Jm, KeyboardHandler.wz, KeyboardHandler.Jv];
+	return _local3757;
+};
+LayersPanel.a51 = function (l, d) {
+	if (l)
+	for (var _local3760 = 0; _local3760 < l.g.length; _local3760++) {
+		var _local3761 = l.B[l.g[_local3760]];
+		if (_local3761.add.TySh || _local3761.add.SoLd || _local3761.add.SoCo || _local3761.add.GdFl || _local3761.add.PtFl) return {
+			p: !0
+		};
+	}
+	return {
+		p: !1
+	};
+};
+LayersPanel.prototype.aA6 = function (l) {
+	s.stopAndPreventHandler(l);
+	var _local3765 = l.dataTransfer.getData("Text"),
+		_local3762 = 1,
+		_local3764 = 0;
+	if (_local3765 == "") {
+		s.handleDataTransferDrop(l, this, this.z8.indexOf(this.Kv), _local3764 + (_local3762 > .5 ? 0 : 1));
+	} else if (_local3765 != "--panel") {
+		var _local3765 = JSON.parse(_local3765),
+			_local3763 = _local3765.Ts;
+		if (_local3763 == "l") this.zh({
+			a: LayerRecord.jD,
+			source: _local3765.yD,
+			target: _local3764,
+			yu: _local3762
+		});
+	}
+};
+LayersPanel.prototype.a2r = function (l) {
+	var _local3770 = this.Kv,
+		_local3766 = l.data,
+		_local3768;
+	if (_local3770.g.indexOf(_local3766.j) == -1) {
+		var _local3769 = {
+			a: LayerRecord.bj,
+			j: l.target.Qj.index,
+			VY: _local3766.ht
+		};
+		this.zh(_local3769);
+	}
+	if (_local3770.g.indexOf(_local3766.j) == -1) return;
+	this.nh();
+	if (_local3766.ht == 1) {
+		_local3768 = this.a3R;
+	} else if (_local3766.ht == 2) {
+		_local3768 = this.ajc;
+	} else if (_local3766.ht == 3) {
+		_local3768 = this.aj8;
+	} else if (_local3766.ht == 4) {
+		_local3768 = this.a7F;
+	} else if (_local3766.ht == 5) {
+		_local3768 = this.aje;
+	} else {
+		_local3768 = this.DM;
+	}
+	_local3768.refresh();
+	_local3768.update(_local3770);
+	_local3768.parent = this;
+	var _local3767 = new Action(ActionTypes.E.L, !0);
+	_local3767.data = {
+		a: ActionTypes.$.dY,
+		A3: _local3768,
+		x: _local3766.be.x + 1,
+		y: _local3766.be.y + 1
+	};
+	this.dispatch(_local3767);
+};
+LayersPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	this.ru.refresh();
+	this.eR.refresh();
+	this.__.refresh();
+	this.z2.refresh();
+	if (this.mR) {
+		this.mR.refresh();
+		this.fq[0].refresh();
+	}
+	if (this.Kv) this.Yw(this.Kv);
+	var _local3774 = "lrs/link lrs/fx lrs/adj lrs/mask lrs/folder lrs/newlayer lrs/bin".split(" ");
+	for (var _local3771 = 0; _local3771 < this.lM.length; _local3771++) {
+		var _local3773 = this.lM[_local3771];
+		_local3773.setLabel(s.getIconImgHtml(_local3774[_local3771], null, "miniscale"));
+		if (_local3771 == 1 || _local3771 == 2) {
+			_local3773.e.style.position = "relative";
+			var _local3772 = s.createElement("img", "gsicon");
+			_local3772.setAttribute("src", PIMG["tools/corner"]);
+			_local3772.setAttribute("style", "position:absolute; right:0;  bottom:0; width:100%;  height:100%;");
+			_local3773.e.appendChild(_local3772);
+		}
+	}
+};
+LayersPanel.prototype.Yw = function (l, d) {
+	if (l && !l.i_) return;
+	if (l == null) s.addClass(this.DK, "disabled");else
+	s.removeClass(this.DK, "disabled");
+	this.Kv = l;
+	this.z8 = d;
+	if (this.$E != null) {
+		s.clearChildren(this.jo);
+		this.$E = null;
+		this.Yb = [];
+	}
+	if (l == null) return;
+	var _local3776 = !1;
+	for (var _local3775 = 0; _local3775 < l.vj.length; _local3775++)
+	if (l.vj[_local3775].jv) _local3776 = !0;
+	this.$E = new LayerPanelRow(l.root, this, l, {
+		_A: 0,
+		LG: !1
+	}, {
+		a35: _local3776,
+		aty: this.axk()
+	}, this.Yb, 0, new Rect(0, 0, l.m, l.n));
+
+	if (l.g.length == 0 || l.B[l.g[0]] == null) {
+		s.addClass(this.lg, "disabled");
+	} else {
+		s.removeClass(this.lg, "disabled");
+		if (l.g.length == 1 && l.DF) {
+			var _local3780 = l.g[0];
+			for (var _local3775 = 0; _local3775 < this.Yb.length; _local3775++) {
+				var _local3779 = this.Yb[_local3775];
+				if (_local3779.Qj.index == _local3780 && _local3779.lg.scrollIntoView) _local3779.lg.scrollIntoView({
+					block: "nearest"
+				});
+			}
+		}
+		var _local3778 = l.B[l.g[0]];
+		if (_local3778.IQ()) {
+			this.ru.b3([
+			[15, 10, 27]].
+			concat(au.YJ), [1].concat(au.hY));
+			var _local3781 = au.CP.indexOf(_local3778.blendModeKey);
+			this.ru.c(_local3781 + 1);
+		} else {
+			this.ru.b3(au.YJ, au.hY);
+			var _local3781 = au.CP.indexOf(_local3778.blendModeKey);
+			this.ru.c(_local3781);
+		}
+		this.eR.c(Math.round(100 * _local3778.opacity / 255));
+		this.__.c([_local3778.Ka(0), _local3778.Ka(1), _local3778.Ka(2), _local3778.Ka(31)]);
+		var _local3777 = l.jq();
+		this.ru.setEnabled(!_local3777);
+		this.z2.setEnabled(!_local3777);
+		this.eR.setEnabled(!_local3777);
+		this.__.setEnabled(!(_local3777 && !_local3778.Ka(31)));
+		this.z2.c(Math.round(100 * (_local3778.add.iOpa != null ? _local3778.add.iOpa / 255 : 1)));
+		this.lM[3].arb(_local3778.c3() ? "Add Vector Mask" : "Add Raster Mask");
+	}
+	this.axz(null);
+};
+LayersPanel.prototype.resize = function (l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	var _local3782 = this.lg.getBoundingClientRect().height;
+	if (55 < _local3782 && _local3782 < 56) _local3782 = 60.2;
+	var _local3784 = this.S8.getBoundingClientRect().height,
+		_local3783 = d - (_local3782 + _local3784 + 3);
+	this.jo.style.height = _local3783 + "px";
+	this.jo.style.width = l + "px";
+};
+LayersPanel.prototype.a5p = function (l) {
+	this.zh({
+		a: LayerRecord.zZ,
+		mz: this.ru.b()
+	});
+};
+LayersPanel.prototype.aoS = function (l) {
+	this.zh({
+		a: LayerRecord.y$,
+		mz: Math.round(255 * this.eR.b() / 100)
+	});
+};
+LayersPanel.prototype.asd = function (l) {
+	this.zh({
+		a: LayerRecord.ss,
+		mz: [this.__.b(), [0, 1, 2, 31]]
+	});
+};
+LayersPanel.prototype.afg = function (l) {
+	this.zh({
+		a: LayerRecord.Ij,
+		mz: Math.round(255 * this.z2.b() / 100)
+	});
+};
+LayersPanel.prototype.$M = function (l) {
+	if (l.target == this.xa) this.aqN();
+	var _local3785 = this.mR.b();
+	if (_local3785) s.removeClass(this.Mg, "disabled");else
+	s.addClass(this.Mg, "disabled");
+	this.refresh();
+	this.Kv.i_ = !0;
+	this.Yw(this.Kv);
+	this.Kv.i_ = !1;
+};
+LayersPanel.prototype.aqN = function () {
+	var _local3789 = this.Mg;
+	if (_local3789 == null) {
+		var _local3788 = this.a9i,
+			_local3786 = this.mR = new CheckboxControl("Filter");
+		_local3786.addListener(ActionTypes.E.A, this.$M, this);
+		_local3788.appendChild(_local3786.e);
+		_local3789 = this.Mg = s.createElement("span", "disabled");
+		_local3788.appendChild(_local3789);
+		this.xa = new DropdownMenu(null, ["Kind", "Name"], []);
+		this.xa.addListener(ActionTypes.E.A, this.$M, this);
+		var _local3787 = this.fq = [
+		new MultiOptionBox(null, [
+		"<img src=\"" + PIMG.pix_layer + "\" class=\"miniscale gsicon\" />",
+		"<img src=\"" + PIMG["lrs/adj"] + "\" class=\"miniscale gsicon\" />",
+		"<img src=\"" + PIMG["tools/htype"] + "\" class=\"miniscale gsicon\" />",
+		"<img src=\"" + PIMG.shape_layer + "\" class=\"miniscale gsicon\" />",
+		"<img src=\"" + PIMG.so_layer + "\" class=\"miniscale gsicon\" />"],
+		!0, [
+		"Pixels",
+		"Adjustments",
+		"Type",
+		"Shapes",
+		"Smart Object"]
+		), new TextInput(null, null, 8)];
+		_local3787[0].addListener(ActionTypes.E.A, this.$M, this);
+		_local3787[1].addListener("input", this.$M, this);
+	}
+	s.clearChildren(_local3789);
+	_local3789.appendChild(this.xa.e);
+	_local3789.appendChild(this.fq[this.xa.b()].e);
+};
+LayersPanel.prototype.akS = function (l) {
+	this.nh();
+	this.a4k(l, this.alw);
+};
+LayersPanel.prototype.agK = function (l) {
+	this.nh();
+	this.a4k(l, this.aoa);
+};
+LayersPanel.prototype.a4k = function (l, d) {
+	var _local3790 = l.currentTarget;
+	if (s.isInDocument(d.e)) return;
+	l.stopPropagation();
+	var _local3792 = _local3790.getBoundingClientRect();
+	d.refresh();
+	d.update(this.Kv);
+	d.parent = this;
+	var _local3791 = new Action(ActionTypes.E.L, !0);
+	_local3791.data = {
+		a: ActionTypes.$.dY,
+		A3: d,
+		x: _local3792.left,
+		y: _local3792.top,
+		a8G: !0
+	};
+	this.dispatch(_local3791);
+};
+LayersPanel.prototype.ajw = function (l) {
+	this.zh({
+		a: LayerRecord.ai0
+	});
+};
+LayersPanel.prototype.a5Z = function (l) {
+	this.zh({
+		a: this.Kv.g.length > 1 ? LayerRecord.mQ : LayerRecord.C2
+	});
+};
+LayersPanel.prototype.aqk = function (l) {
+	this.zh({
+		a: LayerRecord.vx
+	});
+};
+LayersPanel.prototype.a5m = function (l) {
+	var _local3795 = this.Kv;
+	if (_local3795.g.length == 0) return;
+	var _local3793 = _local3795.B[_local3795.g[0]],
+		_local3794 = _local3793.ht;
+	this.zh({
+		a: _local3794 <= 0 ? _local3793.VM ? LayerRecord.W1 : LayerRecord.Qe : _local3794 == 3 ? LayerRecord.V2 : LayerRecord.uU
+	});
+};
+LayersPanel.prototype.a6r = function (l) {
+	this.zh({
+		a: LayerRecord.cr
+	});
+};
+LayersPanel.prototype.zh = function (l) {
+	var _local3796 = new Action(ActionTypes.E.v, !0);
+	_local3796.data = l;
+	_local3796.G = f.yS;
+	this.dispatch(_local3796);
+};
+LayersPanel.prototype.sY = function () {
+	var _local3802 = [
+		"Link Layers",
+		"Layer Style",
+		"New Adjustment Layer",
+		"Add Raster Mask",
+		"New Folder",
+		"New Layer",
+		"Delete"],
+
+		_local3801 = [this.a6r, this.agK, this.akS, this.ajw, this.a5Z, this.aqk, this.a5m],
+		_local3798 = this.aiE.bind(this);
+	for (var _local3797 = 0; _local3797 < _local3802.length; _local3797++) {
+		var _local3800 = new ToolbarButton("W", !1, _local3802[_local3797]);
+		this.lM.push(_local3800);
+		s.addPointerDown(_local3800.e, _local3801[_local3797].bind(this));
+		this.S8.appendChild(_local3800.e);
+		if (_local3797 >= _local3802.length - 3) {
+			var _local3799 = _local3800.e;
+			_local3799.addEventListener("drop", _local3798, !1);
+			_local3799.addEventListener("dragover", function (Q) {
+				Q.preventDefault();
+			}, !1);
+			_local3799.addEventListener("dragenter", s.stopAndPreventHandler, !1);
+		}
+	}
+};
+LayersPanel.prototype.aiE = function (l) {
+	s.stopAndPreventHandler(l);
+	var _local3807 = 0,
+		_local3803 = this.lM;
+	while (_local3803[_local3807].e != l.currentTarget) _local3807++;
+	_local3803[_local3807].kL();
+	var _local3806 = l.dataTransfer.getData("Text");
+	if (_local3806 == "") return;
+	var _local3806 = JSON.parse(_local3806);
+	if (_local3806.Ts == "l") {
+		var _local3805 = {
+			a: [LayerRecord.mQ, LayerRecord.ZY, LayerRecord.Qe][_local3807 - 4]
+		};
+		if (this.Kv.g.indexOf(_local3806.yD) == -1) _local3805.j = _local3806.yD;
+		this.zh(_local3805);
+	}
+	if (_local3807 != 6) return;
+	if (_local3806.Ts == "sm" || _local3806.Ts == "s") {
+		var _local3804 = new Action(ActionTypes.E.v, !0);
+		_local3804.G = f.LY;
+		_local3804.data = {
+			a: _local3806.Ts == "sm" ? "st_clear" : "st_delsingle",
+			j: _local3806.yD,
+			yD: _local3806.aN
+		};
+		this.dispatch(_local3804);
+	}
+	if (_local3806.Ts == "fm" || _local3806.Ts == "f") {
+		this.zh({
+			a: _local3806.Ts == "fm" ? LayerRecord.OL : LayerRecord.Sk,
+			src: _local3806.yD,
+			aN: _local3806.aN
+		});
+	}
+	if (_local3806.Ts == "m" || _local3806.Ts == "vm") {
+		this.zh({
+			a: _local3806.Ts == "m" ? LayerRecord.uU : LayerRecord.W1,
+			j: _local3806.yD
+		});
+	}
+};
+
+
+function LayerPanelRow(l, d, G, b, V, Q, t, I) {
+	UIComponent.call(this);
+	this.parent = d;
+	this.Xl = t;
+	this.Qj = l;
+	Q.push(this);
+	this.v0 = G;
+	this.a9 = b;
+	var _local3830 = d.jo,
+		_local3821 = l.j,
+		_local3814 = G.g.indexOf(l.index) != -1,
+		_local3829 = null;
+	this.lg = s.createElement("div", _local3814 ? "head selected" : "head");
+	if (_local3821.add.artb != null) {
+		s.addClass(this.lg, "artb");
+		I = _local3821.dA();
+	}
+	var _local3815 = this.a3X = Math.floor(10 + _local3821.a80 / s.getDevicePixelRatio()),
+		_local3813 = "height: " + _local3815 + "px;";
+	if (_local3814 && V.a35) _local3813 += "background-color:rgba(255,50,50,0.4);";
+	this.lg.setAttribute("style", _local3813);
+	this.Fm = I;
+	var _local3826 = this.avG = this.acP.bind(this),
+		_local3816 = V.aty && !this.a97();
+	if (!_local3816) {
+		if (l.depth != 0) {
+			_local3830.appendChild(this.lg);
+			t += _local3815;
+		}
+		if (_local3821.sc() || _local3821.aW())
+		if (_local3821.bn()) {
+			_local3829 = this.a1W = s.createElement("div", "lpineck");
+			_local3830.appendChild(_local3829);
+			if (_local3821.sc()) {
+				_local3829.addEventListener("contextmenu", _local3826, !1);
+				var _local3823 = new LayersPanel.s0("Effects", "sm", "layerstyle", l.depth, 0, null);
+				t += 21;
+				_local3823.parent = this;
+				_local3829.appendChild(_local3823.e);
+				var _local3822 = _local3821.add.lmfx;
+				LayerStyleConstants.ensureEffectMultiLists(_local3822);
+				var _local3818 = _local3822.masterFXSwitch.v;
+				_local3823.Oj(_local3818);
+				for (var _local3808 = 0; _local3808 < LayerStyleConstants.effectOrder.length; _local3808++) {
+					var _local3824 = _local3822[LayerStyleConstants.effectMultiKeys[_local3808]].v;
+					if (_local3824.length == 0) continue;
+					for (var _local3811 = 0; _local3811 < _local3824.length; _local3811++) {
+						var _local3823 = new LayersPanel.s0(languageManager.get(LayerStyleConstants.effectDisplayNames[_local3808]), "s", "layerstyle", l.depth, 1, [_local3808, _local3811]);
+						t += 21;
+						_local3823.Oj(_local3818 && _local3824[_local3811].v.enab.v);
+						_local3823.parent = this;
+						_local3829.appendChild(_local3823.e);
+					}
+				}
+			}
+			if (_local3821.aW()) {
+				var _local3810 = _local3821.vZ(G).z;
+				if (_local3810) this.N$ = s.createElement("div", "thumb");
+				var _local3823 = new LayersPanel.s0("Smart Filters", "fm", null, l.depth, 0, -1, _local3810 ? this.N$ : null);
+				t += _local3810 ? _local3815 : 21;
+				_local3823.parent = this;
+				_local3829.appendChild(_local3823.e);
+				this.a0e = _local3823.e;
+				this.a0e.addEventListener("contextmenu", _local3826, !1);
+				var _local3822 = _local3821.add.SoLd.filterFX.v,
+					_local3828 = _local3822.filterFXList.v,
+					_local3818 = _local3822.enab.v;
+				_local3823.Oj(_local3818);
+				for (var _local3808 = _local3828.length - 1; _local3808 >= 0; _local3808--) {
+					var _local3812 = _local3828[_local3808].v,
+						_local3817 = FilterHelper.ko(_local3812);
+					if (LayerEffectsHelper.classIdToKey[_local3817]) _local3817 = LayerEffectsHelper.classIdToKey[_local3817];
+					var _local3819 = _local3812.Nm.v;
+					if (FilterHelper.names[_local3817]) _local3819 = languageManager.get(FilterHelper.names[_local3817]);
+					if (LayerEffectsHelper.names[_local3817]) _local3819 = languageManager.get(LayerEffectsHelper.names[_local3817]);
+					var _local3809 = "afw_" + _local3817,
+						_local3823 = new LayersPanel.s0(_local3819, "f", _local3809, l.depth, 1, _local3808);
+					t += 21;
+					_local3823.Oj(_local3818 && _local3812.enab.v);
+					_local3823.parent = this;
+					_local3829.appendChild(_local3823.e);
+				}
+			}
+		}
+	}
+	var _local3820 = _local3821.add.lclr;
+	if (_local3820 == null) _local3820 = 0;
+	_local3820 = _local3820 == 0 ? b._A : LayerPanelRow.J2[_local3820];
+	this.ayi = _local3820;
+	if (_local3821.IQ() && (_local3821.add.lsct == LayerSectionType.open || V.aty)) {
+		var _local3825 = {
+			_A: _local3820,
+			LG: b.LG || _local3821.Ka(31)
+		};
+		for (var _local3808 = l.children.length - 1; _local3808 >= 0; _local3808--) {
+			var _local3827 = new LayerPanelRow(l.children[_local3808], d, G, _local3825, V, Q, t, I);
+			t = _local3827.a3z;
+		}
+	}
+	this.a3z = t;
+}
+LayerPanelRow.prototype = new UIComponent();
+LayerPanelRow.J2 = [16777215, 16711680, 16748544, 16763904, 4513024, 22015, 11141375, 7829367];
+LayerPanelRow.prototype.ast = function () {
+	if (this.qc) return;
+	var _local3855 = this.Qj,
+		_local3850 = _local3855.j,
+		_local3835 = this.v0,
+		_local3848 = this.a9,
+		_local3841 = !0,
+		_local3856 = !1;
+	_local3855.Gx(_local3835, this.Fm, !0);
+	var _local3843 = s.createElement("div", "headL"),
+		_local3840 = s.createElement("div", "headR");
+	this.lg.appendChild(_local3843);
+	this.lg.appendChild(_local3840);
+	var _local3861 = this.lg;
+	_local3861.setAttribute("draggable", "true");
+	_local3861.addEventListener("dragstart", this.Hk.bind(this), !1);
+	_local3861.addEventListener("drop", this.TR.bind(this), !1);
+	_local3861.addEventListener("dragover", this.Xq.bind(this), !1);
+	_local3861.addEventListener("dragenter", s.stopAndPreventHandler, !1);
+	_local3861.addEventListener("dragleave", this.up.bind(this), !1);
+	var _local3837 = [],
+		_local3863 = [null, null, null, null],
+		_local3851 = _local3850.zD(),
+		_local3839 = _local3855;
+	while (_local3839.parent) {
+		_local3839 = _local3839.parent;
+		_local3851 = _local3851 && _local3839.j.zD();
+	}
+	if (_local3850.usesClippingMask) {
+		for (var _local3831 = _local3855.index - 1; _local3831 >= 0; _local3831--) {
+			var _local3838 = _local3835.B[_local3831];
+			if (!_local3838.usesClippingMask) {
+				_local3841 = _local3838.zD();
+				break;
+			}
+		}
+	}
+	var _local3857 = _local3850.zD() ? _local3851 && _local3841 ? 2 : 1 : 0;
+	this.qc = s.createElement("div");
+	var _local3860 = s.createElement("div", _local3857 == 0 ? "sqr" : "eye");
+	this.qc.appendChild(_local3860);
+	_local3860.style.opacity = [.12, .33, 1][_local3857];
+	var _local3842 = s.createElement("div", "space");
+	this.Me = s.createElement("div", "label");
+	this.Me.setAttribute("style", "max-width:calc(100% - " + (96 + _local3855.depth * 20) + "px); margin-top:" + (this.a3X - 19) / 2 + "px;");
+	this.Me.textContent = _local3850.getName();
+	this.Ed = s.createElement("div", "lock");
+	this.a0Y = s.createElement("div", "lrfx");
+	this.PE = s.createElement("div", "arfx");
+	var _local3853 = this.avG,
+		_local3852 = this.aeB.bind(this);
+	this.lg.addEventListener("click", _local3852, !1);
+	this.lg.addEventListener("contextmenu", _local3853, !1);
+	var _local3845 = this.ayi;
+	if (_local3845 != 0) {
+		var _local3854 = [_local3845 >> 16, _local3845 >> 8 & 255, _local3845 & 255];
+		for (var _local3831 = 0; _local3831 < 3; _local3831++) {
+			_local3854[_local3831] = "calc(" + _local3854[_local3831] + "*0.7 + (var(--absc)) * 255 * 0.3)";
+		}
+		this.qc.setAttribute("style", "background-color:rgba(" + _local3854.join(",") + ",1);");
+	}
+	var _local3834 = this.a1O.bind(this);
+	this.qc.addEventListener("mousedown", _local3834, !1);
+	this.qc.addEventListener("mouseover", _local3834, !1);
+	this.PE.addEventListener("click", this.a3I.bind(this), !1);
+	_local3837[0] = this.qc;
+	_local3837[1] = _local3842;
+	_local3837[10] = this.Me;
+	if (_local3850.IQ()) {
+		var _local3833 = s.createElement("div", "arrow"),
+			_local3859 = s.createElement("div", "folder");
+		this.qh(_local3859);
+		_local3833.addEventListener("click", this.a6X.bind(this), !1);
+		_local3837[2] = _local3833;
+		_local3837[3] = _local3859;
+		_local3833.className = _local3850.add.lsct == LayerSectionType.open ? "open" : "closed";
+	} else {
+		this.Ct = s.createElement("div", "thumb");
+		_local3837[5] = this.Ct;
+		LayerPanelRow.LF(this.Ct, _local3850.at);
+		this.qh(this.Ct);
+		if (LayerEffectsHelper.detectAdjustmentKey(_local3850.add)) s.addClass(_local3850.at.canvas, "gsicon");
+	}
+	var _local3836 = _local3850.c3();
+	if (_local3836) {
+		this.KC = s.createElement("div", "chain");
+		this.Pz = s.createElement("div", "thumb");
+		LayerPanelRow.LF(this.Pz, _local3850.yY, !0);
+		this.KC.style.opacity = _local3836.cv ? 1 : 0;
+		this.KC.addEventListener("click", this.ae8.bind(this), !1);
+	}
+	var _local3844 = _local3850.VF() && _local3850.add.vmsk;
+	if (_local3850.add.vmsk && !_local3844) {
+		this.nW = s.createElement("div", "chain");
+		this.jy = s.createElement("div", "thumb");
+		LayerPanelRow.LF(this.jy, _local3850.bX, !0);
+		this.nW.style.opacity = _local3850.add.vmsk.cv ? 1 : 0;
+		this.nW.addEventListener("click", this.aba.bind(this), !1);
+	}
+	if (_local3850.aW() && _local3850.bn() && _local3850.vZ(_local3835).z) {
+		LayerPanelRow.LF(this.N$, _local3850.Fp, !1);
+		this.qh(this.N$);
+		this.N$.addEventListener("click", _local3852, !1);
+		this.N$.addEventListener("contextmenu", _local3853, !1);
+	}
+	if (_local3855.index == _local3835.g[0]) {
+		var _local3846 = _local3850.ht,
+			_local3832;
+		if (_local3846 <= 0) _local3832 = this.Ct;else
+		if (_local3846 == 1) _local3832 = this.Pz;else
+		if (_local3846 == 3) _local3832 = this.N$;
+		if (_local3832) _local3832.className = "thumb active";
+		if (_local3850.VM && this.jy) this.jy.className = "thumb active";
+	}
+	_local3842.setAttribute("style", "width:" + Math.max(0, _local3855.depth - 1) * 18 + "px");
+	var _local3847 = _local3850.add.lspf != null && _local3850.add.lspf != 0 || _local3848.LG;
+	this.Ed.style.opacity = _local3850.Ka(31) ? 1 : .5;
+	_local3837[4] = _local3850.usesClippingMask ? s.createElement("div", "clipp") : null;
+	_local3837[6] = _local3836 ? this.KC : null;
+	_local3837[7] = _local3836 ? this.Pz : null;
+	_local3837[8] = _local3850.add.vmsk && !_local3844 ? this.nW : null;
+	_local3837[9] = _local3850.add.vmsk && !_local3844 ? this.jy : null;
+	var _local3858 = _local3850.folderStackIndex,
+		_local3849 = _local3835.g;
+	if (_local3858 != 0)
+	for (var _local3831 = 0; _local3831 < _local3849.length; _local3831++)
+	if (_local3835.B[_local3849[_local3831]].folderStackIndex == _local3858) {
+		_local3856 = !0;
+		break;
+	}
+	if (_local3856) {
+		_local3863[0] = s.createElement("div", _local3850.layerLinkEnabled ? "link" : "linkX");
+		_local3863[0].addEventListener("click", this.apy.bind(this), !1);
+	}
+	_local3863[1] = _local3847 ? this.Ed : null;
+	_local3863[2] = _local3850.sc() ? this.a0Y : null;
+	_local3863[3] = _local3850.sc() || _local3850.aW() ? this.PE : null;
+	this.PE.className = _local3850.bn() ? "arfx open  gsicon" : "arfx closed  gsicon";
+	var _local3862 = _local3837;
+	for (var _local3831 = 0; _local3831 < _local3862.length; _local3831++)
+	if (_local3862[_local3831]) _local3843.appendChild(_local3862[_local3831]);
+	_local3862 = _local3863;
+	for (var _local3831 = 0; _local3831 < _local3862.length; _local3831++)
+	if (_local3862[_local3831]) _local3840.appendChild(_local3862[_local3831]);
+};
+LayerPanelRow.LF = function (l, d, G) {
+	var _local3864 = d.canvas;
+	s.setCanvasCssSizeForDpr(_local3864);
+	if (G) l.setAttribute("draggable", "true");
+	l.appendChild(_local3864);
+	_local3864.setAttribute("style", _local3864.getAttribute("style") + "; pointer-events:none");
+};
+LayerPanelRow.prototype.qh = function (l) {
+	s.addPointerDown(l, function (d) {
+		if (this.parent.Nj[3] == 0) return;
+		s.preventDefaultHandler(d);
+		s.addPointerUp(document.body, function () {
+			clearTimeout(this.aaH);
+		}.bind(this));
+		this.aaH = setTimeout(function () {
+			var _local3865 = new Action("rclick", !0);
+			_local3865.data = {
+				j: this.Qj.index,
+				ht: this.ht(d),
+				be: s.getEventPositionInElement(d, document.body)
+			};
+			this.dispatch(_local3865);
+		}.bind(this), 600);
+	}.bind(this));
+};
+LayerPanelRow.C_ = function (l, d) {
+	var _local3866 = d.getBoundingClientRect();
+	return (l.clientY - _local3866.top) / _local3866.height;
+};
+LayerPanelRow.prototype.Hk = function (l) {
+	l.stopPropagation();
+	var _local3867 = l.target == this.Pz ? "m" : l.target == this.jy ? "vm" : "l";
+	l.dataTransfer.setData("Text", JSON.stringify({
+		Ts: _local3867,
+		yD: this.Qj.index
+	}));
+};
+LayerPanelRow.prototype.up = function (l) {
+	s.stopAndPreventHandler(l);
+	this.hb();
+};
+LayerPanelRow.prototype.TR = function (l) {
+	s.stopAndPreventHandler(l);
+	this.hb();
+	var _local3873 = l.dataTransfer.getData("Text"),
+		_local3868 = this.parent.Kv,
+		_local3872 = LayerPanelRow.C_(l, this.lg),
+		_local3871 = this.Qj.index;
+	if (_local3872 > .8) {
+		var _local3870 = !0,
+			_local3875 = _local3868.root.O4(_local3871);
+		while (_local3875.parent != null) {
+			var _local3869 = _local3875.parent,
+				_local3876 = _local3869.children;
+			if (_local3876.indexOf(_local3875) != 0) _local3870 = !1;
+			_local3875 = _local3875.parent;
+		}
+		if (_local3870) {
+			_local3871 = 0;
+			_local3872 = 1;
+		}
+	}
+	if (_local3873 == "") {
+		s.handleDataTransferDrop(l, this, this.parent.z8.indexOf(_local3868), _local3871 + (_local3872 > .5 ? 0 : 1));
+	} else if (_local3873 != "--panel") {
+		var _local3873 = JSON.parse(_local3873),
+			_local3874 = _local3873.Ts;
+		if (_local3874 == "l") this.zh({
+			a: LayerRecord.jD,
+			source: _local3873.yD,
+			target: _local3871,
+			yu: _local3872
+		});else
+		if (_local3874 == "m" || _local3874 == "vm") this.zh({
+			a: _local3874 == "m" ? LayerRecord.aqH : LayerRecord.Es,
+			src: _local3873.yD,
+			hw: _local3871
+		});else
+		LayerPanelRow.aiL(l, _local3873, this);
+	}
+};
+LayerPanelRow.aiL = function (l, d, G, b) {
+	var _local3878 = d.Ts,
+		_local3877 = G.Qj.index,
+		_local3879 = d.yD;
+	if (_local3878 == "s" || _local3878 == "sm") G.zh({
+		a: LayerRecord.R4,
+		src: _local3879,
+		hw: _local3877,
+		aN: d.aN
+	});
+	if (_local3878 == "f" || _local3878 == "fm") G.zh({
+		a: LayerRecord.agf,
+		src: _local3879,
+		hw: _local3877,
+		aN: d.aN,
+		_L: b == null ? 0 : b
+	});
+};
+LayerPanelRow.prototype.Xq = function (l) {
+	s.stopAndPreventHandler(l);
+	var _local3882 = LayerPanelRow.C_(l, this.lg),
+		_local3880 = this.Qj.j.IQ() && .5 < _local3882 && _local3882 < .8;
+	this.hb();
+	var _local3881 = "inset 0 " + (_local3880 ? 0 : _local3882 > .5 ? -3 : 3) + "px " + (_local3880 ? "5px black" : "0 rgba(0,0,0,0.5)");
+	this.lg.style.boxShadow = _local3881;
+};
+LayerPanelRow.prototype.hb = function (l) {
+	this.lg.style.boxShadow = "";
+};
+LayerPanelRow.aou = -1;
+LayerPanelRow.lY = !1;
+LayerPanelRow.ae7 = function (l) {
+	LayerPanelRow.lY = !1;
+	document.body.removeEventListener("mouseup", LayerPanelRow.ae7);
+};
+LayerPanelRow.prototype.a1O = function (l) {
+	if (l.button != 0) return;
+	if (l.type == "mousedown") {
+		LayerPanelRow.lY = !0;
+		document.body.addEventListener("mouseup", LayerPanelRow.ae7, !1);
+	}
+	if (l.type == "mouseover" && (!LayerPanelRow.lY || LayerPanelRow.aou == this.Qj.index)) return;
+	s.stopAndPreventHandler(l);
+	this.zh({
+		a: LayerRecord.mH,
+		j: this.Qj.index
+	});
+	LayerPanelRow.aou = this.Qj.index;
+};
+LayerPanelRow.prototype.a6X = function (l) {
+	s.stopAndPreventHandler(l);
+	this.zh({
+		a: LayerRecord.ac5,
+		j: this.Qj.index
+	});
+};
+LayerPanelRow.prototype.ae8 = function (l) {
+	this.zh({
+		a: LayerRecord.JX,
+		j: this.Qj.index
+	});
+};
+LayerPanelRow.prototype.aba = function (l) {
+	this.zh({
+		a: LayerRecord.GD,
+		j: this.Qj.index
+	});
+};
+LayerPanelRow.pm = 0;
+LayerPanelRow.prototype.sd = function (l) {
+	this.zh({
+		a: LayerRecord.oY,
+		j: this.Qj.index,
+		name: l
+	});
+};
+LayerPanelRow.prototype.a3I = function (l) {
+	this.zh({
+		a: LayerRecord.ami,
+		j: this.Qj.index
+	});
+};
+LayerPanelRow.prototype.apy = function (l) {
+	this.zh({
+		a: LayerRecord.Ok,
+		j: this.Qj.index
+	});
+};
+LayerPanelRow.prototype.acP = function (l) {
+	if (l.button != 2 && !s.isTouchEvent(l)) return;
+	var _local3884 = this.ht(l);
+	if (_local3884 != 3 && l.currentTarget == this.a0e) _local3884 = 4;
+	if (l.target == this.a0Y || l.currentTarget == this.a1W) _local3884 = 5;
+	var _local3883 = new Action("rclick", !0);
+	_local3883.data = {
+		j: this.Qj.index,
+		ht: _local3884,
+		be: s.getEventPositionInElement(l, document.body)
+	};
+	this.dispatch(_local3883);
+};
+LayerPanelRow.prototype.ht = function (l) {
+	var _local3886 = l.target,
+		_local3885 = _local3886;
+	return _local3885 == this.jy ? 2 : _local3885 == this.Pz ? 1 : _local3885 == this.Ct ? 0 : _local3885 == this.N$ ? 3 : -1;
+};
+LayerPanelRow.prototype.aeB = function (l) {
+	var _local3896 = l.target,
+		_local3898;
+	if (_local3896 == this.qc.firstChild || _local3896 == this.PE || _local3896 == this.KC || _local3896 == this.nW || _local3896.tagName && _local3896.tagName.toLowerCase() == "input") return;
+	var _local3887 = this.ht(l),
+		_local3895 = this.parent.Kv,
+		_local3894 = this.Qj.index,
+		_local3891 = _local3895.B[_local3894];
+	if (_local3896 == this.Ed) {
+		this.zh({
+			a: LayerRecord.ss,
+			j: _local3894,
+			mz: [
+			[!1, !1, !1, !1, !1],
+			[0, 1, 2, 3, 31]]
+
+		});
+		return;
+	}
+	var _local3900 = LayerPanelRow.pm,
+		_local3888 = Date.now() - _local3900 < 300;
+	LayerPanelRow.pm = Date.now();
+	if (_local3896 == this.Me) {
+		if (_local3888) {
+			this.lg.setAttribute("draggable", "false");
+			var _local3901 = new PanelTabBase.di(this.Me, this.sd.bind(this));
+		} else this.zh({
+			a: LayerRecord.bj,
+			j: _local3894,
+			VY: _local3887,
+			St: !0
+		});
+		return;
+	}
+	if (l.button == 0 && _local3888) {
+		if (_local3896 == this.Me) return;
+		var _local3897 = new Action(ActionTypes.E.v, !0),
+			_local3890 = new Action(ActionTypes.E.L, !0),
+			_local3892 = new Action(ActionTypes.E.g5, !0);
+		if (_local3887 == 0 && _local3891.add.SoCo) {
+			var _local3889 = PixelUtil.color.sampleGradientColor(_local3891.add.SoCo.Clr.v);
+			_local3890.data = {
+				a: ActionTypes.$.SN,
+				GU: "colorpicker",
+				_A: _local3889.o << 16 | _local3889.J << 8 | _local3889.k,
+				qF: function (j) {
+					var _local3903 = PixelUtil.color.rgbColorDescriptor({
+						k: j & 255,
+						J: j >>> 8 & 255,
+						o: j >> 16 & 255
+					});
+					_local3903 = {
+						classID: "null",
+						Clr: {
+							t: "Objc",
+							v: _local3903
+						}
+					};
+					var _local3902 = new Action(ActionTypes.E.v, !0);
+					_local3902.G = f.yS;
+					_local3902.data = {
+						a: LayerRecord.sM,
+						xn: [_local3894],
+						T3: !0,
+						Z: {
+							hA: 1,
+							rU: _local3903
+						}
+					};
+					this.dispatch(_local3902);
+				}.bind(this),
+				bH: !0
+			};
+		} else if (_local3887 == 0 && (LayerEffectsHelper.detectAdjustmentKey(_local3891.add) || _local3891.add.SoCo || _local3891.add.GdFl || _local3891.add.PtFl)) {
+			_local3890.data = {
+				a: ActionTypes.$.B_,
+				GU: PanelTabBase.xA.uB
+			};
+		} else if (_local3887 != 0 && _local3887 != -1) {
+			_local3890.data = {
+				a: ActionTypes.$.B_,
+				GU: PanelTabBase.xA.uB
+			};
+		} else if (_local3887 == 0 && _local3891.add.SoLd) {
+			_local3892.data = {
+				kT: "placedLayerEditContents",
+				a0: {
+					classID: "placedLayerEditContents"
+				}
+			};
+		} else if (_local3887 == 0 && _local3891.add.TySh) {
+			_local3897.G = f.zl;
+			_local3897.data = {
+				a: "editCurr",
+				ca: _local3894
+			};
+		} else {
+			_local3890.data = {
+				a: ActionTypes.$.SN,
+				GU: "layerstyle",
+				j: _local3894
+			};
+		}
+		this.dispatch(_local3892.data ? _local3892 : _local3890.data ? _local3890 : _local3897);
+		return;
+	}
+	if (l.button != 0) return;
+	if (_local3887 == 1 || _local3887 == 3) {
+		var _local3899 = _local3887 == 3 ? _local3891.vZ(_local3895).z : _local3891.c3();
+		_local3898 = _local3899.jv ? _local3895.u.MX.join("") == "111" ? 1 : 2 : 0;
+	}
+	var _local3893 = {
+		a: LayerRecord.bj,
+		j: _local3894,
+		VY: _local3887,
+		ayc: _local3898,
+		St: !0
+	};
+	this.zh(_local3893);
+};
+LayerPanelRow.prototype.zh = function (l) {
+	var _local3904 = new Action(ActionTypes.E.v, !0);
+	_local3904.data = l;
+	_local3904.G = f.yS;
+	this.dispatch(_local3904);
+};
+LayerPanelRow.prototype.a97 = function () {
+	var _local3908 = this.Qj.j,
+		_local3907 = _local3908.add,
+		_local3905 = this.parent.xa.b(),
+		_local3906 = this.parent.fq[_local3905].b();
+	if (_local3905 == 0) {
+		if (_local3906[0] && _local3907.SoLd == null && _local3907.TySh == null && _local3908.Eo()) return !0;
+		if (_local3906[1] && LayerEffectsHelper.detectAdjustmentKey(_local3907) != null) return !0;
+		if (_local3906[2] && _local3907.TySh != null) return !0;
+		if (_local3906[3] && _local3907.vstk != null) return !0;
+		if (_local3906[4] && _local3907.SoLd != null) return !0;
+		return !1;
+	}
+	if (_local3905 == 1) return _local3908.getName().toLowerCase().indexOf(_local3906.toLowerCase()) != -1;
+};
+LayersPanel.s0 = function (l, d, G, b, V, Q, t) {
+	UIComponent.call(this);
+	this.a4O = d;
+	this.H8 = G;
+	this.index = Q;
+	this.e = s.createElement("div", "styleitem");
+	this.lg = s.createElement("div", "head");
+	this.afK = null;
+	if (d == "f") {
+		var _local3909 = this.afK = s.createElement("div", "headR");
+		_local3909.textContent = "\u2699";
+		this.lg.appendChild(_local3909);
+	}
+	this.qc = s.createElement("div", "eye gsicon");
+	this.Me = s.createElement("div", "label");
+	this.e.appendChild(this.lg);
+	this.lg.appendChild(this.qc);
+	if (t) {
+		this.Pz = t;
+		this.lg.appendChild(t);
+		this.lg.setAttribute("style", "height: " + (26 / s.getDevicePixelRatio() + 10) + "px");
+	}
+	this.Me.innerHTML = l;
+	this.e.setAttribute("style", "margin-left: " + (24 + b * 16 + V * 22) + "px");
+	this.lg.appendChild(this.Me);
+	this.qc.addEventListener("click", this.alW.bind(this), !1);
+	var _local3910 = this.e;
+	_local3910.setAttribute("draggable", "true");
+	_local3910.addEventListener("dragstart", this.Hk.bind(this), !1);
+	if (!0) {
+		_local3910.addEventListener("drop", this.TR.bind(this), !1);
+		_local3910.addEventListener("dragover", this.Xq.bind(this), !1);
+		_local3910.addEventListener("dragenter", s.stopAndPreventHandler, !1);
+		_local3910.addEventListener("dragleave", this.up.bind(this), !1);
+	}
+	this.e.addEventListener("click", this.Nl.bind(this), !1);
+};
+LayersPanel.s0.prototype = new UIComponent();
+LayersPanel.s0.prototype.Hk = function (l) {
+	l.stopPropagation();
+	l.dataTransfer.setData("Text", JSON.stringify({
+		Ts: this.a4O,
+		yD: this.parent.Qj.index,
+		aN: this.index
+	}));
+};
+LayersPanel.s0.prototype.up = function (l) {
+	s.stopAndPreventHandler(l);
+	this.hb();
+};
+LayersPanel.s0.prototype.TR = function (l) {
+	s.stopAndPreventHandler(l);
+	this.hb();
+	var _local3911 = l.dataTransfer.getData("Text");
+	if (_local3911 == "") return;
+	var _local3911 = JSON.parse(_local3911);
+	LayerPanelRow.aiL(l, _local3911, this.parent, this.index + (LayerPanelRow.C_(l, this.lg) > .5 ? 0 : 1));
+};
+LayersPanel.s0.prototype.Xq = function (l) {
+	s.stopAndPreventHandler(l);
+	var _local3913 = LayerPanelRow.C_(l, this.lg) > .5;
+	this.hb();
+	var _local3912 = "border-" + (_local3913 ? "bottom" : "top");
+	this.lg.style[_local3912] = "0.2em solid rgba(0,0,0,0.5)";
+};
+LayersPanel.s0.prototype.hb = function (l) {
+	this.lg.style.border = "none";
+};
+LayersPanel.s0.prototype.Oj = function (l) {
+	this.qc.style.opacity = l ? 1 : .2;
+};
+LayersPanel.s0.prototype.Nl = function (l) {
+	var _local3919 = LayerPanelRow.pm,
+		_local3914 = Date.now() - _local3919 < 300;
+	LayerPanelRow.pm = Date.now();
+	if (l.target == this.qc) return;
+	var _local3918 = this.parent.Qj.index;
+	if (_local3914 && this.H8 != null) {
+		var _local3918 = this.parent.Qj.index,
+			_local3917 = new Action(ActionTypes.E.L, !0);
+		if (this.H8.indexOf("afw_") == 0) {
+			var _local3916 = this.H8.slice(4),
+				_local3920 = FilterEffectPanel[_local3916] || FilterHelper.d[_local3916],
+				_local3915 = l.target == this.afK;
+			if (!_local3915 && !_local3920) return;
+			_local3917.data = f.uY.avp(_local3915 ? "blendOptions" : _local3916, {
+				j: _local3918,
+				index: this.index
+			});
+		} else _local3917.data = {
+			a: ActionTypes.$.SN,
+			GU: this.H8,
+			j: _local3918,
+			index: this.index
+		};
+		this.dispatch(_local3917);
+	} else {
+		if (l.target.className != "thumb") this.parent.zh({
+			a: LayerRecord.bj,
+			j: _local3918,
+			VY: 0
+		});
+	}
+};
+LayersPanel.s0.prototype.alW = function (l) {
+	var _local3921 = {
+		fm: LayerRecord.Wj,
+		f: LayerRecord.GQ,
+		sm: LayerRecord.M0,
+		s: LayerRecord.f0
+	}[this.a4O];
+	this.parent.zh({
+		a: _local3921,
+		j: this.parent.Qj.index,
+		index: this.index
+	});
+};
+
+
+function ActionsPanel() {
+	PanelTabBase.call(this, "Actions", !1, "---panels/actions", PanelTabBase.xA.abR);
+	this.mN = null;
+	this.au = [0, 0];
+}
+ActionsPanel.prototype = new PanelTabBase("");
+ActionsPanel.prototype.Eg = function () {
+	if (!s.isInDocument(this.DK) || this.pa) return;
+	this.pa = s.createElement("div", "padded scrollable");
+	this.pa.setAttribute("style", "width:260px;  height:260px");
+	this.DK.appendChild(this.pa);
+	this.addListener(ActionTypes.E.A, this.bL, this);
+	this.S8 = s.createElement("div", "lpfoot");
+	this.DK.appendChild(this.S8);
+	this.VS = [];
+	var _local3380 = "<svg  class=\"miniscale gsicon\" viewBox=\"0 0 15 15\" width=\"15\" height=\"15\" fill=\"black\">",
+		_local3379 = "</svg>",
+		_local3374 = _local3380 + "<path d=\"M14,6 L10,6 L10,0 L4,0 L4,6 L0,6 L7,13 L14,6 L14,6 Z M0,14 L0,16 L14,16 L14,14 Z\" />" + _local3379,
+		_local3378 = _local3380 + "<path d=\"M0,0 L15,7.5 L0,15 Z\" />" + _local3379;
+	this.afD = _local3380 + "<circle cx=\"7.5\" cy=\"7.5\" r=\"7.5\" />" + _local3379;
+	this.aeI = _local3380 + "<path d=\"M1,1 L14,1 L14,14 L1,14 Z\" />" + _local3379;
+	var _local3377 = [this.afD, _local3378, "lrs/folder", "lrs/newlayer", "lrs/bin", _local3374],
+		_local3376 = [
+		[15, 8, 0],
+		[5, 8],
+		[15, 8, 1],
+		[15, 8, 2],
+		[5, 4],
+		[1, 2]];
+
+	for (var _local3373 = 0; _local3373 < _local3377.length; _local3373++) {
+		var _local3381 = _local3377[_local3373];
+		if (1 < _local3373 && _local3373 != _local3377.length - 1) _local3381 = "<img src=\"" + PIMG[_local3377[_local3373]] + "\" class=\"miniscale gsicon\" />";
+		var _local3375 = new ToolbarButton(_local3381, !1, _local3376[_local3373]);
+		_local3375.addListener("click", this.a0X, this);
+		this.S8.appendChild(_local3375.e);
+		this.VS.push(_local3375);
+	}
+	this.VP();
+};
+ActionsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	if (this.pa == null) return;
+	for (var _local3382 = 0; _local3382 < this.VS.length; _local3382++) this.VS[_local3382].refresh();
+};
+ActionsPanel.prototype.a0X = function (l) {
+	var _local3383 = this.VS.indexOf(l.currentTarget),
+		_local3390 = this.au,
+		_local3384 = this.mN,
+		_local3389 = _local3384.rJ;
+	if (_local3383 == 0) {
+		var _local3388,_local3387 = _local3384.X4;
+		if (_local3389.length == 0) {
+			alert("Create an Action Set first.");
+			return;
+		}
+		if (_local3390.length < 2) {
+			alert("Select a target action first.");
+			return;
+		}
+		if (_local3387 == null) {
+			_local3388 = this.aeI;
+			_local3387 = this.au;
+		} else {
+			_local3388 = this.afD;
+			_local3387 = null;
+		}
+		this.VS[0].setLabel(_local3388);
+		_local3384.X4 = _local3387;
+	} else if (_local3383 == 1) this.are();else
+	if (_local3383 == 2 || _local3383 == 3) {
+		var _local3392 = {
+			Il: "Action Set " + _local3389.length,
+			Vm: [],
+			exp: !0
+		};
+		if (_local3383 == 2 || _local3389.length == 0) {
+			_local3390 = [_local3389.length];
+			_local3389.push(_local3392);
+		}
+		if (_local3383 == 3) {
+			var _local3385 = _local3389[_local3390[0]].Vm;
+			_local3390 = [_local3390[0], _local3385.length];
+			_local3385.push({
+				Il: "Action " + _local3385.length,
+				color: 0,
+				Vm: [],
+				a0c: !1,
+				shift: !1,
+				exp: !0,
+				sy: _local3385.length
+			});
+		}
+		this.au = _local3390;
+		this.VP();
+	} else if (_local3383 == 4) {
+		var _local3393;
+		if (_local3390.length == 1) _local3393 = _local3389;else
+		if (_local3390.length == 2) _local3393 = _local3389[_local3390[0]].Vm;else
+		_local3393 = _local3389[_local3390[0]].Vm[_local3390[1]].Vm;
+		var _local3391 = _local3390.length - 1;
+		_local3393.splice(_local3390[_local3391], 1);
+		if (_local3393.length == 0) _local3390.pop();else
+
+		while (_local3390[_local3391] >= _local3393.length) _local3390[_local3391]--;
+		if (_local3390.length == 0) _local3390.push(0);
+		this.VP();
+	} else if (_local3383 == 5) {
+		if (_local3389.length == 0) {
+			alert("No Actions Present.");
+			return;
+		}
+		var _local3386 = new Action(ActionTypes.E.L, !0);
+		_local3386.data = {
+			a: ActionTypes.$.Bs,
+			abe: PsdResourceTypes.v,
+			yD: _local3390[0]
+		};
+		this.dispatch(_local3386);
+	}
+};
+ActionsPanel.prototype.bL = function (l) {
+	var _local3397 = this.mN.rJ,
+		_local3394 = l.data.a,
+		_local3396 = l.data.Ow;
+	if (_local3394 == "sel") this.au = _local3396;
+	if (_local3394 == "fold") {
+		if (_local3396.length == 1) _local3397[_local3396[0]].exp = !_local3397[_local3396[0]].exp;else
+		_local3397[_local3396[0]].Vm[_local3396[1]].exp = !_local3397[_local3396[0]].Vm[_local3396[1]].exp;
+	}
+	if (_local3394 == "enab") {
+		var _local3395 = _local3397[_local3396[0]].Vm[_local3396[1]].Vm[_local3396[2]];
+		_local3395.p = !_local3395.p;
+	}
+	if (_local3394 == "nchange") {
+		if (_local3396.length == 1) _local3397[_local3396[0]].Il = l.data.Xu;else
+		_local3397[_local3396[0]].Vm[_local3396[1]].Il = l.data.Xu;
+	}
+	this.VP();
+};
+ActionsPanel.prototype.Yw = ActionsPanel.prototype.KN = function () {
+	this.Eg();
+};
+ActionsPanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	if (this.pa == null) return;
+	if (d == PsdResourceTypes.v || d == PsdResourceTypes.Wx) this.VP();
+};
+ActionsPanel.prototype.VP = function () {
+	if (this.mN == null) return;
+	s.clearChildren(this.pa);
+	var _local3405 = this.mN.rJ;
+	if (_local3405.length == 0) return;
+	var _local3404 = JSON.stringify(this.au);
+	for (var _local3398 = 0; _local3398 < _local3405.length; _local3398++) {
+		var _local3399 = _local3405[_local3398],
+			_local3403 = new ActionsPanel.$X([_local3398], _local3404, _local3399.exp, _local3399.Il.split("=").pop());
+		_local3403.parent = this;
+		this.pa.appendChild(_local3403.e);
+		if (!_local3399.exp) continue;
+		for (var _local3402 = 0; _local3402 < _local3399.Vm.length; _local3402++) {
+			var _local3401 = _local3399.Vm[_local3402],
+				_local3403 = new ActionsPanel.$X([_local3398, _local3402], _local3404, _local3401.exp, _local3401.Il.split("=").pop());
+			_local3403.parent = this;
+			this.pa.appendChild(_local3403.e);
+			if (!_local3401.exp) continue;
+			for (var _local3406 = 0; _local3406 < _local3401.Vm.length; _local3406++) {
+				var _local3400 = _local3401.Vm[_local3406],
+					_local3403 = new ActionsPanel.$X([_local3398, _local3402, _local3406], _local3404, null, languageManager.get(PsdDescriptorHelper.ahE(_local3400)), _local3400.p);
+				_local3403.parent = this;
+				this.pa.appendChild(_local3403.e);
+			}
+		}
+	}
+};
+ActionsPanel.prototype.are = function () {
+	var _local3411 = this.mN.rJ,
+		_local3410 = this.au;
+	if (_local3411.length == 0) {
+		alert("No Actions Present");
+		return;
+	}
+	if (_local3410.length == 1) {
+		alert("Select an Action first");
+		return;
+	}
+	if (this.mN.X4 != null) {
+		alert("You can not apply actions while recording actions");
+		return;
+	}
+	if (_local3410.length == 1) _local3410.push(0);
+	var _local3407 = _local3411[_local3410[0]],
+		_local3409 = _local3407.Vm[_local3410[1]],
+		_local3408 = new Action(ActionTypes.E.L, !0);
+	_local3408.data = {
+		a: ActionTypes.$.du,
+		X9: [_local3409.Il, _local3407.Il]
+	};
+	this.dispatch(_local3408);
+};
+ActionsPanel.$X = function (l, d, G, b, V) {
+	UIComponent.call(this);
+	this.Ow = l;
+	var _local3414 = this.Ow.length - 1;
+	this.e = s.createElement("div", "layeritem" + (JSON.stringify(l) == d ? " selected" : ""));
+	this.lg = s.createElement("div", "head");
+	this.e.appendChild(this.lg);
+	this.lg.setAttribute("style", "height:24px");
+	this.Ld = s.createElement("div", "headL");
+	this.lg.appendChild(this.Ld);
+	if (_local3414 != 0) {
+		var _local3416 = s.createElement("div");
+		_local3416.style.width = _local3414 * 20 + "px";
+		this.Ld.appendChild(_local3416);
+	}
+	if (G != null) {
+		var _local3412 = this.avf = s.createElement("div", G ? "open" : "closed");
+		this.Ld.appendChild(_local3412);
+	} else {
+		var _local3417 = this.a3L = s.createElement("div", "cmark");
+		_local3417.setAttribute("style", "background-size:12px 12px; opacity:" + (V ? 1 : .3));
+		this.Ld.appendChild(_local3417);
+	}
+	if (_local3414 == 0) {
+		var _local3415 = s.createElement("div", "folder");
+		this.Ld.appendChild(_local3415);
+	}
+	var _local3413 = this.c1 = s.createElement("div", "label");
+	_local3413.textContent = b;
+	this.Ld.appendChild(_local3413);
+	this.e.addEventListener("mouseup", this.O5.bind(this), !1);
+};
+ActionsPanel.$X.prototype = new UIComponent();
+ActionsPanel.$X.prototype.O5 = function (l) {
+	if (l.detail == 1 && l.target.tagName.toLowerCase() != "input") {
+		var _local3420 = "sel";
+		if (l.target == this.avf) _local3420 = "fold";
+		if (l.target == this.a3L) _local3420 = "enab";
+		var _local3418 = new Action(ActionTypes.E.A, !0);
+		_local3418.data = {
+			a: _local3420,
+			Ow: this.Ow
+		};
+		this.dispatch(_local3418);
+	} else if (this.Ow.length < 3) var _local3419 = new PanelTabBase.di(this.c1, this.sd.bind(this));
+};
+ActionsPanel.$X.prototype.sd = function (l) {
+	var _local3421 = new Action(ActionTypes.E.A, !0);
+	_local3421.data = {
+		a: "nchange",
+		Xu: l,
+		Ow: this.Ow
+	};
+	this.dispatch(_local3421);
+};
+
+function AdjustmentsPanel() {
+	PanelTabBase.call(this, "Adjustments", !1, "---lrs/adj", PanelTabBase.xA.auV);
+}
+AdjustmentsPanel.prototype = new PanelTabBase("");
+AdjustmentsPanel.prototype.Eg = function () {
+	if (!s.isInDocument(this.DK) || this.VS) return;
+	this.DK.setAttribute("style", "text-align:center;  padding:6px; min-width:220px");
+	this.VS = [];
+	var _local3422 = 0;
+	for (var _local3424 in LayerEffectsHelper.names) {
+		var _local3423 = new ToolbarButton("<img src=\"" + PIMG["adj/" + _local3424] + "\" class=\"autoscale gsicon\" style=\"margin:4px 4px;\"/>", !1, LayerEffectsHelper.names[_local3424]);
+		_local3423.addListener("click", this.adx, this);
+		this.VS.push(_local3423);
+		this.DK.appendChild(_local3423.e);
+		if (_local3422 == 4 || _local3422 == 10) s.appendBr(this.DK);
+		_local3422++;
+	}
+	this.refresh();
+};
+AdjustmentsPanel.prototype.Yw = function () {
+	this.Eg();
+};
+AdjustmentsPanel.prototype.KN = function () {
+	this.Eg();
+};
+AdjustmentsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	if (this.VS == null) return;
+	for (var _local3425 = 0; _local3425 < this.VS.length; _local3425++) this.VS[_local3425].refresh();
+};
+AdjustmentsPanel.prototype.adx = function (l) {
+	var _local3428 = this.VS.indexOf(l.target),
+		_local3426 = LayerStyleDialog.ye()[_local3428],
+		_local3427 = new Action(_local3426.Y, !0);
+	_local3427.data = _local3426.W;
+	this.dispatch(_local3427);
+};
+
+
+function StylePanel() {
+	PanelTabBase.call(this, "Style", !1, null, PanelTabBase.xA.G9);
+	this.pa = s.createElement("div", "padded");
+	this.mN = null;
+	this.DK.appendChild(this.pa);
+	this.aF = new PatternPickerWide(null, 17.7, 10);
+	this.aF.parent = this;
+	this.aF.addListener(ActionTypes.E.A, this.Q3, this);
+	this.pa.appendChild(this.aF.Sc);
+}
+StylePanel.prototype = new PanelTabBase("");
+StylePanel.prototype.Q3 = function (l) {
+	var _local3430 = this.aF.b(),
+		_local3429 = new Action(ActionTypes.E.v, !0);
+	_local3429.data = {
+		a: "setstl",
+		Z: _local3430.x1
+	};
+	_local3429.G = f.LY;
+	this.dispatch(_local3429);
+	_local3429.data = {
+		a: "confirm"
+	};
+	this.dispatch(_local3429);
+};
+StylePanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	this.VP();
+};
+StylePanel.prototype.VP = function () {
+	var _local3431 = this.mN;
+	if (_local3431 == null) return;
+	this.aF.Z2([_local3431.Pr, _local3431._N]);
+};
+StylePanel.prototype.Yw = function () {
+	this.VP();
+};
+StylePanel.prototype.KN = function () {
+	this.VP();
+};
+
+
+function PluginTabPanel(l, d) {
+	PanelTabBase.call(this, l.name, !1, l.icon, d);
+	this.az4 = l;
+}
+PluginTabPanel.prototype = new PanelTabBase("");
+PluginTabPanel.prototype.Eg = function () {
+	var _local4362 = this.DK,
+		_local4361 = this.az4;
+	if (!s.isInDocument(_local4362) || this.SE) return;
+	var _local4360 = this.SE = s.createElement("iframe");
+	_local4360.setAttribute("src", _local4361.url);
+	this.DK.appendChild(_local4360);
+};
+PluginTabPanel.prototype.KN = PluginTabPanel.prototype.Yw = function () {
+	this.Eg();
+};
+PluginTabPanel.prototype.em = function (l) {
+	if (s.isInDocument(this.SE)) this.SE.contentWindow.postMessage(l, "*");
+};
+PluginTabPanel.prototype.resize = function (l, d) {
+	if (this.SE == null) return;
+	this.SE.setAttribute("style", "width:" + l + "px; height:" + d + "px");
+};
+
+function ToolPresetsPanel() {
+	PanelTabBase.call(this, "Tool Presets", !1, "---panels/tpreset", PanelTabBase.xA.qa);
+	this.mN = null;
+	this.Fd = new ToolPresetButton(f.CV);
+	this.Fd.parent = this;
+	var _local4363 = s.createElement("div", "padded");
+	_local4363.setAttribute("style", "width:20em");
+	this.DK.appendChild(_local4363);
+	_local4363.appendChild(this.Fd.Sc);
+}
+ToolPresetsPanel.prototype = new PanelTabBase("");
+ToolPresetsPanel.prototype.KN = function () {
+	this.Fd.Z2(this.mN.UL);
+};
+ToolPresetsPanel.prototype.BM = function (l, d) {
+	this.mN = l;
+	if (d == PsdResourceTypes.Wx || d == PsdResourceTypes.qa) this.Fd.Z2(l.UL);
+};
+ToolPresetsPanel.prototype.resize = function (l, d) {
+	this.Fd.ajv(this.mN.QN);
+};
+ToolPresetsPanel.prototype.refresh = function () {
+	PanelTabBase.prototype.refresh.call(this);
+	this.Fd.refresh();
+};
+
+
+
+var MemoryPanel = function () {
+	var _local4373 = [],
+		_local4371 = null,
+		_local4364 = null,
+		_local4370 = null,
+		_local4369 = [
+		[100, 180, 255],
+		[100, 255, 100],
+		[255, 200, 100],
+		[200, 100, 255],
+		[255, 100, 200]];
+
+
+	function _local4367() {
+		PanelTabBase.call(this, "Memory", !1, null, PanelTabBase.xA.al6);
+		var _local4376 = s.createElement("div", "padded");
+		this.DK.appendChild(_local4376);
+		_local4364 = new ToolbarButton("<< Back", !1, null, !0);
+		_local4364.addEventListener("click", function (n) {
+			_local4373.pop();
+			_local4365();
+		});
+		_local4376.appendChild(_local4364.e);
+		_local4371 = s.createElement("div", "scrollable");
+		_local4371.setAttribute("style", "width:20em;  height:26em; margin-top:8px;");
+		_local4376.appendChild(_local4371);
+	}
+	_local4367.prototype = new PanelTabBase("");
+	_local4367.prototype.Yw = function (J, n, r) {
+		_local4370 = n;
+		this.KN();
+	};
+	_local4367.prototype.KN = function () {
+		_local4364.setEnabled(!1);
+		if (!s.isInDocument(_local4371)) return;
+		var _local4378 = {
+			MS: "Total:",
+			LK: []
+		};
+		for (var _local4377 = 0; _local4377 < _local4370.length; _local4377++) _local4378.LK.push(_local4372(_local4370[_local4377]));
+		_local4368(_local4378);
+		_local4373 = [_local4378];
+		_local4365();
+	};
+	_local4367.prototype.refresh = function () {
+		PanelTabBase.prototype.refresh.call(this);
+		_local4364.refresh();
+	};
+
+	function _local4374(J) {
+		var _local4380 = J.currentTarget,
+			_local4379 = 0;
+		while ((_local4380 = _local4380.previousSibling) != null) _local4379++;
+		_local4373.push(_local4373[_local4373.length - 1].LK[_local4379 - 1]);
+		_local4365();
+	}
+
+	function _local4365() {
+		_local4364.setEnabled(_local4373.length > 1);
+		var _local4382 = _local4373[_local4373.length - 1];
+		s.clearChildren(_local4371);
+		_local4375(_local4382, _local4371, 0);
+		_local4382.LK.sort(function (n, r) {
+			return r.E3[0] - n.E3[0];
+		});
+		for (var _local4381 = 0; _local4381 < _local4382.LK.length; _local4381++) _local4375(_local4382.LK[_local4381], _local4371, 1);
+	}
+
+	function _local4375(J, n, r) {
+		var _local4383 = SaveForWebDialog.fa,
+			_local4386 = r != 0 && J.LK,
+			_local4385 = "margin-left:" + r * 10 + "px; margin-bottom:8px; padding:3px 5px;";
+		if (_local4386) _local4385 += "cursor:pointer;";
+		if (J.Ts != null) _local4385 += "background-color:rgba(" + _local4369[J.Ts].join(",") + ",0.2);";
+		var _local4384 = s.createElement("div");
+		n.appendChild(_local4384);
+		_local4384.setAttribute("style", _local4385);
+		_local4384.innerHTML = s.escapeHtml(J.MS) + "<br />RAM: <b>" + _local4383(J.E3[0]) + "</b>\u2001GPU: <b>" + _local4383(J.E3[1]) + "</b>";
+		if (_local4386) _local4384.addEventListener("click", _local4374, !1);
+	}
+
+	function _local4372(J) {
+		var _local4395 = {
+				MS: J.name,
+				LK: [],
+				Ts: 0
+			},
+			_local4396 = WebGLContext.webglAvailable ? 1 : 0,
+			_local4390 = 1 - _local4396,
+			_local4393 = {
+				MS: "Final Image",
+				E3: [J.m * J.n * 4, _local4396 * J.m * J.n * 4],
+				Ts: 2
+			};
+		_local4395.LK.push(_local4393);
+		for (var _local4387 = 0; _local4387 < J.B.length; _local4387++) {
+			var _local4392 = _local4366(J.B[_local4387]);
+			if (_local4392.LK.length != 0) _local4395.LK.push(_local4392);
+		}
+		var _local4391 = J.add.lnk2;
+		if (_local4391)
+		for (var _local4387 = 0; _local4387 < _local4391.length; _local4387++) {
+			var _local4392 = _local4391[_local4387],
+				_local4394 = {
+					MS: _local4392.bf,
+					LK: [],
+					Ts: 4
+				},
+				_local4389 = 0;
+			_local4394.LK.push({
+				MS: "Raw file",
+				E3: [_local4392.raw.length, 0]
+			});
+			if (_local4392.hF)
+			for (var _local4388 = 0; _local4388 < _local4392.hF.length; _local4388 += 2) _local4389 += _local4392.hF[_local4388].length;
+			if (_local4389 != 0) _local4394.LK.push({
+				MS: "Decoded pixels",
+				E3: [_local4389, 0]
+			});
+			_local4368(_local4394);
+			_local4395.LK.push(_local4394);
+		}
+		_local4368(_local4395);
+		return _local4395;
+	}
+
+	function _local4366(J) {
+		var _local4406 = {
+				MS: J.getName(),
+				LK: [],
+				Ts: 1
+			},
+			_local4408 = WebGLContext.webglAvailable ? 1 : 0,
+			_local4400 = 1 - _local4408,
+			_local4404 = J.rect.O();
+		if (_local4404 != 0) _local4406.LK.push({
+			MS: "Layer pixels",
+			E3: [_local4404 * 4, _local4408 * _local4404 * 4]
+		});
+		if (J.add.lmfx && J.hD.Pr.type) {
+			var _local4403 = J.hD.Pr.type,
+				_local4397 = 0;
+			for (var _local4402 in _local4403) {
+				var _local4405 = 0;
+				for (var _local4398 = 0; _local4398 < _local4403[_local4402].length; _local4398++)
+				if (_local4402 == "ebbl") {
+					if (_local4403[_local4402][_local4398].Ei) _local4405 += _local4403[_local4402][_local4398].Ei.We.O();
+					if (_local4403[_local4402][_local4398].p9) _local4405 += _local4403[_local4402][_local4398].p9.We.O();
+					if (_local4403[_local4402][_local4398].l2) _local4405 += _local4403[_local4402][_local4398].l2.We.O();
+					if (_local4403[_local4402][_local4398].gp) _local4405 += _local4403[_local4402][_local4398].gp.We.O();
+				} else _local4405 += _local4403[_local4402][_local4398].We.O();
+				if (_local4405 != 0) _local4406.LK.push({
+					MS: languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(_local4402)]),
+					E3: [_local4400 * _local4405 * 4, _local4408 * _local4405 * 4],
+					Ts: 3
+				});
+			}
+			if (J.hD.VK) _local4397 += _local4404;
+			if (J.hD.GA) _local4397 += _local4404;
+			if (J.hD.Vn) _local4397 += _local4404;
+			if (J.hD.Vn) _local4397 += _local4404;
+			if (J.hD.me) _local4397 += _local4404;
+			if (J.hD.dO) _local4397 += _local4404;
+			var _local4407 = J.hD.tw ? J.hD.tw.length : 0;
+			if (_local4397 + _local4407 != 0) _local4406.LK.push({
+				MS: "Additional Blending Data",
+				E3: [_local4400 * _local4397 * 4 + _local4407, _local4408 * _local4397 * 4]
+			});
+		}
+		var _local4399 = J.c3(),
+			_local4401 = _local4399 ? _local4399.rect.O() : 0;
+		if (_local4401 != 0) {
+			_local4406.LK.push({
+				MS: "Raster Mask",
+				E3: [_local4401, 0]
+			});
+		}
+		var _local4399 = J.add.vmsk,
+			_local4401 = _local4399 && _local4399.UG ? _local4399.UG.rect.O() : 0;
+		if (_local4401 != 0) {
+			_local4406.LK.push({
+				MS: "Vector Mask",
+				E3: [_local4401, 0]
+			});
+		}
+		_local4368(_local4406);
+		return _local4406;
+	}
+
+	function _local4368(J) {
+		J.E3 = [0, 0];
+		for (var _local4409 = 0; _local4409 < J.LK.length; _local4409++) {
+			J.E3[0] += J.LK[_local4409].E3[0];
+			J.E3[1] += J.LK[_local4409].E3[1];
+		}
+	}
+	return _local4367;
+}();
+
+
+function ConfigBar() {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "confbar");
+}
+ConfigBar.prototype = new UIComponent();
+ConfigBar.prototype.ajt = function (l) {
+	l.parent = this;
+	s.clearChildren(this.e);
+	this.e.appendChild(l.e);
+};
+
+
+
+function PanelListContainer() {
+	UIComponent.call(this);
+	this.mN = null;
+	this.rD = PanelListContainer.Ho;
+	this.akd = "";
+	this.e = s.createElement("div", "rightbar");
+	this.Z8 = [new VerticalSidebarColumn(300), new VerticalSidebarColumn(268, !0)];
+	this.xY = [new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer, new PanelContainer];
+	this.aa6 = []
+}
+PanelListContainer.prototype = new UIComponent;
+PanelListContainer.prototype.refresh = function() {
+	var l = this.rD;
+	// for (var A = 0; A < l.length; A++) l[A].A3.refresh(); // hbi
+};
+// hbi: disabled
+PanelListContainer.Ho = [{
+	A3: new ActionsPanel,
+	Ju: 3
+}, {
+	A3: new AdjustmentsPanel,
+	Ju: 1
+}, {
+	A3: new BrushPanel,
+	Ju: 4
+}, {
+	A3: new ChannelsPanel,
+	Ju: 2
+}, {
+	A3: new CharacterParagraphPanel(!0),
+	Ju: 5
+}, {
+	A3: new ColorPanel,
+	Ju: 0
+}, {
+	A3: new GlyphsPanel,
+	Ju: 5
+}, {
+	A3: new HistogramPanel,
+	Ju: 3
+}, {
+	A3: new HistoryPanel,
+	Ju: 0
+}, {
+	A3: new InfoPanel,
+	Ju: 3
+}, {
+	A3: new LayersPanel,
+	Ju: 2
+}, {
+	A3: new LayerCompsPanel,
+	Ju: 4
+}, {
+	A3: new NavigatorPanel,
+	Ju: 3
+}, {
+	A3: new NotesPanel,
+	Ju: 5
+}, {
+	A3: new CharacterParagraphPanel(!1),
+	Ju: 5
+}, {
+	A3: new PathsPanel,
+	Ju: 2
+}, {
+	A3: new PropertiesPanel,
+	Ju: 3
+}, {
+	A3: new StylePanel,
+	Ju: 1
+}, {
+	A3: new SwatchesPanel,
+	Ju: 0
+}, {
+	A3: new ToolPresetsPanel,
+	Ju: 5
+}, {
+	A3: new CssPanel,
+	Ju: 6,
+	ME: !0
+}, {
+	A3: new GuideGuyPanel,
+	Ju: 6,
+	ME: !0
+}, {
+	A3: new MemoryPanel,
+	Ju: 6,
+	ME: !0
+}];
+(function() {
+	var l = [{
+		id: PanelTabBase.xA.aas,
+		name: "Gallery",
+		url: "plugins/gallery.html",
+		icon: "===data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgBAMAAAB54XoeAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAB5QTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtyhvagAAAAp0Uk5TAP+mc4pfC+rILiKk3cQAAALjSURBVHic7dq/bxMxFAdwKy1HM16up4QtDCDYkv8gTIgtZWGNWMpIJKhgLAtriyrx71Lnh8/2e76c3/tOxW9olUb56Fvf3bPPOWNKlSpVqtSxPv6uIfXj1d77hOFs/bTeGc6r68UjuESCjTHPkF5dr801FrwxV1iwNS+x4MRs7a+3iNP5j5Vmxv5sEN7+fJnuwDkGHFlrB95hwLEDNxiwciDGM+Zpgw9v6vrXBxg4fr+/Lr6F54cYrNz1OtlAQK/Hf0eAI78bzPVgdRu0l40avAgblhdRCEYddKIFySS0VoJkErpRgmTO6P5nETiOPa+disBzCq5U4HMKflWB9xR8oQLfUfBSBTILA3eYReAtBWcqkHrd5ws4rOAHBX7aMCe2Ww2KwHsK6i49eHOAty94g4VPAfhJSjGNngUj7ko+0e/OYXoPMwrB+WDwcIIs4r9XQcSMxdJy/4kTEb2AJ0B3p08iChecy+NnLslboiWxtxWxIm9KFu1em6IRBbcVwcDTiHz1gUEfHXo/3QNGTYoe6FwwavQDI6bB6OryG4AMJD2v1YFMmx8UMQkyU+WgiCmQjGAU8Tx14FMgu9nkRUz0ySTIBvQipvpkEkzshrmIhxFmIvJgIqCL2NMneTC5XXeItIxenwKTAQ8RvT5JIrJgz35iGwRkInJgT0BacUQOzNrwjCMyYFZAEpEBM3dk21NgZsC4CVEwe8u47QeZPpgVkYCCPe2mD8weQVuLHlC06d6kQcEIRhEjUPitQJsCP8s8P2IIMvetuREDUHSIo4gBqPhepeVARcAuogdW4hG01VDwi8ZzETtQF9CtwjtQGfAYsQPVX501ISi+SLpaB6ByBG21AYioNRps0aA90FiwQYOPEcFggwbrBRps0GBdwAIW8AmBW6w3la8z+Zrhn7e5woIt/pkl4d1JqlbqpWFYs40xf5GgfdZtvMV50zvVLRSt1/ul8QPqccF4X7tUqVKl/uf6BxTPzN+MDvNvAAAAAElFTkSuQmCC"
+	}];
+	for (var A = 0; A < l.length; A++) {
+		PanelListContainer.Ho.push({
+			A3: new PluginTabPanel(l[A], 100 + A),
+			Ju: 6,
+			ME: !0
+		})
+	}
+}());
+PanelListContainer.prototype.ak7 = function(l) {
+	for (var A = 0; A < l.length; A++) {
+		var d = l[A],
+			G = new PluginTabPanel(d, "plg_" + d.name);
+		this.rD.push({
+			A3: G,
+			Ju: 6
+		});
+		this.aa6.push(G.kR)
+	}
+	this.VP()
+};
+PanelListContainer.prototype.BM = function(l, d) {
+	this.mN = l;
+	var G = this.rD;
+	// hbi
+	// for (var A = 0; A < G.length; A++) G[A].A3.BM(l, d);
+	if (d == PsdResourceTypes.X2 || d == PsdResourceTypes.Wx) this.VP()
+};
+PanelListContainer.prototype.em = function(l) {
+	var d = this.rD;
+	// hbi
+	// for (var A = 0; A < d.length; A++) d[A].A3.em(l)
+};
+PanelListContainer.prototype.resize = function(l, d) {
+	this.iJ = l;
+	this.Tq = d;
+	this.VP();
+	this.Z8[0].resize(l, d);
+	this.Z8[1].resize(l, d)
+};
+PanelListContainer.prototype.VP = function() {
+	var l = this.mN,
+		d = this.iJ,
+		G = this.Tq;
+	if (l == null || d == 0) return;
+	var b = l.J_.concat(this.aa6),
+		V = d < 500 || d < 700 && d < G,
+		Q = JSON.stringify(b) + "," + V;
+	if (Q != this.akd) {
+		this.akd = Q;
+		s.clearChildren(this.e);
+		var t = [];
+		for (var A = 0; A < this.Z8.length; A++) {
+			var I = this.Z8[A];
+			t[A] = I.TL();
+			while (I.aoj() != 0) I.akg(0);
+			I.sS()
+		}
+		var y = [];
+		for (var A = 0; A < this.xY.length; A++) {
+			var e = this.xY[A];
+			e.sS();
+			while (e.a5B() != 0) e.cd(0);
+			y.push(0)
+		}
+		for (var A = 0; A < b.length; A++) {
+			var M = this.abu(b[A].toString());
+			if (M == null) continue;
+			this.xY[M.Ju].$J(M.A3);
+			this.xY[M.Ju].AT(0);
+			y[M.Ju]++
+		}
+		var R = [];
+		for (var A = 0; A < y.length; A++) {
+			if (y[A] == 0) continue;
+			var J = A < 3 || V ? 1 : 0,
+				I = this.Z8[J];
+			I.parent = this;
+			I.ayf(this.xY[A]);
+			R[J] = !0
+		}
+		for (var A = 0; A < this.Z8.length; A++)
+			if (R[A]) this.e.appendChild(this.Z8[A].e);
+		this.Z8[0].collapse();
+		if (d < 700 || this.mN.compact || !t[1]) {
+			this.Z8[1].collapse()
+		}
+		var n = new Action(ActionTypes.E.L, !0);
+		n.data = {
+			a: ActionTypes.$.to
+		};
+		this.dispatch(n)
+	}
+};
+PanelListContainer.prototype.abu = function(l) {
+	for (var A = 0; A < this.rD.length; A++)
+		if (this.rD[A].A3.kR == l) return this.rD[A]
+};
+PanelListContainer.prototype.aoY = function(l) {
+	var d = this.abu(l);
+	this.xY[d.Ju].$J(d.A3)
+};
+PanelListContainer.prototype.Yw = function(l, d, G) {
+	var b = this.rD;
+	// for (var A = 0; A < b.length; A++) b[A].A3.Yw(l, d, G); // hbi
+};
+PanelListContainer.prototype.dJ = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.dJ(l, d, G, b, V)
+};
+PanelListContainer.prototype.JP = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.JP(l, d, G, b, V)
+};
+PanelListContainer.prototype.Nl = function(l, d, G, b, V) {
+	var Q = this.rD;
+	for (var A = 0; A < Q.length; A++) Q[A].A3.Nl(l, d, G, b, V)
+};
+
+
+
+function TopBar() {
+	UIComponent.call(this);
+	this.e = s.createElement("div", "topbar");
+	this.mJ = s.createElement("span", "");
+	this.amU = 0;
+	this.e.appendChild(this.mJ);
+	this._B = null;
+	this.cH = null;
+	this.lT = [];
+	this.J_ = [];
+	var l = this.JO.bind(this);
+	for (var A = 0; A < TopBar.data.length; A++) {
+		var d = s.createElement("button");
+		this.lT.push(d);
+		this.mJ.appendChild(d);
+		d.addEventListener("mouseover", l, !1);
+		s.addPointerDown(d, l)
+	}
+	this.OK = new ToolbarButton([0, 13, 0], !1, null, !0);
+	this.OK.addListener("click", this.Yu, this);
+	this.e.appendChild(this.OK.e);
+	this.rm = new ToolbarButton(s.getIconImgHtml("tools/zoom", null, "autoscale"), !1, [12, 86]);
+	this.rm.addListener("click", this.Yu, this);
+	this.e.appendChild(this.rm.e);
+	this.U1 = new ToolbarButton("<svg class=\"gsicon\" version=\"1.1\"  width=\"20\" height=\"20\" viewBox=\"8 8 20 20\"><path d=\"m 10,16 2,0 0,-4 4,0 0,-2 L 10,10 l 0,6 0,0 z\"></path><path d=\"m 20,10 0,2 4,0 0,4 2,0 L 26,10 l -6,0 0,0 z\"></path><path d=\"m 24,24 -4,0 0,2 L 26,26 l 0,-6 -2,0 0,4 0,0 z\"></path><path d=\"M 12,20 10,20 10,26 l 6,0 0,-2 -4,0 0,-4 0,0 z\"></path></svg>", !1, "Fullscreen");
+	this.U1.addListener("click", this.Yu, this);
+	this.e.appendChild(this.U1.e)
+}
+TopBar.prototype = new UIComponent;
+TopBar.prototype.aA8 = function() {
+	if (this.J_.length != 0) return;
+	for (var A = 0; A < TopBar.data.length; A++) {
+		var l = TopBar.data[A],
+			d = new ContextPanel(l.items, l.iD);
+		d.parent = this;
+		this.J_.push(d)
+	}
+	this.refresh()
+};
+TopBar.prototype.refresh = function() {
+	this.OK.refresh();
+	this.rm.refresh();
+	this.U1.refresh();
+	for (var A = 0; A < this.lT.length; A++) this.lT[A].textContent = languageManager.get(TopBar.data[A].name);
+	this.afC();
+	for (var A = 0; A < this.J_.length; A++) this.J_[A].refresh()
+};
+TopBar.prototype.Yu = function(l) {
+	var d = new Action(ActionTypes.E.L, !0);
+	if (l.target == this.OK) d.data = {
+		a: ActionTypes.$.SN,
+		GU: "account"
+	};
+	else if (l.target == this.rm) d.data = {
+		a: ActionTypes.$.V7
+	};
+	else d.data = {
+		a: ActionTypes.$.Mc,
+		Xs: !0
+	};
+	this.dispatch(d)
+};
+TopBar.prototype.aef = function(l, d) {
+	this._B = l;
+	this.cH = d
+};
+TopBar.prototype.BM = function(l, d) {
+	this.cH = l;
+	if (d == PsdResourceTypes.Wx) {
+		var G = l.ae2;
+		s.clearChildren(this.mJ);
+		for (var A = 0; A < this.lT.length; A++) {
+			if (G == null || G[A] == 1 || G[A] instanceof Array) this.mJ.appendChild(this.lT[A]);
+			if (G != null && G[A] instanceof Array) {
+				this.aA8();
+				this.J_[A].avV(G[A])
+			}
+		}
+		this.e.removeChild(this.OK.e);
+		this.e.removeChild(this.rm.e);
+		this.e.removeChild(this.U1.e);
+		if (l.ki) this.e.appendChild(this.OK.e);
+		this.e.appendChild(this.rm.e);
+		this.e.appendChild(this.U1.e)
+	}
+	this.afC()
+};
+TopBar.prototype.afC = function(l, d) {
+	var G = this.OK,
+		b = 12255232;
+	if (premiumSession.getCurrentUserRecord()) b = premiumSession.hasActiveEntitlement() ? 43520 : 16755200;
+	G.e.setAttribute("style", "color:#ffffff; background-color:#" + PixelUtil.intToHex6(b))
+};
+TopBar.prototype.JO = function(l) {
+	this.aA8();
+	var A = this.lT.indexOf(l.currentTarget),
+		d = this.J_[A];
+	if (l.type == "mouseover" && !s.isInDocument(this.J_[this.amU].e)) return;
+	if (s.isInDocument(d.e)) return;
+	l.al8 = !0;
+	this.amU = A;
+	for (var A = 0; A < TopBar.data.length; A++) this.J_[A].update(this._B, this.cH);
+	var G = l.target.getBoundingClientRect(),
+		b = new Action(ActionTypes.E.L, !0);
+	b.data = {
+		a: ActionTypes.$.dY,
+		A3: d,
+		x: G.left,
+		y: G.top + G.height + 2,
+		amW: !0
+	};
+	this.dispatch(b)
+};
+TopBar.aj2 = function(l) {
+	var d = KeyboardHandler,
+		G = d.wz,
+		b = d.Zz,
+		V = d.Jm,
+		Q = function(e) {
+			return {
+				p: e != null
+			}
+		},
+		t = function(e) {
+			return {
+				p: e != null && e.P != null
+			}
+		},
+		I = {
+			name: [0, 5],
+			items: [{
+				name: [7, 0],
+				p: Q,
+				C0: [G, d.$]
+			}, {
+				name: [7, 1],
+				C0: [G, d.HM],
+				p: t
+			}, {
+				name: [7, 2],
+				C0: [b, G, d.wo],
+				p: t,
+				xX: !0
+			}, {
+				name: [7, 8],
+				p: Q,
+				pR: !0
+			}, {
+				name: [7, 13],
+				pR: !0,
+				p: function(e) {
+					return {
+						p: e != null && e.g.length != 0 && !e.B[e.g[0]].rect.W6()
+					}
+				},
+				xX: !0
+			}, {
+				name: [7, 11],
+				pR: !0,
+				p: function(e) {
+					return {
+						p: e != null && e.g.length != 0 && !e.B[e.g[0]].rect.W6()
+					}
+				}
+			}, {
+				name: [7, 3],
+				p: Q,
+				xX: !0,
+				sub: [{
+					name: [7, 9],
+					pR: !0,
+					p: t
+				}, {
+					name: [19, 3, 0],
+					pR: !0,
+					p: t
+				}, {
+					name: [7, 4],
+					pR: !0,
+					p: t
+				}, {
+					name: [7, 5],
+					pR: !0,
+					p: t
+				}, {
+					name: [7, 6],
+					pR: !0,
+					p: t,
+					C0: "Shift+F6"
+				}]
+			}, {
+				name: "Grow",
+				p: t
+			}, {
+				name: "Similar",
+				p: t,
+				xX: !0
+			}, {
+				name: [7, 10],
+				p: t,
+				xX: !0
+			}, {
+				name: [6, 6, 1],
+				p: function(e) {
+					return {
+						p: e != null,
+						Zj: e != null && e.kg() != null
+					}
+				},
+				C0: [d.og],
+				xX: !0
+			}, {
+				name: ["VAR0 VAR1", [1, 2],
+					[17, 2]
+				],
+				p: t
+			}],
+			iD: [{
+				Y: ActionTypes.E.g5,
+				W: f.GS.Cc(!0)
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.GS.Cc()
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "inverse"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "crange"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "magiccut"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "redge"
+				}
+			}, {
+				sub: [{
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "sel_border"
+					}
+				}, {
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "sel_smoothness"
+					}
+				}, {
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "sel_expand"
+					}
+				}, {
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "sel_contract"
+					}
+				}, {
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "sel_feather"
+					}
+				}]
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "grow",
+					a0: {
+						classID: "null",
+						null: {
+							t: "obj ",
+							v: [{
+								t: "prop",
+								v: {
+									classID: "Chnl",
+									keyID: "fsel"
+								}
+							}]
+						}
+					}
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "similar",
+					a0: {
+						classID: "null",
+						null: {
+							t: "obj ",
+							v: [{
+								t: "prop",
+								v: {
+									classID: "Chnl",
+									keyID: "fsel"
+								}
+							}]
+						}
+					}
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.yb,
+					G: f.tr
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.Da,
+				W: {
+					a: "qmask"
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "duplicate",
+					a0: {
+						classID: "null",
+						null: {
+							t: "obj ",
+							v: [{
+								t: "prop",
+								v: {
+									classID: "Chnl",
+									keyID: "fsel"
+								}
+							}]
+						}
+					}
+				}
+			}]
+		};
+	if (l) {
+		var y = I.items.length - 1;
+		I.items.splice(y - 2, 0, {
+			name: [6, 49],
+			C0: [G, d.Ns],
+			xX: !0
+		});
+		I.iD.splice(y - 2, 0, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "copyToLayer"
+			}
+		});
+		I.items.splice(y - 1, 0, {
+			name: [10, 16],
+			C0: [V, G, d.hD]
+		});
+		I.iD.splice(y - 1, 0, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.yb,
+				G: f.qK
+			}
+		})
+	}
+	return I
+};
+TopBar.oc = function(l, d) {
+	if (l == null || l.g.length == 0) return !1;
+	var G = l.B[l.g[0]];
+	return G.add.TySh != null && d.QN == f.zl
+};
+TopBar.ade = function() {
+	var l = KeyboardHandler,
+		d = l.wz,
+		G = l.Zz,
+		b = l.Jm,
+		V = function(Q) {
+			return {
+				p: Q != null
+			}
+		};
+	return [
+		[{
+			name: [5, 0],
+			C0: [d, l.QD],
+			p: function(Q, t) {
+				return {
+					p: Q != null && (Q.P9() || TopBar.oc(Q, t))
+				}
+			}
+		}, {
+			name: [5, 1],
+			C0: [d, l.nA],
+			p: V
+		}, {
+			name: [5, 2],
+			C0: [d, l.AR],
+			p: function(Q, t) {
+				return {
+					p: TopBar.oc() || s.hasClipboardSupport() || t.wH != null || t.C6 != null || t.arv != null
+				}
+			}
+		}, {
+			name: [2, 2],
+			p: function(Q, t) {
+				return {
+					p: Q != null && (Q.P != null || TopBar.oc(Q, t))
+				}
+			},
+			C0: "Delete",
+			xX: !0
+		}],
+		[{
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.Yq
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.n4
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.EZ
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "delete"
+			}
+		}]
+	]
+};
+TopBar.data = function() {
+	var l = KeyboardHandler,
+		d = l.wz,
+		G = l.Zz,
+		b = l.Jm,
+		V = function(n) {
+			return {
+				p: n != null && n.g.length != 0
+			}
+		},
+		Q = function(n) {
+			return {
+				p: n != null && n.g.length != 0 && n.B[n.g[0]].add.SoLd != null
+			}
+		},
+		t = function(n) {
+			return {
+				p: n != null
+			}
+		},
+		I = function(n) {
+			return {
+				p: n != null && n.T8(!1)
+			}
+		},
+		y = [],
+		e = [],
+		M = "none maxx avrg medn minn rang stdv summ vari".split(" "),
+		R = [
+			[22, 5, 0],
+			[24, 17, 2],
+			[24, 3, 0],
+			[24, 7, 3],
+			[24, 17, 3],
+			[12, 12], "Standard Deviation", "Summation", "Variance"
+		];
+	for (var A = 0; A < M.length; A++) {
+		y.push({
+			name: R[A],
+			p: function(n, r) {
+				if (n == null || n.g.length != 1) return {
+					p: !1
+				};
+				var T = n.B[n.g[0]].add.SoLd;
+				if (T == null) return {
+					p: !1
+				};
+				return {
+					p: !0,
+					Zj: T.Impr.v.classID == this.alz
+				}
+			}.bind({
+				alz: M[A]
+			})
+		});
+		e.push({
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.OF,
+				mz: M[A]
+			}
+		})
+	}
+	// hbi: Menu
+	var J = TopBar.ade(!0);
+	return [{
+		name: "File",
+		items: [{
+			name: "New",
+			C0: [b, d, l.q5],
+			title: "New Project",
+			pR: !0
+		}, {
+			name: "Open",
+			C0: [d, l.vc],
+			pR: !0
+		}, {
+			name: "Open & Place",
+			pR: !0,
+			p: t
+		}, {
+			name: "Open More",
+			xX: !0,
+			sub: [{
+				name: "Storage",
+				pR: !0,
+				C0: [b, d, l.vc]
+			}, {
+				name: "Open from URL",
+				pR: !0
+			}, {
+				name: "Take a picture",
+				pR: !0
+			}, {
+				name: "PSD Templates",
+				pR: !0
+			}]
+		}, {
+			name: "Publish  Online",
+			xX: !0,
+			p: t,
+			sub: [{
+				name: "PNG",
+				C0: "Imgur.com",
+				p: function(n, r) {
+					return {
+						p: n != null && r.N_
+					}
+				}
+			}, {
+				name: "JPG",
+				C0: "Imgur.com",
+				p: function(n, r) {
+					return {
+						p: n != null && r.N_
+					}
+				}
+			}, {
+				name: "PSD",
+				C0: "Photopea.com",
+				p: function(n, r) {
+					return {
+						p: n != null && r.N_ && !n.vs
+					}
+				}
+			}]
+		}, {
+			name: "Save ...",
+			C0: [d, l.kC],
+			p: function(n, r) {
+				var T = "Save",
+					j = !0;
+				if (n) {
+					if (n.Ta) T += " (Smart Object)";
+					if (n.yi) T += " (Google Drive)";
+					if (n.O2) T += " (" + Storage.list[n.O2[0]][0] + ")";
+					j = "psd jpg png gif webp svg bmp".split(" ").indexOf(n.o8) != -1
+				}
+				return {
+					p: n != null && (n.O2 != null || n.vG != null && j || n.Ta != null || n.pb != null && n.pb.RG != null || n.yi != null || r.QR.save != null),
+					iH: T
+				}
+			}
+		}, {
+			name: "Save as PSD",
+			p: function(n, r) {
+				return {
+					p: n != null && r.N_
+				}
+			}
+		}, {
+			name: "Save More",
+			p: t,
+			sub: [{
+				name: "PSD to Storage",
+				p: function(n, r) {
+					return {
+						p: n != null && r.N_
+					}
+				}
+			}, {
+				name: "Save PSD/PSB",
+				pR: !0,
+				p: function(n, r) {
+					return {
+						p: n != null && r.N_
+					}
+				}
+			}]
+		}, {
+			name: "Export as",
+			p: t,
+			sub: function() {
+				var n = FormatHandler.EK(0),
+					r = [];
+				for (var A = 0; A < n.length; A++) r.push({
+					name: n[A],
+					C0: "." + n[A].toLowerCase()
+				});
+				r.push({
+					name: [0, 14],
+					sub: function() {
+						var n = FormatHandler.EK(1),
+							r = [];
+						for (var A = 0; A < n.length; A++) r.push({
+							name: n[A],
+							C0: "." + n[A].toLowerCase()
+						});
+						return r
+					}()
+				});
+				return r
+			}()
+		}, {
+			name: "Print",
+			pR: !0,
+			p: t,
+			xX: !0
+		}, {
+			name: "Export Layers",
+			pR: !0,
+			p: t
+		}, {
+			name: "Export Color Lookup",
+			pR: !0,
+			p: t,
+			xX: !0
+		}, {
+			name: "File Info",
+			pR: !0,
+			p: t,
+			xX: !0
+		}, {
+			name: "Automate",
+			sub: [{
+				name: "PDF Presentation",
+				pR: !0
+			}, {
+				name: "Convert Formats",
+				pR: !0
+			}]
+		}, {
+			name: "Script"
+		}],
+		iD: [{
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "newproject"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.Um
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.Um,
+				ar3: !0
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "storwindow",
+					fz: 0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "open_from_url"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "camera"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "res0"
+				}
+			}]
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.mb,
+					oE: "png"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.mb,
+					oE: "jpg"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.mb,
+					oE: "psd"
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.WD
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.a1
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "storwindow",
+					fz: 1
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "savepsb"
+				}
+			}]
+		}, {
+			sub: function() {
+				var n = FormatHandler.EK(0),
+					r = [];
+				for (var A = 0; A < n.length; A++) r.push({
+					Y: ActionTypes.E.L,
+					W: {
+						a: ActionTypes.$.SN,
+						GU: "saveforweb",
+						oE: A
+					}
+				});
+				r.push({
+					sub: function() {
+						var T = FormatHandler.EK(0).length,
+							n = FormatHandler.EK(1),
+							r = [];
+						for (var A = 0; A < n.length; A++) r.push({
+							Y: ActionTypes.E.L,
+							W: {
+								a: ActionTypes.$.SN,
+								GU: "saveforweb",
+								oE: T + A
+							}
+						});
+						return r
+					}()
+				});
+				return r
+			}()
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "saveforweb",
+				oE: 4,
+				amJ: !0
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "eassets"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "exlut"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "finfo"
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "pdfpres"
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "cformat"
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "script"
+			}
+		}]
+	}, {
+		name: "Edit",
+		items: [{
+			name: "Undo / Redo",
+			p: t
+		}, {
+			name: "Step Forward",
+			p: t,
+			C0: [G, d, l.dr]
+		}, {
+			name: "Step Backward",
+			p: t,
+			C0: [d, l.dr],
+			xX: !0
+		}, {
+			name: "Fade",
+			C0: [G, d, l.vW],
+			xX: !0,
+			pR: !0,
+			p: function(n, r) {
+				return {
+					p: FilterEffectDialog.a7h(n) && r.QN != f.qK
+				}
+			}
+		}, J[0][0], J[0][1], {
+			name: "Copy Merged",
+			C0: [G, d, l.nA],
+			p: function(n) {
+				return {
+					p: n != null && n.P9()
+				}
+			}
+		}, J[0][2], J[0][3], {
+			name: "Fill",
+			p: t,
+			pR: !0,
+			C0: [G, l.YF]
+		}, {
+			name: "Stroke",
+			p: t,
+			pR: !0,
+			xX: !0
+		}, {
+			name: "Content-Aware Scale",
+			p: I
+		}, {
+			name: "Puppet Warp",
+			p: function(n) {
+				return {
+					p: f.XR.a4t(n)
+				}
+			}
+		}, {
+			name: "Free Transform",
+			p: t,
+			C0: [b, d, l.hD]
+		}, {
+			name: "Transform",
+			p: t,
+			sub: TypeToolOptions.azf()
+		}, {
+			name: "Auto-Align",
+			p: t
+		}, {
+			name: "Auto-Blend",
+			p: t,
+			xX: !0
+		}, {
+			name: "Define New",
+			p: t,
+			sub: [{
+				name: "Pattern",
+				p: t
+			}, {
+				name: "Brush",
+				p: t
+			}, {
+				name: "Cursom Shape",
+				p: function(n) {
+					return {
+						p: n != null && n.LW()[1].length != 0
+					}
+				}
+			}]
+		}, {
+			name: "Preset Manager",
+			pR: !0
+		}, {
+			name: "Preferences",
+			pR: !0,
+			C0: [d, l.TY]
+		}, {
+			name: "Local Storage",
+			pR: !0
+		}],
+		iD: [{
+			Y: ActionTypes.E.v,
+			G: f.lv,
+			W: {
+				a: "h_undoredo"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.lv,
+			W: {
+				a: "h_stepfwd"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.lv,
+			W: {
+				a: "h_stepbck"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "afw_fade"
+			}
+		}, J[1][0], J[1][1], {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.n4,
+				sW: !0
+			}
+		}, J[1][2], J[1][3], {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "fill"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "stroke"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.yb,
+				G: f.Z5
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.WH,
+			W: {
+				a: "start",
+				_K: "rigidTransform"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.yb,
+				G: f.qK
+			}
+		}, {
+			sub: TypeToolOptions.ala()
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "align",
+				a0: {
+					classID: "null",
+					null: {
+						t: "obj ",
+						v: [{
+							t: "Enmr",
+							v: {
+								classID: "Lyr",
+								typeID: "Ordn",
+								enum: "Trgt"
+							}
+						}]
+					},
+					Usng: {
+						t: "enum",
+						v: {
+							ADSt: "ADSContent"
+						}
+					},
+					alignToCanvas: {
+						t: "bool",
+						v: !1
+					},
+					Aply: {
+						t: "enum",
+						v: {
+							projection: "Auto"
+						}
+					},
+					vignette: {
+						t: "bool",
+						v: !1
+					},
+					radialDistort: {
+						t: "bool",
+						v: !1
+					}
+				}
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.ZP
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kc,
+					Oo: 0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kc,
+					Oo: 1
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kc,
+					Oo: 2
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "pmanager"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "preferences"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "locstor"
+			}
+		}]
+	}, {
+		name: "Image",
+		items: [{
+			name: "Mode",
+			p: t,
+			xX: !0,
+			sub: [{
+				name: "RGB",
+				p: function(n) {
+					if (n == null) return {
+						p: !1
+					};
+					return {
+						Zj: n.add.fcmy == null,
+						p: !0
+					}
+				}
+			}, {
+				name: "CMYK",
+				p: function(n) {
+					if (n == null) return {
+						p: !1
+					};
+					return {
+						Zj: n.add.fcmy != null,
+						p: !0
+					}
+				},
+				xX: !0
+			}, {
+				name: "Raster",
+				p: function(n) {
+					if (n == null) return {
+						p: !1
+					};
+					return {
+						Zj: n.add.fvec == null,
+						p: !0
+					}
+				}
+			}, {
+				name: "Vector (Beta)",
+				p: function(n) {
+					if (n == null) return {
+						p: !1
+					};
+					return {
+						Zj: n.add.fvec != null,
+						p: !0
+					}
+				}
+			}]
+		}, {
+			name: "Adjustments",
+			p: t,
+			xX: !0,
+			sub: function() {
+				var n = [];
+				for (var r in LayerEffectsHelper.names) {
+					n.push({
+						name: LayerEffectsHelper.names[r],
+						pR: FilterEffectPanel[r] != null,
+						C0: LayerEffectsHelper.keys[r],
+						xX: LayerEffectsHelper.advancedAdjustmentKeys.indexOf(r) != -1
+					});
+					if (r == "selc") {
+						n.push({
+							name: "Shadows/Highlights",
+							pR: !0,
+							xX: !0
+						});
+						n.push({
+							name: "Desaturate",
+							C0: [d, G, l.fu],
+							p: I
+						});
+						n.push({
+							name: "Match Color",
+							pR: !0,
+							p: I
+						})
+					}
+				}
+				return n
+			}()
+		}, {
+			name: "Auto Tone",
+			p: I
+		}, {
+			name: "Auto Contrast",
+			p: I
+		}, {
+			name: "Auto Color",
+			p: I,
+			xX: !0
+		}, {
+			name: "Reduce Colors",
+			p: I
+		}, {
+			name: "Vectorize Bitmap",
+			p: I,
+			xX: !0
+		}, {
+			name: "Canvas Size",
+			p: t,
+			pR: !0,
+			C0: [b, d, l.nA]
+		}, {
+			name: "Image Size",
+			p: t,
+			pR: !0,
+			C0: [b, d, l.wo]
+		}, {
+			name: "Transform",
+			p: t,
+			sub: [{
+				name: "Rotate 90\xB0 \u21BB"
+			}, {
+				name: "Rotate 90\xB0 \u21BA"
+			}, {
+				name: "Rotate 180\xB0"
+			}, {
+				name: "Flip Horizontally"
+			}, {
+				name: "Flip Vertically"
+			}]
+		}, {
+			name: "Crop",
+			p: function(n) {
+				return {
+					p: n != null && n.P != null
+				}
+			}
+		}, {
+			name: "Trim",
+			p: t,
+			C0: [d, l.Vy],
+			pR: !0
+		}, {
+			name: "Reveal All",
+			p: t,
+			xX: !0
+		}, {
+			name: "Apply Image",
+			p: I,
+			pR: !0,
+			xX: !0
+		}, {
+			name: "Variables",
+			p: t,
+			pR: !0
+		}],
+		iD: [{
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.$C,
+				W: {
+					a: "fcmy",
+					Z: 0
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.$C,
+				W: {
+					a: "fcmy",
+					Z: 1
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.$C,
+				W: {
+					a: "fvec",
+					Z: 0
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.$C,
+				W: {
+					a: "fvec",
+					Z: 1
+				}
+			}]
+		}, {
+			sub: function() {
+				var n = [];
+				for (var r in LayerEffectsHelper.names) {
+					n.push({
+						Y: ActionTypes.E.v,
+						G: f.Qi,
+						W: {
+							a: "start",
+							ce: r
+						}
+					});
+					if (r == "selc") {
+						n.push({
+							Y: ActionTypes.E.v,
+							G: f.WH,
+							W: {
+								a: "start",
+								_K: "adaptCorrect"
+							}
+						});
+						n.push({
+							Y: ActionTypes.E.g5,
+							W: {
+								kT: "desaturate"
+							}
+						});
+						n.push({
+							Y: ActionTypes.E.v,
+							G: f.Qi,
+							W: {
+								a: "start",
+								ce: "matc"
+							}
+						})
+					}
+				}
+				return n
+			}()
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "levels",
+				a0: {
+					classID: "Lvls",
+					Auto: {
+						t: "bool",
+						v: !0
+					}
+				}
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "levels",
+				a0: {
+					classID: "Lvls",
+					AuCo: {
+						t: "bool",
+						v: !0
+					}
+				}
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "levels",
+				a0: {
+					classID: "Lvls",
+					autoBlackWhite: {
+						t: "bool",
+						v: !0
+					},
+					autoNeutrals: {
+						t: "bool",
+						v: !0
+					}
+				}
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "rcolors"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "vbitmap"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "csize"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "isize"
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.g5,
+				W: f.NH.Lg(!0, 90)
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.NH.Lg(!0, -90)
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.NH.Lg(!0, -180)
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.NH.Lg(!1, "Hrzn")
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.NH.Lg(!1, "Vrtc")
+			}]
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "crop",
+				a0: {
+					__name: "Crop",
+					classID: "Crop"
+				}
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "trim"
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "revealAll",
+				a0: {
+					classID: "RvlA"
+				}
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.Qi,
+			W: {
+				a: "start",
+				ce: "aply"
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "varsdats"
+			}
+		}]
+	}, {
+		name: "Layer",
+		items: [{
+			name: "New",
+			p: t,
+			sub: [{
+				name: "Layer",
+				C0: [G, d, l.q5]
+			}, {
+				name: "Folder"
+			}, {
+				name: "Artboard",
+				pR: !0
+			}, {
+				name: "Artboard from Layer",
+				pR: !0,
+				xX: !0
+			}, {
+				name: "Layer Via Copy",
+				C0: [d, l.Ns]
+			}, {
+				name: "Layer Via Cut",
+				C0: [G, d, l.Ns],
+				p: function(n) {
+					return {
+						p: n != null && n.P != null && n.T8(!1)
+					}
+				}
+			}]
+		}, {
+			name: "Duplicate Layer",
+			p: V,
+			C0: [d, l.Ns]
+		}, {
+			name: "Duplicate Into ...",
+			p: V
+		}, {
+			name: "Delete",
+			p: V,
+			xX: !0
+		}, {
+			name: "Layer Style",
+			p: V,
+			xX: !0,
+			sub: LayerStyleDialog.bb(!0)
+		}, {
+			name: "New Fill Layer",
+			p: t,
+			sub: [{
+				name: "Color Fill"
+			}, {
+				name: "Gradient Fill"
+			}, {
+				name: "Pattern Fill"
+			}]
+		}, {
+			name: "New Adjustment Layer",
+			p: t,
+			xX: !0,
+			sub: LayerStyleDialog.alE()
+		}, {
+			name: "Raster Mask",
+			p: t,
+			sub: [{
+				name: "Add (Reveal All)",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() == null
+					}
+				}
+			}, {
+				name: "Add (Hide All)",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() == null
+					}
+				}
+			}, {
+				name: "Reveal Selection",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() == null && n.P != null
+					}
+				}
+			}, {
+				name: "Hide Selection",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() == null && n.P != null
+					}
+				}
+			}, {
+				name: "From Transparency",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() == null
+					}
+				},
+				xX: !0
+			}, {
+				name: "Delete",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() != null
+					}
+				}
+			}, {
+				name: "Apply",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() != null && n.T8(!1, !0)
+					}
+				}
+			}, {
+				name: "Enable/Disable",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].c3() != null
+					}
+				}
+			}]
+		}, {
+			name: "Vector Mask",
+			p: t,
+			sub: [{
+				name: "Add (Reveal All)",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].add.vmsk == null
+					}
+				}
+			}, {
+				name: "Add (Hide All)",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].add.vmsk == null
+					}
+				}
+			}, {
+				name: "Current Path",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].add.vmsk == null
+					}
+				},
+				xX: !0
+			}, {
+				name: "Delete",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].add.vmsk != null
+					}
+				}
+			}, {
+				name: "Enable/Disable",
+				p: function(n) {
+					return {
+						p: n != null && n.g.length != 0 && n.B[n.g[0]].add.vmsk != null
+					}
+				}
+			}]
+		}, LayersPanel.a1S(!0), {
+			name: "Smart Object",
+			p: t,
+			xX: !0,
+			sub: [{
+				name: "Convert to Smart Object",
+				xX: !0
+			}, {
+				name: "Open (Edit Contents)",
+				p: Q,
+				pR: !0
+			}, {
+				name: "Replace Contents",
+				p: Q,
+				pR: !0
+			}, {
+				name: "Export Contents",
+				p: Q,
+				pR: !0,
+				xX: !0
+			}, {
+				name: "Stack Mode",
+				p: Q,
+				sub: y
+			}, {
+				name: "Turn into JPG",
+				p: Q
+			}]
+		}, {
+			name: "Rasterize",
+			p: LayersPanel.a51
+		}, {
+			name: "Rasterize Layer Style",
+			xX: !0,
+			p: function(n) {
+				if (n == null || n.g.length == 0) return {
+					p: !1
+				};
+				var r = n.B[n.g[0]];
+				return {
+					p: r.add.lmfx != null && !r.IQ()
+				}
+			}
+		}, {
+			name: "Group Layers",
+			p: t,
+			xX: !0,
+			C0: [d, l.Jv]
+		}, {
+			name: "Arrange",
+			p: t,
+			xX: !0,
+			sub: [{
+				name: "Bring to Front",
+				C0: [G, d, l.uM]
+			}, {
+				name: "Bring Forward",
+				C0: [d, l.uM]
+			}, {
+				name: "Send Backward",
+				C0: [d, l.vz]
+			}, {
+				name: "Send to Back",
+				C0: [G, d, l.vz]
+			}]
+		}, {
+			name: "Animation",
+			p: t,
+			xX: !0,
+			sub: [{
+				name: ["Make Frames"]
+			}, {
+				name: ["Unmake Frames"]
+			}, {
+				name: "Merge"
+			}]
+		}, {
+			name: "Merge Layers",
+			C0: [d, l.E],
+			p: function(n) {
+				var r = n == null ? 0 : n.g.length;
+				return {
+					p: r != 0 && (r != 1 || n.g[0] != 0),
+					iH: r > 1 || r == 1 && n.B[n.g[0]].IQ() ? "Merge Layers" : "Merge Down"
+				}
+			}
+		}, {
+			name: "Flatten Image",
+			p: t
+		}, {
+			name: "Defringe",
+			p: t
+		}],
+		iD: [{
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.vx
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.C2
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "newartb",
+					fz: 0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "newartb",
+					fz: 1
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "copyToLayer"
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "cutToLayer"
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.ZY
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "duplinto"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.Qe
+			}
+		}, {
+			sub: LayerStyleDialog.bQ(!0)
+		}, {
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.LI,
+				W: {
+					a: "newfill",
+					Ts: 0
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.Ga.ML(1)
+			}, {
+				Y: ActionTypes.E.g5,
+				W: f.Ga.ML(2)
+			}]
+		}, {
+			sub: LayerStyleDialog.ye()
+		}, {
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.a5,
+					fz: "RvlA"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.a5,
+					fz: "HdAl"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.a5,
+					fz: "RvlS"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.a5,
+					fz: "HdSl"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.a5,
+					fz: "Trns"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.uU
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.n9
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.sF
+				}
+			}]
+		}, {
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.dL,
+					afG: !1
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.dL,
+					afG: !0
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.dL,
+					ajQ: !0
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.W1
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.dD
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.Gk
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "newPlacedLayer"
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "placedLayerEditContents",
+					a0: {
+						classID: "placedLayerEditContents"
+					}
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "placedLayerReplaceContents",
+					a0: {
+						classID: "placedLayerReplaceContents"
+					}
+				}
+			}, {
+				Y: ActionTypes.E.g5,
+				W: {
+					kT: "placedLayerExportContents",
+					a0: {
+						classID: "placedLayerExportContents"
+					}
+				}
+			}, {
+				sub: e
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.aeu
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "rasterizeLayer",
+				a0: {
+					classID: "rasterizeLayer",
+					null: PsdDescriptorHelper.Fw("Lyr", !0)
+				}
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.pL
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.yS,
+			W: {
+				a: LayerRecord.mQ
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.CU,
+					y3: 0
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.CU,
+					y3: 1
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.CU,
+					y3: 2
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.CU,
+					y3: 3
+				}
+			}]
+		}, {
+			sub: [{
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.WW,
+					y3: "makeframes"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.WW,
+					y3: "unmakeframes"
+				}
+			}, {
+				Y: ActionTypes.E.v,
+				G: f.yS,
+				W: {
+					a: LayerRecord.WW,
+					y3: "merge"
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "mergeLayersNew",
+				a0: {
+					__name: "Merge Layers",
+					classID: "Mrg2"
+				}
+			}
+		}, {
+			Y: ActionTypes.E.g5,
+			W: {
+				kT: "flattenImage"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.WH,
+			W: {
+				a: "start",
+				_K: "defr"
+			}
+		}]
+	}, TopBar.aj2(!1), function() {
+		var n = {
+			name: "Filter",
+			items: [{
+				name: "Last Filter",
+				C0: [b, d, l.vW],
+				p: t,
+				xX: !0
+			}],
+			iD: [{
+				Y: ActionTypes.E.v,
+				G: f.WH,
+				W: {
+					a: "applylast"
+				}
+			}]
+		};
+		for (var A = 0; A < FilterHelper.JJ.length; A++) {
+			var r = FilterHelper.JJ[A];
+			if (r.rU != null) {
+				n.items.push({
+					name: FilterHelper.names[r.rU],
+					pR: !0,
+					xX: r.xX,
+					p: t
+				});
+				n.iD.push({
+					Y: ActionTypes.E.v,
+					G: f.WH,
+					W: {
+						a: "start",
+						_K: r.rU
+					}
+				});
+				continue
+			}
+			var T = {
+				name: r.X$,
+				sub: [],
+				p: t
+			};
+			n.items.push(T);
+			var j = {
+				sub: []
+			};
+			n.iD.push(j);
+			for (var g = 0; g < r.Uv.length; g++) {
+				var Y = {
+					name: FilterHelper.names[r.Uv[g]],
+					pR: FilterHelper.oT(r.Uv[g]) != null
+				};
+				T.sub.push(Y);
+				var k = {
+					Y: ActionTypes.E.v,
+					G: f.WH,
+					W: {
+						a: "start",
+						_K: r.Uv[g]
+					}
+				};
+				j.sub.push(k)
+			}
+		}
+		return n
+	}(), {
+		name: "View",
+		items: [{
+			name: "Zoom In",
+			p: t,
+			C0: [d, l.W$]
+		}, {
+			name: "Zoom Out",
+			p: t,
+			C0: [d, l.Zw]
+		}, {
+			name: "Fit The Area",
+			p: t,
+			C0: [d, l.ZD]
+		}, {
+			name: "Pixel to Pixel",
+			p: t,
+			C0: [d, l.wY]
+		}, {
+			name: "Pattern Preview",
+			p: function(n, r) {
+				return {
+					p: n != null,
+					Zj: n != null && n.ZV
+				}
+			},
+			xX: !0
+		}, {
+			name: "Mode",
+			xX: !0,
+			sub: [{
+				name: "Fullscreen",
+				p: function(n, r) {
+					return {
+						Zj: document.fullscreenElement != null
+					}
+				},
+				xX: !0
+			}, {
+				name: "Standard",
+				p: function(n, r) {
+					return {
+						Zj: r.WN == 0
+					}
+				}
+			}, {
+				name: "Menu Bar and Canvas",
+				p: function(n, r) {
+					return {
+						Zj: r.WN == 1
+					}
+				}
+			}]
+		}, {
+			name: "Extras",
+			C0: [d, l.Zi],
+			p: function(n, r) {
+				return {
+					Zj: r.Wi
+				}
+			}
+		}, {
+			name: "Show",
+			xX: !0,
+			sub: [{
+				name: "Selection",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.vF
+					}
+				}
+			}, {
+				name: "Paths",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.t_
+					}
+				}
+			}, {
+				name: "Guides",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.qz
+					}
+				},
+				C0: [d, l._z]
+			}, {
+				name: "Grid",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.Sp
+					}
+				},
+				C0: [d, l.kS]
+			}, {
+				name: "Pixel Grid",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.vr
+					}
+				}
+			}, {
+				name: "Slices",
+				p: function(n, r) {
+					return {
+						p: r.Wi,
+						Zj: r.hq.Vp
+					}
+				}
+			}]
+		}, {
+			name: "Rulers",
+			p: function(n, r) {
+				return {
+					Zj: r.bI
+				}
+			},
+			C0: [d, l.xA],
+			xX: !0
+		}, {
+			name: "Snap",
+			p: function(n, r) {
+				return {
+					Zj: r.gX
+				}
+			}
+		}, {
+			name: "Snap To",
+			xX: !0,
+			sub: [{
+				name: "Guides",
+				p: function(n, r) {
+					return {
+						Zj: r.v1[0]
+					}
+				}
+			}, {
+				name: "Grid",
+				p: function(n, r) {
+					return {
+						Zj: r.v1[1]
+					}
+				}
+			}, {
+				name: "Layers",
+				p: function(n, r) {
+					return {
+						Zj: r.v1[2]
+					}
+				}
+			}, {
+				name: "Slices",
+				p: function(n, r) {
+					return {
+						Zj: r.v1[3]
+					}
+				}
+			}, {
+				name: "Document Bounds",
+				p: function(n, r) {
+					return {
+						Zj: r.v1[4]
+					}
+				}
+			}]
+		}, {
+			name: "Lock Guides",
+			p: function(n, r) {
+				return {
+					p: n != null,
+					Zj: n != null && n.HH
+				}
+			}
+		}, {
+			name: "Clear Guides",
+			p: t
+		}, {
+			name: "Add Guides",
+			p: t,
+			pR: !0
+		}, {
+			name: "Guides from Layers",
+			p: function(n, r) {
+				return {
+					p: n != null && n.g.length != 0
+				}
+			},
+			xX: !0
+		}, {
+			name: "Clear Slices",
+			p: function(n, r) {
+				return {
+					p: n != null && n.Vp.length != 0
+				}
+			}
+		}],
+		iD: [{
+			Y: ActionTypes.E.v,
+			G: f.t7,
+			W: {
+				a: "zoom",
+				K$: !0
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.t7,
+			W: {
+				a: "zoom",
+				K$: !1
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.t7,
+			W: {
+				a: "adapt",
+				Z: "fitscr"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.t7,
+			W: {
+				a: "adapt",
+				Z: "pixel"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.$C,
+			W: {
+				a: "pview"
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.Mc,
+					Xs: !0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.Mc,
+					Z: 0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.Mc,
+					Z: 1
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.Mc,
+					Z: 2
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.kI,
+				Oo: PsdResourceTypes.Z3
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.Xe
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.fe
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.ef
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.oV
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.pn
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.T$
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.kI,
+				Oo: PsdResourceTypes.yv
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.kI,
+				Oo: PsdResourceTypes.a0B
+			}
+		}, {
+			sub: [{
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.LU,
+					XY: 0
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.LU,
+					XY: 1
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.LU,
+					XY: 2
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.LU,
+					XY: 3
+				}
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.LU,
+					XY: 4
+				}
+			}]
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.$C,
+			W: {
+				a: "lockguides"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.$C,
+			W: {
+				a: "gids",
+				jh: [
+					[],
+					[]
+				]
+			}
+		}, {
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "addguides"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.$C,
+			W: {
+				a: "gidsFromLayer"
+			}
+		}, {
+			Y: ActionTypes.E.v,
+			G: f.E7,
+			W: {
+				a: "deleteAll"
+			}
+		}]
+	}, function() {
+		var n = {
+			name: "Window",
+			items: [{
+				name: "More",
+				xX: !0,
+				sub: []
+			}, {
+				name: "Plugins",
+				xX: !0
+			}],
+			iD: [{
+				sub: []
+			}, {
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.SN,
+					GU: "res1"
+				}
+			}]
+		};
+		for (var A = 0; A < PanelListContainer.Ho.length; A++) {
+			var r = PanelListContainer.Ho[A],
+				T = function() {
+					var j = r.A3.kR;
+					return function(g, Y) {
+						return {
+							Zj: Y.J_.indexOf(parseInt(j)) != -1
+						}
+					}
+				}();
+			(r.ME ? n.items[0].sub : n.items).push({
+				name: r.A3.name,
+				p: T
+			});
+			(r.ME ? n.iD[0].sub : n.iD).push({
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.B_,
+					GU: r.A3.kR
+				}
+			})
+		}
+		return n
+	}(), function() {
+		var n = {
+				name: "More",
+				items: [],
+				iD: []
+			},
+			r = {
+				name: "Language",
+				sub: []
+			};
+		n.items.push(r);
+		var T = {
+			sub: []
+		};
+		n.iD.push(T);
+		var j = languageManager.getSortedLanguages();
+		for (var A = 0; A < j.length; A++) {
+			var g = j[A],
+				Y = g.code,
+				k = languageManager.findLanguageIndexByCode(Y);
+			r.sub.push({
+				name: g.name,
+				C0: Y,
+				p: function(F, D) {
+					return {
+						Zj: this.C0 == languageManager.getCurrentLanguageCode()
+					}
+				}
+			});
+			T.sub.push({
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.Ef,
+					lang: k
+				}
+			})
+		}
+		r.sub.push({
+			name: "Create Translation"
+		});
+		T.sub.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.dG,
+				link: "https://www.photopea.com/translate/"
+			}
+		});
+		var r = {
+			name: "Theme",
+			sub: []
+		};
+		n.items.push(r);
+		var T = {
+			sub: []
+		};
+		n.iD.push(T);
+		for (var A = 0; A < ThemeManager.themes.length; A++) {
+			r.sub.push({
+				name: ThemeManager.themes[A].name,
+				p: function(F, D) {
+					return {
+						Zj: this.name == ThemeManager.themes[D.j$].name
+					}
+				}
+			});
+			T.sub.push({
+				Y: ActionTypes.E.L,
+				W: {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.userMask$,
+					j$: A
+				}
+			})
+		}
+		n.items.push({
+			name: "Install Photopea",
+			p: function(F, D) {
+				return {
+					p: D.sv != null
+				}
+			}
+		});
+		n.iD.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.at7
+			}
+		});
+		n.items.push({
+			name: "Keyboard Shortcuts"
+		});
+		n.iD.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "shortcuts"
+			}
+		});
+		n.items.push({
+			name: "Use WebGL",
+			p: function(F) {
+				return {
+					Zj: WebGLContext.webglAvailable,
+					p: WebGLContext.webglEnabled
+				}
+			},
+			xX: !0
+		});
+		n.iD.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.amK
+			}
+		});
+		n.items.push({
+			name: "",
+			p: function(F, D) {
+				return D.ki ? {
+					iH: "About Photopea",
+					p: !0
+				} : {
+					iH: "",
+					p: !1
+				}
+			}
+		});
+		n.iD.push({
+			Y: ActionTypes.E.L,
+			W: {
+				a: ActionTypes.$.SN,
+				GU: "aboutpp"
+			}
+		});
+		return n
+	}()]
+}();

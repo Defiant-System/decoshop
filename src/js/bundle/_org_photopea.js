@@ -2,10 +2,17 @@
 function BaseAppUI(l) {
 	UIComponent.call(this);
 	if (l) return;
+	// ThemeManager.applyTheme(1);
 	this.e = s.createElement("div", "flexrow app");
 	this.X8 = s.createElement("div");
 	this.e.appendChild(this.X8);
 	this.Ib = new KeyboardHandler;
+	/*
+	window.addEventListener("blur", function(G) {
+		this.Ib.reset()
+	}.bind(this), !1);
+	*/
+	window.addEventListener("resize", this.e3.bind(this), !1);
 	var d = this.X8;
 	this.dx = new DialogManager;
 	this.dx.parent = this;
@@ -13,8 +20,12 @@ function BaseAppUI(l) {
 	this.i2 = new CommandPalette;
 	this.i2.parent = this;
 	d.appendChild(this.i2.e);
+	this.Nf = new LinkBar(!0);
+	this.Nf.parent = this;
+	d.appendChild(this.Nf.e);
 	this.addListener(ActionTypes.E.L, this.$e, this);
 	this.aB = this.io.bind(this);
+	// window.requestAnimationFrame(this.aB)
 }
 
 BaseAppUI.prototype = new UIComponent;
@@ -113,6 +124,90 @@ function PhotopeaApp() {
 		vu: [
 			[
 				{ G: new f.Pq, _g: MoveToolOptions },
+				{ G: new f.Ur, _g: ArtboardToolOptions }
+			],
+			[
+				{ G: new f.bm, _g: ObjectSelectToolOptions },
+				{ G: new f.OU, _g: MarqueeToolOptions }
+			],
+			[
+				{ G: new f.Ri, _g: LassoToolOptions },
+				{ G: new f.Pc, _g: PolygonalLassoOptions },
+				{ G: new f.uu, _g: MagneticLassoOptions }
+			],
+			[
+				{ G: new f.xB, _g: MagicWandToolOptions },
+				{ G: new f.WC, _g: BlurSharpenOptions },
+				{ G: new f.Sl, _g: MagicEraserOptions }
+			],
+			[
+				{ G: new f.a6P, _g: BrushEraserBrushOptions },
+				{ G: new f.a7C, _g: BrushEraserEraserOptions },
+				{ G: new f.UA, _g: SliceToolOptions },
+				{ G: new f.M2, _g: SliceSelectToolOptions }
+			],
+			[
+				{ G: new f.lS, _g: EyedropperToolOptions },
+				{ G: new f.C$, _g: RulerStraightenToolOptions }
+			],
+			[
+				{ G: new f.WE, _g: CloneSourceOptions },
+				{ G: new f.da, _g: CloneStampAlignOptions },
+				{ G: new f.zj, _g: PatchToolOptions },
+				{ G: new f.a99, _g: QuickSelectionToolOptions },
+				{ G: new f.oA, _g: BrushOnlyOptions }],
+			[
+				{ G: new f.Yv, _g: BrushPaintOptions },
+				{ G: new f.D0, _g: BrushMainOptions },
+				{ G: new f.fy, _g: MixerBrushOptions }
+			],
+			[
+				{ G: new f.ix, _g: CloneStampOptions }
+			],
+			[
+				{ G: new f.Vh, _g: EraserBrushOptions },
+				{ G: new f.U8, _g: MixerBrushWetOptions }
+			],
+			[
+				{ G: new f.RK, _g: GradientToolOptions },
+				{ G: new f.ym, _g: QuickSelectModeOptions }
+			],
+			[
+				{ G: new f.ZM, _g: BrushPencilOptions },
+				{ G: new f.vL, _g: PencilDetailOptions },
+				{ G: new f.zB, _g: BrushStrengthOptions }
+			],
+			[
+				{ G: new f.oX, _g: SpongeOptions },
+				{ G: new f.BurnTool, _g: DodgeBurnOptions },
+				{ G: new f.gw, _g: BrushFlowOptions }
+			],
+			[
+				{ G: new f.tk, _g: TypeToolMainOptions },
+				{ G: new f.ayg, _g: TypeToolMainOptions }
+			],
+			[
+				{ G: new f.Ud(0), _g: RectangleEllipseShapeOptions },
+				{ G: new f.YC, _g: EllipseShapeOptions },
+				{ G: new f.Ud(1), _g: RectangleEllipseShapeOptions }
+			],
+			[
+				{ G: new f.yM, _g: PathDirectSelectOptions },
+				{ G: new f.ks, _g: RoundedRectOptions }
+			],
+			[
+				{ G: new f.Rect, _g: RectangleShapeOptions },
+				{ G: new f.am, _g: PolygonShapeOptions },
+				{ G: new f.pB, _g: LineArrowOptions },
+				{ G: new f.EU, _g: PolygonStarOptions },
+				{ G: new f.sQ, _g: CustomShapeOptions }
+			],
+			[
+				{ G: new f.Mi, _g: ColorSamplerToolOptions },
+				{ G: new f.RotateViewTool, _g: GradientAngleToolOptions }
+			],
+			[
+				{ G: new f.gU, _g: ZoomToolOptions }
 			]
 		],
 		L7: [],
@@ -137,6 +232,21 @@ function PhotopeaApp() {
 			KeyboardHandler.Zi,
 			KeyboardHandler.dr
 		],
+		Vi: [
+			{ G: new f.avo, _g: TypeToolHorizontalOptions },
+			{ G: new f.abB, _g: TypeToolVerticalOptions },
+			{ G: new f.aug, _g: TypeToolWarpOptions },
+			{ G: new f.lS(!0), _g: EyedropperToolOptions },
+			{ G: new f.XR, _g: PuppetWarpOptions }
+		],
+		Y9: [
+			{ G: new f.uj },
+			{ G: new f.History },
+			{ G: new f.hE },
+			{ G: new f.Tt },
+			{ G: new f.u2 },
+			{ G: new f.uY }
+		],
 		map: {},
 		Vu: null,
 		JB: null,
@@ -151,10 +261,16 @@ function PhotopeaApp() {
 			this.d.map[e[R].G.id] = e[R];
 			e[R].vv = A;
 			e[R].a6C = R;
+			var J = languageManager.get(e[R].G.name);
+			y += "<li>" + e[R].G.id + ": " + J + "</li>";
+			I += "\t" + JSON.stringify(e[R].G.name) + ", " + (M ? "\"" + M.hy + "\"" : "null") + ", " + e[R].G.id + ", // " + J + "\n"
 		}
 		this.d.L7[A] = 0
 	}
 
+	for (var A = 0; A < this.d.Vi.length; A++) this.d.map[this.d.Vi[A].G.id] = this.d.Vi[A];
+	for (var A = 0; A < this.d.Y9.length; A++) this.d.map[this.d.Y9[A].G.id] = this.d.Y9[A];
+	
 	this.fB = {
 		av3: !1,
 		QN: null,
@@ -254,12 +370,22 @@ function PhotopeaApp() {
 	};
 
 	this.fB.XG = dt.ae5();
+	this.D7 = new TopBar;
+	this.vA = new ConfigBar;
+	this.QB = new ToolbarColumn(this.d, !0);
+	this.gP = new PanelListContainer;
 	this.gD = new WorkspacePanelContainer(this);
+	this.fc = s.createElement("div");
 	this.U3 = !1;
 	this.vg = this.aA0.bind(this);
 
 	s.addClass(this.gD.e, "mainblock");
 
+	this.Nf.parent =
+	this.D7.parent =
+	this.vA.parent =
+	this.QB.parent =
+	this.gP.parent =
 	this.gD.parent = this;
 	this.gD.addListener(ActionTypes.E.A, this.MF, this);
 	this.gD.addListener(ActionTypes.E.Ax, this.awi, this);
@@ -269,17 +395,59 @@ function PhotopeaApp() {
 	this.addListener(ActionTypes.E.v, this.TA, this);
 	this.addListener(ActionTypes.E.g5, this.ah4, this);
 
+	// console.log( this.h );
+	// console.log( ActionTypes.E.g5, this.ah4, this );
+
+	// document.body.addEventListener("keydown", this.D3.bind(this), !1);
+	// window.addEventListener("keyup", this.M1.bind(this), !1);
 	window.addEventListener("paste", this.adG.bind(this), !1);
 	window.addEventListener("copy", this.avj.bind(this), !1);
+
 	window.addEventListener("wheel", function(j) {
 		if (j.ctrlKey) j.preventDefault()
 	}, { passive: !1 });
 
+	// window.addEventListener("beforeinstallprompt", function(j) {
+	// 	if (PP.window.innerWidth > 400) j.preventDefault();
+	// 	this.fB.sv = j
+	// }.bind(this));
+	// edited by hbi
+	// if (window.location.href.indexOf("photopea.com") != -1 && "serviceWorker" in navigator) {
+
+	/*
+		navigator.serviceWorker.register("sw.js", {
+			scope: "./"
+		}).then(function(j) {
+			if (j.atH) {
+				console.log("Service worker installing")
+			} else if (j.aiy) {
+				console.log("Service worker installed")
+			} else if (j.active) {
+				console.log("Service worker active")
+			}
+		}).catch(function(j) {
+			console.log("Registration failed with " + j)
+		})
+	*/
+
+	// }
 	this.AQ = 0;
 	this.Mt = [];
 	this.DE = new ClipboardHandler(exportHelper.openFile);
 	this.DE.parent = this;
 
+	var n = this.X8,
+		r = this.L8 = s.createElement("div");
+	r.appendChild(this.D7.e);
+	r.appendChild(this.vA.e);
+
+	this.Nf.af4(r);
+	var T = this.ato = s.createElement("div", "flexrow");
+
+	n.appendChild(T);
+	T.appendChild(this.QB.e);
+	T.appendChild(this.gD.e);
+	T.appendChild(this.gP.e);
 	this.DE.SP({ url: "~/rsrc/basic.zip" });
 	this.fr(f.$C);
 	premiumSession.initSession(this.ash.bind(this))
@@ -312,8 +480,25 @@ PhotopeaApp.prototype.ash = function() {
 			languageManager.loadLanguageByCode(G, this.vg)
 		}
 	}
+	// if (!this.QG()) {
+	// 	var b = s.getLicenseLevel();
+	// 	if (b == 0) this.axZ = !0;
+	// 	if (b == 2) this.fB.ki = !1;
+	// 	if (b != 1 && Math.random() < .002) s.sendOnlinePing()
+	// }
 	this.a5d();
 	this.S7();
+	/*
+	if (!this.fB.ki) {
+		this.a5d();
+		this.S7()
+	} else {
+		var V = s.createTypedArrayWithRandomKind(XMLHttpRequest);
+		V.addEventListener("load", this.awJ.bind(this));
+		V.open("GET", "~/rsrc/doms.json");
+		V.send()
+	}
+	*/
 	this.w4 = !0;
 	this.pp()
 };
@@ -337,6 +522,7 @@ PhotopeaApp.prototype.S7 = function(l) {
 	this.Sh(PsdResourceTypes.Wx);
 	this.refresh();
 	this.e3();
+	this.gP.Yw(this.fk(), this.Mt, this.fB)
 };
 
 PhotopeaApp.prototype.I2 = function(l) {
@@ -416,6 +602,7 @@ PhotopeaApp.prototype.a5d = function() {
 				});
 			var Q = V.environment;
 			if (Q == null) Q = {};
+			if (Q.plugins != null) this.gP.ak7(Q.plugins);
 			if (Q.localsave != null) this.fB.N_ = Q.localsave;
 			if (Q.customIO != null) this.fB.QR = Q.customIO;
 			if (Q.vmode != null) {
@@ -548,6 +735,10 @@ PhotopeaApp.prototype.refresh = function() {
 	}
 	var r = document.getElementById("sponsors");
 	if (r) r.textContent = "Sponsor links open in new window.";
+	this.Nf.refresh();
+	this.D7.refresh();
+	this.gP.refresh();
+	this.QB.refresh();
 	this.dx.refresh();
 	this.gD.refresh();
 	for (var T in this.d.map)
@@ -583,23 +774,44 @@ PhotopeaApp.prototype.resize = function(l, d) {
 	}
 	BaseAppUI.prototype.resize.call(this, l, d);
 	if (y && this.U3) {
+		this.e.removeChild(this.fc);
+		s.clearChildren(this.fc);
 		this.U3 = !1
 	}
 	if (!y && !this.U3) {
 		var e = function(r) {
-			// if (Math.random() < .002) {
-			// 	premiumSession.event("gota_1")
-			// }
+			if (Math.random() < .002) {
+				premiumSession.event("gota_1")
+			}
 			this.aob(l, d);
 			var T = I == 0 ? V.body : this.e;
+			T.appendChild(this.fc);
+			this.fc.setAttribute(b, "padding-top:" + (I == 0 ? 10 : 10) + "px; overflow:hidden;");
+			this.fc[b].paddingLeft = (I == 0 ? 0 : 19) + "px";
+			this.fc[b].zIndex = I == 0 ? 0 : 1
 		}.bind(this);
 
+		// function M() {
+		//     ju.a7$(e)
+		// }
+		// setTimeout(M, 2300);
 		this.U3 = !0
 
 		// edited by hbi
 		e(1);
 	}
+	if (s.isInDocument(this.D7.e)) R += 31;
+	if (s.isInDocument(this.vA.e)) R += 32;
+	this.Nf.ayF = this.fB.ki && this.h$;
+	this.Nf.resize(l, R);
+	var J = d - R,
+		n = "px";
+	this.fc[b].height = (I == 0 ? 100 >>> 1 : d - 11) + n;
+	this.fc[b].width = (I == 0 ? l : 6 * Math.pow(10, 2)) + n;
+	if (s.isInDocument(this.QB.e)) this.QB.resize(l, J);
+	this.gP.resize(l, J);
 	this.gD.resize(PP.window.innerWidth, PP.window.innerHeight);
+	// this.gD.resize(l - this.QB.getMeasuredWidth() - this.gP.getMeasuredWidth(), J); // hbi
 };
 
 PhotopeaApp.prototype.aob = function(l, d) {
@@ -611,6 +823,8 @@ PhotopeaApp.prototype.aob = function(l, d) {
 		};
 		this.dispatch(b)
 	}.bind(this);
+
+	// ju.azK(l, d, this.fc, G, this.TQ)
 };
 
 PhotopeaApp.prototype.avj = function(l) {
@@ -780,8 +994,10 @@ PhotopeaApp.prototype.$e = function(l) {
 	}
 	if (d == ActionTypes.$.a7q) {
 		var G = l.data.Z;
+		this.gP.ak7([G]);
 		this.refresh()
 	}
+	// if (HBI.debug) console.log( d, ActionTypes.$.kc );
 	if (d == ActionTypes.$.kc) {
 		var b = this.fk(),
 			V = b.LT().slice(0),
@@ -1294,6 +1510,10 @@ PhotopeaApp.prototype.$e = function(l) {
 	if (d == ActionTypes.$.WM) {
 		ScriptingEngine.runScript(l.data.nM, this)
 	}
+	if (d == ActionTypes.$.QT) {
+		// if (window.parent != window) window.parent.postMessage(l.data.Oo, "*");
+		this.gP.em(l.data.Oo)
+	}
 	if (d == ActionTypes.$.B_) {
 		var dY = parseFloat(l.data.GU);
 		if (this.fB.J_.indexOf(dY) == -1) {
@@ -1306,6 +1526,7 @@ PhotopeaApp.prototype.$e = function(l) {
 			};
 			this.dispatch(y)
 		}
+		this.gP.aoY(l.data.GU)
 	}
 	if (d == ActionTypes.$.V7) {
 		this.i2.a1U(this.fk(), this.fB)
@@ -1971,9 +2192,15 @@ PhotopeaApp.prototype.Sh = function(l) {
 		this.awP()
 	}
 	this.gD.BM(d, l);
+	this.QB.BM(d, l);
 	this.dx.BM(d, l);
 	this.GK().BM(d, l);
-
+	this.gP.BM(d, l);
+	this.D7.BM(d, l);
+	if (l == PsdResourceTypes.userMask$ || l == PsdResourceTypes.Wx) {
+		ThemeManager.applyTheme(d.j$);
+		this.update(!0)
+	}
 	var V = d.XG,
 		Q = V.xg.Font;
 	if (l == PsdResourceTypes.o$ && Q != null && V.rA[Q].Name != d.font) {
@@ -2081,13 +2308,16 @@ PhotopeaApp.prototype.fr = function(l, d) {
 		this.Xh();
 		if (l != b.QN) this.d.Vu = b.QN ? b.QN : f.$C;
 		b.QN = l;
+		this.QB.fr(b.QN);
 		var V = this.d.map[l];
 		this.d.L7[V.vv] = V.a6C;
 		this.auf(V);
+		this.vA.ajt(V.x5);
 		var Q = V.G;
 		Q.enable(G, this, this.fB, this.Ib, !1, d);
 		if (G) G.i_ = !0;
 		this.e3();
+		this.Nf.aoC()
 	}
 };
 
@@ -2118,13 +2348,26 @@ PhotopeaApp.prototype.aly = function(l) {
 		this.aeT++
 	}
 	l.T_ = Date.now();
-
+	// if (!this.ahu && s.global.confirm.toString().indexOf("native") == -1) {
+	// 	alert("Your browser (or an extension) is modifying our code.");
+	// 	return
+	// }
 	for (var A = 0; A < l.B.length; A++) {
 		var b = l.B[A];
 		if (b.add.SoLd != null) {
 			var V = Date.now()
 		}
 	}
+	// var Q = l.B.length,
+	// 	t = ppConfig.eg(),
+	// 	I = Math.PI * (5465 << 14) + (s.randomCheck(31) ? 20 : 10) * 7e7;
+
+	// hbi: disable
+	// if (t > I) {
+	// 	var Q = l.B.length;
+	// 	l.B = [];
+	// 	return Q
+	// }
 	
 	if (WebGLContext.webglAvailable) {
 		WebGLContext.checkMaxTextureSize(Math.max(l.m, l.n));
@@ -2153,6 +2396,7 @@ PhotopeaApp.prototype.aly = function(l) {
 	}
 	// hbi - setting canvas center origo
 	let doc = this.fk();
+	// if (!doc) return;
 	let u = doc.u,
 		dpr = s.getDevicePixelRatio(),
 		panX = 500 * dpr - u.Vm.m / 2,
@@ -2176,6 +2420,8 @@ PhotopeaApp.prototype.MF = function(l, d) {
 	if (d != null) this.gD.AT((this.gD.ZF() + d + G) % G);
 	this.AQ = this.gD.ZF();
 	var b = this.fk();
+	this.D7.aef(b, this.fB);
+	this.gP.Yw(b, this.Mt, this.fB);
 	this.e3();
 	if (b) b.i_ = !0
 };
@@ -2324,6 +2570,10 @@ PhotopeaApp.prototype.azg = function(l) {
 			this.dispatch(Q)
 		}
 	}
+	var R = this.gP;
+	if (l.action == "down") R.dJ(d, this, b, G, V);
+	if (l.action == "move") R.JP(d, this, b, G, V);
+	if (l.action == "up") R.Nl(d, this, b, G, V);
 	if (l.action == "down" || l.action == "up") {
 		this.Gd()
 	}
@@ -2407,6 +2657,8 @@ PhotopeaApp.prototype.update = function(l) {
 	}
 	if ((d.Gg || d.bV || d.i_) && (!this.YE.oW || d.Va)) {
 		if (d.i_) d.vo();
+		this.gP.Yw(d, this.Mt, this.fB);
+		this.QB.aam(d, this.Ib);
 		d.DF = !1
 	}
 	d.Va = !1;
@@ -2961,7 +3213,35 @@ PhotopeaApp.prototype.zT = function(l) {
 };
 
 PhotopeaApp.prototype.tO = function(l) {
+	var d = this.ato,
+		G = this.X8;
 	this.fB.WN = l;
+	var b = s.isInDocument,
+		V = this.D7.e;
+	if (b(V)) this.L8.removeChild(V);
+	var Q = this.vA.e;
+	if (b(Q)) this.L8.removeChild(Q);
+	var t = this.QB.e;
+	if (b(t)) d.removeChild(t);
+	var I = this.gD.e;
+	if (b(I)) d.removeChild(I);
+	var y = this.gP.e;
+	if (b(y)) d.removeChild(y);
+	if (l == 0) {
+		this.L8.appendChild(V);
+		this.L8.appendChild(Q);
+		G.appendChild(d);
+		d.appendChild(t);
+		d.appendChild(I);
+		d.appendChild(y)
+	}
+	if (l == 1) {
+		this.L8.appendChild(V);
+		d.appendChild(I)
+	}
+	if (l == 2) {
+		d.appendChild(I)
+	}
 	this.gD.tO(l == 2 ? 1 : 0);
 	this.e3()
 };
