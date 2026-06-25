@@ -25,16 +25,14 @@ const Engine = {
 				break;
 
 			// open file (URL / path)
-			case "ActionTypes.$.ub":
+			case ActionTypes.$.ub:
 				// hbi - setting canvas center origo
-				// setTimeout(() => {
-				// 	let doc = PP.fk(),
-				// 		dpr = window.devicePixelRatio,
-				// 		panX = 500 * dpr - doc.u.Vm.m / 2,
-				// 		panY = 530 * dpr - doc.u.Vm.n / 2;
-				// 	doc.u.R.T6(panX, panY);
-				// 	doc.bV = true;
-				// 	PP.update();
+				// let doc = PP.fk(),
+				// 	panX = -100 - doc.u.Vm.m / 2,
+				// 	panY = -230 - doc.u.Vm.n / 2;
+				// doc.u.R.T6(panX, panY);
+				// doc.bV = true;
+				// PP.update();
 
 				// 	console.log(doc.u.R);
 
@@ -50,13 +48,6 @@ const Engine = {
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
-
-				let doc = PP.fk(),
-					panX = -100 - doc.u.Vm.m / 2,
-					panY = -230 - doc.u.Vm.n / 2;
-				doc.u.R.T6(panX, panY);
-				doc.bV = true;
-				PP.update();
 				break;
 			
 			default:
