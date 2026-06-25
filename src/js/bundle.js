@@ -72,6 +72,10 @@ Promise.all(Object.keys(BINDB).map(async key => {
 	FormatHandler.sZ.gR = FormatHandler.sZ.gR();
 	FormatHandler.Wb.gR = FormatHandler.Wb.gR();
 
+	// hbi: init event
+	var event = new Action(ActionTypes.E.hbi);
+	event.data = { type: "app-init" };
+	PP.dispatch(event);
 });
 
 const PP = new PhotopeaApp;

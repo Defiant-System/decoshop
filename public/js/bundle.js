@@ -86687,7 +86687,9 @@ let ActionTypes = {
 		g5: "1.5",   // descriptor / history step
 		A: "2",      // document tab activated
 		Ax: "3",     // document tab close
-		azc: "4"     // duplicate document to another tab (drag)
+		azc: "4",    // duplicate document to another tab (drag)
+
+		hbi: "5",    // events added by "hbi"
 	},
 	$: {
 		to: "10",        // resize layout (window / panels)
@@ -86740,7 +86742,6 @@ let ActionTypes = {
 		du: "49",        // play descriptor action
 		azm: "50",       // paste special (text / paths / layers)
 		Mc: "51",        // fullscreen or theme
-		h73: "52"        // app init
 	}
 };
 
@@ -93473,7 +93474,9 @@ NamedTabPanel.wn = function () {
 }();
 
 NamedTabPanel.prototype.ah$ = function () {
-	if (this.Kv.hasUnsavedChanges()) return window.confirm("There is unsaved work in " + this.Kv.name + ". Do you really want to close it?");
+	if (this.Kv.hasUnsavedChanges()) {
+		return window.confirm("There is unsaved work in " + this.Kv.name + ". Do you really want to close it?");
+	}
 	return !0;
 };
 
@@ -93512,10 +93515,15 @@ NamedTabPanel.prototype.KN = function () {
 
 	// hbi
 	if (!workCvs.parentNode) {
-		let el = PP.window.find(`.cvs-wrapper`)[0];
-		el.appendChild(workCvs);
+		let el = PP.APP.els.cvsWrapper.append(workCvs);
 		PP.e3();
 		PP.resize();
+		PP.update();
+
+		// event: canvas added
+		var event = new Action(ActionTypes.E.hbi, !0);
+		event.data = { type: "file-canvas-added", el };
+		this.dispatch(event);
 	}
 	
 	// if (!s.isInDocument(workCvs)) {
@@ -97804,8 +97812,9 @@ function PhotopeaApp() {
 
 PhotopeaApp.prototype = new BaseAppUI(!0);
 
-PhotopeaApp.prototype.init = function(w) {
-	this.window = w;
+PhotopeaApp.prototype.init = function(entity) {
+	this.APP = entity.app;
+	this.window = entity.window;
 };
 
 PhotopeaApp.prototype.pp = function(l) {
@@ -97837,11 +97846,6 @@ PhotopeaApp.prototype.ash = function() {
 	this.S7();
 	this.w4 = !0;
 	this.pp();
-
-	// hbi: init event
-	var d = new Action(ActionTypes.E.L, !0);
-	d.data = { a: ActionTypes.$.h73, Oo: "ready" };
-	this.dispatch(d);
 };
 
 PhotopeaApp.prototype.awJ = function(l) {
@@ -100527,6 +100531,10 @@ Promise.all(Object.keys(BINDB).map(async key => {
 	FormatHandler.sZ.gR = FormatHandler.sZ.gR();
 	FormatHandler.Wb.gR = FormatHandler.Wb.gR();
 
+	// hbi: init event
+	var event = new Action(ActionTypes.E.hbi);
+	event.data = { type: "app-init" };
+	PP.dispatch(event);
 });
 
 const PP = new PhotopeaApp;

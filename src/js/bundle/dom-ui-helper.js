@@ -6726,7 +6726,9 @@ NamedTabPanel.wn = function () {
 }();
 
 NamedTabPanel.prototype.ah$ = function () {
-	if (this.Kv.hasUnsavedChanges()) return window.confirm("There is unsaved work in " + this.Kv.name + ". Do you really want to close it?");
+	if (this.Kv.hasUnsavedChanges()) {
+		return window.confirm("There is unsaved work in " + this.Kv.name + ". Do you really want to close it?");
+	}
 	return !0;
 };
 
@@ -6765,10 +6767,15 @@ NamedTabPanel.prototype.KN = function () {
 
 	// hbi
 	if (!workCvs.parentNode) {
-		let el = PP.window.find(`.cvs-wrapper`)[0];
-		el.appendChild(workCvs);
+		let el = PP.APP.els.cvsWrapper.append(workCvs);
 		PP.e3();
 		PP.resize();
+		PP.update();
+
+		// event: canvas added
+		var event = new Action(ActionTypes.E.hbi, !0);
+		event.data = { type: "file-canvas-added", el };
+		this.dispatch(event);
 	}
 	
 	// if (!s.isInDocument(workCvs)) {

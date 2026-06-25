@@ -287,8 +287,9 @@ function PhotopeaApp() {
 
 PhotopeaApp.prototype = new BaseAppUI(!0);
 
-PhotopeaApp.prototype.init = function(w) {
-	this.window = w;
+PhotopeaApp.prototype.init = function(entity) {
+	this.APP = entity.app;
+	this.window = entity.window;
 };
 
 PhotopeaApp.prototype.pp = function(l) {
@@ -320,11 +321,6 @@ PhotopeaApp.prototype.ash = function() {
 	this.S7();
 	this.w4 = !0;
 	this.pp();
-
-	// hbi: init event
-	var d = new Action(ActionTypes.E.L, !0);
-	d.data = { a: ActionTypes.$.h73, Oo: "ready" };
-	this.dispatch(d);
 };
 
 PhotopeaApp.prototype.awJ = function(l) {

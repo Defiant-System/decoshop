@@ -18,7 +18,9 @@ let ActionTypes = {
 		g5: "1.5",   // descriptor / history step
 		A: "2",      // document tab activated
 		Ax: "3",     // document tab close
-		azc: "4"     // duplicate document to another tab (drag)
+		azc: "4",    // duplicate document to another tab (drag)
+
+		hbi: "5",    // events added by "hbi"
 	},
 	$: {
 		to: "10",        // resize layout (window / panels)
@@ -71,6 +73,5 @@ let ActionTypes = {
 		du: "49",        // play descriptor action
 		azm: "50",       // paste special (text / paths / layers)
 		Mc: "51",        // fullscreen or theme
-		h73: "52"        // app init
 	}
 };

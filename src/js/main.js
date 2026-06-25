@@ -3,11 +3,11 @@
 
 @import "classes/file.js"
 
-@import "modules/color.js"
 @import "modules/ui.js"
 @import "modules/panels.js"
 @import "modules/adjustments.js"
 @import "modules/dialogs.js"
+@import "modules/engine.js"
 
 @import "./modules/test.js"
 
@@ -48,12 +48,14 @@ const decoshop = {
 		// fast references
 		this.els = {
 			content: window.find("content"),
+			cvsWrapper: window.find(".cvs-wrapper"),
 			toolsBar: window.find(".tools-bar"),
 			blankView: window.find(".blank-view"),
 			handleBox: window.find(".handle-box"),
 		};
 		// init sub objects
-		PP.init(window);
+		PP.init({ app: this, window });
+		Engine.init();
 		UI.init();
 		Panels.init();
 		Adjustments.init();

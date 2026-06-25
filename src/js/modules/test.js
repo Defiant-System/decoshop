@@ -9,63 +9,6 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
-
-		PP.addEventListener(ActionTypes.E.L, event => {
-			switch (event.data.a) {
-				case ActionTypes.$.h73: // APP init
-					setTimeout(() => {
-						// Open PSD file (same flow as File > Open from URL)
-						let action = new Action(ActionTypes.E.L, true);
-						action.data = {
-							a: ActionTypes.$.ub,
-							Oo: { url: "/cdn/img/2d-samples/casey-lee.jpg" }
-							// Oo: { url: "/cdn/img/2d-samples/robert-collins.jpg" }
-							// Oo: { url: "/cdn/img/2d-samples/matthew-brodeur.jpg" }
-							// Oo: { url: "/cdn/img/2d-samples/girl.psd" }
-							// Oo: { url: "~/img/combo.webp" }
-							// Oo: { url: "~/img/font-sheet.png" }
-						};
-						PP.dispatch(action);
-					}, 300);
-					break;
-				case ActionTypes.$.ub: // open file (URL / path)
-
-					// hbi - setting canvas center origo
-					setTimeout(() => {
-						let doc = PP.fk(),
-							dpr = window.devicePixelRatio,
-							panX = 500 * dpr - doc.u.Vm.m / 2,
-							panY = 530 * dpr - doc.u.Vm.n / 2;
-						doc.u.R.T6(panX, panY);
-						doc.bV = true;
-						PP.update();
-
-
-						// hbi - read from history
-						console.log( 2222, languageManager.get(doc.history[0].name) );
-
-						// let history = doc.history;
-						// let currentIndex = doc.historyIndex;
-						// let currentState = doc.history[doc.historyIndex];
-					}, 100);
-					break;
-				default:
-					// console.log(1111, event);
-			}
-		});
-
-		// setTimeout(() => {
-		// 	let doc = PP.fk();
-		// 	if (!doc) return;
-		// 	let u = doc.u,
-		// 		dpr = s.getDevicePixelRatio(),
-		// 		panX = 300 * dpr - u.Vm.m / 2,
-		// 		panY = 500 * dpr - u.Vm.n / 2;
-		// 	u.R.T6(panX, panY);
-		// 	doc.bV = true;
-		// 	// PP.update();
-		// }, 1500);
-
 		// stops RAF
 		// setTimeout(() => { decoshop._stopped = true; }, 2000);
 		
