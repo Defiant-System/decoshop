@@ -7478,8 +7478,9 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		d.putImageData(l.u.XF, 0, 72); // left ruler
 		d.putImageData(l.u.C5, 0, 72); // top ruler
 		d.putImageData(l.u.X7, 0, 72); // ruler corner
-		// zoom percentage and "width x height"
-		d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
+		
+		// hbi: zoom percentage and "width x height"
+		// d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
 	}
 	if (l.I.P4.length != 0) {
 		for (var _local4150 = 0; _local4150 < l.I.P4.length; _local4150++) {

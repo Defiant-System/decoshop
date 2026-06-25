@@ -29582,12 +29582,13 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		// Ruler corner square (top-left): fill with bg, 1px outline in text color.
 		if (viewState.X7) {
 			var cornerPixels = viewState.X7.data,
-				bgPixel = 0xff000000 | bgColor;
+				cornerPixels32 = new Uint32Array(cornerPixels.buffer),
+				bgPixel = 0xff000000 | bgColor,
+				outline = 0xff000000 | borderColor;
 			PixelUtil.andMaskUint32(cornerPixels, bgPixel);
-			var cornerPixels32 = new Uint32Array(cornerPixels.buffer);
 			for (var i = 0; i < rulerThicknessPx; i++) {
-				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = lineColor;
-				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = lineColor;
+				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = outline;
+				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = outline;
 			};
 		}
 
@@ -94227,8 +94228,9 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		d.putImageData(l.u.XF, 0, 72); // left ruler
 		d.putImageData(l.u.C5, 0, 72); // top ruler
 		d.putImageData(l.u.X7, 0, 72); // ruler corner
-		// zoom percentage and "width x height"
-		d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
+		
+		// hbi: zoom percentage and "width x height"
+		// d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
 	}
 	if (l.I.P4.length != 0) {
 		for (var _local4150 = 0; _local4150 < l.I.P4.length; _local4150++) {

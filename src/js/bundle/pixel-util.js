@@ -14525,12 +14525,13 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		// Ruler corner square (top-left): fill with bg, 1px outline in text color.
 		if (viewState.X7) {
 			var cornerPixels = viewState.X7.data,
-				bgPixel = 0xff000000 | bgColor;
+				cornerPixels32 = new Uint32Array(cornerPixels.buffer),
+				bgPixel = 0xff000000 | bgColor,
+				outline = 0xff000000 | borderColor;
 			PixelUtil.andMaskUint32(cornerPixels, bgPixel);
-			var cornerPixels32 = new Uint32Array(cornerPixels.buffer);
 			for (var i = 0; i < rulerThicknessPx; i++) {
-				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = lineColor;
-				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = lineColor;
+				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = outline;
+				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = outline;
 			};
 		}
 

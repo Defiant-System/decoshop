@@ -50,6 +50,13 @@ const Engine = {
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
+
+				let doc = PP.fk(),
+					panX = -100 - doc.u.Vm.m / 2,
+					panY = -230 - doc.u.Vm.n / 2;
+				doc.u.R.T6(panX, panY);
+				doc.bV = true;
+				PP.update();
 				break;
 			
 			default:
