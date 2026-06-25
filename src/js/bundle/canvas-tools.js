@@ -1,6 +1,7 @@
 
 // Global namespace for all Photopea canvas editing tools
 const f = {};
+const CanvasTools = f;
 // f.V = function(l) {
 //     return window.devicePixelRatio || 1
 // };

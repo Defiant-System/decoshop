@@ -278,9 +278,12 @@ content {
 		}
 	}
 
-	&.cursor-hand.cover,
-	&.cursor-hand .canvas {
-		cursor: url(~/icons/cursor-hand.png) 8 8, move;
+	&.cursor-hand .cvs-wrapper {
+		cursor: url(~/icons/cursor-hand.png) 8 8, auto;
+	}
+
+	&.cursor-hand.cover {
+		cursor: url(~/icons/cursor-hand-grabbed.png) 8 8, auto;
 	}
 
 	.tools-bar {

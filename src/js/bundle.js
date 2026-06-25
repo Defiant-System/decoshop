@@ -33,7 +33,7 @@
 @import "bundle/psd-document.js"
 @import "bundle/psd-descriptor-helper.js"
 @import "bundle/psd-resource-types.js"
-@import "bundle/cvs-edit-tools.js"
+@import "bundle/canvas-tools.js"
 @import "bundle/riff-chunk-parser.js"
 @import "bundle/filter-helper.js"
 @import "bundle/text-style-helper.js"
@@ -84,6 +84,7 @@ module.exports = {
 	PP,
 	Action,
 	ActionTypes,
+	CanvasTools,
 	languageManager,
 	Misc,
 };

@@ -17,6 +17,7 @@ let {
 	PP,
 	Action,
 	ActionTypes,
+	CanvasTools,
 	languageManager,
 	Misc,
 } = await window.fetch("~/js/bundle.js");

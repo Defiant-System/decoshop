@@ -35,17 +35,39 @@
 		let APP = decoshop,
 			Self = APP.tools.move,
 			Drag = Self.drag;
-
 		switch (event.type) {
 			// native events
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
-				console.log(event);
+
+				let root = $(document),
+					doc = PP.fk(),
+					func = CanvasTools.Mi.if,
+					offset = doc.u.R.clone(),
+					click = {
+						x: offset.x - (event.clientX * window.devicePixelRatio),
+						y: offset.y - (event.clientY * window.devicePixelRatio),
+					};
+				// drag details
+				Self.drag = { PP, func, doc, root, click };
+
+				// prevent mouse from triggering mouseover
+				APP.els.content.addClass("cover");
+				// bind event handlers
+				root.on("mousemove mouseup", Self.doPan);
 				break;
 			case "mousemove":
+				let x = Drag.click.x + event.clientX,
+					y = Drag.click.y + event.clientY;
+				Drag.func(Drag.doc, x, y);
+				Drag.PP.update();
 				break;
 			case "mouseup":
+				// remove class
+				APP.els.content.removeClass("cover");
+				// unbind event handlers
+				Drag.root.off("mousemove mouseup", Self.doPan);
 				break;
 		}
 	}

@@ -56725,6 +56725,7 @@ PsdResourceTypes.Gz[PsdResourceTypes.Qo] = ["icc", "profiles", iZ, "ICCs", 8];
 
 // Global namespace for all Photopea canvas editing tools
 const f = {};
+const CanvasTools = f;
 // f.V = function(l) {
 //     return window.devicePixelRatio || 1
 // };
@@ -100543,6 +100544,7 @@ module.exports = {
 	PP,
 	Action,
 	ActionTypes,
+	CanvasTools,
 	languageManager,
 	Misc,
 };
