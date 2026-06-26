@@ -651,6 +651,87 @@
 		<path class="st2" d="M13.9,13H5v-1.4l2.6-4.2l3,3.5h0.7l2.6-2.1V13z"/>
 	</svg>
 
+	<svg id="tool-color" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:none;}
+			.st1{fill:#333;}
+			.st2{fill:#333a;}
+			.st3{fill:#333c;}
+			.st4{fill:#3338;}
+		</style>
+		<path class="st0" d="M3.6,12.6c0,0.4,0.3,0.8,0.8,0.8s0.8-0.3,0.8-0.8s-0.3-0.8-0.8-0.8S3.6,12.2,3.6,12.6z"/>
+		<polygon class="st1" points="8.2,5.2 7.5,5.9 7.5,9.4 11,9.4 11.7,8.7 "/>
+		<path class="st2" d="M14.3,10.2L14.3,10.2l-2.8,0V15h2.8c0.3,0,0.5-0.2,0.5-0.6v-3.7C14.9,10.4,14.6,10.2,14.3,10.2z"/>
+		<path class="st3" d="M14.3,6c0.2-0.2,0.2-0.6,0-0.8l-2.7-2.7c-0.2-0.2-0.6-0.2-0.8,0L8.7,4.7l3.4,3.5L14.3,6z"/>
+		<path class="st1" d="M4.4,10.2c-0.7,0-1.3,0.3-1.7,0.7c-0.2,0.2-0.3,0.4-0.4,0.6C2.1,11.8,2,12.2,2,12.6c0,0.1,0,0.2,0,0.3
+			c0,0.2,0,0.3,0.1,0.5c0.3,1,1.2,1.7,2.3,1.7h2.4v-4.8l-2.1,0L4.4,10.2z M5.1,12.6c0,0.4-0.3,0.8-0.8,0.8S3.6,13,3.6,12.6
+			c0-0.4,0.3-0.8,0.8-0.8S5.1,12.2,5.1,12.6z"/>
+		<rect x="7.5" y="10.2" class="st1" width="3.2" height="4.8"/>
+		<path class="st1" d="M2,10.4c0.5-0.6,1.3-1,2.1-1h2.6V6.5H2V10.4z"/>
+		<path class="st4" d="M6.2,2.1L6.2,2.1H2.6C2.3,2.1,2,2.4,2,2.7v3.1h4.8V2.7C6.8,2.4,6.5,2.1,6.2,2.1z"/>
+	</svg>
+
+	<svg id="tool-swatches" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#333e;stroke:#333;}
+			.st1{fill:#333d;stroke:#333;}
+			.st2{fill:#333c;stroke:#333;}
+			.st3{fill:#333b;stroke:#333;}
+			.st4{fill:#333a;stroke:#333;}
+			.st5{fill:#3339;stroke:#333;}
+			.st6{fill:#3338;stroke:#333;}
+			.st7{fill:#3337;stroke:#333;}
+			.st8{fill:#3336;stroke:#333;}
+			.st9{fill:#3335;stroke:#333;}
+			.st10{fill:#3334;stroke:#333;}
+			.st11{fill:#3333;stroke:#333;}
+		</style>
+		<rect x="0.5" y="2.5" class="st0" width="4" height="4"/>
+		<rect x="4.5" y="2.5" class="st1" width="4" height="4"/>
+		<rect x="8.5" y="2.5" class="st2" width="4" height="4"/>
+		<rect x="12.5" y="2.5" class="st3" width="4" height="4"/>
+		<rect x="0.5" y="6.5" class="st4" width="4" height="4"/>
+		<rect x="4.5" y="6.5" class="st5" width="4" height="4"/>
+		<rect x="8.5" y="6.5" class="st6" width="4" height="4"/>
+		<rect x="12.5" y="6.5" class="st7" width="4" height="4"/>
+		<rect x="0.5" y="10.5" class="st8" width="4" height="4"/>
+		<rect x="4.5" y="10.5" class="st9" width="4" height="4"/>
+		<rect x="8.5" y="10.5" class="st10" width="4" height="4"/>
+		<rect x="12.5" y="10.5" class="st11" width="4" height="4"/>
+	</svg>
+
+	<svg id="tool-layers" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#333;}
+		</style>
+		<path class="st0" d="M16.4,5.5l-7.9-4l-7.9,4v1.6l7.9,4l7.9-4V5.5z"/>
+		<polygon class="st0" points="14.8,9.1 8.5,12.3 2.2,9.1 0.6,9.9 0.6,11.5 8.5,15.5 16.4,11.5 16.4,9.9 	"/>
+	</svg>
+
+	<svg id="tool-channels" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#333c;stroke:#666;}
+			.st1{fill:#3338;stroke:#666;}
+			.st2{fill:#3333;stroke:#666;}
+		</style>
+		<circle class="st0" cx="11.5" cy="11.5" r="4.25"/>
+		<circle class="st1" cx="5.5" cy="11.5" r="4.25"/>
+		<circle class="st2" cx="8.5" cy="5.5" r="4.25"/>
+	</svg>
+
+	<svg id="tool-paths" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:#333;}
+		</style>
+		<path class="st0" d="M1.5,15c0-5,2.8-10.4,6.8-10.4S15.4,10,15.4,15"/>
+		<line class="st0" x1="4" y1="4.6" x2="13.1" y2="4.6"/>
+		<circle class="st0" cx="2.5" cy="4.6" r="1.5"/>
+		<circle class="st0" cx="14.8" cy="4.6" r="1.5"/>
+		<circle class="st1" cx="8.4" cy="4.6" r="2.4"/>
+	</svg>
+
+
 	<svg id="icon-rgb" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{opacity:0.5;fill:#333;}

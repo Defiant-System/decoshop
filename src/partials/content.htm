@@ -79,12 +79,14 @@
 				<div class="box-head" data-click="box-head-tab">
 					<div data-content="history">History</div>
 					<div data-content="actions">Actions</div>
-					<div data-content="histogram">Histogram</div>
+					<div data-content="info">Info</div>
+					<div data-content="styles">Styles</div>
 				</div>
 				<div class="box-body">
 					@import "sidebar/box-history.htm"
 					@import "sidebar/box-actions.htm"
-					@import "sidebar/box-histogram.htm"
+					@import "sidebar/box-info.htm"
+					@import "sidebar/box-styles.htm"
 				</div>
 			</div>
 
@@ -118,23 +120,13 @@
 
 			<div class="extra-box">
 				<div class="box-head" data-click="box-head-tab">
-					<div data-content="styles">Styles</div>
 					<div data-content="tool-presets">Tool Presets</div>
-				</div>
-				<div class="box-body">
-					@import "sidebar/box-styles.htm"
-					@import "sidebar/box-presets.htm"
-				</div>
-			</div>
-
-
-			<div class="extra-box">
-				<div class="box-head" data-click="box-head-tab">
 					<div data-content="gallery">Gallery</div>
 					<div data-content="notes">Notes</div>
 					<div data-content="memory">Memory</div>
 				</div>
 				<div class="box-body">
+					@import "sidebar/box-presets.htm"
 					@import "sidebar/box-gallery.htm"
 					@import "sidebar/box-notes.htm"
 					@import "sidebar/box-memory.htm"
@@ -147,6 +139,7 @@
 				<div class="tool box-icon" data-target="history" title="History"></div>
 				<div class="tool box-icon" data-target="actions" title="Actions"></div>
 				<div class="tool box-icon" data-target="histogram" title="Histogram"></div>
+				<div class="tool box-icon" data-target="styles" title="Styles"></div>
 			</div>
 			<div class="box-group">
 				<div class="tool box-icon" data-target="brush" title="Brush"></div>
@@ -159,10 +152,7 @@
 				<div class="tool box-icon" data-target="glyphs" title="Glyphs"></div>
 			</div>
 			<div class="box-group">
-				<div class="tool box-icon" data-target="styles" title="Styles"></div>
 				<div class="tool box-icon" data-target="tool-presets" title="Tool Presets"></div>
-			</div>
-			<div class="box-group">
 				<div class="tool box-icon" data-target="gallery" title="Gallery"></div>
 				<div class="tool box-icon" data-target="notes" title="Notes"></div>
 				<div class="tool box-icon" data-target="memory" title="Memory"></div>
@@ -174,13 +164,13 @@
 				<div class="box-head" data-click="box-head-tab">
 					<div data-content="navigator" class="active">Navigator</div>
 					<div data-content="color">Color</div>
-					<div data-content="info">Info</div>
+					<div data-content="histogram">Histogram</div>
 				</div>
 				<div class="box-body">
 					<!-- content goes here -->
 					@import "sidebar/box-navigator.htm"
 					@import "sidebar/box-color.htm"
-					@import "sidebar/box-info.htm"
+					@import "sidebar/box-histogram.htm"
 				</div>
 			</div>
 

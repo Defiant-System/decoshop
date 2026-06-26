@@ -784,6 +784,12 @@ content {
 		&[data-target="memory"]       { background-image: url(~/icons/tool-memory.png); }
 		&[data-target="gallery"]      { background-image: url(~/icons/tool-gallery.png); }
 
+		&[data-target="color"]    { background-image: url(~/icons/tool-color.png); }
+		&[data-target="swatches"] { background-image: url(~/icons/tool-swatches.png); }
+		&[data-target="layers"]   { background-image: url(~/icons/tool-layers.png); }
+		&[data-target="channels"] { background-image: url(~/icons/tool-channels.png); }
+		&[data-target="paths"]    { background-image: url(~/icons/tool-paths.png); }
+
 		&[data-content="move"] 		{ background-image: url(~/icons/tool-move.png); }
 		&[data-content="marquee"] 	{ background-image: url(~/icons/tool-marquee-rect.png); }
 		&[data-content="pipette"] 	{ background-image: url(~/icons/tool-pipette.png); }
@@ -1800,52 +1806,12 @@ content {
 				border: 1px solid rgba(#011, .65);
 				transition: right 150ms ease-in-out;
 
-				&:nth-child(1) { top: -1px; width: 230px; right: -230px; }
-				&:nth-child(2) { top: 108px; width: 228px; right: -228px; }
-				&:nth-child(3) { top: 217px; width: 298px; right: -298px; }
-				&:nth-child(4) { top: 326px; width: 230px; right: -230px; }
-				&:nth-child(5) { top: 400px; width: 230px; right: -230px; }
+				&:nth-child(1) { top: -1px; width: 240px; right: -240px; }
+				&:nth-child(2) { top: 143px; width: 238px; right: -238px; }
+				&:nth-child(3) { top: 252px; width: 298px; right: -298px; }
+				&:nth-child(4) { top: 361px; width: 271px; right: -271px; }
 
 				&.show { right: 0; }
-
-				// .box-head {
-				// 	position: relative;
-				// 	background-color: rgba(0,0,0,.05);
-				// 	font-size: 0;
-				// 	user-select: none;
-				// 	z-index: 2;
-
-				// 	> div {
-				// 		position: relative;
-				// 		display: inline-block;
-				// 		text-transform: uppercase;
-				// 		color: rgba(#cdd, .65);
-				// 		font-size: 10px;
-				// 		padding: 8px 9px 7px;
-				// 		border-right: 1px solid rgba(#011, .55);
-				// 		text-shadow: 0 1px 0 rgba(#000, .5);
-
-				// 		&.active {
-				// 			background: #eff2;
-				// 			color: rgba(#eff, .85);
-				// 			text-shadow: 0 1px 0 rgba(#000, .35);
-
-				// 			&[data-content="glyphs"]:after {
-				// 				content: "";
-				// 				position: absolute;
-				// 				bottom: -1px;
-				// 				left: 0;
-				// 				right: 0;
-				// 				height: 1px;
-				// 				background: #4c5f5d;
-				// 			}
-				// 		}
-
-				// 		&:hover:not(.active) {
-				// 			color: rgba(#bcc, .75);
-				// 		}
-				// 	}
-				// }
 
 				.box-foot {
 
@@ -2399,7 +2365,7 @@ content {
 											position: relative;
 											width: 34px;
 											height: 47px;
-											margin-bottom: 1px;
+											margin: 0 2px 0px 0;
 											border-radius: 1px;
 											display: inline-block;
 
@@ -3444,15 +3410,15 @@ content {
 											position: relative;
 											border-radius: 1px;
 											display: inline-block;
-											width: 50px;
-											height: 50px;
+											width: 47px;
+											height: 47px;
 											background-size: 0;
-											margin: 0 1px 3px 2px;
+											margin: 0 2px 4px;
 											border-radius: 2px;
 											cursor: pointer;
 											// border: 1px solid #eff1;
 
-											&:nth-child(4n) {
+											&:nth-child(5n) {
 												margin-right: 0;
 											}
 
@@ -3657,6 +3623,7 @@ content {
 			display: none;
 			right: 0;
 			border-right: 0;
+			border-radius: 0 0 5px 0;
 		}
 
 		.sidebar-wrapper {
@@ -5089,7 +5056,7 @@ content {
 		height: 27px;
 		font-size: 0;
 		user-select: none;
-		z-index: 2;
+		// z-index: 2;
 
 		> div {
 			display: inline-block;
