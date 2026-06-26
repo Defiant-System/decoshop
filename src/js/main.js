@@ -18,6 +18,7 @@ let {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	Point2D,
 	languageManager,
 	Misc,
 } = await window.fetch("~/js/bundle.js");

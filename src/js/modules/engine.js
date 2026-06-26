@@ -8,7 +8,6 @@ const Engine = {
 		let APP = decoshop,
 			Self = Engine,
 			type = event.data.type,
-			doc,
 			el;
 		switch (type) {
 			// APP init
@@ -51,9 +50,9 @@ const Engine = {
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
 				// update panels
-				doc = PP.fk();
-				APP.statusbar.dispatch({ type: "open-file", doc });
-				APP.sidebar.dispatch({ type: "refresh-panels", doc, list: ["navigator", "layers", "channels"] });
+				Self.doc = PP.fk();
+				APP.statusbar.dispatch({ type: "open-file", doc: Self.doc });
+				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc, list: ["navigator", "layers", "channels"] });
 				break;
 			
 			default:
@@ -65,7 +64,6 @@ const Engine = {
 			Self = Engine,
 			type = event.type,
 			value,
-			doc,
 			el;
 		switch (type) {
 			// karaqu events

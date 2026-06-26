@@ -1461,24 +1461,22 @@ const UI = {
 		let APP = decoshop,
 			Self = UI,
 			Drag = Self.drag,
-			_round = Math.round,
-			_min = Math.min,
-			_max = Math.max,
-			data,
-			value,
-			el;
+			value;
 		switch (event.type) {
 			// native events
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
 				
-				el = $(event.target);
+				let el = $(event.target),
+					pEl = Self.srcEl.parents(`[data-section]`);
 				value = +el.data("value");
 
 				Self.drag = {
 					el,
 					value,
+					type: Self.srcEl.data("change"),
+					func: APP[pEl.data("section")].dispatch,
 					src: Self.srcEl.find(".value"),
 					suffix: Self.srcEl.data("suffix") || "",
 					min: +Self.srcEl.data("min"),
@@ -1487,28 +1485,37 @@ const UI = {
 					clientX: event.clientX,
 				};
 
+
 				// bind event handlers
 				Self.content.addClass("no-cursor");
 				Self.doc.on("mousemove mouseup", Self.doKnob);
 				break;
 			case "mousemove":
 				value = (Drag.clientY - event.clientY) + Drag.value;
-				value = _min(_max(value, 0), 100);
+				value = Math.min(Math.max(value, 0), 100);
 				Drag.el.data({ value });
 
-				Drag.newValue = Drag.min + _round((value / 100) * (Drag.max - Drag.min));
+				Drag.newValue = Drag.min + Math.round((value / 100) * (Drag.max - Drag.min));
 				Drag.src.html(Drag.newValue + Drag.suffix);
+
+				let data = {
+						type: Drag.type,
+						el: Self.srcEl,
+						old: Drag.value,
+						value: Drag.newValue,
+					};
+				if (data.old !== data.value) Drag.func(data);
 				break;
 			case "mouseup":
-				data = {
-					type: Self.srcEl.data("change"),
-					el: Self.srcEl,
-					old: Drag.value,
-					value: Drag.newValue,
-				};
-				if (data.old === data.value) return;
+				// data = {
+				// 	type: Self.srcEl.data("change"),
+				// 	el: Self.srcEl,
+				// 	old: Drag.value,
+				// 	value: Drag.newValue,
+				// };
+				// if (data.old === data.value) return;
 				// dispatch event to be forwarded
-				if (data.type) APP.dispatch(data);
+				// if (data.type) APP.dispatch(data);
 
 				// unbind event handlers
 				Self.content.removeClass("no-cursor");

@@ -100549,6 +100549,7 @@ module.exports = {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	Point2D,
 	languageManager,
 	Misc,
 };

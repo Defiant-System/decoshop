@@ -25,10 +25,16 @@
 					Self.dispatch({ type: "prepare-file", isSample: true, file });
 				});
 				break;
-			case "open-file":
-				// TODO
+			case "set-zoom":
+				// console.log(event.value);
+
+				CanvasTools.gU.p8(Engine.doc.u, new Point2D(360, 340), false, event.value / 100);
+				PP.update();
+
 				break;
 			case "open-file":
+				// TODO
+				return;
 				file = new File(event.file);
 				// add to stack
 				Self._stack.push(file);
