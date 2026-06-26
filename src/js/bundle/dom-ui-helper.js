@@ -7052,6 +7052,7 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		_local4185 = _local4184 / l.u.N,
 		_local4274 = G.Gb(!0);
 	_local4274.hI();
+
 	d.save();
 	d.setTransform(_local4274.aS, _local4274.k, _local4274.S5, _local4274.Qd, _local4274.cI, _local4274.xu);
 	if (l.add.artd) {
@@ -7441,8 +7442,6 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 	d.restore();
 
 	// hbi: render rulers
-	_local4162.bI = true;
-
 	if (_local4162.bI) {
 		if (l.u.C5 == null || l.u.C5.width != l.u.Vm.m || l.u.XF.height != l.u.Vm.n) {
 			l.u.X7 = d.createImageData(PixelUtil.y0.mT, PixelUtil.y0.mT);

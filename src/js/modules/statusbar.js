@@ -26,6 +26,9 @@
 				});
 				break;
 			case "open-file":
+				// TODO
+				break;
+			case "open-file":
 				file = new File(event.file);
 				// add to stack
 				Self._stack.push(file);

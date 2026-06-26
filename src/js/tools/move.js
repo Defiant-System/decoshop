@@ -40,9 +40,10 @@
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
+				// handle with "move" drag'n drop function
+				if (Self.option === "move") return Self.doMove(event);
 
-				let root = $(document),
-					doc = PP.fk(),
+				let doc = PP.fk(),
 					func = CanvasTools.Mi.if,
 					offset = doc.u.R.clone(),
 					click = {
@@ -50,12 +51,12 @@
 						y: offset.y - (event.clientY * window.devicePixelRatio),
 					};
 				// drag details
-				Self.drag = { PP, func, doc, root, click };
+				Self.drag = { PP, func, doc, click };
 
 				// prevent mouse from triggering mouseover
 				APP.els.content.addClass("cover");
 				// bind event handlers
-				root.on("mousemove mouseup", Self.doPan);
+				APP.els.doc.on("mousemove mouseup", Self.doPan);
 				break;
 			case "mousemove":
 				let x = Drag.click.x + event.clientX,
@@ -67,7 +68,44 @@
 				// remove class
 				APP.els.content.removeClass("cover");
 				// unbind event handlers
-				Drag.root.off("mousemove mouseup", Self.doPan);
+				APP.els.doc.off("mousemove mouseup", Self.doPan);
+				break;
+		}
+	},
+	doMove(event) {
+		let APP = decoshop,
+			Self = APP.tools.move,
+			Drag = Self.drag;
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				let doc = PP.fk(),
+					func = CanvasTools.Mi.if,
+					offset = doc.u.R.clone(),
+					click = {
+						x: offset.x - (event.clientX * window.devicePixelRatio),
+						y: offset.y - (event.clientY * window.devicePixelRatio),
+					};
+				// drag details
+				Self.drag = { PP, func, doc, click };
+
+				// prevent mouse from triggering mouseover
+				APP.els.content.addClass("cover");
+				// bind event handlers
+				APP.els.doc.on("mousemove mouseup", Self.doMove);
+				break;
+			case "mousemove":
+				let x = Drag.click.x + event.clientX,
+					y = Drag.click.y + event.clientY;
+				console.log( x, y );
+				// Drag.func(Drag.doc, x, y);
+				// Drag.PP.update();
+				break;
+			case "mouseup":
+				// remove class
+				APP.els.content.removeClass("cover");
+				// unbind event handlers
+				APP.els.doc.off("mousemove mouseup", Self.doMove);
 				break;
 		}
 	}

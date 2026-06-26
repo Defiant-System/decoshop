@@ -2,21 +2,15 @@
 const Engine = {
 	init() {
 		// listen to events from engine
-		PP.addEventListener(ActionTypes.E.hbi, this.dispatch);
+		PP.addEventListener(ActionTypes.E.hbi, this.fromEngine);
 	},
-	dispatch(event) {
+	fromEngine(event) {
 		let APP = decoshop,
 			Self = Engine,
-			type = event.data?.type || event.type,
+			type = event.data.type,
+			doc,
 			el;
 		switch (type) {
-			// karaqu events
-			case "window.resize":
-				// console.log(event.width, event.height);
-				PP.resize(event.width, event.height);
-				break;
-
-			// engine events
 			// APP init
 			case "app-init":
 				// Open PSD file (same flow as File > Open from URL)
@@ -44,7 +38,6 @@ const Engine = {
 				// PP.update();
 
 				// 	console.log(doc.u.R);
-
 				// 	// hbi - read from history
 				// 	console.log( 2222, languageManager.get(doc.history[0].name) );
 
@@ -57,10 +50,36 @@ const Engine = {
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
+				// update panels
+				doc = PP.fk();
+				APP.statusbar.dispatch({ type: "open-file", doc });
+				APP.sidebar.dispatch({ type: "refresh-panels", doc, list: ["navigator", "layers", "channels"] });
 				break;
 			
 			default:
 				// console.log(1111, event);
 		}
-	}
+	},
+	dispatch(event) {
+		let APP = decoshop,
+			Self = Engine,
+			type = event.type,
+			value,
+			doc,
+			el;
+		switch (type) {
+			// karaqu events
+			case "window.resize":
+				PP.resize(event.width, event.height);
+				break;
+			case "toggle-guides":
+			case "toggle-grid":
+			case "toggle-pixel-grid":
+			case "toggle-rulers":
+				value = !PP.fB.bI;
+				PP.fB.bI = value;
+				PP.update();
+				break;
+		}
+	},
 };

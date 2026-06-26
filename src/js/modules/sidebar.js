@@ -26,6 +26,9 @@
 				Self.els.root.find(`.box-head > div[data-content="${el.data("target")}"]`).trigger("click");
 				APP.tools.dispatch({ type: "toggle-sidebar" });
 				break;
+			case "refresh-panels":
+				// TODO
+				break;
 			// proxied events
 			case "box-head-tab":
 				el = $(event.target);

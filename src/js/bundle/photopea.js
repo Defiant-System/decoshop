@@ -288,8 +288,10 @@ function PhotopeaApp() {
 PhotopeaApp.prototype = new BaseAppUI(!0);
 
 PhotopeaApp.prototype.init = function(entity) {
-	this.APP = entity.app;
 	this.window = entity.window;
+	this.APP = entity.app;
+	// apply settings
+	this.I2(this.APP.Settings.pp);
 };
 
 PhotopeaApp.prototype.pp = function(l) {

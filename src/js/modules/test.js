@@ -18,7 +18,7 @@ let Test = {
 		
 
 
-		setTimeout(() => APP.els.content.find(`.tool-hand`).trigger("click"), 500);
+		// setTimeout(() => APP.els.content.find(`.tool-hand`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
 		// setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);
 

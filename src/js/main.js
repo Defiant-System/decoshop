@@ -24,6 +24,17 @@ let {
 
 
 const DefaultSettings = {
+	pp: {
+		as: 1,
+		bcolor: 0,
+		co: 0,
+		eparams: { guides: false, grid: false, sels: true, paths: true, pgrid: true },
+		extras: true,
+		fcolor: 15452170,
+		font: "DejaVuSans",
+		lang: "en",
+		rulers: true,
+	},
 	guides: {
 		show: true,
 		color: "#3583d0",
@@ -48,6 +59,7 @@ const decoshop = {
 		this.Settings = window.settings.getItem("settings") || DefaultSettings;
 		// fast references
 		this.els = {
+			doc: $(document),
 			content: window.find("content"),
 			cvsWrapper: window.find(".cvs-wrapper"),
 			toolsBar: window.find(".tools-bar"),
@@ -105,6 +117,16 @@ const decoshop = {
 				UI.doDialog({ type: "dlg-open", name: event.arg });
 				break;
 
+			// proxy events
+			case "toggle-guides":
+			case "toggle-rulers":
+			case "toggle-grid":
+			case "toggle-pixel-grid":
+				return Engine.dispatch(event);
+			case "toggle-statusbar":
+				return Self.statusbar.dispatch(event);
+
+			// ...otherwise
 			default:
 				el = event.el;
 				if (el) {
