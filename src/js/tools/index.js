@@ -6,6 +6,7 @@
 		// fast references
 		this.els = {
 			toolBar: window.find(".tools-bar"),
+			toolPanel: window.find(`.panel-tools .tool[data-click="toggle-sidebar"]`),
 			optionBar: window.find(".tools-options-bar"),
 		};
 		// all tools
@@ -29,7 +30,7 @@
 			// proxied events
 			case "toggle-sidebar":
 				value = APP.els.content.hasClass("slim-sidebar");
-				event.el.toggleClass("icon-toggle-sidebar", value);
+				Self.els.toolPanel.toggleClass("icon-toggle-sidebar", value);
 				APP.els.content.toggleClass("slim-sidebar", value);
 				break;
 			case "select-tool":

@@ -21,6 +21,9 @@
 			el;
 		// console.log(event);
 		switch (event.type) {
+			case "sidebar-tools":
+				APP.tools.dispatch({ type: "toggle-sidebar" });
+				break;
 			// proxied events
 			case "box-head-tab":
 				el = $(event.target);
