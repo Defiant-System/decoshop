@@ -27,6 +27,11 @@
 		// console.log(event);
 		switch (event.type) {
 			// proxied events
+			case "toggle-sidebar":
+				value = event.el.hasClass("icon-toggle-sidebar-off");
+				event.el.toggleClass("icon-toggle-sidebar-off", value);
+				APP.els.content.toggleClass("slim-sidebar", value);
+				break;
 			case "select-tool":
 				el = $(event.target);
 				if (el.hasClass("active") || !el.data("content")) return;

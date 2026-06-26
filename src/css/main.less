@@ -202,6 +202,26 @@ content {
 		}
 	}
 
+	&.slim-sidebar {
+		.workspace {
+			.sidebar-wrapper {
+				display: none;
+			}
+
+			.sidebar-bar {
+				display: block;
+			}
+
+			.extras-wrapper {
+				right: 73px;
+			}
+
+			.extras-bar {
+				right: 37px;
+			}
+		}
+	}
+
 	&.seq-show-blank-view {
 		box-shadow: 0 1px 0;
 		transition-duration: @blankViewAnim * 2.1;
@@ -355,7 +375,7 @@ content {
 					background: #0115;
 					position: absolute;
 					top: 5px;
-					left: 5px;
+					left: 4px;
 					width: 25px;
 					height: 25px;
 					border-radius: 3px;
@@ -3578,6 +3598,7 @@ content {
 			}
 		}
 
+		.sidebar-bar,
 		.extras-bar {
 			position: absolute;
 			top: 0;
@@ -3630,6 +3651,12 @@ content {
 					&:before { display: block; }
 				}
 			}
+		}
+
+		.sidebar-bar {
+			display: none;
+			right: 0;
+			border-right: 0;
 		}
 
 		.sidebar-wrapper {

@@ -1,13 +1,22 @@
 
 const Engine = {
 	init() {
+		// listen to events from engine
 		PP.addEventListener(ActionTypes.E.hbi, this.dispatch);
 	},
 	dispatch(event) {
 		let APP = decoshop,
 			Self = Engine,
+			type = event.data?.type || event.type,
 			el;
-		switch (event.data.type) {
+		switch (type) {
+			// karaqu events
+			case "window.resize":
+				// console.log(event.width, event.height);
+				PP.resize(event.width, event.height);
+				break;
+
+			// engine events
 			// APP init
 			case "app-init":
 				// Open PSD file (same flow as File > Open from URL)

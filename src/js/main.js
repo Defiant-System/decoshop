@@ -85,7 +85,10 @@ const decoshop = {
 				break;
 			case "window.blur": break;
 			case "window.focus": break;
-			case "window.resize": break;
+			case "window.resize":
+				// proxy event
+				Engine.dispatch(event);
+				break;
 			case "open-file":
 				// show FS dialog
 				window.dialog.open({
