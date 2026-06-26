@@ -28,8 +28,8 @@
 		switch (event.type) {
 			// proxied events
 			case "toggle-sidebar":
-				value = event.el.hasClass("icon-toggle-sidebar-off");
-				event.el.toggleClass("icon-toggle-sidebar-off", value);
+				value = APP.els.content.hasClass("slim-sidebar");
+				event.el.toggleClass("icon-toggle-sidebar", value);
 				APP.els.content.toggleClass("slim-sidebar", value);
 				break;
 			case "select-tool":
