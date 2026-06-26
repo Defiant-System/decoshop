@@ -157,6 +157,7 @@ content {
 
 			.extras-wrapper {
 				right: 73px;
+				transition: right @blankViewAnim * .85 ease-in-out;
 			}
 
 			.extras-bar {
@@ -1802,6 +1803,7 @@ content {
 			z-index: 12;
 			overflow-x: hidden;
 			pointer-events: none;
+			transition: right @blankViewAnim ease-in-out;
 
 			.extra-box {
 				position: absolute;
@@ -2150,27 +2152,73 @@ content {
 							}
 						}
 
-						&[data-box="histogram"] {
-							.histogram-wrapper {
-								padding: 9px 7px;
-								--clr1: #9aa1;
-								--bW1: 31px;
+						&[data-box="info"] {
+							.info-wrapper {
+								//height: 189px;
+								padding: 3px 0 7px;
+								color: rgba(#eff, .75);
+								font-size: 11px;
 
-								.graph {
-									background: #4553;
+								.field {
+									&:first-child .info-area:nth-child(1) {
+										flex: initial;
+										width: 137px;
+									}
+
+									&:last-child .info-area {
+										padding-top: 5px;
+										padding-left: 7px;
+										color: rgba(#eff, .45);
+									}
+								}
+
+								.info-area {
 									position: relative;
-									height: 119px;
-									background-image:
-										repeating-linear-gradient(90deg,
-											transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-											var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-										),
-										repeating-linear-gradient(0deg,
-											transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-											var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-										);
-									background-position: 0 1px;
-									box-shadow: 0 0 0 1px #1227;
+									padding-left: 29px;
+									flex: 1;
+
+									&:nth-child(3) {
+										flex: initial;
+										width: 47px;
+										padding-top: 42px;
+										padding-left: 0;
+									}
+
+									> .icon {
+										position: absolute;
+										top: 50%;
+										left: 5px;
+										width: 15px;
+										height: 15px;
+										transform: translateY(-50%);
+									}
+
+									.value.fileSize {
+										color: rgba(#eff, .65);
+										padding-left: 3px;
+									}
+
+									.info-row {
+										padding: 2px 0;
+										display: flex;
+
+										&.hidden { display: none; }
+
+										.label {
+											display: inline-block;
+											vertical-align: middle;
+											padding: 3px 7px 0 0;
+											width: 18px;
+											font-size: 11px;
+											color: rgba(#eff, .45);
+										}
+
+										.value {
+											height: 17px;
+											padding: 3px 0 0;
+											width: 43px;
+										}
+									}
 								}
 							}
 						}
@@ -3628,6 +3676,10 @@ content {
 			}
 		}
 
+		.extras-bar {
+			transition: right @blankViewAnim ease-in-out;
+		}
+
 		.sidebar-bar {
 			opacity: 0;
 			visibility: hidden;
@@ -4213,72 +4265,26 @@ content {
 					}
 				}
 
-				.info-wrapper {
-					//height: 189px;
-					padding: 3px 0 7px;
-					color: rgba(#eff, .75);
-					font-size: 11px;
+				.histogram-wrapper {
+					padding: 9px 7px;
+					--clr1: #9aa1;
+					--bW1: 31px;
 
-					.field {
-						&:first-child .info-area:nth-child(1) {
-							flex: initial;
-							width: 137px;
-						}
-
-						&:last-child .info-area {
-							padding-top: 5px;
-							padding-left: 7px;
-							color: rgba(#eff, .45);
-						}
-					}
-
-					.info-area {
+					.graph {
+						background: #4553;
 						position: relative;
-						padding-left: 29px;
-						flex: 1;
-
-						&:nth-child(3) {
-							flex: initial;
-							width: 47px;
-							padding-top: 42px;
-							padding-left: 0;
-						}
-
-						> .icon {
-							position: absolute;
-							top: 50%;
-							left: 5px;
-							width: 15px;
-							height: 15px;
-							transform: translateY(-50%);
-						}
-
-						.value.fileSize {
-							color: rgba(#eff, .65);
-							padding-left: 3px;
-						}
-
-						.info-row {
-							padding: 2px 0;
-							display: flex;
-
-							&.hidden { display: none; }
-
-							.label {
-								display: inline-block;
-								vertical-align: middle;
-								padding: 3px 7px 0 0;
-								width: 18px;
-								font-size: 11px;
-								color: rgba(#eff, .45);
-							}
-
-							.value {
-								height: 17px;
-								padding: 3px 0 0;
-								width: 43px;
-							}
-						}
+						height: 119px;
+						background-image:
+							repeating-linear-gradient(90deg,
+								transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+								var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+							),
+							repeating-linear-gradient(0deg,
+								transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+								var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+							);
+						background-position: 0 1px;
+						box-shadow: 0 0 0 1px #1227;
 					}
 				}
 

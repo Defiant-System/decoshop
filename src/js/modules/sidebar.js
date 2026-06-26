@@ -22,6 +22,8 @@
 		// console.log(event);
 		switch (event.type) {
 			case "sidebar-tools":
+				el = $(event.target);
+				Self.els.root.find(`.box-head > div[data-content="${el.data("target")}"]`).trigger("click");
 				APP.tools.dispatch({ type: "toggle-sidebar" });
 				break;
 			// proxied events

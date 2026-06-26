@@ -9,6 +9,10 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 
+
+		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
+		// setTimeout(() => APP.els.content.find(`.sidebar-bar .tool[data-target="color"]`).trigger("click"), 700);
+
 		// stops RAF
 		// setTimeout(() => { decoshop._stopped = true; }, 2000);
 		

@@ -32,6 +32,8 @@
 				value = APP.els.content.hasClass("slim-sidebar");
 				Self.els.toolPanel.toggleClass("icon-toggle-sidebar", value);
 				APP.els.content.toggleClass("slim-sidebar", value);
+				// auto close open extras box
+				APP.sidebar.els.extraBar.find(`.tool.down`).trigger("click");
 				break;
 			case "select-tool":
 				el = $(event.target);
