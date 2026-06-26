@@ -73,12 +73,16 @@ const Engine = {
 				PP.resize(event.width, event.height);
 				break;
 			case "toggle-guides":
+				// pp.fB.Wi
 			case "toggle-grid":
 			case "toggle-pixel-grid":
 			case "toggle-rulers":
 				value = !PP.fB.bI;
+				// engine update
 				PP.fB.bI = value;
-				PP.update();
+				PP.update(true);
+				// ui update
+				APP.els.content.toggleClass("show-rulers", !value);
 				break;
 		}
 	},

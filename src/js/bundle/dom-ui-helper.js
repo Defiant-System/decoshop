@@ -7311,6 +7311,7 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 			d.restore();
 		}
 	}
+	
 	if (_local4162.Wi) {
 		if (_local4247.vr && l.u.N > 10 && l.add.fvec == null) {
 			this.C9(l, d, 1, 1, .25, _local4247.ra, 16777215);
