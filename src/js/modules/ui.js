@@ -65,6 +65,11 @@ const UI = {
 				// position menubox
 				rect = this.getBoundingClientRect();
 				switch (el.data("pos")) {
+					case "above":
+						Self.menu.addClass("arrow-below");
+						top = rect.top - window.top - rect.height - 39;
+						left = rect.left - window.left + (rect.width >> 1) - (Self.menu[0].offsetWidth >> 1);
+						break;
 					case "right":
 						Self.menu.addClass("arrow-left");
 						top = rect.top - window.top - 9;
@@ -101,7 +106,6 @@ const UI = {
 					Self[this.dataset.ui](event);
 					// handles event differently for brush menu box
 					if (this.dataset.ui === "doBrushTips" || this.dataset.select === "multi") return;
-					
 					return;
 				} else if (el.parents("ul.opt-group").length) {
 					// event handling option-group
@@ -1482,6 +1486,7 @@ const UI = {
 					clientY: event.clientY,
 					clientX: event.clientX,
 				};
+
 				// bind event handlers
 				Self.content.addClass("no-cursor");
 				Self.doc.on("mousemove mouseup", Self.doKnob);
@@ -1509,13 +1514,16 @@ const UI = {
 				Self.content.removeClass("no-cursor");
 				Self.doc.off("mousemove mouseup", Self.doKnob);
 				// clean up
-				Self.srcEl = false;
-				Self.menu.remove();
+				// Self.srcEl = false;
+				// Self.menu.remove();
 				break;
 			// custom events
 			case "set-initial-value":
 				// initial value of knob
-				value = parseInt(event.el.find(".value").text(), 10);
+				let min = +event.el.data("min"),
+					max = +event.el.data("max"),
+					val = parseInt(event.el.find(".value").text(), 10);
+				value = Math.round(Math.invLerp(min, max, val) * 100);
 				Self.menu.find(".knob").data({ value });
 				break;
 		}
