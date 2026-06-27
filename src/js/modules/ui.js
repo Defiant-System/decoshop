@@ -1470,7 +1470,7 @@ const UI = {
 				
 				let el = $(event.target),
 					pEl = Self.srcEl.parents(`[data-section]`);
-				value = +el.data("value");
+				value = parseInt(el.data("value"), 10);
 
 				Self.drag = {
 					el,
@@ -1479,12 +1479,18 @@ const UI = {
 					func: APP[pEl.data("section")].dispatch,
 					src: Self.srcEl.find(".value"),
 					suffix: Self.srcEl.data("suffix") || "",
-					min: +Self.srcEl.data("min"),
-					max: +Self.srcEl.data("max"),
 					clientY: event.clientY,
 					clientX: event.clientX,
 				};
 
+				if (Self.srcEl.data("scale")) {
+					// drag object
+					Self.drag.spectrum = Self.doKnob({ type: "generate-spectrum", el: Self.srcEl });
+					Self.drag.sLen = Self.drag.spectrum.length-1;
+				} else {
+					Self.drag.min = +Self.srcEl.data("min");
+					Self.drag.max = +Self.srcEl.data("max");
+				}
 
 				// bind event handlers
 				Self.content.addClass("no-cursor");
@@ -1495,7 +1501,12 @@ const UI = {
 				value = Math.min(Math.max(value, 0), 100);
 				Drag.el.data({ value });
 
-				Drag.newValue = Drag.min + Math.round((value / 100) * (Drag.max - Drag.min));
+				if (Drag.spectrum) {
+					let index = Math.round(Math.lerp(0, Drag.sLen, value / 100));
+					Drag.newValue = Drag.spectrum[index];
+				} else {
+					Drag.newValue = Drag.min + Math.round((value / 100) * (Drag.max - Drag.min));
+				}
 				Drag.src.html(Drag.newValue + Drag.suffix);
 
 				let data = {
@@ -1526,13 +1537,29 @@ const UI = {
 				break;
 			// custom events
 			case "set-initial-value":
-				// initial value of knob
-				let min = +event.el.data("min"),
-					max = +event.el.data("max"),
-					val = parseInt(event.el.find(".value").text(), 10);
-				value = Math.round(Math.invLerp(min, max, val) * 100);
+				if (event.el.data("scale")) {
+					let spectrum = Self.doKnob({ type: "generate-spectrum", el: event.el }),
+						index = spectrum.indexOf(parseInt(event.el.find(".value").text(), 10));
+					value = Math.round((index / spectrum.length) * 100);
+				} else {
+					// initial value of knob
+					let min = +event.el.data("min"),
+						max = +event.el.data("max"),
+						val = parseInt(event.el.find(".value").text(), 10);
+					value = Math.round(Math.invLerp(min, max, val) * 100);
+				}
 				Self.menu.find(".knob").data({ value });
 				break;
+			case "generate-spectrum":
+				let scale = JSON.parse(event.el.data("scale")),
+					spectrum = [];
+				scale.map(g => {
+					for (var i=g[0]; i<g[1]; i+=g[2]) {
+						if (spectrum.at(-1) !== i) spectrum.push(i);
+					}
+					if (spectrum.at(-1) !== g[1]) spectrum.push(g[1]);
+				});
+				return spectrum;
 		}
 	}
 };

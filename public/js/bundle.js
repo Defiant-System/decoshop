@@ -29628,7 +29628,7 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 				if (isHorizontal) {
 					digitBlitRect.x = tickBlitRect.x + 3 + digitIndex * Math.round(PixelUtil.y0.m2 * .8);
 				} else {
-					digitBlitRect.y = tickBlitRect.y + 2 + digitIndex * Math.round(PixelUtil.y0.m2 * 1.15);
+					digitBlitRect.y = tickBlitRect.y + 2 + digitIndex * Math.round(PixelUtil.y0.m2 * 1.);
 				}
 				var digitPixels = PixelUtil.y0.qG[tickLabel[digitIndex]];
 				PixelUtil.blitRgbaRect(digitPixels, digitBlitRect, rulerPixels, rulerBounds, digitBlitRect);

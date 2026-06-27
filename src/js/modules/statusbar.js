@@ -27,10 +27,8 @@
 				break;
 			case "set-zoom":
 				// console.log(event.value);
-
-				CanvasTools.gU.p8(Engine.doc.u, new Point2D(360, 340), false, event.value / 100);
+				CanvasTools.gU.p8(Engine.doc.u, new Point2D(590, 495), false, event.value / 100);
 				PP.update();
-
 				break;
 			case "open-file":
 				// TODO
