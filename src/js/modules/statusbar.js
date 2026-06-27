@@ -32,6 +32,7 @@
 				break;
 			case "open-file":
 				// TODO
+				// console.log(event);
 				return;
 				file = new File(event.file);
 				// add to stack

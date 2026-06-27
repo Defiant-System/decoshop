@@ -9,6 +9,8 @@
 			extras: window.find(".extras-wrapper"),
 			extraBar: window.find(".extras-bar"),
 		};
+		// 
+		this.livePanels = ["navigator", "layers", "channels"];
 	},
 	dispatch(event) {
 		let APP = decoshop,
@@ -27,7 +29,8 @@
 				APP.tools.dispatch({ type: "toggle-sidebar" });
 				break;
 			case "refresh-panels":
-				// TODO
+				// forward event to panels to refresh
+				Self.livePanels.map(name => Panels[name].dispatch({ ...event, type: "refresh" }));
 				break;
 			// proxied events
 			case "box-head-tab":
@@ -100,7 +103,7 @@
 					name = pEl.data("box");
 					if (name) {
 						// forward event
-						Panels[name](event);
+						Panels[name].dispatch(event);
 					}
 				}
 		}

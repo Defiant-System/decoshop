@@ -85,6 +85,7 @@ module.exports = {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	PixelUtil,
 	Point2D,
 	languageManager,
 	Misc,

@@ -4081,11 +4081,11 @@ content {
 				}
 
 				.navigator-wrapper {
-					--w: 198px;
-					--h: 137px;
+					--w: 258px;
+					--h: 138px;
+					--d: none;
 					position: relative;
-					margin: 8px auto 7px;
-					max-width: 260px;
+					margin: 7px auto;
 					width: var(--w);
 					height: var(--h);
 
@@ -4101,7 +4101,8 @@ content {
 					}
 
 					canvas.nav-cvs {
-						box-shadow: 0 0 0 1px rgba(#011, .65);
+						display: var(--d);
+						box-shadow: 0 0 0 1px #0119;
 						width: var(--w);
 						height: var(--h);
 						/* temp START * /
@@ -4111,7 +4112,7 @@ content {
 					}
 
 					.view-rect {
-						//display: none;
+						display: var(--d);
 						position: absolute;
 						top: 0;
 						left: 0;

@@ -36,6 +36,13 @@ const Misc = {
 		cvs.prop({ width, height });
 		return { cvs, ctx }
 	},
+	fitWithin(w, h, mW, mH) {
+		let scale = Math.min(mW/w, mH/h, 1);
+		return {
+			width: Math.round(w * scale),
+			height: Math.round(h * scale),
+		};
+	},
 	findBoundingBox(ctx) {
 		let _min = Math.min,
 			_max = Math.max,

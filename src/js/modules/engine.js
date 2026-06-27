@@ -52,7 +52,7 @@ const Engine = {
 				// update panels
 				Self.doc = PP.fk();
 				APP.statusbar.dispatch({ type: "open-file", doc: Self.doc });
-				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc, list: ["navigator", "layers", "channels"] });
+				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc });
 				break;
 			
 			default:
