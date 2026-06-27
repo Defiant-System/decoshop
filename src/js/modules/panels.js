@@ -13,7 +13,7 @@ const Panels = {
 	actions: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.actions,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -24,7 +24,7 @@ const Panels = {
 	adjustments: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.adjustments,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -46,7 +46,7 @@ const Panels = {
 	brush: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.brush,
 				pEl,
 				el;
 			// console.log(event);
@@ -72,7 +72,7 @@ const Panels = {
 	channels: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.channels,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -83,7 +83,7 @@ const Panels = {
 	character: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.character,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -97,7 +97,7 @@ const Panels = {
 	color: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.color,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -111,7 +111,7 @@ const Panels = {
 	gallery: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.gallery,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -122,7 +122,7 @@ const Panels = {
 	glyphs: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.glyphs,
 				val,
 				el;
 			// console.log(event);
@@ -147,7 +147,7 @@ const Panels = {
 	guides: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.guides,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -165,7 +165,7 @@ const Panels = {
 	histogram: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.histogram,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -176,7 +176,7 @@ const Panels = {
 	history: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.history,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -187,7 +187,7 @@ const Panels = {
 	info: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.info,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -198,7 +198,7 @@ const Panels = {
 	layers: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.layers,
 				gEl,
 				rEl,
 				el;
@@ -254,7 +254,7 @@ const Panels = {
 	memory: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.memory,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -273,27 +273,78 @@ const Panels = {
 	navigator: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.navigator,
 				el;
 			// console.log(event);
 			switch (event.type) {
 				case "init-panel":
+					Self.wrapper = APP.els.content.find(`.navigator-wrapper`);
+					Self.maxW = parseInt(Self.wrapper.cssProp("--w"), 10);
+					Self.maxH = parseInt(Self.wrapper.cssProp("--h"), 10);
+					Self.cvs = Self.wrapper.find("canvas");
+					Self.ctx = Self.cvs[0].getContext("2d", { willReadFrequently: true });
+					Self.ctx.imageSmoothingEnabled = true;
+					Self.ctx.imageSmoothingQuality = "high";
+					break;
+				case "thumbnail-mip-chain":
+					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
+					var edge = Self.maxW * window.devicePixelRatio,
+						count = 0,
+						doc = Engine.doc,
+						// Seed the pyramid with the full-resolution composite and its bounds.
+						mipmap = [doc.LT(), new Rect(0, 0, doc.m, doc.n)];
+					// Append progressively half-sized RGBA levels (mipmaps).
+					PixelUtil.pyramidDownsampleRgba(mipmap);
+					// Skip the levels that are still larger than the display target.
+					while (Math.max(mipmap[count + 1].m, mipmap[count + 1].n) > edge) {
+						count += 2;
+					}
+					// Keep from the first small-enough level onward; EI[0]=pixels, EI[1]=rect.
+					Self.EI = mipmap.slice(count);
 					break;
 				case "refresh":
 	 				let w = event.doc.Ch.m,
 	 					h = event.doc.Ch.n,
-	 					{ width, height } = Misc.fitWithin(w, h, 258, 138), // max-width: 258, max-height: 138
-	 					cvs = APP.sidebar.els.root.find("canvas"),
-	 					ctx = cvs[0].getContext("2d", { willReadFrequently: true }),
-	 					iData = ctx.createImageData(width, height);
+	 					{ width, height } = Misc.fitWithin(w, h, Self.maxW, Self.maxH);
 	 				// update width & height for navigator panel
-	 				APP.sidebar.els.root.find(`.navigator-wrapper`).css({ "--d": "block", "--w": `${width}px`, "--h": `${height}px` });
+	 				Self.wrapper.css({ "--d": "block", "--w": `${width}px`, "--h": `${height}px` });
 
+	 				Self.dispatch({ type: "thumbnail-mip-chain" });
 					// PixelUtil.copyByteBuffer(event.doc, iData.data);
-					console.log(Engine.doc.EI);
-					console.log(Engine.doc.KP);
-					console.log(Engine.doc);
 
+					var viewState = event.doc.u;
+					// Smallest cached level: EI[0] = RGBA pixels, EI[1] = its Rect (size).
+					var mipmap = Self.EI[0],
+						rect = Self.EI[1],
+						vw = rect.m,
+						vh = rect.n,
+						cvs = Self.cvs[0];
+					// Size the canvas to the thumbnail's pixel dimensions.
+					Self.cvs.attr({ width: vw, height: vh });
+					// s.setElementSizePx(cvs, width, height);
+					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
+					var iData = Self.ctx.createImageData(vw, vh);
+					PixelUtil.copyByteBuffer(mipmap, iData.data);
+					Self.ctx.putImageData(iData, 0, 0);
+					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
+					Self.ctx.getImageData(0, 0, 1, 1);
+
+					// Map the visible viewport rect (aR, device px) to document coordinates via
+					// Zx(), then scale to thumbnail space so the red box lines up with the image.
+					var vRect = viewState.aR(),
+						_local4350 = viewState.Zx(vRect.x, vRect.y),
+						_local4352 = viewState.Zx(vRect.x + vRect.m, vRect.y + vRect.n),
+						factor = vw / event.doc.m;
+					console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
+
+					// Draw in document space; factor converts doc px -> thumbnail px.
+					return;
+					Self.ctx.scale(factor, factor);
+					// Keep the outline a constant ~4 px regardless of the thumbnail scale.
+					Self.ctx.lineWidth = 4 / factor;
+					Self.ctx.strokeStyle = "#ff0000";
+					// Red rectangle = currently visible region of the document.
+					Self.ctx.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
 					break;
 			}
 		}
@@ -301,7 +352,7 @@ const Panels = {
 	notes: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.notes,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -312,7 +363,7 @@ const Panels = {
 	paragraph: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.paragraph,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -326,7 +377,7 @@ const Panels = {
 	paths: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.paths,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -337,7 +388,7 @@ const Panels = {
 	tool: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.tool,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -348,7 +399,7 @@ const Panels = {
 	properties: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.properties,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -372,7 +423,7 @@ const Panels = {
 	styles: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.styles,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -383,7 +434,7 @@ const Panels = {
 	swatches: {
 		dispatch(event) {
 			let APP = decoshop,
-				Self = Panels,
+				Self = Panels.swatches,
 				el;
 			// console.log(event);
 			switch (event.type) {

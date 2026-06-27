@@ -87,6 +87,8 @@ module.exports = {
 	CanvasTools,
 	PixelUtil,
 	Point2D,
+	Rect,
+	exportHelper,
 	languageManager,
 	Misc,
 };

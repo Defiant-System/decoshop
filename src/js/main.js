@@ -20,6 +20,8 @@ let {
 	CanvasTools,
 	PixelUtil,
 	Point2D,
+	Rect,
+	exportHelper,
 	languageManager,
 	Misc,
 } = await window.fetch("~/js/bundle.js");

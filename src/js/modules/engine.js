@@ -13,6 +13,7 @@ const Engine = {
 			// APP init
 			case "app-init":
 				// Open PSD file (same flow as File > Open from URL)
+				/*
 				let action = new Action(ActionTypes.E.L, true);
 				action.data = {
 					a: ActionTypes.$.ub,
@@ -24,6 +25,7 @@ const Engine = {
 					// Oo: { url: "~/img/font-sheet.png" }
 				};
 				PP.dispatch(action);
+				*/
 				break;
 
 			// open file (URL / path)
@@ -51,7 +53,6 @@ const Engine = {
 				APP.els.cvs = event.data.el;
 				// update panels
 				Self.doc = PP.fk();
-				APP.statusbar.dispatch({ type: "open-file", doc: Self.doc });
 				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc });
 				break;
 			
