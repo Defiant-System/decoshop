@@ -54,6 +54,9 @@
 				oldBox = newBox.parent().find("> div[data-box]:not(.hidden)");
 				toolIcon = Self.els.extras.find(`.tool[data-target="${el.data("content")}"]`);
 
+				Self.els.extraBar.find(`.tool.down`).removeClass("down");
+				Self.els.extraBar.find(`.tool[data-target="${el.data("content")}"]`).addClass("down");
+
 				// UI sync tabs with icons
 				if (!toolIcon.hasClass("down")) {
 					// update sidebar icon
