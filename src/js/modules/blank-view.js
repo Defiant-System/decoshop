@@ -95,7 +95,7 @@
 				});
 				break;
 			case "close-view":
-				if (Tabs._stack.length) {
+				if (window.el.hasClass("showing-blank-view")) {
 					Self.dispatch({
 						type: "anim-hide-view",
 						callback: () => {

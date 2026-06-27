@@ -54,6 +54,14 @@ backdrop-filter: blur(@backgrop-blur);
 	.win-caption-title_ {
 		left: 67px;
 	}
+
+	.blank-view {
+		.block-buttons {
+			.btn[data-click="close-view"] {
+				display: block;
+			}
+		}
+	}
 }
 
 content {
@@ -1770,11 +1778,10 @@ content {
 				// border-radius: 0 11px 11px 0;
 				backdrop-filter: blur(@backgrop-blur);
 				font-size: 11px;
-				cursor: pointer;
 
-				&:hover {
-					color: #eee;
-				}
+				// &:hover {
+				// 	color: #eee;
+				// }
 
 				i {
 					display: inline-block;
@@ -1788,11 +1795,13 @@ content {
 					&.icon-new {
 						margin-left: 5px;
 						margin-right: 1px;
+						cursor: pointer;
 					}
 
 					&.icon-clipboard {
 						margin-left: 0;
 						margin-right: 3px;
+						cursor: pointer;
 					}
 				}
 			}
@@ -5367,7 +5376,7 @@ content {
 			top: 0;
 			left: 0;
 			z-index: 2;
-			border-radius: 5px;
+			border-radius: 7px;
 			
 			&.canvas {
 				position: absolute;

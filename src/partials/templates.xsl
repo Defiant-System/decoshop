@@ -15,8 +15,8 @@
 		</div>
 
 		<div class="btn" data-click="close-view">
-			<i class="icon-cancel"></i>
-			Close
+			<i class="icon-chevron"></i>
+			Go back
 		</div>
 	</div>
 
