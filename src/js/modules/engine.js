@@ -24,7 +24,7 @@ const Engine = {
 				APP.els.cvs = event.data.el;
 				Self.doc = PP.fk();
 
-				Self.dispatch({ type: "center-fit-doc" });
+				APP.tools.zoom.dispatch({ type: "center-actual" });
 				// update panels
 				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc });
 				break;
@@ -56,40 +56,13 @@ const Engine = {
 				PP.update(true);
 				// ui update
 				APP.els.content.toggleClass("show-rulers", !value);
-				// // update view state / "available rect"
-				// Engine.dispatch({ type: "update-view-state" });
+				// update view state / "available rect"
+				// APP.tools.zoom.dispatch({ type: "center-fit" });
 				break;
 			case "update-view-state":
 				rect = APP.els.content.find(".cvs-helpers").offset();
 				Self.doc.u.setAvailable(rect.left, rect.top, rect.width, rect.height);
 				PP.update(!PP.fB.bI);
-				break;
-			case "center-fit-doc":
-				// avr is in device px; at 100% the image occupies doc.m x doc.n device px.
-				let doc = Self.doc,
-					u = doc.u,
-					avr = u.aR();
-
-				if (PP.fB.bI) {
-					let rulerW = 17,
-						margin = 3;
-					avr.x += rulerW + margin;
-					avr.m -= rulerW + (margin * 2);
-				}
-
-				let fit = Math.min(avr.m / doc.m, avr.n / doc.n);
-				u.N = u.ma = Math.min(1, fit); // scale down to fit, never enlarge past 100%
-				// Center the document in the available rect: measure where the doc center lands
-				// with no pan, then shift the pan so it lands at the rect center.
-				u.R.T6(0, 0);
-				let c = u.dN(doc.m / 2, doc.n / 2);
-				u.R.T6(
-					Math.round(avr.x + avr.m / 2 - c.x),
-					Math.round(avr.y + avr.n / 2 - c.y)
-				);
-				u.q8.T6(u.R.x, u.R.y);
-				doc.bV = true;
-				PP.update(true);
 				break;
 		}
 	},
