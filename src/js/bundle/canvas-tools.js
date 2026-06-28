@@ -4003,16 +4003,25 @@ f.Mi.prototype.JP = function(l, d, G, b, V) {
 f.Mi.prototype.Nl = function(l, d, G, b, V) {
 	this.oP = null
 };
+// HBI: extra overscroll (in device px) allowed past the strict available-rect pan
+// bounds, on each side. 0 = strict (image edges can't pass the rect bounds);
+// e.g. 64 restores the classic "let the image be dragged a bit past the edge" feel.
+f.Mi.panSlack = 64;
 f.Mi.if = function(l, d, G) {
+	// HBI: constrain panning to the available rect (aR) instead of the full viewport.
+	// The pan offset R is measured from the image being centered within the available
+	// rect, so the symmetric limit is |availableSize - imageSize| / 2 (+ slack):
+	//   - image larger than the rect  -> rect stays fully covered (cover model)
+	//   - image smaller than the rect -> image stays fully inside the rect (contain model)
 	var b = l.u.N,
-		V = l.u.Vm,
-		Q = V.m,
-		t = V.n,
+		aR = l.u.aR(),
+		Q = aR.m,
+		t = aR.n,
 		I = l.m * b,
 		y = l.n * b,
-		e = I < Q && y < t,
-		M = Q / 2 + I / 2 - 64,
-		R = t / 2 + y / 2 - 64;
+		slack = f.Mi.panSlack || 0,
+		M = Math.abs(Q - I) / 2 + slack,
+		R = Math.abs(t - y) / 2 + slack;
 	l.u.R.T6(Math.max(-M, Math.min(M, d)), Math.max(-R, Math.min(R, G)));
 	l.bV = !0
 };

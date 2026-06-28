@@ -6743,6 +6743,12 @@ NamedTabPanel.prototype.Yw = function (l) {
 
 NamedTabPanel.prototype.resize = function (l, d) {
 	if (l <= 0 || d <= 0) return;
+	// HBI: canvas inherits its width/height from its parent (.pbody) instead of the
+	// layout-allocated area, so it can stretch beyond its normal bounds.
+	if (this.DK && this.DK.clientWidth > 0 && this.DK.clientHeight > 0) {
+		l = this.DK.clientWidth;
+		d = this.DK.clientHeight;
+	}
 	this.iJ = l;
 	this.Tq = d;
 	var _local4066 = this.Kv,
@@ -6753,8 +6759,11 @@ NamedTabPanel.prototype.resize = function (l, d) {
 	s.setCanvasSizeForDpr(_local4068.Lp, l, d);
 	s.setCanvasSizeForDpr(_local4068.La, l, d);
 	s.setCanvasSizeForDpr(WebGLContext.getCanvas(), l, d);
-	
-	if (_local4066.u.N == 0) _local4066.u.N = f.gU.agP(_local4066.m, _local4066.n, l * _local4067, d * _local4067);
+
+	if (_local4066.u.N == 0) {
+		var _avr = _local4066.u.aR();
+		_local4066.u.N = f.gU.agP(_local4066.m, _local4066.n, _avr.m, _avr.n);
+	}
 	this.VP();
 };
 

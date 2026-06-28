@@ -54069,7 +54069,7 @@ DocumentViewState.prototype.Gb = function(l) {
 	d.translate(-y, -e);
 	d.rotate(this.Ay);
 	d.translate(y, e);
-	return d
+	return d;
 };
 
 DocumentViewState.prototype.ai7 = function(l) {
@@ -60763,16 +60763,25 @@ f.Mi.prototype.JP = function(l, d, G, b, V) {
 f.Mi.prototype.Nl = function(l, d, G, b, V) {
 	this.oP = null;
 };
+// HBI: extra overscroll (in device px) allowed past the strict available-rect pan
+// bounds, on each side. 0 = strict (image edges can't pass the rect bounds);
+// e.g. 64 restores the classic "let the image be dragged a bit past the edge" feel.
+f.Mi.panSlack = 64;
 f.Mi.if = function(l, d, G) {
+	// HBI: constrain panning to the available rect (aR) instead of the full viewport.
+	// The pan offset R is measured from the image being centered within the available
+	// rect, so the symmetric limit is |availableSize - imageSize| / 2 (+ slack):
+	//   - image larger than the rect  -> rect stays fully covered (cover model)
+	//   - image smaller than the rect -> image stays fully inside the rect (contain model)
 	var b = l.u.N,
-		V = l.u.Vm,
-		Q = V.m,
-		t = V.n,
+		aR = l.u.aR(),
+		Q = aR.m,
+		t = aR.n,
 		I = l.m * b,
 		y = l.n * b,
-		e = I < Q && y < t,
-		M = Q / 2 + I / 2 - 64,
-		R = t / 2 + y / 2 - 64;
+		slack = f.Mi.panSlack || 0,
+		M = Math.abs(Q - I) / 2 + slack,
+		R = Math.abs(t - y) / 2 + slack;
 	l.u.R.T6(Math.max(-M, Math.min(M, d)), Math.max(-R, Math.min(R, G)));
 	l.bV = !0;
 };
@@ -93528,6 +93537,12 @@ NamedTabPanel.prototype.Yw = function (l) {
 
 NamedTabPanel.prototype.resize = function (l, d) {
 	if (l <= 0 || d <= 0) return;
+	// HBI: canvas inherits its width/height from its parent (.pbody) instead of the
+	// layout-allocated area, so it can stretch beyond its normal bounds.
+	if (this.DK && this.DK.clientWidth > 0 && this.DK.clientHeight > 0) {
+		l = this.DK.clientWidth;
+		d = this.DK.clientHeight;
+	}
 	this.iJ = l;
 	this.Tq = d;
 	var _local4066 = this.Kv,
@@ -93538,8 +93553,11 @@ NamedTabPanel.prototype.resize = function (l, d) {
 	s.setCanvasSizeForDpr(_local4068.Lp, l, d);
 	s.setCanvasSizeForDpr(_local4068.La, l, d);
 	s.setCanvasSizeForDpr(WebGLContext.getCanvas(), l, d);
-	
-	if (_local4066.u.N == 0) _local4066.u.N = f.gU.agP(_local4066.m, _local4066.n, l * _local4067, d * _local4067);
+
+	if (_local4066.u.N == 0) {
+		var _avr = _local4066.u.aR();
+		_local4066.u.N = f.gU.agP(_local4066.m, _local4066.n, _avr.m, _avr.n);
+	}
 	this.VP();
 };
 

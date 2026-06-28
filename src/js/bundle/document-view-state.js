@@ -60,7 +60,7 @@ DocumentViewState.prototype.Gb = function(l) {
 	d.translate(-y, -e);
 	d.rotate(this.Ay);
 	d.translate(y, e);
-	return d
+	return d;
 };
 
 DocumentViewState.prototype.ai7 = function(l) {
