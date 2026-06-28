@@ -335,7 +335,7 @@ const Panels = {
 						_local4350 = viewState.Zx(vRect.x, vRect.y),
 						_local4352 = viewState.Zx(vRect.x + vRect.m, vRect.y + vRect.n),
 						factor = vw / event.doc.m;
-					console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
+					// console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
 
 					// Draw in document space; factor converts doc px -> thumbnail px.
 					return;

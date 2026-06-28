@@ -34,6 +34,8 @@
 				APP.els.content.toggleClass("slim-sidebar", value);
 				// auto close open extras box
 				APP.sidebar.els.extraBar.find(`.tool.down`).trigger("click");
+				// update view state / "available rect"
+				Engine.dispatch({ type: "update-view-state" });
 				break;
 			case "select-tool":
 				el = $(event.target);

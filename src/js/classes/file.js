@@ -7,12 +7,7 @@ class File {
 		this.xNode = $.nodeFromString(`<i id="${this.id}" name="${this.base}" />`);
 
 		fsFile.blob.arrayBuffer().then(buf => {
-			exportHelper.openFile(
-				{ name: this.base || "image.png" }, // descriptor; name → title + format hint
-				buf,                                // ArrayBuffer of file bytes
-				PP.DE,                              // dispatcher (ClipboardHandler)
-				null                                // optional completion callback
-			);
+			exportHelper.openFile({ name: this.base || "image.png" }, buf, PP.DE, null); // "null" - optional completion callback
 		});
 	}
 

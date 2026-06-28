@@ -14501,8 +14501,11 @@ PixelUtil.y0.YH = function(l, d, G) {
 // cursorScreenX, cursorScreenY: pointer position for ruler crosshair markers
 // horizAxisTransform, vertAxisTransform: [effectiveZoom, panOrigin] per axis (unit-aware)
 PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
-	var viewportWidth = viewState.Vm.m,
-		viewportHeight = viewState.Vm.n,
+	var avr = viewState.aR(),
+		rulerOriginX = avr.x,
+		rulerOriginY = avr.y,
+		viewportWidth = avr.m,
+		viewportHeight = avr.n,
 		rulerThicknessPx = PixelUtil.y0.mT,
 		bgColor = 0x282828,
 		textColor = 0x6d6d6d,

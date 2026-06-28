@@ -29565,8 +29565,11 @@ PixelUtil.y0.YH = function(l, d, G) {
 // cursorScreenX, cursorScreenY: pointer position for ruler crosshair markers
 // horizAxisTransform, vertAxisTransform: [effectiveZoom, panOrigin] per axis (unit-aware)
 PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
-	var viewportWidth = viewState.Vm.m,
-		viewportHeight = viewState.Vm.n,
+	var avr = viewState.aR(),
+		rulerOriginX = avr.x,
+		rulerOriginY = avr.y,
+		viewportWidth = avr.m,
+		viewportHeight = avr.n,
 		rulerThicknessPx = PixelUtil.y0.mT,
 		bgColor = 0x282828,
 		textColor = 0x6d6d6d,
@@ -54015,6 +54018,9 @@ function DocumentViewState(l) {
 	this.MX = [1, 1, 1];
 	this.$m = 0;
 	this.Vm = new Rect(0, 0, 1, 1);
+	// HBI: optional "available" sub-rect of the viewport (device px, same space as Vm).
+	// When set, the document is centered/fit inside this rect instead of the whole canvas.
+	// null = use the full viewport. Set via setAvailable()/clearAvailable().
 	this.awr = new Rect(0, 0, l.m, l.n);
 	this.M9 = null;
 	this.Je = null;
@@ -54024,7 +54030,29 @@ function DocumentViewState(l) {
 	this.cM = PixelUtil.allocBytes(0);
 	this.aT = null;
 	this.eW = null;
+
+	// viewstate initiated
+	var event = new Action(ActionTypes.E.hbi, !0);
+	event.data = { type: "init-view-state", viewState: this };
+	PP.dispatch(event);
 }
+
+// HBI: effective area the document is centered within (the "available" rect when set,
+// otherwise the whole viewport). Returns plain {x, y, m, n} in device pixels.
+DocumentViewState.prototype.aR = function() {
+	var d = this.Vm,
+		a = this.av;
+	if (a == null) return { x: 0, y: 0, m: d.m, n: d.n };
+	return { x: a.x, y: a.y, m: a.m, n: a.n };
+};
+
+DocumentViewState.prototype.setAvailable = function(l, d, G, b) {
+	this.av = new Rect(l, d, G, b);
+};
+
+DocumentViewState.prototype.clearAvailable = function() {
+	this.av = null;
+};
 
 DocumentViewState.prototype.Gb = function(l) {
 	var d = new Matrix2D,
@@ -94201,10 +94229,11 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 
 	// hbi: render rulers
 	if (_local4162.bI) {
-		if (l.u.C5 == null || l.u.C5.width != l.u.Vm.m || l.u.XF.height != l.u.Vm.n) {
+		var _hbiAvr = l.u.aR();
+		if (l.u.C5 == null || l.u.C5.width != _hbiAvr.m || l.u.XF.height != _hbiAvr.n) {
 			l.u.X7 = d.createImageData(PixelUtil.y0.mT, PixelUtil.y0.mT);
-			l.u.C5 = d.createImageData(l.u.Vm.m, PixelUtil.y0.mT);
-			l.u.XF = d.createImageData(PixelUtil.y0.mT, l.u.Vm.n);
+			l.u.C5 = d.createImageData(_hbiAvr.m, PixelUtil.y0.mT);
+			l.u.XF = d.createImageData(PixelUtil.y0.mT, _hbiAvr.n);
 		}
 		var _local4157 = 0,
 			_local4158 = 0,
@@ -94232,9 +94261,9 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		NamedTabPanel._f(l.u.XF.data);
 		NamedTabPanel._f(l.u.C5.data);
 		NamedTabPanel._f(l.u.X7.data);
-		d.putImageData(l.u.XF, 0, 72); // left ruler
-		d.putImageData(l.u.C5, 0, 72); // top ruler
-		d.putImageData(l.u.X7, 0, 72); // ruler corner
+		d.putImageData(l.u.XF, _hbiAvr.x, _hbiAvr.y); // left ruler
+		d.putImageData(l.u.C5, _hbiAvr.x, _hbiAvr.y); // top ruler
+		d.putImageData(l.u.X7, _hbiAvr.x, _hbiAvr.y); // ruler corner
 		
 		// hbi: zoom percentage and "width x height"
 		// d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);

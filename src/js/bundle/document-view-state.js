@@ -9,6 +9,9 @@ function DocumentViewState(l) {
 	this.MX = [1, 1, 1];
 	this.$m = 0;
 	this.Vm = new Rect(0, 0, 1, 1);
+	// HBI: optional "available" sub-rect of the viewport (device px, same space as Vm).
+	// When set, the document is centered/fit inside this rect instead of the whole canvas.
+	// null = use the full viewport. Set via setAvailable()/clearAvailable().
 	this.awr = new Rect(0, 0, l.m, l.n);
 	this.M9 = null;
 	this.Je = null;
@@ -18,7 +21,29 @@ function DocumentViewState(l) {
 	this.cM = PixelUtil.allocBytes(0);
 	this.aT = null;
 	this.eW = null
+
+	// viewstate initiated
+	var event = new Action(ActionTypes.E.hbi, !0);
+	event.data = { type: "init-view-state", viewState: this };
+	PP.dispatch(event);
 }
+
+// HBI: effective area the document is centered within (the "available" rect when set,
+// otherwise the whole viewport). Returns plain {x, y, m, n} in device pixels.
+DocumentViewState.prototype.aR = function() {
+	var d = this.Vm,
+		a = this.av;
+	if (a == null) return { x: 0, y: 0, m: d.m, n: d.n };
+	return { x: a.x, y: a.y, m: a.m, n: a.n };
+};
+
+DocumentViewState.prototype.setAvailable = function(l, d, G, b) {
+	this.av = new Rect(l, d, G, b);
+};
+
+DocumentViewState.prototype.clearAvailable = function() {
+	this.av = null;
+};
 
 DocumentViewState.prototype.Gb = function(l) {
 	var d = new Matrix2D,

@@ -149,7 +149,7 @@ content {
 
 		.sidebar-wrapper {
 			right: 0;
-			transition: right @blankViewAnim ease-in-out;
+			transition: right @blankViewAnim * .65 ease-in-out;
 		}
 
 		.status-bar {
@@ -159,10 +159,15 @@ content {
 	}
 
 	&.slim-sidebar {
+		.cvs-wrapper {
+			.cvs-helpers {
+				right: 73px;
+			}
+		}
 		.workspace {
 			.sidebar-wrapper {
 				right: -273px;
-				transition: right @blankViewAnim ease-in-out;
+				transition: right @blankViewAnim * .65 ease-in-out;
 			}
 
 			.sidebar-bar {
@@ -173,12 +178,12 @@ content {
 
 			.extras-wrapper {
 				right: 73px;
-				transition: right @blankViewAnim * .85 ease-in-out;
+				transition: right @blankViewAnim * .65 ease-in-out;
 			}
 
 			.extras-bar {
 				right: 37px;
-				transition: right @blankViewAnim * .85 ease-in-out;
+				transition: right @blankViewAnim * .65 ease-in-out;
 			}
 		}
 	}
