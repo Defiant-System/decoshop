@@ -27,8 +27,15 @@
 				break;
 			case "set-zoom":
 				// console.log(event.value);
-				CanvasTools.gU.p8(Engine.doc.u, new Point2D(590, 495), false, event.value / 100);
+				let doc = Engine.doc,
+					avr = doc.u.aR(),
+					// ruler = PP.fB.bI ? 17 : 0,
+					center = doc.u.dN(doc.m / 2, doc.n / 2);
+				CanvasTools.gU.p8(doc.u, center, false, event.value / 100);
 				PP.update();
+				break;
+			case "update-zoom-value":
+				Self.els.statusBar.find(`.zoom-value .value`).html(`${event.value}%`);
 				break;
 			case "open-file":
 				file = new File(event.file);

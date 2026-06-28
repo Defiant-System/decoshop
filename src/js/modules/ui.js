@@ -1485,7 +1485,7 @@ const UI = {
 
 				if (Self.srcEl.data("scale")) {
 					// drag object
-					Self.drag.spectrum = Self.doKnob({ type: "generate-spectrum", el: Self.srcEl });
+					Self.drag.spectrum = Misc.generateSpectrum(JSON.parse(Self.srcEl.data("scale")));
 					Self.drag.sLen = Self.drag.spectrum.length-1;
 				} else {
 					Self.drag.min = +Self.srcEl.data("min");
@@ -1538,7 +1538,7 @@ const UI = {
 			// custom events
 			case "set-initial-value":
 				if (event.el.data("scale")) {
-					let spectrum = Self.doKnob({ type: "generate-spectrum", el: event.el }),
+					let spectrum = Misc.generateSpectrum(JSON.parse(event.el.data("scale"))),
 						index = spectrum.indexOf(parseInt(event.el.find(".value").text(), 10));
 					value = Math.round((index / spectrum.length) * 100);
 				} else {
@@ -1550,16 +1550,6 @@ const UI = {
 				}
 				Self.menu.find(".knob").data({ value });
 				break;
-			case "generate-spectrum":
-				let scale = JSON.parse(event.el.data("scale")),
-					spectrum = [];
-				scale.map(g => {
-					for (var i=g[0]; i<g[1]; i+=g[2]) {
-						if (spectrum.at(-1) !== i) spectrum.push(i);
-					}
-					if (spectrum.at(-1) !== g[1]) spectrum.push(g[1]);
-				});
-				return spectrum;
 		}
 	}
 };

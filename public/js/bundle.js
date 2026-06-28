@@ -3240,6 +3240,22 @@ const Misc = {
 		cvs.prop({ width, height });
 		return { cvs, ctx }
 	},
+	generateSpectrum(scale) {
+		let spectrum = [];
+		scale.map(g => {
+			switch (g.constructor) {
+				case Array:
+					for (var i=g[0]; i<g[1]; i+=g[2]) {
+						if (spectrum.at(-1) !== i) spectrum.push(i);
+					}
+					if (spectrum.at(-1) !== g[1]) spectrum.push(g[1]);
+					break;
+				default:
+					if (spectrum.at(-1) !== g) spectrum.push(g);
+			}
+		});
+		return spectrum;
+	},
 	fitWithin(w, h, mW, mH) {
 		let scale = Math.min(mW/w, mH/h, 1);
 		return {
@@ -97695,7 +97711,91 @@ function PhotopeaApp() {
 		vu: [
 			[
 				{ G: new f.Pq, _g: MoveToolOptions },
-			]
+				// { G: new f.Ur, _g: ArtboardToolOptions }
+			],
+			// [
+			// 	{ G: new f.bm, _g: ObjectSelectToolOptions },
+			// 	{ G: new f.OU, _g: MarqueeToolOptions }
+			// ],
+			// [
+			// 	{ G: new f.Ri, _g: LassoToolOptions },
+			// 	{ G: new f.Pc, _g: PolygonalLassoOptions },
+			// 	{ G: new f.uu, _g: MagneticLassoOptions }
+			// ],
+			// [
+			// 	{ G: new f.xB, _g: MagicWandToolOptions },
+			// 	{ G: new f.WC, _g: BlurSharpenOptions },
+			// 	{ G: new f.Sl, _g: MagicEraserOptions }
+			// ],
+			// [
+			// 	{ G: new f.a6P, _g: BrushEraserBrushOptions },
+			// 	{ G: new f.a7C, _g: BrushEraserEraserOptions },
+			// 	{ G: new f.UA, _g: SliceToolOptions },
+			// 	{ G: new f.M2, _g: SliceSelectToolOptions }
+			// ],
+			// [
+			// 	{ G: new f.lS, _g: EyedropperToolOptions },
+			// 	{ G: new f.C$, _g: RulerStraightenToolOptions }
+			// ],
+			// [
+			// 	{ G: new f.WE, _g: CloneSourceOptions },
+			// 	{ G: new f.da, _g: CloneStampAlignOptions },
+			// 	{ G: new f.zj, _g: PatchToolOptions },
+			// 	{ G: new f.a99, _g: QuickSelectionToolOptions },
+			// 	{ G: new f.oA, _g: BrushOnlyOptions }],
+			// [
+			// 	{ G: new f.Yv, _g: BrushPaintOptions },
+			// 	{ G: new f.D0, _g: BrushMainOptions },
+			// 	{ G: new f.fy, _g: MixerBrushOptions }
+			// ],
+			// [
+			// 	{ G: new f.ix, _g: CloneStampOptions }
+			// ],
+			// [
+			// 	{ G: new f.Vh, _g: EraserBrushOptions },
+			// 	{ G: new f.U8, _g: MixerBrushWetOptions }
+			// ],
+			// [
+			// 	{ G: new f.RK, _g: GradientToolOptions },
+			// 	{ G: new f.ym, _g: QuickSelectModeOptions }
+			// ],
+			// [
+			// 	{ G: new f.ZM, _g: BrushPencilOptions },
+			// 	{ G: new f.vL, _g: PencilDetailOptions },
+			// 	{ G: new f.zB, _g: BrushStrengthOptions }
+			// ],
+			// [
+			// 	{ G: new f.oX, _g: SpongeOptions },
+			// 	{ G: new f.BurnTool, _g: DodgeBurnOptions },
+			// 	{ G: new f.gw, _g: BrushFlowOptions }
+			// ],
+			// [
+			// 	{ G: new f.tk, _g: TypeToolMainOptions },
+			// 	{ G: new f.ayg, _g: TypeToolMainOptions }
+			// ],
+			// [
+			// 	{ G: new f.Ud(0), _g: RectangleEllipseShapeOptions },
+			// 	{ G: new f.YC, _g: EllipseShapeOptions },
+			// 	{ G: new f.Ud(1), _g: RectangleEllipseShapeOptions }
+			// ],
+			// [
+			// 	{ G: new f.yM, _g: PathDirectSelectOptions },
+			// 	{ G: new f.ks, _g: RoundedRectOptions }
+			// ],
+			// [
+			// 	{ G: new f.Rect, _g: RectangleShapeOptions },
+			// 	{ G: new f.am, _g: PolygonShapeOptions },
+			// 	{ G: new f.pB, _g: LineArrowOptions },
+			// 	{ G: new f.EU, _g: PolygonStarOptions },
+			// 	{ G: new f.sQ, _g: CustomShapeOptions }
+			// ],
+			// [
+			// 	{ G: new f.Mi, _g: ColorSamplerToolOptions },
+			// 	{ G: new f.RotateViewTool, _g: GradientAngleToolOptions }
+			// ],
+			// [
+			// 	{ G: new f.gU, _g: ZoomToolOptions }
+			// ]
 		],
 		L7: [],
 		keys: [
@@ -97718,6 +97818,21 @@ function PhotopeaApp() {
 			KeyboardHandler.fu,
 			KeyboardHandler.Zi,
 			KeyboardHandler.dr
+		],
+		Vi: [
+			// { G: new f.avo, _g: TypeToolHorizontalOptions },
+			// { G: new f.abB, _g: TypeToolVerticalOptions },
+			// { G: new f.aug, _g: TypeToolWarpOptions },
+			// { G: new f.lS(!0), _g: EyedropperToolOptions },
+			// { G: new f.XR, _g: PuppetWarpOptions }
+		],
+		Y9: [
+			{ G: new f.uj },
+			{ G: new f.History },
+			{ G: new f.hE },
+			{ G: new f.Tt },
+			{ G: new f.u2 },
+			{ G: new f.uY }
 		],
 		map: {},
 		Vu: null,

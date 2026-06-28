@@ -278,7 +278,8 @@ const Panels = {
 			// console.log(event);
 			switch (event.type) {
 				case "init-panel":
-					Self.wrapper = APP.els.content.find(`.navigator-wrapper`);
+					Self.root = APP.els.content.find(`.sidebar-wrapper div[data-box="navigator"]`);
+					Self.wrapper = Self.root.find(`.navigator-wrapper`);
 					Self.maxW = parseInt(Self.wrapper.cssProp("--w"), 10);
 					Self.maxH = parseInt(Self.wrapper.cssProp("--h"), 10);
 					Self.cvs = Self.wrapper.find("canvas");
@@ -335,7 +336,7 @@ const Panels = {
 						_local4350 = viewState.Zx(vRect.x, vRect.y),
 						_local4352 = viewState.Zx(vRect.x + vRect.m, vRect.y + vRect.n),
 						factor = vw / event.doc.m;
-					console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
+					// console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
 
 					// Draw in document space; factor converts doc px -> thumbnail px.
 					return;
@@ -345,6 +346,9 @@ const Panels = {
 					Self.ctx.strokeStyle = "#ff0000";
 					// Red rectangle = currently visible region of the document.
 					Self.ctx.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
+					break;
+				case "update-zoom-value":
+					Self.root.find(`.box-foot .value`).html(`${event.value}%`);
 					break;
 			}
 		}

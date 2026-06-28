@@ -18,7 +18,7 @@ let Test = {
 		
 		// setTimeout(() => APP.tools.zoom.dispatch({ type: "center-fit" }), 1200);
 
-		setTimeout(() => APP.els.content.find(`.tool[data-content="zoom"]`).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.tool[data-content="zoom"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.tool-hand`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
 		// setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);

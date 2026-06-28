@@ -36,6 +36,22 @@ const Misc = {
 		cvs.prop({ width, height });
 		return { cvs, ctx }
 	},
+	generateSpectrum(scale) {
+		let spectrum = [];
+		scale.map(g => {
+			switch (g.constructor) {
+				case Array:
+					for (var i=g[0]; i<g[1]; i+=g[2]) {
+						if (spectrum.at(-1) !== i) spectrum.push(i);
+					}
+					if (spectrum.at(-1) !== g[1]) spectrum.push(g[1]);
+					break;
+				default:
+					if (spectrum.at(-1) !== g) spectrum.push(g);
+			}
+		});
+		return spectrum;
+	},
 	fitWithin(w, h, mW, mH) {
 		let scale = Math.min(mW/w, mH/h, 1);
 		return {
