@@ -361,15 +361,11 @@ const Panels = {
 					value = Math.min(+Self.miniRange[0].value+1, APP.tools.zoom.spectrum.length-1);
 					Self.miniRange[0].value = value;
 					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
-
-					setTimeout(() => Self.dispatch({ type: "recalc-view-rect" }), 500);
 					break;
 				case "zoom-out":
 					value = Math.max(+Self.miniRange[0].value-1, 0);
 					Self.miniRange[0].value = value;
 					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
-
-					setTimeout(() => Self.dispatch({ type: "recalc-view-rect" }), 500);
 					break;
 				case "recalc-view-rect":
 					var a  = Doc.u.aR(),
@@ -381,9 +377,7 @@ const Panels = {
 						vy = Math.max(p0.y * fy, 0),
 						vw = Math.min((p1.x - p0.x) * fx, Self.vw),
 						vh = Math.min((p1.y - p0.y) * fy, Self.vh);
-					// console.log(vx, vy);
-					// console.log(p0, p1);
-
+					// apply rect dim
 					Self.viewRect.css({
 						"--vx": `${vx}px`,
 						"--vy": `${vy}px`,

@@ -66,6 +66,10 @@
 							u.R.y = u.q8.y = y0 + (y1 - y0) * t;
 							Engine.doc.bV = true; // claim anim; N==ma so update() won't re-ease
 							if (e < 1) requestAnimationFrame(step);
+							else {
+								// anim ended
+								Panels.navigator.dispatch({ type: "recalc-view-rect" });
+							}
 						});
 					};
 					// smooth anim
@@ -73,6 +77,8 @@
 				} else {
 					CanvasTools.gU.p8(Engine.doc.u, event.point, false, event.value / 100);
 					PP.update();
+
+					Panels.navigator.dispatch({ type: "recalc-view-rect" });
 				}
 				break;
 			case "select-option":
