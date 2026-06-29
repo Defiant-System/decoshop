@@ -295,6 +295,7 @@ const Panels = {
 				// custom events
 				case "init-panel":
 					Self.root = APP.els.content.find(`.sidebar-wrapper div[data-box="navigator"]`);
+					Self.viewRect = Self.root.find(`.view-rect`);
 					Self.miniRange = Self.root.find(`.box-foot .mini-range`);
 					Self.miniValue = Self.root.find(`.box-foot .value`);
 					Self.wrapper = Self.root.find(`.navigator-wrapper`);
@@ -331,59 +332,64 @@ const Panels = {
 					Self.EI = mipmap.slice(count);
 					break;
 				case "refresh":
-	 				let w = event.doc.Ch.m,
-	 					h = event.doc.Ch.n,
-	 					{ width, height } = Misc.fitWithin(w, h, Self.maxW, Self.maxH);
-	 				// update width & height for navigator panel
-	 				Self.wrapper.css({ "--d": "block", "--w": `${width}px`, "--h": `${height}px` });
+					let w = event.doc.Ch.m,
+						h = event.doc.Ch.n,
+						{ width, height } = Misc.fitWithin(w, h, Self.maxW, Self.maxH);
+					// update width & height for navigator panel
+					Self.wrapper.css({ "--d": "block", "--w": `${width}px`, "--h": `${height}px` });
+					Self.vw = width;
+					Self.vh = height;
 
-	 				Self.dispatch({ type: "thumbnail-mip-chain" });
+					Self.dispatch({ type: "thumbnail-mip-chain" });
 					// PixelUtil.copyByteBuffer(event.doc, iData.data);
 
 					var viewState = event.doc.u;
 					// Smallest cached level: EI[0] = RGBA pixels, EI[1] = its Rect (size).
 					var mipmap = Self.EI[0],
-						rect = Self.EI[1],
-						vw = rect.m,
-						vh = rect.n,
-						cvs = Self.cvs[0];
+						rect = Self.EI[1];
 					// Size the canvas to the thumbnail's pixel dimensions.
-					Self.cvs.attr({ width: vw, height: vh });
-					// s.setElementSizePx(cvs, width, height);
+					Self.cvs.attr({ width: rect.m, height: rect.n });
 					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
-					var iData = Self.ctx.createImageData(vw, vh);
+					var iData = Self.ctx.createImageData(rect.m, rect.n);
 					PixelUtil.copyByteBuffer(mipmap, iData.data);
 					Self.ctx.putImageData(iData, 0, 0);
 					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
 					Self.ctx.getImageData(0, 0, 1, 1);
-
-					// Map the visible viewport rect (aR, device px) to document coordinates via
-					// Zx(), then scale to thumbnail space so the red box lines up with the image.
-					var vRect = viewState.aR(),
-						_local4350 = viewState.Zx(vRect.x, vRect.y),
-						_local4352 = viewState.Zx(vRect.x + vRect.m, vRect.y + vRect.n),
-						factor = vw / event.doc.m;
-					console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
-
-					// Draw in document space; factor converts doc px -> thumbnail px.
-					return;
-					Self.ctx.scale(factor, factor);
-					// Keep the outline a constant ~4 px regardless of the thumbnail scale.
-					Self.ctx.lineWidth = 4 / factor;
-					Self.ctx.strokeStyle = "#ff0000";
-					// Red rectangle = currently visible region of the document.
-					Self.ctx.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
 					break;
 
 				case "zoom-in":
 					value = Math.min(+Self.miniRange[0].value+1, APP.tools.zoom.spectrum.length-1);
 					Self.miniRange[0].value = value;
 					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
+
+					setTimeout(() => Self.dispatch({ type: "recalc-view-rect" }), 500);
 					break;
 				case "zoom-out":
 					value = Math.max(+Self.miniRange[0].value-1, 0);
 					Self.miniRange[0].value = value;
 					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
+
+					setTimeout(() => Self.dispatch({ type: "recalc-view-rect" }), 500);
+					break;
+				case "recalc-view-rect":
+					var a  = Doc.u.aR(),
+						p0 = Doc.u.Zx(a.x, a.y),
+						p1 = Doc.u.Zx(a.x + a.m, a.y + a.n),
+						fx = Self.vw / Doc.m,
+						fy = Self.vh / Doc.n,
+						vx = Math.max(p0.x * fx, 0),
+						vy = Math.max(p0.y * fy, 0),
+						vw = Math.min((p1.x - p0.x) * fx, Self.vw),
+						vh = Math.min((p1.y - p0.y) * fy, Self.vh);
+					// console.log(vx, vy);
+					// console.log(p0, p1);
+
+					Self.viewRect.css({
+						"--vx": `${vx}px`,
+						"--vy": `${vy}px`,
+						"--vw": `${vw}px`,
+						"--vh": `${vh}px`,
+					});
 					break;
 				case "update-zoom-value":
 					Self.root.find(`.box-foot .value`).html(`${event.value}%`);

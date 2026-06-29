@@ -4097,6 +4097,10 @@ content {
 					--w: 258px;
 					--h: 138px;
 					--d: none;
+					--vx: 0;
+					--vy: 0;
+					--vw: var(--w);
+					--vh: var(--h);
 					position: relative;
 					margin: 7px auto;
 					width: var(--w);
@@ -4127,15 +4131,13 @@ content {
 					.view-rect {
 						display: var(--d);
 						position: absolute;
-						top: 0;
-						left: 0;
-						width: inherit;
-						height: inherit;
+						top: var(--vy);
+						left: var(--vx);
+						width: var(--vw);
+						height: var(--vh);
 						background: transparent;
 						border: 2px solid #ff4a4a;
 						cursor: move;
-						width: var(--w);
-						height: var(--h);
 					}
 				}
 
