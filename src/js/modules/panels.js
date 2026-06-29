@@ -315,6 +315,7 @@ const Panels = {
 					});
 					// bind event handlers
 					Self.miniRange.on("input", Self.dispatch);
+					Self.viewRect.on("mousedown", Self.doPan);
 					break;
 				case "thumbnail-mip-chain":
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
@@ -379,14 +380,91 @@ const Panels = {
 						vh = Math.min((p1.y - p0.y) * fy, Self.vh);
 					// apply rect dim
 					Self.viewRect.css({
-						"--vx": `${vx}px`,
-						"--vy": `${vy}px`,
-						"--vw": `${vw}px`,
-						"--vh": `${vh}px`,
+						"--vx": `${Math.round(vx)}px`,
+						"--vy": `${Math.round(vy)}px`,
+						"--vw": `${Math.round(vw)}px`,
+						"--vh": `${Math.round(vh)}px`,
 					});
 					break;
 				case "update-zoom-value":
 					Self.root.find(`.box-foot .value`).html(`${event.value}%`);
+					break;
+			}
+		},
+		doPan(event) {
+			let APP = decoshop,
+				Self = Panels.navigator,
+				Drag = Self.drag;
+			switch (event.type) {
+				case "mousedown":
+					// prevent default behaviour
+					event.preventDefault();
+					// prepare drag object
+					let el = $(event.target),
+						cvs = {
+							el: Self.cvs[0],
+							w: Self.cvs.attr("width"),
+							g: Self.cvs.attr("height"),
+						},
+						rect = {
+							x: parseInt(el.cssProp("--vx"), 10),
+							y: parseInt(el.cssProp("--vy"), 10),
+							w: parseInt(el.cssProp("--vw"), 10),
+							h: parseInt(el.cssProp("--vh"), 10),
+						},
+						// mini = {
+						// 	w: parseInt(el.cssProp("--w"), 10),
+						// 	h: parseInt(el.cssProp("--h"), 10),
+						// },
+						click = {
+							x: rect.x - event.clientX,
+							y: rect.y - event.clientY,
+						},
+						min = {
+							x: 0,
+							y: 0,
+						},
+						max = {
+							x: parseInt(el.parent().cssProp("--w"), 10) - rect.w,
+							y: parseInt(el.parent().cssProp("--h"), 10) - rect.h,
+						},
+						doc = Engine.doc,
+						avr = doc.u.aR(),
+						target = {
+							doc,
+							s: doc.u.N,
+							w: doc.m,
+							h: doc.n,
+							rx: (doc.m - avr.m),
+							ry: (doc.n - avr.n),
+						};
+
+					Self.drag = { el, click, rect, target, cvs, min, max };
+
+					// prevent mouse from triggering mouseover
+					APP.els.content.addClass("no-cursor");
+					// bind event handlers
+					APP.els.doc.on("mousemove mouseup", Self.doPan);
+					break;
+				case "mousemove":
+					let vx = Math.min(Math.max(event.clientX + Drag.click.x, Drag.min.x), Drag.max.x),
+						vy = Math.min(Math.max(event.clientY + Drag.click.y, Drag.min.y), Drag.max.y);
+					// moves navigator view rectangle
+					Drag.el.css({ "--vx": `${vx}px`, "--vy": `${vy}px` });
+
+					// apply pan
+					// let x = (vx * (Drag.target.w * Drag.target.s) / 2) + 64;
+					// let y = (vy * (Drag.target.h * Drag.target.s) / 2) + 64;
+					// CanvasTools.Mi.if(Drag.target.doc, x, y);
+					
+					
+
+					break;
+				case "mouseup":
+					// remove class
+					APP.els.content.removeClass("no-cursor");
+					// unbind event handlers
+					APP.els.doc.off("mousemove mouseup", Self.doPan);
 					break;
 			}
 		}

@@ -7850,12 +7850,13 @@ f.gU.prototype.TA = function(l, d, G, b, V) {
 		t = !1,
 		I = null;
 	if (l.a == "adapt") {
-		var y = 0;
+		var y = 0,
+			aVR = G.u.aR();
 		if (l.Z == "pixel") y = 1;
 		if (l.Z == "fitscr") {
 			var y = 0,
-				e = G.u.Vm.m,
-				M = G.u.Vm.n,
+				e = aVR.m,
+				M = aVR.n,
 				R = new Rect(0, 0, G.m, G.n),
 				J = PixelUtil.vec.simplifyPath(R).C,
 				n = new Matrix2D;
@@ -7866,7 +7867,7 @@ f.gU.prototype.TA = function(l, d, G, b, V) {
 			y = Math.min((e - T * 2) / r.m, (M - T * 2) / r.n);
 			G.u.R.T6(0, 0)
 		}
-		I = new Point2D(Math.round(G.u.Vm.m / 2), Math.round(G.u.Vm.n / 2));
+		I = new Point2D(Math.round(aVR.x + aVR.m / 2), Math.round(aVR.y + aVR.n / 2));
 		Q = y;
 		f.gU.p8(G.u, I, t, Q);
 		G.bV = !0
@@ -7912,8 +7913,9 @@ f.gU.prototype.TA = function(l, d, G, b, V) {
 		var B = l.In ? d.Mt : [G];
 		for (var A = 0; A < B.length; A++) {
 			var a = B[A],
-				m = a.u;
-			I = l.OJ ? l.OJ : new Point2D(Math.round(m.Vm.m / 2), Math.round(m.Vm.n / 2));
+				m = a.u,
+				mVR = m.aR();
+			I = l.OJ ? l.OJ : new Point2D(Math.round(mVR.x + mVR.m / 2), Math.round(mVR.y + mVR.n / 2));
 			if (l.N != null) Q = l.N;
 			else t = l.K$;
 			f.gU.p8(m, I, t, Q);

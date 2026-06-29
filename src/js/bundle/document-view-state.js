@@ -47,12 +47,12 @@ DocumentViewState.prototype.clearAvailable = function() {
 
 DocumentViewState.prototype.Gb = function(l) {
 	var d = new Matrix2D,
-		G = this.Vm,
+		G = this.aR(),
 		b = this.Kv,
 		V = l ? this.ma : this.N,
 		Q = l ? this.q8 : this.R,
-		t = Math.round((G.m - b.m * V) / 2 + Q.x),
-		I = Math.round((G.n - b.n * V) / 2 + Q.y);
+		t = Math.round(G.x + (G.m - b.m * V) / 2 + Q.x),
+		I = Math.round(G.y + (G.n - b.n * V) / 2 + Q.y);
 	d.translate(-t, -I);
 	d.scale(1 / V, 1 / V);
 	var y = b.m / 2,
@@ -64,7 +64,7 @@ DocumentViewState.prototype.Gb = function(l) {
 };
 
 DocumentViewState.prototype.ai7 = function(l) {
-	var d = this.Vm,
+	var d = this.aR(),
 		G = this.Kv,
 		b = Math.atan2(-l.k, l.aS),
 		V = G.m / 2,
@@ -76,8 +76,8 @@ DocumentViewState.prototype.ai7 = function(l) {
 	l.scale(t, t);
 	var I = -l.cI,
 		y = -l.xu,
-		e = Math.round(I - (d.m - G.m * t) / 2),
-		M = Math.round(y - (d.n - G.n * t) / 2);
+		e = Math.round(I - d.x - (d.m - G.m * t) / 2),
+		M = Math.round(y - d.y - (d.n - G.n * t) / 2);
 	if (Math.abs(t - Math.round(t)) < 1e-6) t = Math.round(t);
 	this.Ay = b;
 	this.N = t;

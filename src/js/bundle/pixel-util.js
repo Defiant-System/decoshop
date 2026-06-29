@@ -14437,9 +14437,10 @@ PixelUtil.y0.axs = function(l, d) {
 };
 
 PixelUtil.y0.a3j = function(l, lineColor, borderColor, bgColor) {
-	var b = 0,
+	var rS = PixelUtil.y0.mT,
+		b = 0,
 		V = 0,
-		Q = 4 * PixelUtil.y0.mT;
+		Q = 4 * rS;
 	for (var A = 9; A >= 0; A--) {
 		var t = Math.pow(10, A);
 		if (5 * t * l <= Q) {
@@ -14463,11 +14464,11 @@ PixelUtil.y0.a3j = function(l, lineColor, borderColor, bgColor) {
 		V = 10
 	}
 	var I = Math.ceil(b * l),
-		y = PixelUtil.allocBytes(I * PixelUtil.y0.mT * 4),
+		y = PixelUtil.allocBytes(I * rS * 4),
 		bgPixel = 0xff000000 | bgColor;
 	PixelUtil.andMaskUint32(y, bgPixel);
-	for (var A = 0; A < PixelUtil.y0.mT; A++) PixelUtil.y0.YH(y, 4 * A * I, lineColor);
-	for (var A = 0; A < I; A++) PixelUtil.y0.YH(y, 4 * ((PixelUtil.y0.mT - 1) * I + A), borderColor);
+	for (var A = 0; A < rS; A++) PixelUtil.y0.YH(y, 4 * A * I, lineColor);
+	for (var A = 0; A < I; A++) PixelUtil.y0.YH(y, 4 * ((rS - 1) * I + A), borderColor);
 	if (b == 2) V = 2;
 	if (b == 5) V = 5;
 	if (b > 1 || b == 1 && I > 20) {
@@ -14502,11 +14503,11 @@ PixelUtil.y0.YH = function(l, d, G) {
 // horizAxisTransform, vertAxisTransform: [effectiveZoom, panOrigin] per axis (unit-aware)
 PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
 	var avr = viewState.aR(),
-		rulerOriginX = avr.x,
-		rulerOriginY = avr.y,
-		viewportWidth = avr.m,
-		viewportHeight = avr.n,
-		rulerThicknessPx = PixelUtil.y0.mT,
+		// rulerOriginX = avr.x,
+		// rulerOriginY = avr.y,
+		vW = avr.m,
+		vH = avr.n,
+		rS = PixelUtil.y0.mT,
 		bgColor = 0x282828,
 		textColor = 0x6d6d6d,
 		lineColor = 0x494949,
@@ -14532,15 +14533,15 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 				bgPixel = 0xff000000 | bgColor,
 				outline = 0xff000000 | borderColor;
 			PixelUtil.andMaskUint32(cornerPixels, bgPixel);
-			for (var i = 0; i < rulerThicknessPx; i++) {
-				cornerPixels32[(rulerThicknessPx - 1) * rulerThicknessPx + i] = outline;
-				cornerPixels32[i * rulerThicknessPx + rulerThicknessPx - 1] = outline;
+			for (var i = 0; i < rS; i++) {
+				cornerPixels32[(rS - 1) * rS + i] = outline;
+				cornerPixels32[i * rS + rS - 1] = outline;
 			};
 		}
 
 		var tickStrip = this.a3j(viewState.N, lineColor, borderColor, bgColor),
 			viewMinDoc = viewState.Zx(0, 0),
-			viewMaxDoc = viewState.Zx(viewportWidth, viewportHeight),
+			viewMaxDoc = viewState.Zx(vW, vH),
 			// Document-space bounds snapped to tick grid.
 			tickStartDocX = Math.floor(viewMinDoc.x / tickStrip.step) * tickStrip.step,
 			tickEndDocX = Math.ceil(viewMaxDoc.x / tickStrip.step) * tickStrip.step,
@@ -14554,11 +14555,11 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 		if (!isHorizontal) {
 			var horizTickStrip = tickStrip.Wq;
 			tickStrip.Wq = PixelUtil.allocBytes(horizTickStrip.length * 4);
-			PixelUtil.canvas.Bo(horizTickStrip, tickStrip.Wq, tickStepScreenPxCeil, rulerThicknessPx)
+			PixelUtil.canvas.Bo(horizTickStrip, tickStrip.Wq, tickStepScreenPxCeil, rS)
 		}
 		var rulerPixels = isHorizontal ? viewState.C5.data : viewState.XF.data,
-			rulerBounds = new Rect(0, 0, isHorizontal ? viewportWidth : rulerThicknessPx, isHorizontal ? rulerThicknessPx : viewportHeight),
-			tickBlitRect = new Rect(0, 0, isHorizontal ? tickStepScreenPxCeil : rulerThicknessPx, isHorizontal ? rulerThicknessPx : tickStepScreenPxCeil),
+			rulerBounds = new Rect(0, 0, isHorizontal ? vW : rS, isHorizontal ? rS : vH),
+			tickBlitRect = new Rect(0, 0, isHorizontal ? tickStepScreenPxCeil : rS, isHorizontal ? rS : tickStepScreenPxCeil),
 			digitBlitRect = new Rect(isHorizontal ? 0 : 2, isHorizontal ? -1 : 0, PixelUtil.y0.m3, PixelUtil.y0.m2),
 			tickCount = (isHorizontal ? tickEndDocX - tickStartDocX : tickEndDocY - tickStartDocY) / tickStrip.step;
 		for (var tickIndex = 0; tickIndex < tickCount; tickIndex++) {
@@ -14586,18 +14587,18 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 	viewState.R = savedOrigin;
 	viewState.Ay = savedAy;
 	// Crosshair notch on each ruler at the current pointer position.
-	var crosshairLen = Math.floor(rulerThicknessPx * .6),
+	var crosshairLen = Math.floor(rS * .6),
 		topRulerPixels32 = new Uint32Array(viewState.C5.data.buffer),
 		leftRulerPixels32 = new Uint32Array(viewState.XF.data.buffer),
 		crosshairColor = 0xff0000;
-	if (0 < cursorScreenX && cursorScreenX < viewportWidth) {
+	if (0 < cursorScreenX && cursorScreenX < vW) {
 		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			topRulerPixels32[crosshairIndex * viewportWidth + cursorScreenX] = crosshairColor;
+			topRulerPixels32[crosshairIndex * vW + cursorScreenX] = crosshairColor;
 		}
 	}
-	if (0 < cursorScreenY && cursorScreenY < viewportHeight) {
+	if (0 < cursorScreenY && cursorScreenY < vH) {
 		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			leftRulerPixels32[cursorScreenY * rulerThicknessPx + crosshairIndex] = crosshairColor;
+			leftRulerPixels32[cursorScreenY * rS + crosshairIndex] = crosshairColor;
 		}
 	}
 };

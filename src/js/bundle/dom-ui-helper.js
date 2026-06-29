@@ -7453,11 +7453,12 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 
 	// hbi: render rulers
 	if (_local4162.bI) {
-		var _hbiAvr = l.u.aR();
-		if (l.u.C5 == null || l.u.C5.width != _hbiAvr.m || l.u.XF.height != _hbiAvr.n) {
-			l.u.X7 = d.createImageData(PixelUtil.y0.mT, PixelUtil.y0.mT);
-			l.u.C5 = d.createImageData(_hbiAvr.m, PixelUtil.y0.mT);
-			l.u.XF = d.createImageData(PixelUtil.y0.mT, _hbiAvr.n);
+		var avr = l.u.aR();
+		var rS = PixelUtil.y0.mT;
+		if (l.u.C5 == null || l.u.C5.width != avr.m || l.u.XF.height != avr.n) {
+			l.u.X7 = d.createImageData(rS, rS);
+			l.u.C5 = d.createImageData(avr.m, rS);
+			l.u.XF = d.createImageData(rS, avr.n);
 		}
 		var _local4157 = 0,
 			_local4158 = 0,
@@ -7485,9 +7486,9 @@ NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
 		NamedTabPanel._f(l.u.XF.data);
 		NamedTabPanel._f(l.u.C5.data);
 		NamedTabPanel._f(l.u.X7.data);
-		d.putImageData(l.u.XF, _hbiAvr.x, _hbiAvr.y); // left ruler
-		d.putImageData(l.u.C5, _hbiAvr.x, _hbiAvr.y); // top ruler
-		d.putImageData(l.u.X7, _hbiAvr.x, _hbiAvr.y); // ruler corner
+		d.putImageData(l.u.XF, avr.x-rS, avr.y);    // left ruler
+		d.putImageData(l.u.C5, avr.x,    avr.y-rS); // top ruler
+		d.putImageData(l.u.X7, avr.x-rS, avr.y-rS); // ruler corner
 		
 		// hbi: zoom percentage and "width x height"
 		// d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);

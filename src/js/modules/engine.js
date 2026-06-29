@@ -16,8 +16,7 @@ const Engine = {
 			case "app-init":
 				break;
 			case "init-view-state":
-				rect = APP.els.content.find(".cvs-helpers").offset();
-				event.data.viewState.setAvailable(rect.left, rect.top, rect.width, rect.height);
+				Self.dispatch({ type: "update-view-state", viewState: event.data.viewState });
 				break;
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
@@ -39,6 +38,7 @@ const Engine = {
 			type = event.type,
 			value,
 			rect,
+			vs,
 			el;
 		switch (type) {
 			// karaqu events
@@ -53,16 +53,19 @@ const Engine = {
 				value = !PP.fB.bI;
 				// engine update
 				PP.fB.bI = value;
-				PP.update(true);
 				// ui update
 				APP.els.content.toggleClass("show-rulers", !value);
-				// update view state / "available rect"
-				// APP.tools.zoom.dispatch({ type: "center-fit" });
+				Self.dispatch({ type: "update-view-state" });
 				break;
 			case "update-view-state":
 				rect = APP.els.content.find(".cvs-helpers").offset();
-				Self.doc.u.setAvailable(rect.left, rect.top, rect.width, rect.height);
-				PP.update(!PP.fB.bI);
+				if (PP.fB.bI) {
+					rect.top += PixelUtil.y0.mT;
+					rect.left += PixelUtil.y0.mT;
+				}
+				vs = event.viewState || Engine.doc.u;
+				vs.setAvailable(rect.left, rect.top, rect.width, rect.height);
+				PP.update(true);
 				break;
 		}
 	},

@@ -19,7 +19,32 @@ let Test = {
 		// setTimeout(() => APP.tools.zoom.dispatch({ type: "center-fit" }), 1200);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="zoom"]`).trigger("click"), 1500);
-		setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
+		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
+		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1700);
+
+		/*
+		setTimeout(() => {
+			// CanvasTools.Mi.if(Engine.doc, 0, 0);
+			// PP.update();
+
+			// let { x, y } = Engine.doc.u.R;
+			// // x += 250;
+			// // y += 0;
+			// console.log( x, y );
+
+			// let x = 17-((445-230) >> 1);
+			// let y = 72+17-((454-345) >> 1);
+
+			let x = 0;
+			let y = 0;
+			// Engine.doc.u.R.T6(x, y);
+			// Engine.doc.u.q8.T6(x, y); 
+			CanvasTools.Mi.if(Engine.doc, x, y);
+			Engine.doc.bV = true;
+			PP.update();
+
+		}, 2000);
+		*/
 
 		// setTimeout(() => APP.els.content.find(`.tool-hand`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
