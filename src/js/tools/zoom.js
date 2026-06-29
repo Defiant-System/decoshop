@@ -23,41 +23,13 @@
 			case "click":
 				let index = Self.spectrum.indexOf(Self.value) + (Self.option === "zoom-plus" ? 1 : -1);
 				Self.value = Self.spectrum[index];
-				// CanvasTools.gU.p8(Engine.doc.u, new Point2D(event.offsetX, event.offsetY), false, Self.value / 100);
-				// PP.update();
-
-				let animateZoom = (target, ms=120) => {
-					let u = Engine.doc.u,
-						c = new Point2D(event.offsetX, event.offsetY),
-						N0 = u.N,
-						x0 = u.R.x,
-						y0 = u.R.y;
-
-					// Resolve final zoom + pan once (about c), then rewind to the start.
-					CanvasTools.gU.p8(u, c, false, target);
-					
-					let N1 = u.N,
-						x1 = u.R.x,
-						y1 = u.R.y,
-						e = 0,
-						last = window.performance.now();
-					u.N = u.ma = N0;
-					u.R.T6(x0, y0);
-					u.q8.T6(x0, y0);
-					requestAnimationFrame(function step(now) {
-						if (e > 0) PP.update();
-						e = Math.min(1, e + (now - last) / ms);
-						last = now;
-						let t = 1 - Math.pow(1 - e, 3); // easeOutCubic
-						u.N = u.ma = N0 * Math.pow(N1 / N0, t); // geometric zoom interp
-						u.R.x = u.q8.x = x0 + (x1 - x0) * t;
-						u.R.y = u.q8.y = y0 + (y1 - y0) * t;
-						Engine.doc.bV = true; // claim anim; N==ma so update() won't re-ease
-						if (e < 1) requestAnimationFrame(step);
-					});
-				};
-				// smooth anim
-				animateZoom(Self.value / 100);
+				
+				Self.dispatch({
+					type: "do-zoom",
+					value: Self.value,
+					smooth: true,
+					point: new Point2D(event.offsetX, event.offsetY),
+				});
 
 				// update panel + status bar
 				Panels.navigator.dispatch({ type: "update-zoom-value", value: Self.value });
@@ -65,6 +37,44 @@
 				break;
 
 			// custom events
+			case "do-zoom":
+				if (event.smooth) {
+					let animateZoom = (target, ms=120) => {
+						let u = Engine.doc.u,
+							N0 = u.N,
+							x0 = u.R.x,
+							y0 = u.R.y;
+
+						// Resolve final zoom + pan once (about c), then rewind to the start.
+						CanvasTools.gU.p8(u, event.point, false, target);
+						
+						let N1 = u.N,
+							x1 = u.R.x,
+							y1 = u.R.y,
+							e = 0,
+							last = window.performance.now();
+						u.N = u.ma = N0;
+						u.R.T6(x0, y0);
+						u.q8.T6(x0, y0);
+						requestAnimationFrame(function step(now) {
+							if (e > 0) PP.update();
+							e = Math.min(1, e + (now - last) / ms);
+							last = now;
+							let t = 1 - Math.pow(1 - e, 3); // easeOutCubic
+							u.N = u.ma = N0 * Math.pow(N1 / N0, t); // geometric zoom interp
+							u.R.x = u.q8.x = x0 + (x1 - x0) * t;
+							u.R.y = u.q8.y = y0 + (y1 - y0) * t;
+							Engine.doc.bV = true; // claim anim; N==ma so update() won't re-ease
+							if (e < 1) requestAnimationFrame(step);
+						});
+					};
+					// smooth anim
+					animateZoom(event.value / 100);
+				} else {
+					CanvasTools.gU.p8(Engine.doc.u, event.point, false, event.value / 100);
+					PP.update();
+				}
+				break;
 			case "select-option":
 				Self.option = event.arg || "zoom-plus";
 				// set canvas cursor

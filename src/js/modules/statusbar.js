@@ -26,7 +26,6 @@
 				});
 				break;
 			case "set-zoom":
-				// console.log(event.value);
 				let doc = Engine.doc,
 					avr = doc.u.aR(),
 					// ruler = PP.fB.bI ? 17 : 0,

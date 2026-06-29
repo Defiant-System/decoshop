@@ -274,13 +274,25 @@ const Panels = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.navigator,
+				Doc = Engine.doc,
 				zoomTool,
 				spectrum,
-				index,
 				value,
 				el;
 			// console.log(event);
 			switch (event.type) {
+				// native events
+				case "input":
+				case "update-zoom":
+					value = APP.tools.zoom.spectrum[event.target.value];
+					Self.miniValue.html(`${value}%`);
+					// update doc canvas
+					let point = Doc.u.dN(Doc.m / 2, Doc.n / 2),
+						smooth = event.type === "update-zoom";
+					APP.tools.zoom.dispatch({ type: "do-zoom", value, point, smooth });
+					break;
+
+				// custom events
 				case "init-panel":
 					Self.root = APP.els.content.find(`.sidebar-wrapper div[data-box="navigator"]`);
 					Self.miniRange = Self.root.find(`.box-foot .mini-range`);
@@ -300,14 +312,15 @@ const Panels = {
 						max: spectrum.length-1,
 						value: spectrum.indexOf(zoomTool.value),
 					});
+					// bind event handlers
+					Self.miniRange.on("input", Self.dispatch);
 					break;
 				case "thumbnail-mip-chain":
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
 					var edge = Self.maxW * window.devicePixelRatio,
 						count = 0,
-						doc = Engine.doc,
 						// Seed the pyramid with the full-resolution composite and its bounds.
-						mipmap = [doc.LT(), new Rect(0, 0, doc.m, doc.n)];
+						mipmap = [Doc.LT(), new Rect(0, 0, Doc.m, Doc.n)];
 					// Append progressively half-sized RGBA levels (mipmaps).
 					PixelUtil.pyramidDownsampleRgba(mipmap);
 					// Skip the levels that are still larger than the display target.
@@ -350,7 +363,7 @@ const Panels = {
 						_local4350 = viewState.Zx(vRect.x, vRect.y),
 						_local4352 = viewState.Zx(vRect.x + vRect.m, vRect.y + vRect.n),
 						factor = vw / event.doc.m;
-					// console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
+					console.log( _local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y );
 
 					// Draw in document space; factor converts doc px -> thumbnail px.
 					return;
@@ -361,19 +374,16 @@ const Panels = {
 					// Red rectangle = currently visible region of the document.
 					Self.ctx.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
 					break;
+
 				case "zoom-in":
-					zoomTool = APP.tools.zoom;
-					spectrum = zoomTool.spectrum;
-					index = Math.min(+Self.miniRange.attr("value")+1, spectrum.length-1);
-					Self.miniRange.attr({ value: index });
-					Self.miniValue.html(`${spectrum[index]}%`);
+					value = Math.min(+Self.miniRange[0].value+1, APP.tools.zoom.spectrum.length-1);
+					Self.miniRange[0].value = value;
+					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
 					break;
 				case "zoom-out":
-					zoomTool = APP.tools.zoom;
-					spectrum = zoomTool.spectrum;
-					index = Math.max(+Self.miniRange.attr("value")-1, 0);
-					Self.miniRange.attr({ value: index });
-					Self.miniValue.html(`${spectrum[index]}%`);
+					value = Math.max(+Self.miniRange[0].value-1, 0);
+					Self.miniRange[0].value = value;
+					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
 					break;
 				case "update-zoom-value":
 					Self.root.find(`.box-foot .value`).html(`${event.value}%`);
