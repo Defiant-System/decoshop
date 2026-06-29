@@ -71,13 +71,13 @@ const decoshop = {
 			handleBox: window.find(".handle-box"),
 		};
 		// init sub objects
+		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 		PP.init({ app: this, window });
 		Engine.init();
 		UI.init();
 		Panels.init();
 		Adjustments.init();
 		Dialogs.init();
-		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
 
 		// DEV-ONLY-START
 		Test.init(this);
@@ -104,6 +104,15 @@ const decoshop = {
 			case "window.resize":
 				// proxy event
 				Engine.dispatch(event);
+				break;
+			case "window.keydown":
+				Self.tools.move.dispatch({ type: "select-option", arg: "hand" });
+				Self.tools.move.dispatch({ type: "enable" });
+				break;
+			case "window.keyup":
+				Self.tools.move.dispatch({ type: "select-option", arg: "move" });
+				Self.tools.move.dispatch({ type: "diable" });
+				// reset canvas cursor
 				break;
 			case "open-file":
 				// show FS dialog

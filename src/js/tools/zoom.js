@@ -26,10 +26,9 @@
 				// CanvasTools.gU.p8(Engine.doc.u, new Point2D(event.offsetX, event.offsetY), false, Self.value / 100);
 				// PP.update();
 
-				let animateZoom = (target, ms) => {
+				let animateZoom = (target, ms=120) => {
 					let u = Engine.doc.u,
 						c = new Point2D(event.offsetX, event.offsetY),
-						k = ms || 120,
 						N0 = u.N,
 						x0 = u.R.x,
 						y0 = u.R.y;
@@ -39,34 +38,26 @@
 					
 					let N1 = u.N,
 						x1 = u.R.x,
-						y1 = u.R.y;
+						y1 = u.R.y,
+						e = 0,
+						last = window.performance.now();
 					u.N = u.ma = N0;
 					u.R.T6(x0, y0);
 					u.q8.T6(x0, y0);
-
-					let e = 0,
-						last = window.performance.now();
 					requestAnimationFrame(function step(now) {
-						e = Math.min(1, e + (now - last) / k);
+						if (e > 0) PP.update();
+						e = Math.min(1, e + (now - last) / ms);
 						last = now;
-						let t = 1 - Math.pow(1 - e, 3),             // easeOutCubic
-							n = N0 * Math.pow(N1 / N0, t);           // geometric zoom interp
-						u.N = u.ma = n;
+						let t = 1 - Math.pow(1 - e, 3); // easeOutCubic
+						u.N = u.ma = N0 * Math.pow(N1 / N0, t); // geometric zoom interp
 						u.R.x = u.q8.x = x0 + (x1 - x0) * t;
 						u.R.y = u.q8.y = y0 + (y1 - y0) * t;
-						Engine.doc.bV = true;                               // claim anim; N==ma so update() won't re-ease
-						PP.update();
+						Engine.doc.bV = true; // claim anim; N==ma so update() won't re-ease
 						if (e < 1) requestAnimationFrame(step);
 					});
 				};
-
+				// smooth anim
 				animateZoom(Self.value / 100);
-
-				// Zoom via the Zoom Tool action (sets N/R; ma/q8 lag → built-in smooth animation).
-				// let t = new Action(ActionTypes.E.v, true);
-				// t.G = CanvasTools.t7;
-				// t.data = { a: "zoom", N: Self.value / 100 };
-				// PP.dispatch(t);
 
 				// update panel + status bar
 				Panels.navigator.dispatch({ type: "update-zoom-value", value: Self.value });

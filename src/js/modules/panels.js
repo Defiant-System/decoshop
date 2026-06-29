@@ -274,11 +274,17 @@ const Panels = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.navigator,
+				zoomTool,
+				spectrum,
+				index,
+				value,
 				el;
 			// console.log(event);
 			switch (event.type) {
 				case "init-panel":
 					Self.root = APP.els.content.find(`.sidebar-wrapper div[data-box="navigator"]`);
+					Self.miniRange = Self.root.find(`.box-foot .mini-range`);
+					Self.miniValue = Self.root.find(`.box-foot .value`);
 					Self.wrapper = Self.root.find(`.navigator-wrapper`);
 					Self.maxW = parseInt(Self.wrapper.cssProp("--w"), 10);
 					Self.maxH = parseInt(Self.wrapper.cssProp("--h"), 10);
@@ -286,6 +292,14 @@ const Panels = {
 					Self.ctx = Self.cvs[0].getContext("2d", { willReadFrequently: true });
 					Self.ctx.imageSmoothingEnabled = true;
 					Self.ctx.imageSmoothingQuality = "high";
+					// prepare range slider
+					zoomTool = APP.tools.zoom;
+					spectrum = zoomTool.spectrum;
+					Self.miniRange.attr({
+						min: 0,
+						max: spectrum.length-1,
+						value: spectrum.indexOf(zoomTool.value),
+					});
 					break;
 				case "thumbnail-mip-chain":
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
@@ -346,6 +360,20 @@ const Panels = {
 					Self.ctx.strokeStyle = "#ff0000";
 					// Red rectangle = currently visible region of the document.
 					Self.ctx.strokeRect(_local4350.x, _local4350.y, _local4352.x - _local4350.x, _local4352.y - _local4350.y);
+					break;
+				case "zoom-in":
+					zoomTool = APP.tools.zoom;
+					spectrum = zoomTool.spectrum;
+					index = Math.min(+Self.miniRange.attr("value")+1, spectrum.length-1);
+					Self.miniRange.attr({ value: index });
+					Self.miniValue.html(`${spectrum[index]}%`);
+					break;
+				case "zoom-out":
+					zoomTool = APP.tools.zoom;
+					spectrum = zoomTool.spectrum;
+					index = Math.max(+Self.miniRange.attr("value")-1, 0);
+					Self.miniRange.attr({ value: index });
+					Self.miniValue.html(`${spectrum[index]}%`);
 					break;
 				case "update-zoom-value":
 					Self.root.find(`.box-foot .value`).html(`${event.value}%`);
