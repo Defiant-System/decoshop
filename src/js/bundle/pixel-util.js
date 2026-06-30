@@ -14501,9 +14501,9 @@ PixelUtil.y0.YH = function(l, d, G) {
 // bgColor: theme ruler background color
 PixelUtil.y0.rulers = function(viewState, horizAxisTransform, vertAxisTransform) {
 	var avr = viewState.aR(),
-		vW = avr.m,
-		vH = avr.n,
 		rS = PixelUtil.y0.mT,
+		vW = avr.m + rS,
+		vH = avr.n + rS,
 		bgColor = 0x282828,
 		textColor = 0x6d6d6d,
 		lineColor = 0x494949,

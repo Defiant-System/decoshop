@@ -29581,9 +29581,9 @@ PixelUtil.y0.YH = function(l, d, G) {
 // bgColor: theme ruler background color
 PixelUtil.y0.rulers = function(viewState, horizAxisTransform, vertAxisTransform) {
 	var avr = viewState.aR(),
-		vW = avr.m,
-		vH = avr.n,
 		rS = PixelUtil.y0.mT,
+		vW = avr.m + rS,
+		vH = avr.n + rS,
 		bgColor = 0x282828,
 		textColor = 0x6d6d6d,
 		lineColor = 0x494949,
@@ -54065,7 +54065,7 @@ DocumentViewState.prototype.Gb = function(useAnim) {
 	matrix.scale(1 / zoom, 1 / zoom);
 	var halfDocW = doc.m / 2,
 		halfDocH = doc.n / 2;
-	matrix.translate(-halfDocW+100, -halfDocH);
+	matrix.translate(-halfDocW, -halfDocH);
 	matrix.rotate(this.Ay);
 	matrix.translate(halfDocW, halfDocH);
 	return matrix;
@@ -94250,8 +94250,8 @@ NamedTabPanel.prototype.ak0 = function (doc, ctx, view, blendWithCanvas) {
 		var rS = PixelUtil.y0.mT;
 		if (doc.u.C5 == null || doc.u.C5.width != availRect.m || doc.u.XF.height != availRect.n) {
 			doc.u.X7 = ctx.createImageData(rS, rS);
-			doc.u.C5 = ctx.createImageData(availRect.m, rS);
-			doc.u.XF = ctx.createImageData(rS, availRect.n);
+			doc.u.C5 = ctx.createImageData(availRect.m + rS, rS);
+			doc.u.XF = ctx.createImageData(rS, availRect.n + rS);
 		}
 		var rulerOriginX = -availRect.x,
 			rulerOriginY = -availRect.y,

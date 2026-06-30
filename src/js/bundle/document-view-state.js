@@ -58,7 +58,7 @@ DocumentViewState.prototype.Gb = function(useAnim) {
 	matrix.scale(1 / zoom, 1 / zoom);
 	var halfDocW = doc.m / 2,
 		halfDocH = doc.n / 2;
-	matrix.translate(-halfDocW+100, -halfDocH);
+	matrix.translate(-halfDocW, -halfDocH);
 	matrix.rotate(this.Ay);
 	matrix.translate(halfDocW, halfDocH);
 	return matrix;

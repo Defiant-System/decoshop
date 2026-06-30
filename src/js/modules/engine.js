@@ -44,6 +44,7 @@ const Engine = {
 			// karaqu events
 			case "window.resize":
 				PP.resize(event.width, event.height);
+				Self.dispatch({ type: "update-view-state" });
 				break;
 			case "toggle-guides":
 				// pp.fB.Wi
@@ -62,6 +63,8 @@ const Engine = {
 				if (PP.fB.bI) {
 					rect.top += PixelUtil.y0.mT;
 					rect.left += PixelUtil.y0.mT;
+					rect.width -= PixelUtil.y0.mT * 2;
+					rect.height -= PixelUtil.y0.mT * 2;
 				}
 				vs = event.viewState || Engine.doc.u;
 				vs.setAvailable(rect.left, rect.top, rect.width, rect.height);
