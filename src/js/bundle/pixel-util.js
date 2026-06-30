@@ -14499,12 +14499,8 @@ PixelUtil.y0.YH = function(l, d, G) {
 // viewState: DocumentViewState (zoom, pan, ruler buffers)
 // textColor: theme text color as packed 0xBBGGRR
 // bgColor: theme ruler background color
-// cursorScreenX, cursorScreenY: pointer position for ruler crosshair markers
-// horizAxisTransform, vertAxisTransform: [effectiveZoom, panOrigin] per axis (unit-aware)
-PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
+PixelUtil.y0.rulers = function(viewState, horizAxisTransform, vertAxisTransform) {
 	var avr = viewState.aR(),
-		// rulerOriginX = avr.x,
-		// rulerOriginY = avr.y,
 		vW = avr.m,
 		vH = avr.n,
 		rS = PixelUtil.y0.mT,
@@ -14586,21 +14582,6 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 	viewState.N = savedZoom;
 	viewState.R = savedOrigin;
 	viewState.Ay = savedAy;
-	// Crosshair notch on each ruler at the current pointer position.
-	var crosshairLen = Math.floor(rS * .6),
-		topRulerPixels32 = new Uint32Array(viewState.C5.data.buffer),
-		leftRulerPixels32 = new Uint32Array(viewState.XF.data.buffer),
-		crosshairColor = 0xff0000;
-	if (0 < cursorScreenX && cursorScreenX < vW) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			topRulerPixels32[crosshairIndex * vW + cursorScreenX] = crosshairColor;
-		}
-	}
-	if (0 < cursorScreenY && cursorScreenY < vH) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			leftRulerPixels32[cursorScreenY * rS + crosshairIndex] = crosshairColor;
-		}
-	}
 };
 
 PixelUtil.scale = {};

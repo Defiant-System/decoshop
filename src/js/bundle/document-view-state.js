@@ -1,6 +1,6 @@
 
-function DocumentViewState(l) {
-	this.Kv = l;
+function DocumentViewState(doc) {
+	this.Kv = doc;
 	this.N = 0;
 	this.ma = 1;
 	this.R = new Point2D(0, 0);
@@ -12,7 +12,8 @@ function DocumentViewState(l) {
 	// HBI: optional "available" sub-rect of the viewport (device px, same space as Vm).
 	// When set, the document is centered/fit inside this rect instead of the whole canvas.
 	// null = use the full viewport. Set via setAvailable()/clearAvailable().
-	this.awr = new Rect(0, 0, l.m, l.n);
+	this.av = null;
+	this.awr = new Rect(0, 0, doc.m, doc.n);
 	this.M9 = null;
 	this.Je = null;
 	this.xL = new Uint32Array(0);
@@ -31,66 +32,66 @@ function DocumentViewState(l) {
 // HBI: effective area the document is centered within (the "available" rect when set,
 // otherwise the whole viewport). Returns plain {x, y, m, n} in device pixels.
 DocumentViewState.prototype.aR = function() {
-	var d = this.Vm,
-		a = this.av;
-	if (a == null) return { x: 0, y: 0, m: d.m, n: d.n };
-	return { x: a.x, y: a.y, m: a.m, n: a.n };
+	var viewport = this.Vm,
+		avail = this.av;
+	if (avail == null) return { x: 0, y: 0, m: viewport.m, n: viewport.n };
+	return { x: avail.x, y: avail.y, m: avail.m, n: avail.n };
 };
 
-DocumentViewState.prototype.setAvailable = function(l, d, G, b) {
-	this.av = new Rect(l, d, G, b);
+DocumentViewState.prototype.setAvailable = function(x, y, w, h) {
+	this.av = new Rect(x, y, w, h);
 };
 
 DocumentViewState.prototype.clearAvailable = function() {
 	this.av = null;
 };
 
-DocumentViewState.prototype.Gb = function(l) {
-	var d = new Matrix2D,
-		G = this.aR(),
-		b = this.Kv,
-		V = l ? this.ma : this.N,
-		Q = l ? this.q8 : this.R,
-		t = Math.round(G.x + (G.m - b.m * V) / 2 + Q.x),
-		I = Math.round(G.y + (G.n - b.n * V) / 2 + Q.y);
-	d.translate(-t, -I);
-	d.scale(1 / V, 1 / V);
-	var y = b.m / 2,
-		e = b.n / 2;
-	d.translate(-y, -e);
-	d.rotate(this.Ay);
-	d.translate(y, e);
-	return d;
+DocumentViewState.prototype.Gb = function(useAnim) {
+	var matrix = new Matrix2D,
+		availRect = this.aR(),
+		doc = this.Kv,
+		zoom = useAnim ? this.ma : this.N,
+		pan = useAnim ? this.q8 : this.R,
+		originX = Math.round(availRect.x + (availRect.m - doc.m * zoom) / 2 + pan.x),
+		originY = Math.round(availRect.y + (availRect.n - doc.n * zoom) / 2 + pan.y);
+	matrix.translate(-originX, -originY);
+	matrix.scale(1 / zoom, 1 / zoom);
+	var halfDocW = doc.m / 2,
+		halfDocH = doc.n / 2;
+	matrix.translate(-halfDocW+100, -halfDocH);
+	matrix.rotate(this.Ay);
+	matrix.translate(halfDocW, halfDocH);
+	return matrix;
 };
 
-DocumentViewState.prototype.ai7 = function(l) {
-	var d = this.aR(),
-		G = this.Kv,
-		b = Math.atan2(-l.k, l.aS),
-		V = G.m / 2,
-		Q = G.n / 2;
-	l.translate(-V, -Q);
-	l.rotate(-b);
-	l.translate(V, Q);
-	var t = 1 / l.Nw();
-	l.scale(t, t);
-	var I = -l.cI,
-		y = -l.xu,
-		e = Math.round(I - d.x - (d.m - G.m * t) / 2),
-		M = Math.round(y - d.y - (d.n - G.n * t) / 2);
-	if (Math.abs(t - Math.round(t)) < 1e-6) t = Math.round(t);
-	this.Ay = b;
-	this.N = t;
-	this.R = new Point2D(e, M)
+DocumentViewState.prototype.ai7 = function(matrix) {
+	var availRect = this.aR(),
+		doc = this.Kv,
+		angle = Math.atan2(-matrix.k, matrix.aS),
+		halfDocW = doc.m / 2,
+		halfDocH = doc.n / 2;
+	matrix.translate(-halfDocW, -halfDocH);
+	matrix.rotate(-angle);
+	matrix.translate(halfDocW, halfDocH);
+	var zoom = 1 / matrix.Nw();
+	matrix.scale(zoom, zoom);
+	var transX = -matrix.cI,
+		transY = -matrix.xu,
+		panX = Math.round(transX - availRect.x - (availRect.m - doc.m * zoom) / 2),
+		panY = Math.round(transY - availRect.y - (availRect.n - doc.n * zoom) / 2);
+	if (Math.abs(zoom - Math.round(zoom)) < 1e-6) zoom = Math.round(zoom);
+	this.Ay = angle;
+	this.N = zoom;
+	this.R = new Point2D(panX, panY);
 };
 
-DocumentViewState.prototype.Zx = function(l, d) {
-	var G = this.Gb();
-	return G.kD(new Point2D(l, d))
+DocumentViewState.prototype.Zx = function(x, y) {
+	var matrix = this.Gb();
+	return matrix.kD(new Point2D(x, y));
 };
 
-DocumentViewState.prototype.dN = function(l, d) {
-	var G = this.Gb();
-	G.hI();
-	return G.kD(new Point2D(l, d))
+DocumentViewState.prototype.dN = function(x, y) {
+	var matrix = this.Gb();
+	matrix.hI();
+	return matrix.kD(new Point2D(x, y));
 };

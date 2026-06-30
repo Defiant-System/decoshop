@@ -457,7 +457,12 @@ const Panels = {
 					// let y = (vy * (Drag.target.h * Drag.target.s) / 2) + 64;
 					// CanvasTools.Mi.if(Drag.target.doc, x, y);
 					
-					
+					// let x = 17-((445-230) >> 1);
+					// let y = 72+17-((454-345) >> 1);
+					// Drag.target.doc.u.R.T6(x, y);
+					// Drag.target.doc.u.q8.T6(x, y); 
+					// Drag.target.doc.bV = true;
+					// PP.update();
 
 					break;
 				case "mouseup":

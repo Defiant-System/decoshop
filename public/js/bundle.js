@@ -29579,12 +29579,8 @@ PixelUtil.y0.YH = function(l, d, G) {
 // viewState: DocumentViewState (zoom, pan, ruler buffers)
 // textColor: theme text color as packed 0xBBGGRR
 // bgColor: theme ruler background color
-// cursorScreenX, cursorScreenY: pointer position for ruler crosshair markers
-// horizAxisTransform, vertAxisTransform: [effectiveZoom, panOrigin] per axis (unit-aware)
-PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxisTransform, vertAxisTransform) {
+PixelUtil.y0.rulers = function(viewState, horizAxisTransform, vertAxisTransform) {
 	var avr = viewState.aR(),
-		// rulerOriginX = avr.x,
-		// rulerOriginY = avr.y,
 		vW = avr.m,
 		vH = avr.n,
 		rS = PixelUtil.y0.mT,
@@ -29666,21 +29662,6 @@ PixelUtil.y0.rulers = function(viewState, cursorScreenX, cursorScreenY, horizAxi
 	viewState.N = savedZoom;
 	viewState.R = savedOrigin;
 	viewState.Ay = savedAy;
-	// Crosshair notch on each ruler at the current pointer position.
-	var crosshairLen = Math.floor(rS * .6),
-		topRulerPixels32 = new Uint32Array(viewState.C5.data.buffer),
-		leftRulerPixels32 = new Uint32Array(viewState.XF.data.buffer),
-		crosshairColor = 0xff0000;
-	if (0 < cursorScreenX && cursorScreenX < vW) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			topRulerPixels32[crosshairIndex * vW + cursorScreenX] = crosshairColor;
-		}
-	}
-	if (0 < cursorScreenY && cursorScreenY < vH) {
-		for (var crosshairIndex = 0; crosshairIndex < crosshairLen; crosshairIndex++) {
-			leftRulerPixels32[cursorScreenY * rS + crosshairIndex] = crosshairColor;
-		}
-	}
 };
 
 PixelUtil.scale = {};
@@ -54025,8 +54006,8 @@ function HistoryState(l, d, G) {
 }
 
 
-function DocumentViewState(l) {
-	this.Kv = l;
+function DocumentViewState(doc) {
+	this.Kv = doc;
 	this.N = 0;
 	this.ma = 1;
 	this.R = new Point2D(0, 0);
@@ -54038,7 +54019,8 @@ function DocumentViewState(l) {
 	// HBI: optional "available" sub-rect of the viewport (device px, same space as Vm).
 	// When set, the document is centered/fit inside this rect instead of the whole canvas.
 	// null = use the full viewport. Set via setAvailable()/clearAvailable().
-	this.awr = new Rect(0, 0, l.m, l.n);
+	this.av = null;
+	this.awr = new Rect(0, 0, doc.m, doc.n);
 	this.M9 = null;
 	this.Je = null;
 	this.xL = new Uint32Array(0);
@@ -54057,68 +54039,68 @@ function DocumentViewState(l) {
 // HBI: effective area the document is centered within (the "available" rect when set,
 // otherwise the whole viewport). Returns plain {x, y, m, n} in device pixels.
 DocumentViewState.prototype.aR = function() {
-	var d = this.Vm,
-		a = this.av;
-	if (a == null) return { x: 0, y: 0, m: d.m, n: d.n };
-	return { x: a.x, y: a.y, m: a.m, n: a.n };
+	var viewport = this.Vm,
+		avail = this.av;
+	if (avail == null) return { x: 0, y: 0, m: viewport.m, n: viewport.n };
+	return { x: avail.x, y: avail.y, m: avail.m, n: avail.n };
 };
 
-DocumentViewState.prototype.setAvailable = function(l, d, G, b) {
-	this.av = new Rect(l, d, G, b);
+DocumentViewState.prototype.setAvailable = function(x, y, w, h) {
+	this.av = new Rect(x, y, w, h);
 };
 
 DocumentViewState.prototype.clearAvailable = function() {
 	this.av = null;
 };
 
-DocumentViewState.prototype.Gb = function(l) {
-	var d = new Matrix2D,
-		G = this.aR(),
-		b = this.Kv,
-		V = l ? this.ma : this.N,
-		Q = l ? this.q8 : this.R,
-		t = Math.round(G.x + (G.m - b.m * V) / 2 + Q.x),
-		I = Math.round(G.y + (G.n - b.n * V) / 2 + Q.y);
-	d.translate(-t, -I);
-	d.scale(1 / V, 1 / V);
-	var y = b.m / 2,
-		e = b.n / 2;
-	d.translate(-y, -e);
-	d.rotate(this.Ay);
-	d.translate(y, e);
-	return d;
+DocumentViewState.prototype.Gb = function(useAnim) {
+	var matrix = new Matrix2D,
+		availRect = this.aR(),
+		doc = this.Kv,
+		zoom = useAnim ? this.ma : this.N,
+		pan = useAnim ? this.q8 : this.R,
+		originX = Math.round(availRect.x + (availRect.m - doc.m * zoom) / 2 + pan.x),
+		originY = Math.round(availRect.y + (availRect.n - doc.n * zoom) / 2 + pan.y);
+	matrix.translate(-originX, -originY);
+	matrix.scale(1 / zoom, 1 / zoom);
+	var halfDocW = doc.m / 2,
+		halfDocH = doc.n / 2;
+	matrix.translate(-halfDocW+100, -halfDocH);
+	matrix.rotate(this.Ay);
+	matrix.translate(halfDocW, halfDocH);
+	return matrix;
 };
 
-DocumentViewState.prototype.ai7 = function(l) {
-	var d = this.aR(),
-		G = this.Kv,
-		b = Math.atan2(-l.k, l.aS),
-		V = G.m / 2,
-		Q = G.n / 2;
-	l.translate(-V, -Q);
-	l.rotate(-b);
-	l.translate(V, Q);
-	var t = 1 / l.Nw();
-	l.scale(t, t);
-	var I = -l.cI,
-		y = -l.xu,
-		e = Math.round(I - d.x - (d.m - G.m * t) / 2),
-		M = Math.round(y - d.y - (d.n - G.n * t) / 2);
-	if (Math.abs(t - Math.round(t)) < 1e-6) t = Math.round(t);
-	this.Ay = b;
-	this.N = t;
-	this.R = new Point2D(e, M);
+DocumentViewState.prototype.ai7 = function(matrix) {
+	var availRect = this.aR(),
+		doc = this.Kv,
+		angle = Math.atan2(-matrix.k, matrix.aS),
+		halfDocW = doc.m / 2,
+		halfDocH = doc.n / 2;
+	matrix.translate(-halfDocW, -halfDocH);
+	matrix.rotate(-angle);
+	matrix.translate(halfDocW, halfDocH);
+	var zoom = 1 / matrix.Nw();
+	matrix.scale(zoom, zoom);
+	var transX = -matrix.cI,
+		transY = -matrix.xu,
+		panX = Math.round(transX - availRect.x - (availRect.m - doc.m * zoom) / 2),
+		panY = Math.round(transY - availRect.y - (availRect.n - doc.n * zoom) / 2);
+	if (Math.abs(zoom - Math.round(zoom)) < 1e-6) zoom = Math.round(zoom);
+	this.Ay = angle;
+	this.N = zoom;
+	this.R = new Point2D(panX, panY);
 };
 
-DocumentViewState.prototype.Zx = function(l, d) {
-	var G = this.Gb();
-	return G.kD(new Point2D(l, d))
+DocumentViewState.prototype.Zx = function(x, y) {
+	var matrix = this.Gb();
+	return matrix.kD(new Point2D(x, y));
 };
 
-DocumentViewState.prototype.dN = function(l, d) {
-	var G = this.Gb();
-	G.hI();
-	return G.kD(new Point2D(l, d))
+DocumentViewState.prototype.dN = function(x, y) {
+	var matrix = this.Gb();
+	matrix.hI();
+	return matrix.kD(new Point2D(x, y));
 };
 
 
@@ -93554,28 +93536,29 @@ NamedTabPanel.prototype.Yw = function (l) {
 	this.VP();
 };
 
-NamedTabPanel.prototype.resize = function (l, d) {
-	if (l <= 0 || d <= 0) return;
+NamedTabPanel.prototype.resize = function (cssWidth, cssHeight) {
+	if (cssWidth <= 0 || cssHeight <= 0) return;
 	// HBI: canvas inherits its width/height from its parent (.pbody) instead of the
 	// layout-allocated area, so it can stretch beyond its normal bounds.
 	if (this.DK && this.DK.clientWidth > 0 && this.DK.clientHeight > 0) {
-		l = this.DK.clientWidth;
-		d = this.DK.clientHeight;
+		cssWidth = this.DK.clientWidth;
+		cssHeight = this.DK.clientHeight;
 	}
-	this.iJ = l;
-	this.Tq = d;
-	var _local4066 = this.Kv,
-		_local4068 = NamedTabPanel.wn,
-		_local4067 = s.getDevicePixelRatio();
-	_local4066.u.Vm.m = Math.floor(l * _local4067);
-	_local4066.u.Vm.n = Math.floor(d * _local4067);
-	s.setCanvasSizeForDpr(_local4068.Lp, l, d);
-	s.setCanvasSizeForDpr(_local4068.La, l, d);
-	s.setCanvasSizeForDpr(WebGLContext.getCanvas(), l, d);
+	this.iJ = cssWidth;
+	this.Tq = cssHeight;
+	var doc = this.Kv,
+		canvases = NamedTabPanel.wn,
+		dpr = s.getDevicePixelRatio();
+	doc.u.Vm.m = Math.floor(cssWidth * dpr);
+	doc.u.Vm.n = Math.floor(cssHeight * dpr);
+	s.setCanvasSizeForDpr(canvases.Lp, cssWidth, cssHeight);
+	s.setCanvasSizeForDpr(canvases.La, cssWidth, cssHeight);
+	s.setCanvasSizeForDpr(WebGLContext.getCanvas(), cssWidth, cssHeight);
 
-	if (_local4066.u.N == 0) {
-		var _avr = _local4066.u.aR();
-		_local4066.u.N = f.gU.agP(_local4066.m, _local4066.n, _avr.m, _avr.n);
+	// Zoom not yet set (fresh document): fit it to the available rect.
+	if (doc.u.N == 0) {
+		var availRect = doc.u.aR();
+		doc.u.N = f.gU.agP(doc.m, doc.n, availRect.m, availRect.n);
 	}
 	this.VP();
 };
@@ -93866,454 +93849,452 @@ NamedTabPanel.prototype.a5F = function (l, d, G, b, V) {
 	_local4141.Vm.restore();
 };
 
-NamedTabPanel.prototype.ak0 = function (l, d, G, b) {
-	var _local4174 = l.I.Y1 != null || l.I.Bt != null || l.I.Cj != null || l.I.iT.length != 0 || l.I.P4.length != 0,
-		_local4162 = this.wQ,
-		_local4247 = _local4162.hq,
-		_local4184 = Math.round(12 * s.getDevicePixelRatio()),
-		_local4185 = _local4184 / l.u.N,
-		_local4274 = G.Gb(!0);
-	_local4274.hI();
-
-	d.save();
-	d.setTransform(_local4274.aS, _local4274.k, _local4274.S5, _local4274.Qd, _local4274.cI, _local4274.xu);
-	if (l.add.artd) {
-		var _local4163 = NamedTabPanel.Ku(l)[0];
-		_local4163 = _local4163 < .5 ? _local4163 + .5 : _local4163 - .5;
-		_local4163 = "" + Math.round(_local4163 * 255).toString(16);
-		while (_local4163.length < 2) _local4163 = "0" + _local4163;
-		d.fillStyle = "#" + _local4163 + _local4163 + _local4163;
-		d.font = _local4185 + "px sans-serif";
-		for (var _local4221 = 0; _local4221 < l.B.length; _local4221++) {
-			var _local4219 = l.B[_local4221];
-			if (_local4219.add.artb == null || !_local4219.zD()) continue;
-			var _local4220 = _local4219.dA();
-			d.fillText(_local4219.getName(), _local4220.x + 2, _local4220.y - _local4185 * .7);
-			_local4174 = !0;
+NamedTabPanel.prototype.ak0 = function (doc, ctx, view, blendWithCanvas) {
+	var drewOverlay = doc.I.Y1 != null || doc.I.Bt != null || doc.I.Cj != null || doc.I.iT.length != 0 || doc.I.P4.length != 0,
+		prefs = this.wQ,
+		viewOpts = prefs.hq,
+		// theme = ThemeManager.themes[prefs.j$],
+		fontPx = Math.round(12 * s.getDevicePixelRatio()),
+		fontDoc = fontPx / doc.u.N,
+		viewMatrix = view.Gb(!0);
+	viewMatrix.hI();
+	ctx.save();
+	ctx.setTransform(viewMatrix.aS, viewMatrix.k, viewMatrix.S5, viewMatrix.Qd, viewMatrix.cI, viewMatrix.xu);
+	if (doc.add.artd) {
+		var labelShade = NamedTabPanel.Ku(doc)[0];
+		labelShade = labelShade < .5 ? labelShade + .5 : labelShade - .5;
+		labelShade = "" + Math.round(labelShade * 255).toString(16);
+		while (labelShade.length < 2) labelShade = "0" + labelShade;
+		ctx.fillStyle = "#" + labelShade + labelShade + labelShade;
+		ctx.font = fontDoc + "px sans-serif";
+		for (var li = 0; li < doc.B.length; li++) {
+			var layer = doc.B[li];
+			if (layer.add.artb == null || !layer.zD()) continue;
+			var abRect = layer.dA();
+			ctx.fillText(layer.getName(), abRect.x + 2, abRect.y - fontDoc * .7);
+			drewOverlay = !0;
 		}
 	}
 
-	function _local4210(segType) {
+	function isHandleSeg(segType) {
 		return segType == 1 || segType == 2 || segType == 4 || segType == 5;
 	}
-	var _local4236 = NamedTabPanel.ut([.1, .5, 1, 1]),
-		_local4233 = NamedTabPanel.ut([1, 1, 1, 1]);
-	if (_local4162.Wi && _local4247.t_) {
-		d.fillStyle = d.strokeStyle = _local4236;
-		d.lineWidth = 1.5 / G.N;
-		var _local4240 = l.LW(),
-			_local4243 = _local4240[0],
-			_local4242 = _local4240[1];
-		for (var _local4239 = 0; _local4239 < _local4242.length; _local4239++) {
-			var _local4241 = _local4243[_local4242[_local4239]],
-				_local4272 = _local4241.add.vmsk,
-				_local4268 = _local4272.i,
-				_local4238 = PixelUtil.vec.pathFromSvg(_local4268);
-			this.yC(_local4238, null, d);
-			d.stroke();
-			_local4174 = !0;
-			var _local4200 = 3 * s.getDevicePixelRatio() / G.N,
-				_local4218 = _local4268.length - 3;
-			for (var _local4198 = 0; _local4198 < _local4272.JG.length; _local4198++) {
-				var _local4199 = PixelUtil.path.OT(_local4268, _local4272.JG[_local4198]);
-				if (_local4199 == null) continue;
-				var _local4203 = _local4199.x,
-					_local4204 = _local4199.y;
-				d.beginPath();
-				var _local4211 = _local4198 == 0;
-				if (_local4272.as) _local4211 = !_local4211;
-				if (_local4211) {
-					d.moveTo(_local4203 - _local4200, _local4204 - _local4200);
-					d.lineTo(_local4203 + _local4200, _local4204 + _local4200);
-					d.moveTo(_local4203 - _local4200, _local4204 + _local4200);
-					d.lineTo(_local4203 + _local4200, _local4204 - _local4200);
-					d.stroke();
+	var colBlue = NamedTabPanel.ut([.1, .5, 1, 1]),
+		colWhite = NamedTabPanel.ut([1, 1, 1, 1]);
+	if (prefs.Wi && viewOpts.t_) {
+		ctx.fillStyle = ctx.strokeStyle = colBlue;
+		ctx.lineWidth = 1.5 / view.N;
+		var maskSel = doc.LW(),
+			maskLayers = maskSel[0],
+			maskIdx = maskSel[1];
+		for (var mi = 0; mi < maskIdx.length; mi++) {
+			var maskLayer = maskLayers[maskIdx[mi]],
+				vmask = maskLayer.add.vmsk,
+				segs = vmask.i,
+				maskPath = PixelUtil.vec.pathFromSvg(segs);
+			this.yC(maskPath, null, ctx);
+			ctx.stroke();
+			drewOverlay = !0;
+			var handleR = 3 * s.getDevicePixelRatio() / view.N,
+				lastSegIdx = segs.length - 3;
+			for (var jgi = 0; jgi < vmask.JG.length; jgi++) {
+				var ctrlPt = PixelUtil.path.OT(segs, vmask.JG[jgi]);
+				if (ctrlPt == null) continue;
+				var cx = ctrlPt.x,
+					cy = ctrlPt.y;
+				ctx.beginPath();
+				var isFirst = jgi == 0;
+				if (vmask.as) isFirst = !isFirst;
+				if (isFirst) {
+					ctx.moveTo(cx - handleR, cy - handleR);
+					ctx.lineTo(cx + handleR, cy + handleR);
+					ctx.moveTo(cx - handleR, cy + handleR);
+					ctx.lineTo(cx + handleR, cy - handleR);
+					ctx.stroke();
 				} else {
-					d.arc(_local4203, _local4204, _local4200 * 1, 0, 2 * Math.PI);
-					d.fill();
+					ctx.arc(cx, cy, handleR * 1, 0, 2 * Math.PI);
+					ctx.fill();
 				}
-				_local4174 = !0;
+				drewOverlay = !0;
 			}
-			if (l.g.length != 1) continue;
-			var _local4267 = -1;
-			for (var _local4257 = 0; _local4257 < _local4268.length; _local4257++) {
-				if (_local4268[_local4257].type > 5) continue;
-				if (_local4268[_local4257].type == 0 || _local4268[_local4257].type == 3) {
-					if (_local4268[_local4257].H$ != -1) _local4267++;
+			if (doc.g.length != 1) continue;
+			var anchorIdx = -1;
+			for (var si = 0; si < segs.length; si++) {
+				if (segs[si].type > 5) continue;
+				if (segs[si].type == 0 || segs[si].type == 3) {
+					if (segs[si].H$ != -1) anchorIdx++;
 					continue;
 				}
-				if (_local4272.g.indexOf(_local4267) != -1) {
-					var _local4159 = _local4268[_local4257].H.x,
-						_local4160 = _local4268[_local4257].H.y;
-					d.fillRect(_local4159 - _local4200 * .8, _local4160 - _local4200 * .8, 2 * _local4200 * .8, 2 * _local4200 * .8);
+				if (vmask.g.indexOf(anchorIdx) != -1) {
+					var ax = segs[si].H.x,
+						ay = segs[si].H.y;
+					ctx.fillRect(ax - handleR * .8, ay - handleR * .8, 2 * handleR * .8, 2 * handleR * .8);
 				}
-				if (_local4272.OE.indexOf(_local4257) != -1) {
-					var _local4256 = _local4268[_local4257],
-						_local4168 = [_local4256.H];
-					d.beginPath();
-					d.moveTo(_local4256.Wf.x, _local4256.Wf.y);
-					d.lineTo(_local4256.H.x, _local4256.H.y);
-					d.lineTo(_local4256.UU.x, _local4256.UU.y);
-					var _local4248 = _local4268[_local4257 - 1],
-						_local4229 = _local4268[_local4257 + 1];
-					if (_local4248 && _local4210(_local4248.type) && _local4272.OE.indexOf(_local4257 - 1) == -1) {
-						d.moveTo(_local4248.H.x, _local4248.H.y);
-						d.lineTo(_local4248.UU.x, _local4248.UU.y);
-						_local4168.push(_local4248.UU);
+				if (vmask.OE.indexOf(si) != -1) {
+					var seg = segs[si],
+						handlePts = [seg.H];
+					ctx.beginPath();
+					ctx.moveTo(seg.Wf.x, seg.Wf.y);
+					ctx.lineTo(seg.H.x, seg.H.y);
+					ctx.lineTo(seg.UU.x, seg.UU.y);
+					var prevSeg = segs[si - 1],
+						nextSeg = segs[si + 1];
+					if (prevSeg && isHandleSeg(prevSeg.type) && vmask.OE.indexOf(si - 1) == -1) {
+						ctx.moveTo(prevSeg.H.x, prevSeg.H.y);
+						ctx.lineTo(prevSeg.UU.x, prevSeg.UU.y);
+						handlePts.push(prevSeg.UU);
 					}
-					if (_local4229 && _local4210(_local4229.type) && _local4272.OE.indexOf(_local4257 + 1) == -1) {
-						d.moveTo(_local4229.H.x, _local4229.H.y);
-						d.lineTo(_local4229.Wf.x, _local4229.Wf.y);
-						_local4168.push(_local4229.Wf);
+					if (nextSeg && isHandleSeg(nextSeg.type) && vmask.OE.indexOf(si + 1) == -1) {
+						ctx.moveTo(nextSeg.H.x, nextSeg.H.y);
+						ctx.lineTo(nextSeg.Wf.x, nextSeg.Wf.y);
+						handlePts.push(nextSeg.Wf);
 					}
-					d.stroke();
-					if (!_local4256.H.XB(_local4256.Wf)) _local4168.push(_local4256.Wf);
-					if (!_local4256.H.XB(_local4256.UU)) _local4168.push(_local4256.UU);
-					for (var _local4250 = 0; _local4250 < _local4168.length; _local4250++) {
-						var _local4249 = _local4168[_local4250],
-							_local4251 = _local4249.x,
-							_local4252 = _local4249.y;
-						if (_local4250 == 0 && (_local4256.type == 2 || _local4256.type == 5)) d.fillRect(_local4251 - 1.2 * _local4200, _local4252 - 1.2 * _local4200, 2.4 * _local4200, 2.4 * _local4200);else
+					ctx.stroke();
+					if (!seg.H.XB(seg.Wf)) handlePts.push(seg.Wf);
+					if (!seg.H.XB(seg.UU)) handlePts.push(seg.UU);
+					for (var pi = 0; pi < handlePts.length; pi++) {
+						var hpt = handlePts[pi],
+							hx2 = hpt.x,
+							hy2 = hpt.y;
+						if (pi == 0 && (seg.type == 2 || seg.type == 5)) ctx.fillRect(hx2 - 1.2 * handleR, hy2 - 1.2 * handleR, 2.4 * handleR, 2.4 * handleR);else
 						{
-							d.beginPath();
-							d.arc(_local4251, _local4252, _local4200 * 1.2, 0, 2 * Math.PI);
-							d.fill();
-							if (_local4250 != 0) d.fillStyle = _local4233;
-							d.beginPath();
-							d.arc(_local4251, _local4252, _local4200 * .8, 0, 2 * Math.PI);
-							d.fill();
-							d.fillStyle = _local4236;
+							ctx.beginPath();
+							ctx.arc(hx2, hy2, handleR * 1.2, 0, 2 * Math.PI);
+							ctx.fill();
+							if (pi != 0) ctx.fillStyle = colWhite;
+							ctx.beginPath();
+							ctx.arc(hx2, hy2, handleR * .8, 0, 2 * Math.PI);
+							ctx.fill();
+							ctx.fillStyle = colBlue;
 						}
 					}
 				}
-				_local4174 = !0;
+				drewOverlay = !0;
 			}
 		}
 	}
-	d.lineWidth = 1 / G.N;
-	if (l.I.Iq) {
-		d.fillStyle = d.strokeStyle = _local4236;
-		var _local4166 = {
+	ctx.lineWidth = 1 / view.N;
+	if (doc.I.Iq) {
+		ctx.fillStyle = ctx.strokeStyle = colBlue;
+		var handlesPath = {
 				C: [],
 				F: []
 			},
-			_local4167 = NamedTabPanel.aq3;
-		if (_local4167 == null) {
-			_local4167 = NamedTabPanel.aq3 = {
+			unitCircle = NamedTabPanel.aq3;
+		if (unitCircle == null) {
+			unitCircle = NamedTabPanel.aq3 = {
 				C: [1, 0],
 				F: ["M"]
 			};
-			for (var _local4266 = 1; _local4266 < 30; _local4266++) {
-				var _local4161 = Math.PI * 2 * _local4266 / 30;
-				_local4167.C.push(Math.cos(_local4161), Math.sin(_local4161));
-				_local4167.F.push("L");
+			for (var ci = 1; ci < 30; ci++) {
+				var ang = Math.PI * 2 * ci / 30;
+				unitCircle.C.push(Math.cos(ang), Math.sin(ang));
+				unitCircle.F.push("L");
 			}
-			_local4167.F.push("Z", "M", "L", "M", "L");
-			_local4167.C.push(-.5, 0, .5, 0, 0, -.5, 0, .5);
+			unitCircle.F.push("Z", "M", "L", "M", "L");
+			unitCircle.C.push(-.5, 0, .5, 0, 0, -.5, 0, .5);
 		}
-		for (var _local4223 = 0; _local4223 < l.I.Iq.length; _local4223++) {
-			var _local4222 = f.Ur.abM(l.I.Iq[_local4223], G),
-				_local4224 = new Matrix2D(_local4222[0], 0, 0, _local4222[0], _local4222[1], _local4222[2]);
-			PixelUtil.vec.concat(_local4166, _local4167, _local4224);
+		for (var ti = 0; ti < doc.I.Iq.length; ti++) {
+			var handleXform = f.Ur.abM(doc.I.Iq[ti], view),
+				handleMat = new Matrix2D(handleXform[0], 0, 0, handleXform[0], handleXform[1], handleXform[2]);
+			PixelUtil.vec.concat(handlesPath, unitCircle, handleMat);
 		}
-		this.yC(_local4166, null, d);
-		d.stroke();
-		_local4174 = !0;
+		this.yC(handlesPath, null, ctx);
+		ctx.stroke();
+		drewOverlay = !0;
 	}
-	var _local4197 = new Matrix2D(1, 0, 0, 1, .5 / G.N, .5 / G.N);
-	if (l.ZV) {
-		d.fillStyle = d.strokeStyle = _local4236;
-		var _local4179 = {
-			C: [0, 0, l.m, 0, l.m, l.n, 0, l.n],
+	var halfPxMat = new Matrix2D(1, 0, 0, 1, .5 / view.N, .5 / view.N);
+	if (doc.ZV) {
+		ctx.fillStyle = ctx.strokeStyle = colBlue;
+		var docOutline = {
+			C: [0, 0, doc.m, 0, doc.m, doc.n, 0, doc.n],
 			F: ["M", "L", "L", "L", "Z"]
 		};
-		this.yC(_local4179, _local4197, d);
-		d.stroke();
-		_local4174 = !0;
+		this.yC(docOutline, halfPxMat, ctx);
+		ctx.stroke();
+		drewOverlay = !0;
 	}
-	if (l.I.Ru) {
-		d.fillStyle = d.strokeStyle = NamedTabPanel.ut([0, 0, 0, .5]);
-		this.yC(l.I.Ru, null, d, !0);
-		d.fill("evenodd");
+	if (doc.I.Ru) {
+		ctx.fillStyle = ctx.strokeStyle = NamedTabPanel.ut([0, 0, 0, .5]);
+		this.yC(doc.I.Ru, null, ctx, !0);
+		ctx.fill("evenodd");
 	}
-	d.fillStyle = d.strokeStyle = NamedTabPanel.ut([0, 0, 0, WebGLContext.webglAvailable && l.add.fvec == null ? 1 : .5], !0);
-	if (l.I.Y1) {
-		this.yC(l.I.Y1, null, d);
-		d.fill();
+	ctx.fillStyle = ctx.strokeStyle = NamedTabPanel.ut([0, 0, 0, WebGLContext.webglAvailable && doc.add.fvec == null ? 1 : .5], !0);
+	if (doc.I.Y1) {
+		this.yC(doc.I.Y1, null, ctx);
+		ctx.fill();
 	}
-	if (l.I.Bt) {
-		this.yC(l.I.Bt, _local4197, d);
-		d.stroke();
+	if (doc.I.Bt) {
+		this.yC(doc.I.Bt, halfPxMat, ctx);
+		ctx.stroke();
 	}
-	for (var _local4234 in l.I.He)
-	if (l.I.He[_local4234].Bt) {
-		this.yC(l.I.He[_local4234].Bt, null, d);
-		d.stroke();
-		_local4174 = !0;
+	for (var heKey in doc.I.He)
+	if (doc.I.He[heKey].Bt) {
+		this.yC(doc.I.He[heKey].Bt, null, ctx);
+		ctx.stroke();
+		drewOverlay = !0;
 	}
-	var _local4175 = NamedTabPanel.aoJ(l.I.jf, d, G);
-	d.stroke();
-	_local4174 = _local4174 || _local4175;
-	var _local4246 = l.I.g2;
-	d.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
-	d.beginPath();
-	var _local4245 = 6 * s.getDevicePixelRatio() / G.N;
-	for (var _local4249 = 0; _local4249 < _local4246.length; _local4249 += 2) {
-		_local4174 = !0;
-		var _local4253 = _local4246[_local4249],
-			_local4254 = _local4246[_local4249 + 1];
-		d.moveTo(_local4253 + _local4245, _local4254);
-		d.arc(_local4253, _local4254, _local4245, 0, 2 * Math.PI);
+	var drewHandles = NamedTabPanel.aoJ(doc.I.jf, ctx, view);
+	ctx.stroke();
+	drewOverlay = drewOverlay || drewHandles;
+	var gradPts = doc.I.g2;
+	ctx.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
+	ctx.beginPath();
+	var outerR = 6 * s.getDevicePixelRatio() / view.N;
+	for (var gi = 0; gi < gradPts.length; gi += 2) {
+		drewOverlay = !0;
+		var gx = gradPts[gi],
+			gy = gradPts[gi + 1];
+		ctx.moveTo(gx + outerR, gy);
+		ctx.arc(gx, gy, outerR, 0, 2 * Math.PI);
 	}
-	d.fill();
-	var _local4244 = 4 * s.getDevicePixelRatio() / G.N;
-	for (var _local4249 = 0; _local4249 < _local4246.length; _local4249 += 2) {
-		_local4174 = !0;
-		var _local4253 = _local4246[_local4249],
-			_local4254 = _local4246[_local4249 + 1];
-		d.fillStyle = NamedTabPanel.ut(l.I.Qg.indexOf(_local4249 >>> 1) != -1 ? [0, .6, 1, 1] : [.7, .7, .7, 1]);
-		d.beginPath();
-		d.moveTo(_local4253 + _local4244, _local4254);
-		d.arc(_local4253, _local4254, _local4244, 0, 2 * Math.PI);
-		d.fill();
+	ctx.fill();
+	var innerR = 4 * s.getDevicePixelRatio() / view.N;
+	for (var gi = 0; gi < gradPts.length; gi += 2) {
+		drewOverlay = !0;
+		var gx = gradPts[gi],
+			gy = gradPts[gi + 1];
+		ctx.fillStyle = NamedTabPanel.ut(doc.I.Qg.indexOf(gi >>> 1) != -1 ? [0, .6, 1, 1] : [.7, .7, .7, 1]);
+		ctx.beginPath();
+		ctx.moveTo(gx + innerR, gy);
+		ctx.arc(gx, gy, innerR, 0, 2 * Math.PI);
+		ctx.fill();
 	}
-	if (l.I.iT.length != 0) {
-		for (var _local4235 = 0; _local4235 < l.I.iT.length; _local4235++) {
-			var _local4232 = l.I.iT[_local4235],
-				_local4180 = _local4232[1],
-				_local4208;
-			if (b) {
-				_local4208 = d.getImageData(_local4180.x, _local4180.y, _local4180.m, _local4180.n);
-				PixelUtil.blend.compositeBlend("norm", _local4232[0], _local4180, new Uint8Array(_local4208.data.buffer), _local4180, _local4180, 1);
-			} else _local4208 = new ImageData(new Uint8ClampedArray(_local4232[0].buffer), _local4180.m, _local4180.n);
-			d.putImageData(_local4208, _local4180.x, _local4180.y);
+	if (doc.I.iT.length != 0) {
+		for (var ii = 0; ii < doc.I.iT.length; ii++) {
+			var overlay = doc.I.iT[ii],
+				oRect = overlay[1],
+				imgData;
+			if (blendWithCanvas) {
+				imgData = ctx.getImageData(oRect.x, oRect.y, oRect.m, oRect.n);
+				PixelUtil.blend.compositeBlend("norm", overlay[0], oRect, new Uint8Array(imgData.data.buffer), oRect, oRect, 1);
+			} else imgData = new ImageData(new Uint8ClampedArray(overlay[0].buffer), oRect.m, oRect.n);
+			ctx.putImageData(imgData, oRect.x, oRect.y);
 		}
 	}
-	var _local4196 = .5 / G.N;
-	d.lineWidth = 1 / G.N;
-	if (l.I.nO) {
-		_local4174 = !0;
-		var _local4225 = l.I.nO,
-			_local4227 = _local4225.wx,
-			_local4226 = {
+	var halfPx = .5 / view.N;
+	ctx.lineWidth = 1 / view.N;
+	if (doc.I.nO) {
+		drewOverlay = !0;
+		var measure = doc.I.nO,
+			measPts = measure.wx,
+			measPath = {
 				F: [],
 				C: []
 			};
-		for (var _local4256 = 0; _local4256 < _local4225.KB.length; _local4256++) PixelUtil.vec.concat(_local4226, PixelUtil.vec.simplifyPath(_local4225.KB[_local4256]));
-		_local4226.C = _local4226.C.concat(_local4227);
-		for (var _local4256 = 0; _local4256 < _local4227.length; _local4256 += 4) {
-			_local4226.F.push("M", "L");
+		for (var mci = 0; mci < measure.KB.length; mci++) PixelUtil.vec.concat(measPath, PixelUtil.vec.simplifyPath(measure.KB[mci]));
+		measPath.C = measPath.C.concat(measPts);
+		for (var mci = 0; mci < measPts.length; mci += 4) {
+			measPath.F.push("M", "L");
 		}
-		for (var _local4165 = 0; _local4165 < _local4226.C.length; _local4165++) {
-			_local4226.C[_local4165] += _local4196;
+		for (var pci = 0; pci < measPath.C.length; pci++) {
+			measPath.C[pci] += halfPx;
 		}
-		d.strokeStyle = NamedTabPanel.ut([.9, .2, .2, 1]);
-		this.yC(_local4226, null, d);
-		d.stroke();
-		var _local4173 = s.getDevicePixelRatio(),
-			_local4237 = 2 / G.N;
-		d.font = _local4185 * .9 + "px sans-serif";
-		for (var _local4256 = 0; _local4256 < _local4227.length; _local4256 += 4) {
-			var _local4276 = _local4227[_local4256],
-				_local4280 = _local4227[_local4256 + 1],
-				_local4277 = _local4227[_local4256 + 2],
-				_local4281 = _local4227[_local4256 + 3],
-				_local4176 = Math.sqrt((_local4281 - _local4280) * (_local4281 - _local4280) + (_local4277 - _local4276) * (_local4277 - _local4276));
-			_local4176 = PixelUtil.y0.ij(_local4176, l.m7, _local4162, _local4280 == _local4281 ? l.m : l.n);
-			var _local4182 = new Point2D((m + jq) / 2, (p + iv) / 2);
-			d.fillStyle = NamedTabPanel.ut([.9, .2, .2, 1]);
-			var _local4181 = d.measureText(kq).width;
-			d.fillRect(_local4182.x - _local4181 / 2 - _local4237 * _local4173, _local4182.y - 3.5 * _local4237 * _local4173, _local4181 + 2 * _local4237 * _local4173, 7 * _local4237 * _local4173);
-			d.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
-			d.save();
-			d.translate(_local4182.x - _local4181 / 2, _local4182.y + 2 * hn * iw);
-			d.scale(.1, .1);
-			d.font = e * 9 + "px sans-serif";
-			d.fillText(kq, 0, 0);
-			d.restore();
+		ctx.strokeStyle = NamedTabPanel.ut([.9, .2, .2, 1]);
+		this.yC(measPath, null, ctx);
+		ctx.stroke();
+		var dpr2 = s.getDevicePixelRatio(),
+			measPad = 2 / view.N;
+		ctx.font = fontDoc * .9 + "px sans-serif";
+		for (var mci = 0; mci < measPts.length; mci += 4) {
+			var x0 = measPts[mci],
+				y0 = measPts[mci + 1],
+				x1 = measPts[mci + 2],
+				y1 = measPts[mci + 3],
+				measLen = Math.sqrt((y1 - y0) * (y1 - y0) + (x1 - x0) * (x1 - x0));
+			measLen = PixelUtil.y0.ij(measLen, doc.m7, prefs, y0 == y1 ? doc.m : doc.n);
+			var measMid = new Point2D((m + jq) / 2, (p + iv) / 2);
+			ctx.fillStyle = NamedTabPanel.ut([.9, .2, .2, 1]);
+			var measTextW = ctx.measureText(kq).width;
+			ctx.fillRect(measMid.x - measTextW / 2 - measPad * dpr2, measMid.y - 3.5 * measPad * dpr2, measTextW + 2 * measPad * dpr2, 7 * measPad * dpr2);
+			ctx.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
+			ctx.save();
+			ctx.translate(measMid.x - measTextW / 2, measMid.y + 2 * hn * iw);
+			ctx.scale(.1, .1);
+			ctx.font = e * 9 + "px sans-serif";
+			ctx.fillText(kq, 0, 0);
+			ctx.restore();
 		}
 	}
-	
-	if (_local4162.Wi) {
-		if (_local4247.vr && l.u.N > 10 && l.add.fvec == null) {
-			this.C9(l, d, 1, 1, .25, _local4247.ra, 16777215);
-			_local4174 = !0;
+	if (prefs.Wi) {
+		if (viewOpts.vr && doc.u.N > 10 && doc.add.fvec == null) {
+			this.C9(doc, ctx, 1, 1, .25, viewOpts.ra, 16777215);
+			drewOverlay = !0;
 		}
-		if (_local4247.Sp) {
-			var _local4186 = PixelUtil.y0.Sw(_local4247.rp, l.m7, l.m, _local4247.v7),
-				_local4187 = _local4186;
-			if (_local4247.v7 == 4) _local4187 *= l.n / l.m;
-			this.C9(l, d, _local4186, _local4187, 1, _local4247.ra, _local4247.E6);
-			_local4174 = !0;
+		if (viewOpts.Sp) {
+			var gridStep = PixelUtil.y0.Sw(viewOpts.rp, doc.m7, doc.m, viewOpts.v7),
+				gridStepY = gridStep;
+			if (viewOpts.v7 == 4) gridStepY *= doc.n / doc.m;
+			this.C9(doc, ctx, gridStep, gridStepY, 1, viewOpts.ra, viewOpts.E6);
+			drewOverlay = !0;
 		}
-		if (_local4247.qz) {
-			var _local4194 = l.Ww(),
-				_local4155 = l.bZ(),
-				_local4191 = Math.max(l.u.Vm.m, l.u.Vm.n) / l.u.N;
-			_local4191 = Math.max(Math.max(l.m, l.n) * 2, _local4191);
-			for (var _local4189 = 0; _local4189 < _local4194[0].length; _local4189++) {
-				var _local4188 = _local4194[0][_local4189],
-					_local4190 = _local4194[1][_local4189];
-				if (_local4190 != -1 && _local4190 != _local4155) continue;
-				var _local4193 = G.dN(_local4188[1], _local4188[1]),
-					_local4192 = G.Zx(Math.floor(_local4193.x) + .5, Math.floor(_local4193.y) + .5);
-				d.beginPath();
-				d.strokeStyle = NamedTabPanel.ut([0, _local4190 == -1 ? 1 : .5, 1, 1]);
-				if (_local4188[0] == 0) {
-					var _local4275 = _local4192.x;
-					d.moveTo(_local4275, -_local4191);
-					d.lineTo(_local4275, _local4191);
+		if (viewOpts.qz) {
+			var guides = doc.Ww(),
+				activeBoardIdx = doc.bZ(),
+				guideLen = Math.max(doc.u.Vm.m, doc.u.Vm.n) / doc.u.N;
+			guideLen = Math.max(Math.max(doc.m, doc.n) * 2, guideLen);
+			for (var gdi = 0; gdi < guides[0].length; gdi++) {
+				var guide = guides[0][gdi],
+					guideBoard = guides[1][gdi];
+				if (guideBoard != -1 && guideBoard != activeBoardIdx) continue;
+				var gScreen = view.dN(guide[1], guide[1]),
+					gSnap = view.Zx(Math.floor(gScreen.x) + .5, Math.floor(gScreen.y) + .5);
+				ctx.beginPath();
+				ctx.strokeStyle = NamedTabPanel.ut([0, guideBoard == -1 ? 1 : .5, 1, 1]);
+				if (guide[0] == 0) {
+					var gxPos = gSnap.x;
+					ctx.moveTo(gxPos, -guideLen);
+					ctx.lineTo(gxPos, guideLen);
 				} else {
-					var _local4279 = _local4192.x;
-					d.moveTo(-_local4191, _local4279);
-					d.lineTo(_local4191, _local4279);
+					var gyPos = gSnap.x;
+					ctx.moveTo(-guideLen, gyPos);
+					ctx.lineTo(guideLen, gyPos);
 				}
-				d.stroke();
-				_local4174 = !0;
+				ctx.stroke();
+				drewOverlay = !0;
 			}
 		}
-		var _local4264 = l.Vp;
-		if (_local4247.Vp && _local4264.length != 0) {
-			d.font = _local4185 * .8 + "px sans-serif";
-			var _local4262 = [],
-				_local4258 = [];
-			for (var _local4260 = 0; _local4260 < _local4264.length; _local4260++) {
-				var _local4261 = f.UA.LP(_local4264, _local4260);
-				_local4262.push(_local4261);
-				if (l.Ci.indexOf(_local4260) != -1) _local4258.push(_local4261);
+		var slices = doc.Vp;
+		if (viewOpts.Vp && slices.length != 0) {
+			ctx.font = fontDoc * .8 + "px sans-serif";
+			var sliceRects = [],
+				selSliceRects = [];
+			for (var sli = 0; sli < slices.length; sli++) {
+				var sliceRect = f.UA.LP(slices, sli);
+				sliceRects.push(sliceRect);
+				if (doc.Ci.indexOf(sli) != -1) selSliceRects.push(sliceRect);
 			}
-			_local4262.reverse();
-			var _local4265 = Date.now();
-			_local4262 = PixelUtil.rect.FA([0, 0, l.m, l.n], _local4262);
-			for (var _local4195 = 0; _local4195 < 2; _local4195++)
-			for (var _local4207 = 0; _local4207 < _local4262.length; _local4207++) {
-				var _local4255 = _local4262[_local4207],
-					_local4263 = _local4255[4],
-					_local4259 = _local4263 != null ? _local4264[_local4263] : null;
-				if (_local4259 && _local4195 == 0 || _local4259 == null && _local4195 == 1) continue;
-				var _local4276 = Math.round(_local4255[0]),
-					_local4280 = Math.round(_local4255[1]),
-					_local4277 = Math.round(_local4255[2]),
-					_local4281 = Math.round(_local4255[3]);
-				d.strokeStyle = d.fillStyle = NamedTabPanel.ut(f7 ? [0, .7, .7, 1] : [.8, .8, .8, 1]);
-				d.strokeRect(_local4276 + _local4196, _local4280 + _local4196, _local4277 - _local4276, _local4281 - _local4280);
-				var _local4215 = _local4207 + 1,
-					_local4216 = d.measureText(_local4215),
-					_local4217 = _local4216.width;
-				d.fillRect(_local4276, _local4280, _local4217 + _local4185 / 2, _local4185);
-				d.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
-				d.fillText(_local4215, _local4276 + _local4185 / 4, _local4280 + _local4185 * .8);
+			sliceRects.reverse();
+			var nowTs = Date.now();
+			sliceRects = PixelUtil.rect.FA([0, 0, doc.m, doc.n], sliceRects);
+			for (var pass = 0; pass < 2; pass++)
+			for (var ri = 0; ri < sliceRects.length; ri++) {
+				var rect = sliceRects[ri],
+					sliceRef = rect[4],
+					sliceObj = sliceRef != null ? slices[sliceRef] : null;
+				if (sliceObj && pass == 0 || sliceObj == null && pass == 1) continue;
+				var x0 = Math.round(rect[0]),
+					y0 = Math.round(rect[1]),
+					x1 = Math.round(rect[2]),
+					y1 = Math.round(rect[3]);
+				ctx.strokeStyle = ctx.fillStyle = NamedTabPanel.ut(f7 ? [0, .7, .7, 1] : [.8, .8, .8, 1]);
+				ctx.strokeRect(x0 + halfPx, y0 + halfPx, x1 - x0, y1 - y0);
+				var label = ri + 1,
+					labelMetrics = ctx.measureText(label),
+					labelW = labelMetrics.width;
+				ctx.fillRect(x0, y0, labelW + fontDoc / 2, fontDoc);
+				ctx.fillStyle = NamedTabPanel.ut([1, 1, 1, 1]);
+				ctx.fillText(label, x0 + fontDoc / 4, y0 + fontDoc * .8);
 			}
-			var _local4201 = 2 / l.u.N,
-				_local4202 = 2 * _local4201;
-			for (var _local4207 = 0; _local4207 < _local4258.length; _local4207++) {
-				var _local4255 = _local4258[_local4207],
-					_local4276 = Math.round(_local4255[0]),
-					_local4280 = Math.round(_local4255[1]),
-					_local4277 = Math.round(_local4255[2]),
-					_local4281 = Math.round(_local4255[3]);
-				d.strokeStyle = d.fillStyle = NamedTabPanel.ut([1, .6, 0, 1]);
-				d.strokeRect(_local4276 + _local4196, _local4280 + _local4196, _local4277 - _local4276, _local4281 - _local4280);
-				var _local4170 = [_local4276, _local4280, _local4277, _local4280, _local4277, _local4281, _local4276, _local4281];
-				for (var _local4165 = 0; _local4165 < _local4170.length; _local4165 += 2) {
-					var _local4171 = _local4170[_local4165],
-						_local4172 = _local4170[_local4165 + 1],
-						_local4230 = _local4170[_local4165 + 2 & 7],
-						_local4231 = _local4170[_local4165 + 3 & 7];
-					d.fillRect(_local4171 - _local4201, _local4172 - _local4201, _local4202, _local4202);
-					d.fillRect(Math.round((_local4171 + _local4230) / 2) - _local4201, Math.round((_local4172 + _local4231) / 2) - _local4201, _local4202, _local4202);
+			var handleHalf = 2 / doc.u.N,
+				handleSize = 2 * handleHalf;
+			for (var ri = 0; ri < selSliceRects.length; ri++) {
+				var rect = selSliceRects[ri],
+					x0 = Math.round(rect[0]),
+					y0 = Math.round(rect[1]),
+					x1 = Math.round(rect[2]),
+					y1 = Math.round(rect[3]);
+				ctx.strokeStyle = ctx.fillStyle = NamedTabPanel.ut([1, .6, 0, 1]);
+				ctx.strokeRect(x0 + halfPx, y0 + halfPx, x1 - x0, y1 - y0);
+				var corners = [x0, y0, x1, y0, x1, y1, x0, y1];
+				for (var ci2 = 0; ci2 < corners.length; ci2 += 2) {
+					var cxv = corners[ci2],
+						cyv = corners[ci2 + 1],
+						nxv = corners[ci2 + 2 & 7],
+						nyv = corners[ci2 + 3 & 7];
+					ctx.fillRect(cxv - handleHalf, cyv - handleHalf, handleSize, handleSize);
+					ctx.fillRect(Math.round((cxv + nxv) / 2) - handleHalf, Math.round((cyv + nyv) / 2) - handleHalf, handleSize, handleSize);
 				}
 			}
-			_local4174 = !0;
+			drewOverlay = !0;
 		}
-		var _local4213 = l.add.Anno;
-		if (_local4213 && _local4213.length != 0)
-		for (var _local4150 = 0; _local4150 < _local4213.length; _local4150++) {
-			var _local4209 = _local4213[_local4150],
-				_local4152 = _local4209[2],
-				_local4205 = _local4209[0] - gX,
-				_local4183 = _local4209[1] - gX,
-				_local4212 = 30 / G.ma,
-				_local4206 = .4 * _local4212,
-				_local4214 = .6 * _local4212;
-			d.beginPath();
-			d.moveTo(_local4205, _local4183 + _local4214);
-			d.lineTo(_local4205, _local4183);
-			d.lineTo(_local4205 + _local4212, _local4183);
-			d.lineTo(_local4205 + _local4212, _local4183 + _local4212);
-			d.lineTo(_local4205 + _local4206, _local4183 + _local4212);
-			d.closePath();
-			d.lineTo(_local4205 + _local4206, _local4183 + _local4214);
-			d.lineTo(_local4205 + _local4206, _local4183 + _local4212);
-			if (_local4150 == l.u.$m) {
-				d.lineWidth *= 5;
-				d.strokeStyle = NamedTabPanel.ut([0, 0, 0, .5]);
-				d.stroke();
-				d.lineWidth /= 5;
+		var annos = doc.add.Anno;
+		if (annos && annos.length != 0)
+		for (var ai = 0; ai < annos.length; ai++) {
+			var anno = annos[ai],
+				annoColor = anno[2],
+				annoX = anno[0] - gX,
+				annoY = anno[1] - gX,
+				annoSize = 30 / view.ma,
+				annoInner = .4 * annoSize,
+				annoOuter = .6 * annoSize;
+			ctx.beginPath();
+			ctx.moveTo(annoX, annoY + annoOuter);
+			ctx.lineTo(annoX, annoY);
+			ctx.lineTo(annoX + annoSize, annoY);
+			ctx.lineTo(annoX + annoSize, annoY + annoSize);
+			ctx.lineTo(annoX + annoInner, annoY + annoSize);
+			ctx.closePath();
+			ctx.lineTo(annoX + annoInner, annoY + annoOuter);
+			ctx.lineTo(annoX + annoInner, annoY + annoSize);
+			if (ai == doc.u.$m) {
+				ctx.lineWidth *= 5;
+				ctx.strokeStyle = NamedTabPanel.ut([0, 0, 0, .5]);
+				ctx.stroke();
+				ctx.lineWidth /= 5;
 			}
-			d.fillStyle = NamedTabPanel.ut([_local4152.o / 255, _local4152.J / 255, _local4152.k / 255, 1]);
-			d.fill();
-			d.strokeStyle = NamedTabPanel.ut([0, 0, 0, 1]);
-			d.stroke();
+			ctx.fillStyle = NamedTabPanel.ut([annoColor.o / 255, annoColor.J / 255, annoColor.k / 255, 1]);
+			ctx.fill();
+			ctx.strokeStyle = NamedTabPanel.ut([0, 0, 0, 1]);
+			ctx.stroke();
 		}
 	}
-	d.strokeStyle = NamedTabPanel.ut([1, 0, 0, 1]);
-	if (l.I.Cj) {
-		this.yC(l.I.Cj, _local4197, d);
-		d.stroke();
+	ctx.strokeStyle = NamedTabPanel.ut([1, 0, 0, 1]);
+	if (doc.I.Cj) {
+		this.yC(doc.I.Cj, halfPxMat, ctx);
+		ctx.stroke();
 	}
-	d.restore();
-
-	// hbi: render rulers
-	if (_local4162.bI) {
-		var avr = l.u.aR();
+	ctx.restore();
+	if (prefs.bI) {
+		var availRect = doc.u.aR();
 		var rS = PixelUtil.y0.mT;
-		if (l.u.C5 == null || l.u.C5.width != avr.m || l.u.XF.height != avr.n) {
-			l.u.X7 = d.createImageData(rS, rS);
-			l.u.C5 = d.createImageData(avr.m, rS);
-			l.u.XF = d.createImageData(rS, avr.n);
+		if (doc.u.C5 == null || doc.u.C5.width != availRect.m || doc.u.XF.height != availRect.n) {
+			doc.u.X7 = ctx.createImageData(rS, rS);
+			doc.u.C5 = ctx.createImageData(availRect.m, rS);
+			doc.u.XF = ctx.createImageData(rS, availRect.n);
 		}
-		var _local4157 = 0,
-			_local4158 = 0,
-			_local4156 = l.m,
-			_local4154 = l.n;
-		if (l.bZ() != -1) {
-			var _local4153 = l.B[l.bZ()].dA();
-			_local4157 = _local4153.x;
-			_local4158 = _local4153.y;
-			_local4156 = _local4153.m;
-			_local4154 = _local4153.n;
+		var rulerOriginX = -availRect.x,
+			rulerOriginY = -availRect.y,
+			contentW = doc.m,
+			contentH = doc.n;
+		// With an active artboard, ruler zero is the artboard's top-left (not the document's).
+		if (doc.bZ() != -1) {
+			var artboardRect = doc.B[doc.bZ()].dA();
+			rulerOriginX = artboardRect.x;
+			rulerOriginY = artboardRect.y;
+			contentW = artboardRect.m;
+			contentH = artboardRect.n;
 		}
-		_local4157 *= G.N;
-		_local4158 *= G.N;
-		var _local4273 = l.u,
-			_local4271 = [1, l.m7, l.m7 / 2.54, l.m7 / 25.4, _local4156 / 100][_local4247.SF],
-			_local4178 = _local4273.N * l.m / 2,
-			_local4177 = _local4273.N * l.n / 2,
-			_local4278 = [_local4273.N * _local4271, new Point2D(_local4273.R.x + (_local4157 + _local4178 * _local4271 - _local4178), _local4273.R.y + (_local4158 + _local4177 * _local4271 - _local4177))];
-		if (_local4247.SF == 4) _local4271 *= _local4154 / _local4156;
-		var _local4282 = [_local4273.N * _local4271, new Point2D(_local4273.R.x + (_local4157 + _local4178 * _local4271 - _local4178), _local4273.R.y + (_local4158 + _local4177 * _local4271 - _local4177))],
-			_local4228 = this.zS.YE;
-		PixelUtil.y0.rulers(_local4273, Math.floor(_local4228.x), Math.floor(_local4228.y), _local4278, _local4282);
-		var _local4169 = LayerCanvasPanel.ae$(_local4273.N, NamedTabPanel.ut([1, 1, 1, 1]), l.m, l.n);
-		NamedTabPanel._f(l.u.XF.data);
-		NamedTabPanel._f(l.u.C5.data);
-		NamedTabPanel._f(l.u.X7.data);
-		d.putImageData(l.u.XF, avr.x-rS, avr.y);    // left ruler
-		d.putImageData(l.u.C5, avr.x,    avr.y-rS); // top ruler
-		d.putImageData(l.u.X7, avr.x-rS, avr.y-rS); // ruler corner
-		
-		// hbi: zoom percentage and "width x height"
-		// d.putImageData(_local4169, 50, l.u.Vm.n - _local4169.height - 50);
+		rulerOriginX *= view.N;
+		rulerOriginY *= view.N;
+		var viewState = doc.u,
+			// Units: [px, inch, cm, mm, %] -> document-space scale per ruler unit.
+			unitScale = [1, doc.m7, doc.m7 / 2.54, doc.m7 / 25.4, contentW / 100][viewOpts.SF],
+			halfDocScreenW = viewState.N * doc.m / 2,
+			halfDocScreenH = viewState.N * doc.n / 2,
+			horizAxisTransform = [viewState.N * unitScale, new Point2D(viewState.R.x + (rulerOriginX + halfDocScreenW * unitScale - halfDocScreenW), viewState.R.y + (rulerOriginY + halfDocScreenH * unitScale - halfDocScreenH))];
+		if (viewOpts.SF == 4) unitScale *= contentH / contentW;
+		var vertAxisTransform = [viewState.N * unitScale, new Point2D(viewState.R.x + (rulerOriginX + halfDocScreenW * unitScale - halfDocScreenW), viewState.R.y + (rulerOriginY + halfDocScreenH * unitScale - halfDocScreenH))],
+			cursorPos = this.zS.YE;
+		PixelUtil.y0.rulers(viewState, horizAxisTransform, vertAxisTransform);
+		NamedTabPanel._f(doc.u.XF.data);
+		NamedTabPanel._f(doc.u.C5.data);
+		NamedTabPanel._f(doc.u.X7.data);
+		ctx.putImageData(doc.u.XF, availRect.x-rS, availRect.y);    // left ruler
+		ctx.putImageData(doc.u.C5, availRect.x,    availRect.y-rS); // top ruler
+		ctx.putImageData(doc.u.X7, availRect.x-rS, availRect.y-rS); // ruler corner
+
+		// var zoomLabelImg = LayerCanvasPanel.ae$(viewState.N, NamedTabPanel.ut([1, 1, 1, 1]), doc.m, doc.n);
+		// ctx.putImageData(zoomLabelImg, availRect.x, doc.u.Vm.n - zoomLabelImg.height);
 	}
-	if (l.I.P4.length != 0) {
-		for (var _local4150 = 0; _local4150 < l.I.P4.length; _local4150++) {
-			var _local4164 = l.I.P4[_local4150],
-				_local4151 = _local4164[1];
-			d.putImageData(new ImageData(new Uint8ClampedArray(_local4164[0].buffer), _local4151.m, _local4151.n), _local4151.x, _local4151.y);
+	if (doc.I.P4.length != 0) {
+		for (var pi3 = 0; pi3 < doc.I.P4.length; pi3++) {
+			var p4item = doc.I.P4[pi3],
+				p4rect = p4item[1];
+			ctx.putImageData(new ImageData(new Uint8ClampedArray(p4item[0].buffer), p4rect.m, p4rect.n), p4rect.x, p4rect.y);
 		}
 	}
-	return _local4174 || _local4162.bI;
+	return drewOverlay || prefs.bI;
 };
 
 NamedTabPanel.prototype.C9 = function (l, d, G, b, V, Q, t) {
