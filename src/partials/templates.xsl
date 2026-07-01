@@ -129,7 +129,6 @@
 		<xsl:when test="@type = 'smart'">
 			<div class="row" data-layer="smart">
 				<xsl:attribute name="style">
-					--bg: url(<xsl:value-of select="@bg"/>);
 					--w: <xsl:value-of select="@w"/>px;
 					--h: <xsl:value-of select="@h"/>px;
 				</xsl:attribute>
@@ -152,7 +151,6 @@
 		<xsl:otherwise>
 			<div class="row" data-layer="image">
 				<xsl:attribute name="style">
-					--bg: url(<xsl:value-of select="@bg"/>);
 					--w: <xsl:value-of select="@w"/>px;
 					--h: <xsl:value-of select="@h"/>px;
 				</xsl:attribute>

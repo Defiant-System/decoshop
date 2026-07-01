@@ -196,6 +196,7 @@ const Panels = {
 		}
 	},
 	layers: {
+		thumbSize: 32,
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.layers,
@@ -205,15 +206,56 @@ const Panels = {
 			// console.log(event);
 			switch (event.type) {
 				case "init-panel":
+					// window.render({
+					// 	template: "layers-list",
+					// 	match: "//TempLayers",
+					// 	target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
+					// }).then((el) => {
+					// 	// temp
+					// 	el.find(".row:nth(0) .name").trigger("click");
+					// 	// el.find(".row:nth(0)").addClass("fx-expand");
+					// });
+					break;
+				case "refresh":
 					window.render({
+						data: event.file.xLayers,
 						template: "layers-list",
-						match: "//TempLayers",
+						match: "//Layers",
 						target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
 					}).then((el) => {
 						// temp
 						el.find(".row:nth(0) .name").trigger("click");
 						// el.find(".row:nth(0)").addClass("fx-expand");
+
+						Self.dispatch({ type: "refresh-thumbnails" });
 					});
+					break;
+				case "refresh-thumbnails":
+					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
+					var edge = Self.thumbSize * window.devicePixelRatio,
+						count = 0,
+						// Seed the pyramid with the full-resolution composite and its bounds.
+						mipmap = [...APP.statusbar._activeFile.mipmap];
+					// Skip the levels that are still larger than the display target.
+					while (Math.max(mipmap[count+1].m, mipmap[count+1].n) > edge) {
+						count += 2;
+					}
+					// Keep from the first small-enough level onward; cache[0]=pixels, cache[1]=rect.
+					let cache = mipmap.slice(count),
+						rect = cache[1],
+						cvs = APP.els.content.find(`[data-box="layers"] .box-content-wrapper .thumbnail canvas`),
+						ctx = cvs[0].getContext("2d", { willReadFrequently: true });
+					// Size the canvas to the thumbnail's pixel dimensions.
+					cvs.attr({ width: rect.m, height: rect.n });
+					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
+					var iData = ctx.createImageData(rect.m, rect.n);
+					PixelUtil.copyByteBuffer(cache[0], iData.data);
+					ctx.putImageData(iData, 0, 0);
+					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
+					ctx.getImageData(0, 0, 1, 1);
+					break;
+				case "toggle-layer-visibility":
+					// layer.Oj(false); // set hidden (mutates layerFlags)
 					break;
 				case "select-layer":
 					el = $(event.target);
@@ -317,42 +359,31 @@ const Panels = {
 					Self.miniRange.on("input", Self.dispatch);
 					Self.viewRect.on("mousedown", Self.doPan);
 					break;
-				case "thumbnail-mip-chain":
+				case "refresh":
+					let doc = event.file.doc,
+						{ width: w, height: h } = Misc.fitWithin(doc.Ch.m, doc.Ch.n, Self.maxW, Self.maxH);
+					// update width & height for navigator panel
+					Self.wrapper.css({ "--d": "block", "--w": `${w}px`, "--h": `${h}px` });
+					Self.vw = w;
+					Self.vh = h;
+
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
 					var edge = Self.maxW * window.devicePixelRatio,
 						count = 0,
 						// Seed the pyramid with the full-resolution composite and its bounds.
-						mipmap = [Doc.LT(), new Rect(0, 0, Doc.m, Doc.n)];
-					// Append progressively half-sized RGBA levels (mipmaps).
-					PixelUtil.pyramidDownsampleRgba(mipmap);
+						mipmap = [...APP.statusbar._activeFile.mipmap];
 					// Skip the levels that are still larger than the display target.
-					while (Math.max(mipmap[count + 1].m, mipmap[count + 1].n) > edge) {
+					while (Math.max(mipmap[count+1].m, mipmap[count+1].n) > edge) {
 						count += 2;
 					}
-					// Keep from the first small-enough level onward; EI[0]=pixels, EI[1]=rect.
-					Self.EI = mipmap.slice(count);
-					break;
-				case "refresh":
-					let w = event.doc.Ch.m,
-						h = event.doc.Ch.n,
-						{ width, height } = Misc.fitWithin(w, h, Self.maxW, Self.maxH);
-					// update width & height for navigator panel
-					Self.wrapper.css({ "--d": "block", "--w": `${width}px`, "--h": `${height}px` });
-					Self.vw = width;
-					Self.vh = height;
-
-					Self.dispatch({ type: "thumbnail-mip-chain" });
-					// PixelUtil.copyByteBuffer(event.doc, iData.data);
-
-					var viewState = event.doc.u;
-					// Smallest cached level: EI[0] = RGBA pixels, EI[1] = its Rect (size).
-					var mipmap = Self.EI[0],
-						rect = Self.EI[1];
+					// Keep from the first small-enough level onward; cache[0]=pixels, cache[1]=rect.
+					let cache = mipmap.slice(count),
+						rect = cache[1];
 					// Size the canvas to the thumbnail's pixel dimensions.
 					Self.cvs.attr({ width: rect.m, height: rect.n });
 					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
 					var iData = Self.ctx.createImageData(rect.m, rect.n);
-					PixelUtil.copyByteBuffer(mipmap, iData.data);
+					PixelUtil.copyByteBuffer(cache[0], iData.data);
 					Self.ctx.putImageData(iData, 0, 0);
 					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
 					Self.ctx.getImageData(0, 0, 1, 1);

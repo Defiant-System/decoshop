@@ -8,6 +8,7 @@ let Test = {
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
+		// /cdn/img/2d-samples/girl.psd
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
@@ -19,7 +20,7 @@ let Test = {
 		// setTimeout(() => APP.tools.zoom.dispatch({ type: "center-fit" }), 1200);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="zoom"]`).trigger("click"), 1500);
-		setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
+		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1700);
 
 		/*

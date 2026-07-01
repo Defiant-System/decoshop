@@ -85,13 +85,6 @@ const decoshop = {
 	},
 	dispatch(event) {
 		let Self = decoshop,
-			Tools = Self.tools,
-			callback,
-			name,
-			args,
-			layer,
-			pixels,
-			filtered,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -128,6 +121,10 @@ const decoshop = {
 				break;
 			case "open-dialog":
 				UI.doDialog({ type: "dlg-open", name: event.arg });
+				break;
+
+			case "file-ready":
+				Self.sidebar.dispatch({ ...event, type: "refresh-panels" });
 				break;
 
 			// proxy events

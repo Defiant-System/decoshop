@@ -40,11 +40,11 @@
 			<i type="group" name="Folder 2" />
 		</i> -->
 
-		<i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="29" mask="shape-1">
+		<!-- <i type="image" name="Flower" bg="/cdn/img/2d-samples/matthew-brodeur.jpg" w="22" h="29" mask="shape-1">
 			<fx name="Inner Glow" hidden="1"/>
 			<fx name="Drop Shadow"/>
 		</i>
-		<i type="image" name="Background" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="21"/>
+		<i type="image" name="Background" bg="/cdn/img/2d-samples/robert-collins.jpg" w="28" h="21"/> -->
 	</TempLayers>
 
 	<Presets>

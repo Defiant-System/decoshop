@@ -21,11 +21,11 @@ const Engine = {
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
-				Self.doc = PP.fk();
+				// Self.doc = PP.fk();
 
-				APP.tools.zoom.dispatch({ type: "center-actual" });
+				// APP.tools.zoom.dispatch({ type: "center-actual" });
 				// update panels
-				APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc });
+				// APP.sidebar.dispatch({ type: "refresh-panels", doc: Self.doc });
 				break;
 			
 			default:
@@ -66,7 +66,7 @@ const Engine = {
 					rect.width -= PixelUtil.y0.mT * 2;
 					rect.height -= PixelUtil.y0.mT * 2;
 				}
-				vs = event.viewState || Engine.doc.u;
+				vs = event.viewState || APP._activeFile.doc.u;
 				vs.setAvailable(rect.left, rect.top, rect.width, rect.height);
 				PP.update(true);
 				break;

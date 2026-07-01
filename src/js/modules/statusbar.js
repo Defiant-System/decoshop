@@ -56,7 +56,7 @@
 						"arg": file.id,
 						"name": file.base,
 					});
-					//
+					// ui update new file as selected
 					Self.dispatch({ type: "select-file", id: file.id });
 				});
 				break;
@@ -72,6 +72,7 @@
 				if (Self._activeFile) Self._activeFile.dispatch({ type: "file.blur" });
 				Self._activeFile = Self._stack.find(f => f.id === el.data("arg"));
 				Self._activeFile.dispatch({ type: "file.focus" });
+
 				break;
 			case "close-file":
 				break;
