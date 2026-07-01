@@ -2,11 +2,27 @@
 let Test = {
 	debug: 1,
 	xLayers: `<Layers>
+					<i type="image" name="Background" w="{{w}}" h="{{h}}">
+						<fx name="Inner Shadow"/>
+						<fx name="Inner Glow" hidden="1"/>
+						<fx name="Color Overlay"/>
+						<fx name="Gradient Overlay"/>
+						<fx name="Drop Shadow"/>
+					</i>
+					<i type="group" name="Folder" expanded="1">
+						<i type="text" name="Some Text 1"/>
+						<i type="group" name="Folder 1" expanded="1">
+							<i type="group" name="Folder 4" />
+							<i type="group" name="Folder 3">
+								<i type="text" name="Some Text 2"/>
+							</i>
+						</i>
+						<i type="group" name="Folder 2" />
+					</i>
 					<i type="image" name="Flower" w="{{w}}" h="{{h}}" mask="shape-1">
 						<fx name="Inner Glow" hidden="1"/>
 						<fx name="Drop Shadow"/>
 					</i>
-					<i type="image" name="Background" w="{{w}}" h="{{h}}"/>
 				</Layers>`,
 	xLayersBig: `<Layers>
 			<i type="group" name="Landscape" expanded="1">
@@ -55,12 +71,13 @@ let Test = {
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		setTimeout(() => APP.els.content.find(`.sample:nth(6)`).trigger("click"), 100);
+		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 		// /cdn/img/2d-samples/girl.psd
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sidebar-bar .tool[data-target="color"]`).trigger("click"), 700);
+		
 		// setTimeout(() => APP.els.content.find(`.sidebar-wrapper div[data-box="layers"] .icon[data-click="remove-layer"]`).trigger("click"), 1000);
 
 		// stops RAF

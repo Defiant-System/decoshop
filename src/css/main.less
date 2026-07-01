@@ -4053,10 +4053,53 @@ content {
 
 										.icon-eye-off,
 										.icon-eye-on { top: 17px; }
+									}
 
-										.fx-applied {
-											height: 64px;
+									.fx-applied {
+										height: 64px;
+									}
+
+									&:first-child {
+										.icon-folder {
+											top: 16px;
 										}
+									}
+
+									// &:before { top: 0; height: 64px; }
+								}
+
+								.group {
+									&.expanded {
+										> div:not(:first-child) {
+											// height: 65px;
+										}
+
+										> .row {
+											&:after { top: 25px; }
+
+											&[data-layer="text"] {
+												height: 65px;
+												
+												.thumbnail:before {
+													background: 26px auto;
+												}
+											}
+										}
+
+										> .row:first-child {
+											&:before { top: 38px; height: 27px; }
+											// &:after { top: 25px; }
+										}
+									}
+
+									> .row:first-child {
+										// &:before { top: 38px; height: 27px; }
+										&:after { top: 25px; }
+									}
+
+									> div:last-child {
+										&:before { height: 32px; }
+										&:after { top: 28px; }
 									}
 								}
 							}
@@ -4818,8 +4861,8 @@ content {
 					font-size: 12px;
 					color: rgba(#dee, .65);
 					text-shadow: 0 1px 0 rgba(#000, .25);
-					--w: calc( 26px * var( --multiplier ) );
-					--h: calc( 26px * var( --multiplier ) );
+					--w: 28px;
+					--h: 28px;
 					--aW: calc( 32px * var( --multiplier ) );
 					--aH: calc( 32px * var( --multiplier ) );
 
@@ -4873,6 +4916,7 @@ content {
 							.mask {
 								&:before { border-color: #011e; }
 								&:after { border-color: #effc; }
+								canvas { box-shadow: inset 0 0 0 2px #566; }
 							}
 						}
 						
@@ -4926,6 +4970,7 @@ content {
 							&:before {
 								background: url(~/icons/tool-glyphs.png) 50% 50% no-repeat;
 								background-size: 17px auto;
+								box-shadow: 0 0 0 1px #fdd3;
 								filter: contrast(1.15) invert(1) drop-shadow(0 1px 0 #0115);
 								border-color: #0110;
 							}
@@ -4946,9 +4991,9 @@ content {
 						position: relative;
 						width: var( --aW );
 						height: var( --aH );
-						--cW: calc( calc( var( --w ) + 4px ) * var( --multiplier ) );
-						--cH: calc( calc( var( --h ) + 4px ) * var( --multiplier ) );
-						--m: 4px; // calc( 4px * var( --multiplier ) );
+						--cW: calc( var( --w ) * var( --multiplier ) );
+						--cH: calc( var( --h ) * var( --multiplier ) );
+						--m: 4px;
 
 						&:before,
 						&:after {
@@ -4988,8 +5033,8 @@ content {
 							position: absolute;
 							top: calc( calc( var( --aH ) - var( --cH ) ) * .5 );
 							left: calc( calc( var( --aW ) - var( --cW ) ) * .5 );
-							width: calc( var( --cW ) - 2px );
-							height: calc( var( --cH ) - 2px );
+							width: var( --cW );
+							height: var( --cH );
 							/* temp START 
 							background: 50% 50% / contain no-repeat;
 							background-image: var( --bg );
@@ -5013,11 +5058,12 @@ content {
 						cursor: pointer;
 
 						&:before {
-							background-color: #eff;
+							// background-color: #eff;
 						}
 
 						canvas {
 							background-image: none;
+							background-color: #eff;
 						}
 					}
 
