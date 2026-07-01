@@ -128,6 +128,7 @@ const decoshop = {
 				break;
 
 			case "file-ready":
+				Self.tools.zoom.dispatch({ type: "center-actual" });
 				Self.sidebar.dispatch({ ...event, type: "refresh-panels" });
 				break;
 

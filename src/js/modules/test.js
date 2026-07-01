@@ -1,6 +1,6 @@
 
 let Test = {
-	debug: 1,
+	debug: !1,
 	xLayers: `<Layers>
 					<i type="image" name="Background" w="{{w}}" h="{{h}}">
 						<fx name="Inner Shadow"/>
@@ -71,13 +71,13 @@ let Test = {
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
+		setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
 		// /cdn/img/2d-samples/girl.psd
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sidebar-bar .tool[data-target="color"]`).trigger("click"), 700);
-		
+
 		// setTimeout(() => APP.els.content.find(`.sidebar-wrapper div[data-box="layers"] .icon[data-click="remove-layer"]`).trigger("click"), 1000);
 
 		// stops RAF

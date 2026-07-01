@@ -135,6 +135,10 @@
 				doc.u.q8.T6(doc.u.R.x, doc.u.R.y);
 				doc.bV = true;
 				PP.update(true);
+				// update navigator panel
+				Self.value = Math.round(doc.u.N * 100);
+				Panels.navigator.dispatch({ type: "update-zoom-value", value: Self.value });
+				APP.statusbar.dispatch({ type: "update-zoom-value", value: Self.value });
 				break;
 		}
 	}
