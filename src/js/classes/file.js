@@ -60,7 +60,7 @@ class File {
 					"3": "vector",
 				},
 				type = types[node.j.ht],
-				xLayer = $.nodeFromString(`<i type="${type}" name="${name}" w="${w-4}" h="${h-4}"/>`);
+				xLayer = $.nodeFromString(`<i type="${type}" name="${name}" w="${w}" h="${h}"/>`);
 			xNode.appendChild(xLayer);
 		}
 

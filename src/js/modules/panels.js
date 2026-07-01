@@ -216,7 +216,7 @@ const Panels = {
 						target: Self.root,
 					}).then((el) => {
 						// temp
-						el.find(".row:nth(3) .name").trigger("click");
+						el.find(".row:nth(0) .name").trigger("click");
 						// el.find(".row:nth(0)").addClass("fx-expand");
 
 						Self.dispatch({ type: "refresh-thumbnails" });
