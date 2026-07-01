@@ -369,21 +369,30 @@ const Panels = {
 					Self.dispatch({ type: "update-zoom", target: Self.miniRange[0] });
 					break;
 				case "recalc-view-rect":
-					var a  = Doc.u.aR(),
-						p0 = Doc.u.Zx(a.x, a.y),
-						p1 = Doc.u.Zx(a.x + a.m, a.y + a.n),
+					if (!Doc) break;
+					// Map the work view (available rect) to navigator view-rect CSS vars.
+					let u = Doc.u,
+						aR = u.aR(),
+						p0 = u.Zx(aR.x, aR.y),
+						p1 = u.Zx(aR.x + aR.m, aR.y + aR.n),
 						fx = Self.vw / Doc.m,
 						fy = Self.vh / Doc.n,
-						vx = Math.max(p0.x * fx, 0),
-						vy = Math.max(p0.y * fy, 0),
-						vw = Math.min((p1.x - p0.x) * fx, Self.vw),
-						vh = Math.min((p1.y - p0.y) * fy, Self.vh);
-					// apply rect dim
+						vr = {
+							vx: p0.x * fx,
+							vy: p0.y * fy,
+							vw: (p1.x - p0.x) * fx,
+							vh: (p1.y - p0.y) * fy,
+						};
+					if (vr.vx < 0) { vr.vw += vr.vx; vr.vx = 0; }
+					if (vr.vy < 0) { vr.vh += vr.vy; vr.vy = 0; }
+					if (vr.vx + vr.vw > Self.vw) vr.vw -= vr.vx + vr.vw - Self.vw;
+					if (vr.vy + vr.vh > Self.vh) vr.vh -= vr.vy + vr.vh - Self.vh;
+
 					Self.viewRect.css({
-						"--vx": `${Math.round(vx)}px`,
-						"--vy": `${Math.round(vy)}px`,
-						"--vw": `${Math.round(vw)}px`,
-						"--vh": `${Math.round(vh)}px`,
+						"--vx": `${Math.round(vr.vx)}px`,
+						"--vy": `${Math.round(vr.vy)}px`,
+						"--vw": `${Math.round(vr.vw)}px`,
+						"--vh": `${Math.round(vr.vh)}px`,
 					});
 					break;
 				case "update-zoom-value":
@@ -401,45 +410,53 @@ const Panels = {
 					event.preventDefault();
 					// prepare drag object
 					let el = $(event.target),
-						cvs = {
-							el: Self.cvs[0],
-							w: Self.cvs.attr("width"),
-							g: Self.cvs.attr("height"),
-						},
 						rect = {
 							x: parseInt(el.cssProp("--vx"), 10),
 							y: parseInt(el.cssProp("--vy"), 10),
 							w: parseInt(el.cssProp("--vw"), 10),
 							h: parseInt(el.cssProp("--vh"), 10),
 						},
-						// mini = {
-						// 	w: parseInt(el.cssProp("--w"), 10),
-						// 	h: parseInt(el.cssProp("--h"), 10),
-						// },
 						click = {
 							x: rect.x - event.clientX,
 							y: rect.y - event.clientY,
 						},
-						min = {
-							x: 0,
-							y: 0,
-						},
-						max = {
-							x: parseInt(el.parent().cssProp("--w"), 10) - rect.w,
-							y: parseInt(el.parent().cssProp("--h"), 10) - rect.h,
+						panFromNavPos = (vx, vy) => {
+							let tX = vx * doc.m / Self.vw,
+								tY = vy * doc.n / Self.vh;
+							doc.u.R.T6(0, 0);
+							let { x: sx, y: sy } = doc.u.dN(tX, tY);
+							return {
+								x: Math.round(avR.x - sx),
+								y: Math.round(avR.y - sy),
+							};
 						},
 						doc = Engine.doc,
-						avr = doc.u.aR(),
-						target = {
-							doc,
-							s: doc.u.N,
-							w: doc.m,
-							h: doc.n,
-							rx: (doc.m - avr.m),
-							ry: (doc.n - avr.n),
-						};
-
-					Self.drag = { el, click, rect, target, cvs, min, max };
+						avR = doc.u.aR(),
+						// Pan limits matching CanvasTools.Mi.if (available rect + panSlack).
+						slack = CanvasTools.Mi.panSlack || 0,
+						panLimX = Math.abs(avR.m - doc.m * doc.u.N) / 2 + slack,
+						panLimY = Math.abs(avR.n - doc.n * doc.u.N) / 2 + slack,
+						fx = Self.vw / doc.m,
+						fy = Self.vh / doc.n,
+						saved = { x: doc.u.R.x, y: doc.u.R.y },
+						min = { x: Infinity, y: Infinity },
+						max = { x: -Infinity, y: -Infinity };
+					for (let rx of [-panLimX, panLimX]) {
+						for (let ry of [-panLimY, panLimY]) {
+							doc.u.R.T6(rx, ry);
+							let p0 = doc.u.Zx(avR.x, avR.y);
+							let vx = p0.x * fx;
+							let vy = p0.y * fy;
+							if (vx < min.x) min.x = vx;
+							if (vx > max.x) max.x = vx;
+							if (vy < min.y) min.y = vy;
+							if (vy > max.y) max.y = vy;
+						}
+					}
+					doc.u.R.T6(saved.x, saved.y);
+					doc.u.q8.T6(saved.x, saved.y);
+					// save drag details
+					Self.drag = { el, click, rect, doc, avR, panFromNavPos, min, max };
 
 					// prevent mouse from triggering mouseover
 					APP.els.content.addClass("no-cursor");
@@ -448,28 +465,20 @@ const Panels = {
 					break;
 				case "mousemove":
 					let vx = Math.min(Math.max(event.clientX + Drag.click.x, Drag.min.x), Drag.max.x),
-						vy = Math.min(Math.max(event.clientY + Drag.click.y, Drag.min.y), Drag.max.y);
-					// moves navigator view rectangle
-					Drag.el.css({ "--vx": `${vx}px`, "--vy": `${vy}px` });
-
-					// apply pan
-					// let x = (vx * (Drag.target.w * Drag.target.s) / 2) + 64;
-					// let y = (vy * (Drag.target.h * Drag.target.s) / 2) + 64;
-					// CanvasTools.Mi.if(Drag.target.doc, x, y);
-					
-					// let x = 17-((445-230) >> 1);
-					// let y = 72+17-((454-345) >> 1);
-					// Drag.target.doc.u.R.T6(x, y);
-					// Drag.target.doc.u.q8.T6(x, y); 
-					// Drag.target.doc.bV = true;
-					// PP.update();
-
+						vy = Math.min(Math.max(event.clientY + Drag.click.y, Drag.min.y), Drag.max.y),
+						pan = Drag.panFromNavPos(vx, vy);
+					// Navigator view-rect top-left -> work-view pan (available-rect aligned).
+					CanvasTools.Mi.if(Drag.doc, pan.x, pan.y);
+					Drag.doc.u.q8.T6(Drag.doc.u.R.x, Drag.doc.u.R.y);
+					PP.update();
+					Self.dispatch({ type: "recalc-view-rect" });
 					break;
 				case "mouseup":
 					// remove class
 					APP.els.content.removeClass("no-cursor");
 					// unbind event handlers
 					APP.els.doc.off("mousemove mouseup", Self.doPan);
+					Self.dispatch({ type: "recalc-view-rect" });
 					break;
 			}
 		}

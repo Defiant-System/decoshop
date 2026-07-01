@@ -19,7 +19,7 @@ let Test = {
 		// setTimeout(() => APP.tools.zoom.dispatch({ type: "center-fit" }), 1200);
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-content="zoom"]`).trigger("click"), 1500);
-		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
+		setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1700);
 
 		/*
