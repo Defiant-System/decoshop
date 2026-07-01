@@ -40,7 +40,7 @@
 			case "do-zoom":
 				if (event.smooth) {
 					let animateZoom = (target, ms=120) => {
-						let u = Engine.doc.u,
+						let u = APP.file.doc.u,
 							N0 = u.N,
 							x0 = u.R.x,
 							y0 = u.R.y;
@@ -64,7 +64,7 @@
 							u.N = u.ma = N0 * Math.pow(N1 / N0, t); // geometric zoom interp
 							u.R.x = u.q8.x = x0 + (x1 - x0) * t;
 							u.R.y = u.q8.y = y0 + (y1 - y0) * t;
-							Engine.doc.bV = true; // claim anim; N==ma so update() won't re-ease
+							APP.file.doc.bV = true; // claim anim; N==ma so update() won't re-ease
 							if (e < 1) requestAnimationFrame(step);
 							else {
 								// anim ended
@@ -75,7 +75,7 @@
 					// smooth anim
 					animateZoom(event.value / 100);
 				} else {
-					CanvasTools.gU.p8(Engine.doc.u, event.point, false, event.value / 100);
+					CanvasTools.gU.p8(APP.file.doc.u, event.point, false, event.value / 100);
 					PP.update();
 
 					Panels.navigator.dispatch({ type: "recalc-view-rect" });
@@ -104,7 +104,7 @@
 				break;
 			case "center-actual":
 				// avr is in device px; at 100% the image occupies doc.m x doc.n device px.
-				doc = Engine.doc;
+				doc = APP.file.doc;
 				avr = doc.u.aR();
 
 				if (PP.fB.bI) {

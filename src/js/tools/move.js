@@ -97,7 +97,7 @@
 			case "mousemove":
 				let x = Drag.click.x + event.clientX,
 					y = Drag.click.y + event.clientY;
-				console.log( x, y );
+				// console.log( x, y );
 				// Drag.func(Drag.doc, x, y);
 				// Drag.PP.update();
 				break;

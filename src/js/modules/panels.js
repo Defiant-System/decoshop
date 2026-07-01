@@ -196,7 +196,6 @@ const Panels = {
 		}
 	},
 	layers: {
-		thumbSize: 32,
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.layers,
@@ -206,22 +205,15 @@ const Panels = {
 			// console.log(event);
 			switch (event.type) {
 				case "init-panel":
-					// window.render({
-					// 	template: "layers-list",
-					// 	match: "//TempLayers",
-					// 	target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
-					// }).then((el) => {
-					// 	// temp
-					// 	el.find(".row:nth(0) .name").trigger("click");
-					// 	// el.find(".row:nth(0)").addClass("fx-expand");
-					// });
+					Self.root = APP.els.content.find(`[data-box="layers"] .box-content-wrapper`);
+					Self.thumbSize = 32;
 					break;
 				case "refresh":
 					window.render({
 						data: event.file.xLayers,
 						template: "layers-list",
 						match: "//Layers",
-						target: APP.els.content.find(`[data-box="layers"] .box-content-wrapper`),
+						target: Self.root,
 					}).then((el) => {
 						// temp
 						el.find(".row:nth(0) .name").trigger("click");
@@ -243,7 +235,7 @@ const Panels = {
 					// Keep from the first small-enough level onward; cache[0]=pixels, cache[1]=rect.
 					let cache = mipmap.slice(count),
 						rect = cache[1],
-						cvs = APP.els.content.find(`[data-box="layers"] .box-content-wrapper .thumbnail canvas`),
+						cvs = Self.root.find(`.thumbnail canvas`),
 						ctx = cvs[0].getContext("2d", { willReadFrequently: true });
 					// Size the canvas to the thumbnail's pixel dimensions.
 					cvs.attr({ width: rect.m, height: rect.n });
@@ -290,6 +282,16 @@ const Panels = {
 					event.el.find(".mask-active").removeClass("mask-active");
 					if (el.hasClass("mask")) rEl.addClass("mask-active");
 					break;
+				// box footer
+				case "add-layer-folder":
+					Self.root.data({ size: "0" });
+					break;
+				case "add-layer":
+					Self.root.data({ size: "1" });
+					break;
+				case "remove-layer":
+					Self.root.data({ size: "2" });
+					break;
 			}
 		}
 	},
@@ -316,7 +318,7 @@ const Panels = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.navigator,
-				Doc = Engine.doc,
+				Doc = APP.file?.doc,
 				zoomTool,
 				spectrum,
 				value,
@@ -461,7 +463,7 @@ const Panels = {
 								y: Math.round(avR.y - sy),
 							};
 						},
-						doc = Engine.doc,
+						doc = APP.file.doc,
 						avR = doc.u.aR(),
 						// Pan limits matching CanvasTools.Mi.if (available rect + panSlack).
 						slack = CanvasTools.Mi.panSlack || 0,

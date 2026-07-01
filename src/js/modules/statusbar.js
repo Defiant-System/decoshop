@@ -26,7 +26,7 @@
 				});
 				break;
 			case "set-zoom":
-				let doc = Engine.doc,
+				let doc = APP.file.doc,
 					avr = doc.u.aR(),
 					// ruler = PP.fB.bI ? 17 : 0,
 					center = doc.u.dN(doc.m / 2, doc.n / 2);

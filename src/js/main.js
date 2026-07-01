@@ -71,7 +71,7 @@ const decoshop = {
 			handleBox: window.find(".handle-box"),
 		};
 		// init sub objects
-		Object.keys(this).filter(i => this[i].init).map(i => this[i].init());
+		Object.keys(this).filter(i => this[i]?.init).map(i => this[i].init());
 		PP.init({ app: this, window });
 		Engine.init();
 		UI.init();
@@ -82,6 +82,10 @@ const decoshop = {
 		// DEV-ONLY-START
 		Test.init(this);
 		// DEV-ONLY-END
+	},
+	// short cut to active file
+	get file() {
+		return this.statusbar._activeFile;
 	},
 	dispatch(event) {
 		let Self = decoshop,

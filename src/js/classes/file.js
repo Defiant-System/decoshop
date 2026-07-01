@@ -12,10 +12,16 @@ class File {
 
 			this.doc = PP.fk();
 			this.buildMipChain();
+			this.doc.U();
+			this.doc.Po();
 
-			this.xLayers = this.walkLayers(this.doc.root, 0);
-			// console.log( xml );
-
+			if (Test.debug) {
+				let { width: w, height: h } = Misc.fitWithin(this.doc.m, this.doc.n, 32, 32),
+					xmlStr = Test.xLayers.replace(/\{\{w\}\}/g, w).replace(/\{\{h\}\}/g, h);
+				this.xLayers = $.nodeFromString(xmlStr);
+			} else {
+				this.xLayers = this.walkLayers(this.doc.root, 0);
+			}
 			// update panels
 			decoshop.dispatch({ type: "file-ready", file: this });
 		});
@@ -37,10 +43,6 @@ class File {
 	walkLayers(node, depth=0, x) {
 		let xNode = x || $.nodeFromString(`<Layers/>`);
 
-		if (depth === 0) {
-			this.doc.U();
-			this.doc.Po();
-		}
 		if (node.depth !== 0) {
 			let name = node.j.getName(),
 				blend = node.j.blendModeKey,

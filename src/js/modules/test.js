@@ -1,5 +1,53 @@
 
 let Test = {
+	debug: 1,
+	xLayers: `<Layers>
+					<i type="image" name="Flower" w="{{w}}" h="{{h}}" mask="shape-1">
+						<fx name="Inner Glow" hidden="1"/>
+						<fx name="Drop Shadow"/>
+					</i>
+					<i type="image" name="Background" w="{{w}}" h="{{h}}"/>
+				</Layers>`,
+	xLayersBig: `<Layers>
+			<i type="group" name="Landscape" expanded="1">
+				<i type="smart" name="Flower1" bg="/cdn/img/2d-samples/robert-collins.jpg" w="{{w}}" h="{{h}}"/>
+				<i type="shape" name="Star Shape Very long name here" hidden="1"/>
+				<i type="group" name="Sub folder" hidden="1">
+					<i type="text" name="Some Text Very long name here"/>
+				</i>
+				<i type="text" name="Some Text">
+					<fx name="Inner Shadow"/>
+					<fx name="Inner Glow" hidden="1"/>
+					<fx name="Color Overlay"/>
+					<fx name="Gradient Overlay"/>
+					<fx name="Drop Shadow"/>
+				</i>
+			</i>
+			<i type="group" name="Folder" expanded="1">
+				<i type="text" name="Some Text 2"/>
+				<i type="group" name="Sub folder 1" expanded="1">
+					<i type="group" name="Sub folder 2" expanded="1">
+						<i type="group" name="Sub folder 3" expanded="1">
+							<i type="group" name="Sub folder 4" expanded="1">
+								<i type="text" name="Some Text Very long name here"/>
+							</i>
+							<i type="text" name="Some Text Very long name here"/>
+						</i>
+					</i>
+					<i type="text" name="Some Text Very long name here"/>
+				</i>
+			</i>
+			<i type="group" name="Folder" expanded="1">
+				<i type="text" name="Some Text 1"/>
+				<i type="group" name="Folder 1" expanded="1">
+					<i type="group" name="Folder 4" />
+					<i type="group" name="Folder 3">
+						<i type="text" name="Some Text 2"/>
+					</i>
+				</i>
+				<i type="group" name="Folder 2" />
+			</i>
+		</Layers>`,
 	init(APP) {
 		// return;
 
@@ -7,12 +55,13 @@ let Test = {
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
+		setTimeout(() => APP.els.content.find(`.sample:nth(6)`).trigger("click"), 100);
 		// /cdn/img/2d-samples/girl.psd
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sidebar-bar .tool[data-target="color"]`).trigger("click"), 700);
+		// setTimeout(() => APP.els.content.find(`.sidebar-wrapper div[data-box="layers"] .icon[data-click="remove-layer"]`).trigger("click"), 1000);
 
 		// stops RAF
 		// setTimeout(() => { decoshop._stopped = true; }, 2000);
@@ -25,10 +74,10 @@ let Test = {
 
 		/*
 		setTimeout(() => {
-			// CanvasTools.Mi.if(Engine.doc, 0, 0);
+			// CanvasTools.Mi.if(APP.file.doc, 0, 0);
 			// PP.update();
 
-			// let { x, y } = Engine.doc.u.R;
+			// let { x, y } = APP.file.doc.u.R;
 			// // x += 250;
 			// // y += 0;
 			// console.log( x, y );
@@ -38,10 +87,10 @@ let Test = {
 
 			let x = 0;
 			let y = 0;
-			// Engine.doc.u.R.T6(x, y);
-			// Engine.doc.u.q8.T6(x, y); 
-			CanvasTools.Mi.if(Engine.doc, x, y);
-			Engine.doc.bV = true;
+			// APP.file.doc.u.R.T6(x, y);
+			// APP.file.doc.u.q8.T6(x, y); 
+			CanvasTools.Mi.if(APP.file.doc, x, y);
+			APP.file.doc.bV = true;
 			PP.update();
 
 		}, 2000);
