@@ -149,7 +149,10 @@
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<div class="row" data-layer="image">
+			<div data-layer="image">
+				<xsl:attribute name="class">row 
+					<xsl:if test="@fx-expanded = 1">fx-expand </xsl:if>
+				</xsl:attribute>
 				<xsl:attribute name="style">
 					--w: <xsl:value-of select="@w"/>px;
 					--h: <xsl:value-of select="@h"/>px;
@@ -183,9 +186,16 @@
 <xsl:template name="layer-row-fx">
 	<xsl:if test="count(./fx)">
 		<div class="fx-applied"></div>
-		<ul class="fx-list">
+		<ul>
+			<xsl:attribute name="class">fx-list 
+				<xsl:if test="@fx-enabled = 0">fx-disabled </xsl:if>
+			</xsl:attribute>
 			<li class="fx-header">
-				<i class="icon icon-eye-on"></i>
+				<i>
+					<xsl:attribute name="class">icon icon-eye-on 
+						<xsl:if test="@fx-enabled = 0">icon-eye-off</xsl:if>
+					</xsl:attribute>
+				</i>
 				<div class="fx-name">Effects</div>
 			</li>
 			<xsl:for-each select="./*">

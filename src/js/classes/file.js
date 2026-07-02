@@ -79,7 +79,7 @@ class File {
 				{ width, height } = Misc.fitWithin(rect.m, rect.n, size, size),
 				w = Math.max(width, 8),
 				h = Math.max(height, 8),
-				{ masterFx, xFxList } = this.getLayerFxList(layer),
+				{ fxEnabled, fxExpanded, xFxList } = this.getLayerFxList(layer),
 				types = {
 					"0": "layer-pixels", // Layer pixels (rect + buffer)
 					"1": "raster-mask",  // Raster mask (c3())
@@ -164,7 +164,7 @@ class File {
 			}
 			switch (type) {
 				case "layer-pixels":
-					xStr = `<i id="${id}" type="${type}" name="${name}" w="${w}" h="${h}" hidden="${isHidden}">${xFxList.join("")}</i>`;
+					xStr = `<i id="${id}" type="${type}" name="${name}" w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "raster-mask": break;
 				case "vector-mask": break;
@@ -185,25 +185,26 @@ class File {
 	}
 
 	getLayerFxList(layer) {
-		var lmfx = layer.add.lmfx;
-		if (!lmfx) return { masterFx: undefined, xFxList: [] };
+		let lmfx = layer.add.lmfx;
+		let fxEnabled = lmfx?.masterFXSwitch.v ? 1 : 0;
+		let fxExpanded = layer.bn() ? 1 : 0;
+		let xFxList = [];
+		if (!lmfx) return { fxEnabled, fxExpanded, xFxList };
 		LayerStyleConstants.ensureEffectMultiLists(lmfx);
-		var masterFx = lmfx.masterFXSwitch.v;
-		var xFxList = [];
-		for (var i = 0; i < LayerStyleConstants.effectOrder.length; i++) {
-			var typeId = LayerStyleConstants.effectOrder[i];           // e.g. "DrSh"
-			var multiKey = LayerStyleConstants.effectMultiKeys[i];     // e.g. "dropShadowMulti"
-			var instances = lmfx[multiKey].v;
-			for (var j = 0; j < instances.length; j++) {
-				var fx = instances[j].v;   // descriptor for this effect instance
-				var nI = LayerStyleConstants.effectOrder.indexOf(fx.classID);
-				var name = languageManager.get(LayerStyleConstants.effectDisplayNames[nI]);
-				var enabled = !fx.enab.v ? 1 : 0;
+		for (let i = 0; i < LayerStyleConstants.effectOrder.length; i++) {
+			let typeId = LayerStyleConstants.effectOrder[i];           // e.g. "DrSh"
+			let multiKey = LayerStyleConstants.effectMultiKeys[i];     // e.g. "dropShadowMulti"
+			let instances = lmfx[multiKey].v;
+			for (let j = 0; j < instances.length; j++) {
+				let fx = instances[j].v;   // descriptor for this effect instance
+				let nI = LayerStyleConstants.effectOrder.indexOf(fx.classID);
+				let name = languageManager.get(LayerStyleConstants.effectDisplayNames[nI]);
+				let enabled = !fx.enab.v ? 1 : 0;
 				// list.push({
 				// 	typeIndex: i,
 				// 	instanceIndex: j,
 				// 	typeId: typeId,                          // fx.classID
-				// 	enabled: masterFx && fx.enab.v,
+				// 	enabled: fxEnabled && fx.enab.v,
 				// 	opacity: fx.Opct ? fx.Opct.v.val : null, // not all types have Opct
 				// 	blendMode: fx.Md ? fx.Md.v.BlnM : null,
 				// 	descriptor: fx
@@ -211,6 +212,6 @@ class File {
 				xFxList.push(`<fx name="${name}" hidden="${enabled}"/>`);
 			}
 		}
-		return { masterFx, xFxList };
+		return { fxEnabled, fxExpanded, xFxList };
 	}
 }

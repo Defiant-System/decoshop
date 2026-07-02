@@ -227,17 +227,10 @@ const Panels = {
 						let ctx = cvs.getContext("2d"),
 							lId = cvs.parentNode.parentNode.getAttribute("data-id"),
 							layer = APP.file.getlayerImageData(lId);
-						// 	{ cache, rect } = APP.file.getlayerImageData(rEl),
-						// 	iData = ctx.createImageData(rect.m, rect.n);
-
+						// copy contents of canvas in memory
 						cvs.width = layer.at.cvs[0].width;
 						cvs.height = layer.at.cvs[0].height;
 						ctx.drawImage(layer.at.cvs[0], 0, 0);
-						// PixelUtil.copyByteBuffer(cache, iData.data);
-
-						// ctx.putImageData(iData, 0, 0);
-						// // Touch a pixel to force the canvas to flush/realize the put (perf quirk).
-						// ctx.getImageData(0, 0, 1, 1);
 					});
 					break;
 				case "toggle-layer-visibility":
@@ -254,7 +247,7 @@ const Panels = {
 
 						if (el.parent().hasClass("fx-header")) {
 							let fxList = el.parents(".fx-list");
-							fxList.toggleClass("disabled", !el.hasClass("icon-eye-off"));
+							fxList.toggleClass("fx-disabled", !el.hasClass("icon-eye-off"));
 						}
 						return;
 					}
