@@ -41,6 +41,12 @@ const DefaultSettings = {
 		font: "DejaVuSans",
 		lang: "en",
 		rulers: true,
+		panels: {
+			layers: {
+				thumbBoundsMode: 0, // 0 = scale by layer rect, 1 = scale by document rect
+				thumbSize: 32,
+			}
+		}
 	},
 	guides: {
 		show: true,

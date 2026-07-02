@@ -57,11 +57,13 @@ class File {
 	}
 
 	getlayerImageData(id) {
-		
+		return this.layers[id];
 	}
 
 	walkLayers(layerTreeNode, depth=0, x) {
-		let layer = layerTreeNode.j,
+		let Settings = decoshop.Settings.pp.panels.layers,
+			G = true,
+			layer = layerTreeNode.j,
 			xNode = x || $.nodeFromString(`<Layers/>`),
 			walkChildren = xParent => {
 				for (let child of layerTreeNode.children) {
@@ -89,49 +91,60 @@ class File {
 				type = isFolder ? "folder" : types[layer.ht],
 				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
 				xStr;
-			if (!this.layers[id]) {
+			if (G && layer.at == null) {
 				layer.at = Misc.createCanvas({ width, height });
 				layer.yY = Misc.createCanvas({ width, height });
 				layer.bX = Misc.createCanvas({ width, height });
 				layer.Fp = Misc.createCanvas({ width, height });
+				this.layers[id] = layer;
 
-				let G = true,
-					thumbBoundsMode = 1, // 0 = scale by layer rect, 1 = scale by document rect
-					contentBounds = thumbBoundsMode == 0 ? layer.rect : this.doc,
-					maxThumbPx = 32 * window.devicePixelRatio,
+				let maxThumbPx = Settings.thumbSize * window.devicePixelRatio,
+					contentBounds = Settings.thumbBoundsMode == 0 ? rect : this.doc.Ch,
 					contentThumbSize = Misc.scaleRectTo(contentBounds, maxThumbPx),
-					thumbW = contentThumbSize.x,
-					thumbH = contentThumbSize.y,
+					tW = contentThumbSize.x,
+					tH = contentThumbSize.y,
 					maskThumbSize = Misc.scaleRectTo(this.doc, maxThumbPx);
+
+				// Enforce minimum thumb dimensions; fill/text/folder rows get a fixed square size.
+				if (layer.VF() && layer.add.vmsk == null || layer.add.TySh) {
+					tW =
+					tH = Math.max(tH, 16);
+				} else if (layer.IQ()) {
+					tW = tH = 16
+				} else {
+					tW = Math.max(tW, 6);
+					tH = Math.max(tH, 6)
+				}
+
 				switch (true) {
 					case isFillWithVectorMask:
-						if (G && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
-						if (G) PixelUtil.e2.alc(layer.at.ctx, thumbW, thumbH)
+						if (G && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
+						if (G) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
 						break;
 					case layer.add.TySh:
-						if (G) PixelUtil.e2.ayR(layer.at.ctx, thumbH, thumbH, layer.add.TySh);
+						if (G) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
 						break;
 					case layer.add.SoCo:
-						if (G) PixelUtil.e2.auB(layer.at.ctx, thumbH, thumbH, layer.add.SoCo);
+						if (G) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
 						break;
 					case layer.add.GdFl:
-						if (G) PixelUtil.e2.aps(layer.at.ctx, thumbH, thumbH, layer.add.GdFl);
+						if (G) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
 						break;
 					case layer.add.PtFl:
-						if (G) PixelUtil.e2.apY(layer.at.ctx, thumbH, thumbH, layer.add.PtFl, l);
+						if (G) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
-						if (G) PixelUtil.e2.aa7(layer.at.ctx, thumbH, thumbH, layer.add);
+						if (G) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
 						break;
 					case layer.add.SoLd:
-						if (G) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1);
-						if (G) PixelUtil.e2.alT(layer.at.ctx, thumbW, thumbH, layer.add.SoLd);
+						if (G) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
+						if (G) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
 						break;
 					case layer.IQ(): break;
 					default:
 						if (G) {
-							if (layer.Eo()) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1);
-							else PixelUtil.e2.abf(layer.at.ctx, thumbH, thumbH) // locked / no pixel data → placeholder
+							if (layer.Eo()) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
+							else PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
 						}
 				}
 				var rasterMask = layer.c3();
@@ -146,6 +159,8 @@ class File {
 						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, d, layer.add.vmsk.c3(), !0)
 					}
 				}
+				w = tW;
+				h = tH;
 			}
 			switch (type) {
 				case "layer-pixels":

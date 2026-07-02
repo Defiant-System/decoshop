@@ -224,14 +224,15 @@ const Panels = {
 					break;
 				case "refresh-thumbnails":
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
-						console.log(cvs);
-						// let ctx = cvs.getContext("2d"),
-						// 	rEl = cvs.parentNode.parentNode,
-						// 	{ cache, rect } = APP.file.getlayerImageData(rEl.getAttribute("data-id")),
+						let ctx = cvs.getContext("2d"),
+							lId = cvs.parentNode.parentNode.getAttribute("data-id"),
+							layer = APP.file.getlayerImageData(lId);
+						// 	{ cache, rect } = APP.file.getlayerImageData(rEl),
 						// 	iData = ctx.createImageData(rect.m, rect.n);
 
-						// cvs.width = rect.m;
-						// cvs.height = rect.n;
+						cvs.width = layer.at.cvs[0].width;
+						cvs.height = layer.at.cvs[0].height;
+						ctx.drawImage(layer.at.cvs[0], 0, 0);
 						// PixelUtil.copyByteBuffer(cache, iData.data);
 
 						// ctx.putImageData(iData, 0, 0);
