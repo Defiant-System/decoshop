@@ -57,49 +57,95 @@ class File {
 	}
 
 	getlayerImageData(id) {
-		return this.layers[id];
+		
 	}
 
-	walkLayers(node, depth=0, x) {
-		let xNode = x || $.nodeFromString(`<Layers/>`),
+	walkLayers(layerTreeNode, depth=0, x) {
+		let layer = layerTreeNode.j,
+			xNode = x || $.nodeFromString(`<Layers/>`),
 			walkChildren = xParent => {
-				for (let child of node.children) {
+				for (let child of layerTreeNode.children) {
 					this.walkLayers(child, depth+1, xParent);
 				}
 			};
-		if (node.depth !== 0) {
-			let name = node.j.getName(),
-				buffer = node.j.buffer,
-				rect = node.j.rect,
-				add = node.j.add,
-				id = add.lyid,
-				isHidden = !node.j.zD() ? 1 : 0,
-				isFolder = node.j.IQ(),
+		if (layerTreeNode.depth !== 0) {
+			let name = layer.getName(),
+				buffer = layer.buffer,
+				rect = layer.rect,
+				id = layer.add.lyid,
 				size = Panels.layers.thumbSize,
 				{ width, height } = Misc.fitWithin(rect.m, rect.n, size, size),
 				w = Math.max(width, 8),
 				h = Math.max(height, 8),
-				{ masterFx, xFxList } = this.getLayerFxList(node.j),
+				{ masterFx, xFxList } = this.getLayerFxList(layer),
 				types = {
 					"0": "layer-pixels", // Layer pixels (rect + buffer)
 					"1": "raster-mask",  // Raster mask (c3())
-					"2": "vector-mask",  // Vector mask (add.vmsk)
+					"2": "vector-mask",  // Vector mask (layer.add.vmsk)
 					"3": "smart-filter", // Smart-filter mask (vZ(doc).z)
 				},
-				type = isFolder ? "folder" : types[node.j.ht],
+				isHidden = !layer.zD() ? 1 : 0,
+				isFolder = layer.IQ(),
+				type = isFolder ? "folder" : types[layer.ht],
+				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
 				xStr;
-			if (buffer && rect) {
-				let chain = [buffer, rect.clone()],
-					edge = 64,
-					count = 0;
-				PixelUtil.pyramidDownsampleRgba(chain);
+			if (!this.layers[id]) {
+				layer.at = Misc.createCanvas({ width, height });
+				layer.yY = Misc.createCanvas({ width, height });
+				layer.bX = Misc.createCanvas({ width, height });
+				layer.Fp = Misc.createCanvas({ width, height });
 
-				// Skip the levels that are still larger than the display target.
-				while (Math.max(chain[count+1].m, chain[count+1].n) > edge) {
-					count += 2;
+				let G = true,
+					thumbBoundsMode = 1, // 0 = scale by layer rect, 1 = scale by document rect
+					contentBounds = thumbBoundsMode == 0 ? layer.rect : this.doc,
+					maxThumbPx = 32 * window.devicePixelRatio,
+					contentThumbSize = Misc.scaleRectTo(contentBounds, maxThumbPx),
+					thumbW = contentThumbSize.x,
+					thumbH = contentThumbSize.y,
+					maskThumbSize = Misc.scaleRectTo(this.doc, maxThumbPx);
+				switch (true) {
+					case isFillWithVectorMask:
+						if (G && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
+						if (G) PixelUtil.e2.alc(layer.at.ctx, thumbW, thumbH)
+						break;
+					case layer.add.TySh:
+						if (G) PixelUtil.e2.ayR(layer.at.ctx, thumbH, thumbH, layer.add.TySh);
+						break;
+					case layer.add.SoCo:
+						if (G) PixelUtil.e2.auB(layer.at.ctx, thumbH, thumbH, layer.add.SoCo);
+						break;
+					case layer.add.GdFl:
+						if (G) PixelUtil.e2.aps(layer.at.ctx, thumbH, thumbH, layer.add.GdFl);
+						break;
+					case layer.add.PtFl:
+						if (G) PixelUtil.e2.apY(layer.at.ctx, thumbH, thumbH, layer.add.PtFl, l);
+						break;
+					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
+						if (G) PixelUtil.e2.aa7(layer.at.ctx, thumbH, thumbH, layer.add);
+						break;
+					case layer.add.SoLd:
+						if (G) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1);
+						if (G) PixelUtil.e2.alT(layer.at.ctx, thumbW, thumbH, layer.add.SoLd);
+						break;
+					case layer.IQ(): break;
+					default:
+						if (G) {
+							if (layer.Eo()) PixelUtil.e2.ho(layer.at.ctx, thumbW, thumbH, contentBounds, layer.buffer, layer.rect, !1);
+							else PixelUtil.e2.abf(layer.at.ctx, thumbH, thumbH) // locked / no pixel data → placeholder
+						}
 				}
-				let cache = chain.slice(count);
-				this.layers[id] = { cache: chain[0], rect: cache[1] };
+				var rasterMask = layer.c3();
+				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
+				if (G) {
+					if (rasterMask) PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, d, rasterMask);
+					if (layer.aW() && layer.vZ(l) && layer.vZ(l).z) {
+						var filterMask = layer.vZ(l).z;
+						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, d, filterMask)
+					}
+					if (!isFillWithVectorMask && layer.add.vmsk) {
+						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, d, layer.add.vmsk.c3(), !0)
+					}
+				}
 			}
 			switch (type) {
 				case "layer-pixels":
@@ -109,20 +155,16 @@ class File {
 				case "vector-mask": break;
 				case "smart-filter": break;
 				case "folder":
-					// LayerSectionType.none: 0,
-					// LayerSectionType.open: 1,
-					// LayerSectionType.closed: 2,
-					// LayerSectionType.divider: 3
-					let expanded = add.lsct === LayerSectionType.open ? 1 : 0;
+					let expanded = layer.add.lsct === LayerSectionType.open ? 1 : 0;
 					xStr = `<i id="${id}" type="group" name="${name}" expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;
 					break;
 			}
 			let xLayer = $.nodeFromString(xStr);
 			xNode.insertBefore(xLayer, xNode.firstChild);
 
-			if (node.children) walkChildren(xLayer);
+			if (layerTreeNode.children) walkChildren(xLayer);
 		} else {
-			if (node.children) walkChildren(xNode);
+			if (layerTreeNode.children) walkChildren(xNode);
 		}
 		return xNode;
 	}

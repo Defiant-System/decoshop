@@ -101,7 +101,7 @@
 		<xsl:when test="@type = 'group'">
 			<div>
 				<xsl:attribute name="class">group 
-					<xsl:if test="@expanded">expanded </xsl:if>
+					<xsl:if test="@expanded = 1">expanded </xsl:if>
 					<xsl:if test="@hidden = 1">hidden </xsl:if>
 					<xsl:if test="count(./i) = 0">empty </xsl:if>
 				</xsl:attribute>

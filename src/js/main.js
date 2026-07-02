@@ -20,6 +20,7 @@ let {
 	CanvasTools,
 	LayerSectionType,
 	LayerStyleConstants,
+	LayerEffectsHelper,
 	PixelUtil,
 	Point2D,
 	Rect,

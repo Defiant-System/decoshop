@@ -93,6 +93,7 @@ module.exports = {
 	CanvasTools,
 	LayerSectionType,
 	LayerStyleConstants,
+	LayerEffectsHelper,
 	PixelUtil,
 	Point2D,
 	Rect,

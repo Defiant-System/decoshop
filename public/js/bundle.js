@@ -11463,6 +11463,17 @@ const Misc = {
 		});
 		return spectrum;
 	},
+	scaleRectTo(rect, maxSize) {
+		let tW, tH;
+		if (rect.m > rect.n) {
+			tW = maxSize;
+			tH = Math.floor(maxSize * (rect.n / rect.m));
+		} else {
+			tW = Math.floor(maxSize * (rect.m / rect.n));
+			tH = maxSize;
+		}
+		return new Point2D(tW, tH);
+	},
 	fitWithin(w, h, mW, mH) {
 		let scale = Math.min(mW/w, mH/h, 1);
 		return {
@@ -116357,6 +116368,7 @@ module.exports = {
 	CanvasTools,
 	LayerSectionType,
 	LayerStyleConstants,
+	LayerEffectsHelper,
 	PixelUtil,
 	Point2D,
 	Rect,

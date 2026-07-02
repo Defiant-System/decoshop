@@ -224,18 +224,19 @@ const Panels = {
 					break;
 				case "refresh-thumbnails":
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
-						let ctx = cvs.getContext("2d"),
-							rEl = cvs.parentNode.parentNode,
-							{ cache, rect } = APP.file.getlayerImageData(rEl.getAttribute("data-id")),
-							iData = ctx.createImageData(rect.m, rect.n);
+						console.log(cvs);
+						// let ctx = cvs.getContext("2d"),
+						// 	rEl = cvs.parentNode.parentNode,
+						// 	{ cache, rect } = APP.file.getlayerImageData(rEl.getAttribute("data-id")),
+						// 	iData = ctx.createImageData(rect.m, rect.n);
 
-						cvs.width = rect.m;
-						cvs.height = rect.n;
-						PixelUtil.copyByteBuffer(cache, iData.data);
+						// cvs.width = rect.m;
+						// cvs.height = rect.n;
+						// PixelUtil.copyByteBuffer(cache, iData.data);
 
-						ctx.putImageData(iData, 0, 0);
-						// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
-						ctx.getImageData(0, 0, 1, 1);
+						// ctx.putImageData(iData, 0, 0);
+						// // Touch a pixel to force the canvas to flush/realize the put (perf quirk).
+						// ctx.getImageData(0, 0, 1, 1);
 					});
 					break;
 				case "toggle-layer-visibility":
