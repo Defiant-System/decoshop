@@ -223,28 +223,20 @@ const Panels = {
 					});
 					break;
 				case "refresh-thumbnails":
-					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
-					var edge = Self.thumbSize * window.devicePixelRatio,
-						count = 0,
-						// Seed the pyramid with the full-resolution composite and its bounds.
-						mipmap = [...APP.statusbar._activeFile.mipmap];
-					// Skip the levels that are still larger than the display target.
-					while (Math.max(mipmap[count+1].m, mipmap[count+1].n) > edge) {
-						count += 2;
-					}
-					// Keep from the first small-enough level onward; cache[0]=pixels, cache[1]=rect.
-					let cache = mipmap.slice(count),
-						rect = cache[1],
-						cvs = Self.root.find(`.thumbnail canvas`),
-						ctx = cvs[0].getContext("2d", { willReadFrequently: true });
-					// Size the canvas to the thumbnail's pixel dimensions.
-					cvs.attr({ width: rect.m, height: rect.n });
-					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
-					var iData = ctx.createImageData(rect.m, rect.n);
-					PixelUtil.copyByteBuffer(cache[0], iData.data);
-					ctx.putImageData(iData, 0, 0);
-					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
-					ctx.getImageData(0, 0, 1, 1);
+					Self.root.find(`.thumbnail canvas`).map(cvs => {
+						let ctx = cvs.getContext("2d"),
+							rEl = cvs.parentNode.parentNode,
+							{ cache, rect } = APP.file.getlayerImageData(rEl.getAttribute("data-id")),
+							iData = ctx.createImageData(rect.m, rect.n);
+
+						cvs.width = rect.m;
+						cvs.height = rect.n;
+						PixelUtil.copyByteBuffer(cache, iData.data);
+
+						ctx.putImageData(iData, 0, 0);
+						// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
+						ctx.getImageData(0, 0, 1, 1);
+					});
 					break;
 				case "toggle-layer-visibility":
 					// layer.Oj(false); // set hidden (mutates layerFlags)

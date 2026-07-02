@@ -19,6 +19,7 @@ let {
 	ActionTypes,
 	CanvasTools,
 	LayerSectionType,
+	LayerStyleConstants,
 	PixelUtil,
 	Point2D,
 	Rect,

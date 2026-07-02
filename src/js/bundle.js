@@ -92,6 +92,7 @@ module.exports = {
 	ActionTypes,
 	CanvasTools,
 	LayerSectionType,
+	LayerStyleConstants,
 	PixelUtil,
 	Point2D,
 	Rect,

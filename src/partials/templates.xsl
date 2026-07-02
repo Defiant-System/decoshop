@@ -102,7 +102,7 @@
 			<div>
 				<xsl:attribute name="class">group 
 					<xsl:if test="@expanded">expanded </xsl:if>
-					<xsl:if test="@hidden">hidden </xsl:if>
+					<xsl:if test="@hidden = 1">hidden </xsl:if>
 					<xsl:if test="count(./i) = 0">empty </xsl:if>
 				</xsl:attribute>
 				<div class="row" data-layer="folder">
@@ -115,7 +115,7 @@
 						<div class="name"><xsl:value-of select="@name"/></div>
 						<i>
 							<xsl:attribute name="class">icon icon-eye-on 
-								<xsl:if test="@hidden">icon-eye-off</xsl:if>
+								<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 							</xsl:attribute>
 						</i>
 						<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
@@ -164,6 +164,7 @@
 
 <xsl:template name="layer-row-body">
 	<div class="layer-row-body">
+		<xsl:attribute name="data-id"><xsl:value-of select="@id"/></xsl:attribute>
 		<div class="thumbnail"><canvas></canvas><i></i></div>
 		<xsl:if test="@mask">
 			<i class="icon-mask-link"></i>
@@ -172,7 +173,7 @@
 		<div class="name"><xsl:value-of select="@name"/></div>
 		<i>
 			<xsl:attribute name="class">icon icon-eye-on 
-				<xsl:if test="@hidden">icon-eye-off</xsl:if>
+				<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 			</xsl:attribute>
 		</i>
 	</div>
@@ -191,7 +192,7 @@
 			<li>
 				<i>
 					<xsl:attribute name="class">icon icon-eye-on 
-						<xsl:if test="@hidden">icon-eye-off</xsl:if>
+						<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 					</xsl:attribute>
 				</i>
 				<div class="fx-name"><xsl:value-of select="@name"/></div>
