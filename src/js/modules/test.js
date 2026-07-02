@@ -73,7 +73,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/girl.psd"] });
-		APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/beyond.psd"] });
+		APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/beyond-2.psd"] });
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);

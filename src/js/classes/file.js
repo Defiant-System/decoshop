@@ -21,6 +21,7 @@ class File {
 				this.xLayers = $.nodeFromString(xmlStr);
 			} else {
 				this.xLayers = this.walkLayers(this.doc.root, 0);
+				// console.log(this.xLayers);
 			}
 			// update panels
 			decoshop.dispatch({ type: "file-ready", file: this });
@@ -41,7 +42,12 @@ class File {
 	}
 
 	walkLayers(node, depth=0, x) {
-		let xNode = x || $.nodeFromString(`<Layers/>`);
+		let xNode = x || $.nodeFromString(`<Layers/>`),
+			walkChildren = xParent => {
+				for (let child of node.children) {
+					this.walkLayers(child, depth+1, xParent);
+				}
+			};
 
 		if (node.depth !== 0) {
 			let name = node.j.getName(),
@@ -55,19 +61,35 @@ class File {
 				size = Panels.layers.thumbSize,
 				{ width: w, height: h } = Misc.fitWithin(rect.m, rect.n, size, size),
 				types = {
-					"0": "image",
-					"1": "mask",
-					"3": "vector",
+					"0": "layer-pixels", // Layer pixels (rect + buffer)
+					"1": "raster-mask",  // Raster mask (c3())
+					"2": "vector-mask",  // Vector mask (add.vmsk)
+					"3": "smart-filter", // Smart-filter mask (vZ(doc).z)
 				},
-				type = types[node.j.ht],
-				xLayer = $.nodeFromString(`<i type="${type}" name="${name}" w="${w}" h="${h}"/>`);
-			xNode.appendChild(xLayer);
-		}
-
-		if (node.children) {
-			for (let child of node.children) {
-				this.walkLayers(child, depth+1, xNode);
+				type = isFolder ? "folder" : types[node.j.ht],
+				xStr;
+			switch (type) {
+				case "layer-pixels":
+					xStr = `<i type="${type}" name="${name}" w="${Math.max(w, 8)}" h="${Math.max(h, 8)}"/>`;
+					break;
+				case "raster-mask": break;
+				case "vector-mask": break;
+				case "smart-filter": break;
+				case "folder":
+					// LayerSectionType.none: 0,
+					// LayerSectionType.open: 1,
+					// LayerSectionType.closed: 2,
+					// LayerSectionType.divider: 3
+					let expanded = add.lsct === LayerSectionType.open ? 1 : 0;
+					xStr = `<i type="group" name="${name}" expanded="${expanded}"/>`;
+					break;
 			}
+			let xLayer = $.nodeFromString(xStr);
+			xNode.insertBefore(xLayer, xNode.firstChild);
+
+			if (node.children) walkChildren(xLayer);
+		} else {
+			if (node.children) walkChildren(xNode);
 		}
 
 		return xNode;
