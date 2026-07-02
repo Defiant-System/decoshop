@@ -290,7 +290,7 @@ function PhotopeaApp() {
 			g.data = {
 				a: ActionTypes.$.ub,
 				Oo: {
-					url: "rsrc/fonts/" + j
+					url: "/cdn/fonts/" + j
 				}
 			};
 			this.dispatch(g)
