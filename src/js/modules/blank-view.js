@@ -112,8 +112,9 @@
 				Self.dispatch({
 					type: "anim-hide-view",
 					callback: () => {
-						let name = el.data("url");
-						APP.statusbar.dispatch({ type: "load-sample", names: [name.slice(name.lastIndexOf("/")+1)] });
+						let url = el.data("url");
+						// `/cdn/img/2d-samples/${name}`
+						APP.statusbar.dispatch({ type: "load-sample", names: [url] });
 					}
 				});
 				break;

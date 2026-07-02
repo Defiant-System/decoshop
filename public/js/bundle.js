@@ -1,4 +1,1585 @@
 // to be part of bundle
+/* pako 1.0.5 nodeca/pako */
+const pako = (function() {
+    return function t(e, a, i) {
+        function n(s, o) {
+            if (!a[s]) {
+                if (!e[s]) {
+                    var l = "function" == typeof require && require;
+                    if (!o && l) return l(s, !0);
+                    if (r) return r(s, !0);
+                    var h = new Error("Cannot find module '" + s + "'");
+                    throw h.code = "MODULE_NOT_FOUND", h
+                }
+                var d = a[s] = {
+                    exports: {}
+                };
+                e[s][0].call(d.exports, function(t) {
+                    var a = e[s][1][t];
+                    return n(a ? a : t)
+                }, d, d.exports, t, e, a, i);
+            }
+            return a[s].exports
+        }
+        for (var r = "function" == typeof require && require, s = 0; s < i.length; s++) n(i[s]);
+        return n
+    }({
+        1: [function(t, e, a) {
+            "use strict";
+
+            function i(t) {
+                if (!(this instanceof i)) return new i(t);
+                this.options = l.assign({
+                    level: w,
+                    method: v,
+                    chunkSize: 16384,
+                    windowBits: 15,
+                    memLevel: 8,
+                    strategy: p,
+                    to: ""
+                }, t || {});
+                var e = this.options;
+                e.raw && e.windowBits > 0 ? e.windowBits = -e.windowBits : e.gzip && e.windowBits > 0 && e.windowBits < 16 && (e.windowBits += 16), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new f, this.strm.avail_out = 0;
+                var a = o.deflateInit2(this.strm, e.level, e.method, e.windowBits, e.memLevel, e.strategy);
+                if (a !== b) throw new Error(d[a]);
+                if (e.header && o.deflateSetHeader(this.strm, e.header), e.dictionary) {
+                    var n;
+                    if (n = "string" == typeof e.dictionary ? h.string2buf(e.dictionary) : "[object ArrayBuffer]" === _.call(e.dictionary) ? new Uint8Array(e.dictionary) : e.dictionary, a = o.deflateSetDictionary(this.strm, n), a !== b) throw new Error(d[a]);
+                    this._dict_set = !0;
+                }
+            }
+
+            function n(t, e) {
+                var a = new i(e);
+                if (a.push(t, !0), a.err) throw a.msg || d[a.err];
+                return a.result
+            }
+
+            function r(t, e) {
+                return e = e || {}, e.raw = !0, n(t, e)
+            }
+
+            function s(t, e) {
+                return e = e || {}, e.gzip = !0, n(t, e)
+            }
+            var o = t("./zlib/deflate"),
+                l = t("./utils/common"),
+                h = t("./utils/strings"),
+                d = t("./zlib/messages"),
+                f = t("./zlib/zstream"),
+                _ = Object.prototype.toString,
+                u = 0,
+                c = 4,
+                b = 0,
+                g = 1,
+                m = 2,
+                w = -1,
+                p = 0,
+                v = 8;
+            i.prototype.push = function(t, e) {
+                var a, i, n = this.strm,
+                    r = this.options.chunkSize;
+                if (this.ended) return !1;
+                i = e === ~~e ? e : e === !0 ? c : u, "string" == typeof t ? n.input = h.string2buf(t) : "[object ArrayBuffer]" === _.call(t) ? n.input = new Uint8Array(t) : n.input = t, n.next_in = 0, n.avail_in = n.input.length;
+                do {
+                    if (0 === n.avail_out && (n.output = new l.Buf8(r), n.next_out = 0, n.avail_out = r), a = o.deflate(n, i), a !== g && a !== b) return this.onEnd(a), this.ended = !0, !1;
+                    0 !== n.avail_out && (0 !== n.avail_in || i !== c && i !== m) || ("string" === this.options.to ? this.onData(h.buf2binstring(l.shrinkBuf(n.output, n.next_out))) : this.onData(l.shrinkBuf(n.output, n.next_out)));
+                } while ((n.avail_in > 0 || 0 === n.avail_out) && a !== g);
+                return i === c ? (a = o.deflateEnd(this.strm), this.onEnd(a), this.ended = !0, a === b) : i !== m || (this.onEnd(b), n.avail_out = 0, !0)
+            }, i.prototype.onData = function(t) {
+                this.chunks.push(t);
+            }, i.prototype.onEnd = function(t) {
+                t === b && ("string" === this.options.to ? this.result = this.chunks.join("") : this.result = l.flattenChunks(this.chunks)), this.chunks = [], this.err = t, this.msg = this.strm.msg;
+            }, a.Deflate = i, a.deflate = n, a.deflateRaw = r, a.gzip = s;
+        }, {
+            "./utils/common": 3,
+            "./utils/strings": 4,
+            "./zlib/deflate": 8,
+            "./zlib/messages": 13,
+            "./zlib/zstream": 15
+        }],
+        2: [function(t, e, a) {
+            "use strict";
+
+            function i(t) {
+                if (!(this instanceof i)) return new i(t);
+                this.options = o.assign({
+                    chunkSize: 16384,
+                    windowBits: 0,
+                    to: ""
+                }, t || {});
+                var e = this.options;
+                e.raw && e.windowBits >= 0 && e.windowBits < 16 && (e.windowBits = -e.windowBits, 0 === e.windowBits && (e.windowBits = -15)), !(e.windowBits >= 0 && e.windowBits < 16) || t && t.windowBits || (e.windowBits += 32), e.windowBits > 15 && e.windowBits < 48 && 0 === (15 & e.windowBits) && (e.windowBits |= 15), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new f, this.strm.avail_out = 0;
+                var a = s.inflateInit2(this.strm, e.windowBits);
+                if (a !== h.Z_OK) throw new Error(d[a]);
+                this.header = new _, s.inflateGetHeader(this.strm, this.header);
+            }
+
+            function n(t, e) {
+                var a = new i(e);
+                if (a.push(t, !0), a.err) throw a.msg || d[a.err];
+                return a.result
+            }
+
+            function r(t, e) {
+                return e = e || {}, e.raw = !0, n(t, e)
+            }
+            var s = t("./zlib/inflate"),
+                o = t("./utils/common"),
+                l = t("./utils/strings"),
+                h = t("./zlib/constants"),
+                d = t("./zlib/messages"),
+                f = t("./zlib/zstream"),
+                _ = t("./zlib/gzheader"),
+                u = Object.prototype.toString;
+            i.prototype.push = function(t, e) {
+                var a, i, n, r, d, f, _ = this.strm,
+                    c = this.options.chunkSize,
+                    b = this.options.dictionary,
+                    g = !1;
+                if (this.ended) return !1;
+                i = e === ~~e ? e : e === !0 ? h.Z_FINISH : h.Z_NO_FLUSH, "string" == typeof t ? _.input = l.binstring2buf(t) : "[object ArrayBuffer]" === u.call(t) ? _.input = new Uint8Array(t) : _.input = t, _.next_in = 0, _.avail_in = _.input.length;
+                do {
+                    if (0 === _.avail_out && (_.output = new o.Buf8(c), _.next_out = 0, _.avail_out = c), a = s.inflate(_, h.Z_NO_FLUSH), a === h.Z_NEED_DICT && b && (f = "string" == typeof b ? l.string2buf(b) : "[object ArrayBuffer]" === u.call(b) ? new Uint8Array(b) : b, a = s.inflateSetDictionary(this.strm, f)), a === h.Z_BUF_ERROR && g === !0 && (a = h.Z_OK, g = !1), a !== h.Z_STREAM_END && a !== h.Z_OK) return this.onEnd(a), this.ended = !0, !1;
+                    _.next_out && (0 !== _.avail_out && a !== h.Z_STREAM_END && (0 !== _.avail_in || i !== h.Z_FINISH && i !== h.Z_SYNC_FLUSH) || ("string" === this.options.to ? (n = l.utf8border(_.output, _.next_out), r = _.next_out - n, d = l.buf2string(_.output, n), _.next_out = r, _.avail_out = c - r, r && o.arraySet(_.output, _.output, n, r, 0), this.onData(d)) : this.onData(o.shrinkBuf(_.output, _.next_out)))), 0 === _.avail_in && 0 === _.avail_out && (g = !0);
+                } while ((_.avail_in > 0 || 0 === _.avail_out) && a !== h.Z_STREAM_END);
+                return a === h.Z_STREAM_END && (i = h.Z_FINISH), i === h.Z_FINISH ? (a = s.inflateEnd(this.strm), this.onEnd(a), this.ended = !0, a === h.Z_OK) : i !== h.Z_SYNC_FLUSH || (this.onEnd(h.Z_OK), _.avail_out = 0, !0)
+            }, i.prototype.onData = function(t) {
+                this.chunks.push(t);
+            }, i.prototype.onEnd = function(t) {
+                t === h.Z_OK && ("string" === this.options.to ? this.result = this.chunks.join("") : this.result = o.flattenChunks(this.chunks)), this.chunks = [], this.err = t, this.msg = this.strm.msg;
+            }, a.Inflate = i, a.inflate = n, a.inflateRaw = r, a.ungzip = n;
+        }, {
+            "./utils/common": 3,
+            "./utils/strings": 4,
+            "./zlib/constants": 6,
+            "./zlib/gzheader": 9,
+            "./zlib/inflate": 11,
+            "./zlib/messages": 13,
+            "./zlib/zstream": 15
+        }],
+        3: [function(t, e, a) {
+            "use strict";
+            var i = "undefined" != typeof Uint8Array && "undefined" != typeof Uint16Array && "undefined" != typeof Int32Array;
+            a.assign = function(t) {
+                for (var e = Array.prototype.slice.call(arguments, 1); e.length;) {
+                    var a = e.shift();
+                    if (a) {
+                        if ("object" != typeof a) throw new TypeError(a + "must be non-object");
+                        for (var i in a) a.hasOwnProperty(i) && (t[i] = a[i]);
+                    }
+                }
+                return t
+            }, a.shrinkBuf = function(t, e) {
+                return t.length === e ? t : t.subarray ? t.subarray(0, e) : (t.length = e, t)
+            };
+            var n = {
+                    arraySet: function(t, e, a, i, n) {
+                        if (e.subarray && t.subarray) return void t.set(e.subarray(a, a + i), n);
+                        for (var r = 0; r < i; r++) t[n + r] = e[a + r];
+                    },
+                    flattenChunks: function(t) {
+                        var e, a, i, n, r, s;
+                        for (i = 0, e = 0, a = t.length; e < a; e++) i += t[e].length;
+                        for (s = new Uint8Array(i), n = 0, e = 0, a = t.length; e < a; e++) r = t[e], s.set(r, n), n += r.length;
+                        return s
+                    }
+                },
+                r = {
+                    arraySet: function(t, e, a, i, n) {
+                        for (var r = 0; r < i; r++) t[n + r] = e[a + r];
+                    },
+                    flattenChunks: function(t) {
+                        return [].concat.apply([], t)
+                    }
+                };
+            a.setTyped = function(t) {
+                t ? (a.Buf8 = Uint8Array, a.Buf16 = Uint16Array, a.Buf32 = Int32Array, a.assign(a, n)) : (a.Buf8 = Array, a.Buf16 = Array, a.Buf32 = Array, a.assign(a, r));
+            }, a.setTyped(i);
+        }, {}],
+        4: [function(t, e, a) {
+            "use strict";
+
+            function i(t, e) {
+                if (e < 65537 && (t.subarray && s || !t.subarray && r)) return String.fromCharCode.apply(null, n.shrinkBuf(t, e));
+                for (var a = "", i = 0; i < e; i++) a += String.fromCharCode(t[i]);
+                return a
+            }
+            var n = t("./common"),
+                r = !0,
+                s = !0;
+            try {
+                String.fromCharCode.apply(null, [0]);
+            } catch (t) {
+                r = !1;
+            }
+            try {
+                String.fromCharCode.apply(null, new Uint8Array(1));
+            } catch (t) {
+                s = !1;
+            }
+            for (var o = new n.Buf8(256), l = 0; l < 256; l++) o[l] = l >= 252 ? 6 : l >= 248 ? 5 : l >= 240 ? 4 : l >= 224 ? 3 : l >= 192 ? 2 : 1;
+            o[254] = o[254] = 1, a.string2buf = function(t) {
+                var e, a, i, r, s, o = t.length,
+                    l = 0;
+                for (r = 0; r < o; r++) a = t.charCodeAt(r), 55296 === (64512 & a) && r + 1 < o && (i = t.charCodeAt(r + 1), 56320 === (64512 & i) && (a = 65536 + (a - 55296 << 10) + (i - 56320), r++)), l += a < 128 ? 1 : a < 2048 ? 2 : a < 65536 ? 3 : 4;
+                for (e = new n.Buf8(l), s = 0, r = 0; s < l; r++) a = t.charCodeAt(r), 55296 === (64512 & a) && r + 1 < o && (i = t.charCodeAt(r + 1), 56320 === (64512 & i) && (a = 65536 + (a - 55296 << 10) + (i - 56320), r++)), a < 128 ? e[s++] = a : a < 2048 ? (e[s++] = 192 | a >>> 6, e[s++] = 128 | 63 & a) : a < 65536 ? (e[s++] = 224 | a >>> 12, e[s++] = 128 | a >>> 6 & 63, e[s++] = 128 | 63 & a) : (e[s++] = 240 | a >>> 18, e[s++] = 128 | a >>> 12 & 63, e[s++] = 128 | a >>> 6 & 63, e[s++] = 128 | 63 & a);
+                return e
+            }, a.buf2binstring = function(t) {
+                return i(t, t.length)
+            }, a.binstring2buf = function(t) {
+                for (var e = new n.Buf8(t.length), a = 0, i = e.length; a < i; a++) e[a] = t.charCodeAt(a);
+                return e
+            }, a.buf2string = function(t, e) {
+                var a, n, r, s, l = e || t.length,
+                    h = new Array(2 * l);
+                for (n = 0, a = 0; a < l;)
+                    if (r = t[a++], r < 128) h[n++] = r;
+                    else if (s = o[r], s > 4) h[n++] = 65533, a += s - 1;
+                else {
+                    for (r &= 2 === s ? 31 : 3 === s ? 15 : 7; s > 1 && a < l;) r = r << 6 | 63 & t[a++], s--;
+                    s > 1 ? h[n++] = 65533 : r < 65536 ? h[n++] = r : (r -= 65536, h[n++] = 55296 | r >> 10 & 1023, h[n++] = 56320 | 1023 & r);
+                }
+                return i(h, n)
+            }, a.utf8border = function(t, e) {
+                var a;
+                for (e = e || t.length, e > t.length && (e = t.length), a = e - 1; a >= 0 && 128 === (192 & t[a]);) a--;
+                return a < 0 ? e : 0 === a ? e : a + o[t[a]] > e ? a : e
+            };
+        }, {
+            "./common": 3
+        }],
+        5: [function(t, e, a) {
+            "use strict";
+
+            function i(t, e, a, i) {
+                for (var n = 65535 & t | 0, r = t >>> 16 & 65535 | 0, s = 0; 0 !== a;) {
+                    s = a > 2e3 ? 2e3 : a, a -= s;
+                    do n = n + e[i++] | 0, r = r + n | 0; while (--s);
+                    n %= 65521, r %= 65521;
+                }
+                return n | r << 16 | 0
+            }
+            e.exports = i;
+        }, {}],
+        6: [function(t, e, a) {
+            "use strict";
+            e.exports = {
+                Z_NO_FLUSH: 0,
+                Z_PARTIAL_FLUSH: 1,
+                Z_SYNC_FLUSH: 2,
+                Z_FULL_FLUSH: 3,
+                Z_FINISH: 4,
+                Z_BLOCK: 5,
+                Z_TREES: 6,
+                Z_OK: 0,
+                Z_STREAM_END: 1,
+                Z_NEED_DICT: 2,
+                Z_ERRNO: -1,
+                Z_STREAM_ERROR: -2,
+                Z_DATA_ERROR: -3,
+                Z_BUF_ERROR: -5,
+                Z_NO_COMPRESSION: 0,
+                Z_BEST_SPEED: 1,
+                Z_BEST_COMPRESSION: 9,
+                Z_DEFAULT_COMPRESSION: -1,
+                Z_FILTERED: 1,
+                Z_HUFFMAN_ONLY: 2,
+                Z_RLE: 3,
+                Z_FIXED: 4,
+                Z_DEFAULT_STRATEGY: 0,
+                Z_BINARY: 0,
+                Z_TEXT: 1,
+                Z_UNKNOWN: 2,
+                Z_DEFLATED: 8
+            };
+        }, {}],
+        7: [function(t, e, a) {
+            "use strict";
+
+            function i() {
+                for (var t, e = [], a = 0; a < 256; a++) {
+                    t = a;
+                    for (var i = 0; i < 8; i++) t = 1 & t ? 3988292384 ^ t >>> 1 : t >>> 1;
+                    e[a] = t;
+                }
+                return e
+            }
+
+            function n(t, e, a, i) {
+                var n = r,
+                    s = i + a;
+                t ^= -1;
+                for (var o = i; o < s; o++) t = t >>> 8 ^ n[255 & (t ^ e[o])];
+                return t ^ -1
+            }
+            var r = i();
+            e.exports = n;
+        }, {}],
+        8: [function(t, e, a) {
+            "use strict";
+
+            function i(t, e) {
+                return t.msg = D[e], e
+            }
+
+            function n(t) {
+                return (t << 1) - (t > 4 ? 9 : 0)
+            }
+
+            function r(t) {
+                for (var e = t.length; --e >= 0;) t[e] = 0;
+            }
+
+            function s(t) {
+                var e = t.state,
+                    a = e.pending;
+                a > t.avail_out && (a = t.avail_out), 0 !== a && (R.arraySet(t.output, e.pending_buf, e.pending_out, a, t.next_out), t.next_out += a, e.pending_out += a, t.total_out += a, t.avail_out -= a, e.pending -= a, 0 === e.pending && (e.pending_out = 0));
+            }
+
+            function o(t, e) {
+                C._tr_flush_block(t, t.block_start >= 0 ? t.block_start : -1, t.strstart - t.block_start, e), t.block_start = t.strstart, s(t.strm);
+            }
+
+            function l(t, e) {
+                t.pending_buf[t.pending++] = e;
+            }
+
+            function h(t, e) {
+                t.pending_buf[t.pending++] = e >>> 8 & 255, t.pending_buf[t.pending++] = 255 & e;
+            }
+
+            function d(t, e, a, i) {
+                var n = t.avail_in;
+                return n > i && (n = i), 0 === n ? 0 : (t.avail_in -= n, R.arraySet(e, t.input, t.next_in, n, a), 1 === t.state.wrap ? t.adler = N(t.adler, e, n, a) : 2 === t.state.wrap && (t.adler = O(t.adler, e, n, a)), t.next_in += n, t.total_in += n, n)
+            }
+
+            function f(t, e) {
+                var a, i, n = t.max_chain_length,
+                    r = t.strstart,
+                    s = t.prev_length,
+                    o = t.nice_match,
+                    l = t.strstart > t.w_size - ft ? t.strstart - (t.w_size - ft) : 0,
+                    h = t.window,
+                    d = t.w_mask,
+                    f = t.prev,
+                    _ = t.strstart + dt,
+                    u = h[r + s - 1],
+                    c = h[r + s];
+                t.prev_length >= t.good_match && (n >>= 2), o > t.lookahead && (o = t.lookahead);
+                do
+                    if (a = e, h[a + s] === c && h[a + s - 1] === u && h[a] === h[r] && h[++a] === h[r + 1]) {
+                        r += 2, a++;
+                        do; while (h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && h[++r] === h[++a] && r < _);
+                        if (i = dt - (_ - r), r = _ - dt, i > s) {
+                            if (t.match_start = e, s = i, i >= o) break;
+                            u = h[r + s - 1], c = h[r + s];
+                        }
+                    }
+                while ((e = f[e & d]) > l && 0 !== --n);
+                return s <= t.lookahead ? s : t.lookahead
+            }
+
+            function _(t) {
+                var e, a, i, n, r, s = t.w_size;
+                do {
+                    if (n = t.window_size - t.lookahead - t.strstart, t.strstart >= s + (s - ft)) {
+                        R.arraySet(t.window, t.window, s, s, 0), t.match_start -= s, t.strstart -= s, t.block_start -= s, a = t.hash_size, e = a;
+                        do i = t.head[--e], t.head[e] = i >= s ? i - s : 0; while (--a);
+                        a = s, e = a;
+                        do i = t.prev[--e], t.prev[e] = i >= s ? i - s : 0; while (--a);
+                        n += s;
+                    }
+                    if (0 === t.strm.avail_in) break;
+                    if (a = d(t.strm, t.window, t.strstart + t.lookahead, n), t.lookahead += a, t.lookahead + t.insert >= ht)
+                        for (r = t.strstart - t.insert, t.ins_h = t.window[r], t.ins_h = (t.ins_h << t.hash_shift ^ t.window[r + 1]) & t.hash_mask; t.insert && (t.ins_h = (t.ins_h << t.hash_shift ^ t.window[r + ht - 1]) & t.hash_mask, t.prev[r & t.w_mask] = t.head[t.ins_h], t.head[t.ins_h] = r, r++, t.insert--, !(t.lookahead + t.insert < ht)););
+                } while (t.lookahead < ft && 0 !== t.strm.avail_in)
+            }
+
+            function u(t, e) {
+                var a = 65535;
+                for (a > t.pending_buf_size - 5 && (a = t.pending_buf_size - 5);;) {
+                    if (t.lookahead <= 1) {
+                        if (_(t), 0 === t.lookahead && e === I) return vt;
+                        if (0 === t.lookahead) break
+                    }
+                    t.strstart += t.lookahead, t.lookahead = 0;
+                    var i = t.block_start + a;
+                    if ((0 === t.strstart || t.strstart >= i) && (t.lookahead = t.strstart - i, t.strstart = i, o(t, !1), 0 === t.strm.avail_out)) return vt;
+                    if (t.strstart - t.block_start >= t.w_size - ft && (o(t, !1), 0 === t.strm.avail_out)) return vt
+                }
+                return t.insert = 0, e === F ? (o(t, !0), 0 === t.strm.avail_out ? yt : xt) : t.strstart > t.block_start && (o(t, !1), 0 === t.strm.avail_out) ? vt : vt
+            }
+
+            function c(t, e) {
+                for (var a, i;;) {
+                    if (t.lookahead < ft) {
+                        if (_(t), t.lookahead < ft && e === I) return vt;
+                        if (0 === t.lookahead) break
+                    }
+                    if (a = 0, t.lookahead >= ht && (t.ins_h = (t.ins_h << t.hash_shift ^ t.window[t.strstart + ht - 1]) & t.hash_mask, a = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h], t.head[t.ins_h] = t.strstart), 0 !== a && t.strstart - a <= t.w_size - ft && (t.match_length = f(t, a)), t.match_length >= ht)
+                        if (i = C._tr_tally(t, t.strstart - t.match_start, t.match_length - ht), t.lookahead -= t.match_length, t.match_length <= t.max_lazy_match && t.lookahead >= ht) {
+                            t.match_length--;
+                            do t.strstart++, t.ins_h = (t.ins_h << t.hash_shift ^ t.window[t.strstart + ht - 1]) & t.hash_mask, a = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h], t.head[t.ins_h] = t.strstart; while (0 !== --t.match_length);
+                            t.strstart++;
+                        } else t.strstart += t.match_length, t.match_length = 0, t.ins_h = t.window[t.strstart], t.ins_h = (t.ins_h << t.hash_shift ^ t.window[t.strstart + 1]) & t.hash_mask;
+                    else i = C._tr_tally(t, 0, t.window[t.strstart]), t.lookahead--, t.strstart++;
+                    if (i && (o(t, !1), 0 === t.strm.avail_out)) return vt
+                }
+                return t.insert = t.strstart < ht - 1 ? t.strstart : ht - 1, e === F ? (o(t, !0), 0 === t.strm.avail_out ? yt : xt) : t.last_lit && (o(t, !1), 0 === t.strm.avail_out) ? vt : kt
+            }
+
+            function b(t, e) {
+                for (var a, i, n;;) {
+                    if (t.lookahead < ft) {
+                        if (_(t), t.lookahead < ft && e === I) return vt;
+                        if (0 === t.lookahead) break
+                    }
+                    if (a = 0, t.lookahead >= ht && (t.ins_h = (t.ins_h << t.hash_shift ^ t.window[t.strstart + ht - 1]) & t.hash_mask, a = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h], t.head[t.ins_h] = t.strstart), t.prev_length = t.match_length, t.prev_match = t.match_start, t.match_length = ht - 1, 0 !== a && t.prev_length < t.max_lazy_match && t.strstart - a <= t.w_size - ft && (t.match_length = f(t, a), t.match_length <= 5 && (t.strategy === q || t.match_length === ht && t.strstart - t.match_start > 4096) && (t.match_length = ht - 1)), t.prev_length >= ht && t.match_length <= t.prev_length) {
+                        n = t.strstart + t.lookahead - ht, i = C._tr_tally(t, t.strstart - 1 - t.prev_match, t.prev_length - ht), t.lookahead -= t.prev_length - 1, t.prev_length -= 2;
+                        do ++t.strstart <= n && (t.ins_h = (t.ins_h << t.hash_shift ^ t.window[t.strstart + ht - 1]) & t.hash_mask, a = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h], t.head[t.ins_h] = t.strstart); while (0 !== --t.prev_length);
+                        if (t.match_available = 0, t.match_length = ht - 1, t.strstart++, i && (o(t, !1), 0 === t.strm.avail_out)) return vt
+                    } else if (t.match_available) {
+                        if (i = C._tr_tally(t, 0, t.window[t.strstart - 1]), i && o(t, !1), t.strstart++, t.lookahead--, 0 === t.strm.avail_out) return vt
+                    } else t.match_available = 1, t.strstart++, t.lookahead--;
+                }
+                return t.match_available && (i = C._tr_tally(t, 0, t.window[t.strstart - 1]), t.match_available = 0), t.insert = t.strstart < ht - 1 ? t.strstart : ht - 1, e === F ? (o(t, !0), 0 === t.strm.avail_out ? yt : xt) : t.last_lit && (o(t, !1), 0 === t.strm.avail_out) ? vt : kt
+            }
+
+            function g(t, e) {
+                for (var a, i, n, r, s = t.window;;) {
+                    if (t.lookahead <= dt) {
+                        if (_(t), t.lookahead <= dt && e === I) return vt;
+                        if (0 === t.lookahead) break
+                    }
+                    if (t.match_length = 0, t.lookahead >= ht && t.strstart > 0 && (n = t.strstart - 1, i = s[n], i === s[++n] && i === s[++n] && i === s[++n])) {
+                        r = t.strstart + dt;
+                        do; while (i === s[++n] && i === s[++n] && i === s[++n] && i === s[++n] && i === s[++n] && i === s[++n] && i === s[++n] && i === s[++n] && n < r);
+                        t.match_length = dt - (r - n), t.match_length > t.lookahead && (t.match_length = t.lookahead);
+                    }
+                    if (t.match_length >= ht ? (a = C._tr_tally(t, 1, t.match_length - ht), t.lookahead -= t.match_length, t.strstart += t.match_length, t.match_length = 0) : (a = C._tr_tally(t, 0, t.window[t.strstart]), t.lookahead--, t.strstart++), a && (o(t, !1), 0 === t.strm.avail_out)) return vt
+                }
+                return t.insert = 0, e === F ? (o(t, !0), 0 === t.strm.avail_out ? yt : xt) : t.last_lit && (o(t, !1), 0 === t.strm.avail_out) ? vt : kt
+            }
+
+            function m(t, e) {
+                for (var a;;) {
+                    if (0 === t.lookahead && (_(t), 0 === t.lookahead)) {
+                        if (e === I) return vt;
+                        break
+                    }
+                    if (t.match_length = 0, a = C._tr_tally(t, 0, t.window[t.strstart]), t.lookahead--, t.strstart++, a && (o(t, !1), 0 === t.strm.avail_out)) return vt
+                }
+                return t.insert = 0, e === F ? (o(t, !0), 0 === t.strm.avail_out ? yt : xt) : t.last_lit && (o(t, !1), 0 === t.strm.avail_out) ? vt : kt
+            }
+
+            function w(t, e, a, i, n) {
+                this.good_length = t, this.max_lazy = e, this.nice_length = a, this.max_chain = i, this.func = n;
+            }
+
+            function p(t) {
+                t.window_size = 2 * t.w_size, r(t.head), t.max_lazy_match = Z[t.level].max_lazy, t.good_match = Z[t.level].good_length, t.nice_match = Z[t.level].nice_length, t.max_chain_length = Z[t.level].max_chain, t.strstart = 0, t.block_start = 0, t.lookahead = 0, t.insert = 0, t.match_length = t.prev_length = ht - 1, t.match_available = 0, t.ins_h = 0;
+            }
+
+            function v() {
+                this.strm = null, this.status = 0, this.pending_buf = null, this.pending_buf_size = 0, this.pending_out = 0, this.pending = 0, this.wrap = 0, this.gzhead = null, this.gzindex = 0, this.method = V, this.last_flush = -1, this.w_size = 0, this.w_bits = 0, this.w_mask = 0, this.window = null, this.window_size = 0, this.prev = null, this.head = null, this.ins_h = 0, this.hash_size = 0, this.hash_bits = 0, this.hash_mask = 0, this.hash_shift = 0, this.block_start = 0, this.match_length = 0, this.prev_match = 0, this.match_available = 0, this.strstart = 0, this.match_start = 0, this.lookahead = 0, this.prev_length = 0, this.max_chain_length = 0, this.max_lazy_match = 0, this.level = 0, this.strategy = 0, this.good_match = 0, this.nice_match = 0, this.dyn_ltree = new R.Buf16(2 * ot), this.dyn_dtree = new R.Buf16(2 * (2 * rt + 1)), this.bl_tree = new R.Buf16(2 * (2 * st + 1)), r(this.dyn_ltree), r(this.dyn_dtree), r(this.bl_tree), this.l_desc = null, this.d_desc = null, this.bl_desc = null, this.bl_count = new R.Buf16(lt + 1), this.heap = new R.Buf16(2 * nt + 1), r(this.heap), this.heap_len = 0, this.heap_max = 0, this.depth = new R.Buf16(2 * nt + 1), r(this.depth), this.l_buf = 0, this.lit_bufsize = 0, this.last_lit = 0, this.d_buf = 0, this.opt_len = 0, this.static_len = 0, this.matches = 0, this.insert = 0, this.bi_buf = 0, this.bi_valid = 0;
+            }
+
+            function k(t) {
+                var e;
+                return t && t.state ? (t.total_in = t.total_out = 0, t.data_type = Q, e = t.state, e.pending = 0, e.pending_out = 0, e.wrap < 0 && (e.wrap = -e.wrap), e.status = e.wrap ? ut : wt, t.adler = 2 === e.wrap ? 0 : 1, e.last_flush = I, C._tr_init(e), H) : i(t, K)
+            }
+
+            function y(t) {
+                var e = k(t);
+                return e === H && p(t.state), e
+            }
+
+            function x(t, e) {
+                return t && t.state ? 2 !== t.state.wrap ? K : (t.state.gzhead = e, H) : K
+            }
+
+            function z(t, e, a, n, r, s) {
+                if (!t) return K;
+                var o = 1;
+                if (e === Y && (e = 6), n < 0 ? (o = 0, n = -n) : n > 15 && (o = 2, n -= 16), r < 1 || r > $ || a !== V || n < 8 || n > 15 || e < 0 || e > 9 || s < 0 || s > W) return i(t, K);
+                8 === n && (n = 9);
+                var l = new v;
+                return t.state = l, l.strm = t, l.wrap = o, l.gzhead = null, l.w_bits = n, l.w_size = 1 << l.w_bits, l.w_mask = l.w_size - 1, l.hash_bits = r + 7, l.hash_size = 1 << l.hash_bits, l.hash_mask = l.hash_size - 1, l.hash_shift = ~~((l.hash_bits + ht - 1) / ht), l.window = new R.Buf8(2 * l.w_size), l.head = new R.Buf16(l.hash_size), l.prev = new R.Buf16(l.w_size), l.lit_bufsize = 1 << r + 6, l.pending_buf_size = 4 * l.lit_bufsize, l.pending_buf = new R.Buf8(l.pending_buf_size), l.d_buf = 1 * l.lit_bufsize, l.l_buf = 3 * l.lit_bufsize, l.level = e, l.strategy = s, l.method = a, y(t)
+            }
+
+            function B(t, e) {
+                return z(t, e, V, tt, et, J)
+            }
+
+            function S(t, e) {
+                var a, o, d, f;
+                if (!t || !t.state || e > L || e < 0) return t ? i(t, K) : K;
+                if (o = t.state, !t.output || !t.input && 0 !== t.avail_in || o.status === pt && e !== F) return i(t, 0 === t.avail_out ? P : K);
+                if (o.strm = t, a = o.last_flush, o.last_flush = e, o.status === ut)
+                    if (2 === o.wrap) t.adler = 0, l(o, 31), l(o, 139), l(o, 8), o.gzhead ? (l(o, (o.gzhead.text ? 1 : 0) + (o.gzhead.hcrc ? 2 : 0) + (o.gzhead.extra ? 4 : 0) + (o.gzhead.name ? 8 : 0) + (o.gzhead.comment ? 16 : 0)), l(o, 255 & o.gzhead.time), l(o, o.gzhead.time >> 8 & 255), l(o, o.gzhead.time >> 16 & 255), l(o, o.gzhead.time >> 24 & 255), l(o, 9 === o.level ? 2 : o.strategy >= G || o.level < 2 ? 4 : 0), l(o, 255 & o.gzhead.os), o.gzhead.extra && o.gzhead.extra.length && (l(o, 255 & o.gzhead.extra.length), l(o, o.gzhead.extra.length >> 8 & 255)), o.gzhead.hcrc && (t.adler = O(t.adler, o.pending_buf, o.pending, 0)), o.gzindex = 0, o.status = ct) : (l(o, 0), l(o, 0), l(o, 0), l(o, 0), l(o, 0), l(o, 9 === o.level ? 2 : o.strategy >= G || o.level < 2 ? 4 : 0), l(o, zt), o.status = wt);
+                    else {
+                        var _ = V + (o.w_bits - 8 << 4) << 8,
+                            u = -1;
+                        u = o.strategy >= G || o.level < 2 ? 0 : o.level < 6 ? 1 : 6 === o.level ? 2 : 3, _ |= u << 6, 0 !== o.strstart && (_ |= _t), _ += 31 - _ % 31, o.status = wt, h(o, _), 0 !== o.strstart && (h(o, t.adler >>> 16), h(o, 65535 & t.adler)), t.adler = 1;
+                    }
+                if (o.status === ct)
+                    if (o.gzhead.extra) {
+                        for (d = o.pending; o.gzindex < (65535 & o.gzhead.extra.length) && (o.pending !== o.pending_buf_size || (o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), s(t), d = o.pending, o.pending !== o.pending_buf_size));) l(o, 255 & o.gzhead.extra[o.gzindex]), o.gzindex++;
+                        o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), o.gzindex === o.gzhead.extra.length && (o.gzindex = 0, o.status = bt);
+                    } else o.status = bt;
+                if (o.status === bt)
+                    if (o.gzhead.name) {
+                        d = o.pending;
+                        do {
+                            if (o.pending === o.pending_buf_size && (o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), s(t), d = o.pending, o.pending === o.pending_buf_size)) {
+                                f = 1;
+                                break
+                            }
+                            f = o.gzindex < o.gzhead.name.length ? 255 & o.gzhead.name.charCodeAt(o.gzindex++) : 0, l(o, f);
+                        } while (0 !== f);
+                        o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), 0 === f && (o.gzindex = 0, o.status = gt);
+                    } else o.status = gt;
+                if (o.status === gt)
+                    if (o.gzhead.comment) {
+                        d = o.pending;
+                        do {
+                            if (o.pending === o.pending_buf_size && (o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), s(t), d = o.pending, o.pending === o.pending_buf_size)) {
+                                f = 1;
+                                break
+                            }
+                            f = o.gzindex < o.gzhead.comment.length ? 255 & o.gzhead.comment.charCodeAt(o.gzindex++) : 0, l(o, f);
+                        } while (0 !== f);
+                        o.gzhead.hcrc && o.pending > d && (t.adler = O(t.adler, o.pending_buf, o.pending - d, d)), 0 === f && (o.status = mt);
+                    } else o.status = mt;
+                if (o.status === mt && (o.gzhead.hcrc ? (o.pending + 2 > o.pending_buf_size && s(t), o.pending + 2 <= o.pending_buf_size && (l(o, 255 & t.adler), l(o, t.adler >> 8 & 255), t.adler = 0, o.status = wt)) : o.status = wt), 0 !== o.pending) {
+                    if (s(t), 0 === t.avail_out) return o.last_flush = -1, H
+                } else if (0 === t.avail_in && n(e) <= n(a) && e !== F) return i(t, P);
+                if (o.status === pt && 0 !== t.avail_in) return i(t, P);
+                if (0 !== t.avail_in || 0 !== o.lookahead || e !== I && o.status !== pt) {
+                    var c = o.strategy === G ? m(o, e) : o.strategy === X ? g(o, e) : Z[o.level].func(o, e);
+                    if (c !== yt && c !== xt || (o.status = pt), c === vt || c === yt) return 0 === t.avail_out && (o.last_flush = -1), H;
+                    if (c === kt && (e === U ? C._tr_align(o) : e !== L && (C._tr_stored_block(o, 0, 0, !1), e === T && (r(o.head), 0 === o.lookahead && (o.strstart = 0, o.block_start = 0, o.insert = 0))), s(t), 0 === t.avail_out)) return o.last_flush = -1, H
+                }
+                return e !== F ? H : o.wrap <= 0 ? j : (2 === o.wrap ? (l(o, 255 & t.adler), l(o, t.adler >> 8 & 255), l(o, t.adler >> 16 & 255), l(o, t.adler >> 24 & 255), l(o, 255 & t.total_in), l(o, t.total_in >> 8 & 255), l(o, t.total_in >> 16 & 255), l(o, t.total_in >> 24 & 255)) : (h(o, t.adler >>> 16), h(o, 65535 & t.adler)), s(t), o.wrap > 0 && (o.wrap = -o.wrap), 0 !== o.pending ? H : j)
+            }
+
+            function E(t) {
+                var e;
+                return t && t.state ? (e = t.state.status, e !== ut && e !== ct && e !== bt && e !== gt && e !== mt && e !== wt && e !== pt ? i(t, K) : (t.state = null, e === wt ? i(t, M) : H)) : K
+            }
+
+            function A(t, e) {
+                var a, i, n, s, o, l, h, d, f = e.length;
+                if (!t || !t.state) return K;
+                if (a = t.state, s = a.wrap, 2 === s || 1 === s && a.status !== ut || a.lookahead) return K;
+                for (1 === s && (t.adler = N(t.adler, e, f, 0)), a.wrap = 0, f >= a.w_size && (0 === s && (r(a.head), a.strstart = 0, a.block_start = 0, a.insert = 0), d = new R.Buf8(a.w_size), R.arraySet(d, e, f - a.w_size, a.w_size, 0), e = d, f = a.w_size), o = t.avail_in, l = t.next_in, h = t.input, t.avail_in = f, t.next_in = 0, t.input = e, _(a); a.lookahead >= ht;) {
+                    i = a.strstart, n = a.lookahead - (ht - 1);
+                    do a.ins_h = (a.ins_h << a.hash_shift ^ a.window[i + ht - 1]) & a.hash_mask, a.prev[i & a.w_mask] = a.head[a.ins_h], a.head[a.ins_h] = i, i++; while (--n);
+                    a.strstart = i, a.lookahead = ht - 1, _(a);
+                }
+                return a.strstart += a.lookahead, a.block_start = a.strstart, a.insert = a.lookahead, a.lookahead = 0, a.match_length = a.prev_length = ht - 1, a.match_available = 0, t.next_in = l, t.input = h, t.avail_in = o, a.wrap = s, H
+            }
+            var Z, R = t("../utils/common"),
+                C = t("./trees"),
+                N = t("./adler32"),
+                O = t("./crc32"),
+                D = t("./messages"),
+                I = 0,
+                U = 1,
+                T = 3,
+                F = 4,
+                L = 5,
+                H = 0,
+                j = 1,
+                K = -2,
+                M = -3,
+                P = -5,
+                Y = -1,
+                q = 1,
+                G = 2,
+                X = 3,
+                W = 4,
+                J = 0,
+                Q = 2,
+                V = 8,
+                $ = 9,
+                tt = 15,
+                et = 8,
+                at = 29,
+                it = 256,
+                nt = it + 1 + at,
+                rt = 30,
+                st = 19,
+                ot = 2 * nt + 1,
+                lt = 15,
+                ht = 3,
+                dt = 258,
+                ft = dt + ht + 1,
+                _t = 32,
+                ut = 42,
+                ct = 69,
+                bt = 73,
+                gt = 91,
+                mt = 103,
+                wt = 113,
+                pt = 666,
+                vt = 1,
+                kt = 2,
+                yt = 3,
+                xt = 4,
+                zt = 3;
+            Z = [new w(0, 0, 0, 0, u), new w(4, 4, 8, 4, c), new w(4, 5, 16, 8, c), new w(4, 6, 32, 32, c), new w(4, 4, 16, 16, b), new w(8, 16, 32, 32, b), new w(8, 16, 128, 128, b), new w(8, 32, 128, 256, b), new w(32, 128, 258, 1024, b), new w(32, 258, 258, 4096, b)], a.deflateInit = B, a.deflateInit2 = z, a.deflateReset = y, a.deflateResetKeep = k, a.deflateSetHeader = x, a.deflate = S, a.deflateEnd = E, a.deflateSetDictionary = A, a.deflateInfo = "pako deflate (from Nodeca project)";
+        }, {
+            "../utils/common": 3,
+            "./adler32": 5,
+            "./crc32": 7,
+            "./messages": 13,
+            "./trees": 14
+        }],
+        9: [function(t, e, a) {
+            "use strict";
+
+            function i() {
+                this.text = 0, this.time = 0, this.xflags = 0, this.os = 0, this.extra = null, this.extra_len = 0, this.name = "", this.comment = "", this.hcrc = 0, this.done = !1;
+            }
+            e.exports = i;
+        }, {}],
+        10: [function(t, e, a) {
+            "use strict";
+            var i = 30,
+                n = 12;
+            e.exports = function(t, e) {
+                var a, r, s, o, l, h, d, f, _, u, c, b, g, m, w, p, v, k, y, x, z, B, S, E, A;
+                a = t.state, r = t.next_in, E = t.input, s = r + (t.avail_in - 5), o = t.next_out, A = t.output, l = o - (e - t.avail_out), h = o + (t.avail_out - 257), d = a.dmax, f = a.wsize, _ = a.whave, u = a.wnext, c = a.window, b = a.hold, g = a.bits, m = a.lencode, w = a.distcode, p = (1 << a.lenbits) - 1, v = (1 << a.distbits) - 1;
+                t: do {
+                    g < 15 && (b += E[r++] << g, g += 8, b += E[r++] << g, g += 8), k = m[b & p];
+                    e: for (;;) {
+                        if (y = k >>> 24, b >>>= y, g -= y, y = k >>> 16 & 255, 0 === y) A[o++] = 65535 & k;
+                        else {
+                            if (!(16 & y)) {
+                                if (0 === (64 & y)) {
+                                    k = m[(65535 & k) + (b & (1 << y) - 1)];
+                                    continue e
+                                }
+                                if (32 & y) {
+                                    a.mode = n;
+                                    break t
+                                }
+                                t.msg = "invalid literal/length code", a.mode = i;
+                                break t
+                            }
+                            x = 65535 & k, y &= 15, y && (g < y && (b += E[r++] << g, g += 8), x += b & (1 << y) - 1, b >>>= y, g -= y), g < 15 && (b += E[r++] << g, g += 8, b += E[r++] << g, g += 8), k = w[b & v];
+                            a: for (;;) {
+                                if (y = k >>> 24, b >>>= y, g -= y, y = k >>> 16 & 255, !(16 & y)) {
+                                    if (0 === (64 & y)) {
+                                        k = w[(65535 & k) + (b & (1 << y) - 1)];
+                                        continue a
+                                    }
+                                    t.msg = "invalid distance code", a.mode = i;
+                                    break t
+                                }
+                                if (z = 65535 & k, y &= 15, g < y && (b += E[r++] << g, g += 8, g < y && (b += E[r++] << g, g += 8)), z += b & (1 << y) - 1, z > d) {
+                                    t.msg = "invalid distance too far back", a.mode = i;
+                                    break t
+                                }
+                                if (b >>>= y, g -= y, y = o - l, z > y) {
+                                    if (y = z - y, y > _ && a.sane) {
+                                        t.msg = "invalid distance too far back", a.mode = i;
+                                        break t
+                                    }
+                                    if (B = 0, S = c, 0 === u) {
+                                        if (B += f - y, y < x) {
+                                            x -= y;
+                                            do A[o++] = c[B++]; while (--y);
+                                            B = o - z, S = A;
+                                        }
+                                    } else if (u < y) {
+                                        if (B += f + u - y, y -= u, y < x) {
+                                            x -= y;
+                                            do A[o++] = c[B++]; while (--y);
+                                            if (B = 0, u < x) {
+                                                y = u, x -= y;
+                                                do A[o++] = c[B++]; while (--y);
+                                                B = o - z, S = A;
+                                            }
+                                        }
+                                    } else if (B += u - y, y < x) {
+                                        x -= y;
+                                        do A[o++] = c[B++]; while (--y);
+                                        B = o - z, S = A;
+                                    }
+                                    for (; x > 2;) A[o++] = S[B++], A[o++] = S[B++], A[o++] = S[B++], x -= 3;
+                                    x && (A[o++] = S[B++], x > 1 && (A[o++] = S[B++]));
+                                } else {
+                                    B = o - z;
+                                    do A[o++] = A[B++], A[o++] = A[B++], A[o++] = A[B++], x -= 3; while (x > 2);
+                                    x && (A[o++] = A[B++], x > 1 && (A[o++] = A[B++]));
+                                }
+                                break
+                            }
+                        }
+                        break
+                    }
+                } while (r < s && o < h);
+                x = g >> 3, r -= x, g -= x << 3, b &= (1 << g) - 1, t.next_in = r, t.next_out = o, t.avail_in = r < s ? 5 + (s - r) : 5 - (r - s), t.avail_out = o < h ? 257 + (h - o) : 257 - (o - h), a.hold = b, a.bits = g;
+            };
+        }, {}],
+        11: [function(t, e, a) {
+            "use strict";
+
+            function i(t) {
+                return (t >>> 24 & 255) + (t >>> 8 & 65280) + ((65280 & t) << 8) + ((255 & t) << 24)
+            }
+
+            function n() {
+                this.mode = 0, this.last = !1, this.wrap = 0, this.havedict = !1, this.flags = 0, this.dmax = 0, this.check = 0, this.total = 0, this.head = null, this.wbits = 0, this.wsize = 0, this.whave = 0, this.wnext = 0, this.window = null, this.hold = 0, this.bits = 0, this.length = 0, this.offset = 0, this.extra = 0, this.lencode = null, this.distcode = null, this.lenbits = 0, this.distbits = 0, this.ncode = 0, this.nlen = 0, this.ndist = 0, this.have = 0, this.next = null, this.lens = new w.Buf16(320), this.work = new w.Buf16(288), this.lendyn = null, this.distdyn = null, this.sane = 0, this.back = 0, this.was = 0;
+            }
+
+            function r(t) {
+                var e;
+                return t && t.state ? (e = t.state, t.total_in = t.total_out = e.total = 0, t.msg = "", e.wrap && (t.adler = 1 & e.wrap), e.mode = T, e.last = 0, e.havedict = 0, e.dmax = 32768, e.head = null, e.hold = 0, e.bits = 0, e.lencode = e.lendyn = new w.Buf32(bt), e.distcode = e.distdyn = new w.Buf32(gt), e.sane = 1, e.back = -1, Z) : N
+            }
+
+            function s(t) {
+                var e;
+                return t && t.state ? (e = t.state, e.wsize = 0, e.whave = 0, e.wnext = 0, r(t)) : N
+            }
+
+            function o(t, e) {
+                var a, i;
+                return t && t.state ? (i = t.state, e < 0 ? (a = 0, e = -e) : (a = (e >> 4) + 1, e < 48 && (e &= 15)), e && (e < 8 || e > 15) ? N : (null !== i.window && i.wbits !== e && (i.window = null), i.wrap = a, i.wbits = e, s(t))) : N
+            }
+
+            function l(t, e) {
+                var a, i;
+                return t ? (i = new n, t.state = i, i.window = null, a = o(t, e), a !== Z && (t.state = null), a) : N
+            }
+
+            function h(t) {
+                return l(t, wt)
+            }
+
+            function d(t) {
+                if (pt) {
+                    var e;
+                    for (g = new w.Buf32(512), m = new w.Buf32(32), e = 0; e < 144;) t.lens[e++] = 8;
+                    for (; e < 256;) t.lens[e++] = 9;
+                    for (; e < 280;) t.lens[e++] = 7;
+                    for (; e < 288;) t.lens[e++] = 8;
+                    for (y(z, t.lens, 0, 288, g, 0, t.work, {
+                            bits: 9
+                        }), e = 0; e < 32;) t.lens[e++] = 5;
+                    y(B, t.lens, 0, 32, m, 0, t.work, {
+                        bits: 5
+                    }), pt = !1;
+                }
+                t.lencode = g, t.lenbits = 9, t.distcode = m, t.distbits = 5;
+            }
+
+            function f(t, e, a, i) {
+                var n, r = t.state;
+                return null === r.window && (r.wsize = 1 << r.wbits, r.wnext = 0, r.whave = 0, r.window = new w.Buf8(r.wsize)), i >= r.wsize ? (w.arraySet(r.window, e, a - r.wsize, r.wsize, 0), r.wnext = 0, r.whave = r.wsize) : (n = r.wsize - r.wnext, n > i && (n = i), w.arraySet(r.window, e, a - i, n, r.wnext), i -= n, i ? (w.arraySet(r.window, e, a - i, i, 0), r.wnext = i, r.whave = r.wsize) : (r.wnext += n, r.wnext === r.wsize && (r.wnext = 0), r.whave < r.wsize && (r.whave += n))), 0
+            }
+
+            function _(t, e) {
+                var a, n, r, s, o, l, h, _, u, c, b, g, m, bt, gt, mt, wt, pt, vt, kt, yt, xt, zt, Bt, St = 0,
+                    Et = new w.Buf8(4),
+                    At = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+                if (!t || !t.state || !t.output || !t.input && 0 !== t.avail_in) return N;
+                a = t.state, a.mode === X && (a.mode = W), o = t.next_out, r = t.output, h = t.avail_out, s = t.next_in, n = t.input, l = t.avail_in, _ = a.hold, u = a.bits, c = l, b = h, xt = Z;
+                t: for (;;) switch (a.mode) {
+                    case T:
+                        if (0 === a.wrap) {
+                            a.mode = W;
+                            break
+                        }
+                        for (; u < 16;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if (2 & a.wrap && 35615 === _) {
+                            a.check = 0, Et[0] = 255 & _, Et[1] = _ >>> 8 & 255, a.check = v(a.check, Et, 2, 0), _ = 0, u = 0, a.mode = F;
+                            break
+                        }
+                        if (a.flags = 0, a.head && (a.head.done = !1), !(1 & a.wrap) || (((255 & _) << 8) + (_ >> 8)) % 31) {
+                            t.msg = "incorrect header check", a.mode = _t;
+                            break
+                        }
+                        if ((15 & _) !== U) {
+                            t.msg = "unknown compression method", a.mode = _t;
+                            break
+                        }
+                        if (_ >>>= 4, u -= 4, yt = (15 & _) + 8, 0 === a.wbits) a.wbits = yt;
+                        else if (yt > a.wbits) {
+                            t.msg = "invalid window size", a.mode = _t;
+                            break
+                        }
+                        a.dmax = 1 << yt, t.adler = a.check = 1, a.mode = 512 & _ ? q : X, _ = 0, u = 0;
+                        break;
+                    case F:
+                        for (; u < 16;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if (a.flags = _, (255 & a.flags) !== U) {
+                            t.msg = "unknown compression method", a.mode = _t;
+                            break
+                        }
+                        if (57344 & a.flags) {
+                            t.msg = "unknown header flags set", a.mode = _t;
+                            break
+                        }
+                        a.head && (a.head.text = _ >> 8 & 1), 512 & a.flags && (Et[0] = 255 & _, Et[1] = _ >>> 8 & 255, a.check = v(a.check, Et, 2, 0)), _ = 0, u = 0, a.mode = L;
+                    case L:
+                        for (; u < 32;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        a.head && (a.head.time = _), 512 & a.flags && (Et[0] = 255 & _, Et[1] = _ >>> 8 & 255, Et[2] = _ >>> 16 & 255, Et[3] = _ >>> 24 & 255, a.check = v(a.check, Et, 4, 0)), _ = 0, u = 0, a.mode = H;
+                    case H:
+                        for (; u < 16;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        a.head && (a.head.xflags = 255 & _, a.head.os = _ >> 8), 512 & a.flags && (Et[0] = 255 & _, Et[1] = _ >>> 8 & 255, a.check = v(a.check, Et, 2, 0)), _ = 0, u = 0, a.mode = j;
+                    case j:
+                        if (1024 & a.flags) {
+                            for (; u < 16;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            a.length = _, a.head && (a.head.extra_len = _), 512 & a.flags && (Et[0] = 255 & _, Et[1] = _ >>> 8 & 255, a.check = v(a.check, Et, 2, 0)), _ = 0, u = 0;
+                        } else a.head && (a.head.extra = null);
+                        a.mode = K;
+                    case K:
+                        if (1024 & a.flags && (g = a.length, g > l && (g = l), g && (a.head && (yt = a.head.extra_len - a.length, a.head.extra || (a.head.extra = new Array(a.head.extra_len)), w.arraySet(a.head.extra, n, s, g, yt)), 512 & a.flags && (a.check = v(a.check, n, g, s)), l -= g, s += g, a.length -= g), a.length)) break t;
+                        a.length = 0, a.mode = M;
+                    case M:
+                        if (2048 & a.flags) {
+                            if (0 === l) break t;
+                            g = 0;
+                            do yt = n[s + g++], a.head && yt && a.length < 65536 && (a.head.name += String.fromCharCode(yt)); while (yt && g < l);
+                            if (512 & a.flags && (a.check = v(a.check, n, g, s)), l -= g, s += g, yt) break t
+                        } else a.head && (a.head.name = null);
+                        a.length = 0, a.mode = P;
+                    case P:
+                        if (4096 & a.flags) {
+                            if (0 === l) break t;
+                            g = 0;
+                            do yt = n[s + g++], a.head && yt && a.length < 65536 && (a.head.comment += String.fromCharCode(yt)); while (yt && g < l);
+                            if (512 & a.flags && (a.check = v(a.check, n, g, s)), l -= g, s += g, yt) break t
+                        } else a.head && (a.head.comment = null);
+                        a.mode = Y;
+                    case Y:
+                        if (512 & a.flags) {
+                            for (; u < 16;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            if (_ !== (65535 & a.check)) {
+                                t.msg = "header crc mismatch", a.mode = _t;
+                                break
+                            }
+                            _ = 0, u = 0;
+                        }
+                        a.head && (a.head.hcrc = a.flags >> 9 & 1, a.head.done = !0), t.adler = a.check = 0, a.mode = X;
+                        break;
+                    case q:
+                        for (; u < 32;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        t.adler = a.check = i(_), _ = 0, u = 0, a.mode = G;
+                    case G:
+                        if (0 === a.havedict) return t.next_out = o, t.avail_out = h, t.next_in = s, t.avail_in = l, a.hold = _, a.bits = u, C;
+                        t.adler = a.check = 1, a.mode = X;
+                    case X:
+                        if (e === E || e === A) break t;
+                    case W:
+                        if (a.last) {
+                            _ >>>= 7 & u, u -= 7 & u, a.mode = ht;
+                            break
+                        }
+                        for (; u < 3;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        switch (a.last = 1 & _, _ >>>= 1, u -= 1, 3 & _) {
+                            case 0:
+                                a.mode = J;
+                                break;
+                            case 1:
+                                if (d(a), a.mode = at, e === A) {
+                                    _ >>>= 2, u -= 2;
+                                    break t
+                                }
+                                break;
+                            case 2:
+                                a.mode = $;
+                                break;
+                            case 3:
+                                t.msg = "invalid block type", a.mode = _t;
+                        }
+                        _ >>>= 2, u -= 2;
+                        break;
+                    case J:
+                        for (_ >>>= 7 & u, u -= 7 & u; u < 32;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if ((65535 & _) !== (_ >>> 16 ^ 65535)) {
+                            t.msg = "invalid stored block lengths", a.mode = _t;
+                            break
+                        }
+                        if (a.length = 65535 & _, _ = 0, u = 0, a.mode = Q, e === A) break t;
+                    case Q:
+                        a.mode = V;
+                    case V:
+                        if (g = a.length) {
+                            if (g > l && (g = l), g > h && (g = h), 0 === g) break t;
+                            w.arraySet(r, n, s, g, o), l -= g, s += g, h -= g, o += g, a.length -= g;
+                            break
+                        }
+                        a.mode = X;
+                        break;
+                    case $:
+                        for (; u < 14;) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if (a.nlen = (31 & _) + 257, _ >>>= 5, u -= 5, a.ndist = (31 & _) + 1, _ >>>= 5, u -= 5, a.ncode = (15 & _) + 4, _ >>>= 4, u -= 4, a.nlen > 286 || a.ndist > 30) {
+                            t.msg = "too many length or distance symbols", a.mode = _t;
+                            break
+                        }
+                        a.have = 0, a.mode = tt;
+                    case tt:
+                        for (; a.have < a.ncode;) {
+                            for (; u < 3;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            a.lens[At[a.have++]] = 7 & _, _ >>>= 3, u -= 3;
+                        }
+                        for (; a.have < 19;) a.lens[At[a.have++]] = 0;
+                        if (a.lencode = a.lendyn, a.lenbits = 7, zt = {
+                                bits: a.lenbits
+                            }, xt = y(x, a.lens, 0, 19, a.lencode, 0, a.work, zt), a.lenbits = zt.bits, xt) {
+                            t.msg = "invalid code lengths set", a.mode = _t;
+                            break
+                        }
+                        a.have = 0, a.mode = et;
+                    case et:
+                        for (; a.have < a.nlen + a.ndist;) {
+                            for (; St = a.lencode[_ & (1 << a.lenbits) - 1], gt = St >>> 24, mt = St >>> 16 & 255, wt = 65535 & St, !(gt <= u);) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            if (wt < 16) _ >>>= gt, u -= gt, a.lens[a.have++] = wt;
+                            else {
+                                if (16 === wt) {
+                                    for (Bt = gt + 2; u < Bt;) {
+                                        if (0 === l) break t;
+                                        l--, _ += n[s++] << u, u += 8;
+                                    }
+                                    if (_ >>>= gt, u -= gt, 0 === a.have) {
+                                        t.msg = "invalid bit length repeat", a.mode = _t;
+                                        break
+                                    }
+                                    yt = a.lens[a.have - 1], g = 3 + (3 & _), _ >>>= 2, u -= 2;
+                                } else if (17 === wt) {
+                                    for (Bt = gt + 3; u < Bt;) {
+                                        if (0 === l) break t;
+                                        l--, _ += n[s++] << u, u += 8;
+                                    }
+                                    _ >>>= gt, u -= gt, yt = 0, g = 3 + (7 & _), _ >>>= 3, u -= 3;
+                                } else {
+                                    for (Bt = gt + 7; u < Bt;) {
+                                        if (0 === l) break t;
+                                        l--, _ += n[s++] << u, u += 8;
+                                    }
+                                    _ >>>= gt, u -= gt, yt = 0, g = 11 + (127 & _), _ >>>= 7, u -= 7;
+                                }
+                                if (a.have + g > a.nlen + a.ndist) {
+                                    t.msg = "invalid bit length repeat", a.mode = _t;
+                                    break
+                                }
+                                for (; g--;) a.lens[a.have++] = yt;
+                            }
+                        }
+                        if (a.mode === _t) break;
+                        if (0 === a.lens[256]) {
+                            t.msg = "invalid code -- missing end-of-block", a.mode = _t;
+                            break
+                        }
+                        if (a.lenbits = 9, zt = {
+                                bits: a.lenbits
+                            }, xt = y(z, a.lens, 0, a.nlen, a.lencode, 0, a.work, zt), a.lenbits = zt.bits, xt) {
+                            t.msg = "invalid literal/lengths set", a.mode = _t;
+                            break
+                        }
+                        if (a.distbits = 6, a.distcode = a.distdyn, zt = {
+                                bits: a.distbits
+                            }, xt = y(B, a.lens, a.nlen, a.ndist, a.distcode, 0, a.work, zt), a.distbits = zt.bits, xt) {
+                            t.msg = "invalid distances set", a.mode = _t;
+                            break
+                        }
+                        if (a.mode = at, e === A) break t;
+                    case at:
+                        a.mode = it;
+                    case it:
+                        if (l >= 6 && h >= 258) {
+                            t.next_out = o, t.avail_out = h, t.next_in = s, t.avail_in = l, a.hold = _, a.bits = u, k(t, b), o = t.next_out, r = t.output, h = t.avail_out, s = t.next_in, n = t.input, l = t.avail_in, _ = a.hold, u = a.bits, a.mode === X && (a.back = -1);
+                            break
+                        }
+                        for (a.back = 0; St = a.lencode[_ & (1 << a.lenbits) - 1], gt = St >>> 24, mt = St >>> 16 & 255, wt = 65535 & St, !(gt <= u);) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if (mt && 0 === (240 & mt)) {
+                            for (pt = gt, vt = mt, kt = wt; St = a.lencode[kt + ((_ & (1 << pt + vt) - 1) >> pt)], gt = St >>> 24, mt = St >>> 16 & 255, wt = 65535 & St, !(pt + gt <= u);) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            _ >>>= pt, u -= pt, a.back += pt;
+                        }
+                        if (_ >>>= gt, u -= gt, a.back += gt, a.length = wt, 0 === mt) {
+                            a.mode = lt;
+                            break
+                        }
+                        if (32 & mt) {
+                            a.back = -1, a.mode = X;
+                            break
+                        }
+                        if (64 & mt) {
+                            t.msg = "invalid literal/length code", a.mode = _t;
+                            break
+                        }
+                        a.extra = 15 & mt, a.mode = nt;
+                    case nt:
+                        if (a.extra) {
+                            for (Bt = a.extra; u < Bt;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            a.length += _ & (1 << a.extra) - 1, _ >>>= a.extra, u -= a.extra, a.back += a.extra;
+                        }
+                        a.was = a.length, a.mode = rt;
+                    case rt:
+                        for (; St = a.distcode[_ & (1 << a.distbits) - 1], gt = St >>> 24, mt = St >>> 16 & 255, wt = 65535 & St, !(gt <= u);) {
+                            if (0 === l) break t;
+                            l--, _ += n[s++] << u, u += 8;
+                        }
+                        if (0 === (240 & mt)) {
+                            for (pt = gt, vt = mt, kt = wt; St = a.distcode[kt + ((_ & (1 << pt + vt) - 1) >> pt)], gt = St >>> 24, mt = St >>> 16 & 255, wt = 65535 & St, !(pt + gt <= u);) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            _ >>>= pt, u -= pt, a.back += pt;
+                        }
+                        if (_ >>>= gt, u -= gt, a.back += gt, 64 & mt) {
+                            t.msg = "invalid distance code", a.mode = _t;
+                            break
+                        }
+                        a.offset = wt, a.extra = 15 & mt, a.mode = st;
+                    case st:
+                        if (a.extra) {
+                            for (Bt = a.extra; u < Bt;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            a.offset += _ & (1 << a.extra) - 1, _ >>>= a.extra, u -= a.extra, a.back += a.extra;
+                        }
+                        if (a.offset > a.dmax) {
+                            t.msg = "invalid distance too far back", a.mode = _t;
+                            break
+                        }
+                        a.mode = ot;
+                    case ot:
+                        if (0 === h) break t;
+                        if (g = b - h, a.offset > g) {
+                            if (g = a.offset - g, g > a.whave && a.sane) {
+                                t.msg = "invalid distance too far back", a.mode = _t;
+                                break
+                            }
+                            g > a.wnext ? (g -= a.wnext, m = a.wsize - g) : m = a.wnext - g, g > a.length && (g = a.length), bt = a.window;
+                        } else bt = r, m = o - a.offset, g = a.length;
+                        g > h && (g = h), h -= g, a.length -= g;
+                        do r[o++] = bt[m++]; while (--g);
+                        0 === a.length && (a.mode = it);
+                        break;
+                    case lt:
+                        if (0 === h) break t;
+                        r[o++] = a.length, h--, a.mode = it;
+                        break;
+                    case ht:
+                        if (a.wrap) {
+                            for (; u < 32;) {
+                                if (0 === l) break t;
+                                l--, _ |= n[s++] << u, u += 8;
+                            }
+                            if (b -= h, t.total_out += b, a.total += b, b && (t.adler = a.check = a.flags ? v(a.check, r, b, o - b) : p(a.check, r, b, o - b)), b = h, (a.flags ? _ : i(_)) !== a.check) {
+                                t.msg = "incorrect data check", a.mode = _t;
+                                break
+                            }
+                            _ = 0, u = 0;
+                        }
+                        a.mode = dt;
+                    case dt:
+                        if (a.wrap && a.flags) {
+                            for (; u < 32;) {
+                                if (0 === l) break t;
+                                l--, _ += n[s++] << u, u += 8;
+                            }
+                            if (_ !== (4294967295 & a.total)) {
+                                t.msg = "incorrect length check", a.mode = _t;
+                                break
+                            }
+                            _ = 0, u = 0;
+                        }
+                        a.mode = ft;
+                    case ft:
+                        xt = R;
+                        break t;
+                    case _t:
+                        xt = O;
+                        break t;
+                    case ut:
+                        return D;
+                    case ct:
+                    default:
+                        return N
+                }
+                return t.next_out = o, t.avail_out = h, t.next_in = s, t.avail_in = l, a.hold = _, a.bits = u, (a.wsize || b !== t.avail_out && a.mode < _t && (a.mode < ht || e !== S)) && f(t, t.output, t.next_out, b - t.avail_out) ? (a.mode = ut, D) : (c -= t.avail_in, b -= t.avail_out, t.total_in += c, t.total_out += b, a.total += b, a.wrap && b && (t.adler = a.check = a.flags ? v(a.check, r, b, t.next_out - b) : p(a.check, r, b, t.next_out - b)), t.data_type = a.bits + (a.last ? 64 : 0) + (a.mode === X ? 128 : 0) + (a.mode === at || a.mode === Q ? 256 : 0), (0 === c && 0 === b || e === S) && xt === Z && (xt = I), xt)
+            }
+
+            function u(t) {
+                if (!t || !t.state) return N;
+                var e = t.state;
+                return e.window && (e.window = null), t.state = null, Z
+            }
+
+            function c(t, e) {
+                var a;
+                return t && t.state ? (a = t.state, 0 === (2 & a.wrap) ? N : (a.head = e, e.done = !1, Z)) : N
+            }
+
+            function b(t, e) {
+                var a, i, n, r = e.length;
+                return t && t.state ? (a = t.state, 0 !== a.wrap && a.mode !== G ? N : a.mode === G && (i = 1, i = p(i, e, r, 0), i !== a.check) ? O : (n = f(t, e, r, r)) ? (a.mode = ut, D) : (a.havedict = 1, Z)) : N
+            }
+            var g, m, w = t("../utils/common"),
+                p = t("./adler32"),
+                v = t("./crc32"),
+                k = t("./inffast"),
+                y = t("./inftrees"),
+                x = 0,
+                z = 1,
+                B = 2,
+                S = 4,
+                E = 5,
+                A = 6,
+                Z = 0,
+                R = 1,
+                C = 2,
+                N = -2,
+                O = -3,
+                D = -4,
+                I = -5,
+                U = 8,
+                T = 1,
+                F = 2,
+                L = 3,
+                H = 4,
+                j = 5,
+                K = 6,
+                M = 7,
+                P = 8,
+                Y = 9,
+                q = 10,
+                G = 11,
+                X = 12,
+                W = 13,
+                J = 14,
+                Q = 15,
+                V = 16,
+                $ = 17,
+                tt = 18,
+                et = 19,
+                at = 20,
+                it = 21,
+                nt = 22,
+                rt = 23,
+                st = 24,
+                ot = 25,
+                lt = 26,
+                ht = 27,
+                dt = 28,
+                ft = 29,
+                _t = 30,
+                ut = 31,
+                ct = 32,
+                bt = 852,
+                gt = 592,
+                mt = 15,
+                wt = mt,
+                pt = !0;
+            a.inflateReset = s, a.inflateReset2 = o, a.inflateResetKeep = r, a.inflateInit = h, a.inflateInit2 = l, a.inflate = _, a.inflateEnd = u, a.inflateGetHeader = c, a.inflateSetDictionary = b, a.inflateInfo = "pako inflate (from Nodeca project)";
+        }, {
+            "../utils/common": 3,
+            "./adler32": 5,
+            "./crc32": 7,
+            "./inffast": 10,
+            "./inftrees": 12
+        }],
+        12: [function(t, e, a) {
+            "use strict";
+            var i = t("../utils/common"),
+                n = 15,
+                r = 852,
+                s = 592,
+                o = 0,
+                l = 1,
+                h = 2,
+                d = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0],
+                f = [16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 72, 78],
+                _ = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577, 0, 0],
+                u = [16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 64, 64];
+            e.exports = function(t, e, a, c, b, g, m, w) {
+                var p, v, k, y, x, z, B, S, E, A = w.bits,
+                    Z = 0,
+                    R = 0,
+                    C = 0,
+                    N = 0,
+                    O = 0,
+                    D = 0,
+                    I = 0,
+                    U = 0,
+                    T = 0,
+                    F = 0,
+                    L = null,
+                    H = 0,
+                    j = new i.Buf16(n + 1),
+                    K = new i.Buf16(n + 1),
+                    M = null,
+                    P = 0;
+                for (Z = 0; Z <= n; Z++) j[Z] = 0;
+                for (R = 0; R < c; R++) j[e[a + R]]++;
+                for (O = A, N = n; N >= 1 && 0 === j[N]; N--);
+                if (O > N && (O = N), 0 === N) return b[g++] = 20971520, b[g++] = 20971520, w.bits = 1, 0;
+                for (C = 1; C < N && 0 === j[C]; C++);
+                for (O < C && (O = C), U = 1, Z = 1; Z <= n; Z++)
+                    if (U <<= 1, U -= j[Z], U < 0) return -1;
+                if (U > 0 && (t === o || 1 !== N)) return -1;
+                for (K[1] = 0, Z = 1; Z < n; Z++) K[Z + 1] = K[Z] + j[Z];
+                for (R = 0; R < c; R++) 0 !== e[a + R] && (m[K[e[a + R]]++] = R);
+                if (t === o ? (L = M = m, z = 19) : t === l ? (L = d, H -= 257, M = f, P -= 257, z = 256) : (L = _, M = u, z = -1), F = 0, R = 0, Z = C, x = g, D = O, I = 0, k = -1, T = 1 << O, y = T - 1, t === l && T > r || t === h && T > s) return 1;
+                for (;;) {
+                    B = Z - I, m[R] < z ? (S = 0, E = m[R]) : m[R] > z ? (S = M[P + m[R]], E = L[H + m[R]]) : (S = 96, E = 0), p = 1 << Z - I, v = 1 << D, C = v;
+                    do v -= p, b[x + (F >> I) + v] = B << 24 | S << 16 | E | 0; while (0 !== v);
+                    for (p = 1 << Z - 1; F & p;) p >>= 1;
+                    if (0 !== p ? (F &= p - 1, F += p) : F = 0, R++, 0 === --j[Z]) {
+                        if (Z === N) break;
+                        Z = e[a + m[R]];
+                    }
+                    if (Z > O && (F & y) !== k) {
+                        for (0 === I && (I = O), x += C, D = Z - I, U = 1 << D; D + I < N && (U -= j[D + I], !(U <= 0));) D++, U <<= 1;
+                        if (T += 1 << D, t === l && T > r || t === h && T > s) return 1;
+                        k = F & y, b[k] = O << 24 | D << 16 | x - g | 0;
+                    }
+                }
+                return 0 !== F && (b[x + F] = Z - I << 24 | 64 << 16 | 0), w.bits = O, 0
+            };
+        }, {
+            "../utils/common": 3
+        }],
+        13: [function(t, e, a) {
+            "use strict";
+            e.exports = {
+                2: "need dictionary",
+                1: "stream end",
+                0: "",
+                "-1": "file error",
+                "-2": "stream error",
+                "-3": "data error",
+                "-4": "insufficient memory",
+                "-5": "buffer error",
+                "-6": "incompatible version"
+            };
+        }, {}],
+        14: [function(t, e, a) {
+            "use strict";
+
+            function i(t) {
+                for (var e = t.length; --e >= 0;) t[e] = 0;
+            }
+
+            function n(t, e, a, i, n) {
+                this.static_tree = t, this.extra_bits = e, this.extra_base = a, this.elems = i, this.max_length = n, this.has_stree = t && t.length;
+            }
+
+            function r(t, e) {
+                this.dyn_tree = t, this.max_code = 0, this.stat_desc = e;
+            }
+
+            function s(t) {
+                return t < 256 ? lt[t] : lt[256 + (t >>> 7)]
+            }
+
+            function o(t, e) {
+                t.pending_buf[t.pending++] = 255 & e, t.pending_buf[t.pending++] = e >>> 8 & 255;
+            }
+
+            function l(t, e, a) {
+                t.bi_valid > W - a ? (t.bi_buf |= e << t.bi_valid & 65535, o(t, t.bi_buf), t.bi_buf = e >> W - t.bi_valid, t.bi_valid += a - W) : (t.bi_buf |= e << t.bi_valid & 65535, t.bi_valid += a);
+            }
+
+            function h(t, e, a) {
+                l(t, a[2 * e], a[2 * e + 1]);
+            }
+
+            function d(t, e) {
+                var a = 0;
+                do a |= 1 & t, t >>>= 1, a <<= 1; while (--e > 0);
+                return a >>> 1
+            }
+
+            function f(t) {
+                16 === t.bi_valid ? (o(t, t.bi_buf), t.bi_buf = 0, t.bi_valid = 0) : t.bi_valid >= 8 && (t.pending_buf[t.pending++] = 255 & t.bi_buf, t.bi_buf >>= 8, t.bi_valid -= 8);
+            }
+
+            function _(t, e) {
+                var a, i, n, r, s, o, l = e.dyn_tree,
+                    h = e.max_code,
+                    d = e.stat_desc.static_tree,
+                    f = e.stat_desc.has_stree,
+                    _ = e.stat_desc.extra_bits,
+                    u = e.stat_desc.extra_base,
+                    c = e.stat_desc.max_length,
+                    b = 0;
+                for (r = 0; r <= X; r++) t.bl_count[r] = 0;
+                for (l[2 * t.heap[t.heap_max] + 1] = 0, a = t.heap_max + 1; a < G; a++) i = t.heap[a], r = l[2 * l[2 * i + 1] + 1] + 1, r > c && (r = c, b++), l[2 * i + 1] = r, i > h || (t.bl_count[r]++, s = 0, i >= u && (s = _[i - u]), o = l[2 * i], t.opt_len += o * (r + s), f && (t.static_len += o * (d[2 * i + 1] + s)));
+                if (0 !== b) {
+                    do {
+                        for (r = c - 1; 0 === t.bl_count[r];) r--;
+                        t.bl_count[r]--, t.bl_count[r + 1] += 2, t.bl_count[c]--, b -= 2;
+                    } while (b > 0);
+                    for (r = c; 0 !== r; r--)
+                        for (i = t.bl_count[r]; 0 !== i;) n = t.heap[--a], n > h || (l[2 * n + 1] !== r && (t.opt_len += (r - l[2 * n + 1]) * l[2 * n], l[2 * n + 1] = r), i--);
+                }
+            }
+
+            function u(t, e, a) {
+                var i, n, r = new Array(X + 1),
+                    s = 0;
+                for (i = 1; i <= X; i++) r[i] = s = s + a[i - 1] << 1;
+                for (n = 0; n <= e; n++) {
+                    var o = t[2 * n + 1];
+                    0 !== o && (t[2 * n] = d(r[o]++, o));
+                }
+            }
+
+            function c() {
+                var t, e, a, i, r, s = new Array(X + 1);
+                for (a = 0, i = 0; i < K - 1; i++)
+                    for (dt[i] = a, t = 0; t < 1 << et[i]; t++) ht[a++] = i;
+                for (ht[a - 1] = i, r = 0, i = 0; i < 16; i++)
+                    for (ft[i] = r, t = 0; t < 1 << at[i]; t++) lt[r++] = i;
+                for (r >>= 7; i < Y; i++)
+                    for (ft[i] = r << 7, t = 0; t < 1 << at[i] - 7; t++) lt[256 + r++] = i;
+                for (e = 0; e <= X; e++) s[e] = 0;
+                for (t = 0; t <= 143;) st[2 * t + 1] = 8, t++, s[8]++;
+                for (; t <= 255;) st[2 * t + 1] = 9, t++, s[9]++;
+                for (; t <= 279;) st[2 * t + 1] = 7, t++, s[7]++;
+                for (; t <= 287;) st[2 * t + 1] = 8, t++, s[8]++;
+                for (u(st, P + 1, s), t = 0; t < Y; t++) ot[2 * t + 1] = 5, ot[2 * t] = d(t, 5);
+                _t = new n(st, et, M + 1, P, X), ut = new n(ot, at, 0, Y, X), ct = new n(new Array(0), it, 0, q, J);
+            }
+
+            function b(t) {
+                var e;
+                for (e = 0; e < P; e++) t.dyn_ltree[2 * e] = 0;
+                for (e = 0; e < Y; e++) t.dyn_dtree[2 * e] = 0;
+                for (e = 0; e < q; e++) t.bl_tree[2 * e] = 0;
+                t.dyn_ltree[2 * Q] = 1, t.opt_len = t.static_len = 0, t.last_lit = t.matches = 0;
+            }
+
+            function g(t) {
+                t.bi_valid > 8 ? o(t, t.bi_buf) : t.bi_valid > 0 && (t.pending_buf[t.pending++] = t.bi_buf), t.bi_buf = 0, t.bi_valid = 0;
+            }
+
+            function m(t, e, a, i) {
+                g(t), i && (o(t, a), o(t, ~a)), N.arraySet(t.pending_buf, t.window, e, a, t.pending), t.pending += a;
+            }
+
+            function w(t, e, a, i) {
+                var n = 2 * e,
+                    r = 2 * a;
+                return t[n] < t[r] || t[n] === t[r] && i[e] <= i[a]
+            }
+
+            function p(t, e, a) {
+                for (var i = t.heap[a], n = a << 1; n <= t.heap_len && (n < t.heap_len && w(e, t.heap[n + 1], t.heap[n], t.depth) && n++, !w(e, i, t.heap[n], t.depth));) t.heap[a] = t.heap[n], a = n, n <<= 1;
+                t.heap[a] = i;
+            }
+
+            function v(t, e, a) {
+                var i, n, r, o, d = 0;
+                if (0 !== t.last_lit)
+                    do i = t.pending_buf[t.d_buf + 2 * d] << 8 | t.pending_buf[t.d_buf + 2 * d + 1], n = t.pending_buf[t.l_buf + d], d++, 0 === i ? h(t, n, e) : (r = ht[n], h(t, r + M + 1, e), o = et[r], 0 !== o && (n -= dt[r], l(t, n, o)), i--, r = s(i), h(t, r, a), o = at[r], 0 !== o && (i -= ft[r], l(t, i, o))); while (d < t.last_lit);
+                h(t, Q, e);
+            }
+
+            function k(t, e) {
+                var a, i, n, r = e.dyn_tree,
+                    s = e.stat_desc.static_tree,
+                    o = e.stat_desc.has_stree,
+                    l = e.stat_desc.elems,
+                    h = -1;
+                for (t.heap_len = 0, t.heap_max = G, a = 0; a < l; a++) 0 !== r[2 * a] ? (t.heap[++t.heap_len] = h = a, t.depth[a] = 0) : r[2 * a + 1] = 0;
+                for (; t.heap_len < 2;) n = t.heap[++t.heap_len] = h < 2 ? ++h : 0, r[2 * n] = 1, t.depth[n] = 0, t.opt_len--, o && (t.static_len -= s[2 * n + 1]);
+                for (e.max_code = h, a = t.heap_len >> 1; a >= 1; a--) p(t, r, a);
+                n = l;
+                do a = t.heap[1], t.heap[1] = t.heap[t.heap_len--], p(t, r, 1), i = t.heap[1], t.heap[--t.heap_max] = a, t.heap[--t.heap_max] = i, r[2 * n] = r[2 * a] + r[2 * i], t.depth[n] = (t.depth[a] >= t.depth[i] ? t.depth[a] : t.depth[i]) + 1, r[2 * a + 1] = r[2 * i + 1] = n, t.heap[1] = n++, p(t, r, 1); while (t.heap_len >= 2);
+                t.heap[--t.heap_max] = t.heap[1], _(t, e), u(r, h, t.bl_count);
+            }
+
+            function y(t, e, a) {
+                var i, n, r = -1,
+                    s = e[1],
+                    o = 0,
+                    l = 7,
+                    h = 4;
+                for (0 === s && (l = 138, h = 3), e[2 * (a + 1) + 1] = 65535, i = 0; i <= a; i++) n = s, s = e[2 * (i + 1) + 1], ++o < l && n === s || (o < h ? t.bl_tree[2 * n] += o : 0 !== n ? (n !== r && t.bl_tree[2 * n]++, t.bl_tree[2 * V]++) : o <= 10 ? t.bl_tree[2 * $]++ : t.bl_tree[2 * tt]++, o = 0, r = n, 0 === s ? (l = 138, h = 3) : n === s ? (l = 6, h = 3) : (l = 7, h = 4));
+            }
+
+            function x(t, e, a) {
+                var i, n, r = -1,
+                    s = e[1],
+                    o = 0,
+                    d = 7,
+                    f = 4;
+                for (0 === s && (d = 138, f = 3), i = 0; i <= a; i++)
+                    if (n = s, s = e[2 * (i + 1) + 1], !(++o < d && n === s)) {
+                        if (o < f) {
+                            do h(t, n, t.bl_tree); while (0 !== --o)
+                        } else 0 !== n ? (n !== r && (h(t, n, t.bl_tree), o--), h(t, V, t.bl_tree), l(t, o - 3, 2)) : o <= 10 ? (h(t, $, t.bl_tree), l(t, o - 3, 3)) : (h(t, tt, t.bl_tree), l(t, o - 11, 7));
+                        o = 0, r = n, 0 === s ? (d = 138, f = 3) : n === s ? (d = 6, f = 3) : (d = 7, f = 4);
+                    }
+            }
+
+            function z(t) {
+                var e;
+                for (y(t, t.dyn_ltree, t.l_desc.max_code), y(t, t.dyn_dtree, t.d_desc.max_code), k(t, t.bl_desc), e = q - 1; e >= 3 && 0 === t.bl_tree[2 * nt[e] + 1]; e--);
+                return t.opt_len += 3 * (e + 1) + 5 + 5 + 4, e
+            }
+
+            function B(t, e, a, i) {
+                var n;
+                for (l(t, e - 257, 5), l(t, a - 1, 5), l(t, i - 4, 4), n = 0; n < i; n++) l(t, t.bl_tree[2 * nt[n] + 1], 3);
+                x(t, t.dyn_ltree, e - 1), x(t, t.dyn_dtree, a - 1);
+            }
+
+            function S(t) {
+                var e, a = 4093624447;
+                for (e = 0; e <= 31; e++, a >>>= 1)
+                    if (1 & a && 0 !== t.dyn_ltree[2 * e]) return D;
+                if (0 !== t.dyn_ltree[18] || 0 !== t.dyn_ltree[20] || 0 !== t.dyn_ltree[26]) return I;
+                for (e = 32; e < M; e++)
+                    if (0 !== t.dyn_ltree[2 * e]) return I;
+                return D
+            }
+
+            function E(t) {
+                bt || (c(), bt = !0), t.l_desc = new r(t.dyn_ltree, _t), t.d_desc = new r(t.dyn_dtree, ut), t.bl_desc = new r(t.bl_tree, ct), t.bi_buf = 0, t.bi_valid = 0, b(t);
+            }
+
+            function A(t, e, a, i) {
+                l(t, (T << 1) + (i ? 1 : 0), 3), m(t, e, a, !0);
+            }
+
+            function Z(t) {
+                l(t, F << 1, 3), h(t, Q, st), f(t);
+            }
+
+            function R(t, e, a, i) {
+                var n, r, s = 0;
+                t.level > 0 ? (t.strm.data_type === U && (t.strm.data_type = S(t)), k(t, t.l_desc), k(t, t.d_desc), s = z(t), n = t.opt_len + 3 + 7 >>> 3, r = t.static_len + 3 + 7 >>> 3, r <= n && (n = r)) : n = r = a + 5, a + 4 <= n && e !== -1 ? A(t, e, a, i) : t.strategy === O || r === n ? (l(t, (F << 1) + (i ? 1 : 0), 3), v(t, st, ot)) : (l(t, (L << 1) + (i ? 1 : 0), 3), B(t, t.l_desc.max_code + 1, t.d_desc.max_code + 1, s + 1), v(t, t.dyn_ltree, t.dyn_dtree)), b(t), i && g(t);
+            }
+
+            function C(t, e, a) {
+                return t.pending_buf[t.d_buf + 2 * t.last_lit] = e >>> 8 & 255, t.pending_buf[t.d_buf + 2 * t.last_lit + 1] = 255 & e, t.pending_buf[t.l_buf + t.last_lit] = 255 & a, t.last_lit++, 0 === e ? t.dyn_ltree[2 * a]++ : (t.matches++, e--, t.dyn_ltree[2 * (ht[a] + M + 1)]++, t.dyn_dtree[2 * s(e)]++), t.last_lit === t.lit_bufsize - 1
+            }
+            var N = t("../utils/common"),
+                O = 4,
+                D = 0,
+                I = 1,
+                U = 2,
+                T = 0,
+                F = 1,
+                L = 2,
+                H = 3,
+                j = 258,
+                K = 29,
+                M = 256,
+                P = M + 1 + K,
+                Y = 30,
+                q = 19,
+                G = 2 * P + 1,
+                X = 15,
+                W = 16,
+                J = 7,
+                Q = 256,
+                V = 16,
+                $ = 17,
+                tt = 18,
+                et = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0],
+                at = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13],
+                it = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7],
+                nt = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15],
+                rt = 512,
+                st = new Array(2 * (P + 2));
+            i(st);
+            var ot = new Array(2 * Y);
+            i(ot);
+            var lt = new Array(rt);
+            i(lt);
+            var ht = new Array(j - H + 1);
+            i(ht);
+            var dt = new Array(K);
+            i(dt);
+            var ft = new Array(Y);
+            i(ft);
+            var _t, ut, ct, bt = !1;
+            a._tr_init = E, a._tr_stored_block = A, a._tr_flush_block = R, a._tr_tally = C, a._tr_align = Z;
+        }, {
+            "../utils/common": 3
+        }],
+        15: [function(t, e, a) {
+            "use strict";
+
+            function i() {
+                this.input = null, this.next_in = 0, this.avail_in = 0, this.total_in = 0, this.output = null, this.next_out = 0, this.avail_out = 0, this.total_out = 0, this.msg = "", this.state = null, this.data_type = 2, this.adler = 0;
+            }
+            e.exports = i;
+        }, {}],
+        "/": [function(t, e, a) {
+            "use strict";
+            var i = t("./lib/utils/common").assign,
+                n = t("./lib/deflate"),
+                r = t("./lib/inflate"),
+                s = t("./lib/zlib/constants"),
+                o = {};
+            i(o, n, r, s), e.exports = o;
+        }, {
+            "./lib/deflate": 1,
+            "./lib/inflate": 2,
+            "./lib/utils/common": 3,
+            "./lib/zlib/constants": 6
+        }]
+    }, {}, [])("/")
+})();
+
 
 var UPNG = function() {
 	var y = {
@@ -3006,6 +4587,6632 @@ var UZIP = {};
 }());
 
 
+const UTIF = (function() {
+"use strict";
+
+    var b = {};
+    // if (typeof module == "object") {
+    //     module.exports = b
+    // } else {
+    //     window.UTIF = b
+    // }
+    // var bb = typeof require === "function" ? require("pako") : window.pako;
+    var bb = pako;
+
+    function az() {
+        if (typeof process == "undefined" || process.env.NODE_ENV == "development") console.log.apply(console, arguments);
+    }(function(b, bb) {
+        (function() {
+            "use strict";
+            var c = function C() {
+                    function c(F) {
+                        this.message = "JPEG error: " + F;
+                    }
+                    c.prototype = new Error;
+                    c.prototype.name = "JpegError";
+                    c.constructor = c;
+                    return c
+                }(),
+                V = function g() {
+                    var F = new Uint8Array([0, 1, 8, 16, 9, 2, 3, 10, 17, 24, 32, 25, 18, 11, 4, 5, 12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6, 7, 14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47, 55, 62, 63]),
+                        a = 4017,
+                        q = 799,
+                        R = 3406,
+                        d = 2276,
+                        T = 1567,
+                        i = 3784,
+                        _ = 5793,
+                        E = 2896;
+
+                    function V(D) {
+                        if (D == null) D = {};
+                        if (D.w == null) D.w = -1;
+                        this.V = D.n;
+                        this.N = D.w;
+                    }
+
+                    function G(D, y) {
+                        var e = 0,
+                            X = [],
+                            n, k, P = 16,
+                            A;
+                        while (P > 0 && !D[P - 1]) {
+                            P--;
+                        }
+                        X.push({
+                            children: [],
+                            index: 0
+                        });
+                        var z = X[0];
+                        for (n = 0; n < P; n++) {
+                            for (k = 0; k < D[n]; k++) {
+                                z = X.pop();
+                                z.children[z.index] = y[e];
+                                while (z.index > 0) {
+                                    z = X.pop();
+                                }
+                                z.index++;
+                                X.push(z);
+                                while (X.length <= n) {
+                                    X.push(A = {
+                                        children: [],
+                                        index: 0
+                                    });
+                                    z.children[z.index] = A.children;
+                                    z = A;
+                                }
+                                e++;
+                            }
+                            if (n + 1 < P) {
+                                X.push(A = {
+                                    children: [],
+                                    index: 0
+                                });
+                                z.children[z.index] = A.children;
+                                z = A;
+                            }
+                        }
+                        return X[0].children
+                    }
+
+                    function r(D, y, e) {
+                        return 64 * ((D.P + 1) * y + e)
+                    }
+
+                    function j(D, y, e, X, n, k, P, A, z, o) {
+                        if (o == null) o = !1;
+                        var t = e.m,
+                            S = e.Z,
+                            U = y,
+                            B = 0,
+                            $ = 0,
+                            s = 0,
+                            x = 0,
+                            a0, Y = 0,
+                            K, f, h, w, b7, as, ai = 0,
+                            b6, aD, aT, ba;
+
+                        function b0() {
+                            if ($ > 0) {
+                                $--;
+                                return B >> $ & 1
+                            }
+                            B = D[y++];
+                            if (B === 255) {
+                                var aR = D[y++];
+                                if (aR) {
+                                    if (aR === 220 && o) {
+                                        y += 2;
+                                        var aC = Z(D, y);
+                                        y += 2;
+                                        if (aC > 0 && aC !== e.s) {
+                                            throw new DNLMarkerError("Found DNL marker (0xFFDC) while parsing scan data", aC)
+                                        }
+                                    } else if (aR === 217) {
+                                        if (o) {
+                                            var bc = Y * 8;
+                                            if (bc > 0 && bc < e.s / 10) {
+                                                throw new DNLMarkerError("Found EOI marker (0xFFD9) while parsing scan data, " + "possibly caused by incorrect `scanLines` parameter", bc)
+                                            }
+                                        }
+                                        throw new EOIMarkerError("Found EOI marker (0xFFD9) while parsing scan data")
+                                    }
+                                    throw new c("unexpected marker")
+                                }
+                            }
+                            $ = 7;
+                            return B >>> 7
+                        }
+
+                        function aM(aR) {
+                            var aC = aR;
+                            while (!0) {
+                                aC = aC[b0()];
+                                switch (typeof aC) {
+                                    case "number":
+                                        return aC;
+                                    case "object":
+                                        continue
+                                }
+                                throw new c("invalid huffman sequence")
+                            }
+                        }
+
+                        function aL(aR) {
+                            var b7 = 0;
+                            while (aR > 0) {
+                                b7 = b7 << 1 | b0();
+                                aR--;
+                            }
+                            return b7
+                        }
+
+                        function ad(aR) {
+                            if (aR === 1) {
+                                return b0() === 1 ? 1 : -1
+                            }
+                            var b7 = aL(aR);
+                            if (b7 >= 1 << aR - 1) {
+                                return b7
+                            }
+                            return b7 + (-1 << aR) + 1
+                        }
+
+                        function ak(K, aR) {
+                            var aC = aM(K.J),
+                                bc = aC === 0 ? 0 : ad(aC),
+                                w = 1;
+                            K.D[aR] = K.Q += bc;
+                            while (w < 64) {
+                                var ax = aM(K.i),
+                                    aj = ax & 15,
+                                    aX = ax >> 4;
+                                if (aj === 0) {
+                                    if (aX < 15) {
+                                        break
+                                    }
+                                    w += 16;
+                                    continue
+                                }
+                                w += aX;
+                                var af = F[w];
+                                K.D[aR + af] = ad(aj);
+                                w++;
+                            }
+                        }
+
+                        function aJ(K, aR) {
+                            var aC = aM(K.J),
+                                bc = aC === 0 ? 0 : ad(aC) << z;
+                            K.D[aR] = K.Q += bc;
+                        }
+
+                        function aF(K, aR) {
+                            K.D[aR] |= b0() << z;
+                        }
+
+                        function H(K, aR) {
+                            if (s > 0) {
+                                s--;
+                                return
+                            }
+                            var w = k,
+                                aC = P;
+                            while (w <= aC) {
+                                var bc = aM(K.i),
+                                    ax = bc & 15,
+                                    aj = bc >> 4;
+                                if (ax === 0) {
+                                    if (aj < 15) {
+                                        s = aL(aj) + (1 << aj) - 1;
+                                        break
+                                    }
+                                    w += 16;
+                                    continue
+                                }
+                                w += aj;
+                                var aX = F[w];
+                                K.D[aR + aX] = ad(ax) * (1 << z);
+                                w++;
+                            }
+                        }
+
+                        function aI(K, aR) {
+                            var w = k,
+                                aC = P,
+                                bc = 0,
+                                ax, aj;
+                            while (w <= aC) {
+                                var aX = aR + F[w],
+                                    af = K.D[aX] < 0 ? -1 : 1;
+                                switch (x) {
+                                    case 0:
+                                        aj = aM(K.i);
+                                        ax = aj & 15;
+                                        bc = aj >> 4;
+                                        if (ax === 0) {
+                                            if (bc < 15) {
+                                                s = aL(bc) + (1 << bc);
+                                                x = 4;
+                                            } else {
+                                                bc = 16;
+                                                x = 1;
+                                            }
+                                        } else {
+                                            if (ax !== 1) {
+                                                throw new c("invalid ACn encoding")
+                                            }
+                                            a0 = ad(ax);
+                                            x = bc ? 2 : 3;
+                                        }
+                                        continue;
+                                    case 1:
+                                    case 2:
+                                        if (K.D[aX]) {
+                                            K.D[aX] += af * (b0() << z);
+                                        } else {
+                                            bc--;
+                                            if (bc === 0) {
+                                                x = x === 2 ? 3 : 0;
+                                            }
+                                        }
+                                        break;
+                                    case 3:
+                                        if (K.D[aX]) {
+                                            K.D[aX] += af * (b0() << z);
+                                        } else {
+                                            K.D[aX] = a0 << z;
+                                            x = 0;
+                                        }
+                                        break;
+                                    case 4:
+                                        if (K.D[aX]) {
+                                            K.D[aX] += af * (b0() << z);
+                                        }
+                                        break
+                                }
+                                w++;
+                            }
+                            if (x === 4) {
+                                s--;
+                                if (s === 0) {
+                                    x = 0;
+                                }
+                            }
+                        }
+
+                        function a$(K, aR, ai, aC, bc) {
+                            var ax = ai / t | 0,
+                                aj = ai % t;
+                            Y = ax * K.A + aC;
+                            var aX = aj * K.h + bc,
+                                af = r(K, Y, aX);
+                            aR(K, af);
+                        }
+
+                        function aY(K, aR, ai) {
+                            Y = ai / K.P | 0;
+                            var aC = ai % K.P,
+                                bc = r(K, Y, aC);
+                            aR(K, bc);
+                        }
+                        var a8 = X.length;
+                        if (S) {
+                            if (k === 0) {
+                                as = A === 0 ? aJ : aF;
+                            } else {
+                                as = A === 0 ? H : aI;
+                            }
+                        } else {
+                            as = ak;
+                        }
+                        if (a8 === 1) {
+                            aD = X[0].P * X[0].c;
+                        } else {
+                            aD = t * e.R;
+                        }
+                        while (ai <= aD) {
+                            var b5 = n ? Math.min(aD - ai, n) : aD;
+                            if (b5 > 0) {
+                                for (f = 0; f < a8; f++) {
+                                    X[f].Q = 0;
+                                }
+                                s = 0;
+                                if (a8 === 1) {
+                                    K = X[0];
+                                    for (b7 = 0; b7 < b5; b7++) {
+                                        aY(K, as, ai);
+                                        ai++;
+                                    }
+                                } else {
+                                    for (b7 = 0; b7 < b5; b7++) {
+                                        for (f = 0; f < a8; f++) {
+                                            K = X[f];
+                                            aT = K.h;
+                                            ba = K.A;
+                                            for (h = 0; h < ba; h++) {
+                                                for (w = 0; w < aT; w++) {
+                                                    a$(K, as, ai, h, w);
+                                                }
+                                            }
+                                        }
+                                        ai++;
+                                    }
+                                }
+                            }
+                            $ = 0;
+                            b6 = v(D, y);
+                            if (!b6) {
+                                break
+                            }
+                            if (b6.u) {
+                                var at = b5 > 0 ? "unexpected" : "excessive";
+                                y = b6.offset;
+                            }
+                            if (b6.M >= 65488 && b6.M <= 65495) {
+                                y += 2;
+                            } else {
+                                break
+                            }
+                        }
+                        return y - U
+                    }
+
+                    function M(D, y, e) {
+                        var X = D.$,
+                            n = D.D,
+                            k, P, A, z, o, t, S, U, B, $, s, x, a0, Y, K, a2, f;
+                        if (!X) {
+                            throw new c("missing required Quantization Table.")
+                        }
+                        for (var h = 0; h < 64; h += 8) {
+                            B = n[y + h];
+                            $ = n[y + h + 1];
+                            s = n[y + h + 2];
+                            x = n[y + h + 3];
+                            a0 = n[y + h + 4];
+                            Y = n[y + h + 5];
+                            K = n[y + h + 6];
+                            a2 = n[y + h + 7];
+                            B *= X[h];
+                            if (($ | s | x | a0 | Y | K | a2) === 0) {
+                                f = _ * B + 512 >> 10;
+                                e[h] = f;
+                                e[h + 1] = f;
+                                e[h + 2] = f;
+                                e[h + 3] = f;
+                                e[h + 4] = f;
+                                e[h + 5] = f;
+                                e[h + 6] = f;
+                                e[h + 7] = f;
+                                continue
+                            }
+                            $ *= X[h + 1];
+                            s *= X[h + 2];
+                            x *= X[h + 3];
+                            a0 *= X[h + 4];
+                            Y *= X[h + 5];
+                            K *= X[h + 6];
+                            a2 *= X[h + 7];
+                            k = _ * B + 128 >> 8;
+                            P = _ * a0 + 128 >> 8;
+                            A = s;
+                            z = K;
+                            o = E * ($ - a2) + 128 >> 8;
+                            U = E * ($ + a2) + 128 >> 8;
+                            t = x << 4;
+                            S = Y << 4;
+                            k = k + P + 1 >> 1;
+                            P = k - P;
+                            f = A * i + z * T + 128 >> 8;
+                            A = A * T - z * i + 128 >> 8;
+                            z = f;
+                            o = o + S + 1 >> 1;
+                            S = o - S;
+                            U = U + t + 1 >> 1;
+                            t = U - t;
+                            k = k + z + 1 >> 1;
+                            z = k - z;
+                            P = P + A + 1 >> 1;
+                            A = P - A;
+                            f = o * d + U * R + 2048 >> 12;
+                            o = o * R - U * d + 2048 >> 12;
+                            U = f;
+                            f = t * q + S * a + 2048 >> 12;
+                            t = t * a - S * q + 2048 >> 12;
+                            S = f;
+                            e[h] = k + U;
+                            e[h + 7] = k - U;
+                            e[h + 1] = P + S;
+                            e[h + 6] = P - S;
+                            e[h + 2] = A + t;
+                            e[h + 5] = A - t;
+                            e[h + 3] = z + o;
+                            e[h + 4] = z - o;
+                        }
+                        for (var w = 0; w < 8; ++w) {
+                            B = e[w];
+                            $ = e[w + 8];
+                            s = e[w + 16];
+                            x = e[w + 24];
+                            a0 = e[w + 32];
+                            Y = e[w + 40];
+                            K = e[w + 48];
+                            a2 = e[w + 56];
+                            if (($ | s | x | a0 | Y | K | a2) === 0) {
+                                f = _ * B + 8192 >> 14;
+                                if (f < -2040) {
+                                    f = 0;
+                                } else if (f >= 2024) {
+                                    f = 255;
+                                } else {
+                                    f = f + 2056 >> 4;
+                                }
+                                n[y + w] = f;
+                                n[y + w + 8] = f;
+                                n[y + w + 16] = f;
+                                n[y + w + 24] = f;
+                                n[y + w + 32] = f;
+                                n[y + w + 40] = f;
+                                n[y + w + 48] = f;
+                                n[y + w + 56] = f;
+                                continue
+                            }
+                            k = _ * B + 2048 >> 12;
+                            P = _ * a0 + 2048 >> 12;
+                            A = s;
+                            z = K;
+                            o = E * ($ - a2) + 2048 >> 12;
+                            U = E * ($ + a2) + 2048 >> 12;
+                            t = x;
+                            S = Y;
+                            k = (k + P + 1 >> 1) + 4112;
+                            P = k - P;
+                            f = A * i + z * T + 2048 >> 12;
+                            A = A * T - z * i + 2048 >> 12;
+                            z = f;
+                            o = o + S + 1 >> 1;
+                            S = o - S;
+                            U = U + t + 1 >> 1;
+                            t = U - t;
+                            k = k + z + 1 >> 1;
+                            z = k - z;
+                            P = P + A + 1 >> 1;
+                            A = P - A;
+                            f = o * d + U * R + 2048 >> 12;
+                            o = o * R - U * d + 2048 >> 12;
+                            U = f;
+                            f = t * q + S * a + 2048 >> 12;
+                            t = t * a - S * q + 2048 >> 12;
+                            S = f;
+                            B = k + U;
+                            a2 = k - U;
+                            $ = P + S;
+                            K = P - S;
+                            s = A + t;
+                            Y = A - t;
+                            x = z + o;
+                            a0 = z - o;
+                            if (B < 16) {
+                                B = 0;
+                            } else if (B >= 4080) {
+                                B = 255;
+                            } else {
+                                B >>= 4;
+                            }
+                            if ($ < 16) {
+                                $ = 0;
+                            } else if ($ >= 4080) {
+                                $ = 255;
+                            } else {
+                                $ >>= 4;
+                            }
+                            if (s < 16) {
+                                s = 0;
+                            } else if (s >= 4080) {
+                                s = 255;
+                            } else {
+                                s >>= 4;
+                            }
+                            if (x < 16) {
+                                x = 0;
+                            } else if (x >= 4080) {
+                                x = 255;
+                            } else {
+                                x >>= 4;
+                            }
+                            if (a0 < 16) {
+                                a0 = 0;
+                            } else if (a0 >= 4080) {
+                                a0 = 255;
+                            } else {
+                                a0 >>= 4;
+                            }
+                            if (Y < 16) {
+                                Y = 0;
+                            } else if (Y >= 4080) {
+                                Y = 255;
+                            } else {
+                                Y >>= 4;
+                            }
+                            if (K < 16) {
+                                K = 0;
+                            } else if (K >= 4080) {
+                                K = 255;
+                            } else {
+                                K >>= 4;
+                            }
+                            if (a2 < 16) {
+                                a2 = 0;
+                            } else if (a2 >= 4080) {
+                                a2 = 255;
+                            } else {
+                                a2 >>= 4;
+                            }
+                            n[y + w] = B;
+                            n[y + w + 8] = $;
+                            n[y + w + 16] = s;
+                            n[y + w + 24] = x;
+                            n[y + w + 32] = a0;
+                            n[y + w + 40] = Y;
+                            n[y + w + 48] = K;
+                            n[y + w + 56] = a2;
+                        }
+                    }
+
+                    function l(D, y) {
+                        var e = y.P,
+                            X = y.c,
+                            n = new Int16Array(64);
+                        for (var k = 0; k < X; k++) {
+                            for (var P = 0; P < e; P++) {
+                                var A = r(y, k, P);
+                                M(y, A, n);
+                            }
+                        }
+                        return y.D
+                    }
+
+                    function v(D, y, e) {
+                        if (e == null) e = y;
+                        var X = D.length - 1,
+                            n = e < y ? e : y;
+                        if (y >= X) {
+                            return null
+                        }
+                        var k = Z(D, y);
+                        if (k >= 65472 && k <= 65534) {
+                            return {
+                                u: null,
+                                M: k,
+                                offset: y
+                            }
+                        }
+                        var P = Z(D, n);
+                        while (!(P >= 65472 && P <= 65534)) {
+                            if (++n >= X) {
+                                return null
+                            }
+                            P = Z(D, n);
+                        }
+                        return {
+                            u: k.toString(16),
+                            M: P,
+                            offset: n
+                        }
+                    }
+                    V.prototype = {
+                        parse(D, y) {
+                            if (y == null) y = {};
+                            var e = y.F,
+                                X = 0,
+                                n = null,
+                                k = null,
+                                P, A, z = 0;
+
+                            function o() {
+                                var aX = Z(D, X);
+                                X += 2;
+                                var af = X + aX - 2,
+                                    $ = v(D, af, X);
+                                if ($ && $.u) {
+                                    af = $.offset;
+                                }
+                                var aH = D.subarray(X, af);
+                                X += aH.length;
+                                return aH
+                            }
+
+                            function t(P) {
+                                var aX = Math.ceil(P.o / 8 / P.X),
+                                    af = Math.ceil(P.s / 8 / P.B);
+                                for (var s = 0; s < P.W.length; s++) {
+                                    H = P.W[s];
+                                    var aH = Math.ceil(Math.ceil(P.o / 8) * H.h / P.X),
+                                        an = Math.ceil(Math.ceil(P.s / 8) * H.A / P.B),
+                                        a9 = aX * H.h,
+                                        b3 = af * H.A,
+                                        a7 = 64 * b3 * (a9 + 1);
+                                    H.D = new Int16Array(a7);
+                                    H.P = aH;
+                                    H.c = an;
+                                }
+                                P.m = aX;
+                                P.R = af;
+                            }
+                            var S = [],
+                                U = [],
+                                B = [],
+                                $ = Z(D, X);
+                            X += 2;
+                            if ($ !== 65496) {
+                                throw new c("SOI not found")
+                            }
+                            $ = Z(D, X);
+                            X += 2;
+                            markerLoop: while ($ !== 65497) {
+                                var s, x, a0;
+                                switch ($) {
+                                    case 65504:
+                                    case 65505:
+                                    case 65506:
+                                    case 65507:
+                                    case 65508:
+                                    case 65509:
+                                    case 65510:
+                                    case 65511:
+                                    case 65512:
+                                    case 65513:
+                                    case 65514:
+                                    case 65515:
+                                    case 65516:
+                                    case 65517:
+                                    case 65518:
+                                    case 65519:
+                                    case 65534:
+                                        var Y = o();
+                                        if ($ === 65504) {
+                                            if (Y[0] === 74 && Y[1] === 70 && Y[2] === 73 && Y[3] === 70 && Y[4] === 0) {
+                                                n = {
+                                                    version: {
+                                                        d: Y[5],
+                                                        T: Y[6]
+                                                    },
+                                                    K: Y[7],
+                                                    j: Y[8] << 8 | Y[9],
+                                                    H: Y[10] << 8 | Y[11],
+                                                    S: Y[12],
+                                                    I: Y[13],
+                                                    C: Y.subarray(14, 14 + 3 * Y[12] * Y[13])
+                                                };
+                                            }
+                                        }
+                                        if ($ === 65518) {
+                                            if (Y[0] === 65 && Y[1] === 100 && Y[2] === 111 && Y[3] === 98 && Y[4] === 101) {
+                                                k = {
+                                                    version: Y[5] << 8 | Y[6],
+                                                    k: Y[7] << 8 | Y[8],
+                                                    q: Y[9] << 8 | Y[10],
+                                                    a: Y[11]
+                                                };
+                                            }
+                                        }
+                                        break;
+                                    case 65499:
+                                        var K = Z(D, X),
+                                            a2;
+                                        X += 2;
+                                        var f = K + X - 2;
+                                        while (X < f) {
+                                            var h = D[X++],
+                                                w = new Uint16Array(64);
+                                            if (h >> 4 === 0) {
+                                                for (x = 0; x < 64; x++) {
+                                                    a2 = F[x];
+                                                    w[a2] = D[X++];
+                                                }
+                                            } else if (h >> 4 === 1) {
+                                                for (x = 0; x < 64; x++) {
+                                                    a2 = F[x];
+                                                    w[a2] = Z(D, X);
+                                                    X += 2;
+                                                }
+                                            } else {
+                                                throw new c("DQT - invalid table spec")
+                                            }
+                                            S[h & 15] = w;
+                                        }
+                                        break;
+                                    case 65472:
+                                    case 65473:
+                                    case 65474:
+                                        if (P) {
+                                            throw new c("Only single frame JPEGs supported")
+                                        }
+                                        X += 2;
+                                        P = {};
+                                        P.G = $ === 65473;
+                                        P.Z = $ === 65474;
+                                        P.precision = D[X++];
+                                        var b7 = Z(D, X),
+                                            as, ai = 0,
+                                            b6 = 0;
+                                        X += 2;
+                                        P.s = e || b7;
+                                        P.o = Z(D, X);
+                                        X += 2;
+                                        P.W = [];
+                                        P._ = {};
+                                        var aD = D[X++];
+                                        for (s = 0; s < aD; s++) {
+                                            as = D[X];
+                                            var aT = D[X + 1] >> 4,
+                                                ba = D[X + 1] & 15;
+                                            if (ai < aT) {
+                                                ai = aT;
+                                            }
+                                            if (b6 < ba) {
+                                                b6 = ba;
+                                            }
+                                            var b0 = D[X + 2];
+                                            a0 = P.W.push({
+                                                h: aT,
+                                                A: ba,
+                                                L: b0,
+                                                $: null
+                                            });
+                                            P._[as] = a0 - 1;
+                                            X += 3;
+                                        }
+                                        P.X = ai;
+                                        P.B = b6;
+                                        t(P);
+                                        break;
+                                    case 65476:
+                                        var aM = Z(D, X);
+                                        X += 2;
+                                        for (s = 2; s < aM;) {
+                                            var aL = D[X++],
+                                                ad = new Uint8Array(16),
+                                                ak = 0;
+                                            for (x = 0; x < 16; x++, X++) {
+                                                ak += ad[x] = D[X];
+                                            }
+                                            var aJ = new Uint8Array(ak);
+                                            for (x = 0; x < ak; x++, X++) {
+                                                aJ[x] = D[X];
+                                            }
+                                            s += 17 + ak;
+                                            (aL >> 4 === 0 ? B : U)[aL & 15] = G(ad, aJ);
+                                        }
+                                        break;
+                                    case 65501:
+                                        X += 2;
+                                        A = Z(D, X);
+                                        X += 2;
+                                        break;
+                                    case 65498:
+                                        var aF = ++z === 1 && !e,
+                                            H;
+                                        X += 2;
+                                        var aI = D[X++],
+                                            a$ = [];
+                                        for (s = 0; s < aI; s++) {
+                                            var aY = D[X++],
+                                                a8 = P._[aY];
+                                            H = P.W[a8];
+                                            H.index = aY;
+                                            var b5 = D[X++];
+                                            H.J = B[b5 >> 4];
+                                            H.i = U[b5 & 15];
+                                            a$.push(H);
+                                        }
+                                        var at = D[X++],
+                                            aR = D[X++],
+                                            aC = D[X++];
+                                        try {
+                                            var bc = j(D, X, P, a$, A, at, aR, aC >> 4, aC & 15, aF);
+                                            X += bc;
+                                        } catch (ex) {
+                                            if (ex instanceof DNLMarkerError) {
+                                                return this.parse(D, {
+                                                    F: ex.s
+                                                })
+                                            } else if (ex instanceof EOIMarkerError) {
+                                                break markerLoop
+                                            }
+                                            throw ex
+                                        }
+                                        break;
+                                    case 65500:
+                                        X += 4;
+                                        break;
+                                    case 65535:
+                                        if (D[X] !== 255) {
+                                            X--;
+                                        }
+                                        break;
+                                    default:
+                                        var ax = v(D, X - 2, X - 3);
+                                        if (ax && ax.u) {
+                                            X = ax.offset;
+                                            break
+                                        }
+                                        if (X >= D.length - 1) {
+                                            break markerLoop
+                                        }
+                                        throw new c("JpegImage.parse - unknown marker: " + $.toString(16))
+                                }
+                                $ = Z(D, X);
+                                X += 2;
+                            }
+                            this.width = P.o;
+                            this.height = P.s;
+                            this.g = n;
+                            this.b = k;
+                            this.W = [];
+                            for (s = 0; s < P.W.length; s++) {
+                                H = P.W[s];
+                                var aj = S[H.L];
+                                if (aj) {
+                                    H.$ = aj;
+                                }
+                                this.W.push({
+                                    index: H.index,
+                                    e: l(P, H),
+                                    l: H.h / P.X,
+                                    t: H.A / P.B,
+                                    P: H.P,
+                                    c: H.c
+                                });
+                            }
+                            this.p = this.W.length;
+                            return undefined
+                        },
+                        Y(D, y, e) {
+                            if (e == null) e = !1;
+                            var X = this.width / D,
+                                n = this.height / y,
+                                k, P, A, z, o, t, S, U, B, $, s = 0,
+                                x, a0 = this.W.length,
+                                Y = D * y * a0,
+                                K = new Uint8ClampedArray(Y),
+                                a2 = new Uint32Array(D),
+                                f = 4294967288,
+                                h;
+                            for (S = 0; S < a0; S++) {
+                                k = this.W[S];
+                                P = k.l * X;
+                                A = k.t * n;
+                                s = S;
+                                x = k.e;
+                                z = k.P + 1 << 3;
+                                if (P !== h) {
+                                    for (o = 0; o < D; o++) {
+                                        U = 0 | o * P;
+                                        a2[o] = (U & f) << 3 | U & 7;
+                                    }
+                                    h = P;
+                                }
+                                for (t = 0; t < y; t++) {
+                                    U = 0 | t * A;
+                                    $ = z * (U & f) | (U & 7) << 3;
+                                    for (o = 0; o < D; o++) {
+                                        K[s] = x[$ + a2[o]];
+                                        s += a0;
+                                    }
+                                }
+                            }
+                            var w = this.V;
+                            if (!e && a0 === 4 && !w) {
+                                w = new Int32Array([-256, 255, -256, 255, -256, 255, -256, 255]);
+                            }
+                            if (w) {
+                                for (S = 0; S < Y;) {
+                                    for (U = 0, B = 0; U < a0; U++, S++, B += 2) {
+                                        K[S] = (K[S] * w[B] >> 8) + w[B + 1];
+                                    }
+                                }
+                            }
+                            return K
+                        },
+                        get f() {
+                            if (this.b) {
+                                return !!this.b.a
+                            }
+                            if (this.p === 3) {
+                                if (this.N === 0) {
+                                    return !1
+                                } else if (this.W[0].index === 82 && this.W[1].index === 71 && this.W[2].index === 66) {
+                                    return !1
+                                }
+                                return !0
+                            }
+                            if (this.N === 1) {
+                                return !0
+                            }
+                            return !1
+                        },
+                        z: function L(D) {
+                            var y, e, X;
+                            for (var n = 0, k = D.length; n < k; n += 3) {
+                                y = D[n];
+                                e = D[n + 1];
+                                X = D[n + 2];
+                                D[n] = y - 179.456 + 1.402 * X;
+                                D[n + 1] = y + 135.459 - .344 * e - .714 * X;
+                                D[n + 2] = y - 226.816 + 1.772 * e;
+                            }
+                            return D
+                        },
+                        O: function u(D) {
+                            var y, e, X, n, k = 0;
+                            for (var P = 0, A = D.length; P < A; P += 4) {
+                                y = D[P];
+                                e = D[P + 1];
+                                X = D[P + 2];
+                                n = D[P + 3];
+                                D[k++] = -122.67195406894 + e * (-660635669420364e-19 * e + .000437130475926232 * X - 54080610064599e-18 * y + .00048449797120281 * n - .154362151871126) + X * (-.000957964378445773 * X + .000817076911346625 * y - .00477271405408747 * n + 1.53380253221734) + y * (.000961250184130688 * y - .00266257332283933 * n + .48357088451265) + n * (-.000336197177618394 * n + .484791561490776);
+                                D[k++] = 107.268039397724 + e * (219927104525741e-19 * e - .000640992018297945 * X + .000659397001245577 * y + .000426105652938837 * n - .176491792462875) + X * (-.000778269941513683 * X + .00130872261408275 * y + .000770482631801132 * n - .151051492775562) + y * (.00126935368114843 * y - .00265090189010898 * n + .25802910206845) + n * (-.000318913117588328 * n - .213742400323665);
+                                D[k++] = -20.810012546947 + e * (-.000570115196973677 * e - 263409051004589e-19 * X + .0020741088115012 * y - .00288260236853442 * n + .814272968359295) + X * (-153496057440975e-19 * X - .000132689043961446 * y + .000560833691242812 * n - .195152027534049) + y * (.00174418132927582 * y - .00255243321439347 * n + .116935020465145) + n * (-.000343531996510555 * n + .24165260232407);
+                            }
+                            return D.subarray(0, k)
+                        },
+                        r: function I(D) {
+                            var y, e, X;
+                            for (var n = 0, k = D.length; n < k; n += 4) {
+                                y = D[n];
+                                e = D[n + 1];
+                                X = D[n + 2];
+                                D[n] = 434.456 - y - 1.402 * X;
+                                D[n + 1] = 119.541 - y + .344 * e + .714 * X;
+                                D[n + 2] = 481.816 - y - 1.772 * e;
+                            }
+                            return D
+                        },
+                        U: function J(D) {
+                            var y, e, X, n, k = 0;
+                            for (var P = 0, A = D.length; P < A; P += 4) {
+                                y = D[P];
+                                e = D[P + 1];
+                                X = D[P + 2];
+                                n = D[P + 3];
+                                D[k++] = 255 + y * (-6747147073602441e-20 * y + .0008379262121013727 * e + .0002894718188643294 * X + .003264231057537806 * n - 1.1185611867203937) + e * (26374107616089404e-21 * e - 8626949158638572e-20 * X - .0002748769067499491 * n - .02155688794978967) + X * (-3878099212869363e-20 * X - .0003267808279485286 * n + .0686742238595345) - n * (.0003361971776183937 * n + .7430659151342254);
+                                D[k++] = 255 + y * (.00013596372813588848 * y + .000924537132573585 * e + .00010567359618683593 * X + .0004791864687436512 * n - .3109689587515875) + e * (-.00023545346108370344 * e + .0002702845253534714 * X + .0020200308977307156 * n - .7488052167015494) + X * (6834815998235662e-20 * X + .00015168452363460973 * n - .09751927774728933) - n * (.0003189131175883281 * n + .7364883807733168);
+                                D[k++] = 255 + y * (13598650411385308e-21 * y + .00012423956175490851 * e + .0004751985097583589 * X - 36729317476630424e-22 * n - .05562186980264034) + e * (.00016141380598724676 * e + .0009692239130725186 * X + .0007782692450036253 * n - .44015232367526463) + X * (5.068882914068769e-7 * X + .0017778369011375071 * n - .7591454649749609) - n * (.0003435319965105553 * n + .7063770186160144);
+                            }
+                            return D.subarray(0, k)
+                        },
+                        getData: function(D) {
+                            var y = D.width,
+                                e = D.height,
+                                X = D.forceRGB,
+                                n = D.isSourcePDF;
+                            if (this.p > 4) {
+                                throw new c("Unsupported color mode")
+                            }
+                            var k = this.Y(y, e, n);
+                            if (this.p === 1 && X) {
+                                var P = k.length,
+                                    A = new Uint8ClampedArray(P * 3),
+                                    z = 0;
+                                for (var o = 0; o < P; o++) {
+                                    var t = k[o];
+                                    A[z++] = t;
+                                    A[z++] = t;
+                                    A[z++] = t;
+                                }
+                                return A
+                            } else if (this.p === 3 && this.f) {
+                                return this.z(k)
+                            } else if (this.p === 4) {
+                                if (this.f) {
+                                    if (X) {
+                                        return this.O(k)
+                                    }
+                                    return this.r(k)
+                                } else if (X) {
+                                    return this.U(k)
+                                }
+                            }
+                            return k
+                        }
+                    };
+                    return V
+                }();
+
+            function p(F, a) {
+                return F[a] << 24 >> 24
+            }
+
+            function Z(F, a) {
+                return F[a] << 8 | F[a + 1]
+            }
+
+            function N(F, a) {
+                return (F[a] << 24 | F[a + 1] << 16 | F[a + 2] << 8 | F[a + 3]) >>> 0
+            }
+            b.JpegDecoder = V;
+        }());
+        b.encodeImage = function(c, V, C, g) {
+            var Z = {
+                t256: [V],
+                t257: [C],
+                t258: [8, 8, 8, 8],
+                t259: [1],
+                t262: [2],
+                t273: [1e3],
+                t277: [4],
+                t278: [C],
+                t279: [V * C * 4],
+                t282: [
+                    [72, 1]
+                ],
+                t283: [
+                    [72, 1]
+                ],
+                t284: [1],
+                t286: [
+                    [0, 1]
+                ],
+                t287: [
+                    [0, 1]
+                ],
+                t296: [1],
+                t305: ["Photopea (UTIF.js)"],
+                t338: [1]
+            };
+            if (g)
+                for (var N in g) Z[N] = g[N];
+            var F = new Uint8Array(b.encode([Z])),
+                a = new Uint8Array(c),
+                q = new Uint8Array(1e3 + V * C * 4);
+            for (var N = 0; N < F.length; N++) q[N] = F[N];
+            for (var N = 0; N < a.length; N++) q[1e3 + N] = a[N];
+            return q.buffer
+        };
+        b.encode = function(c) {
+            var V = !1,
+                C = new Uint8Array(2e4),
+                g = 4,
+                p = V ? b._binLE : b._binBE,
+                Z = 8;
+            C[0] = C[1] = V ? 73 : 77;
+            p.writeUshort(C, 2, 42);
+            p.writeUint(C, g, Z);
+            g += 4;
+            for (var N = 0; N < c.length; N++) {
+                var F = b._writeIFD(p, b._types.basic, C, Z, c[N]);
+                Z = F[1];
+                if (N < c.length - 1) {
+                    if ((Z & 3) != 0) Z += 4 - (Z & 3);
+                    p.writeUint(C, F[0], Z);
+                }
+            }
+            return C.slice(0, Z).buffer
+        };
+        b.decode = function(c, V) {
+            if (V == null) V = {
+                parseMN: !0,
+                debug: !1
+            };
+            var C = new Uint8Array(c),
+                g = 0,
+                p = b._binBE.readASCII(C, g, 2);
+            g += 2;
+            var Z = p == "II" ? b._binLE : b._binBE,
+                N = Z.readUshort(C, g);
+            g += 2;
+            var F = Z.readUint(C, g);
+            g += 4;
+            var a = [];
+            while (!0) {
+                var q = Z.readUshort(C, F),
+                    R = Z.readUshort(C, F + 4);
+                if (q != 0)
+                    if (R < 1 || 13 < R) {
+                        az("error in TIFF");
+                        break
+                    }
+                b._readIFD(Z, C, F, a, 0, V);
+                F = Z.readUint(C, F + 2 + q * 12);
+                if (F == 0) break
+            }
+            return a
+        };
+        b.decodeImage = function(c, V, C) {
+            if (V.data) return;
+            var g = new Uint8Array(c),
+                p = b._binBE.readASCII(g, 0, 2),
+                i = 0;
+            if (V.t256 == null) return;
+            V.isLE = p == "II";
+            V.width = V.t256[0];
+            V.height = V.t257[0];
+            var Z = V.t259 ? V.t259[0] : 1,
+                N = V.t266 ? V.t266[0] : 1;
+            if (V.t284 && V.t284[0] == 2) az("PlanarConfiguration 2 should not be used!");
+            if (Z == 7 && V.t258 && V.t258.length > 3) V.t258 = V.t258.slice(0, 3);
+            var F = V.t277 ? V.t277[0] : 1,
+                a = V.t258 ? V.t258[0] : 1,
+                q = a * F;
+            if (Z == 1 && V.t279 != null && V.t278 && V.t262[0] == 32803) {
+                q = Math.round(V.t279[0] * 8 / (V.width * V.t278[0]));
+            }
+            if (V.t50885 && V.t50885[0] == 4) q = V.t258[0] * 3;
+            var R = Math.ceil(V.width * q / 8) * 8,
+                d = V.t273;
+            if (d == null || V.t322) d = V.t324;
+            var Q = V.t279;
+            if (Z == 1 && d.length == 1) Q = [V.height * (R >>> 3)];
+            if (Q == null || V.t322) Q = V.t325;
+            var T = new Uint8Array(V.height * (R >>> 3));
+            if (V.t322 != null) {
+                var _ = V.t322[0],
+                    W = V.t323[0],
+                    E = Math.floor((V.width + _ - 1) / _),
+                    G = Math.floor((V.height + W - 1) / W),
+                    r = new Uint8Array(Math.ceil(_ * W * q / 8) | 0);
+                console.log("====", E, G);
+                for (var j = 0; j < G; j++)
+                    for (var l = 0; l < E; l++) {
+                        var v = j * E + l;
+                        r.fill(0);
+                        b.decode._decompress(V, C, g, d[v], Q[v], Z, r, 0, N);
+                        if (Z == 6) T = r;
+                        else b._copyTile(r, Math.ceil(_ * q / 8) | 0, W, T, Math.ceil(V.width * q / 8) | 0, V.height, Math.ceil(l * _ * q / 8) | 0, j * W);
+                    }
+                i = T.length * 8;
+            } else {
+                if (d == null) return;
+                var L = V.t278 ? V.t278[0] : V.height;
+                L = Math.min(L, V.height);
+                console.log("====", V.width, L);
+                for (var v = 0; v < d.length; v++) {
+                    b.decode._decompress(V, C, g, d[v], Q[v], Z, T, Math.ceil(i / 8) | 0, N);
+                    i += R * L;
+                }
+                i = Math.min(i, T.length * 8);
+            }
+            V.data = new Uint8Array(T.buffer, 0, Math.ceil(i / 8) | 0);
+        };
+        b.decode._decompress = function(c, V, C, g, p, Z, N, F, a) {
+            if (c.t271 && c.t271[0] == "Panasonic" && c.t45 && c.t45[0] == 6) Z = 34316;
+            if (!1) {} else if (Z == 1)
+                for (var q = 0; q < p; q++) N[F + q] = C[g + q];
+            else if (Z == 2) b.decode._decodeG2(C, g, p, N, F, c.width, a);
+            else if (Z == 3) b.decode._decodeG3(C, g, p, N, F, c.width, a, c.t292 ? (c.t292[0] & 1) == 1 : !1);
+            else if (Z == 4) b.decode._decodeG4(C, g, p, N, F, c.width, a);
+            else if (Z == 5) b.decode._decodeLZW(C, g, p, N, F, 8);
+            else if (Z == 6) b.decode._decodeOldJPEG(c, C, g, p, N, F);
+            else if (Z == 7 || Z == 34892) b.decode._decodeNewJPEG(c, C, g, p, N, F);
+            else if (Z == 8 || Z == 32946) {
+                var R = new Uint8Array(C.buffer, g + 2, p - 6),
+                    d = bb.inflateRaw(R);
+                N.set(d, F);
+            } else if (Z == 9) b.decode._decodeVC5(C, g, p, N, F, c.t33422);
+            else if (Z == 32767) b.decode._decodeARW(c, C, g, p, N, F);
+            else if (Z == 32773) b.decode._decodePackBits(C, g, p, N, F);
+            else if (Z == 32809) b.decode._decodeThunder(C, g, p, N, F);
+            else if (Z == 34316) b.decode._decodePanasonic(c, C, g, p, N, F);
+            else if (Z == 34713) b.decode._decodeNikon(c, V, C, g, p, N, F);
+            else if (Z == 34676) b.decode._decodeLogLuv32(c, C, g, p, N, F);
+            else az("Unknown compression", Z);
+            var Q = c.t258 ? Math.min(32, c.t258[0]) : 1,
+                T = c.t277 ? c.t277[0] : 1,
+                i = Q * T >>> 3,
+                _ = c.t278 ? c.t278[0] : c.height,
+                W = Math.ceil(Q * T * c.width / 8);
+            if (Q == 16 && !c.isLE && c.t33422 == null)
+                for (var E = 0; E < _; E++) {
+                    var G = F + E * W;
+                    for (var r = 1; r < W; r += 2) {
+                        var l = N[G + r];
+                        N[G + r] = N[G + r - 1];
+                        N[G + r - 1] = l;
+                    }
+                }
+            if (c.t317 && c.t317[0] == 2) {
+                for (var E = 0; E < _; E++) {
+                    var v = F + E * W;
+                    if (Q == 16)
+                        for (var q = i; q < W; q += 2) {
+                            var L = (N[v + q + 1] << 8 | N[v + q]) + (N[v + q - i + 1] << 8 | N[v + q - i]);
+                            N[v + q] = L & 255;
+                            N[v + q + 1] = L >>> 8 & 255;
+                        } else if (T == 3)
+                            for (var q = 3; q < W; q += 3) {
+                                N[v + q] = N[v + q] + N[v + q - 3] & 255;
+                                N[v + q + 1] = N[v + q + 1] + N[v + q - 2] & 255;
+                                N[v + q + 2] = N[v + q + 2] + N[v + q - 1] & 255;
+                            } else
+                                for (var q = i; q < W; q++) N[v + q] = N[v + q] + N[v + q - i] & 255;
+                }
+            }
+        };
+        b.decode._decodePanasonic = function(c, V, C, g, p, Z) {
+            var N = V.buffer,
+                F = c.t2[0],
+                a = c.t3[0],
+                q = c.t10[0],
+                R = c.t45[0],
+                d = 0,
+                Q = 0,
+                T = 0,
+                i = 0,
+                _, W, E = R == 6 ? new Uint32Array(18) : new Uint8Array(16),
+                G, r, j, M = [0, 0],
+                l = [0, 0],
+                v, L = 0,
+                u, I, J, D, y = new Uint8Array(16384),
+                e = new Uint16Array(p.buffer);
+
+            function X(aS) {
+                if (T == 0) {
+                    var _ = new Uint8Array(N, C + Q + 8184, 16384 - 8184),
+                        W = new Uint8Array(N, C + Q, 8184);
+                    y.set(_);
+                    y.set(W, _.length);
+                    Q += 16384;
+                }
+                if (R == 5) {
+                    for (G = 0; G < 16; G++) {
+                        E[G] = y[T++];
+                        T &= 16383;
+                    }
+                } else {
+                    T = T - aS & 131071;
+                    i = T >> 3 ^ 16368;
+                    return (y[i] | y[i + 1] << 8) >> (T & 7) & ~(-1 << aS)
+                }
+            }
+
+            function n(G) {
+                return y[T + 15 - G]
+            }
+
+            function k() {
+                E[0] = n(0) << 6 | n(1) >> 2;
+                E[1] = ((n(1) & 3) << 12 | n(2) << 4 | n(3) >> 4) & 16383;
+                E[2] = n(3) >> 2 & 3;
+                E[3] = (n(3) & 3) << 8 | n(4);
+                E[4] = n(5) << 2 | n(6) >> 6;
+                E[5] = (n(6) & 63) << 4 | n(7) >> 4;
+                E[6] = n(7) >> 2 & 3;
+                E[7] = (n(7) & 3) << 8 | n(8);
+                E[8] = n(9) << 2 & 1020 | n(10) >> 6;
+                E[9] = (n(10) << 4 | n(11) >> 4) & 1023;
+                E[10] = n(11) >> 2 & 3;
+                E[11] = (n(11) & 3) << 8 | n(12);
+                E[12] = (n(13) << 2 & 1020 | n(14) >> 6) & 1023;
+                E[13] = (n(14) << 4 | n(15) >> 4) & 1023;
+                T += 16;
+                i = 0;
+            }
+
+            function P() {
+                E[0] = n(0) << 4 | n(1) >> 4;
+                E[1] = ((n(1) & 15) << 8 | n(2)) & 4095;
+                E[2] = n(3) >> 6 & 3;
+                E[3] = (n(3) & 63) << 2 | n(4) >> 6;
+                E[4] = (n(4) & 63) << 2 | n(5) >> 6;
+                E[5] = (n(5) & 63) << 2 | n(6) >> 6;
+                E[6] = n(6) >> 4 & 3;
+                E[7] = (n(6) & 15) << 4 | n(7) >> 4;
+                E[8] = (n(7) & 15) << 4 | n(8) >> 4;
+                E[9] = (n(8) & 15) << 4 | n(9) >> 4;
+                E[10] = n(9) >> 2 & 3;
+                E[11] = (n(9) & 3) << 6 | n(10) >> 2;
+                E[12] = (n(10) & 3) << 6 | n(11) >> 2;
+                E[13] = (n(11) & 3) << 6 | n(12) >> 2;
+                E[14] = n(12) & 3;
+                E[15] = n(13);
+                E[16] = n(14);
+                E[17] = n(15);
+                T += 16;
+                i = 0;
+            }
+
+            function A() {
+                M[0] = 0;
+                M[1] = 0;
+                l[0] = 0;
+                l[1] = 0;
+            }
+            if (R == 7) {
+                throw R
+            } else if (R == 6) {
+                var z = q == 12,
+                    o = z ? P : k,
+                    t = z ? 14 : 11,
+                    a5 = z ? 128 : 512,
+                    S = z ? 2048 : 8192,
+                    U = z ? 16383 : 65535,
+                    ah = z ? 4095 : 16383,
+                    aB = F / t,
+                    B = aB * 16,
+                    aQ = z ? 18 : 14;
+                for (I = 0; I < a - 15; I += 16) {
+                    var $ = Math.min(16, a - I),
+                        s = B * $;
+                    y = new Uint8Array(N, C + d, s);
+                    T = 0;
+                    d += s;
+                    for (D = 0, J = 0; D < $; D++, J = 0) {
+                        L = (I + D) * F;
+                        for (var aZ = 0; aZ < aB; aZ++) {
+                            o();
+                            A();
+                            j = 0;
+                            u = 0;
+                            for (G = 0; G < t; G++) {
+                                v = G & 1;
+                                if (G % 3 == 2) {
+                                    var x = i < aQ ? E[i++] : 0;
+                                    if (x == 3) x = 4;
+                                    u = a5 << x;
+                                    j = 1 << x;
+                                }
+                                var a0 = i < aQ ? E[i++] : 0;
+                                if (M[v]) {
+                                    a0 *= j;
+                                    if (u < S && l[v] > u) a0 += l[v] - u;
+                                    l[v] = a0;
+                                } else {
+                                    M[v] = a0;
+                                    if (a0) l[v] = a0;
+                                    else a0 = l[v];
+                                }
+                                e[L + J++] = a0 - 15 <= U ? a0 - 15 & U : a0 + 2147483633 >> 31 & ah;
+                            }
+                        }
+                    }
+                }
+            } else if (R == 5) {
+                var aV = q == 12 ? 10 : 9;
+                for (I = 0; I < a; I++) {
+                    for (J = 0; J < F; J += aV) {
+                        X(0);
+                        if (q == 12) {
+                            e[L++] = ((E[1] & 15) << 8) + E[0];
+                            e[L++] = 16 * E[2] + (E[1] >> 4);
+                            e[L++] = ((E[4] & 15) << 8) + E[3];
+                            e[L++] = 16 * E[5] + (E[4] >> 4);
+                            e[L++] = ((E[7] & 15) << 8) + E[6];
+                            e[L++] = 16 * E[8] + (E[7] >> 4);
+                            e[L++] = ((E[10] & 15) << 8) + E[9];
+                            e[L++] = 16 * E[11] + (E[10] >> 4);
+                            e[L++] = ((E[13] & 15) << 8) + E[12];
+                            e[L++] = 16 * E[14] + (E[13] >> 4);
+                        } else if (q == 14) {
+                            e[L++] = E[0] + ((E[1] & 63) << 8);
+                            e[L++] = (E[1] >> 6) + 4 * E[2] + ((E[3] & 15) << 10);
+                            e[L++] = (E[3] >> 4) + 16 * E[4] + ((E[5] & 3) << 12);
+                            e[L++] = ((E[5] & 252) >> 2) + (E[6] << 6);
+                            e[L++] = E[7] + ((E[8] & 63) << 8);
+                            e[L++] = (E[8] >> 6) + 4 * E[9] + ((E[10] & 15) << 10);
+                            e[L++] = (E[10] >> 4) + 16 * E[11] + ((E[12] & 3) << 12);
+                            e[L++] = ((E[12] & 252) >> 2) + (E[13] << 6);
+                            e[L++] = E[14] + ((E[15] & 63) << 8);
+                        }
+                    }
+                }
+            } else if (R == 4) {
+                for (I = 0; I < a; I++) {
+                    for (J = 0; J < F; J++) {
+                        G = J % 14;
+                        v = G & 1;
+                        if (G == 0) A();
+                        if (G % 3 == 2) j = 4 >> 3 - X(2);
+                        if (l[v]) {
+                            r = X(8);
+                            if (r != 0) {
+                                M[v] -= 128 << j;
+                                if (M[v] < 0 || j == 4) M[v] &= ~(-1 << j);
+                                M[v] += r << j;
+                            }
+                        } else {
+                            l[v] = X(8);
+                            if (l[v] || G > 11) M[v] = l[v] << 4 | X(4);
+                        }
+                        e[L++] = M[J & 1];
+                    }
+                }
+            } else throw R
+        };
+        b.decode._decodeVC5 = function() {
+            var c = [1, 0, 1, 0, 2, 2, 1, 1, 3, 7, 1, 2, 5, 25, 1, 3, 6, 48, 1, 4, 6, 54, 1, 5, 7, 111, 1, 8, 7, 99, 1, 6, 7, 105, 12, 0, 7, 107, 1, 7, 8, 209, 20, 0, 8, 212, 1, 9, 8, 220, 1, 10, 9, 393, 1, 11, 9, 394, 32, 0, 9, 416, 1, 12, 9, 427, 1, 13, 10, 887, 1, 18, 10, 784, 1, 14, 10, 790, 1, 15, 10, 835, 60, 0, 10, 852, 1, 16, 10, 885, 1, 17, 11, 1571, 1, 19, 11, 1668, 1, 20, 11, 1669, 100, 0, 11, 1707, 1, 21, 11, 1772, 1, 22, 12, 3547, 1, 29, 12, 3164, 1, 24, 12, 3166, 1, 25, 12, 3140, 1, 23, 12, 3413, 1, 26, 12, 3537, 1, 27, 12, 3539, 1, 28, 13, 7093, 1, 35, 13, 6283, 1, 30, 13, 6331, 1, 31, 13, 6335, 180, 0, 13, 6824, 1, 32, 13, 7072, 1, 33, 13, 7077, 320, 0, 13, 7076, 1, 34, 14, 12565, 1, 36, 14, 12661, 1, 37, 14, 12669, 1, 38, 14, 13651, 1, 39, 14, 14184, 1, 40, 15, 28295, 1, 46, 15, 28371, 1, 47, 15, 25320, 1, 42, 15, 25336, 1, 43, 15, 25128, 1, 41, 15, 27300, 1, 44, 15, 28293, 1, 45, 16, 50259, 1, 48, 16, 50643, 1, 49, 16, 50675, 1, 50, 16, 56740, 1, 53, 16, 56584, 1, 51, 16, 56588, 1, 52, 17, 113483, 1, 61, 17, 113482, 1, 60, 17, 101285, 1, 55, 17, 101349, 1, 56, 17, 109205, 1, 57, 17, 109207, 1, 58, 17, 100516, 1, 54, 17, 113171, 1, 59, 18, 202568, 1, 62, 18, 202696, 1, 63, 18, 218408, 1, 64, 18, 218412, 1, 65, 18, 226340, 1, 66, 18, 226356, 1, 67, 18, 226358, 1, 68, 19, 402068, 1, 69, 19, 405138, 1, 70, 19, 405394, 1, 71, 19, 436818, 1, 72, 19, 436826, 1, 73, 19, 452714, 1, 75, 19, 452718, 1, 76, 19, 452682, 1, 74, 20, 804138, 1, 77, 20, 810279, 1, 78, 20, 810790, 1, 79, 20, 873638, 1, 80, 20, 873654, 1, 81, 20, 905366, 1, 82, 20, 905430, 1, 83, 20, 905438, 1, 84, 21, 1608278, 1, 85, 21, 1620557, 1, 86, 21, 1621582, 1, 87, 21, 1621583, 1, 88, 21, 1747310, 1, 89, 21, 1810734, 1, 90, 21, 1810735, 1, 91, 21, 1810863, 1, 92, 21, 1810879, 1, 93, 22, 3621725, 1, 99, 22, 3621757, 1, 100, 22, 3241112, 1, 94, 22, 3494556, 1, 95, 22, 3494557, 1, 96, 22, 3494622, 1, 97, 22, 3494623, 1, 98, 23, 6482227, 1, 102, 23, 6433117, 1, 101, 23, 6989117, 1, 103, 23, 6989119, 1, 105, 23, 6989118, 1, 104, 23, 7243449, 1, 106, 23, 7243512, 1, 107, 24, 13978233, 1, 111, 24, 12964453, 1, 109, 24, 12866232, 1, 108, 24, 14486897, 1, 113, 24, 13978232, 1, 110, 24, 14486896, 1, 112, 24, 14487026, 1, 114, 24, 14487027, 1, 115, 25, 25732598, 1, 225, 25, 25732597, 1, 189, 25, 25732596, 1, 188, 25, 25732595, 1, 203, 25, 25732594, 1, 202, 25, 25732593, 1, 197, 25, 25732592, 1, 207, 25, 25732591, 1, 169, 25, 25732590, 1, 223, 25, 25732589, 1, 159, 25, 25732522, 1, 235, 25, 25732579, 1, 152, 25, 25732575, 1, 192, 25, 25732489, 1, 179, 25, 25732573, 1, 201, 25, 25732472, 1, 172, 25, 25732576, 1, 149, 25, 25732488, 1, 178, 25, 25732566, 1, 120, 25, 25732571, 1, 219, 25, 25732577, 1, 150, 25, 25732487, 1, 127, 25, 25732506, 1, 211, 25, 25732548, 1, 125, 25, 25732588, 1, 158, 25, 25732486, 1, 247, 25, 25732467, 1, 238, 25, 25732508, 1, 163, 25, 25732552, 1, 228, 25, 25732603, 1, 183, 25, 25732513, 1, 217, 25, 25732587, 1, 168, 25, 25732520, 1, 122, 25, 25732484, 1, 128, 25, 25732562, 1, 249, 25, 25732505, 1, 187, 25, 25732504, 1, 186, 25, 25732483, 1, 136, 25, 25928905, 1, 181, 25, 25732560, 1, 255, 25, 25732500, 1, 230, 25, 25732482, 1, 135, 25, 25732555, 1, 233, 25, 25732568, 1, 222, 25, 25732583, 1, 145, 25, 25732481, 1, 134, 25, 25732586, 1, 167, 25, 25732521, 1, 248, 25, 25732518, 1, 209, 25, 25732480, 1, 243, 25, 25732512, 1, 216, 25, 25732509, 1, 164, 25, 25732547, 1, 140, 25, 25732479, 1, 157, 25, 25732544, 1, 239, 25, 25732574, 1, 191, 25, 25732564, 1, 251, 25, 25732478, 1, 156, 25, 25732546, 1, 139, 25, 25732498, 1, 242, 25, 25732557, 1, 133, 25, 25732477, 1, 162, 25, 25732515, 1, 213, 25, 25732584, 1, 165, 25, 25732514, 1, 212, 25, 25732476, 1, 227, 25, 25732494, 1, 198, 25, 25732531, 1, 236, 25, 25732530, 1, 234, 25, 25732529, 1, 117, 25, 25732528, 1, 215, 25, 25732527, 1, 124, 25, 25732526, 1, 123, 25, 25732525, 1, 254, 25, 25732524, 1, 253, 25, 25732523, 1, 148, 25, 25732570, 1, 218, 25, 25732580, 1, 146, 25, 25732581, 1, 147, 25, 25732569, 1, 224, 25, 25732533, 1, 143, 25, 25732540, 1, 184, 25, 25732541, 1, 185, 25, 25732585, 1, 166, 25, 25732556, 1, 132, 25, 25732485, 1, 129, 25, 25732563, 1, 250, 25, 25732578, 1, 151, 25, 25732501, 1, 119, 25, 25732502, 1, 193, 25, 25732536, 1, 176, 25, 25732496, 1, 245, 25, 25732553, 1, 229, 25, 25732516, 1, 206, 25, 25732582, 1, 144, 25, 25732517, 1, 208, 25, 25732558, 1, 137, 25, 25732543, 1, 241, 25, 25732466, 1, 237, 25, 25732507, 1, 190, 25, 25732542, 1, 240, 25, 25732551, 1, 131, 25, 25732554, 1, 232, 25, 25732565, 1, 252, 25, 25732475, 1, 171, 25, 25732493, 1, 205, 25, 25732492, 1, 204, 25, 25732491, 1, 118, 25, 25732490, 1, 214, 25, 25928904, 1, 180, 25, 25732549, 1, 126, 25, 25732602, 1, 182, 25, 25732539, 1, 175, 25, 25732545, 1, 141, 25, 25732559, 1, 138, 25, 25732537, 1, 177, 25, 25732534, 1, 153, 25, 25732503, 1, 194, 25, 25732606, 1, 160, 25, 25732567, 1, 121, 25, 25732538, 1, 174, 25, 25732497, 1, 246, 25, 25732550, 1, 130, 25, 25732572, 1, 200, 25, 25732474, 1, 170, 25, 25732511, 1, 221, 25, 25732601, 1, 196, 25, 25732532, 1, 142, 25, 25732519, 1, 210, 25, 25732495, 1, 199, 25, 25732605, 1, 155, 25, 25732535, 1, 154, 25, 25732499, 1, 244, 25, 25732510, 1, 220, 25, 25732600, 1, 195, 25, 25732607, 1, 161, 25, 25732604, 1, 231, 25, 25732473, 1, 173, 25, 25732599, 1, 226, 26, 51465122, 1, 116, 26, 51465123, 0, 1],
+                V, C, g, p = [3, 3, 3, 3, 2, 2, 2, 1, 1, 1],
+                Z = 24576,
+                N = 16384,
+                a = 8192,
+                q = N | a;
+
+            function R(l) {
+                var L = l[1],
+                    I = l[0][L >>> 3] >>> 7 - (L & 7) & 1;
+                l[1]++;
+                return I
+            }
+
+            function Q(l, L) {
+                if (V == null) {
+                    V = {};
+                    for (var I = 0; I < c.length; I += 4) V[c[I + 1]] = c.slice(I, I + 4);
+                }
+                var D = R(l),
+                    y = V[D];
+                while (y == null) {
+                    D = D << 1 | R(l);
+                    y = V[D];
+                }
+                var X = y[3];
+                if (X != 0) X = R(l) == 0 ? X : -X;
+                L[0] = y[2];
+                L[1] = X;
+            }
+
+            function T(l, L) {
+                for (var I = 0; I < L; I++) {
+                    if ((l & 1) == 1) l++;
+                    l = l >>> 1;
+                }
+                return l
+            }
+
+            function i(l, L) {
+                return l >> L
+            }
+
+            function _(l, L, I, D, y, X) {
+                L[I] = i(i(11 * l[y] - 4 * l[y + X] + l[y + X + X] + 4, 3) + l[D], 1);
+                L[I + X] = i(i(5 * l[y] + 4 * l[y + X] - l[y + X + X] + 4, 3) - l[D], 1);
+            }
+
+            function W(l, L, I, D, y, X) {
+                var k = l[y - X] - l[y + X],
+                    A = l[y],
+                    z = l[D];
+                L[I] = i(i(k + 4, 3) + A + z, 1);
+                L[I + X] = i(i(-k + 4, 3) + A - z, 1);
+            }
+
+            function E(l, L, I, D, y, X) {
+                L[I] = i(i(5 * l[y] + 4 * l[y - X] - l[y - X - X] + 4, 3) + l[D], 1);
+                L[I + X] = i(i(11 * l[y] - 4 * l[y - X] + l[y - X - X] + 4, 3) - l[D], 1);
+            }
+
+            function G(l) {
+                l = l < 0 ? 0 : l > 4095 ? 4095 : l;
+                l = g[l] >>> 2;
+                return l
+            }
+
+            function r(l, L, I, D, y, X) {
+                D = new Uint16Array(D.buffer);
+                var k = Date.now(),
+                    A = b._binBE,
+                    z = L + I,
+                    a5, S, U, ah, aB, s, aZ, x, aV, aS, aK, Y, ao, K, aa, a2, aG, f;
+                L += 4;
+                var aU = X[0] == 1;
+                while (L < z) {
+                    var O = A.readShort(l, L),
+                        w = A.readUshort(l, L + 2);
+                    L += 4;
+                    if (O == 12) a5 = w;
+                    else if (O == 20) S = w;
+                    else if (O == 21) U = w;
+                    else if (O == 48) ah = w;
+                    else if (O == 53) aB = w;
+                    else if (O == 35) s = w;
+                    else if (O == 62) aZ = w;
+                    else if (O == 101) x = w;
+                    else if (O == 109) aV = w;
+                    else if (O == 84) aS = w;
+                    else if (O == 106) aK = w;
+                    else if (O == 107) Y = w;
+                    else if (O == 108) ao = w;
+                    else if (O == 102) K = w;
+                    else if (O == 104) aa = w;
+                    else if (O == 105) a2 = w;
+                    else {
+                        var ab = O < 0 ? -O : O,
+                            ar = ab & 65280,
+                            a1 = 0;
+                        if (ab & q) {
+                            if (ab & a) {
+                                a1 = w & 65535;
+                                a1 += (ab & 255) << 16;
+                            } else {
+                                a1 = w & 65535;
+                            }
+                        }
+                        if ((ab & Z) == Z) {
+                            if (aG == null) {
+                                aG = [];
+                                for (var aw = 0; aw < 4; aw++) aG[aw] = new Int16Array((S >>> 1) * (U >>> 1));
+                                f = new Int16Array((S >>> 1) * (U >>> 1));
+                                C = new Int16Array(1024);
+                                for (var aw = 0; aw < 1024; aw++) {
+                                    var a6 = aw - 512,
+                                        as = Math.abs(a6),
+                                        a5 = Math.floor(768 * as * as * as / (255 * 255 * 255)) + as;
+                                    C[aw] = Math.sign(a6) * a5;
+                                }
+                                g = new Uint16Array(4096);
+                                var ae = (1 << 16) - 1;
+                                for (var aw = 0; aw < 4096; aw++) {
+                                    var ai = aw,
+                                        b6 = ae * (Math.pow(113, ai / 4095) - 1) / 112;
+                                    g[aw] = Math.min(b6, ae);
+                                }
+                            }
+                            var aT = aG[aZ],
+                                b0 = T(S, 1 + p[ah]),
+                                ad = T(U, 1 + p[ah]);
+                            if (ah == 0) {
+                                for (var ak = 0; ak < ad; ak++)
+                                    for (var H = 0; H < b0; H++) {
+                                        var a$ = L + (ak * b0 + H) * 2;
+                                        aT[ak * (S >>> 1) + H] = l[a$] << 8 | l[a$ + 1];
+                                    }
+                            } else {
+                                var aY = [l, L * 8],
+                                    a8 = [],
+                                    b5 = 0,
+                                    at = b0 * ad,
+                                    aR = [0, 0],
+                                    aC = 0,
+                                    w = 0;
+                                while (b5 < at) {
+                                    Q(aY, aR);
+                                    aC = aR[0];
+                                    w = aR[1];
+                                    while (aC > 0) {
+                                        a8[b5++] = w;
+                                        aC--;
+                                    }
+                                }
+                                var bc = (ah - 1) % 3,
+                                    ax = bc != 1 ? b0 : 0,
+                                    aj = bc != 0 ? ad : 0;
+                                for (var ak = 0; ak < ad; ak++) {
+                                    var aX = (ak + aj) * (S >>> 1) + ax,
+                                        af = ak * b0;
+                                    for (var H = 0; H < b0; H++) aT[aX + H] = C[a8[af + H] + 512] * aB;
+                                }
+                                if (bc == 2) {
+                                    var aa = S >>> 1,
+                                        aH = b0 * 2,
+                                        an = ad * 2;
+                                    for (var ak = 0; ak < ad; ak++) {
+                                        for (var H = 0; H < aH; H++) {
+                                            var aw = ak * 2 * aa + H,
+                                                a9 = ak * aa + H,
+                                                b3 = ad * aa + a9;
+                                            if (ak == 0) _(aT, f, aw, b3, a9, aa);
+                                            else if (ak == ad - 1) E(aT, f, aw, b3, a9, aa);
+                                            else W(aT, f, aw, b3, a9, aa);
+                                        }
+                                    }
+                                    var a7 = aT;
+                                    aT = f;
+                                    f = a7;
+                                    for (var ak = 0; ak < an; ak++) {
+                                        for (var H = 0; H < b0; H++) {
+                                            var aw = ak * aa + 2 * H,
+                                                a9 = ak * aa + H,
+                                                b3 = b0 + a9;
+                                            if (H == 0) _(aT, f, aw, b3, a9, 1);
+                                            else if (H == b0 - 1) E(aT, f, aw, b3, a9, 1);
+                                            else W(aT, f, aw, b3, a9, 1);
+                                        }
+                                    }
+                                    var a7 = aT;
+                                    aT = f;
+                                    f = a7;
+                                    var a4 = [],
+                                        au = 2 - ~~((ah - 1) / 3);
+                                    for (var al = 0; al < 3; al++) a4[al] = aV >> 14 - al * 2 & 3;
+                                    var aE = a4[au];
+                                    if (aE != 0)
+                                        for (var ak = 0; ak < an; ak++)
+                                            for (var H = 0; H < aH; H++) {
+                                                var aw = ak * aa + H;
+                                                aT[aw] = aT[aw] << aE;
+                                            }
+                                }
+                            }
+                            if (ah == 9 && aZ == 3) {
+                                var a_ = aG[0],
+                                    aW = aG[1],
+                                    a3 = aG[2],
+                                    ag = aG[3];
+                                for (var ak = 0; ak < U; ak += 2)
+                                    for (var H = 0; H < S; H += 2) {
+                                        var b2 = ak * S + H,
+                                            a$ = (ak >>> 1) * (S >>> 1) + (H >>> 1),
+                                            ap = a_[a$],
+                                            av = aW[a$] - 2048,
+                                            aq = a3[a$] - 2048,
+                                            b9 = ag[a$] - 2048,
+                                            am = (av << 1) + ap,
+                                            ac = (aq << 1) + ap,
+                                            b8 = ap + b9,
+                                            aN = ap - b9;
+                                        if (aU) {
+                                            D[b2] = G(b8);
+                                            D[b2 + 1] = G(ac);
+                                            D[b2 + S] = G(am);
+                                            D[b2 + S + 1] = G(aN);
+                                        } else {
+                                            D[b2] = G(am);
+                                            D[b2 + 1] = G(b8);
+                                            D[b2 + S] = G(aN);
+                                            D[b2 + S + 1] = G(ac);
+                                        }
+                                    }
+                            }
+                            L += a1 * 4;
+                        } else if (ab == 16388) {
+                            L += a1 * 4;
+                        } else if (ar == 8192 || ar == 8448 || ar == 9216) {} else throw ab.toString(16)
+                    }
+                }
+                console.log(Date.now() - k);
+            }
+            return r
+        }();
+        b.decode._decodeLogLuv32 = function(c, V, C, g, p, Z) {
+            var N = c.width,
+                F = N * 4,
+                a = 0,
+                q = new Uint8Array(F);
+            while (a < g) {
+                var R = 0;
+                while (R < F) {
+                    var d = V[C + a];
+                    a++;
+                    if (d < 128) {
+                        for (var Q = 0; Q < d; Q++) q[R + Q] = V[C + a + Q];
+                        R += d;
+                        a += d;
+                    } else {
+                        d = d - 126;
+                        for (var Q = 0; Q < d; Q++) q[R + Q] = V[C + a];
+                        R += d;
+                        a++;
+                    }
+                }
+                for (var T = 0; T < N; T++) {
+                    p[Z + 0] = q[T];
+                    p[Z + 1] = q[T + N];
+                    p[Z + 2] = q[T + N * 2];
+                    p[Z + 4] = q[T + N * 3];
+                    Z += 6;
+                }
+            }
+        };
+        b.decode._ljpeg_diff = function(c, V, C) {
+            var g = b.decode._getbithuff,
+                p, Z;
+            p = g(c, V, C[0], C);
+            Z = g(c, V, p, 0);
+            if ((Z & 1 << p - 1) == 0) Z -= (1 << p) - 1;
+            return Z
+        };
+        b.decode._decodeARW = function(c, V, C, g, p, Z) {
+            var N = c.t256[0],
+                F = c.t257[0],
+                a = c.t258[0],
+                q = c.isLE ? b._binLE : b._binBE,
+                R = N * F == g || N * F * 1.5 == g,
+                G, E, J, D, y, e, X, n, k, i, P;
+            if (!R) {
+                F += 8;
+                var d = [C, 0, 0, 0],
+                    Q = new Uint16Array(32770),
+                    T = [3857, 3856, 3599, 3342, 3085, 2828, 2571, 2314, 2057, 1800, 1543, 1286, 1029, 772, 771, 768, 514, 513],
+                    i, _, W, E, G, r = 0,
+                    j = b.decode._ljpeg_diff;
+                Q[0] = 15;
+                for (W = i = 0; i < 18; i++) {
+                    var M = 32768 >>> (T[i] >>> 8);
+                    for (var _ = 0; _ < M; _++) Q[++W] = T[i];
+                }
+                for (E = N; E--;)
+                    for (G = 0; G < F + 1; G += 2) {
+                        if (G == F) G = 1;
+                        r += j(V, d, Q);
+                        if (G < F) {
+                            var l = r & 4095;
+                            b.decode._putsF(p, (G * N + E) * a, l << 16 - a);
+                        }
+                    }
+                return
+            }
+            if (N * F * 1.5 == g) {
+                for (var i = 0; i < g; i += 3) {
+                    var v = V[C + i + 0],
+                        L = V[C + i + 1],
+                        u = V[C + i + 2];
+                    p[Z + i] = L << 4 | v >>> 4;
+                    p[Z + i + 1] = v << 4 | u >>> 4;
+                    p[Z + i + 2] = u << 4 | L >>> 4;
+                }
+                return
+            }
+            var I = new Uint16Array(16),
+                A = new Uint8Array(N + 1);
+            for (G = 0; G < F; G++) {
+                for (var z = 0; z < N; z++) A[z] = V[C++];
+                for (P = 0, E = 0; E < N - 30; P += 16) {
+                    D = 2047 & (J = q.readUint(A, P));
+                    y = 2047 & J >>> 11;
+                    e = 15 & J >>> 22;
+                    X = 15 & J >>> 26;
+                    for (n = 0; n < 4 && 128 << n <= D - y; n++);
+                    for (k = 30, i = 0; i < 16; i++)
+                        if (i == e) I[i] = D;
+                        else if (i == X) I[i] = y;
+                    else {
+                        I[i] = ((q.readUshort(A, P + (k >> 3)) >>> (k & 7) & 127) << n) + y;
+                        if (I[i] > 2047) I[i] = 2047;
+                        k += 7;
+                    }
+                    for (i = 0; i < 16; i++, E += 2) {
+                        var l = I[i] << 1;
+                        b.decode._putsF(p, (G * N + E) * a, l << 16 - a);
+                    }
+                    E -= E & 1 ? 1 : 31;
+                }
+            }
+        };
+        b.decode._decodeNikon = function(c, V, C, g, p, Z, N) {
+            var F = [
+                    [0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 5, 4, 3, 6, 2, 7, 1, 0, 8, 9, 11, 10, 12],
+                    [0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 57, 90, 56, 39, 22, 5, 4, 3, 2, 1, 0, 11, 12, 12],
+                    [0, 0, 1, 4, 2, 3, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 4, 6, 3, 7, 2, 8, 1, 9, 0, 10, 11, 12],
+                    [0, 0, 1, 4, 3, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 5, 6, 4, 7, 8, 3, 9, 2, 1, 0, 10, 11, 12, 13, 14],
+                    [0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 8, 92, 75, 58, 41, 7, 6, 5, 4, 3, 2, 1, 0, 13, 14],
+                    [0, 0, 1, 4, 2, 2, 3, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 7, 6, 8, 5, 9, 4, 10, 3, 11, 12, 2, 0, 1, 13, 14]
+                ],
+                a = c.t256[0],
+                q = c.t257[0],
+                R = c.t258[0],
+                d = 0,
+                Q = 0,
+                T = b.decode._make_decoder,
+                i = b.decode._getbithuff,
+                _ = V[0].exifIFD.makerNote,
+                W = _.t150 ? _.t150 : _.t140,
+                E = 0,
+                G = W[E++],
+                r = W[E++],
+                u = 0,
+                l, J, D, y, e, X, n = 0;
+            if (G == 73 || r == 88) E += 2110;
+            if (G == 70) d = 2;
+            if (R == 14) d += 3;
+            var j = [
+                    [0, 0],
+                    [0, 0]
+                ],
+                M = c.isLE ? b._binLE : b._binBE;
+            for (var l = 0; l < 2; l++)
+                for (var v = 0; v < 2; v++) {
+                    j[l][v] = M.readShort(W, E);
+                    E += 2;
+                }
+            var L = 1 << R & 32767,
+                I = M.readShort(W, E);
+            E += 2;
+            if (I > 1) u = Math.floor(L / (I - 1));
+            if (G == 68 && r == 32 && u > 0) Q = M.readShort(W, 562);
+            var k = [0, 0],
+                P = T(F[d]),
+                A = [g, 0, 0, 0];
+            for (n = J = 0; J < q; J++) {
+                if (Q && J == Q) {
+                    P = T(F[d + 1]);
+                }
+                for (D = 0; D < a; D++) {
+                    l = i(C, A, P[0], P);
+                    y = l & 15;
+                    e = l >>> 4;
+                    X = (i(C, A, y - e, 0) << 1) + 1 << e >>> 1;
+                    if ((X & 1 << y - 1) == 0) X -= (1 << y) - (e == 0 ? 1 : 0);
+                    if (D < 2) k[D] = j[J & 1][D] += X;
+                    else k[D & 1] += X;
+                    var z = Math.min(Math.max(k[D & 1], 0), (1 << R) - 1),
+                        o = (J * a + D) * R;
+                    b.decode._putsF(Z, o, z << 16 - R);
+                }
+            }
+        };
+        b.decode._putsF = function(c, V, C) {
+            C = C << 8 - (V & 7);
+            var g = V >>> 3;
+            c[g] |= C >>> 16;
+            c[g + 1] |= C >>> 8;
+            c[g + 2] |= C;
+        };
+        b.decode._getbithuff = function(c, V, C, g) {
+            var p = 0,
+                Z = b.decode._get_byte,
+                N, F = V[0],
+                a = V[1],
+                q = V[2],
+                R = V[3];
+            if (C == 0 || q < 0) return 0;
+            while (!R && q < C && (N = c[F++]) != -1 && !(R = p && N == 255 && c[F++])) {
+                a = (a << 8) + N;
+                q += 8;
+            }
+            N = a << 32 - q >>> 32 - C;
+            if (g) {
+                q -= g[N + 1] >>> 8;
+                N = g[N + 1] & 255;
+            } else q -= C;
+            if (q < 0) throw "e";
+            V[0] = F;
+            V[1] = a;
+            V[2] = q;
+            V[3] = R;
+            return N
+        };
+        b.decode._make_decoder = function(c) {
+            var V, C, g, Z, N, F = [],
+                a = 17;
+            for (V = 16; V != 0 && !c[V]; V--);
+            F[0] = V;
+            for (g = C = 1; C <= V; C++)
+                for (Z = 0; Z < c[C]; Z++, ++a)
+                    for (N = 0; N < 1 << V - C; N++)
+                        if (g <= 1 << V) F[g++] = C << 8 | c[a];
+            return F
+        };
+        b.decode._decodeNewJPEG = function(c, V, C, g, p, Z) {
+            g = Math.min(g, V.length - C);
+            var N = c.t347,
+                F = N ? N.length : 0,
+                a = new Uint8Array(F + g);
+            if (N) {
+                var q = 216,
+                    R = 217,
+                    d = 0;
+                for (var Q = 0; Q < F - 1; Q++) {
+                    if (N[Q] == 255 && N[Q + 1] == R) break;
+                    a[d++] = N[Q];
+                }
+                var T = V[C],
+                    i = V[C + 1];
+                if (T != 255 || i != q) {
+                    a[d++] = T;
+                    a[d++] = i;
+                }
+                for (var Q = 2; Q < g; Q++) a[d++] = V[C + Q];
+            } else
+                for (var Q = 0; Q < g; Q++) a[Q] = V[C + Q];
+            if (c.t262[0] == 32803 || c.t259[0] == 7 && c.t262[0] == 34892) {
+                var _ = c.t258[0],
+                    W = b.LosslessJpegDecode(a),
+                    E = W.length;
+                if (!1) {} else if (_ == 16) {
+                    if (c.isLE)
+                        for (var Q = 0; Q < E; Q++) {
+                            p[Z + (Q << 1)] = W[Q] & 255;
+                            p[Z + (Q << 1) + 1] = W[Q] >>> 8;
+                        } else
+                            for (var Q = 0; Q < E; Q++) {
+                                p[Z + (Q << 1)] = W[Q] >>> 8;
+                                p[Z + (Q << 1) + 1] = W[Q] & 255;
+                            }
+                } else if (_ == 14 || _ == 12) {
+                    var G = 16 - _;
+                    for (var Q = 0; Q < E; Q++) b.decode._putsF(p, Q * _, W[Q] << G);
+                } else if (_ == 8) {
+                    for (var Q = 0; Q < E; Q++) p[Z + Q] = W[Q];
+                } else throw new Error("unsupported bit depth " + _)
+            } else {
+                var r = new b.JpegDecoder;
+                r.parse(a);
+                var j = r.getData({
+                    width: r.width,
+                    height: r.height,
+                    forceRGB: !0,
+                    isSourcePDF: !1
+                });
+                for (var Q = 0; Q < j.length; Q++) p[Z + Q] = j[Q];
+            }
+            if (c.t262[0] == 6) c.t262[0] = 2;
+        };
+        b.decode._decodeOldJPEGInit = function(c, V, C, g) {
+            var p = 216,
+                Z = 217,
+                N = 219,
+                F = 196,
+                a = 221,
+                q = 192,
+                R = 218,
+                d = 0,
+                Q = 0,
+                T, i, _ = !1,
+                W, E, G, r = c.t513,
+                j = r ? r[0] : 0,
+                M = c.t514,
+                l = M ? M[0] : 0,
+                v = c.t324 || c.t273 || r,
+                L = c.t530,
+                u = 0,
+                I = 0,
+                J = c.t277 ? c.t277[0] : 1,
+                D = c.t515;
+            if (v) {
+                Q = v[0];
+                _ = v.length > 1;
+            }
+            if (!_) {
+                if (V[C] == 255 && V[C + 1] == p) return {
+                    jpegOffset: C
+                };
+                if (r != null) {
+                    if (V[C + j] == 255 && V[C + j + 1] == p) d = C + j;
+                    else az("JPEGInterchangeFormat does not point to SOI");
+                    if (M == null) az("JPEGInterchangeFormatLength field is missing");
+                    else if (j >= Q || j + l <= Q) az("JPEGInterchangeFormatLength field value is invalid");
+                    if (d != null) return {
+                        jpegOffset: d
+                    }
+                }
+            }
+            if (L != null) {
+                u = L[0];
+                I = L[1];
+            }
+            if (r != null)
+                if (M != null)
+                    if (l >= 2 && j + l <= Q) {
+                        if (V[C + j + l - 2] == 255 && V[C + j + l - 1] == p) T = new Uint8Array(l - 2);
+                        else T = new Uint8Array(l);
+                        for (W = 0; W < T.length; W++) T[W] = V[C + j + W];
+                        az("Incorrect JPEG interchange format: using JPEGInterchangeFormat offset to derive tables");
+                    } else az("JPEGInterchangeFormat+JPEGInterchangeFormatLength > offset to first strip or tile");
+            if (T == null) {
+                var y = 0,
+                    e = [];
+                e[y++] = 255;
+                e[y++] = p;
+                var X = c.t519;
+                if (X == null) throw new Error("JPEGQTables tag is missing");
+                for (W = 0; W < X.length; W++) {
+                    e[y++] = 255;
+                    e[y++] = N;
+                    e[y++] = 0;
+                    e[y++] = 67;
+                    e[y++] = W;
+                    for (E = 0; E < 64; E++) e[y++] = V[C + X[W] + E];
+                }
+                for (G = 0; G < 2; G++) {
+                    var n = c[G == 0 ? "t520" : "t521"];
+                    if (n == null) throw new Error((G == 0 ? "JPEGDCTables" : "JPEGACTables") + " tag is missing");
+                    for (W = 0; W < n.length; W++) {
+                        e[y++] = 255;
+                        e[y++] = F;
+                        var k = 19;
+                        for (E = 0; E < 16; E++) k += V[C + n[W] + E];
+                        e[y++] = k >>> 8;
+                        e[y++] = k & 255;
+                        e[y++] = W | G << 4;
+                        for (E = 0; E < 16; E++) e[y++] = V[C + n[W] + E];
+                        for (E = 0; E < k; E++) e[y++] = V[C + n[W] + 16 + E];
+                    }
+                }
+                e[y++] = 255;
+                e[y++] = q;
+                e[y++] = 0;
+                e[y++] = 8 + 3 * J;
+                e[y++] = 8;
+                e[y++] = c.height >>> 8 & 255;
+                e[y++] = c.height & 255;
+                e[y++] = c.width >>> 8 & 255;
+                e[y++] = c.width & 255;
+                e[y++] = J;
+                if (J == 1) {
+                    e[y++] = 1;
+                    e[y++] = 17;
+                    e[y++] = 0;
+                } else
+                    for (W = 0; W < 3; W++) {
+                        e[y++] = W + 1;
+                        e[y++] = W != 0 ? 17 : (u & 15) << 4 | I & 15;
+                        e[y++] = W;
+                    }
+                if (D != null && D[0] != 0) {
+                    e[y++] = 255;
+                    e[y++] = a;
+                    e[y++] = 0;
+                    e[y++] = 4;
+                    e[y++] = D[0] >>> 8 & 255;
+                    e[y++] = D[0] & 255;
+                }
+                T = new Uint8Array(e);
+            }
+            var P = -1;
+            W = 0;
+            while (W < T.length - 1) {
+                if (T[W] == 255 && T[W + 1] == q) {
+                    P = W;
+                    break
+                }
+                W++;
+            }
+            if (P == -1) {
+                var A = new Uint8Array(T.length + 10 + 3 * J);
+                A.set(T);
+                var z = T.length;
+                P = T.length;
+                T = A;
+                T[z++] = 255;
+                T[z++] = q;
+                T[z++] = 0;
+                T[z++] = 8 + 3 * J;
+                T[z++] = 8;
+                T[z++] = c.height >>> 8 & 255;
+                T[z++] = c.height & 255;
+                T[z++] = c.width >>> 8 & 255;
+                T[z++] = c.width & 255;
+                T[z++] = J;
+                if (J == 1) {
+                    T[z++] = 1;
+                    T[z++] = 17;
+                    T[z++] = 0;
+                } else
+                    for (W = 0; W < 3; W++) {
+                        T[z++] = W + 1;
+                        T[z++] = W != 0 ? 17 : (u & 15) << 4 | I & 15;
+                        T[z++] = W;
+                    }
+            }
+            if (V[Q] == 255 && V[Q + 1] == R) {
+                var o = V[Q + 2] << 8 | V[Q + 3];
+                i = new Uint8Array(o + 2);
+                i[0] = V[Q];
+                i[1] = V[Q + 1];
+                i[2] = V[Q + 2];
+                i[3] = V[Q + 3];
+                for (W = 0; W < o - 2; W++) i[W + 4] = V[Q + W + 4];
+            } else {
+                i = new Uint8Array(2 + 6 + 2 * J);
+                var t = 0;
+                i[t++] = 255;
+                i[t++] = R;
+                i[t++] = 0;
+                i[t++] = 6 + 2 * J;
+                i[t++] = J;
+                if (J == 1) {
+                    i[t++] = 1;
+                    i[t++] = 0;
+                } else
+                    for (W = 0; W < 3; W++) {
+                        i[t++] = W + 1;
+                        i[t++] = W << 4 | W;
+                    }
+                i[t++] = 0;
+                i[t++] = 63;
+                i[t++] = 0;
+            }
+            return {
+                jpegOffset: C,
+                tables: T,
+                sosMarker: i,
+                sofPosition: P
+            }
+        };
+        b.decode._decodeOldJPEG = function(c, V, C, g, p, Z) {
+            var N, F, a, q, R, d = b.decode._decodeOldJPEGInit(c, V, C, g);
+            if (d.jpegOffset != null) {
+                F = C + g - d.jpegOffset;
+                q = new Uint8Array(F);
+                for (N = 0; N < F; N++) q[N] = V[d.jpegOffset + N];
+            } else {
+                a = d.tables.length;
+                q = new Uint8Array(a + d.sosMarker.length + g + 2);
+                q.set(d.tables);
+                R = a;
+                q[d.sofPosition + 5] = c.height >>> 8 & 255;
+                q[d.sofPosition + 6] = c.height & 255;
+                q[d.sofPosition + 7] = c.width >>> 8 & 255;
+                q[d.sofPosition + 8] = c.width & 255;
+                if (V[C] != 255 || V[C + 1] != SOS) {
+                    q.set(d.sosMarker, R);
+                    R += sosMarker.length;
+                }
+                for (N = 0; N < g; N++) q[R++] = V[C + N];
+                q[R++] = 255;
+                q[R++] = EOI;
+            }
+            var Q = new b.JpegDecoder;
+            Q.parse(q);
+            var T = Q.getData({
+                width: Q.width,
+                height: Q.height,
+                forceRGB: !0,
+                isSourcePDF: !1
+            });
+            for (var N = 0; N < T.length; N++) p[Z + N] = T[N];
+            if (c.t262 && c.t262[0] == 6) c.t262[0] = 2;
+        };
+        b.decode._decodePackBits = function(c, V, C, g, p) {
+            var Z = new Int8Array(c.buffer),
+                N = new Int8Array(g.buffer),
+                F = V + C;
+            while (V < F) {
+                var a = Z[V];
+                V++;
+                if (a >= 0 && a < 128)
+                    for (var q = 0; q < a + 1; q++) {
+                        N[p] = Z[V];
+                        p++;
+                        V++;
+                    }
+                if (a >= -127 && a < 0) {
+                    for (var q = 0; q < -a + 1; q++) {
+                        N[p] = Z[V];
+                        p++;
+                    }
+                    V++;
+                }
+            }
+            return p
+        };
+        b.decode._decodeThunder = function(c, V, C, g, p) {
+            var Z = [0, 1, 0, -1],
+                N = [0, 1, 2, 3, 0, -3, -2, -1],
+                F = V + C,
+                a = p * 2,
+                q = 0;
+            while (V < F) {
+                var R = c[V],
+                    d = R >>> 6,
+                    Q = R & 63;
+                V++;
+                if (d == 3) {
+                    q = Q & 15;
+                    g[a >>> 1] |= q << 4 * (1 - a & 1);
+                    a++;
+                }
+                if (d == 0)
+                    for (var T = 0; T < Q; T++) {
+                        g[a >>> 1] |= q << 4 * (1 - a & 1);
+                        a++;
+                    }
+                if (d == 2)
+                    for (var T = 0; T < 2; T++) {
+                        var i = Q >>> 3 * (1 - T) & 7;
+                        if (i != 4) {
+                            q += N[i];
+                            g[a >>> 1] |= q << 4 * (1 - a & 1);
+                            a++;
+                        }
+                    }
+                if (d == 1)
+                    for (var T = 0; T < 3; T++) {
+                        var i = Q >>> 2 * (2 - T) & 3;
+                        if (i != 2) {
+                            q += Z[i];
+                            g[a >>> 1] |= q << 4 * (1 - a & 1);
+                            a++;
+                        }
+                    }
+            }
+        };
+        b.decode._dmap = {
+            "1": 0,
+            "011": 1,
+            "000011": 2,
+            "0000011": 3,
+            "010": -1,
+            "000010": -2,
+            "0000010": -3
+        };
+        b.decode._lens = function() {
+            var c = function(a, q, R, d) {
+                    for (var Q = 0; Q < q.length; Q++) a[q[Q]] = R + Q * d;
+                },
+                V = "00110101,000111,0111,1000,1011,1100,1110,1111,10011,10100,00111,01000,001000,000011,110100,110101," + "101010,101011,0100111,0001100,0001000,0010111,0000011,0000100,0101000,0101011,0010011,0100100,0011000,00000010,00000011,00011010," + "00011011,00010010,00010011,00010100,00010101,00010110,00010111,00101000,00101001,00101010,00101011,00101100,00101101,00000100,00000101,00001010," + "00001011,01010010,01010011,01010100,01010101,00100100,00100101,01011000,01011001,01011010,01011011,01001010,01001011,00110010,00110011,00110100",
+                C = "0000110111,010,11,10,011,0011,0010,00011,000101,000100,0000100,0000101,0000111,00000100,00000111,000011000," + "0000010111,0000011000,0000001000,00001100111,00001101000,00001101100,00000110111,00000101000,00000010111,00000011000,000011001010,000011001011,000011001100,000011001101,000001101000,000001101001," + "000001101010,000001101011,000011010010,000011010011,000011010100,000011010101,000011010110,000011010111,000001101100,000001101101,000011011010,000011011011,000001010100,000001010101,000001010110,000001010111," + "000001100100,000001100101,000001010010,000001010011,000000100100,000000110111,000000111000,000000100111,000000101000,000001011000,000001011001,000000101011,000000101100,000001011010,000001100110,000001100111",
+                g = "11011,10010,010111,0110111,00110110,00110111,01100100,01100101,01101000,01100111,011001100,011001101,011010010,011010011,011010100,011010101,011010110," + "011010111,011011000,011011001,011011010,011011011,010011000,010011001,010011010,011000,010011011",
+                p = "0000001111,000011001000,000011001001,000001011011,000000110011,000000110100,000000110101,0000001101100,0000001101101,0000001001010,0000001001011,0000001001100," + "0000001001101,0000001110010,0000001110011,0000001110100,0000001110101,0000001110110,0000001110111,0000001010010,0000001010011,0000001010100,0000001010101,0000001011010," + "0000001011011,0000001100100,0000001100101",
+                Z = "00000001000,00000001100,00000001101,000000010010,000000010011,000000010100,000000010101,000000010110,000000010111,000000011100,000000011101,000000011110,000000011111";
+            V = V.split(",");
+            C = C.split(",");
+            g = g.split(",");
+            p = p.split(",");
+            Z = Z.split(",");
+            var N = {},
+                F = {};
+            c(N, V, 0, 1);
+            c(N, g, 64, 64);
+            c(N, Z, 1792, 64);
+            c(F, C, 0, 1);
+            c(F, p, 64, 64);
+            c(F, Z, 1792, 64);
+            return [N, F]
+        }();
+        b.decode._decodeG4 = function(c, V, C, g, p, Z, N) {
+            var F = b.decode,
+                a = V << 3,
+                q = 0,
+                R = "",
+                d = [],
+                Q = [],
+                i = 0,
+                _ = 0,
+                W = 0,
+                E = 0,
+                G = 0,
+                j = 0,
+                M = 0,
+                l = "",
+                v = 0;
+            for (var T = 0; T < Z; T++) Q.push(0);
+            Q = F._makeDiff(Q);
+            var L = Math.ceil(Z / 8) * 8;
+            while (a >>> 3 < V + C) {
+                E = F._findDiff(Q, i + (i == 0 ? 0 : 1), 1 - j), G = F._findDiff(Q, E, j);
+                var u = 0;
+                if (N == 1) u = c[a >>> 3] >>> 7 - (a & 7) & 1;
+                if (N == 2) u = c[a >>> 3] >>> (a & 7) & 1;
+                a++;
+                R += u;
+                if (l == "H") {
+                    if (F._lens[j][R] != null) {
+                        var I = F._lens[j][R];
+                        R = "";
+                        q += I;
+                        if (I < 64) {
+                            F._addNtimes(d, q, j);
+                            i += q;
+                            j = 1 - j;
+                            q = 0;
+                            v--;
+                            if (v == 0) l = "";
+                        }
+                    }
+                } else {
+                    if (R == "0001") {
+                        R = "";
+                        F._addNtimes(d, G - i, j);
+                        i = G;
+                    }
+                    if (R == "001") {
+                        R = "";
+                        l = "H";
+                        v = 2;
+                    }
+                    if (F._dmap[R] != null) {
+                        _ = E + F._dmap[R];
+                        F._addNtimes(d, _ - i, j);
+                        i = _;
+                        R = "";
+                        j = 1 - j;
+                    }
+                }
+                if (d.length == Z && l == "") {
+                    F._writeBits(d, g, p * 8 + M * L);
+                    j = 0;
+                    M++;
+                    i = 0;
+                    Q = F._makeDiff(d);
+                    d = [];
+                }
+            }
+        };
+        b.decode._findDiff = function(c, V, C) {
+            for (var g = 0; g < c.length; g += 2)
+                if (c[g] >= V && c[g + 1] == C) return c[g]
+        };
+        b.decode._makeDiff = function(c) {
+            var V = [];
+            if (c[0] == 1) V.push(0, 1);
+            for (var C = 1; C < c.length; C++)
+                if (c[C - 1] != c[C]) V.push(C, c[C]);
+            V.push(c.length, 0, c.length, 1);
+            return V
+        };
+        b.decode._decodeG2 = function(c, V, C, g, p, Z, N) {
+            var F = b.decode,
+                a = V << 3,
+                q = 0,
+                R = "",
+                d = [],
+                Q = 0,
+                T = 0,
+                i = Math.ceil(Z / 8) * 8;
+            while (a >>> 3 < V + C) {
+                var _ = 0;
+                if (N == 1) _ = c[a >>> 3] >>> 7 - (a & 7) & 1;
+                if (N == 2) _ = c[a >>> 3] >>> (a & 7) & 1;
+                a++;
+                R += _;
+                q = F._lens[Q][R];
+                if (q != null) {
+                    F._addNtimes(d, q, Q);
+                    R = "";
+                    if (q < 64) Q = 1 - Q;
+                    if (d.length == Z) {
+                        F._writeBits(d, g, p * 8 + T * i);
+                        d = [];
+                        T++;
+                        Q = 0;
+                        if ((a & 7) != 0) a += 8 - (a & 7);
+                        if (q >= 64) a += 8;
+                    }
+                }
+            }
+        };
+        b.decode._decodeG3 = function(c, V, C, g, p, Z, N, F) {
+            var a = b.decode,
+                q = V << 3,
+                R = 0,
+                d = "",
+                Q = [],
+                T = [],
+                _ = 0,
+                W = 0,
+                E = 0,
+                G = 0,
+                j = 0,
+                M = 0,
+                v = "",
+                L = 0,
+                u = !0;
+            for (var i = 0; i < Z; i++) Q.push(0);
+            var l = -1,
+                I = Math.ceil(Z / 8) * 8;
+            while (q >>> 3 < V + C) {
+                G = a._findDiff(T, _ + (_ == 0 ? 0 : 1), 1 - M), j = a._findDiff(T, G, M);
+                var J = 0;
+                if (N == 1) J = c[q >>> 3] >>> 7 - (q & 7) & 1;
+                if (N == 2) J = c[q >>> 3] >>> (q & 7) & 1;
+                q++;
+                d += J;
+                if (u) {
+                    if (a._lens[M][d] != null) {
+                        var D = a._lens[M][d];
+                        d = "";
+                        R += D;
+                        if (D < 64) {
+                            a._addNtimes(Q, R, M);
+                            M = 1 - M;
+                            R = 0;
+                        }
+                    }
+                } else {
+                    if (v == "H") {
+                        if (a._lens[M][d] != null) {
+                            var D = a._lens[M][d];
+                            d = "";
+                            R += D;
+                            if (D < 64) {
+                                a._addNtimes(Q, R, M);
+                                _ += R;
+                                M = 1 - M;
+                                R = 0;
+                                L--;
+                                if (L == 0) v = "";
+                            }
+                        }
+                    } else {
+                        if (d == "0001") {
+                            d = "";
+                            a._addNtimes(Q, j - _, M);
+                            _ = j;
+                        }
+                        if (d == "001") {
+                            d = "";
+                            v = "H";
+                            L = 2;
+                        }
+                        if (a._dmap[d] != null) {
+                            W = G + a._dmap[d];
+                            a._addNtimes(Q, W - _, M);
+                            _ = W;
+                            d = "";
+                            M = 1 - M;
+                        }
+                    }
+                }
+                if (d.endsWith("000000000001")) {
+                    if (l >= 0) a._writeBits(Q, g, p * 8 + l * I);
+                    if (F) {
+                        if (N == 1) u = (c[q >>> 3] >>> 7 - (q & 7) & 1) == 1;
+                        if (N == 2) u = (c[q >>> 3] >>> (q & 7) & 1) == 1;
+                        q++;
+                    }
+                    d = "";
+                    M = 0;
+                    l++;
+                    _ = 0;
+                    T = a._makeDiff(Q);
+                    Q = [];
+                }
+            }
+            if (Q.length == Z) a._writeBits(Q, g, p * 8 + l * I);
+        };
+        b.decode._addNtimes = function(c, V, C) {
+            for (var g = 0; g < V; g++) c.push(C);
+        };
+        b.decode._writeBits = function(c, V, C) {
+            for (var g = 0; g < c.length; g++) V[C + g >>> 3] |= c[g] << 7 - (C + g & 7);
+        };
+        b.decode._decodeLZW = b.decode._decodeLZW = function() {
+            var c, C, g, p, Z = 0,
+                N = 0,
+                F = 0,
+                a = 0,
+                q = function() {
+                    var G = c >>> 3,
+                        j = C[G] << 16 | C[G + 1] << 8 | C[G + 2],
+                        M = j >>> 24 - (c & 7) - N & (1 << N) - 1;
+                    c += N;
+                    return M
+                },
+                R = new Uint32Array(4096 * 4),
+                d = 0,
+                Q = function(G) {
+                    if (G == d) return;
+                    d = G;
+                    F = 1 << G;
+                    a = F + 1;
+                    for (var j = 0; j < a + 1; j++) {
+                        R[4 * j] = R[4 * j + 3] = j;
+                        R[4 * j + 1] = 65535;
+                        R[4 * j + 2] = 1;
+                    }
+                },
+                T = function(G) {
+                    N = G + 1;
+                    Z = a + 1;
+                },
+                i = function(G) {
+                    var j = G << 2,
+                        M = R[j + 2],
+                        l = p + M - 1;
+                    while (j != 65535) {
+                        g[l--] = R[j];
+                        j = R[j + 1];
+                    }
+                    p += M;
+                },
+                _ = function(G, j) {
+                    var M = Z << 2,
+                        l = G << 2;
+                    R[M] = R[(j << 2) + 3];
+                    R[M + 1] = l;
+                    R[M + 2] = R[l + 2] + 1;
+                    R[M + 3] = R[l + 3];
+                    Z++;
+                    if (Z + 1 == 1 << N && N != 12) N++;
+                },
+                W = function(G, j, M, l, L, u) {
+                    c = j << 3;
+                    C = G;
+                    g = l;
+                    p = L;
+                    var J = j + M << 3,
+                        D = 0,
+                        y = 0;
+                    Q(u);
+                    T(u);
+                    while (c < J && (D = q()) != a) {
+                        if (D == F) {
+                            T(u);
+                            D = q();
+                            if (D == a) break;
+                            i(D);
+                        } else {
+                            if (D < Z) {
+                                i(D);
+                                _(y, D);
+                            } else {
+                                _(y, y);
+                                i(Z - 1);
+                            }
+                        }
+                        y = D;
+                    }
+                    return p
+                };
+            return W
+        }();
+        b.tags = {};
+        b._types = function() {
+            var c = new Array(250);
+            c.fill(0);
+            c = c.concat([0, 0, 0, 0, 4, 3, 3, 3, 3, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 2, 2, 2, 2, 4, 3, 0, 0, 3, 4, 4, 3, 3, 5, 5, 3, 2, 5, 5, 0, 0, 0, 0, 4, 4, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 5, 5, 3, 0, 3, 3, 4, 4, 4, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            var V = {
+                33432: 2,
+                33434: 5,
+                33437: 5,
+                34665: 4,
+                34850: 3,
+                34853: 4,
+                34855: 3,
+                34864: 3,
+                34866: 4,
+                36864: 7,
+                36867: 2,
+                36868: 2,
+                37121: 7,
+                37377: 10,
+                37378: 5,
+                37380: 10,
+                37381: 5,
+                37383: 3,
+                37384: 3,
+                37385: 3,
+                37386: 5,
+                37510: 7,
+                37520: 2,
+                37521: 2,
+                37522: 2,
+                40960: 7,
+                40961: 3,
+                40962: 4,
+                40963: 4,
+                40965: 4,
+                41486: 5,
+                41487: 5,
+                41488: 3,
+                41985: 3,
+                41986: 3,
+                41987: 3,
+                41988: 5,
+                41989: 3,
+                41990: 3,
+                41993: 3,
+                41994: 3,
+                41995: 7,
+                41996: 3,
+                42032: 2,
+                42033: 2,
+                42034: 5,
+                42036: 2,
+                42037: 2,
+                59932: 7
+            };
+            return {
+                basic: {
+                    main: c,
+                    rest: V
+                },
+                gps: {
+                    main: [1, 2, 5, 2, 5, 1, 5, 5, 0, 9],
+                    rest: {
+                        18: 2,
+                        29: 2
+                    }
+                }
+            }
+        }();
+        b._readIFD = function(c, V, C, g, p, Z) {
+            var N = c.readUshort(V, C);
+            C += 2;
+            var F = {};
+            if (Z.debug) az("   ".repeat(p), g.length - 1, ">>>----------------");
+            for (var a = 0; a < N; a++) {
+                var q = c.readUshort(V, C);
+                C += 2;
+                var R = c.readUshort(V, C);
+                C += 2;
+                var d = c.readUint(V, C);
+                C += 4;
+                var Q = c.readUint(V, C);
+                C += 4;
+                var T = [];
+                if (R == 1 || R == 7) {
+                    var i = d < 5 ? C - 4 : Q;
+                    if (i + d > V.buffer.byteLength) d = V.buffer.byteLength - i;
+                    T = new Uint8Array(V.buffer, i, d);
+                }
+                if (R == 2) {
+                    var _ = d < 5 ? C - 4 : Q,
+                        W = V[_],
+                        E = Math.max(0, Math.min(d - 1, V.length - _));
+                    if (W < 128 || E == 0) T.push(c.readASCII(V, _, E));
+                    else T = new Uint8Array(V.buffer, _, E);
+                }
+                if (R == 3) {
+                    for (var G = 0; G < d; G++) T.push(c.readUshort(V, (d < 3 ? C - 4 : Q) + 2 * G));
+                }
+                if (R == 4 || R == 13) {
+                    for (var G = 0; G < d; G++) T.push(c.readUint(V, (d < 2 ? C - 4 : Q) + 4 * G));
+                }
+                if (R == 5 || R == 10) {
+                    var r = R == 5 ? c.readUint : c.readInt;
+                    for (var G = 0; G < d; G++) T.push([r(V, Q + G * 8), r(V, Q + G * 8 + 4)]);
+                }
+                if (R == 8) {
+                    for (var G = 0; G < d; G++) T.push(c.readShort(V, (d < 3 ? C - 4 : Q) + 2 * G));
+                }
+                if (R == 9) {
+                    for (var G = 0; G < d; G++) T.push(c.readInt(V, (d < 2 ? C - 4 : Q) + 4 * G));
+                }
+                if (R == 11) {
+                    for (var G = 0; G < d; G++) T.push(c.readFloat(V, Q + G * 4));
+                }
+                if (R == 12) {
+                    for (var G = 0; G < d; G++) T.push(c.readDouble(V, Q + G * 8));
+                }
+                if (d != 0 && T.length == 0) {
+                    az(q, "unknown TIFF tag type: ", R, "num:", d);
+                    if (a == 0) return;
+                    continue
+                }
+                if (Z.debug) az("   ".repeat(p), q, R, b.tags[q], T);
+                F["t" + q] = T;
+                if (q == 330 && F.t272 && F.t272[0] == "DSLR-A100") {} else if (q == 330 || q == 34665 || q == 34853 || q == 50740 && c.readUshort(V, c.readUint(T, 0)) < 300 || q == 61440) {
+                    var j = q == 50740 ? [c.readUint(T, 0)] : T,
+                        M = [];
+                    for (var G = 0; G < j.length; G++) b._readIFD(c, V, j[G], M, p + 1, Z);
+                    if (q == 330) F.subIFD = M;
+                    if (q == 34665) F.exifIFD = M[0];
+                    if (q == 34853) F.gpsiIFD = M[0];
+                    if (q == 50740) F.dngPrvt = M[0];
+                    if (q == 61440) F.fujiIFD = M[0];
+                }
+                if (q == 37500 && Z.parseMN) {
+                    var l = T;
+                    if (c.readASCII(l, 0, 5) == "Nikon") F.makerNote = b.decode(l.slice(10).buffer)[0];
+                    else if (c.readUshort(V, Q) < 300 && c.readUshort(V, Q + 4) <= 12) {
+                        var v = [];
+                        b._readIFD(c, V, Q, v, p + 1, Z);
+                        F.makerNote = v[0];
+                    }
+                }
+            }
+            g.push(F);
+            if (Z.debug) az("   ".repeat(p), "<<<---------------");
+            return C
+        };
+        b._writeIFD = function(c, V, C, g, p) {
+            var Z = Object.keys(p),
+                N = Z.length;
+            if (p.exifIFD) N--;
+            if (p.gpsiIFD) N--;
+            c.writeUshort(C, g, N);
+            g += 2;
+            var F = g + N * 12 + 4;
+            for (var a = 0; a < Z.length; a++) {
+                var q = Z[a];
+                if (q == "t34665" || q == "t34853") continue;
+                if (q == "exifIFD") q = "t34665";
+                if (q == "gpsiIFD") q = "t34853";
+                var R = parseInt(q.slice(1)),
+                    d = V.main[R];
+                if (d == null) d = V.rest[R];
+                if (d == null || d == 0) throw new Error("unknown type of tag: " + R);
+                var Q = p[q];
+                if (R == 34665) {
+                    var T = b._writeIFD(c, V, C, F, p.exifIFD);
+                    Q = [F];
+                    F = T[1];
+                }
+                if (R == 34853) {
+                    var T = b._writeIFD(c, b._types.gps, C, F, p.gpsiIFD);
+                    Q = [F];
+                    F = T[1];
+                }
+                if (d == 2) Q = Q[0] + "\0";
+                var i = Q.length;
+                c.writeUshort(C, g, R);
+                g += 2;
+                c.writeUshort(C, g, d);
+                g += 2;
+                c.writeUint(C, g, i);
+                g += 4;
+                var _ = [-1, 1, 1, 2, 4, 8, 0, 1, 0, 4, 8, 0, 8][d] * i,
+                    W = g;
+                if (_ > 4) {
+                    c.writeUint(C, g, F);
+                    W = F;
+                }
+                if (d == 1 || d == 7) {
+                    for (var E = 0; E < i; E++) C[W + E] = Q[E];
+                } else if (d == 2) {
+                    c.writeASCII(C, W, Q);
+                } else if (d == 3) {
+                    for (var E = 0; E < i; E++) c.writeUshort(C, W + 2 * E, Q[E]);
+                } else if (d == 4) {
+                    for (var E = 0; E < i; E++) c.writeUint(C, W + 4 * E, Q[E]);
+                } else if (d == 5 || d == 10) {
+                    var G = d == 5 ? c.writeUint : c.writeInt;
+                    for (var E = 0; E < i; E++) {
+                        var r = Q[E],
+                            j = r[0],
+                            M = r[1];
+                        if (j == null) throw "e";
+                        G(C, W + 8 * E, j);
+                        G(C, W + 8 * E + 4, M);
+                    }
+                } else if (d == 9) {
+                    for (var E = 0; E < i; E++) c.writeInt(C, W + 4 * E, Q[E]);
+                } else if (d == 12) {
+                    for (var E = 0; E < i; E++) c.writeDouble(C, W + 8 * E, Q[E]);
+                } else throw d;
+                if (_ > 4) {
+                    _ += _ & 1;
+                    F += _;
+                }
+                g += 4;
+            }
+            return [g, F]
+        };
+        b.toRGBA8 = function(c, V) {
+            function C(X) {
+                return X < .0031308 ? 12.92 * X : 1.055 * Math.pow(X, 1 / 2.4) - .055
+            }
+            var g = c.width,
+                p = c.height,
+                Z = g * p,
+                N = Z * 4,
+                F = c.data,
+                a = new Uint8Array(Z * 4),
+                q = c.t262 ? c.t262[0] : 2,
+                R = c.t258 ? Math.min(32, c.t258[0]) : 1;
+            if (c.t262 == null && R == 1) q = 0;
+            var d = c.t277 ? c.t277[0] : c.t258 ? c.t258.length : [1, 1, 3, 1, 1, 4, 3][q],
+                Q = Math.ceil(d * R * g / 8);
+            if (!1) {} else if (q == 0) {
+                V = 1 / 256;
+                for (var T = 0; T < p; T++) {
+                    var i = T * Q,
+                        _ = T * g;
+                    if (R == 1)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + (W >> 3)] >> 7 - (W & 7) & 1;
+                            a[E] = a[E + 1] = a[E + 2] = (1 - G) * 255;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 4)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + (W >> 1)] >> 4 - 4 * (W & 1) & 15;
+                            a[E] = a[E + 1] = a[E + 2] = (15 - G) * 17;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 8)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + W];
+                            a[E] = a[E + 1] = a[E + 2] = 255 - G;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 16)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                j = i + 2 * W,
+                                G = F[j + 1] << 8 | F[j];
+                            a[E] = a[E + 1] = a[E + 2] = Math.min(255, 255 - ~~(G * V));
+                            a[E + 3] = 255;
+                        }
+                }
+            } else if (q == 1) {
+                if (V == null) V = 1 / 256;
+                for (var T = 0; T < p; T++) {
+                    var i = T * Q,
+                        _ = T * g;
+                    if (R == 1)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + (W >> 3)] >> 7 - (W & 7) & 1;
+                            a[E] = a[E + 1] = a[E + 2] = G * 255;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 2)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + (W >> 2)] >> 6 - 2 * (W & 3) & 3;
+                            a[E] = a[E + 1] = a[E + 2] = G * 85;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 8)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                G = F[i + W * d];
+                            a[E] = a[E + 1] = a[E + 2] = G;
+                            a[E + 3] = 255;
+                        }
+                    if (R == 16)
+                        for (var W = 0; W < g; W++) {
+                            var E = _ + W << 2,
+                                j = i + 2 * W,
+                                G = F[j + 1] << 8 | F[j];
+                            a[E] = a[E + 1] = a[E + 2] = Math.min(255, ~~(G * V));
+                            a[E + 3] = 255;
+                        }
+                }
+            } else if (q == 2) {
+                if (R == 8) {
+                    if (d == 1)
+                        for (var W = 0; W < Z; W++) {
+                            a[4 * W] = a[4 * W + 1] = a[4 * W + 2] = F[W];
+                            a[4 * W + 3] = 255;
+                        }
+                    if (d == 4)
+                        for (var W = 0; W < N; W++) a[W] = F[W];
+                    if (d == 3)
+                        for (var W = 0; W < Z; W++) {
+                            var E = W << 2,
+                                l = W * 3;
+                            a[E] = F[l];
+                            a[E + 1] = F[l + 1];
+                            a[E + 2] = F[l + 2];
+                            a[E + 3] = 255;
+                        }
+                } else if (R == 16) {
+                    if (d == 4)
+                        for (var W = 0; W < Z; W++) {
+                            var E = W << 2,
+                                l = W * 8 + 1;
+                            a[E] = F[l];
+                            a[E + 1] = F[l + 2];
+                            a[E + 2] = F[l + 4];
+                            a[E + 3] = F[l + 6];
+                        }
+                    if (d == 3)
+                        for (var W = 0; W < Z; W++) {
+                            var E = W << 2,
+                                l = W * 6 + 1;
+                            a[E] = F[l];
+                            a[E + 1] = F[l + 2];
+                            a[E + 2] = F[l + 4];
+                            a[E + 3] = 255;
+                        }
+                } else if (R == 32) {
+                    var v = new Float32Array(F.buffer),
+                        L = 0;
+                    for (var W = 0; W < v.length; W++) L = Math.min(L, v[W]);
+                    if (L < 0)
+                        for (var W = 0; W < F.length; W += 4) {
+                            var u = F[W];
+                            F[W] = F[W + 3];
+                            F[W + 3] = u;
+                            u = F[W + 1];
+                            F[W + 1] = F[W + 2];
+                            F[W + 2] = u;
+                        }
+                    var I = [];
+                    for (var W = 0; W < 65536; W++) I.push(C(W / 65535));
+                    for (var W = 0; W < v.length; W++) {
+                        var J = Math.max(0, Math.min(1, v[W]));
+                        v[W] = I[~~(.5 + J * 65535)];
+                    }
+                    if (d == 3)
+                        for (var W = 0; W < Z; W++) {
+                            var E = W << 2,
+                                l = W * 3;
+                            a[E] = ~~(.5 + v[l] * 255);
+                            a[E + 1] = ~~(.5 + v[l + 1] * 255);
+                            a[E + 2] = ~~(.5 + v[l + 2] * 255);
+                            a[E + 3] = 255;
+                        } else if (d == 4)
+                            for (var W = 0; W < Z; W++) {
+                                var E = W << 2,
+                                    l = W * 4;
+                                a[E] = ~~(.5 + v[l] * 255);
+                                a[E + 1] = ~~(.5 + v[l + 1] * 255);
+                                a[E + 2] = ~~(.5 + v[l + 2] * 255);
+                                a[E + 3] = ~~(.5 + v[l + 3] * 255);
+                            } else throw d
+                } else throw R
+            } else if (q == 3) {
+                var D = c.t320,
+                    y = 1 << R,
+                    e = R == 8 && d > 1 && c.t338 && c.t338[0] != 0;
+                for (var T = 0; T < p; T++)
+                    for (var X = 0; X < g; X++) {
+                        var W = T * g + X,
+                            E = W << 2,
+                            n = 0,
+                            k = T * Q;
+                        if (!1) {} else if (R == 1) n = F[k + (X >>> 3)] >>> 7 - (X & 7) & 1;
+                        else if (R == 2) n = F[k + (X >>> 2)] >>> 6 - 2 * (X & 3) & 3;
+                        else if (R == 4) n = F[k + (X >>> 1)] >>> 4 - 4 * (X & 1) & 15;
+                        else if (R == 8) n = F[k + X * d];
+                        else throw R;
+                        a[E] = D[n] >> 8;
+                        a[E + 1] = D[y + n] >> 8;
+                        a[E + 2] = D[y + y + n] >> 8;
+                        a[E + 3] = e ? F[k + X * d + 1] : 255;
+                    }
+            } else if (q == 5) {
+                var P = d > 4 ? 1 : 0;
+                for (var W = 0; W < Z; W++) {
+                    var E = W << 2,
+                        A = W * d;
+                    if (UDOC) {
+                        var z = F[A],
+                            o = F[A + 1],
+                            t = F[A + 2],
+                            a5 = F[A + 3],
+                            S = UDOC.Color.cmykToRgb([z * (1 / 255), o * (1 / 255), t * (1 / 255), a5 * (1 / 255)]);
+                        a[E] = ~~(.5 + 255 * S[0]);
+                        a[E + 1] = ~~(.5 + 255 * S[1]);
+                        a[E + 2] = ~~(.5 + 255 * S[2]);
+                    } else {
+                        var z = 255 - F[A],
+                            o = 255 - F[A + 1],
+                            t = 255 - F[A + 2],
+                            a5 = (255 - F[A + 3]) * (1 / 255);
+                        a[E] = ~~(z * a5 + .5);
+                        a[E + 1] = ~~(o * a5 + .5);
+                        a[E + 2] = ~~(t * a5 + .5);
+                    }
+                    a[E + 3] = 255 * (1 - P) + F[A + 4] * P;
+                }
+            } else if (q == 6 && c.t278) {
+                var U = c.t278[0];
+                for (var T = 0; T < p; T += U) {
+                    var W = T * g,
+                        ah = U * g;
+                    for (var aB = 0; aB < ah; aB++) {
+                        var E = 4 * (W + aB),
+                            A = 3 * W + 4 * (aB >>> 1),
+                            t = F[A + (aB & 1)],
+                            B = F[A + 2] - 128,
+                            aQ = F[A + 3] - 128,
+                            $ = t + ((aQ >> 2) + (aQ >> 3) + (aQ >> 5)),
+                            aZ = t - ((B >> 2) + (B >> 4) + (B >> 5)) - ((aQ >> 1) + (aQ >> 3) + (aQ >> 4) + (aQ >> 5)),
+                            x = t + (B + (B >> 1) + (B >> 2) + (B >> 6));
+                        a[E] = Math.max(0, Math.min(255, $));
+                        a[E + 1] = Math.max(0, Math.min(255, aZ));
+                        a[E + 2] = Math.max(0, Math.min(255, x));
+                        a[E + 3] = 255;
+                    }
+                }
+            } else if (q == 32845) {
+                for (var T = 0; T < p; T++)
+                    for (var X = 0; X < g; X++) {
+                        var A = (T * g + X) * 6,
+                            E = (T * g + X) * 4,
+                            a0 = F[A + 1] << 8 | F[A],
+                            a0 = Math.pow(2, (a0 + .5) / 256 - 64),
+                            aV = (F[A + 3] + .5) / 410,
+                            aS = (F[A + 5] + .5) / 410,
+                            aK = 9 * aV / (6 * aV - 16 * aS + 12),
+                            aO = 4 * aS / (6 * aV - 16 * aS + 12),
+                            Y = a0,
+                            ao = aK * Y / aO,
+                            t = Y,
+                            K = (1 - aK - aO) * Y / aO,
+                            $ = 2.69 * ao - 1.276 * t - .414 * K,
+                            aZ = -1.022 * ao + 1.978 * t + .044 * K,
+                            x = .061 * ao - .224 * t + 1.163 * K;
+                        a[E] = C(Math.min($, 1)) * 255;
+                        a[E + 1] = C(Math.min(aZ, 1)) * 255;
+                        a[E + 2] = C(Math.min(x, 1)) * 255;
+                        a[E + 3] = 255;
+                    }
+            } else az("Unknown Photometric interpretation: " + q);
+            return a
+        };
+        b.replaceIMG = function(c) {
+            if (c == null) c = document.getElementsByTagName("img");
+            var V = ["tif", "tiff", "dng", "cr2", "nef"];
+            for (var C = 0; C < c.length; C++) {
+                var g = c[C],
+                    p = g.getAttribute("src");
+                if (p == null) continue;
+                var N = p.split(".").pop().toLowerCase();
+                if (V.indexOf(N) == -1) continue;
+                var F = new XMLHttpRequest;
+                b._xhrs.push(F);
+                b._imgs.push(g);
+                F.open("GET", p);
+                F.responseType = "arraybuffer";
+                F.onload = b._imgLoaded;
+                F.send();
+            }
+        };
+        b._xhrs = [];
+        b._imgs = [];
+        b._imgLoaded = function(c) {
+            var C = b._xhrs.indexOf(c.target),
+                g = b._imgs[C];
+            b._xhrs.splice(C, 1);
+            b._imgs.splice(C, 1);
+            g.setAttribute("src", b.bufferToURI(c.target.response));
+        };
+        b.bufferToURI = function(c) {
+            var V = b.decode(c),
+                C = V,
+                g = 0,
+                p = C[0];
+            if (V[0].subIFD) C = C.concat(V[0].subIFD);
+            for (var Z = 0; Z < C.length; Z++) {
+                var N = C[Z];
+                if (N.t258 == null || N.t258.length < 3) continue;
+                var F = N.t256 * N.t257;
+                if (F > g) {
+                    g = F;
+                    p = N;
+                }
+            }
+            b.decodeImage(c, p, V);
+            var a = b.toRGBA8(p),
+                q = p.width,
+                R = p.height,
+                d = document.createElement("canvas");
+            d.width = q;
+            d.height = R;
+            var Q = d.getContext("2d", { willReadFrequently: true }),
+                T = new ImageData(new Uint8ClampedArray(a.buffer), q, R);
+            Q.putImageData(T, 0, 0);
+            return d.toDataURL()
+        };
+        b._binBE = {
+            nextZero: function(c, V) {
+                while (c[V] != 0) V++;
+                return V
+            },
+            readUshort: function(c, V) {
+                return c[V] << 8 | c[V + 1]
+            },
+            readShort: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 1];
+                C[1] = c[V + 0];
+                return b._binBE.i16[0]
+            },
+            readInt: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 3];
+                C[1] = c[V + 2];
+                C[2] = c[V + 1];
+                C[3] = c[V + 0];
+                return b._binBE.i32[0]
+            },
+            readUint: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 3];
+                C[1] = c[V + 2];
+                C[2] = c[V + 1];
+                C[3] = c[V + 0];
+                return b._binBE.ui32[0]
+            },
+            readASCII: function(c, V, C) {
+                var g = "";
+                for (var p = 0; p < C; p++) g += String.fromCharCode(c[V + p]);
+                return g
+            },
+            readFloat: function(c, V) {
+                var C = b._binBE.ui8;
+                for (var g = 0; g < 4; g++) C[g] = c[V + 3 - g];
+                return b._binBE.fl32[0]
+            },
+            readDouble: function(c, V) {
+                var C = b._binBE.ui8;
+                for (var g = 0; g < 8; g++) C[g] = c[V + 7 - g];
+                return b._binBE.fl64[0]
+            },
+            writeUshort: function(c, V, C) {
+                c[V] = C >> 8 & 255;
+                c[V + 1] = C & 255;
+            },
+            writeInt: function(c, V, C) {
+                var g = b._binBE.ui8;
+                b._binBE.i32[0] = C;
+                c[V + 3] = g[0];
+                c[V + 2] = g[1];
+                c[V + 1] = g[2];
+                c[V + 0] = g[3];
+            },
+            writeUint: function(c, V, C) {
+                c[V] = C >> 24 & 255;
+                c[V + 1] = C >> 16 & 255;
+                c[V + 2] = C >> 8 & 255;
+                c[V + 3] = C >> 0 & 255;
+            },
+            writeASCII: function(c, V, C) {
+                for (var g = 0; g < C.length; g++) c[V + g] = C.charCodeAt(g);
+            },
+            writeDouble: function(c, V, C) {
+                b._binBE.fl64[0] = C;
+                for (var g = 0; g < 8; g++) c[V + g] = b._binBE.ui8[7 - g];
+            }
+        };
+        b._binBE.ui8 = new Uint8Array(8);
+        b._binBE.i16 = new Int16Array(b._binBE.ui8.buffer);
+        b._binBE.i32 = new Int32Array(b._binBE.ui8.buffer);
+        b._binBE.ui32 = new Uint32Array(b._binBE.ui8.buffer);
+        b._binBE.fl32 = new Float32Array(b._binBE.ui8.buffer);
+        b._binBE.fl64 = new Float64Array(b._binBE.ui8.buffer);
+        b._binLE = {
+            nextZero: b._binBE.nextZero,
+            readUshort: function(c, V) {
+                return c[V + 1] << 8 | c[V]
+            },
+            readShort: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 0];
+                C[1] = c[V + 1];
+                return b._binBE.i16[0]
+            },
+            readInt: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 0];
+                C[1] = c[V + 1];
+                C[2] = c[V + 2];
+                C[3] = c[V + 3];
+                return b._binBE.i32[0]
+            },
+            readUint: function(c, V) {
+                var C = b._binBE.ui8;
+                C[0] = c[V + 0];
+                C[1] = c[V + 1];
+                C[2] = c[V + 2];
+                C[3] = c[V + 3];
+                return b._binBE.ui32[0]
+            },
+            readASCII: b._binBE.readASCII,
+            readFloat: function(c, V) {
+                var C = b._binBE.ui8;
+                for (var g = 0; g < 4; g++) C[g] = c[V + g];
+                return b._binBE.fl32[0]
+            },
+            readDouble: function(c, V) {
+                var C = b._binBE.ui8;
+                for (var g = 0; g < 8; g++) C[g] = c[V + g];
+                return b._binBE.fl64[0]
+            },
+            writeUshort: function(c, V, C) {
+                c[V] = C & 255;
+                c[V + 1] = C >> 8 & 255;
+            },
+            writeInt: function(c, V, C) {
+                var g = b._binBE.ui8;
+                b._binBE.i32[0] = C;
+                c[V + 0] = g[0];
+                c[V + 1] = g[1];
+                c[V + 2] = g[2];
+                c[V + 3] = g[3];
+            },
+            writeUint: function(c, V, C) {
+                c[V] = C >>> 0 & 255;
+                c[V + 1] = C >>> 8 & 255;
+                c[V + 2] = C >>> 16 & 255;
+                c[V + 3] = C >>> 24 & 255;
+            },
+            writeASCII: b._binBE.writeASCII
+        };
+        b._copyTile = function(c, V, C, g, p, Z, N, F) {
+            var a = Math.min(V, p - N),
+                q = Math.min(C, Z - F);
+            for (var R = 0; R < q; R++) {
+                var d = (F + R) * p + N,
+                    Q = R * V;
+                for (var T = 0; T < a; T++) g[d + T] = c[Q + T];
+            }
+        };
+        b.LosslessJpegDecode = function() {
+            var c, V;
+
+            function C() {
+                return c[V++]
+            }
+
+            function g() {
+                return c[V++] << 8 | c[V++]
+            }
+
+            function p(G) {
+                var r = C(),
+                    M = [0, 0, 0, 255],
+                    l = [],
+                    u = 8;
+                for (var J = 0; J < 16; J++) l[J] = C();
+                for (var J = 0; J < 16; J++) {
+                    for (var D = 0; D < l[J]; D++) {
+                        var e = Z(M, 0, J + 1, 1);
+                        M[e + 3] = C();
+                    }
+                }
+                var X = new Uint8Array(1 << u);
+                G[r] = [new Uint8Array(M), X];
+                for (var J = 0; J < 1 << u; J++) {
+                    var A = u,
+                        z = J,
+                        a5 = 0,
+                        S = 0;
+                    while (M[a5 + 3] == 255 && A != 0) {
+                        S = z >> --A & 1;
+                        a5 = M[a5 + S];
+                    }
+                    X[J] = a5;
+                }
+            }
+
+            function Z(G, r, M, l) {
+                if (G[r + 3] != 255) return 0;
+                if (M == 0) return r;
+                for (var u = 0; u < 2; u++) {
+                    if (G[r + u] == 0) {
+                        G[r + u] = G.length;
+                        G.push(0, 0, l, 255);
+                    }
+                    var J = Z(G, G[r + u], M - 1, l + 1);
+                    if (J != 0) return J
+                }
+                return 0
+            }
+
+            function N(G) {
+                var r = G.b,
+                    M = G.a;
+                while (r < 25 && G.e < G.d) {
+                    var l = G.data[G.e++];
+                    if (!G.c) G.e += l + 1 >>> 8;
+                    M = M << 8 | l;
+                    r += 8;
+                }
+                if (r < 0) throw "e";
+                G.b = r;
+                G.a = M;
+            }
+
+            function F(G, r) {
+                if (r.b < G) N(r);
+                return r.a >> (r.b -= G) & 65535 >> 16 - G
+            }
+
+            function a(G, r) {
+                var M = G[0],
+                    l = 0,
+                    u = 255,
+                    J = 0;
+                if (r.b < 16) N(r);
+                var e = r.a >> r.b - 8 & 255;
+                l = G[1][e];
+                u = M[l + 3];
+                r.b -= M[l + 2];
+                while (u == 255) {
+                    J = r.a >> --r.b & 1;
+                    l = M[l + J];
+                    u = M[l + 3];
+                }
+                return u
+            }
+
+            function q(G, r) {
+                if (G < 32768 >> 16 - r) G += -(1 << r) + 1;
+                return G
+            }
+
+            function R(G, r) {
+                var M = a(G, r);
+                if (M == 0) return 0;
+                if (M == 16) return -32768;
+                var l = F(M, r);
+                return q(l, M)
+            }
+
+            function Q(G, r, M, l, u, J) {
+                for (var e = 0; e < J; e++) {
+                    var V = e * r;
+                    for (var X = 0; X < r; X += u)
+                        for (var A = 0; A < u; A++) G[V + X + A] = R(l[A], M);
+                }
+            }
+
+            function T(G, r) {
+                return q(F(G, r), G)
+            }
+
+            function i(G, r, M, l, u) {
+                var J = c.length - V;
+                for (var e = 0; e < J; e += 4) {
+                    var X = c[V + e];
+                    c[V + e] = c[V + e + 3];
+                    c[V + e + 3] = X;
+                    var X = c[V + e + 1];
+                    c[V + e + 1] = c[V + e + 2];
+                    c[V + e + 2] = X;
+                }
+                for (var A = 0; A < u; A++) {
+                    var z = 32768,
+                        a5 = 32768;
+                    for (var S = 0; S < r; S += 2) {
+                        var U = a(l, M),
+                            ah = a(l, M);
+                        if (U != 0) z += T(U, M);
+                        if (ah != 0) a5 += T(ah, M);
+                        G[A * r + S] = z & 65535;
+                        G[A * r + S + 1] = a5 & 65535;
+                    }
+                }
+            }
+
+            function _(G) {
+                c = G;
+                V = 0;
+                if (g() != 65496) throw "e";
+                var r = [],
+                    M = 0,
+                    l = 0,
+                    u = [],
+                    J = [],
+                    e = [],
+                    X = 0,
+                    A = 0,
+                    z = 0;
+                while (!0) {
+                    var a5 = g();
+                    if (a5 == 65535) {
+                        V--;
+                        continue
+                    }
+                    var S = g();
+                    if (a5 == 65475) {
+                        l = C();
+                        A = g();
+                        z = g();
+                        X = C();
+                        for (var U = 0; U < X; U++) {
+                            var ah = C(),
+                                aB = C(),
+                                B = C();
+                            if (B != 0) throw "e";
+                            r[ah] = [U, aB >> 4, aB & 15];
+                        }
+                    } else if (a5 == 65476) {
+                        var aQ = V + S - 2;
+                        while (V < aQ) p(J);
+                    } else if (a5 == 65498) {
+                        V++;
+                        for (var U = 0; U < X; U++) {
+                            var s = C(),
+                                aV = r[s];
+                            e[aV[0]] = J[C() >>> 4];
+                            u[aV[0]] = aV.slice(1);
+                        }
+                        M = C();
+                        V += 2;
+                        break
+                    } else {
+                        V += S - 2;
+                    }
+                }
+                var aS = l > 8 ? Uint16Array : Uint8Array,
+                    aK = new aS(A * z * X),
+                    aO = {
+                        b: 0,
+                        a: 0,
+                        c: M == 8,
+                        e: V,
+                        data: c,
+                        d: c.length
+                    };
+                if (aO.c) i(aK, z * X, aO, e[0], A);
+                else {
+                    var Y = [],
+                        ao = 0,
+                        K = 0;
+                    for (var U = 0; U < X; U++) {
+                        var aa = u[U],
+                            a2 = aa[0],
+                            aG = aa[1];
+                        if (a2 > ao) ao = a2;
+                        if (aG > K) K = aG;
+                        Y.push(a2 * aG);
+                    }
+                    if (ao != 1 || K != 1) {
+                        var m = [],
+                            f = 0;
+                        for (var U = 0; U < X; U++) {
+                            for (var aU = 0; aU < Y[U]; aU++) m.push(e[U]);
+                            f += Y[U];
+                        }
+                        var O = z / ao,
+                            h = A / K;
+                        Q(aK, O * f, aO, m, f, h);
+                        W(aK, M, O, h, f - 2, f, f, l);
+                        var w = aK.slice(0);
+                        for (var aG = 0; aG < A; aG++)
+                            for (var a2 = 0; a2 < z; a2++) {
+                                var aA = (aG * z + a2) * X,
+                                    aP = ~~(aG / K),
+                                    b1 = ~~(a2 / ao),
+                                    ab = aP * O + b1,
+                                    ar = 0;
+                                for (var U = 0; U < X; U++) {
+                                    var b4 = a2 & 1,
+                                        a1 = aG & 1,
+                                        aw = K == 2 ? aG & 1 : 0,
+                                        a6 = ab * f + ar + (U == 0 ? K == 1 ? b4 : b4 * 2 + a1 : 0);
+                                    aK[aA + U] = w[a6];
+                                    ar += Y[U];
+                                }
+                            }
+                        W(aK, M, z, A, 0, 1, X, l);
+                    } else {
+                        Q(aK, z * X, aO, e, X, A);
+                        W(aK, M, z, A, 0, X, X, l);
+                    }
+                }
+                return aK
+            }
+
+            function W(G, r, M, l, u, J, e, X) {
+                var A = M * e;
+                for (var z = u; z < J; z++) G[z] += 1 << X - 1;
+                for (var a5 = e; a5 < A; a5 += e)
+                    for (var z = u; z < J; z++) G[a5 + z] += G[a5 + z - e];
+                for (var S = 1; S < l; S++) {
+                    var U = S * A;
+                    for (var z = u; z < J; z++) G[U + z] += G[U + z - A];
+                    for (var a5 = e; a5 < A; a5 += e) {
+                        for (var z = u; z < J; z++) {
+                            var ah = U + a5 + z,
+                                aB = ah - A,
+                                B = G[ah - e],
+                                aQ = 0;
+                            if (r == 0) aQ = 0;
+                            else if (r == 1) aQ = B;
+                            else if (r == 2) aQ = G[aB];
+                            else if (r == 3) aQ = G[aB - e];
+                            else if (r == 4) aQ = B + (G[aB] - G[aB - e]);
+                            else if (r == 5) aQ = B + (G[aB] - G[aB - e] >>> 1);
+                            else if (r == 6) aQ = G[aB] + (B - G[aB - e] >>> 1);
+                            else if (r == 7) aQ = B + G[aB] >>> 1;
+                            else throw r;
+                            G[ah] += aQ;
+                        }
+                    }
+                }
+            }
+            return _
+        }();
+        (function() {
+            var c = 0,
+                V = 1,
+                C = 2,
+                g = 3,
+                p = 4,
+                N = 5,
+                F = 6,
+                a = 7,
+                q = 8,
+                R = 9,
+                d = 10,
+                Q = 11,
+                T = 12,
+                i = 13,
+                W = 14,
+                E = 15,
+                G = 16,
+                r = 17,
+                M = 18;
+
+            function l($) {
+                var s = b._binBE.readUshort,
+                    m = {
+                        b: s($, 0),
+                        i: $[2],
+                        C: $[3],
+                        u: $[4],
+                        q: s($, 5),
+                        k: s($, 7),
+                        e: s($, 9),
+                        l: s($, 11),
+                        s: $[13],
+                        d: s($, 14)
+                    };
+                if (m.b != 18771 || m.i > 1 || m.q < 6 || m.q % 6 || m.e < 768 || m.e % 24 || m.l != 768 || m.k < m.l || m.k % m.l || m.k - m.e >= m.l || m.s > 16 || m.s != m.k / m.l || m.s != Math.ceil(m.e / m.l) || m.d != m.q / 6 || m.u != 12 && m.u != 14 && m.u != 16 || m.C != 16 && m.C != 0) {
+                    throw "Invalid data"
+                }
+                if (m.i == 0) {
+                    throw "Not implemented. We need this file!"
+                }
+                m.h = m.C == 16;
+                m.m = (m.h ? m.l * 2 / 3 : m.l >>> 1) | 0;
+                m.A = m.m + 2;
+                m.f = 64;
+                m.g = (1 << m.u) - 1;
+                m.n = 4 * m.u;
+                return m
+            }
+
+            function v($, s) {
+                var m = new Array(s.s),
+                    f = 4 * s.s,
+                    aU = 16 + f;
+                if (f & 12) aU += 16 - (f & 12);
+                for (var O = 0, h = 16; O < s.s; h += 4) {
+                    var w = b._binBE.readUint($, h);
+                    m[O] = $.slice(aU, aU + w);
+                    m[O].j = 0;
+                    m[O].a = 0;
+                    aU += w;
+                    O++;
+                }
+                if (aU != $.length) throw "Invalid data";
+                return m
+            }
+
+            function L($, s) {
+                for (var m = -s[4], f = 0; m <= s[4]; f++, m++) {
+                    $[f] = m <= -s[3] ? -4 : m <= -s[2] ? -3 : m <= -s[1] ? -2 : m < -s[0] ? -1 : m <= s[0] ? 0 : m < s[1] ? 1 : m < s[2] ? 2 : m < s[3] ? 3 : 4;
+                }
+            }
+
+            function u($, s, m) {
+                var f = [s, 3 * s + 18, 5 * s + 67, 7 * s + 276, m];
+                $.o = s;
+                $.w = (f[4] + 2 * s) / (2 * s + 1) + 1 | 0;
+                $.v = Math.ceil(Math.log2($.w));
+                $.t = 9;
+                L($.c, f);
+            }
+
+            function I($) {
+                var s = {
+                    c: new Int8Array(2 << $.u)
+                };
+                u(s, 0, $.g);
+                return s
+            }
+
+            function e($) {
+                var s = [
+                        [],
+                        [],
+                        []
+                    ],
+                    m = Math.max(2, $.w + 32 >>> 6);
+                for (var f = 0; f < 3; f++) {
+                    for (var aU = 0; aU < 41; aU++) {
+                        s[f][aU] = [m, 1];
+                    }
+                }
+                return s
+            }
+
+            function X($) {
+                for (var s = -1, m = 0; !m; s++) {
+                    m = $[$.j] >>> 7 - $.a & 1;
+                    $.a++;
+                    $.a &= 7;
+                    if (!$.a) $.j++;
+                }
+                return s
+            }
+
+            function k($, s) {
+                var m = 0,
+                    f = 8 - $.a,
+                    aU = $.j,
+                    O = $.a;
+                if (s) {
+                    if (s >= f) {
+                        do {
+                            m <<= f;
+                            s -= f;
+                            m |= $[$.j] & (1 << f) - 1;
+                            $.j++;
+                            f = 8;
+                        } while (s >= 8)
+                    }
+                    if (s) {
+                        m <<= s;
+                        f -= s;
+                        m |= $[$.j] >>> f & (1 << s) - 1;
+                    }
+                    $.a = 8 - f;
+                }
+                return m
+            }
+
+            function o($, s) {
+                var m = 0;
+                if (s < $) {
+                    while (m <= 14 && s << ++m < $);
+                }
+                return m
+            }
+
+            function t($, s, m, f, aU, O, h, w) {
+                if (w == null) w = 0;
+                var aA = O + 1,
+                    aP = aA % 2,
+                    b1 = 0,
+                    ab = 0,
+                    ar = 0,
+                    b4, a1, aw = f[aU],
+                    a6 = f[aU - 1],
+                    b7 = f[aU - 2][aA],
+                    as = a6[aA - 1],
+                    ay = a6[aA],
+                    ae = a6[aA + 1],
+                    ai = aw[aA - 1],
+                    b6 = aw[aA + 1],
+                    aD = Math.abs,
+                    aT, ba, b0, aM;
+                if (aP) {
+                    aT = aD(ae - ay);
+                    ba = aD(b7 - ay);
+                    b0 = aD(as - ay);
+                }
+                if (aP) {
+                    aM = aT > b0 && ba < aT ? b7 + as : aT < b0 && ba < b0 ? b7 + ae : ae + as;
+                    aM = aM + 2 * ay >>> 2;
+                    if (w) {
+                        aw[aA] = aM;
+                        return
+                    }
+                    b4 = s.t * s.c[$.g + ay - b7] + s.c[$.g + as - ay];
+                } else {
+                    aM = ay > as && ay > ae || ay < as && ay < ae ? b6 + ai + 2 * ay >>> 2 : ai + b6 >>> 1;
+                    b4 = s.t * s.c[$.g + ay - as] + s.c[$.g + as - ai];
+                }
+                a1 = aD(b4);
+                var aL = X(m);
+                if (aL < $.n - s.v - 1) {
+                    var ad = o(h[a1][0], h[a1][1]);
+                    ar = k(m, ad) + (aL << ad);
+                } else {
+                    ar = k(m, s.v) + 1;
+                }
+                ar = ar & 1 ? -1 - (ar >>> 1) : ar >>> 1;
+                h[a1][0] += aD(ar);
+                if (h[a1][1] == $.f) {
+                    h[a1][0] >>>= 1;
+                    h[a1][1] >>>= 1;
+                }
+                h[a1][1]++;
+                aM = b4 < 0 ? aM - ar : aM + ar;
+                if ($.i) {
+                    if (aM < 0) aM += s.w;
+                    else if (aM > $.g) aM -= s.w;
+                }
+                aw[aA] = aM >= 0 ? Math.min(aM, $.g) : 0;
+            }
+
+            function a5($, s, m) {
+                var f = $[0].length;
+                for (var aU = s; aU <= m; aU++) {
+                    $[aU][0] = $[aU - 1][1];
+                    $[aU][f - 1] = $[aU - 1][f - 2];
+                }
+            }
+
+            function S($) {
+                a5($, a, T);
+                a5($, C, p);
+                a5($, E, r);
+            }
+
+            function U($, s, m, f, aU, O, h, w, aA, aP, b1, ab, ar) {
+                var b4 = 0,
+                    a1 = 1,
+                    aw = aU < i && aU > p;
+                while (a1 < $.m) {
+                    if (b4 < $.m) {
+                        t($, s, m, f, aU, b4, h[aA], $.h && (aw && aP || !aw && (b1 || (b4 & ab) == ar)));
+                        t($, s, m, f, O, b4, h[aA], $.h && (!aw && aP || aw && (b1 || (b4 & ab) == ar)));
+                        b4 += 2;
+                    }
+                    if (b4 > 8) {
+                        t($, s, m, f, aU, a1, w[aA]);
+                        t($, s, m, f, O, a1, w[aA]);
+                        a1 += 2;
+                    }
+                }
+                S(f);
+            }
+
+            function B($, s, m, f, aU, O) {
+                U($, s, m, f, C, a, aU, O, 0, 0, 1, 0, 8);
+                U($, s, m, f, q, E, aU, O, 1, 0, 1, 0, 8);
+                U($, s, m, f, g, R, aU, O, 2, 1, 0, 3, 0);
+                U($, s, m, f, d, G, aU, O, 0, 0, 0, 3, 2);
+                U($, s, m, f, p, Q, aU, O, 1, 0, 0, 3, 2);
+                U($, s, m, f, T, r, aU, O, 2, 1, 0, 3, 0);
+            }
+
+            function aQ($, s, m, f, aU, O) {
+                var h = O.length,
+                    w = $.l;
+                if (aU + 1 == $.s) w = $.e - aU * $.l;
+                var aA = 6 * $.e * f + aU * $.l;
+                for (var aP = 0; aP < 6; aP++) {
+                    for (var b1 = 0; b1 < w; b1++) {
+                        var ab = O[aP % h][b1 % h],
+                            ar;
+                        if (ab == 0) {
+                            ar = C + (aP >>> 1);
+                        } else if (ab == 2) {
+                            ar = E + (aP >>> 1);
+                        } else {
+                            ar = a + aP;
+                        }
+                        var b4 = $.h ? (b1 * 2 / 3 & 2147483646 | b1 % 3 & 1) + (b1 % 3 >>> 1) : b1 >>> 1;
+                        s[aA + b1] = m[ar][b4 + 1];
+                    }
+                    aA += $.e;
+                }
+            }
+            b._decompressRAF = function($, s) {
+                var m = l($),
+                    f = v($, m),
+                    aU = I(m),
+                    O = new Int16Array(m.e * m.q);
+                if (s == null) {
+                    s = m.h ? [
+                        [1, 1, 0, 1, 1, 2],
+                        [1, 1, 2, 1, 1, 0],
+                        [2, 0, 1, 0, 2, 1],
+                        [1, 1, 2, 1, 1, 0],
+                        [1, 1, 0, 1, 1, 2],
+                        [0, 2, 1, 2, 0, 1]
+                    ] : [
+                        [0, 1],
+                        [3, 2]
+                    ];
+                }
+                var h = [
+                        [c, g],
+                        [V, p],
+                        [N, Q],
+                        [F, T],
+                        [i, G],
+                        [W, r]
+                    ],
+                    w = [];
+                for (var aA = 0; aA < M; aA++) {
+                    w[aA] = new Uint16Array(m.A);
+                }
+                for (var aP = 0; aP < m.s; aP++) {
+                    var b1 = e(aU),
+                        ab = e(aU);
+                    for (var aA = 0; aA < M; aA++) {
+                        for (var ar = 0; ar < m.A; ar++) {
+                            w[aA][ar] = 0;
+                        }
+                    }
+                    for (var b4 = 0; b4 < m.d; b4++) {
+                        B(m, aU, f[aP], w, b1, ab);
+                        for (var aA = 0; aA < 6; aA++) {
+                            for (var ar = 0; ar < m.A; ar++) {
+                                w[h[aA][0]][ar] = w[h[aA][1]][ar];
+                            }
+                        }
+                        aQ(m, O, w, b4, aP, s);
+                        for (var aA = C; aA < M; aA++) {
+                            if ([N, F, i, W].indexOf(aA) == -1) {
+                                for (var ar = 0; ar < m.A; ar++) {
+                                    w[aA][ar] = 0;
+                                }
+                            }
+                        }
+                        S(w);
+                    }
+                }
+                return O
+            };
+        }());
+    }(b, bb));
+
+    return b;
+}());
+
+
+// https://github.com/photopea/Typr.js/tree/gh-pages
+
+var Typr = function() {
+    var g = {};
+    g.parse = function(x) {
+        var T = function(E, j, f, r) {
+            var Y = g.B,
+                k = g.T,
+                I = {
+                    cmap: k.v,
+                    head: k.head,
+                    hhea: k.aJ,
+                    maxp: k.aq,
+                    hmtx: k.aI,
+                    name: k.name,
+                    "OS/2": k.N,
+                    post: k.b1,
+                    loca: k.aF,
+                    kern: k.g,
+                    glyf: k.n,
+                    "CFF ": k.L,
+                    CBLC: k.aM,
+                    CBDT: k.ap,
+                    "SVG ": k.au,
+                    COLR: k.ag,
+                    CPAL: k.aZ,
+                    sbix: k.az
+                },
+                o = {
+                    _data: E,
+                    _index: j,
+                    _offset: f
+                };
+            for (var s in I) {
+                var $ = g.findTable(E, s, f);
+                if ($) {
+                    var z = $[0],
+                        K = r[z];
+                    if (K == null) K = I[s].Q(E, z, $[1], o);
+                    o[s] = r[z] = K;
+                }
+            }
+            return o
+        },
+        Y = g.B,
+        E = new Uint8Array(x),
+        r = {},
+        Z = Y.B(E, 0, 4);
+        if (Z == "ttcf") {
+            var f = 4,
+                d = Y.k(E, f);
+            f += 2;
+            var F = Y.k(E, f);
+            f += 2;
+            var b = Y.u(E, f);
+            f += 4;
+            var n = [];
+            for (var v = 0; v < b; v++) {
+                var W = Y.u(E, f);
+                f += 4;
+                n.push(T(E, v, W, r));
+            }
+            return n
+        } else return [T(E, 0, 0, r)]
+    };
+    g.findTable = function(x, T, Y) {
+        var E = g.B,
+            r = E.k(x, Y + 4),
+            Z = Y + 12;
+        for (var f = 0; f < r; f++) {
+            var F = E.B(x, Z, 4),
+                b = E.u(x, Z + 4),
+                n = E.u(x, Z + 8),
+                v = E.u(x, Z + 12);
+            if (F == T) return [n, v];
+            Z += 16;
+        }
+        return null
+    };
+    g.T = {};
+    g.B = {
+        i: function(x, T) {
+            return (x[T] << 8 | x[T + 1]) + (x[T + 2] << 8 | x[T + 3]) / (256 * 256 + 4)
+        },
+        f: function(x, T) {
+            var Y = g.B.X(x, T);
+            return Y / 16384
+        },
+        a: function(x, T) {
+            var Y = g.B.e.q;
+            Y[0] = x[T + 3];
+            Y[1] = x[T + 2];
+            Y[2] = x[T + 1];
+            Y[3] = x[T];
+            return g.B.e.b6[0]
+        },
+        U: function(x, T) {
+            var Y = g.B.e.q;
+            Y[0] = x[T];
+            return g.B.e.aK[0]
+        },
+        X: function(x, T) {
+            var Y = g.B.e.af;
+            Y[0] = x[T] << 8 | x[T + 1];
+            return g.B.e.aC[0]
+        },
+        k: function(x, T) {
+            return x[T] << 8 | x[T + 1]
+        },
+        ad: function(x, T, Y) {
+            x[T] = Y >> 8 & 255;
+            x[T + 1] = Y & 255;
+        },
+        a$: function(x, T, Y) {
+            var E = [];
+            for (var r = 0; r < Y; r++) {
+                var Z = g.B.k(x, T + r * 2);
+                E.push(Z);
+            }
+            return E
+        },
+        u: function(x, T) {
+            var Y = g.B.e.q;
+            Y[3] = x[T];
+            Y[2] = x[T + 1];
+            Y[1] = x[T + 2];
+            Y[0] = x[T + 3];
+            return g.B.e.b5[0]
+        },
+        b2: function(x, T, Y) {
+            x[T] = Y >> 24 & 255;
+            x[T + 1] = Y >> 16 & 255;
+            x[T + 2] = Y >> 8 & 255;
+            x[T + 3] = Y >> 0 & 255;
+        },
+        A: function(x, T) {
+            return g.B.u(x, T) * (4294967295 + 1) + g.B.u(x, T + 4)
+        },
+        B: function(x, T, Y) {
+            var E = "";
+            for (var r = 0; r < Y; r++) E += String.fromCharCode(x[T + r]);
+            return E
+        },
+        ak: function(x, T, Y) {
+            for (var E = 0; E < Y.length; E++) x[T + E] = Y.charCodeAt(E);
+        },
+        K: function(x, T, Y) {
+            var E = "";
+            for (var r = 0; r < Y; r++) {
+                var Z = x[T++] << 8 | x[T++];
+                E += String.fromCharCode(Z);
+            }
+            return E
+        },
+        aU: window.TextDecoder ? new window.TextDecoder : null,
+        aT: function(x, T, Y) {
+            var E = g.B.aU;
+            if (E && T == 0 && Y == x.length) return E.decode(x);
+            return g.B.B(x, T, Y)
+        },
+        d: function(x, T, Y) {
+            var E = [];
+            for (var r = 0; r < Y; r++) E.push(x[T + r]);
+            return E
+        },
+        ai: function(x, T, Y) {
+            var E = [];
+            for (var r = 0; r < Y; r++) E.push(String.fromCharCode(x[T + r]));
+            return E
+        },
+        e: function() {
+            var x = new ArrayBuffer(8);
+            return {
+                b0: x,
+                aK: new Int8Array(x),
+                q: new Uint8Array(x),
+                aC: new Int16Array(x),
+                af: new Uint16Array(x),
+                b6: new Int32Array(x),
+                b5: new Uint32Array(x)
+            }
+        }()
+    };
+    g.T.L = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = g.T.L;
+            x = new Uint8Array(x.buffer, T, Y);
+            T = 0;
+            var Z = x[T];
+            T++;
+            var f = x[T];
+            T++;
+            var d = x[T];
+            T++;
+            var F = x[T];
+            T++;
+            var b = [];
+            T = r.W(x, T, b);
+            var n = [];
+            for (var v = 0; v < b.length - 1; v++) n.push(E.B(x, T + b[v], b[v + 1] - b[v]));
+            T += b[b.length - 1];
+            var W = [];
+            T = r.W(x, T, W);
+            var j = [];
+            for (var v = 0; v < W.length - 1; v++) j.push(r.T(x, T + W[v], T + W[v + 1]));
+            T += W[W.length - 1];
+            var k = j[0],
+                I = [];
+            T = r.W(x, T, I);
+            var o = [];
+            for (var v = 0; v < I.length - 1; v++) o.push(E.B(x, T + I[v], I[v + 1] - I[v]));
+            T += I[I.length - 1];
+            r.o(x, T, k);
+            if (k.CharStrings) k.CharStrings = r.d(x, k.CharStrings);
+            if (k.ROS) {
+                T = k.FDArray;
+                var s = [];
+                T = r.W(x, T, s);
+                k.FDArray = [];
+                for (var v = 0; v < s.length - 1; v++) {
+                    var B = r.T(x, T + s[v], T + s[v + 1]);
+                    r.Z(x, B, o);
+                    k.FDArray.push(B);
+                }
+                T += s[s.length - 1];
+                T = k.FDSelect;
+                k.FDSelect = [];
+                var $ = x[T];
+                T++;
+                if ($ == 3) {
+                    var z = E.k(x, T);
+                    T += 2;
+                    for (var v = 0; v < z + 1; v++) {
+                        k.FDSelect.push(E.k(x, T), x[T + 2]);
+                        T += 3;
+                    }
+                } else throw $
+            }
+            if (k.charset) k.charset = r.aY(x, k.charset, k.CharStrings.length);
+            r.Z(x, k, o);
+            return k
+        },
+        Z: function(x, T, Y) {
+            var E = g.T.L,
+                r;
+            if (T.Private) {
+                r = T.Private[1];
+                T.Private = E.T(x, r, r + T.Private[0]);
+                if (T.Private.Subrs) E.o(x, r + T.Private.Subrs, T.Private);
+            }
+            for (var Z in T)
+                if ("FamilyName FontName FullName Notice version Copyright".split(" ").indexOf(Z) != -1) T[Z] = Y[T[Z] - 426 + 35];
+        },
+        o: function(x, T, Y) {
+            Y.Subrs = g.T.L.d(x, T);
+            var E, r = Y.Subrs.length + 1;
+            if (!1) E = 0;
+            else if (r < 1240) E = 107;
+            else if (r < 33900) E = 1131;
+            else E = 32768;
+            Y.Bias = E;
+        },
+        d: function(x, T) {
+            var Y = g.B,
+                E = [];
+            T = g.T.L.W(x, T, E);
+            var r = [],
+                Z = E.length - 1,
+                f = x.byteOffset + T;
+            for (var d = 0; d < Z; d++) {
+                var F = E[d];
+                r.push(new Uint8Array(x.buffer, f + F, E[d + 1] - F));
+            }
+            return r
+        },
+        aV: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 111, 112, 113, 114, 0, 115, 116, 117, 118, 119, 120, 121, 122, 0, 123, 0, 124, 125, 126, 127, 128, 129, 130, 131, 0, 132, 133, 0, 134, 135, 136, 137, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138, 0, 139, 0, 0, 0, 0, 140, 141, 142, 143, 0, 0, 0, 0, 0, 144, 0, 0, 0, 145, 0, 0, 146, 147, 148, 149, 0, 0, 0, 0],
+        a6: function(x, T) {
+            for (var Y = 0; Y < x.charset.length; Y++)
+                if (x.charset[Y] == T) return Y;
+            return -1
+        },
+        r: function(x, T) {
+            if (T < 0 || T > 255) return -1;
+            return g.T.L.a6(x, g.T.L.aV[T])
+        },
+        aY: function(x, T, Y) {
+            var E = g.B,
+                r = [".notdef"],
+                Z = x[T];
+            T++;
+            if (Z == 0) {
+                for (var f = 0; f < Y; f++) {
+                    var F = E.k(x, T);
+                    T += 2;
+                    r.push(F);
+                }
+            } else if (Z == 1 || Z == 2) {
+                while (r.length < Y) {
+                    var F = E.k(x, T),
+                        b = 0;
+                    T += 2;
+                    if (Z == 1) {
+                        b = x[T];
+                        T++;
+                    } else {
+                        b = E.k(x, T);
+                        T += 2;
+                    }
+                    for (var f = 0; f <= b; f++) {
+                        r.push(F);
+                        F++;
+                    }
+                }
+            } else throw "error: format: " + Z;
+            return r
+        },
+        W: function(x, T, Y) {
+            var E = g.B,
+                r = E.k(x, T) + 1;
+            T += 2;
+            var Z = x[T];
+            T++;
+            if (Z == 1)
+                for (var f = 0; f < r; f++) Y.push(x[T + f]);
+            else if (Z == 2)
+                for (var f = 0; f < r; f++) Y.push(E.k(x, T + f * 2));
+            else if (Z == 3)
+                for (var f = 0; f < r; f++) Y.push(E.u(x, T + f * 3 - 1) & 16777215);
+            else if (Z == 4)
+                for (var f = 0; f < r; f++) Y.push(E.u(x, T + f * 4));
+            else if (r != 1) throw "unsupported offset size: " + Z + ", count: " + r;
+            T += r * Z;
+            return T - 1
+        },
+        ah: function(x, T, Y) {
+            var E = g.B,
+                r = x[T],
+                Z = x[T + 1],
+                f = x[T + 2],
+                d = x[T + 3],
+                F = x[T + 4],
+                b = 1,
+                n = null,
+                v = null;
+            if (r <= 20) {
+                n = r;
+                b = 1;
+            }
+            if (r == 12) {
+                n = r * 100 + Z;
+                b = 2;
+            }
+            if (21 <= r && r <= 27) {
+                n = r;
+                b = 1;
+            }
+            if (r == 28) {
+                v = E.X(x, T + 1);
+                b = 3;
+            }
+            if (29 <= r && r <= 31) {
+                n = r;
+                b = 1;
+            }
+            if (32 <= r && r <= 246) {
+                v = r - 139;
+                b = 1;
+            }
+            if (247 <= r && r <= 250) {
+                v = (r - 247) * 256 + Z + 108;
+                b = 2;
+            }
+            if (251 <= r && r <= 254) {
+                v = -(r - 251) * 256 - Z - 108;
+                b = 2;
+            }
+            if (r == 255) {
+                v = E.a(x, T + 1) / 65535;
+                b = 5;
+            }
+            Y.aP = v != null ? v : "o" + n;
+            Y.size = b;
+        },
+        a5: function(x, T, Y) {
+            var E = T + Y,
+                r = g.B,
+                Z = [];
+            while (T < E) {
+                var f = x[T],
+                    d = x[T + 1],
+                    F = x[T + 2],
+                    b = x[T + 3],
+                    n = x[T + 4],
+                    v = 1,
+                    W = null,
+                    j = null;
+                if (f <= 20) {
+                    W = f;
+                    v = 1;
+                }
+                if (f == 12) {
+                    W = f * 100 + d;
+                    v = 2;
+                }
+                if (f == 19 || f == 20) {
+                    W = f;
+                    v = 2;
+                }
+                if (21 <= f && f <= 27) {
+                    W = f;
+                    v = 1;
+                }
+                if (f == 28) {
+                    j = r.X(x, T + 1);
+                    v = 3;
+                }
+                if (29 <= f && f <= 31) {
+                    W = f;
+                    v = 1;
+                }
+                if (32 <= f && f <= 246) {
+                    j = f - 139;
+                    v = 1;
+                }
+                if (247 <= f && f <= 250) {
+                    j = (f - 247) * 256 + d + 108;
+                    v = 2;
+                }
+                if (251 <= f && f <= 254) {
+                    j = -(f - 251) * 256 - d - 108;
+                    v = 2;
+                }
+                if (f == 255) {
+                    j = r.a(x, T + 1) / 65535;
+                    v = 5;
+                }
+                Z.push(j != null ? j : "o" + W);
+                T += v;
+            }
+            return Z
+        },
+        T: function(x, T, Y) {
+            var E = g.B,
+                r = {},
+                Z = [];
+            while (T < Y) {
+                var f = x[T],
+                    d = x[T + 1],
+                    F = x[T + 2],
+                    b = x[T + 3],
+                    n = x[T + 4],
+                    v = 1,
+                    W = null,
+                    j = null;
+                if (f == 28) {
+                    j = E.X(x, T + 1);
+                    v = 3;
+                }
+                if (f == 29) {
+                    j = E.a(x, T + 1);
+                    v = 5;
+                }
+                if (32 <= f && f <= 246) {
+                    j = f - 139;
+                    v = 1;
+                }
+                if (247 <= f && f <= 250) {
+                    j = (f - 247) * 256 + d + 108;
+                    v = 2;
+                }
+                if (251 <= f && f <= 254) {
+                    j = -(f - 251) * 256 - d - 108;
+                    v = 2;
+                }
+                if (f == 255) {
+                    j = E.a(x, T + 1) / 65535;
+                    v = 5;
+                    throw "unknown number"
+                }
+                if (f == 30) {
+                    var k = [],
+                        B = "";
+                    v = 1;
+                    while (!0) {
+                        var I = x[T + v];
+                        v++;
+                        var o = I >> 4,
+                            s = I & 15;
+                        if (o != 15) k.push(o);
+                        if (s != 15) k.push(s);
+                        if (s == 15) break
+                    }
+                    var $ = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ".", "e", "e-", "reserved", "-", "endOfNumber"];
+                    for (var z = 0; z < k.length; z++) B += $[k[z]];
+                    j = parseFloat(B);
+                }
+                if (f <= 21) {
+                    var K = "version Notice FullName FamilyName Weight FontBBox BlueValues OtherBlues FamilyBlues FamilyOtherBlues StdHW StdVW escape UniqueID XUID charset Encoding CharStrings Private Subrs defaultWidthX nominalWidthX".split(" ");
+                    W = K[f];
+                    v = 1;
+                    if (f == 12) {
+                        var K = "Copyright isFixedPitch ItalicAngle UnderlinePosition UnderlineThickness PaintType CharstringType FontMatrix StrokeWidth BlueScale BlueShift BlueFuzz StemSnapH StemSnapV ForceBold   LanguageGroup ExpansionFactor initialRandomSeed SyntheticBase PostScript BaseFontName BaseFontBlend       ROS CIDFontVersion CIDFontRevision CIDFontType CIDCount UIDBase FDArray FDSelect FontName".split(" ");
+                        W = K[d];
+                        v = 2;
+                    }
+                }
+                if (W != null) {
+                    r[W] = Z.length == 1 ? Z[0] : Z;
+                    Z = [];
+                } else Z.push(j);
+                T += v;
+            }
+            return r
+        }
+    };
+    g.T.v = {
+        Q: function(x, T, Y) {
+            var E = {
+                h: [],
+                C: {},
+                as: T
+            };
+            x = new Uint8Array(x.buffer, T, Y);
+            T = 0;
+            var r = T,
+                Z = g.B,
+                f = Z.k,
+                d = g.T.v,
+                F = f(x, T);
+            T += 2;
+            var b = f(x, T);
+            T += 2;
+            var n = [];
+            for (var v = 0; v < b; v++) {
+                var W = f(x, T);
+                T += 2;
+                var j = f(x, T);
+                T += 2;
+                var k = Z.u(x, T);
+                T += 4;
+                var I = "p" + W + "e" + j,
+                    o = n.indexOf(k);
+                if (o == -1) {
+                    o = E.h.length;
+                    var s = {};
+                    n.push(k);
+                    var B = s.ba = f(x, k);
+                    if (B == 0) s = d.a0(x, k, s);
+                    else if (B == 4) s = d.a8(x, k, s);
+                    else if (B == 6) s = d.a7(x, k, s);
+                    else if (B == 12) s = d.a9(x, k, s);
+                    E.h.push(s);
+                }
+                if (E.C[I] != null) console.log("multiple tables for one platform+encoding: " + I);
+                E.C[I] = o;
+            }
+            return E
+        },
+        a0: function(x, T, Y) {
+            var E = g.B;
+            T += 2;
+            var r = E.k(x, T);
+            T += 2;
+            var Z = E.k(x, T);
+            T += 2;
+            Y.map = [];
+            for (var f = 0; f < r - 6; f++) Y.map.push(x[T + f]);
+            return Y
+        },
+        a8: function(x, T, Y) {
+            var E = g.B,
+                r = E.k,
+                Z = E.a$,
+                f = T;
+            T += 2;
+            var d = r(x, T);
+            T += 2;
+            var F = r(x, T);
+            T += 2;
+            var b = r(x, T);
+            T += 2;
+            var n = b >>> 1;
+            Y.ab = r(x, T);
+            T += 2;
+            Y.a_ = r(x, T);
+            T += 2;
+            Y.at = r(x, T);
+            T += 2;
+            Y.ae = Z(x, T, n);
+            T += n * 2;
+            T += 2;
+            Y.al = Z(x, T, n);
+            T += n * 2;
+            Y.aQ = [];
+            for (var v = 0; v < n; v++) {
+                Y.aQ.push(E.X(x, T));
+                T += 2;
+            }
+            Y.p = Z(x, T, n);
+            T += n * 2;
+            Y.P = Z(x, T, f + d - T >>> 1);
+            return Y
+        },
+        a7: function(x, T, Y) {
+            var E = g.B,
+                r = T;
+            T += 2;
+            var Z = E.k(x, T);
+            T += 2;
+            var f = E.k(x, T);
+            T += 2;
+            Y.aA = E.k(x, T);
+            T += 2;
+            var d = E.k(x, T);
+            T += 2;
+            Y.P = [];
+            for (var F = 0; F < d; F++) {
+                Y.P.push(E.k(x, T));
+                T += 2;
+            }
+            return Y
+        },
+        a9: function(x, T, Y) {
+            var E = g.B,
+                r = E.u,
+                Z = T;
+            T += 4;
+            var f = r(x, T);
+            T += 4;
+            var d = r(x, T);
+            T += 4;
+            var F = r(x, T) * 3;
+            T += 4;
+            var b = Y.ay = new Uint32Array(F);
+            for (var n = 0; n < F; n += 3) {
+                b[n] = r(x, T + (n << 2));
+                b[n + 1] = r(x, T + (n << 2) + 4);
+                b[n + 2] = r(x, T + (n << 2) + 8);
+            }
+            return Y
+        }
+    };
+    g.T.aM = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = T,
+                Z = E.k(x, T);
+            T += 2;
+            var f = E.k(x, T);
+            T += 2;
+            var d = E.u(x, T);
+            T += 4;
+            var F = [];
+            for (var b = 0; b < d; b++) {
+                var n = E.u(x, T);
+                T += 4;
+                var v = E.u(x, T);
+                T += 4;
+                var W = E.u(x, T);
+                T += 4;
+                T += 4;
+                T += 2 * 12;
+                var j = E.k(x, T);
+                T += 2;
+                var k = E.k(x, T);
+                T += 2;
+                T += 4;
+                var I = r + n;
+                for (var o = 0; o < 3; o++) {
+                    var s = E.k(x, I);
+                    I += 2;
+                    var B = E.k(x, I);
+                    I += 2;
+                    var $ = E.u(x, I);
+                    I += 4;
+                    var z = B - s + 1,
+                        K = r + n + $,
+                        y = E.k(x, K);
+                    K += 2;
+                    if (y != 1) throw y;
+                    var H = E.k(x, K);
+                    K += 2;
+                    var q = E.u(x, K);
+                    K += 4;
+                    var c = [];
+                    for (var D = 0; D < z; D++) {
+                        var M = E.u(x, K + D * 4);
+                        c.push(q + M);
+                    }
+                    F.push([s, B, H, c]);
+                }
+            }
+            return F
+        }
+    };
+    g.T.ap = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = T;
+            return new Uint8Array(x.buffer, x.byteOffset + T, Y)
+        }
+    };
+    g.T.n = {
+        Q: function(x, T, Y, E) {
+            var r = [],
+                Z = E.maxp.numGlyphs;
+            for (var f = 0; f < Z; f++) r.push(null);
+            return r
+        },
+        an: function(x, T) {
+            var Y = g.B,
+                E = x._data,
+                r = x.loca;
+            if (r[T] == r[T + 1]) return null;
+            var f = g.findTable(E, "glyf", x._offset)[0] + r[T],
+                d = {};
+            d.I = Y.X(E, f);
+            f += 2;
+            d.ax = Y.X(E, f);
+            f += 2;
+            d.aj = Y.X(E, f);
+            f += 2;
+            d.aW = Y.X(E, f);
+            f += 2;
+            d.aS = Y.X(E, f);
+            f += 2;
+            if (d.ax >= d.aW || d.aj >= d.aS) return null;
+            if (d.I > 0) {
+                d.J = [];
+                for (var F = 0; F < d.I; F++) {
+                    d.J.push(Y.k(E, f));
+                    f += 2;
+                }
+                var b = Y.k(E, f),
+                    o = 0,
+                    s = 0;
+                f += 2;
+                if (E.length - f < b) return null;
+                d.aN = Y.d(E, f, b);
+                f += b;
+                var n = d.J[d.I - 1] + 1;
+                d.O = [];
+                for (var F = 0; F < n; F++) {
+                    var v = E[f];
+                    f++;
+                    d.O.push(v);
+                    if ((v & 8) != 0) {
+                        var W = E[f];
+                        f++;
+                        for (var j = 0; j < W; j++) {
+                            d.O.push(v);
+                            F++;
+                        }
+                    }
+                }
+                d.$ = [];
+                for (var F = 0; F < n; F++) {
+                    var k = (d.O[F] & 2) != 0,
+                        I = (d.O[F] & 16) != 0;
+                    if (k) {
+                        d.$.push(I ? E[f] : -E[f]);
+                        f++;
+                    } else {
+                        if (I) d.$.push(0);
+                        else {
+                            d.$.push(Y.X(E, f));
+                            f += 2;
+                        }
+                    }
+                }
+                d.c = [];
+                for (var F = 0; F < n; F++) {
+                    var k = (d.O[F] & 4) != 0,
+                        I = (d.O[F] & 32) != 0;
+                    if (k) {
+                        d.c.push(I ? E[f] : -E[f]);
+                        f++;
+                    } else {
+                        if (I) d.c.push(0);
+                        else {
+                            d.c.push(Y.X(E, f));
+                            f += 2;
+                        }
+                    }
+                }
+                for (var F = 0; F < n; F++) {
+                    o += d.$[F];
+                    s += d.c[F];
+                    d.$[F] = o;
+                    d.c[F] = s;
+                }
+            } else {
+                var B = 1 << 0,
+                    $ = 1 << 1,
+                    z = 1 << 2,
+                    K = 1 << 3,
+                    q = 1 << 4,
+                    c = 1 << 5,
+                    D = 1 << 6,
+                    M = 1 << 7,
+                    S = 1 << 8,
+                    N = 1 << 9,
+                    O = 1 << 10,
+                    i = 1 << 11,
+                    a = 1 << 12,
+                    u;
+                d.R = [];
+                do {
+                    u = Y.k(E, f);
+                    f += 2;
+                    var p = {
+                        M: {
+                            m: 1,
+                            aD: 0,
+                            a4: 0,
+                            V: 1,
+                            b3: 0,
+                            aG: 0
+                        },
+                        aR: -1,
+                        b4: -1
+                    };
+                    d.R.push(p);
+                    p.aE = Y.k(E, f);
+                    f += 2;
+                    if (u & B) {
+                        var h = Y.X(E, f);
+                        f += 2;
+                        var J = Y.X(E, f);
+                        f += 2;
+                    } else {
+                        var h = Y.U(E, f);
+                        f++;
+                        var J = Y.U(E, f);
+                        f++;
+                    }
+                    if (u & $) {
+                        p.M.b3 = h;
+                        p.M.aG = J;
+                    } else {
+                        p.aR = h;
+                        p.b4 = J;
+                    }
+                    if (u & K) {
+                        p.M.m = p.M.V = Y.f(E, f);
+                        f += 2;
+                    } else if (u & D) {
+                        p.M.m = Y.f(E, f);
+                        f += 2;
+                        p.M.V = Y.f(E, f);
+                        f += 2;
+                    } else if (u & M) {
+                        p.M.m = Y.f(E, f);
+                        f += 2;
+                        p.M.aD = Y.f(E, f);
+                        f += 2;
+                        p.M.a4 = Y.f(E, f);
+                        f += 2;
+                        p.M.V = Y.f(E, f);
+                        f += 2;
+                    }
+                } while (u & c);
+                if (u & S) {
+                    var a6 = Y.k(E, f);
+                    f += 2;
+                    d.aH = [];
+                    for (var F = 0; F < a6; F++) {
+                        d.aH.push(E[f]);
+                        f++;
+                    }
+                }
+            }
+            return d
+        }
+    };
+    g.T.head = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = {},
+                Z = E.i(x, T);
+            T += 4;
+            r.fontRevision = E.i(x, T);
+            T += 4;
+            var f = E.u(x, T);
+            T += 4;
+            var d = E.u(x, T);
+            T += 4;
+            r.flags = E.k(x, T);
+            T += 2;
+            r.unitsPerEm = E.k(x, T);
+            T += 2;
+            r.created = E.A(x, T);
+            T += 8;
+            r.modified = E.A(x, T);
+            T += 8;
+            r.xMin = E.X(x, T);
+            T += 2;
+            r.yMin = E.X(x, T);
+            T += 2;
+            r.xMax = E.X(x, T);
+            T += 2;
+            r.yMax = E.X(x, T);
+            T += 2;
+            r.macStyle = E.k(x, T);
+            T += 2;
+            r.lowestRecPPEM = E.k(x, T);
+            T += 2;
+            r.fontDirectionHint = E.X(x, T);
+            T += 2;
+            r.indexToLocFormat = E.X(x, T);
+            T += 2;
+            r.glyphDataFormat = E.X(x, T);
+            T += 2;
+            return r
+        }
+    };
+    g.T.aJ = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = {},
+                Z = E.i(x, T);
+            T += 4;
+            var f = "ascender descender lineGap advanceWidthMax minLeftSideBearing minRightSideBearing xMaxExtent caretSlopeRise caretSlopeRun caretOffset res0 res1 res2 res3 metricDataFormat numberOfHMetrics".split(" ");
+            for (var d = 0; d < f.length; d++) {
+                var F = f[d],
+                    b = F == "advanceWidthMax" || F == "numberOfHMetrics" ? E.k : E.X;
+                r[F] = b(x, T + d * 2);
+            }
+            return r
+        }
+    };
+    g.T.aI = {
+        Q: function(x, T, Y, E) {
+            var r = g.B,
+                Z = [],
+                f = [],
+                d = E.maxp.numGlyphs,
+                F = E.hhea.numberOfHMetrics,
+                b = 0,
+                n = 0,
+                v = 0;
+            while (v < F) {
+                b = r.k(x, T + (v << 2));
+                n = r.X(x, T + (v << 2) + 2);
+                Z.push(b);
+                f.push(n);
+                v++;
+            }
+            while (v < d) {
+                Z.push(b);
+                f.push(n);
+                v++;
+            }
+            return {
+                b8: Z,
+                aX: f
+            }
+        }
+    };
+    g.T.g = {
+        Q: function(x, T, Y, E) {
+            var r = g.B,
+                Z = g.T.g,
+                f = r.k(x, T);
+            if (f == 1) return Z.ar(x, T, Y, E);
+            var d = r.k(x, T + 2);
+            T += 4;
+            var F = {
+                F: [],
+                b: []
+            };
+            for (var b = 0; b < d; b++) {
+                T += 2;
+                var Y = r.k(x, T);
+                T += 2;
+                var n = r.k(x, T);
+                T += 2;
+                var v = n >>> 8;
+                v &= 15;
+                if (v == 0) T = Z.G(x, T, F);
+            }
+            return F
+        },
+        ar: function(x, T, Y, E) {
+            var r = g.B,
+                Z = g.T.g,
+                f = r.i(x, T),
+                d = r.u(x, T + 4);
+            T += 8;
+            var F = {
+                F: [],
+                b: []
+            };
+            for (var b = 0; b < d; b++) {
+                var Y = r.u(x, T);
+                T += 4;
+                var n = r.k(x, T);
+                T += 2;
+                var v = r.k(x, T);
+                T += 2;
+                var W = n & 255;
+                if (W == 0) T = Z.G(x, T, F);
+            }
+            return F
+        },
+        G: function(x, T, Y) {
+            var E = g.B,
+                r = E.k,
+                Z = -1,
+                f = r(x, T),
+                d = r(x, T + 2),
+                F = r(x, T + 4),
+                b = r(x, T + 6);
+            T += 8;
+            for (var n = 0; n < f; n++) {
+                var v = r(x, T);
+                T += 2;
+                var W = r(x, T);
+                T += 2;
+                var j = E.X(x, T);
+                T += 2;
+                if (v != Z) {
+                    Y.F.push(v);
+                    Y.b.push({
+                        av: [],
+                        a3: []
+                    });
+                }
+                var k = Y.b[Y.b.length - 1];
+                k.av.push(W);
+                k.a3.push(j);
+                Z = v;
+            }
+            return T
+        }
+    };
+    g.T.aF = {
+        Q: function(x, T, Y, E) {
+            var r = g.B,
+                Z = [],
+                f = E.head.indexToLocFormat,
+                d = E.maxp.numGlyphs + 1;
+            if (f == 0)
+                for (var F = 0; F < d; F++) Z.push(r.k(x, T + (F << 1)) << 1);
+            if (f == 1)
+                for (var F = 0; F < d; F++) Z.push(r.u(x, T + (F << 2)));
+            return Z
+        }
+    };
+    g.T.aq = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = E.k,
+                Z = {},
+                f = E.u(x, T);
+            T += 4;
+            Z.numGlyphs = r(x, T);
+            T += 2;
+            return Z
+        }
+    };
+    g.T.name = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = {},
+                Z = E.k(x, T),
+                y = "fontFamily";
+            T += 2;
+            var f = E.k(x, T);
+            T += 2;
+            var d = E.k(x, T);
+            T += 2;
+            var F = "copyright fontFamily fontSubfamily ID fullName version postScriptName trademark manufacturer designer description urlVendor urlDesigner licence licenceURL --- typoFamilyName typoSubfamilyName compatibleFull sampleText postScriptCID wwsFamilyName wwsSubfamilyName lightPalette darkPalette".split(" "),
+                b = T,
+                n = E.k;
+            for (var v = 0; v < f; v++) {
+                var W = n(x, T),
+                    $;
+                T += 2;
+                var j = n(x, T);
+                T += 2;
+                var k = n(x, T);
+                T += 2;
+                var I = n(x, T);
+                T += 2;
+                var o = n(x, T);
+                T += 2;
+                var s = n(x, T);
+                T += 2;
+                var B = b + f * 12 + s;
+                if (!1) {} else if (W == 0) $ = E.K(x, B, o / 2);
+                else if (W == 3 && j == 0) $ = E.K(x, B, o / 2);
+                else if (W == 1 && j == 25) $ = E.K(x, B, o / 2);
+                else if (j == 0) $ = E.B(x, B, o);
+                else if (j == 1) $ = E.K(x, B, o / 2);
+                else if (j == 3) $ = E.K(x, B, o / 2);
+                else if (j == 4) $ = E.K(x, B, o / 2);
+                else if (j == 5) $ = E.K(x, B, o / 2);
+                else if (j == 10) $ = E.K(x, B, o / 2);
+                else if (W == 1) {
+                    $ = E.B(x, B, o);
+                    console.log("reading unknown MAC encoding " + j + " as ASCII");
+                } else {
+                    console.log("unknown encoding " + j + ", platformID: " + W);
+                    $ = E.B(x, B, o);
+                }
+                var z = "p" + W + "," + k.toString(16);
+                if (r[z] == null) r[z] = {};
+                r[z][F[I]] = $;
+                r[z]._lang = k;
+            }
+            var K = g.T.name.b7(r);
+            if (K[y] == null)
+                for (var H in r)
+                    if (r[H][y] != null) K[y] = r[H][y];
+            return K
+        },
+        b7: function(x) {
+            var T = "postScriptName",
+                E;
+            for (var Y in x)
+                if (x[Y][T] != null && x[Y]._lang == 1033) return x[Y];
+            for (var Y in x)
+                if (x[Y][T] != null && x[Y]._lang == 0) return x[Y];
+            for (var Y in x)
+                if (x[Y][T] != null && x[Y]._lang == 3084) return x[Y];
+            for (var Y in x)
+                if (x[Y][T] != null) return x[Y];
+            for (var Y in x) {
+                E = x[Y];
+                break
+            }
+            console.log("returning name table with languageID " + E.aa);
+            if (E[T] == null && E.ID != null) E[T] = E.ID;
+            return E
+        }
+    };
+    g.T.N = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = E.k(x, T);
+            T += 2;
+            var Z = g.T.N,
+                f = {};
+            if (r == 0) Z.D(x, T, f);
+            else if (r == 1) Z.s(x, T, f);
+            else if (r == 2 || r == 3 || r == 4) Z.ao(x, T, f);
+            else if (r == 5) Z.aL(x, T, f);
+            else throw "unknown OS/2 table version: " + r;
+            return f
+        },
+        D: function(x, T, Y) {
+            var E = g.B;
+            Y.xAvgCharWidth = E.X(x, T);
+            T += 2;
+            Y.usWeightClass = E.k(x, T);
+            T += 2;
+            Y.usWidthClass = E.k(x, T);
+            T += 2;
+            Y.fsType = E.k(x, T);
+            T += 2;
+            Y.ySubscriptXSize = E.X(x, T);
+            T += 2;
+            Y.ySubscriptYSize = E.X(x, T);
+            T += 2;
+            Y.ySubscriptXOffset = E.X(x, T);
+            T += 2;
+            Y.ySubscriptYOffset = E.X(x, T);
+            T += 2;
+            Y.ySuperscriptXSize = E.X(x, T);
+            T += 2;
+            Y.ySuperscriptYSize = E.X(x, T);
+            T += 2;
+            Y.ySuperscriptXOffset = E.X(x, T);
+            T += 2;
+            Y.ySuperscriptYOffset = E.X(x, T);
+            T += 2;
+            Y.yStrikeoutSize = E.X(x, T);
+            T += 2;
+            Y.yStrikeoutPosition = E.X(x, T);
+            T += 2;
+            Y.sFamilyClass = E.X(x, T);
+            T += 2;
+            Y.panose = E.d(x, T, 10);
+            T += 10;
+            Y.ulUnicodeRange1 = E.u(x, T);
+            T += 4;
+            Y.ulUnicodeRange2 = E.u(x, T);
+            T += 4;
+            Y.ulUnicodeRange3 = E.u(x, T);
+            T += 4;
+            Y.ulUnicodeRange4 = E.u(x, T);
+            T += 4;
+            Y.achVendID = E.B(x, T, 4);
+            T += 4;
+            Y.fsSelection = E.k(x, T);
+            T += 2;
+            Y.usFirstCharIndex = E.k(x, T);
+            T += 2;
+            Y.usLastCharIndex = E.k(x, T);
+            T += 2;
+            Y.sTypoAscender = E.X(x, T);
+            T += 2;
+            Y.sTypoDescender = E.X(x, T);
+            T += 2;
+            Y.sTypoLineGap = E.X(x, T);
+            T += 2;
+            Y.usWinAscent = E.k(x, T);
+            T += 2;
+            Y.usWinDescent = E.k(x, T);
+            T += 2;
+            return T
+        },
+        s: function(x, T, Y) {
+            var E = g.B;
+            T = g.T.N.D(x, T, Y);
+            Y.ulCodePageRange1 = E.u(x, T);
+            T += 4;
+            Y.ulCodePageRange2 = E.u(x, T);
+            T += 4;
+            return T
+        },
+        ao: function(x, T, Y) {
+            var E = g.B,
+                r = E.k;
+            T = g.T.N.s(x, T, Y);
+            Y.sxHeight = E.X(x, T);
+            T += 2;
+            Y.sCapHeight = E.X(x, T);
+            T += 2;
+            Y.usDefault = r(x, T);
+            T += 2;
+            Y.usBreak = r(x, T);
+            T += 2;
+            Y.usMaxContext = r(x, T);
+            T += 2;
+            return T
+        },
+        aL: function(x, T, Y) {
+            var E = g.B.k;
+            T = g.T.N.ao(x, T, Y);
+            Y.usLowerOpticalPointSize = E(x, T);
+            T += 2;
+            Y.usUpperOpticalPointSize = E(x, T);
+            T += 2;
+            return T
+        }
+    };
+    g.T.b1 = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = {};
+            r.version = E.i(x, T);
+            T += 4;
+            r.italicAngle = E.i(x, T);
+            T += 4;
+            r.underlinePosition = E.X(x, T);
+            T += 2;
+            r.underlineThickness = E.X(x, T);
+            T += 2;
+            return r
+        }
+    };
+    g.T.au = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = {
+                    entries: []
+                },
+                Z = T,
+                f = E.k(x, T);
+            T += 2;
+            var d = E.u(x, T);
+            T += 4;
+            var F = E.u(x, T);
+            T += 4;
+            T = d + Z;
+            var b = E.k(x, T);
+            T += 2;
+            for (var n = 0; n < b; n++) {
+                var v = E.k(x, T);
+                T += 2;
+                var W = E.k(x, T);
+                T += 2;
+                var j = E.u(x, T);
+                T += 4;
+                var k = E.u(x, T);
+                T += 4;
+                var I = new Uint8Array(x.buffer, Z + j + d, k);
+                if (I[0] == 31 && I[1] == 139 && I[2] == 8) I = pako.inflate(I);
+                var o = E.aT(I, 0, I.length);
+                for (var s = v; s <= W; s++) {
+                    r.entries[s] = o;
+                }
+            }
+            return r
+        }
+    };
+    g.T.az = {
+        Q: function(x, T, Y, E) {
+            var r = E.maxp.numGlyphs,
+                Z = T,
+                f = g.B,
+                d = f.u(x, T + 4),
+                F = [];
+            for (var b = d - 1; b < d; b++) {
+                var n = Z + f.u(x, T + 8 + b * 4);
+                for (var v = 0; v < r; v++) {
+                    var W = f.u(x, n + 4 + v * 4),
+                        j = f.u(x, n + 4 + v * 4 + 4);
+                    if (W == j) {
+                        F[v] = null;
+                        continue
+                    }
+                    var k = n + W,
+                        I = f.B(x, k + 4, 4);
+                    if (I != "png ") throw I;
+                    F[v] = new Uint8Array(x.buffer, x.byteOffset + k + 8, j - W - 8);
+                }
+            }
+            return F
+        }
+    };
+    g.T.ag = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = T;
+            T += 2;
+            var Z = E.k(x, T);
+            T += 2;
+            var f = E.u(x, T);
+            T += 4;
+            var d = E.u(x, T);
+            T += 4;
+            var F = E.k(x, T);
+            T += 2;
+            var b = {},
+                n = r + f;
+            for (var v = 0; v < Z; v++) {
+                b["g" + E.k(x, n)] = [E.k(x, n + 2), E.k(x, n + 4)];
+                n += 6;
+            }
+            var W = [];
+            n = r + d;
+            for (var v = 0; v < F; v++) {
+                W.push(E.k(x, n), E.k(x, n + 2));
+                n += 4;
+            }
+            return [b, W]
+        }
+    };
+    g.T.aZ = {
+        Q: function(x, T, Y) {
+            var E = g.B,
+                r = T,
+                Z = E.k(x, T);
+            T += 2;
+            if (Z == 0) {
+                var f = E.k(x, T);
+                T += 2;
+                var d = E.k(x, T);
+                T += 2;
+                var F = E.k(x, T);
+                T += 2;
+                var b = E.u(x, T);
+                T += 4;
+                return new Uint8Array(x.buffer, r + b, F * 4)
+            } else throw Z
+        }
+    };
+    g.U = {
+        shape: function(x, T, Y) {
+            var E = function(x, r, k, Y) {
+                    var I = r[k],
+                        o = r[k + 1],
+                        s = x.kern;
+                    if (s) {
+                        var B = s.F.indexOf(I);
+                        if (B != -1) {
+                            var $ = s.b[B].av.indexOf(o);
+                            if ($ != -1) return [0, 0, s.b[B].a3[$], 0]
+                        }
+                    }
+                    return [0, 0, 0, 0]
+                },
+                r = [],
+                b = 0,
+                n = 0;
+            for (var Z = 0; Z < T.length; Z++) {
+                var f = T.codePointAt(Z);
+                if (f > 65535) Z++;
+                r.push(g.U.codeToGlyph(x, f));
+            }
+            var F = [];
+            for (var Z = 0; Z < r.length; Z++) {
+                var v = E(x, r, Z, Y),
+                    W = r[Z],
+                    j = x.hmtx.b8[W] + v[2];
+                F.push({
+                    g: W,
+                    cl: Z,
+                    dx: 0,
+                    dy: 0,
+                    ax: j,
+                    ay: 0
+                });
+                b += j;
+            }
+            return F
+        },
+        shapeToPath: function(x, T, Y) {
+            var E = {
+                    w: [],
+                    j: []
+                },
+                r = 0,
+                Z = 0;
+            for (var f = 0; f < T.length; f++) {
+                var F = T[f],
+                    b = g.U.glyphToPath(x, F.g),
+                    n = b.crds;
+                for (var v = 0; v < n.length; v += 2) {
+                    E.j.push(n[v] + r + F.dx);
+                    E.j.push(n[v + 1] + Z + F.dy);
+                }
+                if (Y) E.w.push(Y);
+                for (var v = 0; v < b.cmds.length; v++) E.w.push(b.cmds[v]);
+                var W = E.w.length;
+                if (Y)
+                    if (W != 0 && E.w[W - 1] != "X") E.w.push("X");
+                r += F.ax;
+                Z += F.ay;
+            }
+            return {
+                cmds: E.w,
+                crds: E.j
+            }
+        },
+        codeToGlyph: function() {
+            function x(Z, f, F) {
+                var n = 0,
+                    v = ~~(Z.length / f);
+                while (n + 1 != v) {
+                    var W = n + (v - n >>> 1);
+                    if (Z[W * f] <= F) n = W;
+                    else v = W;
+                }
+                return n * f
+            }
+            var T = [9, 10, 11, 12, 13, 32, 133, 160, 5760, 6158, 8232, 8233, 8239, 8288, 12288, 65279],
+                Y = {};
+            for (var E = 0; E < T.length; E++) Y[T[E]] = 1;
+            for (var E = 8192; E <= 8205; E++) Y[E] = 1;
+
+            function r(Z, f) {
+                if (Z._ctab == null) {
+                    var F = Z.cmap,
+                        b = -1,
+                        n = "p3e10 p0e4 p3e1 p1e0 p0e3 p0e1 p3e0 p3e5".split(" ");
+                    for (var E = 0; E < n.length; E++)
+                        if (F.C[n[E]] != null) {
+                            b = F.C[n[E]];
+                            break
+                        }
+                    if (b == -1) throw "no familiar platform and encoding!";
+                    Z._ctab = F.h[b];
+                }
+                var v = Z._ctab,
+                    W = v.ba,
+                    j = -1;
+                if (W == 0) {
+                    if (f >= v.map.length) j = 0;
+                    else j = v.map[f];
+                } else if (W == 4) {
+                    var k = v.ae;
+                    j = 0;
+                    if (f <= k[k.length - 1]) {
+                        var I = x(k, 1, f);
+                        if (k[I] < f) I++;
+                        if (f >= v.al[I]) {
+                            var o = 0;
+                            if (v.p[I] != 0) o = v.P[f - v.al[I] + (v.p[I] >> 1) - (v.p.length - I)];
+                            else o = f + v.aQ[I];
+                            j = o & 65535;
+                        }
+                    }
+                } else if (W == 6) {
+                    var s = f - v.aA,
+                        B = v.P;
+                    if (s < 0 || s >= B.length) j = 0;
+                    else j = B[s];
+                } else if (W == 12) {
+                    var $ = v.ay;
+                    j = 0;
+                    if (f <= $[$.length - 2]) {
+                        var E = x($, 3, f);
+                        if ($[E] <= f && f <= $[E + 1]) {
+                            j = $[E + 2] + (f - $[E]);
+                        }
+                    }
+                } else throw "unknown cmap table format " + v.ba;
+                var z = Z["SVG "],
+                    K = Z.loca;
+                if (j != 0 && Z["CFF "] == null && (z == null || z.entries[j] == null) && K && K[j] == K[j + 1] && Y[f] == null) j = 0;
+                return j
+            }
+            return r
+        }(),
+        glyphToPath: function(x, T, Y) {
+            var E = {
+                    w: [],
+                    j: []
+                },
+                r = x["SVG "],
+                Z = x["CFF "],
+                f = x.COLR,
+                d = x.CBLC,
+                F = x.CBDT,
+                b = x.sbix,
+                n = window.UPNG,
+                v = g.U,
+                W = null;
+            if (d && n)
+                for (var j = 0; j < d.length; j++)
+                    if (d[j][0] <= T && T <= d[j][1]) W = d[j];
+            if (W || b && b[T]) {
+                if (W && W[2] != 17) throw "not a PNG";
+                if (x.__tmp == null) x.__tmp = {};
+                var k = x.__tmp["g" + T];
+                if (k == null) {
+                    var I, o, B = "";
+                    if (b) {
+                        I = b[T];
+                        o = I.length;
+                    } else {
+                        var s = W[3][T - W[0]] + 5;
+                        o = F[s + 1] << 16 | F[s + 2] << 8 | F[s + 3];
+                        s += 4;
+                        I = new Uint8Array(F.buffer, F.byteOffset + s, o);
+                    }
+                    for (var j = 0; j < o; j++) B += String.fromCharCode(I[j]);
+                    k = x.__tmp["g" + T] = "data:image/png;base64," + btoa(B);
+                }
+                E.w.push(k);
+                var $ = x.head.unitsPerEm * 1.15,
+                    z = Math.round($),
+                    K = Math.round($),
+                    y = Math.round(-K * .15);
+                E.j.push(0, K + y, z, K + y, z, y, 0, y);
+            } else if (r && r.entries[T]) {
+                var H = r.entries[T];
+                if (H != null) {
+                    if (typeof H == "string") {
+                        H = v.SVG.a2(H);
+                        r.entries[T] = H;
+                    }
+                    E = H;
+                }
+            } else if (Y != !0 && f && f[0]["g" + T] && f[0]["g" + T][1] > 1) {
+                function q(h) {
+                    var J = h.toString(16);
+                    return (J.length == 1 ? "0" : "") + J
+                }
+                var c = x.CPAL,
+                    D = f[0]["g" + T];
+                for (var j = 0; j < D[1]; j++) {
+                    var M = D[0] + j,
+                        S = f[1][2 * M],
+                        N = f[1][2 * M + 1] * 4,
+                        O = g.U.glyphToPath(x, S, S == T),
+                        i = "#" + q(c[N + 2]) + q(c[N + 1]) + q(c[N + 0]);
+                    E.w.push(i);
+                    E.w = E.w.concat(O.cmds);
+                    E.j = E.j.concat(O.crds);
+                    E.w.push("X");
+                }
+            } else if (Z) {
+                var a = Z.Private,
+                    u = {
+                        x: 0,
+                        y: 0,
+                        stack: [],
+                        l: 0,
+                        z: !1,
+                        width: a ? a.defaultWidthX : 0,
+                        open: !1
+                    };
+                if (Z.ROS) {
+                    var p = 0;
+                    while (Z.FDSelect[p + 2] <= T) p += 2;
+                    a = Z.FDArray[Z.FDSelect[p + 1]].Private;
+                }
+                v._drawCFF(Z.CharStrings[T], u, Z, a, E);
+            } else if (x.glyf) {
+                v._drawGlyf(T, x, E);
+            }
+            return {
+                cmds: E.w,
+                crds: E.j
+            }
+        },
+        _drawGlyf: function(x, T, Y) {
+            var E = T.glyf[x];
+            if (E == null) E = T.glyf[x] = g.T.n.an(T, x);
+            if (E != null) {
+                if (E.I > -1) g.U._simpleGlyph(E, Y);
+                else g.U._compoGlyph(E, T, Y);
+            }
+        },
+        _simpleGlyph: function(x, T) {
+            var Y = g.U.P;
+            for (var E = 0; E < x.I; E++) {
+                var r = E == 0 ? 0 : x.J[E - 1] + 1,
+                    Z = x.J[E];
+                for (var f = r; f <= Z; f++) {
+                    var F = f == r ? Z : f - 1,
+                        b = f == Z ? r : f + 1,
+                        n = x.O[f] & 1,
+                        v = x.O[F] & 1,
+                        W = x.O[b] & 1,
+                        j = x.$[f],
+                        I = x.c[f];
+                    if (f == r) {
+                        if (n) {
+                            if (v) Y.S(T, x.$[F], x.c[F]);
+                            else {
+                                Y.S(T, j, I);
+                                continue
+                            }
+                        } else {
+                            if (v) Y.S(T, x.$[F], x.c[F]);
+                            else Y.S(T, Math.floor((x.$[F] + j) * .5), Math.floor((x.c[F] + I) * .5));
+                        }
+                    }
+                    if (n) {
+                        if (v) Y.H(T, j, I);
+                    } else {
+                        if (W) Y.a1(T, j, I, x.$[b], x.c[b]);
+                        else Y.a1(T, j, I, Math.floor((j + x.$[b]) * .5), Math.floor((I + x.c[b]) * .5));
+                    }
+                }
+                Y._(T);
+            }
+        },
+        _compoGlyph: function(x, T, Y) {
+            for (var E = 0; E < x.R.length; E++) {
+                var r = {
+                        w: [],
+                        j: []
+                    },
+                    Z = x.R[E];
+                g.U._drawGlyf(Z.aE, T, r);
+                var f = Z.M;
+                for (var d = 0; d < r.j.length; d += 2) {
+                    var b = r.j[d],
+                        n = r.j[d + 1];
+                    Y.j.push(b * f.m + n * f.a4 + f.b3);
+                    Y.j.push(b * f.aD + n * f.V + f.aG);
+                }
+                for (var d = 0; d < r.w.length; d++) Y.w.push(r.w[d]);
+            }
+        },
+        pathToSVG: function(x, T) {
+            var Y = x.cmds,
+                E = x.crds,
+                d = 0,
+                b = 0,
+                n = 0,
+                v = 0,
+                W = 0,
+                j = 0,
+                k = 0;
+            if (T == null) T = 5;
+
+            function r(M) {
+                return parseFloat(M.toFixed(T))
+            }
+
+            function Z(M) {
+                var S = [],
+                    N = !1,
+                    O = "";
+                for (var I = 0; I < M.length; I++) {
+                    var i = M[I],
+                        a = typeof i == "number";
+                    if (!a) {
+                        if (i == O && i.length == 1 && i != "m") continue;
+                        O = i;
+                    }
+                    if (N && a && i >= 0) S.push(" ");
+                    S.push(i);
+                    N = a;
+                }
+                return S.join("")
+            }
+            var f = [],
+                F = {
+                    M: 2,
+                    L: 2,
+                    Q: 4,
+                    C: 6
+                };
+            for (var I = 0; I < Y.length; I++) {
+                var o = Y[I],
+                    s = F[o] ? F[o] : 0,
+                    B = [],
+                    $, z, K, q;
+                if (o == "L") {
+                    $ = E[d] - b;
+                    z = E[d + 1] - n;
+                    K = r($ + v);
+                    q = r(z + W);
+                    if (Y[I + 1] == "Z" && E[d] == j && E[d + 1] == k) {
+                        K = $;
+                        q = z;
+                    } else if (K == 0 && q == 0) {} else if (K == 0) B.push("v", q);
+                    else if (q == 0) B.push("h", K);
+                    else {
+                        B.push("l", K, q);
+                    }
+                } else {
+                    B.push(o.toLowerCase());
+                    for (var c = 0; c < s; c += 2) {
+                        $ = E[d + c] - b;
+                        z = E[d + c + 1] - n;
+                        K = r($ + v);
+                        q = r(z + W);
+                        B.push(K, q);
+                    }
+                }
+                if (s != 0) {
+                    v += $ - K;
+                    W += z - q;
+                }
+                var D = B;
+                for (var c = 0; c < D.length; c++) f.push(D[c]);
+                if (s != 0) {
+                    d += s;
+                    b = E[d - 2];
+                    n = E[d - 1];
+                }
+                if (o == "M") {
+                    j = b;
+                    k = n;
+                }
+                if (o == "Z") {
+                    b = j;
+                    n = k;
+                }
+            }
+            return Z(f)
+        },
+        SVGToPath: function(x) {
+            var T = {
+                w: [],
+                j: []
+            };
+            g.U.SVG.am(x, T);
+            return {
+                cmds: T.w,
+                crds: T.j
+            }
+        },
+        pathToContext: function() {
+            var x, T;
+
+            function Y(E, r) {
+                var Z = 0,
+                    f = E.cmds,
+                    d = E.crds;
+                for (var F = 0; F < f.length; F++) {
+                    var b = f[F];
+                    if (b == "M") {
+                        r.moveTo(d[Z], d[Z + 1]);
+                        Z += 2;
+                    } else if (b == "L") {
+                        r.lineTo(d[Z], d[Z + 1]);
+                        Z += 2;
+                    } else if (b == "C") {
+                        r.bezierCurveTo(d[Z], d[Z + 1], d[Z + 2], d[Z + 3], d[Z + 4], d[Z + 5]);
+                        Z += 6;
+                    } else if (b == "Q") {
+                        r.quadraticCurveTo(d[Z], d[Z + 1], d[Z + 2], d[Z + 3]);
+                        Z += 4;
+                    } else if (b[0] == "d") {
+                        var n = window.UPNG,
+                            v = d[Z],
+                            W = d[Z + 1],
+                            j = d[Z + 2],
+                            k = d[Z + 3],
+                            I = d[Z + 4],
+                            o = d[Z + 5],
+                            s = d[Z + 6],
+                            B = d[Z + 7];
+                        Z += 8;
+                        if (n == null) {
+                            r.moveTo(v, W);
+                            r.lineTo(j, k);
+                            r.lineTo(I, o);
+                            r.lineTo(s, B);
+                            r.closePath();
+                            continue
+                        }
+                        r.save();
+                        var $ = j - v,
+                            z = k - W,
+                            K = Math.sqrt($ * $ + z * z),
+                            y = Math.atan2(z, $),
+                            H = s - v,
+                            q = B - W,
+                            c = Math.sqrt(H * H + q * q),
+                            D = Math.sign($ * q - z * H),
+                            M = atob(b.slice(22)),
+                            S = [];
+                        for (var N = 0; N < M.length; N++) S[N] = M.charCodeAt(N);
+                        var O = n.decode(new Uint8Array(S)),
+                            i = O.width,
+                            a = O.height,
+                            u = new Uint8Array(n.toRGBA8(O)[0]);
+                        if (x == null) {
+                            x = document.createElement("canvas");
+                            T = x.getContext("2d", { willReadFrequently: true });
+                        }
+                        if (x.width != i || x.height != a) {
+                            x.width = i;
+                            x.height = a;
+                        }
+                        T.putImageData(new ImageData(new Uint8ClampedArray(u.buffer), i, a), 0, 0);
+                        r.translate(v, W);
+                        r.rotate(y);
+                        r.scale(K * (i / a) / i, D * c / a);
+                        r.drawImage(x, 0, 0);
+                        r.restore();
+                    } else if (b.charAt(0) == "#" || b.charAt(0) == "r") {
+                        r.beginPath();
+                        r.fillStyle = b;
+                    } else if (b.charAt(0) == "O" && b != "OX") {
+                        r.beginPath();
+                        var p = b.split("-");
+                        r.lineWidth = parseFloat(p[2]);
+                        r.strokeStyle = p[1];
+                    } else if (b == "Z") {
+                        r.closePath();
+                    } else if (b == "X") {
+                        r.fill();
+                    } else if (b == "OX") {
+                        r.stroke();
+                    }
+                }
+            }
+            return Y
+        }(),
+        P: {
+            S: function(x, T, Y) {
+                x.w.push("M");
+                x.j.push(T, Y);
+            },
+            H: function(x, T, Y) {
+                x.w.push("L");
+                x.j.push(T, Y);
+            },
+            Y: function(x, T, Y, E, r, Z, f) {
+                x.w.push("C");
+                x.j.push(T, Y, E, r, Z, f);
+            },
+            a1: function(x, T, Y, E, r) {
+                x.w.push("Q");
+                x.j.push(T, Y, E, r);
+            },
+            _: function(x) {
+                x.w.push("Z");
+            }
+        },
+        _drawCFF: function(x, T, Y, E, r) {
+            var Z = T.stack,
+                f = T.l,
+                d = T.z,
+                F = T.width,
+                b = T.open,
+                n = 0,
+                v = T.x,
+                W = T.y,
+                j = 0,
+                I = 0,
+                o = 0,
+                s = 0,
+                B = 0,
+                $ = 0,
+                z = 0,
+                K = 0,
+                q = 0,
+                c = 0,
+                D = g.T.L,
+                M = g.U.P,
+                S = E.nominalWidthX,
+                N = {
+                    aP: 0,
+                    size: 0
+                };
+            while (n < x.length) {
+                D.ah(x, n, N);
+                var O = N.aP;
+                n += N.size;
+                if (!1) {} else if (O == "o1" || O == "o18") {
+                    var i;
+                    i = Z.length % 2 !== 0;
+                    if (i && !d) {
+                        F = Z.shift() + S;
+                    }
+                    f += Z.length >> 1;
+                    Z.length = 0;
+                    d = !0;
+                } else if (O == "o3" || O == "o23") {
+                    var i;
+                    i = Z.length % 2 !== 0;
+                    if (i && !d) {
+                        F = Z.shift() + S;
+                    }
+                    f += Z.length >> 1;
+                    Z.length = 0;
+                    d = !0;
+                } else if (O == "o4") {
+                    if (Z.length > 1 && !d) {
+                        F = Z.shift() + S;
+                        d = !0;
+                    }
+                    if (b) M._(r);
+                    W += Z.pop();
+                    M.S(r, v, W);
+                    b = !0;
+                } else if (O == "o5") {
+                    while (Z.length > 0) {
+                        v += Z.shift();
+                        W += Z.shift();
+                        M.H(r, v, W);
+                    }
+                } else if (O == "o6" || O == "o7") {
+                    var a = Z.length,
+                        u = O == "o6";
+                    for (var p = 0; p < a; p++) {
+                        var h = Z.shift();
+                        if (u) v += h;
+                        else W += h;
+                        u = !u;
+                        M.H(r, v, W);
+                    }
+                } else if (O == "o8" || O == "o24") {
+                    var a = Z.length,
+                        J = 0;
+                    while (J + 6 <= a) {
+                        j = v + Z.shift();
+                        I = W + Z.shift();
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        v = o + Z.shift();
+                        W = s + Z.shift();
+                        M.Y(r, j, I, o, s, v, W);
+                        J += 6;
+                    }
+                    if (O == "o24") {
+                        v += Z.shift();
+                        W += Z.shift();
+                        M.H(r, v, W);
+                    }
+                } else if (O == "o11") break;
+                else if (O == "o1234" || O == "o1235" || O == "o1236" || O == "o1237") {
+                    if (O == "o1234") {
+                        j = v + Z.shift();
+                        I = W;
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        q = o + Z.shift();
+                        c = s;
+                        B = q + Z.shift();
+                        $ = s;
+                        z = B + Z.shift();
+                        K = W;
+                        v = z + Z.shift();
+                        M.Y(r, j, I, o, s, q, c);
+                        M.Y(r, B, $, z, K, v, W);
+                    }
+                    if (O == "o1235") {
+                        j = v + Z.shift();
+                        I = W + Z.shift();
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        q = o + Z.shift();
+                        c = s + Z.shift();
+                        B = q + Z.shift();
+                        $ = c + Z.shift();
+                        z = B + Z.shift();
+                        K = $ + Z.shift();
+                        v = z + Z.shift();
+                        W = K + Z.shift();
+                        Z.shift();
+                        M.Y(r, j, I, o, s, q, c);
+                        M.Y(r, B, $, z, K, v, W);
+                    }
+                    if (O == "o1236") {
+                        j = v + Z.shift();
+                        I = W + Z.shift();
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        q = o + Z.shift();
+                        c = s;
+                        B = q + Z.shift();
+                        $ = s;
+                        z = B + Z.shift();
+                        K = $ + Z.shift();
+                        v = z + Z.shift();
+                        M.Y(r, j, I, o, s, q, c);
+                        M.Y(r, B, $, z, K, v, W);
+                    }
+                    if (O == "o1237") {
+                        j = v + Z.shift();
+                        I = W + Z.shift();
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        q = o + Z.shift();
+                        c = s + Z.shift();
+                        B = q + Z.shift();
+                        $ = c + Z.shift();
+                        z = B + Z.shift();
+                        K = $ + Z.shift();
+                        if (Math.abs(z - v) > Math.abs(K - W)) {
+                            v = z + Z.shift();
+                        } else {
+                            W = K + Z.shift();
+                        }
+                        M.Y(r, j, I, o, s, q, c);
+                        M.Y(r, B, $, z, K, v, W);
+                    }
+                } else if (O == "o14") {
+                    if (Z.length > 0 && Z.length != 4 && !d) {
+                        F = Z.shift() + Y.nominalWidthX;
+                        d = !0;
+                    }
+                    if (Z.length == 4) {
+                        var a6 = 0,
+                            G = Z.shift(),
+                            A = Z.shift(),
+                            ai = Z.shift(),
+                            ag = Z.shift(),
+                            ap = D.r(Y, ai),
+                            a9 = D.r(Y, ag);
+                        g.U._drawCFF(Y.CharStrings[ap], T, Y, E, r);
+                        T.x = G;
+                        T.y = A;
+                        g.U._drawCFF(Y.CharStrings[a9], T, Y, E, r);
+                    }
+                    if (b) {
+                        M._(r);
+                        b = !1;
+                    }
+                } else if (O == "o19" || O == "o20") {
+                    var i;
+                    i = Z.length % 2 !== 0;
+                    if (i && !d) {
+                        F = Z.shift() + S;
+                    }
+                    f += Z.length >> 1;
+                    Z.length = 0;
+                    d = !0;
+                    n += f + 7 >> 3;
+                } else if (O == "o21") {
+                    if (Z.length > 2 && !d) {
+                        F = Z.shift() + S;
+                        d = !0;
+                    }
+                    W += Z.pop();
+                    v += Z.pop();
+                    if (b) M._(r);
+                    M.S(r, v, W);
+                    b = !0;
+                } else if (O == "o22") {
+                    if (Z.length > 1 && !d) {
+                        F = Z.shift() + S;
+                        d = !0;
+                    }
+                    v += Z.pop();
+                    if (b) M._(r);
+                    M.S(r, v, W);
+                    b = !0;
+                } else if (O == "o25") {
+                    while (Z.length > 6) {
+                        v += Z.shift();
+                        W += Z.shift();
+                        M.H(r, v, W);
+                    }
+                    j = v + Z.shift();
+                    I = W + Z.shift();
+                    o = j + Z.shift();
+                    s = I + Z.shift();
+                    v = o + Z.shift();
+                    W = s + Z.shift();
+                    M.Y(r, j, I, o, s, v, W);
+                } else if (O == "o26") {
+                    if (Z.length % 2) {
+                        v += Z.shift();
+                    }
+                    while (Z.length > 0) {
+                        j = v;
+                        I = W + Z.shift();
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        v = o;
+                        W = s + Z.shift();
+                        M.Y(r, j, I, o, s, v, W);
+                    }
+                } else if (O == "o27") {
+                    if (Z.length % 2) {
+                        W += Z.shift();
+                    }
+                    while (Z.length > 0) {
+                        j = v + Z.shift();
+                        I = W;
+                        o = j + Z.shift();
+                        s = I + Z.shift();
+                        v = o + Z.shift();
+                        W = s;
+                        M.Y(r, j, I, o, s, v, W);
+                    }
+                } else if (O == "o10" || O == "o29") {
+                    var w = O == "o10" ? E : Y;
+                    if (Z.length == 0) {
+                        console.log("error: empty stack");
+                    } else {
+                        var C = Z.pop(),
+                            e = w.Subrs[C + w.Bias];
+                        T.x = v;
+                        T.y = W;
+                        T.l = f;
+                        T.z = d;
+                        T.width = F;
+                        T.open = b;
+                        g.U._drawCFF(e, T, Y, E, r);
+                        v = T.x;
+                        W = T.y;
+                        f = T.l;
+                        d = T.z;
+                        F = T.width;
+                        b = T.open;
+                    }
+                } else if (O == "o30" || O == "o31") {
+                    var a, U = Z.length,
+                        J = 0,
+                        m = O == "o31";
+                    a = U & ~2;
+                    J += U - a;
+                    while (J < a) {
+                        if (m) {
+                            j = v + Z.shift();
+                            I = W;
+                            o = j + Z.shift();
+                            s = I + Z.shift();
+                            W = s + Z.shift();
+                            if (a - J == 5) {
+                                v = o + Z.shift();
+                                J++;
+                            } else v = o;
+                            m = !1;
+                        } else {
+                            j = v;
+                            I = W + Z.shift();
+                            o = j + Z.shift();
+                            s = I + Z.shift();
+                            v = o + Z.shift();
+                            if (a - J == 5) {
+                                W = s + Z.shift();
+                                J++;
+                            } else W = s;
+                            m = !0;
+                        }
+                        M.Y(r, j, I, o, s, v, W);
+                        J += 4;
+                    }
+                } else if ((O + "").charAt(0) == "o") {
+                    console.log("Unknown operation: " + O, x);
+                    throw O
+                } else Z.push(O);
+            }
+            T.x = v;
+            T.y = W;
+            T.l = f;
+            T.z = d;
+            T.width = F;
+            T.open = b;
+        },
+        SVG: function() {
+            var x = {
+                b9: function(n) {
+                    return Math.sqrt(Math.abs(n[0] * n[3] - n[1] * n[2]))
+                },
+                translate: function(n, W, j) {
+                    x.concat(n, [1, 0, 0, 1, W, j]);
+                },
+                rotate: function(n, W) {
+                    x.concat(n, [Math.cos(W), -Math.sin(W), Math.sin(W), Math.cos(W), 0, 0]);
+                },
+                scale: function(n, W, j) {
+                    x.concat(n, [W, 0, 0, j, 0, 0]);
+                },
+                concat: function(n, W) {
+                    var j = n[0],
+                        k = n[1],
+                        I = n[2],
+                        o = n[3],
+                        s = n[4],
+                        B = n[5];
+                    n[0] = j * W[0] + k * W[2];
+                    n[1] = j * W[1] + k * W[3];
+                    n[2] = I * W[0] + o * W[2];
+                    n[3] = I * W[1] + o * W[3];
+                    n[4] = s * W[0] + B * W[2] + W[4];
+                    n[5] = s * W[1] + B * W[3] + W[5];
+                },
+                aB: function(n) {
+                    var W = n[0],
+                        j = n[1],
+                        k = n[2],
+                        I = n[3],
+                        o = n[4],
+                        s = n[5],
+                        B = W * I - j * k;
+                    n[0] = I / B;
+                    n[1] = -j / B;
+                    n[2] = -k / B;
+                    n[3] = W / B;
+                    n[4] = (k * s - I * o) / B;
+                    n[5] = (j * o - W * s) / B;
+                },
+                ac: function(n, W) {
+                    var j = W[0],
+                        I = W[1];
+                    return [j * n[0] + I * n[2] + n[4], j * n[1] + I * n[3] + n[5]]
+                },
+                aO: function(n, W) {
+                    for (var j = 0; j < W.length; j += 2) {
+                        var k = W[j],
+                            I = W[j + 1];
+                        W[j] = k * n[0] + I * n[2] + n[4];
+                        W[j + 1] = k * n[1] + I * n[3] + n[5];
+                    }
+                }
+            };
+
+            function T(n, v, W) {
+                var j = [],
+                    k = 0,
+                    I = 0,
+                    o = 0;
+                while (!0) {
+                    var s = n.indexOf(v, I),
+                        B = n.indexOf(W, I);
+                    if (s == -1 && B == -1) break;
+                    if (B == -1 || s != -1 && s < B) {
+                        if (o == 0) {
+                            j.push(n.slice(k, s).trim());
+                            k = s + 1;
+                        }
+                        o++;
+                        I = s + 1;
+                    } else if (s == -1 || B != -1 && B < s) {
+                        o--;
+                        if (o == 0) {
+                            j.push(n.slice(k, B).trim());
+                            k = B + 1;
+                        }
+                        I = B + 1;
+                    }
+                }
+                return j
+            }
+
+            function Y(n) {
+                var v = T(n, "{", "}"),
+                    W = {};
+                for (var j = 0; j < v.length; j += 2) {
+                    var k = v[j].split(",");
+                    for (var I = 0; I < k.length; I++) {
+                        var o = k[I].trim();
+                        if (W[o] == null) W[o] = "";
+                        W[o] += v[j + 1];
+                    }
+                }
+                return W
+            }
+
+            function E(n) {
+                var v = T(n, "(", ")"),
+                    W = [1, 0, 0, 1, 0, 0];
+                for (var j = 0; j < v.length; j += 2) {
+                    var k = W;
+                    W = r(v[j], v[j + 1]);
+                    x.concat(W, k);
+                }
+                return W
+            }
+
+            function r(n, v) {
+                var W = [1, 0, 0, 1, 0, 0],
+                    j = !0;
+                for (var k = 0; k < v.length; k++) {
+                    var I = v.charAt(k);
+                    if (I == "," || I == " ") j = !0;
+                    else if (I == ".") {
+                        if (!j) {
+                            v = v.slice(0, k) + "," + v.slice(k);
+                            k++;
+                        }
+                        j = !1;
+                    } else if (I == "-" && k > 0 && v[k - 1] != "e") {
+                        v = v.slice(0, k) + " " + v.slice(k);
+                        k++;
+                        j = !0;
+                    }
+                }
+                v = v.split(/\s*[\s,]\s*/).map(parseFloat);
+                if (!1) {} else if (n == "translate") {
+                    if (v.length == 1) x.translate(W, v[0], 0);
+                    else x.translate(W, v[0], v[1]);
+                } else if (n == "scale") {
+                    if (v.length == 1) x.scale(W, v[0], v[0]);
+                    else x.scale(W, v[0], v[1]);
+                } else if (n == "rotate") {
+                    var o = 0,
+                        s = 0;
+                    if (v.length != 1) {
+                        o = v[1];
+                        s = v[2];
+                    }
+                    x.translate(W, -o, -s);
+                    x.rotate(W, -Math.PI * v[0] / 180);
+                    x.translate(W, o, s);
+                } else if (n == "matrix") W = v;
+                else console.log("unknown transform: ", n);
+                return W
+            }
+
+            function Z(n) {
+                var v = {
+                    w: [],
+                    j: []
+                };
+                if (n == null) return v;
+                var W = new DOMParser,
+                    j = W.parseFromString(n, "image/svg+xml"),
+                    k = j.getElementsByTagName("svg")[0],
+                    I = k.getAttribute("viewBox");
+                if (I) I = I.trim().split(" ").map(parseFloat);
+                else I = [0, 0, 1e3, 1e3];
+                f(k.children, v);
+                for (var o = 0; o < v.j.length; o += 2) {
+                    var s = v.j[o],
+                        B = v.j[o + 1];
+                    s -= I[0];
+                    B -= I[1];
+                    B = -B;
+                    v.j[o] = s;
+                    v.j[o + 1] = B;
+                }
+                return v
+            }
+
+            function f(n, v, W) {
+                for (var j = 0; j < n.length; j++) {
+                    var k = n[j],
+                        I = k.tagName,
+                        o = k.getAttribute("fill");
+                    if (o == null) o = W;
+                    if (I == "g") {
+                        var s = {
+                            j: [],
+                            w: []
+                        };
+                        f(k.children, s, o);
+                        var B = k.getAttribute("transform");
+                        if (B) {
+                            var $ = E(B);
+                            x.aO($, s.j);
+                        }
+                        v.j = v.j.concat(s.j);
+                        v.w = v.w.concat(s.w);
+                    } else if (I == "path" || I == "circle" || I == "ellipse") {
+                        v.w.push(o ? o : "#000000");
+                        var z;
+                        if (I == "path") z = k.getAttribute("d");
+                        if (I == "circle" || I == "ellipse") {
+                            var K = [0, 0, 0, 0],
+                                y = ["cx", "cy", "rx", "ry", "r"];
+                            for (var H = 0; H < 5; H++) {
+                                var q = k.getAttribute(y[H]);
+                                if (q) {
+                                    q = parseFloat(q);
+                                    if (H < 4) K[H] = q;
+                                    else K[2] = K[3] = q;
+                                }
+                            }
+                            var c = K[0],
+                                D = K[1],
+                                M = K[2],
+                                S = K[3];
+                            z = ["M", c - M, D, "a", M, S, 0, 1, 0, M * 2, 0, "a", M, S, 0, 1, 0, -M * 2, 0].join(" ");
+                        }
+                        b(z, v);
+                        v.w.push("X");
+                    } else if (I == "defs") {} else console.log(I, k);
+                }
+            }
+
+            function d(n) {
+                var v = [],
+                    W = 0,
+                    j = !1,
+                    k = "",
+                    I = "",
+                    o = "",
+                    s = 0;
+                while (W < n.length) {
+                    var B = n.charCodeAt(W),
+                        $ = n.charAt(W);
+                    W++;
+                    var z = 48 <= B && B <= 57 || $ == "." || $ == "-" || $ == "+" || $ == "e" || $ == "E";
+                    if (j) {
+                        if (($ == "+" || $ == "-") && I != "e" || $ == "." && k.indexOf(".") != -1 || z && (o == "a" || o == "A") && (s % 7 == 3 || s % 7 == 4)) {
+                            v.push(parseFloat(k));
+                            s++;
+                            k = $;
+                        } else if (z) k += $;
+                        else {
+                            v.push(parseFloat(k));
+                            s++;
+                            if ($ != "," && $ != " ") {
+                                v.push($);
+                                o = $;
+                                s = 0;
+                            }
+                            j = !1;
+                        }
+                    } else {
+                        if (z) {
+                            k = $;
+                            j = !0;
+                        } else if ($ != "," && $ != " ") {
+                            v.push($);
+                            o = $;
+                            s = 0;
+                        }
+                    }
+                    I = $;
+                }
+                if (j) v.push(parseFloat(k));
+                return v
+            }
+
+            function F(n, v, W) {
+                var j = v;
+                while (j < n.length) {
+                    if (typeof n[j] == "string") break;
+                    j += W;
+                }
+                return (j - v) / W
+            }
+
+            function b(n, v) {
+                var W = d(n),
+                    j = 0,
+                    k = 0,
+                    I = 0,
+                    o = 0,
+                    s = 0,
+                    B = v.j.length,
+                    $ = {
+                        M: 2,
+                        L: 2,
+                        H: 1,
+                        V: 1,
+                        T: 2,
+                        S: 4,
+                        A: 7,
+                        Q: 4,
+                        C: 6
+                    },
+                    z = v.w,
+                    K = v.j;
+                while (j < W.length) {
+                    var q = W[j];
+                    j++;
+                    var c = q.toUpperCase();
+                    if (c == "Z") {
+                        z.push("Z");
+                        k = o;
+                        I = s;
+                    } else {
+                        var D = $[c],
+                            M = F(W, j, D);
+                        for (var S = 0; S < M; S++) {
+                            if (S == 1 && c == "M") {
+                                q = q == c ? "L" : "l";
+                                c = "L";
+                            }
+                            var N = 0,
+                                O = 0;
+                            if (q != c) {
+                                N = k;
+                                O = I;
+                            }
+                            if (!1) {} else if (c == "M") {
+                                k = N + W[j++];
+                                I = O + W[j++];
+                                z.push("M");
+                                K.push(k, I);
+                                o = k;
+                                s = I;
+                            } else if (c == "L") {
+                                k = N + W[j++];
+                                I = O + W[j++];
+                                z.push("L");
+                                K.push(k, I);
+                            } else if (c == "H") {
+                                k = N + W[j++];
+                                z.push("L");
+                                K.push(k, I);
+                            } else if (c == "V") {
+                                I = O + W[j++];
+                                z.push("L");
+                                K.push(k, I);
+                            } else if (c == "Q") {
+                                var i = N + W[j++],
+                                    a = O + W[j++],
+                                    u = N + W[j++],
+                                    p = O + W[j++];
+                                z.push("Q");
+                                K.push(i, a, u, p);
+                                k = u;
+                                I = p;
+                            } else if (c == "T") {
+                                var h = Math.max(K.length - (z[z.length - 1] == "Q" ? 4 : 2), B),
+                                    i = k + k - K[h],
+                                    a = I + I - K[h + 1],
+                                    u = N + W[j++],
+                                    p = O + W[j++];
+                                z.push("Q");
+                                K.push(i, a, u, p);
+                                k = u;
+                                I = p;
+                            } else if (c == "C") {
+                                var i = N + W[j++],
+                                    a = O + W[j++],
+                                    u = N + W[j++],
+                                    p = O + W[j++],
+                                    J = N + W[j++],
+                                    G = O + W[j++];
+                                z.push("C");
+                                K.push(i, a, u, p, J, G);
+                                k = J;
+                                I = G;
+                            } else if (c == "S") {
+                                var h = Math.max(K.length - (z[z.length - 1] == "C" ? 4 : 2), B),
+                                    i = k + k - K[h],
+                                    a = I + I - K[h + 1],
+                                    u = N + W[j++],
+                                    p = O + W[j++],
+                                    J = N + W[j++],
+                                    G = O + W[j++];
+                                z.push("C");
+                                K.push(i, a, u, p, J, G);
+                                k = J;
+                                I = G;
+                            } else if (c == "A") {
+                                var i = k,
+                                    a = I,
+                                    A = W[j++],
+                                    Q = W[j++],
+                                    ai = W[j++] * (Math.PI / 180),
+                                    ag = W[j++],
+                                    ap = W[j++],
+                                    u = N + W[j++],
+                                    p = O + W[j++];
+                                if (u == k && p == I && A == 0 && Q == 0) continue;
+                                var a9 = (i - u) / 2,
+                                    w = (a - p) / 2,
+                                    C = Math.cos(ai),
+                                    e = Math.sin(ai),
+                                    U = C * a9 + e * w,
+                                    m = -e * a9 + C * w,
+                                    a4 = A * A,
+                                    a0 = Q * Q,
+                                    ao = U * U,
+                                    ad = m * m,
+                                    ab = (a4 * a0 - a4 * ad - a0 * ao) / (a4 * ad + a0 * ao),
+                                    ae = (ag != ap ? 1 : -1) * Math.sqrt(Math.max(ab, 0)),
+                                    an = ae * (A * m) / Q,
+                                    as = -ae * (Q * U) / A,
+                                    a1 = C * an - e * as + (i + u) / 2,
+                                    ar = e * an + C * as + (a + p) / 2,
+                                    aa = function(R, l, V, t) {
+                                        var a3 = Math.sqrt(R * R + l * l),
+                                            P = Math.sqrt(V * V + t * t),
+                                            at = (R * V + l * t) / (a3 * P);
+                                        return (R * t - l * V >= 0 ? 1 : -1) * Math.acos(Math.max(-1, Math.min(1, at)))
+                                    },
+                                    au = (U - an) / A,
+                                    ah = (m - as) / Q,
+                                    am = aa(1, 0, au, ah),
+                                    af = aa(au, ah, (-U - an) / A, (-m - as) / Q);
+                                af = af % (2 * Math.PI);
+                                var a5 = function(a8, k, I, R, l, V, t) {
+                                        var a3 = function(L, X) {
+                                                var ak = Math.sin(X),
+                                                    h = Math.cos(X),
+                                                    X = L[0],
+                                                    aq = L[1],
+                                                    a2 = L[2],
+                                                    n = L[3];
+                                                L[0] = X * h + aq * ak;
+                                                L[1] = -X * ak + aq * h;
+                                                L[2] = a2 * h + n * ak;
+                                                L[3] = -a2 * ak + n * h;
+                                            },
+                                            P = function(L, X) {
+                                                for (var S = 0; S < X.length; S += 2) {
+                                                    var k = X[S],
+                                                        I = X[S + 1];
+                                                    X[S] = L[0] * k + L[2] * I + L[4];
+                                                    X[S + 1] = L[1] * k + L[3] * I + L[5];
+                                                }
+                                            },
+                                            at = function(L, X) {
+                                                for (var S = 0; S < X.length; S++) L.push(X[S]);
+                                            },
+                                            ac = function(L, R) {
+                                                at(L.w, R.w);
+                                                at(L.j, R.j);
+                                            };
+                                        if (t)
+                                            while (V > l) V -= 2 * Math.PI;
+                                        else
+                                            while (V < l) V += 2 * Math.PI;
+                                        var a7 = (V - l) / 4,
+                                            al = Math.cos(a7 / 2),
+                                            aj = -Math.sin(a7 / 2),
+                                            i = (4 - al) / 3,
+                                            a = aj == 0 ? aj : (1 - al) * (3 - al) / (3 * aj),
+                                            u = i,
+                                            p = -a,
+                                            J = al,
+                                            G = -aj,
+                                            D = [i, a, u, p, J, G],
+                                            v = {
+                                                w: ["C", "C", "C", "C"],
+                                                j: D.slice(0)
+                                            },
+                                            _ = [1, 0, 0, 1, 0, 0];
+                                        a3(_, -a7);
+                                        for (var S = 0; S < 3; S++) {
+                                            P(_, D);
+                                            at(v.j, D);
+                                        }
+                                        a3(_, -l + a7 / 2);
+                                        _[0] *= R;
+                                        _[1] *= R;
+                                        _[2] *= R;
+                                        _[3] *= R;
+                                        _[4] = k;
+                                        _[5] = I;
+                                        P(_, v.j);
+                                        P(a8.aw, v.j);
+                                        ac(a8.bb, v);
+                                    },
+                                    a8 = {
+                                        bb: v,
+                                        aw: [A * C, A * e, -Q * e, Q * C, a1, ar]
+                                    };
+                                a5(a8, 0, 0, 1, am, am + af, ap == 0);
+                                k = u;
+                                I = p;
+                            } else console.log("Unknown SVG command " + q);
+                        }
+                    }
+                }
+            }
+            return {
+                cssMap: Y,
+                readTrnf: E,
+                am: b,
+                a2: Z
+            }
+        }(),
+        initHB: function(x, T) {
+            var Y = function(E) {
+                var r = 0;
+                if ((E & 4294967295 - (1 << 7) + 1) == 0) {
+                    r = 1;
+                } else if ((E & 4294967295 - (1 << 11) + 1) == 0) {
+                    r = 2;
+                } else if ((E & 4294967295 - (1 << 16) + 1) == 0) {
+                    r = 3;
+                } else if ((E & 4294967295 - (1 << 21) + 1) == 0) {
+                    r = 4;
+                }
+                return r
+            };
+            fetch(x).then(function(E) {
+                return E.arrayBuffer()
+            }).then(function(E) {
+                return WebAssembly.instantiate(E)
+            }).then(function(E) {
+                var r = E.instance.exports,
+                    Z = r.memory,
+                    f, d, F, b, n, v, W, j;
+                g.U.shapeHB = function() {
+                    var k = function(o) {
+                            var s = r.hb_buffer_get_length(o),
+                                B = [],
+                                $ = r.hb_buffer_get_glyph_infos(o, 0) >>> 2,
+                                z = r.hb_buffer_get_glyph_positions(o, 0) >>> 2;
+                            for (var K = 0; K < s; ++K) {
+                                var y = $ + K * 5,
+                                    H = z + K * 5;
+                                B.push({
+                                    g: d[y + 0],
+                                    cl: d[y + 2],
+                                    ax: F[H + 0],
+                                    ay: F[H + 1],
+                                    dx: F[H + 2],
+                                    dy: F[H + 3]
+                                });
+                            }
+                            return B
+                        },
+                        I;
+                    return function(o, s, B) {
+                        var $ = o._data,
+                            z = o.name.postScriptName,
+                            K = Z.buffer.byteLength,
+                            y = 2 * $.length + s.length * 16 + 4e6,
+                            N = 0,
+                            O = 0;
+                        if (K < y) {
+                            Z.grow((y - K >>> 16) + 4);
+                        }
+                        f = new Uint8Array(Z.buffer);
+                        d = new Uint32Array(Z.buffer);
+                        F = new Int32Array(Z.buffer);
+                        if (b != z) {
+                            if (n != null) {
+                                r.hb_blob_destroy(n);
+                                r.free(v);
+                                r.hb_face_destroy(W);
+                                r.hb_font_destroy(j);
+                            }
+                            v = r.malloc($.byteLength);
+                            f.set($, v);
+                            n = r.hb_blob_create(v, $.byteLength, 2, 0, 0);
+                            W = r.hb_face_create(n, 0);
+                            j = r.hb_font_create(W);
+                            b = z;
+                        }
+                        if (window.TextEncoder == null) {
+                            alert("Your browser is too old. Please, update it.");
+                            return
+                        }
+                        if (I == null) I = new window.TextEncoder("utf8");
+                        var H = r.hb_buffer_create(),
+                            q = I.encode(s),
+                            c = q.length,
+                            D = r.malloc(c);
+                        f.set(q, D);
+                        r.hb_buffer_add_utf8(H, D, c, 0, c);
+                        r.free(D);
+                        r.hb_buffer_set_direction(H, B ? 4 : 5);
+                        r.hb_buffer_guess_segment_properties(H);
+                        r.hb_shape(j, H, 0, 0);
+                        var M = k(H);
+                        r.hb_buffer_destroy(H);
+                        var S = M.slice(0);
+                        if (!B) S.reverse();
+                        for (var i = 1; i < S.length; i++) {
+                            var a = S[i],
+                                u = a.cl;
+                            while (!0) {
+                                var p = s.codePointAt(N),
+                                    h = Y(p);
+                                if (O + h <= u) {
+                                    O += h;
+                                    N += p <= 65535 ? 1 : 2;
+                                } else break
+                            }
+                            a.cl = N;
+                        }
+                        return M
+                    }
+                }();
+                T();
+            });
+        }
+    };
+    return g
+}();
+
 
 var BINDB = {
 	"tex/burlap": "/app/ant/decoshop/img/burlap.webp",
@@ -5381,7 +13588,7 @@ je.ao2 = function(l) {
 	je.MZ = 1;
 
 	function d() {
-		fetch("code/ext/fribidi.wasm").then(function(G) {
+		fetch("/app/ant/decoshop/wasm/fribidi.wasm").then(function(G) {
 			return G.arrayBuffer()
 		}).then(function(G) {
 			return WebAssembly.instantiate(G)
@@ -5424,7 +13631,7 @@ je.ao2 = function(l) {
 			l.dispatch(M);
 		});
 	}
-	Typr.U.initHB("code/ext/hb.wasm", d);
+	Typr.U.initHB("/app/ant/decoshop/wasm/hb.wasm", d);
 	return !1
 };
 
@@ -14331,6 +22538,541 @@ DialogManager.prototype.qL = function(l) {
 	var G = this.tx.length - 1;
 	if (G >= 0) s.removeClass(this.tx[G].e, "wdisabled");
 	if (this.Ju.parentNode == this.e) this.e.removeChild(this.Ju);
+};
+
+
+var DescriptorMapper = {};
+
+DescriptorMapper.decodeDescriptor = function(l) {
+	return DescriptorMapper.al(l, DescriptorMapper.c9, 0)
+};
+
+DescriptorMapper.encodeDescriptor = function(l) {
+	return DescriptorMapper.k4(l, DescriptorMapper.c9)
+};
+
+DescriptorMapper.al = function(l, d, G) {
+	var b;
+	if (typeof l == "string") return l;
+	if (l instanceof Array) {
+		b = [];
+		for (var A = 0; A < l.length; A++) b[A] = DescriptorMapper.al(l[A], d, G + 1);
+	} else {
+		b = {};
+		var V = {};
+		for (var Q in d) {
+			var t = d[Q],
+				I = "_" + t[0];
+			if (l[I] != null) {
+				b[Q] = t[1] ? DescriptorMapper.al(l[I], t[1], G + 1) : l[I];
+				V[I] = !0;
+			}
+		}
+		for (var Q in l) {
+			if (V[Q] == null) {
+				if (Q.length > 3) continue;
+				console.log(d, V);
+				console.log(Q, l);
+				throw "e"
+			}
+		}
+	}
+	return b
+};
+
+DescriptorMapper.k4 = function(l, d) {
+	var G;
+	if (typeof l == "string") return l;
+	else if (l instanceof Array) {
+		G = [];
+		for (var A = 0; A < l.length; A++) G[A] = DescriptorMapper.k4(l[A], d);
+	} else {
+		G = {};
+		var b = {};
+		for (var V in d) {
+			var Q = d[V],
+				t = "_" + Q[0];
+			if (l[V] != null) {
+				G[t] = Q[1] ? DescriptorMapper.k4(l[V], Q[1]) : l[V];
+				b[V] = !0;
+			}
+		}
+		for (var V in l) {
+			if (b[V] == null) {
+				console.log(d, b);
+				console.log(V, l);
+				throw "e"
+			}
+		}
+	}
+	return G
+};
+
+DescriptorMapper.hi = {
+	_Color: [0, {
+		_Type: [0],
+		_Values: [1]
+	}],
+	_CAIKnownStyleID: [5],
+	_StreamTag: [99]
+};
+
+DescriptorMapper.Point2D = {
+	_Font: [0],
+	_FontSize: [1],
+	_FauxBold: [2],
+	_FauxItalic: [3],
+	_AutoLeading: [4],
+	_Leading: [5],
+	_HorizontalScale: [6],
+	_VerticalScale: [7],
+	_Tracking: [8],
+	_BaselineShift: [9],
+	_CharacterRotation: [10],
+	_AutoKern: [11],
+	_FontCaps: [12],
+	_FontBaseline: [13],
+	_FontOTPosition: [14],
+	_StrikethroughPosition: [15],
+	_UnderlinePosition: [16],
+	_UnderlineOffset: [17],
+	_Ligatures: [18],
+	_DiscretionaryLigatures: [19],
+	_ContextualLigatures: [20],
+	_AlternateLigatures: [21],
+	_OldStyle: [22],
+	_Fractions: [23],
+	_Ordinals: [24],
+	_Swash: [25],
+	_Titling: [26],
+	_ConnectionForms: [27],
+	_StylisticAlternates: [28],
+	_Ornaments: [29],
+	_FigureStyle: [30],
+	_ProportionalMetrics: [31],
+	_Kana: [32],
+	_Italics: [33],
+	_Ruby: [34],
+	_BaselineDirection: [35],
+	_Tsume: [36],
+	_StyleRunAlignment: [37],
+	_Language: [38],
+	_JapaneseAlternateFeature: [39],
+	_EnableWariChu: [40],
+	_WariChuLineCount: [41],
+	_WariChuLineGap: [42],
+	_WariChuSubLineAmount: [43, {
+		_WariChuSubLineScale: [0]
+	}],
+	_WariChuWidowAmount: [44],
+	_WariChuOrphanAmount: [45],
+	_WariChuJustification: [46],
+	_TCYUpDownAdjustment: [47],
+	_TCYLeftRightAdjustment: [48],
+	_LeftAki: [49],
+	_RightAki: [50],
+	_JiDori: [51],
+	_NoBreak: [52],
+	_FillColor: [53, DescriptorMapper.hi],
+	_StrokeColor: [54, DescriptorMapper.hi],
+	_Blend: [55, {
+		_1: [1],
+		_3: [3],
+		_Knockout: [4],
+		_StreamTag: [99]
+	}],
+	_FillFlag: [56],
+	_StrokeFlag: [57],
+	_FillFirst: [58],
+	_FillOverPrint: [59],
+	_StrokeOverPrint: [60],
+	_LineCap: [61],
+	_LineJoin: [62],
+	_LineWidth: [63],
+	_MiterLimit: [64],
+	_LineDashOffset: [65],
+	_LineDashArray: [66],
+	_Type1EncodingNames: [67],
+	_Kashidas: [68],
+	_DirOverride: [69],
+	_DigitSet: [70],
+	_DiacVPos: [71],
+	_DiacXOffset: [72],
+	_DiacYOffset: [73],
+	_OverlapSwash: [74],
+	_JustificationAlternates: [75],
+	_StretchedAlternates: [76],
+	_FillVisibleFlag: [77],
+	_StrokeVisibleFlag: [78],
+	_FillBackgroundColor: [79, DescriptorMapper.hi],
+	_FillBackgroundFlag: [80],
+	_UnderlineStyle: [81],
+	_DashedUnderlineGapLength: [82],
+	_DashedUnderlineDashLength: [83],
+	_SlashedZero: [84],
+	_StylisticSets: [85],
+	_CustomFeature: [86, {
+		_StreamTag: [99]
+	}],
+	_MarkYDistFromBaseline: [87],
+	_AutoMydfb: [88],
+	_RefFontSize: [89],
+	_FontSizeRefType: [90]
+};
+
+DescriptorMapper.ac_ = {
+	_Justification: [0],
+	_FirstLineIndent: [1],
+	_StartIndent: [2],
+	_EndIndent: [3],
+	_SpaceBefore: [4],
+	_SpaceAfter: [5],
+	_DropCaps: [6],
+	_AutoLeading: [7],
+	_LeadingType: [8],
+	_AutoHyphenate: [9],
+	_HyphenatedWordSize: [10],
+	_PreHyphen: [11],
+	_PostHyphen: [12],
+	_ConsecutiveHyphens: [13],
+	_Zone: [14],
+	_HyphenateCapitalized: [15],
+	_HyphenationPreference: [16],
+	_WordSpacing: [17],
+	_LetterSpacing: [18],
+	_GlyphSpacing: [19],
+	_SingleWordJustification: [20],
+	_Hanging: [21],
+	_AutoTCY: [22],
+	_KeepTogether: [23],
+	_BurasagariType: [24],
+	_KinsokuOrder: [25],
+	_Kinsoku: [27],
+	_KurikaeshiMojiShori: [26],
+	_MojiKumiTable: [28],
+	_EveryLineComposer: [29],
+	_TabStops: [30],
+	_DefaultTabWidth: [31],
+	_DefaultStyle: [32, DescriptorMapper.Point2D],
+	_ParagraphDirection: [33],
+	_JustificationMethod: [34],
+	_ComposerEngine: [35],
+	_ListStyle: [36],
+	_ListTier: [37],
+	_ListSkip: [38],
+	_ListOffset: [39],
+	_KashidaWidth: [40]
+};
+
+DescriptorMapper.akv = {
+	_Name: [0],
+	_Features: [5, DescriptorMapper.ac_],
+	_Parent: [6],
+	_UUID: [97]
+};
+
+DescriptorMapper.adO = {
+	_Name: [0],
+	_Parent: [5],
+	_Features: [6, DescriptorMapper.Point2D],
+	_UUID: [97]
+};
+
+DescriptorMapper.c9 = {
+	_98: [98, {
+		_0: [0]
+	}],
+	_DocumentResources: [0, {
+		_0: [0],
+		_FontSet: [1, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_StreamTag: [99],
+					_Identifier: [0, {
+						_Name: [0],
+						_ScriptType: [1],
+						_Type: [2],
+						_Synthetic: [3],
+						_4: [4],
+						_MMAxis: [5]
+					}],
+					_UUID: [97]
+				}]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_MojiKumiCodeToClassSet: [2, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_Name: [0],
+					_Members: [5],
+					_UUID: [97]
+				}]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_MojiKumiTableSet: [3, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_Name: [0],
+					_Members: [5, {
+						_CodeToClass: [0],
+						_AutoTsume: [1, {
+							_TsumeMappings: [0, {
+								_Before: [0],
+								_After: [1],
+								_Code: [2]
+							}]
+						}],
+						_Table: [2, {
+							_DataArray: [0, {
+								_SparseArray: [0, {
+									_Index: [0],
+									_Elements: [1, {
+										_P: [0],
+										_Data: [1, {
+											_A: [0, {
+												_R: [0],
+												_P: [1]
+											}],
+											_B: [1, {
+												_R: [0],
+												_P: [1]
+											}]
+										}]
+									}]
+								}]
+							}]
+						}],
+						_PredefinedTag: [3]
+					}],
+					_UUID: [97]
+				}]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_KinsokuSet: [4, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_Name: [0],
+					_Data: [5, {
+						_NoStart: [0],
+						_NoEnd: [1],
+						_Keep: [2],
+						_Hanging: [3],
+						_PredefinedTag: [4]
+					}],
+					_UUID: [97]
+				}]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_StyleSheetSet: [5, {
+			_Resources: [0, {
+				_Resource: [0, DescriptorMapper.adO]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_ParagraphSheetSet: [6, {
+			_Resources: [0, {
+				_Resource: [0, DescriptorMapper.akv]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}],
+		_7: [7, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_0: [0, {
+						_0: [0],
+						_1: [1, {
+							_0: [0]
+						}]
+					}],
+					_1: [1]
+				}]
+			}]
+		}],
+		_TextFrameSet: [8, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_0: [0],
+					_Bezier: [1, {
+						_Points: [0]
+					}],
+					_Data: [2, {
+						_Type: [0],
+						_LineOrientation: [1],
+						_FrameMatrix: [2],
+						_4: [4],
+						_TextOnPathTRange: [6],
+						_RowGutter: [7],
+						_ColumnGutter: [8],
+						_9: [9],
+						_FirstBaselineAlignment: [10, {
+							_Flag: [0],
+							_Min: [1]
+						}],
+						_PathData: [11, {
+							_1: [1],
+							_Reversed: [0],
+							_2: [2],
+							_3: [3],
+							_Spacing: [4],
+							_5: [5],
+							_6: [6],
+							_7: [7],
+							_18: [18]
+						}],
+						_12: [12],
+						_13: [13]
+					}],
+					_3: [3, {
+						_0: [0]
+					}],
+					_UUID: [97]
+				}]
+			}]
+		}],
+		_ListStyleSet: [9, {
+			_Resources: [0, {
+				_Resource: [0, {
+					_Name: [0],
+					_LevelStyle: [5, {
+						_IndentUnits: [0],
+						_TextIndent: [1],
+						_LabelIndent: [2],
+						_LabelAlignment: [3],
+						_SequenceGenerator: [5, {
+							_Prefix: [0],
+							_Postfix: [1],
+							_2: [2],
+							_CaseType: [3],
+							_Bullet: [9],
+							_StreamTag: [99]
+						}],
+						_Font: [6],
+						_7: [7]
+					}],
+					_PredefinedTag: [6],
+					_UUID: [97]
+				}]
+			}],
+			_DisplayList: [1, {
+				_Resource: [0]
+			}]
+		}]
+	}],
+	_DocumentObjects: [1, {
+		_DocumentSettings: [0, {
+			_HiddenGlyphFont: [0, {
+				_AlternateGlyphFont: [0],
+				_WhitespaceCharacterMapping: [1, {
+					_WhitespaceCharacter: [0],
+					_AlternateCharacter: [1]
+				}]
+			}],
+			_NormalStyleSheet: [1],
+			_NormalParagraphSheet: [2],
+			_SuperscriptSize: [3],
+			_SuperscriptPosition: [4],
+			_SubscriptSize: [5],
+			_SubscriptPosition: [6],
+			_SmallCapSize: [7],
+			_UseSmartQuotes: [8],
+			_SmartQuoteSets: [9, {
+				_Language: [0],
+				_OpenDoubleQuote: [1],
+				_CloseDoubleQuote: [2],
+				_OpenSingleQuote: [3],
+				_CloseSingleQuote: [4]
+			}],
+			_10: [10],
+			_11: [11],
+			_LinguisticSettings: [15, {
+				_PreferredProvider: [0],
+				_LinguisticProviderInfo: [1]
+			}],
+			_13: [13],
+			_UseSmartLists: [16],
+			_DefaultStoryDir: [17],
+			_18: [18],
+			_GreekingSize: [20]
+		}],
+		_TextObjects: [1, {
+			_Model: [0, {
+				_Text: [0],
+				_ParagraphRun: [5, {
+					_RunArray: [0, {
+						_RunData: [0, {
+							_ParagraphSheet: [0, DescriptorMapper.akv]
+						}],
+						_Length: [1]
+					}]
+				}],
+				_StyleRun: [6, {
+					_RunArray: [0, {
+						_RunData: [0, {
+							_StyleSheet: [0, DescriptorMapper.adO]
+						}],
+						_Length: [1]
+					}]
+				}],
+				_FirstKern: [7],
+				_8: [8],
+				_AlternateGlyphRun: [9, {
+					_RunArray: [0, {
+						_RunData: [0, {
+							_AlternateGlyphSheet: [0, {
+								_Glyph: [0],
+								_Name: [1],
+								_2: [2]
+							}]
+						}],
+						_Length: [1]
+					}]
+				}],
+				_StorySheet: [10, {
+					_AntiAlias: [0],
+					_1: [1],
+					_UseFractionalGlyphWidths: [2],
+					_3: [3],
+					_4: [4]
+				}],
+				_KernRun: [15],
+				_HyperlinkRun: [16]
+			}],
+			_View: [1, {
+				_Frames: [0, {
+					_Resource: [0]
+				}],
+				_RenderedData: [1, {
+					_RunArray: [0, {
+						_RunData: [0, {
+							_0: [0],
+							_LineCount: [1]
+						}],
+						_Length: [1]
+					}]
+				}],
+				_Strikes: [2]
+			}],
+			_OpticalAlignment: [2]
+		}],
+		_OriginalNormalStyleFeatures: [2, DescriptorMapper.Point2D],
+		_OriginalNormalParagraphFeatures: [3, DescriptorMapper.ac_]
+	}]
 };
 
 /**
@@ -56756,6 +65498,325 @@ PsdResourceTypes.Gz[PsdResourceTypes.Sv] = ["aco", "swatches", bA, [9, 8], 0];
 PsdResourceTypes.Gz[PsdResourceTypes.v] = ["atn", "actions", jn, [9, 9], 2];
 PsdResourceTypes.Gz[PsdResourceTypes.qa] = ["tpl", "tpresets", cG, [9, 12], 0];
 PsdResourceTypes.Gz[PsdResourceTypes.Qo] = ["icc", "profiles", iZ, "ICCs", 8];
+
+
+	function xmpMetadata() {}
+	xmpMetadata.xmpPropertySchema = {
+		"dc:Title": ["", null, "dc:title"],
+		"tiff:Artist": ["", 315, "dc:creator"],
+		"tiff:ImageDescription": ["", 270, "dc:description"],
+		"dc:Keywords": ["", null, "dc:subject"],
+		"tiff:Copyright": ["", 33432],
+		"tiff:Make": ["", 271],
+		"tiff:Model": ["", 272],
+		"exif:ExposureTime": [
+			[1, 200], 33434
+		],
+		"exif:FNumber": [
+			[16, 1], 33437
+		],
+		"exif:ExposureProgram": [1, 34850],
+		"exif:ISOSpeedRatings": [200, 34855],
+		"exif:DateTimeOriginal": ["", 36867],
+		"exif:ShutterSpeedValue": [
+			[1, 1], 37377
+		],
+		"exif:ApertureValue": [
+			[8, 1], 37378
+		],
+		"exif:ExposureBiasValue": [
+			[1, 1], 37380
+		],
+		"exif:MaxApertureValue": [
+			[1, 1], 37381
+		],
+		"exif:MeteringMode": [5, 37383],
+		"exif:LightSource": [0, 37384],
+		"exif:Flash": [0, 37385],
+		"exif:FocalLength": [
+			[60, 1], 37386
+		],
+		"exif:PixelXDimension": [1, 40962],
+		"exif:PixelYDimension": [1, 40963],
+		"exif:FocalPlaneXResolution": [
+			[1, 1], 41486
+		],
+		"exif:FocalPlaneYResolution": [
+			[1, 1], 41487
+		],
+		"exif:FocalPlaneResolutionUnit": [2, 41488],
+		"exif:DigitalZoomRatio": [
+			[100, 100], 41988
+		],
+		"exif:FocalLengthIn35mmFilm": [1, 41989],
+		"exif:SceneCaptureType": [0, 41990],
+		"exif:LensInfo": ["", 42034],
+		"exif:Lens": ["", 42036],
+		"exif:LensSerialNumber": ["", 42037],
+		"exif:SensitivityType": [2, 34864],
+		"exif:RecommendedExposureIndex": [100, 34866],
+		"exif:GPSVersionID": ["2.3.0.0", 0],
+		"exif:GPSLatitude": ["48,35,57.646N", 2],
+		"exif:GPSLongitude": ["22,56,42.238E", 4],
+		"exif:GPSAltitudeRef": [0, 5],
+		"exif:GPSAltitude": [
+			[1, 1], 6
+		],
+		"exif:GPSStatus": ["A", 9],
+		"exif:GPSMapDatum": ["", 18],
+		"Iptc4xmpCore:IntellectualGenre": [""],
+		"Iptc4xmpCore:Location": [""],
+		"Iptc4xmpCore:CountryCode": [""],
+		"photoshop:Instructions": [""],
+		"photoshop:AuthorsPosition": [""],
+		"photoshop:City": [""],
+		"photoshop:State": [""],
+		"photoshop:Country": [""],
+		"photoshop:TransmissionReference": [""],
+		"photoshop:Headline": [""],
+		"photoshop:Credit": [""],
+		"photoshop:Source": [""],
+		"dc:rights": [""],
+		"photoshop:CaptionWriter": [""]
+	};
+	xmpMetadata.iptcTagToXmpProperty = {
+		"4": "Iptc4xmpCore:IntellectualGenre",
+		"5": "dc:Title",
+		"40": "photoshop:Instructions",
+		"80": "tiff:Artist",
+		"85": "photoshop:AuthorsPosition",
+		"90": "photoshop:City",
+		"92": "Iptc4xmpCore:Location",
+		"95": "photoshop:State",
+		"100": "Iptc4xmpCore:CountryCode",
+		"101": "photoshop:Country",
+		"103": "photoshop:TransmissionReference",
+		"105": "photoshop:Headline",
+		"110": "photoshop:Credit",
+		"115": "photoshop:Source",
+		"116": "dc:rights",
+		"120": "tiff:ImageDescription",
+		"122": "photoshop:CaptionWriter"
+	};
+	xmpMetadata.mergeIptcIntoMetadata = function(l, d) {
+		if (d == null) d = {};
+		var G = xmpMetadata.iptcTagToXmpProperty,
+			b = [],
+			V = [],
+			Q = "";
+		for (var A = 0; A < l.length; A++) {
+			var t = l[A],
+				I = G[t[0] + ""];
+			if (I && d[I] == null) d[I] = t[1];
+			else if (t[0] == 12) V.push(t[1]);
+			else if (t[0] == 25) b.push(t[1]);
+			else if (t[0] == 55) Q = t[1];
+			else if (t[0] == 60) Q += ";" + t[1];
+		}
+		if (Q != "" && d["exif:DateTimeOriginal"] == null) d["exif:DateTimeOriginal"] = Q;
+		if (V.length != 0 && d["Iptc4xmpCore:SubjectCode"] == null) d["Iptc4xmpCore:SubjectCode"] = V.join(";");
+		if (b.length != 0 && d["dc:Keywords"] == null) d["dc:Keywords"] = b.join(";");
+		return d
+	};
+	xmpMetadata.metadataToIptcArray = function(l) {
+		var d = xmpMetadata.iptcTagToXmpProperty,
+			G = [];
+		for (var b in d)
+			if (l[d[b]]) G.push([parseInt(b), l[d[b]]]);
+		if (l["Iptc4xmpCore:SubjectCode"]) {
+			var V = l["Iptc4xmpCore:SubjectCode"].split(";");
+			for (var A = 0; A < V.length; A++) G.push([12, V[A].trim()]);
+		}
+		if (l["dc:Keywords"]) {
+			var V = l["dc:Keywords"].split(";");
+			for (var A = 0; A < V.length; A++) G.push([25, V[A].trim()]);
+		}
+		G.sort(function(Q, t) {
+			return Q[0] - t[0]
+		});
+		return G
+	};
+	xmpMetadata.parseXmpXmlToMetadata = function(l, d) {
+		if (d == null) d = {};
+		var G = new DOMParser,
+			b = G.parseFromString(l, "image/svg+xml"),
+			V = b.getElementsByTagName("rdf:Description")[0];
+		if (V == null) return d;
+		var Q = xmpMetadata.xmpPropertySchema;
+		for (var t in Q) {
+			var I = Q[t][2];
+			if (I == null) continue;
+			var y = V.getElementsByTagName(I)[0];
+			if (y == null) continue;
+			var e = y.getElementsByTagName("rdf:li"),
+				M = [];
+			for (var A = 0; A < e.length; A++) M.push(e[A].textContent);
+			d[t] = M.join("; ");
+		}
+		return d
+	};
+	xmpMetadata.buildXmpXml = function(l) {
+		var d = ["<?xpacket begin=\"\uFEFF\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>", "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.6-c145 79.163499, 2018/08/13-16:40:22\">", "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">", "<rdf:Description rdf:about=\"\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:xmpMM=\"http://ns.adobe.com/xap/1.0/mm/\" xmlns:stEvt=\"http://ns.adobe.com/xap/1.0/sType/ResourceEvent#\" xmlns:stRef=\"http://ns.adobe.com/xap/1.0/sType/ResourceRef#\">"],
+			G = xmpMetadata.xmpPropertySchema;
+		for (var b in G) {
+			var V = l[b],
+				Q = G[b][2],
+				t = "Seq",
+				I = "";
+			if (V == null || Q == null) continue;
+			if (Q == "dc:title" || Q == "dc:description") {
+				t = "Alt";
+				I = " xml:lang=\"x-default\"";
+			}
+			if (Q == "dc:subject") t = "Bag";
+			d.push("\t<" + Q + "><rdf:" + t + ">");
+			var y = Q == "dc:subject" ? V.split(";").join(",").split(",") : [V];
+			for (var A = 0; A < y.length; A++) d.push("\t\t<rdf:li" + I + ">" + y[A].trim() + "</rdf:li>");
+			d.push("\t</rdf:" + t + "></" + Q + ">");
+		}
+		d.push("</rdf:Description>", "</rdf:RDF>", "</x:xmpmeta>", "<?xpacket end=\"w\"?>");
+		return d.join("\n")
+	};
+	xmpMetadata.rationalsToNumbers = function(l) {
+		var d = [];
+		for (var A = 0; A < l.length; A++) d[A] = l[A][1] == 0 ? 0 : l[A][0] / l[A][1];
+		return d
+	};
+	xmpMetadata.numbersToRationals = function(l) {
+		var d = [];
+		for (var A = 0; A < l.length; A++) {
+			var G = l[A],
+				b = 1;
+			if (G != Math.round(G)) {
+				b = 1e3;
+				G = Math.round(G * b);
+			}
+			d[A] = [G, b];
+		}
+		return d
+	};
+	xmpMetadata.exifIfdToMetadata = function(l, d) {
+		var G = xmpMetadata.xmpPropertySchema;
+		if (d == null) d = {};
+		for (var b in G) {
+			var V = G[b][1],
+				Q = "t" + V;
+			if (V != null && l[Q] != null) {
+				var t = l[Q];
+				if (V == 0) t = t.join(".");
+				else if (V == 2 || V == 4) {
+					var I = l["t" + (V - 1)];
+					if (I == null) I = [V == 2 ? "N" : "E"];
+					t = xmpMetadata.rationalsToNumbers(t).join(",") + I[0];
+				} else if (V == 42034) t = xmpMetadata.rationalsToNumbers(t).join(" ");
+				else if (V == 270 || V == 315) {
+					var y = t[0],
+						e = new Uint8Array(y.length);
+					X.KQ(e, 0, y);
+					t = X.Kw(e);
+				} else t = t[0];
+				d[b] = t;
+			}
+		}
+		if (l.exifIFD) xmpMetadata.exifIfdToMetadata(l.exifIFD, d);
+		if (l.gpsiIFD) xmpMetadata.exifIfdToMetadata(l.gpsiIFD, d);
+		return d
+	};
+	xmpMetadata.metadataToExifIfd = function(l, d, G) {
+		var b = xmpMetadata.xmpPropertySchema,
+			Q = 0,
+			I = 0;
+		if (d == null) d = {};
+		var V = {},
+			t = {};
+		for (var y in b) {
+			if (l[y] == null || b[y][1] == null) continue;
+			var e = b[y][1],
+				M = "t" + e,
+				R = d;
+			if (y.startsWith("exif:")) {
+				R = V;
+				Q++;
+				if (y.startsWith("exif:GPS")) {
+					R = t;
+					I++;
+				}
+			}
+			var J = l[y];
+			if (e == 0) J = new Uint8Array(J.split(".").map(parseFloat));
+			else if (e == 2 || e == 4) {
+				var n = J.length;
+				R["t" + (e - 1)] = [J.slice(J.length - 1)];
+				J = xmpMetadata.numbersToRationals(J.split(",").map(parseFloat));
+			} else if (e == 42034) J = xmpMetadata.numbersToRationals(J.split(" ").map(parseFloat));
+			else if (e == 270 || e == 315) {
+				var r = X.zE(J);
+				J = [X.Ko(r, 0, r.length)];
+			} else J = [J];
+			R[M] = J;
+		}
+		if (Q != 0) {
+			d.exifIFD = V;
+			d.t34665 = [0];
+		}
+		if (I != 0) {
+			d.gpsiIFD = t;
+			d.t34853 = [0];
+		}
+		var T = new Date,
+			j = [T.getFullYear(), T.getMonth() + 1, T.getDate(), T.getHours(), T.getMinutes(), T.getSeconds()];
+		for (var A = 0; A < 6; A++) j[A] = (j[A] + "").padStart(2, "0");
+		d.t305 = ["Photopea Editor (www.photopea.com)"];
+		if (G != !0) d.t306 = [j[0] + ":" + j[1] + ":" + j[2] + " " + j[3] + ":" + j[4] + ":" + j[5]];
+		return d
+	};
+
+	function csvParser() {}
+	csvParser.parse = function(l) {
+		var d = {
+				ai6: ",",
+				Vo: "\r\n",
+				Co: "\""
+			},
+			G = [
+				[""]
+			],
+			b, V, Q, t, I;
+		for (b = V = Q = t = 0; Q < l.length; Q++) {
+			switch (I = l.charAt(Q)) {
+				case d.Co:
+					if (t && l.charAt(Q + 1) == d.Co) {
+						G[b][V] += d.Co;
+						++Q;
+					} else {
+						t ^= 1;
+					}
+					break;
+				case d.ai6:
+					if (!t) {
+						G[b][++V] = "";
+					} else {
+						G[b][V] += I;
+					}
+					break;
+				case d.Vo.charAt(0):
+					if (!t && (!d.Vo.charAt(1) || d.Vo.charAt(1) && d.Vo.charAt(1) == l.charAt(Q + 1))) {
+						G[++b] = [""];
+						G[b][V = 0] = "";
+						if (d.Vo.charAt(1)) {
+							++Q;
+						}
+					} else {
+						G[b][V] += I;
+					}
+					break;
+				default:
+					G[b][V] += I;
+			}
+		}
+		if (G[G.length - 1].length < G[0].length) G.pop();
+		return G
+	};
 
 
 // Global namespace for all Photopea canvas editing tools
@@ -100660,6 +109721,6596 @@ PhotopeaApp.prototype.ayt = function(l) {
 
 
 
+
+var FNTS = {
+	"subsetNames": [
+		"Latin-1",
+		"Latin Ext. A",
+		"Greek",
+		"Cyrillic",
+		"Hebrew",
+		"Arabic",
+		"Hangul",
+		"Chi-Jap-Kor",
+		"Tibetan",
+		"Devanagari",
+		"Thai",
+		"Khmer",
+		"Vietnamese",
+		"Bengali",
+		"Emoji"
+	],
+	"cats": [
+		"Blackletter",
+		"Calligraphic",
+		"Comic",
+		"Dingbat",
+		"Display",
+		"Grunge",
+		"Handdrawn",
+		"Monospaced",
+		"Novelty",
+		"Pixel",
+		"Programming",
+		"Retro",
+		"Sans Serif",
+		"Script",
+		"Serif",
+		"Slab Serif",
+		"Stencil",
+		"Typewriter"
+	],
+	"list": [
+		"!Paul Maul,Regular,a,1,6,",
+		",Bold,,,,",
+		"1942 report,1942 report,a,0,17,",
+		"20 db,Regular,a,8,4,",
+		"2Dumb,,a,1,8,",
+		"3Dumb,,3dumb,,,",
+		"ABeeZee,Italic,,,12,",
+		",Regular,,,,",
+		"Aaargh,Normal,AaarghNormal,0,,",
+		"Abel,Regular,,1,,",
+		"Abhaya Libre,Bold,,,14,",
+		",ExtraBold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Abril Fatface,Regular,,3,4,",
+		"Acknowledgement,Medium,a,1,,",
+		"Aclonica,Regular,,3,12,a",
+		"Acme,,,1,,",
+		"Action Man,,a,,2,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Action Man Extended,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Action Man Shaded,Regular,a,,,",
+		",Italic,,,,",
+		"Actor,Regular,,,12,a",
+		"Adamina,,,,14,a",
+		"Adhesive Nr. Seven,,AdhesiveNrSevenBanners,0,3,",
+		"Advent Pro,Bold,,7,12,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Afta sans,Regular,a,1,,",
+		",Italic,,,,",
+		"Afta serif,Regular,a,,14,",
+		",Italic,,,,",
+		"After Shok,Regular,a,0,4,",
+		"Aguafina Script,,,1,13,",
+		"Aileron,Black,,3,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		",UltraLight,,,,",
+		",UltraLight Italic,,,,",
+		"Air America,Regular,,1,4,",
+		"Airstream,,a,,11,",
+		"Akaya Kanadaka,,,,4,a",
+		"Akaya Telivigala,,,,,a",
+		"Akronim,,,,,a",
+		"Aladin,,,,6,a",
+		"Alata,,,4099,12,",
+		"Alatsi,,,,,",
+		"Aldrich,,,1,,a",
+		"Alef,Bold,,19,,",
+		",Regular,,,,",
+		"Alegreya,Black,,4111,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Alegreya SC,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		"Alegreya Sans,Black,,,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Alegreya Sans SC,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Aleo,Bold,,3,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Alex Brush,,,4099,6,a",
+		"Alfa Slab One,,,,4,a",
+		"Alice,,,9,14,a",
+		"Alike,,,1,,a",
+		"Alike Angular,,,,,a",
+		"Allan,Bold,,,4,a",
+		",Regular,,,,a",
+		"Allerta,,,,12,a",
+		"Allerta Stencil,,,,,a",
+		"Allison,,,4099,6,a",
+		"Allura,,,,,a",
+		"Almarai,Bold,,33,12,a",
+		",ExtraBold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Almendra,Bold,,1,4,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,3,,",
+		"Almendra Display,,,1,,",
+		"Almendra SC,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Alpha Echo,,a,,,",
+		"Alumni Sans,Black,,4107,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Amadeus,Regular,,1,4,",
+		"Amagro,bold,,,14,",
+		"Amarante,Regular,,3,4,a",
+		"Amaranth,Bold,,1,12,a",
+		",Bold Italic,,,,",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Amatic,Bold,,3,6,",
+		"Amatic SC,,,4123,,a",
+		",Regular,,,,a",
+		"Amble,Bold,,3,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Condensed,,,,",
+		",Light Condensed Italic,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		"Amerika,,a,13,4,",
+		"Amerika Alternates,,a,0,,",
+		"Amerika Sans,,a,1,,",
+		"Amethysta,,,,14,a",
+		"Amiko,Bold,,515,12,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Amiri,Bold,,35,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Amita,Bold,,515,13,",
+		",Regular,,,,",
+		"Anagram,,a,1,11,",
+		"Anaheim,,,3,12,a",
+		"Andada,Bold,,4099,14,",
+		",Bold Italic,,3,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Andada Pro,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Andada SC,Bold,,3,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Andika,,,4107,12,a",
+		"Andika New Basic,Bold,,4099,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Angkor,,,2048,4,a",
+		"Annie Use Your Telescope,,,3,6,a",
+		"Anonymous,,a,1,7,",
+		"Anonymous Pro,,a,15,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,a",
+		"Antic,,,1,12,a",
+		"Antic Didone,,,,14,",
+		"Antic Sans,,a,,,",
+		"Antic Slab,,a,,,",
+		",,,,,a",
+		"Anton,,,4099,12,a",
+		"Antonio,Bold,,3,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"AnuDaw,Regular,a,0,4,",
+		",Italic,AnuDawItalic,,,",
+		"AquilineTwo,Regular,a,1,,",
+		"Arapey,Italic,,,14,",
+		",Regular,,,,",
+		"Arbutus,,a,3,4,",
+		",,,,,a",
+		"Arbutus Slab,,,,15,",
+		"Archistico,Bold,,0,4,",
+		",Normal,,,,",
+		"Architects Daughter,Regular,a,3,6,",
+		",,,,,a",
+		"Archivo,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		",Black,ArchivoBlack-Regular,3,,a",
+		"Archivo Narrow,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Arcon,Regular,,3,,",
+		",Rounded-Regular,,,,",
+		"Are You Serious,Regular,,4099,6,a",
+		"Aref Ruqaa,Bold,,33,14,a",
+		",Regular,,,,a",
+		"Arima Koshi,Black,,4099,12,",
+		",Bold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",Semi Bold,,,,",
+		",Thin,,,,",
+		"Arima Madurai,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,4,a",
+		",ExtraLight,,,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",Semi Bold,,,,",
+		",Thin,,,,",
+		"Arimo,Regular,a,4127,,",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Arizonia,Regular,,1,13,",
+		"ArmWrestler,Bold,,,4,",
+		"Armalite Rifle,Regular,a,,16,",
+		"Armata,,,3,12,",
+		"Arsenal,Bold,,4105,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Artifika,Medium,,1,14,",
+		",Regular,,,,a",
+		"Arvo,,a,,15,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Arya,Bold,,515,12,a",
+		",Regular,,,,a",
+		"Asap,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Symbol,,1,,",
+		"Asap Condensed,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Asar,Regular,,515,14,a",
+		"Asset,,,1,,",
+		"Assistant,Bold,,17,12,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,a",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Astloch,Bold,,1,4,a",
+		",Regular,,,,a",
+		"Asul,Bold,,,12,a",
+		",Regular,,,,a",
+		"Athiti,Bold,,5123,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Atkinson Hyperlegible,Bold,,1,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Atma,Bold,,8193,4,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Atomic Age,Regular,,3,,",
+		"Aubrey,,,1,,a",
+		"Audiowide,,,3,,a",
+		"Aurulent Sans,Bold,,1,12,",
+		",BoldItalic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Aurulent Sans Mono,,,,,",
+		"Autour One,,,3,4,a",
+		"Avara,Bold,,1,14,",
+		",Bold Italic,,,,",
+		"Average,Regular,,,,a",
+		"Average Sans,,,3,12,a",
+		"Averia Gruesa Libre,,,1,4,a",
+		"Averia Libre,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Averia Sans Libre,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Averia Serif Libre,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Azeret Mono,Black,,3,7,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Azoft Sans,Regular,a,4107,4,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"B612,Bold,,16389,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"B612 Mono,Bold,,,7,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"BP Diet,UltraBlack,,4,4,",
+		",UltraBlack Italic,,,,",
+		"BPdots,Regular,a,5,,",
+		",Bold,,,,",
+		",Light,,,,",
+		",Condensed,BPdotsCondensed,,,",
+		",CondensedDiamond,BPdotsCondensedDiamond,,,",
+		",CondensedSquare,BPdotsCondensedSquare,,,",
+		",Diamond,BPdotsDiamond,,,",
+		",Diamond Bold,BPdotsDiamond-Bold,,,",
+		",Diamond Light,BPdotsDiamond-Light,,,",
+		",Minus,BPdotsMinus,,,",
+		",Minus Bold,BPdotsMinus-Bold,,,",
+		",Plus,BPdotsPlus,,,",
+		",Plus Bold,BPdotsPlus-Bold,,,",
+		",Squares,BPdotsSquares,,,",
+		",Squares Bold,BPdotsSquares-Bold,,,",
+		",Squares Light,BPdotsSquares-Light,,,",
+		",Unicase,BPdotsUnicase,,,",
+		",Unicase Bold,BPdotsUnicase-Bold,,,",
+		",Unicase Light,BPdotsUnicase-Light,,,",
+		",UnicaseDiamond,BPdotsUnicaseDiamond,,,",
+		",UnicaseDiamond Bold,BPdotsUnicaseDiamond-Bold,,,",
+		",UnicaseDiamond Light,BPdotsUnicaseDiamond-Light,,,",
+		",UnicaseMinus,BPdotsUnicaseMinus,,,",
+		",UnicaseMinus Bold,BPdotsUnicaseMinus-Bold,,,",
+		",UnicasePlus,BPdotsUnicasePlus,,,",
+		",UnicasePlus Bold,BPdotsUnicasePlus-Bold,,,",
+		",UnicaseSquare,BPdotsUnicaseSquare,,,",
+		",UnicaseSquare Bold,BPdotsUnicaseSquare-Bold,,,",
+		",UnicaseSquare Light,BPdotsUnicaseSquare-Light,,,",
+		",UnicaseVertical,BPdotsUnicaseVertical,,,",
+		",UnicaseVertical Bold,BPdotsUnicaseVertical-Bold,,,",
+		",Vertical,BPdotsVertical,,,",
+		",Vertical Bold,BPdotsVertical-Bold,,,",
+		"BPmono,Regular,a,4,7,",
+		",Bold,,,,",
+		",Italic,,,,",
+		"BPreplay,Regular,a,,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"BPscript,Regular,a,,11,",
+		"Bad Script,,,9,6,a",
+		"Bahiana,,,3,4,a",
+		"Bahianita,,,4099,,a",
+		"Bai Jamjuree,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Bainsley,Regular,a,16399,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Bakbak One,Regular,,3,4,a",
+		"Balgruf,,a,,0,",
+		",Italic,,,,",
+		"Ballet 16pt,Regular,,4099,6,a",
+		"Baloo,,a,4611,4,",
+		",2 Bold,Baloo2-Bold,,,a",
+		",2 ExtraBold,Baloo2-ExtraBold,,,a",
+		",2 Medium,Baloo2-Medium,,,a",
+		",2,Baloo2-Regular,,,a",
+		",2 SemiBold,Baloo2-SemiBold,,,a",
+		",Bhai 2 Bold,BalooBhai2-Bold,4099,,a",
+		",Bhai 2 ExtraBold,BalooBhai2-ExtraBold,,,a",
+		",Bhai 2 Medium,BalooBhai2-Medium,,,a",
+		",Bhai 2,BalooBhai2-Regular,,,a",
+		",Bhai 2 SemiBold,BalooBhai2-SemiBold,,,a",
+		",Bhaijaan 2 Bold,BalooBhaijaan2-Bold,4131,,a",
+		",Bhaijaan 2 ExtraBold,BalooBhaijaan2-ExtraBold,,,a",
+		",Bhaijaan 2 Medium,BalooBhaijaan2-Medium,,,a",
+		",Bhaijaan 2,BalooBhaijaan2-Regular,,,a",
+		",Bhaijaan 2 SemiBold,BalooBhaijaan2-SemiBold,,,a",
+		",Bhaina 2 Bold,BalooBhaina2-Bold,4099,,a",
+		",Bhaina 2 ExtraBold,BalooBhaina2-ExtraBold,,,a",
+		",Bhaina 2 Medium,BalooBhaina2-Medium,,,a",
+		",Bhaina 2,BalooBhaina2-Regular,,,a",
+		",Bhaina 2 SemiBold,BalooBhaina2-SemiBold,,,a",
+		",Chettan 2 Bold,BalooChettan2-Bold,,,a",
+		",Chettan 2 ExtraBold,BalooChettan2-ExtraBold,,,a",
+		",Chettan 2 Medium,BalooChettan2-Medium,,,a",
+		",Chettan 2,BalooChettan2-Regular,,,a",
+		",Chettan 2 SemiBold,BalooChettan2-SemiBold,,,a",
+		",Da 2 Bold,BalooDa2-Bold,12291,,a",
+		",Da 2 ExtraBold,BalooDa2-ExtraBold,,,a",
+		",Da 2 Medium,BalooDa2-Medium,,,a",
+		",Da 2,BalooDa2-Regular,,,a",
+		",Da 2 SemiBold,BalooDa2-SemiBold,,,a",
+		",Paaji 2 Bold,BalooPaaji2-Bold,4099,,a",
+		",Paaji 2 ExtraBold,BalooPaaji2-ExtraBold,,,a",
+		",Paaji 2 Medium,BalooPaaji2-Medium,,,a",
+		",Paaji 2,BalooPaaji2-Regular,,,a",
+		",Paaji 2 SemiBold,BalooPaaji2-SemiBold,,,a",
+		",Tamma 2 Bold,BalooTamma2-Bold,,,a",
+		",Tamma 2 ExtraBold,BalooTamma2-ExtraBold,,,a",
+		",Tamma 2 Medium,BalooTamma2-Medium,,,a",
+		",Tamma 2,BalooTamma2-Regular,,,a",
+		",Tamma 2 SemiBold,BalooTamma2-SemiBold,,,a",
+		",Tammudu 2 Bold,BalooTammudu2-Bold,,,a",
+		",Tammudu 2 ExtraBold,BalooTammudu2-ExtraBold,,,a",
+		",Tammudu 2 Medium,BalooTammudu2-Medium,,,a",
+		",Tammudu 2,BalooTammudu2-Regular,,,a",
+		",Tammudu 2 SemiBold,BalooTammudu2-SemiBold,,,a",
+		",Thambi 2 Bold,BalooThambi2-Bold,,,a",
+		",Thambi 2 ExtraBold,BalooThambi2-ExtraBold,,,a",
+		",Thambi 2 Medium,BalooThambi2-Medium,,,a",
+		",Thambi 2,BalooThambi2-Regular,,,a",
+		",Thambi 2 SemiBold,BalooThambi2-SemiBold,,,a",
+		"Balsamiq Sans,Bold,,16395,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Balthazar,,,1,14,a",
+		"Bangers,,,4099,4,a",
+		"Banksia,,a,1,,",
+		", Black,BanksiaBlack,,,",
+		", Bold,BanksiaBold,,,",
+		"Barlow,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Barlow Condensed,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Barlow Semi Condensed,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Barriecito,Regular,,,4,a",
+		"Barrio,,,3,,a",
+		"Basic,,,,12,",
+		"Baskervville,Italic,,,14,",
+		",Regular,,,,",
+		"Battambang,Black,,2048,4,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Baumans,Regular,,1,,a",
+		"Bayon,,,2048,12,a",
+		"Be Vietnam,Bold,,4097,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Be Vietnam Pro,Black,,4099,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Bearpaw,Regular,a,0,4,",
+		"Bebas,,,,,",
+		"Bebas Kai,,a,3,12,",
+		"Bebas Neue,,,,4,a",
+		",Thin,,11,12,ex/bebas_neue/BebasNeue Thin.otf",
+		",Bold,BebasNeueBold,,,ex/bebas_neue/BebasNeue Bold.otf",
+		",Book,BebasNeueBook,,,ex/bebas_neue/BebasNeue Book.otf",
+		",Light,BebasNeueLight,,,ex/bebas_neue/BebasNeue Light.otf",
+		",Regular,BebasNeueRegular,,,ex/bebas_neue/BebasNeue Regular.otf",
+		"Belgrano,,,1,14,a",
+		"Bellefair,,,19,,",
+		"Belleza,,,1,12,a",
+		"Belligerent Madness,,a,0,6,",
+		"Bellota,Bold,,4107,4,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Bellota Text,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"BenchNine,Bold,,3,12,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Benne,,,,14,",
+		"Bentham,,,,,a",
+		",,BenthamRegular,,,",
+		"Berkshire Swash,,,,13,",
+		"Besley,Black,,,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Beth Ellen,Regular,,1,6,a",
+		"Beth Ellen 2,,BethEllen2Regular,,,",
+		"Bevan,,a,3,4,",
+		",Italic,,4099,,a",
+		",Regular,,,,a",
+		"Big Shoulders Display,Black,,,12,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,4,a",
+		",Light,,,12,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Big Shoulders Inline Display,Black,,,4,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Big Shoulders Inline Text,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Big Shoulders Stencil Display,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Big Shoulders Stencil Text,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Big Shoulders Text,Black,,,12,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,4,a",
+		",Light,,,12,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Bigelow Rules,Regular,,3,4,",
+		"Bigshot One,,,1,,a",
+		"Bilbo,,,4099,6,a",
+		"Bilbo Swash Caps,,,1,,a",
+		"BioRhyme,Bold,,3,15,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		"BioRhyme Expanded,Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		"Birthstone,,,4099,6,a",
+		"Birthstone Bounce,Medium,,,,a",
+		",Regular,,,,a",
+		"Biryani,Black,,515,12,a",
+		",Bold,,,,",
+		",DemiBold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,a",
+		",Heavy,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",UltraLight,,,,",
+		"Bitstream Vera Sans,Bold,,1,,",
+		",Bold Oblique,,,,",
+		",Oblique,,,,",
+		",Roman,,,,",
+		"Bitstream Vera Sans Mono,Bold,,,7,",
+		",Bold Oblique,BitstreamVeraSansMono-BoldOb,,,",
+		",Oblique,,,,",
+		",Roman,,,,",
+		"Bitstream Vera Serif,Bold,,,15,",
+		",Roman,,,,",
+		"Bitter,Black,,4107,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Black And White Picture,Regular,,64,12,a",
+		"Black Han Sans,,,0,,a",
+		"Black Jack,,a,1,13,",
+		"Black Ops One,,,3,16,",
+		"Black Rose,,a,1,4,",
+		"Blackout,2 AM,,0,,",
+		",Midnight,,,,",
+		"Blazium,Regular,a,3,8,",
+		"Blinker,Black,,,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Blokletters Balpen,Balpen,Blokletters-Balpen,1,6,",
+		"Blokletters Potlood,Potlood,Blokletters-Potlood,,,",
+		"Blokletters Viltstift,Viltstift,Blokletters-Viltstift,,,",
+		"Bloody,Normal,a,0,8,",
+		"Bluu Next,Bold,,1,14,",
+		",Bold Italic,,,,",
+		",Titling,,,,",
+		"Bodoni Moda 11pt,Black,,3,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"BodoniXT,Regular,a,1,,",
+		"Bodonitown,,a,,15,",
+		"Boisu,Fill,,3,4,",
+		",Full,,,,",
+		",Stroke,,,,",
+		"Bokor,Regular,,2048,,a",
+		"Bombay Black Unicode,Bombay Black Unicode,Bombay-Black-Unicode,32,12,ex/Bombay Black Unicode.ttf",
+		"Bona Nova,Bold,,20511,14,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Bonbon,,,1,6,a",
+		"Bonheur Royale,,,4099,,a",
+		"BonvenoCF,Light,,3,12,",
+		"Boogaloo,Regular,,1,4,",
+		"Boston Traffic,,a,0,16,",
+		"Bowlby One,,a,1,4,",
+		",,,,,a",
+		"Bowlby One SC,,,,,",
+		"Boycott,,a,0,,",
+		"Brawler,,a,1,14,",
+		",,,,,a",
+		"Bree Serif,,,3,15,",
+		"Brizel,,a,,6,",
+		"Brushstroke Plain,Plain,Brushstroke-Plain,0,4,",
+		"Brygada 1918,Bold,,4111,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Bubblegum Sans,Regular,,1,4,a",
+		"Bubbler One,,a,,12,",
+		",,,,,a",
+		"Buda,Light,,,4,a",
+		"Buenard,Bold,,3,14,a",
+		",Regular,,,,a",
+		"Bungee,Hairline,,4099,12,",
+		",Inline,,,,",
+		",Outline,,,,",
+		",Regular,,,,",
+		",Shade,,,,",
+		"Bungee Hairline,Regular,,,4,a",
+		"Bungee Inline,,,,,a",
+		"Bungee Layers,Inline,,,12,",
+		",Outline,,,,",
+		",Regular,,,,",
+		",Shade,,,,",
+		"Bungee Layers Rotated,Inline,,3,,",
+		",Outline,,,,",
+		",Regular,,,,",
+		",Shade,,,,",
+		"Bungee Outline,Regular,,4099,4,a",
+		"Bungee Shade,,,,,a",
+		"Butcherman,,,3,,a",
+		"Butterfly Kids,,,1,6,a",
+		"CMU Bright,Oblique,,13,12,",
+		",Roman,,,,",
+		",SemiBold,,,,",
+		",SemiBoldOblique,,,,",
+		"CMU Classical Serif,Italic,,,,",
+		"CMU Concrete,Bold,,,,",
+		",BoldItalic,,,,",
+		",Italic,,,,",
+		",Roman,,,,",
+		"CMU Sans Serif,Medium,a,,,",
+		",Bold,,,,",
+		",BoldOblique,,,,",
+		"CMU Sans Serif Demi Condensed,DemiCondensed,CMUSansSerif-DemiCondensed,,,",
+		"CMU Sans Serif,Oblique,,,,",
+		"CMU Serif,Bold,,,,",
+		",BoldItalic,,,,",
+		",Extra BoldSlanted,CMUSerif-BoldSlanted,,,",
+		",Italic,,,,",
+		",Roman,,15,,",
+		",Extra RomanSlanted,CMUSerif-RomanSlanted,13,,",
+		"CMU Serif Upright Italic,UprightItalic,CMUSerif-UprightItalic,,,",
+		"CMU Typewriter Text,Bold,CMUTypewriter-Bold,,,",
+		",BoldItalic,CMUTypewriter-BoldItalic,,,",
+		",Italic,CMUTypewriter-Italic,,,",
+		",Light,CMUTypewriter-Light,,,",
+		",LightOblique,CMUTypewriter-LightOblique,,,",
+		",Regular,CMUTypewriter-Regular,,,",
+		"CMU Typewriter Text Variable Width,Medium,CMUTypewriterVariable,9,,",
+		",Italic,CMUTypewriterVariable-Italic,,,",
+		"Cabin,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Cabin Condensed,Bold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"CabinSketch,Regular,a,1,4,",
+		"Cabin Sketch,Bold,,,,a",
+		",Regular,,,,a",
+		"Cadman,,a,16399,12,",
+		",Bold,,15,,",
+		",Bold Italic,,,,",
+		",Italic,,16399,,",
+		"Caesar Dressing,Regular,a,1,4,a",
+		"Cagliostro,,,,,",
+		"Cairo,Black,,35,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Caladea,Bold,,3,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Calistoga,,,4099,,",
+		"Calligraffiti,,a,1,1,",
+		"Calligraffitti,,,,6,a",
+		"Cambay,Bold,,515,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Cambo,,,1,14,a",
+		"CamingoCode,Bold,,3,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Candal,,a,1,12,a",
+		"Candela,Bold,,,,",
+		",Bold Italic,Candela-Bold-Italic,,,",
+		",Book,,,,",
+		",Book Italic,Candela-Book-Italic,,,",
+		"Cantarell,Bold,,3,,",
+		",BoldOblique,,,,",
+		",Oblique,,,,",
+		",Regular,,,,",
+		"Cantata One,,,,14,a",
+		"CantoraOne,,,,12,a",
+		"Capriola,,,,,a",
+		"Capsuula,,a,,,",
+		"Capture it,,a,13,16,",
+		"Capture it 2,,a,0,,",
+		"Caramel,,,4099,6,a",
+		"Carattere,,,,,a",
+		"CarbonType,,a,0,17,",
+		"Cardo,Bold,,16407,14,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Carlito,,a,4111,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Carme,Regular,a,1,,a",
+		"Caroni,,,3,6,",
+		"Carousel,,a,1,4,",
+		"Carrington,,a,,13,",
+		"Carrois Gothic,,,,12,",
+		"Carrois Gothic SC,,,,,",
+		"Carter One,,a,,4,a",
+		"Cascadia Code,,a,0,7,",
+		"Caslon Calligraphic Initials,,a,,4,",
+		"Caslon Initials,,a,,,",
+		"Castoro,Italic,,3,14,a",
+		",Regular,,,,a",
+		"Catamaran,Black,,1,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Caudex,Regular,a,7,14,a",
+		",Bold,,4103,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Caveat,Bold,,11,6,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Caveat Brush,Regular,,3,13,",
+		"Caviar Dreams,,a,15,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Cedarville Cursive,Regular,Cedarville-Cursive,3,6,a",
+		"Ceviche One,,,1,4,a",
+		"Chakra Petch,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Changa,Bold,,35,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",One,ChangaOne,1,4,a",
+		",One Italic,ChangaOne-Italic,,,a",
+		"Chango,Regular,,,,a",
+		"Chantelli Antiqua,,Chantelli-Antiqua,,1,",
+		"ChanticleerRoman,,a,,14,",
+		"Charis SIL,,a,4107,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Charm,Bold,,5123,6,a",
+		",Regular,,,,a",
+		"Charmonman,Bold,,,,a",
+		",Regular,,,,a",
+		"Chathura,Bold,,0,12,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",Thin,,,,",
+		"Chau Philomene One,Italic,,1,,a",
+		",Regular,,,,a",
+		"Chela One,,,,4,",
+		"Chelsea Market,,,,,a",
+		"Chenla,,a,2048,,a",
+		"Cherish,,,4099,6,a",
+		"Cherry Cream Soda,,,1,4,a",
+		"Cherry Swash,Bold,,,,",
+		",Regular,,,,",
+		"Chewy,,,,,a",
+		"Chicle,,,,,a",
+		"Chilanka,,,,6,a",
+		"Chivo,Black,,4099,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Chomsky,Regular,a,3,0,",
+		"Chonburi,,,5123,4,a",
+		"ChunkFive,,,3,,",
+		"ChunkFive Print,,a,0,,",
+		"Cicle,Fina,CicleFina,1,12,",
+		",Fina Italic,CicleFinaItalic,,,",
+		",Gordita,CicleGordita,,,",
+		",Gordita Italic,CicleGorditaItalic,,,",
+		",Semi,CicleSemi,,,",
+		",Semi Italic,CicleSemiItalic,,,",
+		",Shadow,CicleShadow,,,",
+		"Cinzel,Black,,3,14,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Cinzel Decorative,Black,,,4,a",
+		",Bold,,,,a",
+		",Regular,,,,a",
+		"Clear Sans,,a,4111,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Thin,,,,",
+		"Clicker Script,Regular,,3,6,a",
+		"Clutchee,,a,0,4,",
+		"Coda,ExtraBold,,3,,a",
+		",Heavy,,1,,",
+		",Regular,,3,,a",
+		"Coda Caption,ExtraBold,,,12,a",
+		"Codystar,Regular,a,1,8,",
+		",Light,,,,",
+		"Coiny,Regular,,4099,4,",
+		"Colaborate,Bold,,1,12,",
+		"ColaborateLight,Regular,Colaborate-Light,,,",
+		"Colaborate,Medium,,,,",
+		",Regular,,,,",
+		",Thin,,,,",
+		"College,Regular,a,0,4,",
+		",Bold,CollegeBold,,,",
+		"College Condensed,Regular,a,,,",
+		"College Semi-condensed,,CollegeSemiCondensed,,,",
+		"CombiNumerals Ltd,,a,,3,",
+		"Combo,,,3,4,a",
+		"Comfortaa,,a,7,12,",
+		",Bold,,4111,4,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,7,12,",
+		"Comforter,Regular,,4107,6,a",
+		"Comforter Brush,,,,,a",
+		"Comic Neue,Bold,,1,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Comic Relief,,a,15,2,",
+		"Comic Zine OT,,a,1,8,",
+		"Coming Soon,,,,6,a",
+		"Commando,Commando,a,0,4,",
+		"Comme,Bold,,3,12,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Heavy,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Commissioner,Black,,4111,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Communist,Regular,a,0,14,",
+		",Italic,CommunistItalic,,,",
+		",Sans,CommunistSans,,,",
+		",SansBold,CommunistSansBold,,,",
+		"Compagnon,Bold,,1,4,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Roman,,,,",
+		"Comprehension,SemiBold,,,14,",
+		"Concert One,Regular,,,12,",
+		"Condiment,,,,6,a",
+		"Content,,a,2048,4,a",
+		",Bold,,,,a",
+		"Contra,Regular,a,1,14,",
+		",Italic,,,,",
+		"Contrail One,Regular,,,4,a",
+		"Convergence,,,,12,a",
+		"Cookie,,,,13,",
+		"Cooper Hewitt,Bold,,3,12,",
+		",Bold Italic,,,,",
+		",Book,,,,",
+		",Book Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Semibold,,,,",
+		",Semibold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Copse,Regular,a,1,14,a",
+		"Copystruct,Bold,CopystructBold,0,4,",
+		",Normal,CopystructNormal,,,",
+		"Corben,Bold,,3,,a",
+		",Regular,,,,a",
+		"Corinthia,Bold,,4099,6,a",
+		",Regular,,,,a",
+		"Cormorant,Bold,,4107,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Cormorant Garamond,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Cormorant Infant,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,a",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,a",
+		"Cormorant SC,Bold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Cormorant Unicase,Bold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",Semibold,,,,",
+		"Cormorant Upright,Bold,,4099,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Costura,Bold,,0,8,",
+		",DemiBold,,,,",
+		",Regular,Costura-Light,,,",
+		"Courgette,,,3,13,",
+		"Courier Prime,,a,,17,",
+		",Bold,,,7,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Courier Prime Code,Italic,,,12,",
+		",Regular,,,,",
+		"Courier Prime Sans,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Cousine,,a,4127,7,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,a",
+		"Coustard,Black,,3,14,a",
+		",Regular,,,,a",
+		"Covered By Your Grace,,a,,6,a",
+		"Cowboy Hippie Pro,,a,,4,",
+		"Crafty Girls,,,1,6,a",
+		"Creepster,,,,4,a",
+		"Crete Round,Italic,,3,15,",
+		",Regular,,,,",
+		"Crimson,Bold,,4103,14,",
+		",BoldItalic,,4099,,",
+		",Italic,,4111,,",
+		",Roman,,,,",
+		",Semibold,,3,,",
+		",SemiboldItalic,,,,",
+		"Crimson Pro,Black,,4099,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Croissant One,Regular,,3,4,",
+		"Crushed,,,,,a",
+		"Cuprum,Bold,,4105,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Cute Font,Regular,,0,4,a",
+		"Cutive,,,3,14,a",
+		"Cutive Mono,,,,7,a",
+		"D-DIN,,a,1,12,",
+		",DIN-Bold,D-DIN-Bold,,,",
+		",DIN-Italic,D-DIN-Italic,,,",
+		"D-DIN Condensed,Regular,a,,,",
+		",DINCondensed-Bold,D-DINCondensed-Bold,,,",
+		"D-DIN Exp,Regular,a,,,",
+		",DINExp-Bold,D-DINExp-Bold,,,",
+		",DINExp-Italic,D-DINExp-Italic,,,",
+		"DISCO,Regular,a,0,,",
+		"DJ Gross,Normal,DJ-Gross,1,6,",
+		"DM Mono,Italic,,3,7,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		"DM Sans,Bold,,,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		"DM Serif Display,Italic,,1,14,a",
+		",Regular,,,,a",
+		"DM Serif Text,Italic,,,,a",
+		",Regular,,,,a",
+		"DPSDbeyond,,a,4,4,",
+		"DXì•„ê¸°ì‚¬ëž‘B,Bold,DXLBaB-KSCpc-EUC-H,16396,11,ex/DXLBaB-KSCpc-EUC-H.ttf",
+		"Daela,,,1,4,",
+		",Book,,,,",
+		",Italic,,,,",
+		"Damion,Regular,a,,6,a",
+		"Dancing Script,Bold,,4099,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Dancing Script OT,Regular,a,1,13,",
+		"Dangrek,,,2048,4,a",
+		"Daniel,Black,,1,6,",
+		",Bold,,,,",
+		",Regular,,,,",
+		"Darker Grotesque,Black,,4099,12,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Datalegreya,Dot,,,,",
+		",Gradient,,,,",
+		",Thin,,,,",
+		"David Libre,Bold,,4115,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Davys,,,0,3,",
+		"Dawning of a New Day,,a,1,6,a",
+		"DayPosterBlack,,a,,11,",
+		"Days,,a,8,4,",
+		"Days One,,,9,12,a",
+		"DeStencilNF,,a,1,16,",
+		"De Valencia,,,0,7,",
+		"Dearest,,a,1,0,",
+		"Dearest Open,,a,,,",
+		"Dearest Outline,,a,,,",
+		"Dehuti,Bold,,20495,14,",
+		",Bold-Italic,,,,",
+		",Book,,,,",
+		",Italic,,,,",
+		"Dehuti Alt,Bold,,,,",
+		",Bold-Italic,,,,",
+		",Book,,,,",
+		",Italic,,,,",
+		"DejaVu Sans,Book,a,20543,12,",
+		",Bold,,,,",
+		",Bold Oblique,,20511,,",
+		",ExtraLight,,4111,,",
+		",Oblique,,20511,,",
+		",Condensed,DejaVuSansCondensed,20543,,",
+		",Condensed Bold,DejaVuSansCondensed-Bold,,,",
+		",Condensed Bold Oblique,DejaVuSansCondensed-BoldOblique,20511,,",
+		",Condensed Oblique,DejaVuSansCondensed-Oblique,,,",
+		"DejaVu Sans Mono,Book,a,16431,,",
+		",Bold,,,,",
+		",Bold Oblique,,16399,,",
+		",Oblique,,,,",
+		"DejaVu Serif,Book,a,20495,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Condensed,DejaVuSerifCondensed,,,",
+		",Condensed Bold,DejaVuSerifCondensed-Bold,,,",
+		",Condensed Bold Italic,DejaVuSerifCondensed-BoldItalic,,,",
+		",Condensed Italic,DejaVuSerifCondensed-Italic,,,",
+		"Dekko,Regular,a,515,6,a",
+		"Dela Gothic One,,,20623,4,a",
+		"Delius,,,1,2,",
+		"Delius Swash Caps,,,,,",
+		"Delius Unicase,Bold,,,,",
+		",Regular,,,,",
+		"Della Respira,,,,14,a",
+		"Denk One,,,,12,a",
+		"Destroy,,a,0,4,",
+		"Desyrel,,a,1,6,",
+		"Deutsch Gothic,Normal,Deutsch-Gothic,0,0,",
+		"Devonshire,Regular,,3,6,a",
+		"Devroye,,a,1,14,",
+		",Extra,DevroyeExtra,0,,",
+		",Regular SCOSF,DevroyeSCOSF,1,,",
+		",Regular Unicode,DevroyeUnicode,15,,",
+		"Dhurjati,Regular,a,0,12,a",
+		"Didact Gothic,,,15,,",
+		"Digory Doodles,,Digory_Doodles_PS,0,13,",
+		"Diner,Fatt,,,11,",
+		",Obese,,,,",
+		",Regular,,,,",
+		",Skinny,,,,",
+		"Diplomata,Regular,,1,4,",
+		"Diplomata SC,,,,,a",
+		"Distant Galaxy,,a,0,8,",
+		"District,,a,,4,",
+		"Dited,,a,8,,",
+		"Do Hyeon,,,0,12,a",
+		"Dobkin,Plain,,,13,",
+		"Dokdo,Regular,,,6,a",
+		"Domine,Bold,,3,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Donegal One,Regular,,,,a",
+		"Dongle,Bold,,4163,12,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Doppio One,,,3,,a",
+		"Dorsa,,,1,,a",
+		"Dosis,Bold,,4099,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"DotGothic16,Regular,,16525,,a",
+		"Dr Sugiyama,,,1,6,a",
+		"DrawveticaMini,Medium,a,,,",
+		"Droid Sans,Regular,a,4111,12,",
+		",Bold,,,,",
+		"Droid Sans Fallback,Regular,a,192,10,ex/DroidSansFallback.ttf",
+		"Droid Sans Mono,,a,4111,7,",
+		"Droid Serif,,a,,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Dubiel,,,1,,",
+		"DubielPlain,Regular,a,,,",
+		"Dubtronic,Solid,,0,4,",
+		"Dubtronic Inline,Regular,a,,,",
+		"Duplexide,,a,,,",
+		"Duru Sans,,,3,12,",
+		"Dustismo,,a,,,",
+		", Bold,DustismoBold,,,",
+		", Bold Italic,DustismoBoldItalic,,,",
+		", Italic,DustismoItalic,,,",
+		"Dustismo Roman,Regular,a,7,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Dutch Initials,normal,a,0,4,",
+		"DymaxionScript,Regular,a,1,11,",
+		"Dynalight,,,3,4,a",
+		"EB Garamond,Bold,,4111,14,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",08 Italic,EBGaramond08-Italic,4103,,",
+		",08 Regular,EBGaramond08-Regular,4111,,",
+		"EB Garamond 12 All SC,AllSC,EBGaramond12-AllSC,11,,",
+		"EB Garamond,12 Italic,EBGaramond12-Italic,4111,,",
+		",12 Regular,EBGaramond12-Regular,,,",
+		"EB Garamond Initials,Regular,a,0,,",
+		",Fill1,EBGaramondInitialsF1,,,",
+		",Fill2,EBGaramondInitialsF2,,,",
+		"EB Garamond SC,08 Regular,EBGaramondSC08-Regular,4111,,",
+		",12 Regular,EBGaramondSC12-Regular,,,",
+		"Eagle Lake,Regular,,3,6,a",
+		"EastMarket,,a,1,11,",
+		"East Sea Dokdo,,,0,6,a",
+		"Eater,,,3,4,a",
+		"Economica,Bold,,1,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Eczar,Bold,,513,14,",
+		",ExtraBold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Edo,Regular,a,1,4,",
+		"El Messiri,Bold,,41,12,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Electrolize,Regular,,1,,a",
+		"ElliotSix,,a,0,6,",
+		"Elsie,Black,,1,4,a",
+		",Regular,,,14,",
+		",Black,ElsieBlack-Regular,,,",
+		"Elsie Swash Caps,,,,4,a",
+		",Regular,,,14,",
+		",Black,ElsieSwashCapsBlack-Regular,,,",
+		"Emblema One,Regular,,3,4,a",
+		"EmbossedBlack,Normal,,0,0,",
+		"EmbossedBlackWide,,,,,",
+		"Emilys Candy,Regular,,1,4,a",
+		"Encode Sans,Black,,4099,12,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Encode Sans Condensed,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Encode Sans Expanded,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Encode Sans SC,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Encode Sans SemiCondensed,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Encode Sans SemiExpanded,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Engagement,Regular,,3,6,a",
+		"England Hand DB,,a,1,13,",
+		"Englebert,,,3,12,a",
+		"Engry,,a,8,14,",
+		"Enigmatic,,a,1,12,",
+		",Bold,EnigmaticBold,,,",
+		",Italic,EnigmaticItalic,,,",
+		"Enriqueta,Bold,,3,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Entypo,Regular,a,0,3,",
+		"Ephesis,,,4099,6,a",
+		"Epilogue,Black,,,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Eraser,Regular,,0,6,",
+		"Erica One,,,1,4,a",
+		"Esteban,,a,,14,a",
+		"Estonia,,,4099,6,a",
+		"Euphoria Script,,,1,,a",
+		"Ewert,,,,4,a",
+		"Existence,Light,,3,12,",
+		",Stencil Light,,,,",
+		",Unicase Light,,,,",
+		"Exo,Black,,4099,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Exo 2,Black,,4107,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Expletus Sans,Regular,a,1,,",
+		",Bold,,,4,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Explora,Regular,,4099,6,a",
+		"FFF Tusj,Bold,,1,4,",
+		"FORQUE,Regular,a,0,11,",
+		"Fahkwang,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Familiar Pro,Bold,,3,,",
+		"FancyPants,Regular,a,0,11,",
+		"Fantasque Sans Mono,Bold,,15,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Fanwood,,a,3,14,",
+		",Italic,,,,",
+		"Fanwood Text,,,,,a",
+		",Regular,,,,a",
+		"Farro,Bold,,,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"Farsan,,,4099,4,",
+		"Fascinate,,,3,,",
+		"Fascinate Inline,,,,,",
+		"Faster One,,,1,,",
+		"Fasthand,,,2048,,a",
+		"Fauna One,,a,1,14,a",
+		"Faustina,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Faux Snow BRK,Regular,a,0,3,",
+		"Federant,,,1,4,a",
+		"Federo,,,,12,a",
+		"Felipa,,,,1,",
+		"Fengardo Neue,,a,,12,",
+		",Black,,,,",
+		"Fenix,Regular,a,,14,a",
+		"Festive,,,4099,6,a",
+		"Fin Serif Display,Italic,,3,15,",
+		",Regular,,,,",
+		"Finger Paint,,,1,4,",
+		"Fira Code,Bold,,16399,7,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Retina,,15,12,",
+		",SemiBold,,16399,7,a",
+		"Fira Mono,Bold,,15,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"Fira Sans,Black,,4111,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Book,,,,",
+		",Book Italic,,,,",
+		",Eight,,,,",
+		",Eight Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Four,,,,",
+		",Four Italic,,,,",
+		",Hair,,,,",
+		",Hair Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		",Two,,,,",
+		",Two Italic,,,,",
+		",Ultra,,,,",
+		",Ultra Italic,,,,",
+		",UltraLight,,,,",
+		",UltraLight Italic,,,,",
+		"Fira Sans Compressed,Bold,,,,",
+		",Bold Italic,,,,",
+		",Book,,,,",
+		",Book Italic,,,,",
+		",Eight,,,,",
+		",Eight Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Four,,,,",
+		",Four Italic,,,,",
+		",Hair,,,,",
+		",Hair Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		",Two,,,,",
+		",Two Italic,,,,",
+		",UltraLight,,,,",
+		",UltraLight Italic,,,,",
+		"Fira Sans Condensed,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Book,,3,,",
+		",Book Italic,,,,",
+		",Eight,,,,",
+		",Eight Italic,,,,",
+		",ExtraBold,,4111,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Extrabold Italic,,3,,",
+		",Four,,,,",
+		",Four Italic,,,,",
+		",Hair,,,,",
+		",Hair Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,4111,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Semibold Italic,,3,,",
+		",Thin,,4111,,a",
+		",Thin Italic,,,,a",
+		",Two,,3,,",
+		",Two Italic,,,,",
+		",Ultra,,,,",
+		",Ultra Italic,,,,",
+		",UltraLight,,,,",
+		",UltraLight Italic,,,,",
+		"Fira Sans Extra Condensed,Black,,4111,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Firecat,Medium,FirecatMedium,0,8,",
+		"FjallaOne,Regular,a,1,4,",
+		"Fjalla One,,,,12,a",
+		"Fjord,One,,,14,",
+		"Flamenco,Light,,,4,a",
+		",Regular,,,,a",
+		"Flavors,,a,,8,",
+		",,,,4,a",
+		"Fleur De Leah,,,4099,6,a",
+		"Floralia,,a,0,3,",
+		"Florante at Laura,,a,,1,",
+		",Italic,FloranteatLauraItalic,,,",
+		"Flow Block,Regular,,4107,4,a",
+		"Flow Circular,,,,,a",
+		"Flow Rounded,,,,,a",
+		"Flux Architect,,Flux-Architect,0,6,",
+		",Bold,Flux-Architect-Bold,,,",
+		",Bold Italic,Flux-Architect-BoldItalic,,,",
+		",Italic,Flux-Architect-Italic,,,",
+		"Foglihten,Regular,a,3,4,",
+		"FoglihtenBlackPcs,BlackPcs,a,11,,",
+		"FoglihtenNo01,Regular,a,3,,",
+		"FoglihtenNo03,,a,,,",
+		"FoglihtenNo07,,a,,,",
+		"Folks,Bold,,1,12,",
+		",Heavy,,,,",
+		",Light,,,,",
+		",Regular,Folks-Normal,,,",
+		"Fondamento,Italic,,3,6,a",
+		",Regular,,,,a",
+		"Font Awesome 5 Brands,,FontAwesome5BrandsRegular,0,3,",
+		"Font Awesome 5 Free,,FontAwesome5FreeRegular,,,",
+		",Solid,FontAwesome5FreeSolid,,,",
+		"Fontdiner Swanky,Regular,,1,4,a",
+		"FontleroyBrown,,a,,11,",
+		"FortySecondStreetHB,,a,,,",
+		"Forum,,a,11,14,",
+		"Francois One,,a,3,4,",
+		",,,4099,12,a",
+		"Frank Ruhl Libre,Black,,17,14,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Fraunces,Black,Fraunces-9ptBlack,4099,,",
+		",Black Italic,Fraunces-9ptBlackItalic,,,",
+		",Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Freckle Face,Regular,,3,4,a",
+		"Fredericka the Great,,,1,,a",
+		"Fredoka One,,,,12,",
+		"Fredoka dingbats,,a,0,,",
+		"FreeMono,,a,20543,,",
+		",Bold,FreeMonoBold,20511,,",
+		",Bold Oblique,FreeMonoBoldOblique,4127,,",
+		",Oblique,FreeMonoOblique,,,",
+		"FreeSans,Regular,a,12831,,",
+		",Bold,FreeSansBold,4639,,",
+		",Bold Oblique,FreeSansBoldOblique,4127,,",
+		",Oblique,FreeSansOblique,12319,,",
+		"FreeSerif,Regular,a,30271,,",
+		",Bold,FreeSerifBold,5695,,",
+		",Bold Italic,FreeSerifBoldItalic,5151,,",
+		",Italic,FreeSerifItalic,13343,,",
+		"Freebooter Script,Regular,a,1,13,",
+		"Freebooter Script - Alts,,a,0,,",
+		"Freehand,,,2048,4,a",
+		"Frente H1,,,0,6,",
+		"Fresca,,,1,12,a",
+		"Frijole,,a,,4,a",
+		"Fruktur,,,3,,a",
+		"Fugaz One,,,1,,a",
+		"Fuggles,,,4099,6,a",
+		"Fulbo,Argenta,,19,4,",
+		",Champagne,,,,",
+		",Premier,,,,",
+		",Retro,,,,",
+		",Tano,,,,",
+		"Furore,Regular,a,8,,",
+		"FuturaRenner,Light,,1,12,",
+		",Regular,,,,",
+		"Fuzzy Bubbles,Bold,,4099,6,a",
+		",Regular,,,,a",
+		"GEIST RND,,a,0,4,",
+		"GFS Didot,,,4103,14,a",
+		"GFS Neohellenic,Bold,,,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Gabriela,,,9,14,a",
+		"Gaegu,Bold,,0,6,",
+		",Light,,,,",
+		",Regular,,,,",
+		"Gafata,,,1,12,",
+		"Galada,,,8193,4,a",
+		"Galatia SIL,,a,5,14,",
+		",Bold,,,,",
+		"Galdeano,Regular,,1,12,a",
+		"Galindo,,,3,4,a",
+		"Gamja Flower,,,64,6,a",
+		"Gandhi Sans,Bold,,1,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Gandhi Serif,Bold,,,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Garogier,,a,4,,",
+		"Garton,Medium,GartonMedium,0,,",
+		"Gaspar,Regular,a,,15,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Gayathri,Bold,,1,12,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Gelasio,Regular,a,4099,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Gemunu Libre,Bold,,1,12,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Genos,Black,,4099,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Gentium Basic,Regular,a,,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Gentium Book Basic,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Genzsch Et Heyse,Regular,a,0,0,",
+		"Genzsch Et Heyse Alternate,,a,,,",
+		"Geo,Medium,a,1,4,",
+		",Oblique,,,12,a",
+		",Regular,,,,a",
+		",Oblique,GeoOblique,,4,",
+		"Geometry Soft Pro,Bold N,,3,,",
+		"Georama,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Geostar,Regular,,1,4,a",
+		"Geostar Fill,,,,,a",
+		"Germania One,,,,0,",
+		"Gesso,,a,0,4,",
+		"Giant Head OT,,a,1,,",
+		"Giant Head Two OT,,a,,,",
+		"Gideon Roman,,,4099,,a",
+		"Gidole,,,7,12,",
+		"Gidugu,,a,3,,a",
+		"Gilda Display,,,1,14,a",
+		"Girassol,,,3,,",
+		"Give You Glory,,a,,6,a",
+		"Glacial Indifference,Bold,,1,12,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Gladifilthefte,Gladifilthefte,a,,4,",
+		"Glass Antiqua,Regular,,3,,a",
+		"Glegoo,Bold,,515,15,",
+		",Regular,,,,",
+		"Gloria Hallelujah,,a,3,6,",
+		"Glory,Bold,,4099,12,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Gluten,Black,,,4,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Go,Bold,,15,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Medium,GoMedium,,,",
+		",Medium Italic,GoMedium-Italic,,,",
+		"Go Mono,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Go,Regular,GoRegular,,,",
+		"Go Smallcaps,,a,,,",
+		",Italic,,,,",
+		"Goblin,Regular,a,1,4,",
+		"Goblin One,,a,,,a",
+		"Gochi Hand,,,,6,a",
+		"Goldman,Bold,,4099,4,a",
+		",Regular,,,,a",
+		"Gondola SD,,a,1,1,",
+		"Gondola SD - Swash,,a,,,",
+		"Gong!,Normal,GongNormal,0,6,",
+		"Gorditas,Bold,,1,4,",
+		",Regular,,,,",
+		"Gothic A1,Black,,20559,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Gothic Ultra OT,Regular,a,1,1,",
+		"Gotu,,,4611,12,a",
+		"Goudy Bookletter 1911,,a,3,14,",
+		"Sorts Mill Goudy,,GoudyStM,,,",
+		",Italic,GoudyStM-Italic,,,",
+		"Gowun Batang,Bold,,4163,,a",
+		",Regular,,,,a",
+		"Gowun Dodum,,,,12,a",
+		"Gputeks,Bold,,11,4,",
+		",Regular,,,,",
+		"Graduate,,,1,,",
+		"Grand Hotel,,,3,13,",
+		"Grandstander,Black,,4099,4,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Gravitas One,Regular,a,1,,",
+		"GreatLakesNF,,a,,,",
+		"Great Vibes,,,4099,6,a",
+		"Grechen Fuemen,,,,,a",
+		"Grenze,Black,,,14,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Grenze Gotisch,Black,,,4,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Grey Qo,Regular,,,6,a",
+		"GreyscaleBasic,,a,1,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Griffin,Regular,a,,4,",
+		"GriffosFont,,a,,14,",
+		"GriffosSCapsFont,,a,,,",
+		"Griffy,,,,4,a",
+		"Gruppo,,a,,,a",
+		"GrutchShaded,,a,,,",
+		"Gudea,,a,,12,",
+		",Bold,,,,",
+		",Italic,,,,a",
+		"Gugi,Regular,,0,4,a",
+		"Gupter,Bold,,1,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Gurajada,,a,3,,a",
+		"Gwendolyn,Bold,,4099,6,a",
+		",Regular,,,,a",
+		"HK Grotesk,Black,,,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Bold Legacy,,3,,",
+		",Bold Legacy Italic,,,,",
+		",ExtraBold,,4099,,",
+		",Italic,,,,",
+		",Legacy Italic,,3,,",
+		",Light,,4099,,",
+		",Light Italic,,,,",
+		",Light Legacy,,3,,",
+		",Light Legacy Italic,,,,",
+		",Medium,,4099,,",
+		",Medium Italic,,,,",
+		",Medium Legacy,,3,,",
+		",Medium Legacy Italic,,,,",
+		",Regular,,4099,,",
+		",Regular Legacy,,3,,",
+		",SemiBold,,4099,,",
+		",SemiBold Italic,,,,",
+		",SemiBold Legacy,,3,,",
+		",SemiBold Legacy Italic,,,,",
+		"HVD Bodedo,Medium,,1,4,",
+		"HVD Comic Serif Pro,Regular,a,3,,",
+		"HVD Edding 780,Normal,,1,6,",
+		"HVD Peace,Regular,a,3,16,",
+		"HVD Poster,,a,1,4,",
+		",Clean,HVDPosterClean,,,",
+		"HVD Rowdy,Regular,a,,5,",
+		"HVD Steinzeit,,a,,8,",
+		",Fill In,,,,",
+		"Habibi,Regular,,3,14,",
+		"Hachi Maru Pop,,,141,6,a",
+		"Hack,Bold,,15,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Hahmlet,Black,,4099,14,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Halant,Bold,,513,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"HamburgerHeaven,Regular,a,1,11,",
+		"Hammersmith One,,a,,4,",
+		",,,3,12,a",
+		"Hanalei,,,,4,",
+		"Hanalei Fill,,,,,a",
+		"Handlee,,,1,13,",
+		"Hanuman,Black,,2048,14,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Happy Monkey,Regular,,1,2,",
+		"Happy Times at the IKOB,Italic,,,14,",
+		",Regular,,,,",
+		"Harmattan,Bold,,33,12,a",
+		",Regular,,,,a",
+		"Harting,Plain,,0,17,",
+		"Hattori Hanzo,Light,,8,12,",
+		",Light Italic,,,,",
+		"Headhunter,Regular,,0,8,",
+		"HeadlandOne,,,3,14,a",
+		"Heavy Data,,a,1,8,",
+		"Heebo,Black,,17,12,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,a",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",Thin,,,,",
+		"Helmet Neue,Regular,,3,,",
+		"Helsinki,,a,1,2,",
+		"Henny Penny,,,,4,a",
+		"HenryMorganHand,,a,0,13,",
+		"Hepta Slab,Black,,4099,14,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Herr Von Muellerhoff,Regular,,1,6,a",
+		"Hetilica,Bold,,0,,",
+		"Heuristica,,,4107,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Heydings Icons,,Heydings-Icons,0,3,",
+		"Hi Melody,,,64,6,a",
+		"Hina Mincho,,,4239,14,a",
+		"Hind,Bold,,513,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Hind Guntur,Bold,,1,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Hind Madurai,Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Hind Siliguri,Bold,,8193,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Hind Vadodara,Bold,,1,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Holtwood One SC,Regular,a,,14,a",
+		"Holy-Ravioli,,a,0,11,",
+		"Homemade Apple,,a,1,13,",
+		",,,,6,a",
+		"Homenaje,,,,12,a",
+		"Hominis,Normal,a,0,4,",
+		"Hornswoggled,,a,1,,",
+		"Hurricane,Regular,,4099,6,a",
+		"IBM Plex Mono,,a,4107,12,",
+		",Bold,,,,",
+		",Bold Italic,,,7,a",
+		",ExtraLight,,,12,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,7,a",
+		",SemiBold,,,12,",
+		",SemiBold Italic,,,,",
+		",Text,,,,",
+		",Text Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"IBM Plex Sans,Regular,a,,,",
+		",Bold,,4111,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Text,,4107,,",
+		",Text Italic,,,,",
+		",Thin,,4111,,a",
+		",Thin Italic,,,,a",
+		"IBM Plex Sans Arabic,Bold,,33,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Sans Condensed,Bold,IBMPlexSansCond-Bold,4099,,a",
+		",Bold Italic,IBMPlexSansCond-BoldItalic,,,a",
+		",ExtraLight,IBMPlexSansCond-ExtraLight,,,a",
+		",ExtraLight Italic,IBMPlexSansCond-ExtraLightItalic,,,a",
+		",Italic,IBMPlexSansCond-Italic,,,a",
+		",Light,IBMPlexSansCond-Light,,,a",
+		",Light Italic,IBMPlexSansCond-LightItalic,,,a",
+		",Medium,IBMPlexSansCond-Medium,,,a",
+		",Medium Italic,IBMPlexSansCond-MediumItalic,,,a",
+		",Regular,IBMPlexSansCond-Regular,,,a",
+		",SemiBold,IBMPlexSansCond-SemiBold,,,a",
+		",SemiBold Italic,IBMPlexSansCond-SemiBoldItalic,,,a",
+		",Thin,IBMPlexSansCond-Thin,,,a",
+		",Thin Italic,IBMPlexSansCond-ThinItalic,,,a",
+		"IBM Plex Sans Devanagari,Bold,,513,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Sans Hebrew,Bold,,17,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Sans KR,Bold,,64,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Sans Thai,Bold,,1025,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Sans Thai Looped,Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"IBM Plex Serif,Regular,a,4107,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,14,a",
+		",SemiBold,,,12,",
+		",SemiBold Italic,,,,",
+		",Text,,,,",
+		",Text Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"IM FELL DW,Pica Italic,IM_FELL_DW_Pica_Italic,3,14,a",
+		",Pica PRO Italic,IM_FELL_DW_Pica_PRO_Italic,,,",
+		",Pica PRO,IM_FELL_DW_Pica_PRO_Roman,,,",
+		",Pica,IM_FELL_DW_Pica_Roman,,,a",
+		",Pica SC,IM_FELL_DW_Pica_SC,1,,a",
+		"IM FELL Double,Pica Italic,IM_FELL_Double_Pica_Italic,3,,a",
+		",Pica PRO Italic,IM_FELL_Double_Pica_PRO_Italic,,,",
+		",Pica PRO,IM_FELL_Double_Pica_PRO_Roman,,,",
+		",Pica,IM_FELL_Double_Pica_Roman,,,a",
+		",Pica SC,IM_FELL_Double_Pica_SC,1,,a",
+		"IM FELL English,Italic,IM_FELL_English_Italic,3,,a",
+		",PRO Italic,IM_FELL_English_PRO_Italic,,4,",
+		",PRO,IM_FELL_English_PRO_Roman,,,",
+		",Regular,IM_FELL_English_Roman,,14,a",
+		",SC,IM_FELL_English_SC,1,,a",
+		"IM FELL FLOWERS,1,IM_FELL_FLOWERS_1,0,3,",
+		",2,IM_FELL_FLOWERS_2,,,",
+		"IM FELL French Canon,Italic,IM_FELL_French_Canon_Italic,3,14,a",
+		",PRO Italic,IM_FELL_French_Canon_PRO_Italic,,,",
+		",PRO,IM_FELL_French_Canon_PRO_Roman,,,",
+		",Regular,IM_FELL_French_Canon_Roman,,,a",
+		",SC,IM_FELL_French_Canon_SC,1,,a",
+		"IM FELL Great Primer,Italic,IM_FELL_Great_Primer_Italic,3,,a",
+		",PRO Italic,IM_FELL_Great_Primer_PRO_Italic,,,",
+		",PRO,IM_FELL_Great_Primer_PRO_Roman,,,",
+		",Regular,IM_FELL_Great_Primer_Roman,,,a",
+		",SC,IM_FELL_Great_Primer_SC,1,,a",
+		"Ibarra Real Nova,Bold,,3,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Iceberg,Regular,,1,4,a",
+		"Iceland,,,,,a",
+		"Imbue 10pt,Black,,4099,14,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Immortal,Regular,a,1,,",
+		"Immortal - Alternates,,a,0,,",
+		"Impact Label,,a,1,8,",
+		"Impact Label Reversed,,a,,,",
+		"Imperial Script,,,4099,6,a",
+		"Imprima,,,1,12,a",
+		"IncisedBlack,Normal,,0,0,",
+		"IncisedBlackWide,,,,,",
+		"Inconsolata,Medium,a,1,7,",
+		",Black,,4099,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Inder,Regular,,3,12,",
+		"Indie Flower,,a,,6,",
+		"Indigo Outline Font,,,1,4,",
+		"Indigo,,IndigoRegular-Regular,,,",
+		"Indubitably,,a,,11,",
+		"Infini,Bold,,3,12,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Infini Picto,Bold,,0,,",
+		"Inika,Regular,a,1,14,a",
+		",Bold,,,,a",
+		"Inknut Antiqua,Black,,515,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Inria Sans,Bold,,3,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		"Inria Serif,Bold,,,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		"Inspiration,,,4099,6,a",
+		"Inter,Black,,4111,12,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,a",
+		",Extra Bold Italic,,,,",
+		",ExtraLight,,,,a",
+		",Extra Light BETA,,,,",
+		",Extra Light Italic BETA,,,,",
+		",Italic,,,,",
+		",Light,,,,a",
+		",Light BETA,,,,",
+		",Light Italic BETA,,,,",
+		",Medium,,,,a",
+		",Medium Italic,,,,",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Semi Bold Italic,,,,",
+		",Thin,,,,a",
+		",Thin BETA,,,,",
+		",Thin Italic BETA,,,,",
+		"Inter UI,Black Italic,,,,",
+		"Intruder Alert,Regular,a,9,4,",
+		"Irish Grover,,,1,,a",
+		"Island Moments,,,4099,6,a",
+		"Istok,Bold,,11,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Istok Web,Bold,,,,a",
+		",BoldItalic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Italiana,,,1,,",
+		"Italianno,,,4099,6,a",
+		"Itim,,,5123,,a",
+		"JMYZK-LZT,å˜‰æœ¨æ¨å­—åº“--å…°æœ­ä½“,JMYZK-LZT---,256,10,ex/tib/S12/Lanydza.ttf",
+		"JMYZK-WDT-MOD,?-Ã–,JMYZKWDTMOD,,,ex/tib/S12/Wartu.ttf",
+		"JUICE,Bold Bold,JUICEBold-Bold,0,4,",
+		",Bold Italic,JUICEBoldItalic,,,",
+		",Italic Italic,JUICEItalic-Italic,,,",
+		",Light,JUICELight,,,",
+		",Light Italic Italic,JUICELightItalic-Italic,,,",
+		",Regular,JUICERegular,,,",
+		"Jacques Francois,,,1,14,",
+		"Jacques Francois Shadow,,,,4,a",
+		"Jaldi,Bold,,4611,12,a",
+		",Regular,,,,a",
+		"Jameel Noori Nastaleeq,,Jameel-Noori-Nastaleeq,33,,ex/Jameel_Noori_Nastaleeq.ttf",
+		"Jellee,Bold,Jellee-Roman,1,,",
+		"Jenriv Titling,,,3,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		"JetBrains Mono,Bold,,4111,7,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Jim Nightshade,Regular,,3,6,a",
+		"Jinky,,a,1,,",
+		"Jockey One,,,3,12,",
+		"Jolly Lodger,,a,1,4,a",
+		"Jomhuria,,,35,,",
+		"Jomolhari,,a,257,10,ex/tib/S12/Jomolhari.ttf",
+		",,,,14,a",
+		"Josefin Sans,Bold,,4099,12,",
+		",Bold Italic,,,,",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Josefin Slab,Regular,a,1,15,",
+		",Bold,,,14,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Jost,Black,,11,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Joti One,Regular,,3,4,a",
+		"Journal,,a,1,6,",
+		"jr!hand,,Jrhand,,,",
+		"Jua,,,0,12,a",
+		"Judson,Medium,a,4099,14,",
+		",Bold,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		",Bold,JudsonBold,,,",
+		",Italic,JudsonItalic,,,",
+		"Julee,Regular,,1,6,a",
+		"Julius Sans One,,,,12,",
+		"Junction,Bold,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		"Junge,,,,14,a",
+		"JungleFever,,a,,4,",
+		"Junicode,,a,4099,14,",
+		",Bold,,3,,",
+		",BoldCondensed,,,,",
+		",Bold Italic,,,,",
+		",BoldItalicCondensed,,,,",
+		",Italic,,4099,,",
+		",ItalicCondensed,,4103,,",
+		",RegularCondensed,,,,",
+		"Jura,Bold,,4111,12,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Book,JuraBook,,4,",
+		",DemiBold,JuraDemiBold,,,",
+		",Light,JuraLight,,,",
+		",Medium,JuraMedium,,,",
+		"Just Another Hand,Regular,,3,6,",
+		"Just Me Again Down Here,,a,,,a",
+		"JustOldFashion,,a,1,4,",
+		"K2D,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"KJV1611,Regular,a,15,0,",
+		"Kadwa,Bold,,515,14,a",
+		",Regular,,,,a",
+		"Kaisei Decol,Bold,,16525,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Kaisei HarunoUmi,Bold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Kaisei Opti,Bold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Kaisei Tokumin,Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Kalam,Bold,,513,6,",
+		",Light,,,,",
+		",Regular,,,,",
+		"Kalocsai Flowers,,a,0,3,",
+		"Kameron,,a,1,14,",
+		",Bold,,,,",
+		"Kanit,Black,,5123,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Kantumruy,Bold,,2048,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Karantina,Bold,,17,4,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Karatula,Bold,KaratulaBold,0,2,",
+		",BoldItalic,KaratulaBoldItalic,,,",
+		",Italic,KaratulaItalic,,,",
+		",Normal,KaratulaNormal,,,",
+		"Karla,Bold,,3,12,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Karma,Bold,,515,14,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Karmilla,Bold,,3,12,",
+		",Regular,,,,",
+		"Karnivore,,a,1,4,",
+		",Bold,,,,",
+		",Black,KarnivoreBlack,,,",
+		"Karnivore Digit,Regular,a,,,",
+		"Karnivore Lite,,a,,,",
+		"Karnivore Tecca,,a,,,",
+		"Katibeh,,,35,,a",
+		"Kaushan Script,,,3,13,",
+		"Kavivanar,,,,12,",
+		"Kavoon,,,1,4,a",
+		"Kdam Thmor,,a,2048,,a",
+		"Keania One,,,1,,a",
+		"Kells SD,,a,,1,",
+		"Kelly Slab,,,11,4,a",
+		"KelmscottRoman,,a,1,11,",
+		"Kelvinch,,a,20495,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Kenia,Regular,,1,4,a",
+		"Khand,Bold,,513,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",Semibold,,,,",
+		"Khmer,Regular,a,2048,4,a",
+		"Khula,Bold,,512,12,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",Semibold,,,,",
+		"Kings,Regular,,4099,6,a",
+		"Kingthings Calligraphica Italic,Calligraphica,Kingthings-Calligraphica-Italic,0,1,",
+		"Kingthings Calligraphica,Light Light,Kingthings-Calligraphica-Light,,,",
+		"Kingthings Flourishes,Regular,Kingthings-Flourishes,,3,",
+		"Kingthings Gothique,,Kingthings-Gothique,,0,",
+		"Kingthings Italique,,Kingthings-Italique,,,",
+		"Kingthings Spikeless,,Kingthings-Spikeless,,,",
+		"Kingthings Versalis,,Kingthings-Versalis,,8,",
+		"Kingthings Wrote,,Kingthings-Wrote,,13,",
+		"Kingthings Xstitch,,Kingthings-Xstitch,,4,",
+		"Kingthings Calligraphica 2,,a,1,1,",
+		"Kingthings Exeter,,a,0,,",
+		"Kingthings Foundation,,a,,,",
+		"Kingthings Petrock,,a,1,,",
+		",Light,KingthingsPetrockLight,,,",
+		"Kingthings Printingkit,Regular,a,0,4,",
+		"Kingthings Trypewriter 2,,a,1,17,",
+		"Kirang Haerang,,,0,4,",
+		"Kite One,,,1,12,a",
+		"Kiwi Maru,Light,,16525,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Klee One,,,,6,a",
+		",SemiBold,,,,a",
+		"Knewave,Regular,,1,4,a",
+		"Know Your Product,,a,,16,",
+		"KoHo,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Kodchasan,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Koh Santepheap,Black,,2048,4,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Kolker Brush,Regular,,4099,6,a",
+		"Komika Axis,,a,1,2,",
+		"Komika Display,,a,,,",
+		",Bold,,,,",
+		"Komika Display Kaps,Regular,a,,,",
+		",Bold,,,,",
+		"Komika Hand,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Komika Parch,Regular,a,,,",
+		"Komika Text,,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Komika Text Kaps,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Komika Text Tight,Regular,a,,,",
+		",Italic,,,,",
+		"Komika Title,Regular,a,,,",
+		"Komika Title - Axis,,a,,,",
+		"Komika Title - Kaps,,a,,,",
+		"Komika Title - Paint,,a,,,",
+		"Komika Title - Wide,,a,,,",
+		"Kontrapunkt,Bold,KontrapunktBold,,15,",
+		",Light,KontrapunktLight,,,",
+		",Light Italic,KontrapunktLightItalic,,,",
+		"Kosugi,Regular,,140,12,a",
+		"Kosugi Maru,,,,,a",
+		"Kotta One,,,1,14,",
+		"Koulen,,,2048,4,a",
+		"Kranky,,,1,,a",
+		"Kreon,Bold,,3,14,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Kristi,Medium,a,1,6,",
+		",Regular,,,,a",
+		"Krona One,,,3,12,",
+		"Krub,Bold,,5123,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Kufam,Black,,4131,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Kulim Park,Bold,,3,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Kumar One,Regular,,1,4,a",
+		"Kumar One Outline,,,,,a",
+		"Kumbh Sans,Black,,3,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Kurale,Regular,,523,14,",
+		"LIBRARY 3 AM,,a,9,4,",
+		"LIBRARY 3 AM soft,,a,,,",
+		"Latin Modern Mono,10 Italic,LMMono10-Italic,4099,17,",
+		",10 Regular,LMMono10-Regular,,,",
+		",Caps 10 Oblique,LMMonoCaps10-Oblique,,,",
+		",Caps 10 Regular,LMMonoCaps10-Regular,,,",
+		",Light 10 Bold,LMMonoLt10-Bold,,,",
+		",Light 10 Bold Oblique,LMMonoLt10-BoldOblique,,,",
+		",Light 10 Oblique,LMMonoLt10-Oblique,,,",
+		",Light 10 Regular,LMMonoLt10-Regular,,,",
+		",Light Cond 10 Oblique,LMMonoLtCond10-Oblique,,,",
+		",Light Cond 10 Regular,LMMonoLtCond10-Regular,,,",
+		",Prop 10 Oblique,LMMonoProp10-Oblique,,,",
+		",Prop 10 Regular,LMMonoProp10-Regular,,,",
+		",Prop Light 10 Bold,LMMonoPropLt10-Bold,,,",
+		",Prop Light 10 BoldOblique,LMMonoPropLt10-BoldOblique,,,",
+		",Prop Light 10 Oblique,LMMonoPropLt10-Oblique,,,",
+		",Prop Light 10 Regular,LMMonoPropLt10-Regular,,,",
+		",Slanted 10 Regular,LMMonoSlant10-Regular,,,",
+		"Latin Modern Roman,10 Bold,LMRoman10-Bold,,14,",
+		",10 Bold Italic,LMRoman10-BoldItalic,,,",
+		",10 Italic,LMRoman10-Italic,,,",
+		",10 Regular,LMRoman10-Regular,,,",
+		",Caps 10 Oblique,LMRomanCaps10-Oblique,,,",
+		",Caps 10 Regular,LMRomanCaps10-Regular,,,",
+		",Demi 10 Oblique,LMRomanDemi10-Oblique,,,",
+		",Demi 10 Regular,LMRomanDemi10-Regular,,,",
+		",Dunhill 10 Oblique,LMRomanDunh10-Oblique,,,",
+		",Dunhill 10 Regular,LMRomanDunh10-Regular,,,",
+		",Slanted 10 Bold,LMRomanSlant10-Bold,,,",
+		",Slanted 10 Regular,LMRomanSlant10-Regular,,,",
+		"Latin Modern Sans,10 Bold,LMSans10-Bold,,12,",
+		",10 Bold Oblique,LMSans10-BoldOblique,,,",
+		",10 Oblique,LMSans10-Oblique,,,",
+		",10 Regular,LMSans10-Regular,,,",
+		",Demi Cond 10 Oblique,LMSansDemiCond10-Oblique,,,",
+		",Demi Cond 10 Regular,LMSansDemiCond10-Regular,,,",
+		"La Belle Aurore,Regular,a,3,6,a",
+		"Labor Union,,,11,14,",
+		",Small,,,,",
+		"Lack,Italic,,15,12,",
+		"Lack Line,,Lack-Line-Italic,,,",
+		",Regular,Lack-Line-Regular,,,",
+		"Lack,,,,,",
+		"Laconic,Bold,,1,4,",
+		",Light,,,,",
+		",Regular,,,,",
+		",Shadow,,,,",
+		"Lacquer,Regular,,,,a",
+		"Lacuna,Italic,LacunaItalic,,12,",
+		",Regular,LacunaRegular,,,",
+		"Laila,Bold,,513,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"LakeshoreDrive,Regular,a,1,11,",
+		"Lakki Reddy,,a,,6,a",
+		"Lalezar,,,4131,4,",
+		"Lancelot,,a,1,,a",
+		"Landliebe,,a,0,13,",
+		"Lane - Narrow,,a,1,4,",
+		"Lane - Posh,,a,,,",
+		"Lane - Upper,,a,,,",
+		"Langar,,,3,,a",
+		"Langdon,,a,0,,",
+		"Lapsus Pro,Bold,,15,,",
+		"Lateef,Regular,a,33,6,a",
+		"Latinia,,Latinia-Normal,1,14,",
+		",Black,LatiniaBlack,,,",
+		"Lato,,,4111,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Hairline,,,,",
+		",Hairline Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",Semibold,,,,",
+		",Semibold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"La unica,Regular,a,1,4,",
+		"Leafy glade,,a,0,8,",
+		"Leafyshade,,a,,,",
+		"League Gothic,Condensed Italic,,3,4,",
+		",Condensed Regular,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"League Script,League Script,a,1,6,a",
+		",Thin League Script,LeagueScriptThin-LeagueScript,,13,",
+		",Regular,LeagueScriptThin-Regular,,,",
+		"League Spartan,Bold,,,12,",
+		"Leander,Regular,a,,4,",
+		"LeckerliOne,,a,,6,",
+		"Leckerli One,,,,,a",
+		"Ledger,,,11,14,a",
+		"Lekton,Bold,,3,7,",
+		",Italic,,1,,",
+		",Regular,,3,,",
+		"Lemiesz,,a,0,11,",
+		"Lemon,,,1,4,a",
+		"LemonChicken,,a,0,11,",
+		"Lemonada,Bold,,4131,4,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Lexend,Black,,4099,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Deca,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Exa,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Giga,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Mega,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Peta,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Tera,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Lexend Zetta,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Liberation Mono,Regular,a,4127,7,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Liberation Sans,Regular,a,,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Liberation Serif,Regular,a,,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Libertinus Keyboard,Regular,,16403,,",
+		"Libertinus Math,,,20511,,",
+		"Libertinus Mono,,,4099,,",
+		"Libertinus Sans,Bold,,20511,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Libertinus Serif,Bold,,,,",
+		",Bold Italic,,20495,,",
+		",Italic,,20511,,",
+		",Regular,,,,",
+		",Semibold,,,,",
+		",Semibold Italic,,,,",
+		"Libertinus Serif Display,Regular,,16415,,",
+		"Libertinus Serif Initials,,,16,,",
+		"Libre Barcode,128,LibreBarcode128-Regular,0,4,a",
+		",128 Text,LibreBarcode128Text-Regular,,,a",
+		",39,LibreBarcode39-Regular,,,a",
+		",39 Extended,LibreBarcode39Extended-Regular,,,a",
+		",39 Extended Text,LibreBarcode39ExtendedText-Regular,,,a",
+		",39 Text,LibreBarcode39Text-Regular,,,a",
+		",EAN13 Text,LibreBarcodeEAN13Text-Regular,1,,a",
+		"Libre Baskerville,Bold,,3,14,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Libre Caslon,Display,LibreCaslonDisplay-Regular,,,",
+		",Text Bold,LibreCaslonText-Bold,,,",
+		",Text Italic,LibreCaslonText-Italic,,,",
+		",Text,LibreCaslonText-Regular,,,",
+		"Libre Franklin,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Licorice,Regular,,,6,a",
+		"Life Savers,Bold,,3,,",
+		",ExtraBold,,,4,a",
+		",Regular,,,6,",
+		"Lilac Malaria,,a,1,4,",
+		"Lilita One,,a,,,a",
+		"Lilly,,a,,6,",
+		"Lily Script One,,,,4,a",
+		"Limelight,,a,,11,",
+		",,,3,4,a",
+		"Linux Biolinum O,,LinBiolinumO,20511,14,",
+		",Bold,LinBiolinumOB,,,",
+		",Italic,LinBiolinumOI,,,",
+		"Linux Libertine Display O,Regular,LinLibertineDisplayO,16415,,",
+		"Linux Libertine Initials O,Initials,LinLibertineIO,16,,",
+		"Linux Libertine Mono O,Mono,LinLibertineMO,4099,,",
+		"Linux Libertine O,Regular,LinLibertineO,20511,,",
+		",Bold,LinLibertineOB,,,",
+		",Bold Italic,LinLibertineOBI,20487,,",
+		",Italic,LinLibertineOI,20511,,",
+		",Semibold,LinLibertineOZ,,,",
+		",Semibold Italic,LinLibertineOZI,,,",
+		"Linden Hill,Regular,a,3,15,",
+		",Italic,,,14,a",
+		",Regular,,,,a",
+		"Linguistics Pro,Bold,,4111,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Lintsec,,a,0,16,",
+		"Literata,Black,,4111,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Book Bold,LiterataBook-Bold,,,",
+		",Book Bold Italic,LiterataBook-BoldItalic,,,",
+		",Book Italic,LiterataBook-Italic,,,",
+		",Book Medium,LiterataBook-Medium,,,",
+		",Book Medium Italic,LiterataBook-MediumItalic,,,",
+		",Book,LiterataBook-Regular,,,",
+		",Book SemiBold,LiterataBook-SemiBold,,,",
+		",Book SemiBold Italic,LiterataBook-SemiBoldItalic,,,",
+		"Little Trouble Girl BV,Regular,a,1,4,",
+		"Liu Jian Mao Cao,,,128,6,a",
+		"Livvic,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Loaded,Regular,a,0,4,",
+		"Lobster,,,4107,,a",
+		"Lobster 1.3,,a,1,13,",
+		"Lobster,Two,LobsterTwo,,,",
+		",Two Bold,LobsterTwo-Bold,,,",
+		",Two Bold Italic,LobsterTwo-BoldItalic,,,",
+		",Two Italic,LobsterTwo-Italic,,,",
+		"Londrina,Outline,LondrinaOutline-Regular,,4,",
+		",Shadow,LondrinaShadow-Regular,,,",
+		",Sketch,LondrinaSketch-Regular,,,a",
+		",Sketche,LondrinaSketche-Regular,,,",
+		",Solid Black,LondrinaSolid-Black,,,a",
+		",Solid Light,LondrinaSolid-Light,,,a",
+		",Solid,LondrinaSolid-Regular,,,",
+		",Solid Thin,LondrinaSolid-Thin,,,a",
+		"Long Cang,Regular,,128,6,a",
+		"Lora,Bold,,4107,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Love,Light,LoveLight-Regular,4099,6,a",
+		"Love Ya Like A Sister,Regular,,3,4,a",
+		"Loved by the King,,a,,6,a",
+		"Lovers Quarrel,,,4099,,a",
+		"Lucien Schoenschriftv CAT,,a,3,13,",
+		"Luckiest Guy,,,,4,",
+		"Luiss Sans,Bold,,,12,",
+		",Bold Italic,,,,",
+		",Regular,,,,",
+		",Thin Italic,,,,",
+		",Thin Sans,,,,",
+		",italic,,,,",
+		"Luiss Serif,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Lunchtype22,,Lunchtype,1,,",
+		"Lunchtype25,Condensed Light,Lunchtype-CondensedLight,,,",
+		",Condensed Medium,Lunchtype-CondensedMedium,,,",
+		",Condensed Regular,Lunchtype-CondensedRegular,,,",
+		"Lunchtype24,Expanded Light,Lunchtype-ExpandedLight,,,",
+		",Expanded Medium,Lunchtype-ExpandedMedium,,,",
+		",Expanded Regular,Lunchtype-ExpandedRegular,,,",
+		"Lunchtype23,Italic,Lunchtype-Italic,,,",
+		"Lunchtype22,Light,Lunchtype-Light,,,",
+		"Lunchtype23,Light Italic,Lunchtype-LightItalic,,,",
+		"Lunchtype22,Medium,Lunchtype-Medium,,,",
+		"Lunchtype23,Medium Italic,Lunchtype-MediumItalic,,,",
+		"Lusitana,Regular,a,,14,a",
+		",Bold,,,,a",
+		"Lustria,Regular,,,,a",
+		"Luxi Mono,,a,3,7,",
+		",Bold,,,,",
+		",Bold Oblique,,,,",
+		",Oblique,,,,",
+		"Luxi Sans,Regular,a,,12,",
+		",Bold,,,,",
+		",Bold Oblique,,,,",
+		",Oblique,,,,",
+		"Luxi Serif,Regular,a,,14,",
+		",Bold,,,,",
+		",Bold Oblique,,,,",
+		",Oblique,,,,",
+		"Luxurious Roman,Regular,,4099,4,a",
+		"Luxurious Script,,,,6,a",
+		"M PLUS 1,Black,,4227,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"M PLUS 1 Code,Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"M PLUS 2,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"M PLUS Code Latin,Bold,,4099,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Ma Shan Zheng,Regular,,128,6,a",
+		"Macondo,,,1,4,",
+		"Macondo Swash Caps,,,,,",
+		"Mada,Black,,33,12,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"MadisonSquare,Incised,MadisonSquareIncised,1,11,",
+		"Magenta,Regular,a,,4,",
+		"Magra,,a,3,12,",
+		",Bold,,,,",
+		"Maiden Orange,Regular,,,4,",
+		"Maitree,,a,5123,14,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",SemiBold,,,,a",
+		"Major Mono Display,Regular,,4099,7,a",
+		"Major Snafu,,a,1,16,",
+		"Mako,,a,,12,",
+		"Mali,Bold,,5123,6,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Mallanna,Regular,a,0,12,a",
+		"Mandali,,a,,,a",
+		"Manjari,Bold,,1,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Manrope,Bold,,4111,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Mansalva,Regular,,1,6,a",
+		"Manuale,Bold,,4099,14,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Marcellus,Regular,,3,,a",
+		"Marcellus SC,,,,,a",
+		"Marck Script,,,11,6,a",
+		"Margarine,,,3,4,a",
+		"Margherita,Black,,4099,14,",
+		",Bold,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",Semibold,,,,",
+		"Margherita Variable,Regular,a,,,",
+		"Markazi Text,Bold,,4131,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Marko One,Regular,,1,,a",
+		"Marmelad,,,9,12,a",
+		"Martel,Bold,,515,15,",
+		",DemiBold,,,,",
+		",ExtraBold,,,,",
+		",Heavy,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",UltraLight,,,,",
+		"Martel Sans,Black,,,12,a",
+		",Bold,,,,",
+		",DemiBold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,a",
+		",Heavy,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",UltraLight,,,,",
+		"Marvel,Bold,,1,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Matchbook,Matchbook,a,,4,",
+		"Mate,Italic,,,14,a",
+		",Regular,,,,a",
+		"Mate SC,,,,,a",
+		"Mathlete,Bulky,,,6,",
+		",Bulky Slant,,,,",
+		",Skinny,,,,",
+		",Skinny Slant,,,,",
+		"Matiz,Regular,a,0,4,",
+		"Maven Pro,Black,,4099,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Black,MavenProBlack,1,,",
+		",Bold,MavenProBold,,,",
+		",Medium,MavenProMedium,,,",
+		",Regular,MavenProRegular,,,",
+		"McLaren,,,3,4,a",
+		"Mea Culpa,,,4099,6,a",
+		"Meddon,,a,3,,a",
+		"MedievalSharp,,a,,4,a",
+		"Medio,,a,0,14,",
+		"Medula One,,,1,4,a",
+		"Meera Inimai,,,,12,a",
+		"Megrim,Medium,a,3,4,a",
+		"Meie Script,Regular,,1,6,a",
+		"Membra,,a,3,8,",
+		"Meow Script,,,4099,6,a",
+		"Merienda,Bold,,1,13,",
+		",Regular,Merienda-Regular_0_wt,,,",
+		"Merienda One,,,,6,a",
+		"Merriweather,Black,,4107,14,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		"Merriweather Sans,Bold,,4099,12,a",
+		",Bold Italic,,,,a",
+		",Book,,3,,",
+		",BookItalic,,,,",
+		",ExtraBold Italic,MerriweatherSans-ExtraBldItalic,,,",
+		",ExtraBold,,4099,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Metal,Regular,,2048,4,a",
+		"Metal Mania,,,1,,a",
+		"Metamorphous,,a,3,14,",
+		"Metro,,a,8,4,",
+		"Metrophobic,,a,1,12,",
+		",,,4099,,a",
+		"Miama,,a,3,13,",
+		"Michroma,,a,,12,",
+		"Mikodacs,,a,11,4,",
+		"MikodacsPCS,,a,,,",
+		"Millennia,,a,1,,",
+		"Milonga,,,3,,a",
+		"Miltonian,,,1,,a",
+		"Miltonian Tattoo,,,,,a",
+		"Mina,Bold,,8195,12,a",
+		",Regular,,,,a",
+		"Minecrafter Alt,,a,0,2,ex/pu/Minecrafter_Alt.ttf",
+		"Minipax,,a,3,15,",
+		",Bold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",Semi Bold,,,,",
+		"Miniver,Regular,a,1,4,a",
+		"Minotaur,Phatte,,0,11,",
+		"MinstrelPosterWHG,Regular,a,1,,",
+		"Miriam Libre,Bold,,19,12,a",
+		",Regular,,,,a",
+		"Mirza,Bold,,35,4,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Miss Fajardose,Regular,,1,6,a",
+		"Mitr,Bold,,5123,12,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Mochiy Pop One,Regular,,129,,a",
+		"Mochiy Pop P One,,,,,a",
+		"Modak,,a,513,4,",
+		"Modern Antiqua,,,3,14,",
+		"Modern Pictograms,Normal,a,0,3,",
+		"Mogra,Regular,,1,4,a",
+		"Mohave,Bold,,3,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Moinho,Regular,a,1,6,",
+		"Molengo,,a,,12,",
+		",,,,,a",
+		"Molle,,,,6,a",
+		"Molot,,a,8,12,",
+		"MomÂ´sTypewriter,,MomsTypewriter,0,17,",
+		"Monda,Bold,,4099,12,",
+		",Regular,,,,",
+		"Monlam Uni Chouk,,a,1280,10,ex/tib/Monlam Uni Chouk.ttf",
+		"Monlam Uni Choukmatik,,a,,,ex/tib/Monlam Uni ChoukMatik.ttf",
+		"Monlam Uni Dutsa1,,a,,,ex/tib/Monlam Uni Dutsa1.ttf",
+		"Monlam Uni Dutsa2,,a,,,ex/tib/Monlam Uni Dutsa2.ttf",
+		"Monlam Uni OuChan1,,a,,,ex/tib/Monlam Uni OuChan1.ttf",
+		"Monlam Uni OuChan2,,a,,,ex/tib/Monlam Uni OuChan2.ttf",
+		"Monlam Uni OuChan3,,a,,,ex/tib/Monlam Uni OuChan3.ttf",
+		"Monlam Uni OuChan4,,a,,,ex/tib/Monlam Uni OuChan4.ttf",
+		"Monlam Uni OuChan5,,a,,,ex/tib/Monlam Uni OuChan5.ttf",
+		"Monlam Uni PayTsik,,a,,,ex/tib/Monlam Uni PayTsik.ttf",
+		"Monlam Uni Sans Serif,,a,,,ex/tib/Monlam Uni Sans Serif.ttf",
+		"Monlam Uni TikTong,,a,,,ex/tib/Monlam Uni TikTong.ttf",
+		"Monlam Uni Tikrang,,a,,,ex/tib/Monlam Uni Tikrang.ttf",
+		"Monofett,,a,3,4,a",
+		"MonospaceTypewriter,,a,1,7,",
+		"Monoton,,,3,4,",
+		"Monsieur La Doulaise,,,1,6,a",
+		"Montaga,,,,14,a",
+		"Montagu Slab 144pt,Bold,,4099,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"MonteCarlo,Regular,,,6,a",
+		"Montez,,,3,,",
+		"Montserrat,Black,,4107,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Montserrat Alternates,Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Montserrat Subrayada,Bold,,1,,a",
+		",Regular,,,,a",
+		"Moo Lah Lah,,,4099,4,a",
+		"Moon Dance,,,,6,a",
+		"MothproofScript,,a,0,1,",
+		"Moul,,,2048,4,a",
+		"Moulpali,,,,,a",
+		"Mountains of Christmas,Bold,,1,,a",
+		",Regular,,,,a",
+		"Mouse Memoirs,,,3,12,a",
+		"Mplus 1p,Black,,20639,,a",
+		",Bold Bold,Mplus1p-Bold,,,a",
+		",ExtraBold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Mr Bedfort,Regular,,1,6,a",
+		"Mr Dafoe,,,,,a",
+		"Mr De Haviland,,,,,a",
+		"Mrs Saint Delafield,,,,,a",
+		"Mrs Sheppards,,,,,a",
+		"Mukta,Bold,,515,12,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Mukta Mahee,Bold,,3,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Mukta Malar,Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Mukta Vaani,Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Muli,Regular,a,,,",
+		",Bold,,,,",
+		",BoldItalic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLightItalic,,,,",
+		",RegularItalic,Muli-Italic,,,",
+		",Light,,,,",
+		",LightItalic,,,,",
+		",SemiBoldItalic,Muli-Semi-BoldItalic,,,",
+		",SemiBold,,,,",
+		"Mulish,Black,,4107,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Munson,Regular,a,16399,14,",
+		",Bold,,15,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Murecho,Black,,16527,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"MuseoModerno,Black,,4099,4,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Mutlu, Ornamental,MutluOrnamental,1,13,",
+		"My Underwood,Regular,a,0,17,",
+		"Myndraine,,a,1,12,",
+		"Mystery Quest,,a,,4,a",
+		"NTR,,a,0,12,a",
+		"Nanum Brush Script,,NanumBrush,16460,6,a",
+		"NanumGothic,,a,16589,12,",
+		",Bold,NanumGothicBold,,,",
+		"NanumGothicCoding,Regular,a,16460,7,a",
+		",Bold,,,,a",
+		"NanumGothic,ExtraBold,NanumGothicExtraBold,16589,12,",
+		"NanumMyeongjo,Regular,a,16460,14,a",
+		",Bold,NanumMyeongjoBold,,,a",
+		",ExtraBold,NanumMyeongjoExtraBold,,,a",
+		"Nanum Pen,Regular,a,,6,a",
+		"Nautilus Pompilius,,a,8,13,",
+		"Negotiate,Free,NegotiateFree,3,12,",
+		"NeoRetroDraw,Regular,a,0,4,",
+		"NeoRetroFill,,a,,,",
+		"NeoRetroShadow,,a,,,",
+		"Neonderthaw,,,4099,6,a",
+		"Neris,Black,,11,12,",
+		",Black Italic,,,,",
+		",Bold Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Nerko One,Regular,,3,6,a",
+		"Nervous Rex,,a,0,4,",
+		"Neucha,,a,9,6,a",
+		"Neumann,,a,11,14,",
+		"Neuton,Bold,,3,,",
+		",ExtraBold,,1,,a",
+		",ExtraLight,,,,a",
+		",Extrabold,,,,",
+		",Extralight,,,,",
+		",ExtralightItalic,,,,",
+		",Italic,,,,a",
+		",Light,,3,,",
+		",Regular,,,,",
+		"Neuton SC,SC-Bold,Neuton-SC-Bold,1,,",
+		",SC-Extrabold,Neuton-SC-Extrabold,,,",
+		",SC-Extralight,Neuton-SC-Extralight,,,",
+		",SC-Light,Neuton-SC-Light,,,",
+		",SC-Regular,Neuton-SC-Regular,,,",
+		"Neuton Cursive,Regular,,,,",
+		"New Athena Unicode,,a,15,,",
+		"New Cicle,Fina,,1,12,",
+		",Fina Italic,,,,",
+		",Gordita,,,,",
+		",Gordita Italic,,,,",
+		",Semi,,,,",
+		",Semi Italic,,,,",
+		"NewRocker,Regular,,3,0,",
+		"New Tegomin,,,129,14,a",
+		"News Cycle,,a,15,12,a",
+		",Bold,,3,,a",
+		"Newsreader 16pt,,,4099,14,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Newt Serif,Regular,a,3,,",
+		",Italic,,,,",
+		",Bold,NewtSerifBold,,,",
+		",Bold Italic,NewtSerifBold-Italic,,,",
+		"Newt Serif Demi,Regular,a,,,",
+		",Italic,,,,",
+		"Newt Serif,Light,NewtSerifLight,,,",
+		",Light Italic,NewtSerifLight-Italic,,,",
+		"Niconne,Regular,,1,13,",
+		"Nimbus Mono,Bold,,15,7,",
+		",Bold Oblique,,,,",
+		",Regular Oblique,NimbusMono-Oblique,,,",
+		",Regular,,,,",
+		"Nimbus Roman No9 L,Bold,NimbusRomNo9L-Med,,14,",
+		",Bold Italic,NimbusRomNo9L-MedIta,,,",
+		",Regular,NimbusRomNo9L-Reg,,,",
+		",Regular Italic,NimbusRomNo9L-RegIta,,,",
+		"Nimbus Sans L,Bold,NimbusSanL-Bol,,12,",
+		",Bold Italic,NimbusSanL-BolIta,,,",
+		",Regular,NimbusSanL-Reg,,,",
+		",Regular Italic,NimbusSanL-RegIta,,,",
+		"Niramit,Bold,,5123,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Nixie One,Regular,,1,15,",
+		"Nobile,Bold,,9,12,",
+		",Bold Italic,,11,,",
+		",Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,9,,",
+		"Nokora,Black,,2048,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Norican,Regular,,1,6,a",
+		"Norwester,,,0,4,",
+		"Nosifer,,,3,,a",
+		"Nosifer Caps,,,,,",
+		"NotCourierSans,,a,4107,7,",
+		",Bold,,,,",
+		"NotMaryKate,Regular,a,1,11,",
+		"Notable,,,,12,a",
+		"Note this,,a,,6,",
+		"Nothing You Could Do,,a,,,a",
+		"Notice,Notice2,Notice2Std,0,3,",
+		",Notice3,Notice3Std,,,",
+		",Notice,NoticeStd,,,",
+		"Noticia Text,Bold,,4099,15,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Noto Kufi Arabic,Black,,32,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Mono,Regular,a,4111,10,",
+		"Noto Naskh Arabic,Bold,,32,14,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Noto Nastaliq Urdu,Bold,,,,a",
+		",Regular,,,,a",
+		"Noto Rashi Hebrew,Black,,16,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans,Regular,a,4623,12,a",
+		",Black,,4111,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Condensed,,,,",
+		",Condensed Black,,,,",
+		",Condensed Black Italic,,,,",
+		",Condensed Bold,,,,",
+		",Condensed Bold Italic,,,,",
+		",Condensed ExtraBold,,,,",
+		",Condensed ExtraBold Italic,,,,",
+		",Condensed ExtraLight,,,,",
+		",Condensed ExtraLight Italic,,,,",
+		",Condensed Italic,,,,",
+		",Condensed Light,,,,",
+		",Condensed Light Italic,,,,",
+		",Condensed Medium,,,,",
+		",Condensed Medium Italic,,,,",
+		",Condensed SemiBold,,,,",
+		",Condensed SemiBold Italic,,,,",
+		",Condensed Thin,,,,",
+		",Condensed Thin Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraCondensed,,,,",
+		",ExtraCondensed Black,,,,",
+		",ExtraCondensed Black Italic,,,,",
+		",ExtraCondensed Bold,,,,",
+		",ExtraCondensed Bold Italic,,,,",
+		",ExtraCondensed ExtraBold,,,,",
+		",ExtraCondensed ExtraBold Italic,,,,",
+		",ExtraCondensed ExtraLight,,,,",
+		",ExtraCondensed ExtraLight Italic,,,,",
+		",ExtraCondensed Italic,,,,",
+		",ExtraCondensed Light,,,,",
+		",ExtraCondensed Light Italic,,,,",
+		",ExtraCondensed Medium,,,,",
+		",ExtraCondensed Medium Italic,,,,",
+		",ExtraCondensed SemiBold,,,,",
+		",ExtraCondensed SemiBold Italic,,,,",
+		",ExtraCondensed Thin,,,,",
+		",ExtraCondensed Thin Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",SemiCondensed,,,,",
+		",SemiCondensed Black,,,,",
+		",SemiCondensed Black Italic,,,,",
+		",SemiCondensed Bold,,,,",
+		",SemiCondensed Bold Italic,,,,",
+		",SemiCondensed ExtraBold,,,,",
+		",SemiCondensed ExtraBold Italic,,,,",
+		",SemiCondensed ExtraLight,,,,",
+		",SemiCondensed ExtraLight Italic,,,,",
+		",SemiCondensed Italic,,,,",
+		",SemiCondensed Light,,,,",
+		",SemiCondensed Light Italic,,,,",
+		",SemiCondensed Medium,,,,",
+		",SemiCondensed Medium Italic,,,,",
+		",SemiCondensed SemiBold,,,,",
+		",SemiCondensed SemiBold Italic,,,,",
+		",SemiCondensed Thin,,,,",
+		",SemiCondensed Thin Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Noto Sans Arabic,Black,,32,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Bengali,Black,,8192,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Devanagari,Black,,512,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Display,Black,,4111,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Noto Sans HK,Black,,20621,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Hebrew,Black,,16,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans JP,Black,,20621,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Noto Sans KR,Black,,20685,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Khmer,Black,,2048,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Math,Regular,,4,,a",
+		"Noto Sans Mono,Black,,4111,7,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans SC,Black,,20621,12,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Symbols,Black,,16384,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Symbols2,Regular,,,,a",
+		"Noto Sans TC,Black,,20621,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Thai,Black,,1024,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Sans Thai Looped,Black,,,,a",
+		",Bold,,,,a",
+		",Extrabold,,,,a",
+		",Extralight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,NotoSansThaiLooped-Semibold,,,a",
+		",Thin,,,,a",
+		"Noto Sans Tibetan,Regular,a,256,10,ex/tib/NotoSansTibetan-Regular.ttf",
+		"Noto Serif,,a,4111,14,",
+		",Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Condensed,,,,",
+		",Condensed Black,,,,",
+		",Condensed Black Italic,,,,",
+		",Condensed Bold,,,,",
+		",Condensed Bold Italic,,,,",
+		",Condensed ExtraBold,,,,",
+		",Condensed ExtraBold Italic,,,,",
+		",Condensed ExtraLight,,,,",
+		",Condensed ExtraLight Italic,,,,",
+		",Condensed Italic,,,,",
+		",Condensed Light,,,,",
+		",Condensed Light Italic,,,,",
+		",Condensed Medium,,,,",
+		",Condensed Medium Italic,,,,",
+		",Condensed SemiBold,,,,",
+		",Condensed SemiBold Italic,,,,",
+		",Condensed Thin,,,,",
+		",Condensed Thin Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraCondensed,,,,",
+		",ExtraCondensed Black,,,,",
+		",ExtraCondensed Black Italic,,,,",
+		",ExtraCondensed Bold,,,,",
+		",ExtraCondensed Bold Italic,,,,",
+		",ExtraCondensed ExtraBold,,,,",
+		",ExtraCondensed ExtraBold Italic,,,,",
+		",ExtraCondensed ExtraLight,,,,",
+		",ExtraCondensed ExtraLight Italic,,,,",
+		",ExtraCondensed Italic,,,,",
+		",ExtraCondensed Light,,,,",
+		",ExtraCondensed Light Italic,,,,",
+		",ExtraCondensed Medium,,,,",
+		",ExtraCondensed Medium Italic,,,,",
+		",ExtraCondensed SemiBold,,,,",
+		",ExtraCondensed SemiBold Italic,,,,",
+		",ExtraCondensed Thin,,,,",
+		",ExtraCondensed Thin Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",SemiCondensed,,,,",
+		",SemiCondensed Black,,,,",
+		",SemiCondensed Black Italic,,,,",
+		",SemiCondensed Bold,,,,",
+		",SemiCondensed Bold Italic,,,,",
+		",SemiCondensed ExtraBold,,,,",
+		",SemiCondensed ExtraBold Italic,,,,",
+		",SemiCondensed ExtraLight,,,,",
+		",SemiCondensed ExtraLight Italic,,,,",
+		",SemiCondensed Italic,,,,",
+		",SemiCondensed Light,,,,",
+		",SemiCondensed Light Italic,,,,",
+		",SemiCondensed Medium,,,,",
+		",SemiCondensed Medium Italic,,,,",
+		",SemiCondensed SemiBold,,,,",
+		",SemiCondensed SemiBold Italic,,,,",
+		",SemiCondensed Thin,,,,",
+		",SemiCondensed Thin Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Noto Serif Bengali,Black,,8192,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Serif Devanagari,Black,,512,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Serif Display,Black,,4111,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Noto Serif Hebrew,Black,,16,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Serif JP,Black,,20621,,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Noto Serif KR,Black,,20685,,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Noto Serif Khmer,Black,,2048,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Serif SC,Black,,20621,,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Noto Serif TC,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Noto Serif Thai,Black,,1024,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Noto Serif Tibetan,Black,,256,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Nova Cut,Book,a,3,4,a",
+		"Nova Flat,,a,,,a",
+		"NovaMono,Regular,a,7,7,a",
+		"Nova Oval,Book,a,3,4,a",
+		"Nova Round,,a,,,a",
+		"Nova Script,Regular,,,,a",
+		"Nova Slim,Book,a,,,a",
+		"Nova Square,,a,,,a",
+		"Numans,Regular,,1,12,",
+		"Nunito,Black,,4107,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Heavy Italic,NunitoHeavy-Italic,,,",
+		",Heavy,NunitoHeavy-Regular,,,",
+		"Nunito Sans,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Nymphette,Regular,a,0,3,",
+		"OSP-DIN,DIN,a,,4,",
+		"Odibee Sans,Regular,,1,,a",
+		"Odor Mean Chey,,,2048,14,a",
+		"Office Code Pro,Bold,,3,12,",
+		",Bold Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",Regular Italic,,,,",
+		"Office Code Pro D,Bold,,,,",
+		",Bold Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		",Regular Italic,,,,",
+		"Offside,Regular,,1,4,a",
+		"Oi,,,4111,,a",
+		"Old Stamper,,a,0,,",
+		"Old Standard TT,Bold,,15,14,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Oldenburg,,,3,4,a",
+		"Ole,,,4099,6,a",
+		"Oleo Script,Bold,,1,13,",
+		",Regular,,,,",
+		"Oleo Script Swash Caps,Bold,,,4,a",
+		",Regular,,,,a",
+		"Oooh Baby,,,4099,6,a",
+		"Open Sans,,a,4111,12,",
+		",Bold,,4127,,a",
+		",Bold Italic,,,,a",
+		"Open Sans Condensed,Bold,OpenSans-CondensedBold,4111,,",
+		"Open Sans,Condensed Light,,,,",
+		",Condensed Light Italic,,,,",
+		",ExtraBold,,4127,,a",
+		",ExtraBold Italic,,,,a",
+		",Extrabold,,4111,,",
+		",Extrabold Italic,,,,",
+		",Italic,,4127,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Semibold,,4111,,",
+		",Semibold Italic,,,,",
+		"Open Sans Condensed,Bold,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		"Open Sans,,OpenSansLight-Italic,,,",
+		"Oranienbaum,Regular,,11,14,",
+		"Orbitron,Black,,1,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Light,,,4,",
+		",Medium,,,12,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Oregano,Italic,,3,4,a",
+		",Regular,,,,a",
+		"Orelega One,,,11,,a",
+		"Orienta,,,1,12,a",
+		"Origicide,,a,,4,",
+		"Original Surfer,,,3,,a",
+		"Orkney,Bold,,,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"Orotund,Heavy,,0,4,",
+		"Orotund Capitals,,,,,",
+		"Ostrich Sans,Black,,,,",
+		",Bold,,,,",
+		",Heavy,,3,,",
+		",Light,,0,,",
+		",Medium,,3,,",
+		"Ostrich Sans Dashed,,,0,,",
+		"Ostrich Sans Inline,Italic,,1,,",
+		",Regular,,,,",
+		"Ostrich Sans Rounded,Medium,,0,,",
+		"Oswald,Bold,,4107,12,a",
+		",Bold Italic,,11,4,",
+		",Demi-Bold,Oswald-Demi-BoldItalic,,,",
+		",DemiBold,,,,",
+		",Extra-Light,Oswald-Extra-LightItalic,,,",
+		",ExtraLight,,4107,12,a",
+		",Heavy,,11,4,",
+		",Heavy Italic,,,,",
+		",Light,,4107,12,a",
+		",Light Italic,,11,4,",
+		",Medium,,4107,12,a",
+		",Medium Italic,,11,4,",
+		",Regular,,4107,12,a",
+		",Regular Italic,,11,4,",
+		",SemiBold,,4107,12,a",
+		"Oswald Stencil,Bold,,1,4,",
+		"Otama.ep,Regular,Otama-ep,,14,",
+		"Otomanopee One,,,,12,a",
+		"Outfit,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Outgunned,Regular,a,0,3,",
+		"Overlock,Black,,1,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Overlock SC,,,,4,a",
+		"Overpass,Black,,4107,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Heavy,,3,,",
+		",Heavy Italic,,,,",
+		",Italic,,4107,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Overpass Mono,Bold,,,7,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Over the Rainbow,Regular,a,3,6,",
+		"Ovo,,a,1,14,",
+		"Oxanium,Bold,,,12,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Oxygen,Regular,a,15,,",
+		",Bold,,11,,",
+		",Bold Italic,,,,",
+		",Italic,,15,,",
+		",Light,,3,,a",
+		",Regular,,,,a",
+		"Oxygen Mono,,,1,7,",
+		"PT Mono,,,11,,",
+		"PT Root UI,Bold,,,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"PT Sans,Bold,,,,a",
+		",Bold Italic,,,,a",
+		"PT Sans Caption,Regular,PTSans-Caption,,,a",
+		",Bold,PTSans-CaptionBold,,,a",
+		"PT Sans,Italic,,,,a",
+		"PT Sans Narrow,Regular,PTSans-Narrow,,,a",
+		",Bold,PTSans-NarrowBold,,,a",
+		"PT Sans,Regular,,,,a",
+		"PT Serif,Bold,,,15,",
+		",Bold Italic,,,,",
+		"PT Serif Caption,Regular,PTSerif-Caption,,,",
+		",Italic,PTSerif-CaptionItalic,,,",
+		"PT Serif,,,,,",
+		",Regular,,,,",
+		"Pacifico,,a,1,13,",
+		",,,4107,6,a",
+		"Padauk,Bold,,0,12,a",
+		",Regular,,,,a",
+		"Paete Round,,a,,2,",
+		",Bold,PaeteRoundBold,,,",
+		",BoldItalic,PaeteRoundBoldItalic,,,",
+		",Italic,PaeteRoundItalic,,,",
+		"Paint the Sky,Regular,,1,4,",
+		"Palanquin,Bold,,513,12,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Palanquin Dark,Bold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Palette Mosaic,Regular,,0,4,a",
+		"Palitoon,,,1,6,",
+		"PaloAlto,Heavy,a,,12,",
+		",Heavy Italic,PaloAlto-Italic,,,",
+		"Panefresco,1wt Italic,Panefresco1wt-Italic,3,,",
+		",1wt,Panefresco1wt-Regular,,,",
+		",250wt Italic,Panefresco250wt-Italic,,,",
+		",250wt,Panefresco250wt-Regular,,,",
+		",400wt Italic,Panefresco400wt-Italic,,,",
+		",400wt,Panefresco400wt-Regular,,,",
+		",500wt Italic,Panefresco500wt-Italic,,,",
+		",500wt,Panefresco500wt-Regular,,,",
+		",600wt Italic,Panefresco600wt-Italic,,,",
+		",600wt,Panefresco600wt-Regular,,,",
+		",750wt Italic,Panefresco750wt-Italic,,,",
+		",750wt,Panefresco750wt-Regular,,,",
+		",800wt Italic,Panefresco800wt-Italic,,,",
+		",800wt,Panefresco800wt-Regular,,,",
+		",999wt Italic,Panefresco999wt-Italic,,,",
+		",999wt,Panefresco999wt-Regular,,,",
+		"Pangolin,Regular,,4107,6,a",
+		"Paprika,,,1,4,",
+		"Parisienne,,,3,13,",
+		"Passero One,,,1,4,a",
+		"Passion One,Black,,,12,",
+		",Bold,,,,",
+		"Passion,,PassionOne-Regular,,,",
+		"Passions Conflict,Regular,,4099,6,a",
+		"Pathway Gothic One,,,1,12,a",
+		"Patrick Hand,,,4099,6,a",
+		"Patrick Hand SC,,,,,a",
+		"Pattaya,,,5131,12,a",
+		"Patua One,,,1,15,",
+		"Pavanam,,,3,12,a",
+		"Paytone One,,,4099,,a",
+		"Peace Sans,,a,9,,",
+		"Pecita,Book,a,20495,6,",
+		"Peddana,Regular,a,0,14,a",
+		"Peralta,,,3,15,",
+		"Permanent Marker,,a,1,6,",
+		",,,,,a",
+		"PermianSansTypeface,,a,11,12,",
+		",Bold,,,,",
+		",Italic,,,,",
+		"PermianSerifTypeface,Regular,a,,14,",
+		",Bold,,,,",
+		",Italic,,,,",
+		"PermianSlabSerifTypeface,Regular,a,,15,",
+		",Bold,,,,",
+		",Italic,,,,",
+		"Perspective Sans,Regular,a,1,12,",
+		",Black,PerspectiveSansBlack,,,",
+		",Black Italic,PerspectiveSansBlackItalic,,,",
+		",Bold,PerspectiveSansBold,,,",
+		",Bold Italic,PerspectiveSansBoldItalic,,,",
+		",Italic,PerspectiveSansItalic,,,",
+		"Petemoss,Regular,,4099,6,a",
+		"Petit Formal Script,,,3,,a",
+		"Petrona,Black,,4099,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Philosopher,Regular,a,9,12,",
+		",Bold,,4105,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Piazzolla,Black,,4111,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Piedra,Regular,,1,4,a",
+		"Pincoyablack,Black,,,,",
+		"Pinyon Script,Regular,a,,6,a",
+		"Pirata One,,,3,4,a",
+		"PixieFont,,a,0,,",
+		"PlainBlack,Normal,,,0,",
+		"PlainBlackWide,,,,,",
+		"Plasma Drip (BRK),Regular,a,,8,",
+		"Plasma Drip [Empty] (BRK),,a,,,",
+		"Plaster,,,3,4,a",
+		"Play,,a,15,12,",
+		",Bold,,4111,,a",
+		",Regular,,,,a",
+		"Playball,,,4099,4,a",
+		"Playfair Display,Black,,4107,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Playfair Display SC,Black,,,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Playtime With Hot Toddies,,a,1,6,",
+		"PlaytimeWithHotToddies3D,,a,,,",
+		"PlaytimeWithHotToddiesOblique,,a,,,",
+		"Pleasantly Plump,Normal,Pleasantly-Plump,0,4,",
+		"Plexifont BV,Regular,a,,8,",
+		"Plug-NickelBlack,,a,1,11,",
+		"Podkova,,a,,15,",
+		",Bold,,4107,14,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"PoetsenOne,Regular,,3,4,",
+		"Poiret One,,,11,,",
+		"Poller One,,,1,,a",
+		"Polsku,,a,,,",
+		"Poly,Italic,,3,14,",
+		",Regular,,,,",
+		"Pompiere ,,,1,6,",
+		"Pontano Sans,,,3,12,a",
+		"Poor Story,,,64,4,a",
+		"Poppins,Black,,515,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Port Lligat Sans,Regular,,1,,a",
+		"Port Lligat Slab,,,,14,a",
+		"Portcullion,Bold,,0,0,",
+		"Porter Sans Block,Block,a,1,4,",
+		"Post No Bills Colombo,Bold,,,16,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Potta One,Regular,,4227,4,a",
+		"Pragati Narrow,Bold,,515,12,",
+		",Regular,,,,",
+		"Praise,,,4099,6,a",
+		"Prata,,,4105,14,",
+		"Preahvihear,,,2048,12,a",
+		"Press Start 2P,,,15,4,a",
+		"Pribambas,,,8,2,ex/pu/Pribambas-Regular.ttf",
+		"Pridi,Bold,,5123,14,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Princess Sofia,Regular,a,1,13,",
+		"Print,Bold,PrintBold,,12,",
+		"Print Clearly,Regular,a,,,",
+		"Print Dashed,,a,,,",
+		"Printers Ornaments One,,a,0,3,",
+		"ProFontWindows,,a,1,12,",
+		"Prociono,,,3,14,a",
+		"Proclamate,Heavy Heavy,ProclamateHeavy-Heavy,0,0,",
+		"Proclamate Incised,Heavy,,,,",
+		"Proclamate,Light Light,ProclamateLight-Light,,,",
+		"Promocyja,Medium,a,3,13,",
+		"Prompt,Black,,5123,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Prosto One,Regular,,9,4,a",
+		"Proza Libre,Bold,,1,12,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Public Sans,Black,,4099,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Puppies Play,Regular,,,6,a",
+		"Puritan,Bold,,1,12,",
+		",BoldItalic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Purple Purse,,,3,4,",
+		"Pusab,,a,1,,",
+		"Qahiri,,,0,12,a",
+		"Qikki Reg,,a,,2,",
+		"Qomolangma,Art,,257,10,ex/tib/Q17/Q-Art.ttf",
+		",Betsu,,,,ex/tib/Q17/Q-Betsu.ttf",
+		",Chuyig,,,,ex/tib/Q17/Q-Chuyig.ttf",
+		",Drutsa,,,,ex/tib/Q17/Q-Drutsa.ttf",
+		",Dunhuang,,,,ex/tib/Q17/Q-Dunhuang.ttf",
+		",Edict,,,,ex/tib/Q17/Q-Edict.ttf",
+		",Horyig,,,,ex/tib/Q17/Q-Horyig.ttf",
+		",Subtitle,,,,ex/tib/Q17/Q-Subtitle.ttf",
+		",Title,,,,ex/tib/Q17/Q-Title.ttf",
+		",Tsumachu,,,,ex/tib/Q17/Q-Tsumachu.ttf",
+		",Tsuring,,,,ex/tib/Q17/Q-Tsuring.ttf",
+		",Tsutong,,,,ex/tib/Q17/Q-Tsutong.ttf",
+		",Uchen Sarchen,Qomolangma-Uchen-Sarchen,,,ex/tib/Q17/Q-UchenSarchen.ttf",
+		",Uchen Sarchung,Qomolangma-Uchen-Sarchung,,,ex/tib/Q17/Q-UchenSarchung.ttf",
+		",Uchen Suring,Qomolangma-Uchen-Suring,,,ex/tib/Q17/Q-UchenSuring.ttf",
+		",Uchen Sutung,Qomolangma-Uchen-Sutung,,,ex/tib/Q17/Q-UchenSutung.ttf",
+		",Woodblock,,,,ex/tib/Q17/Q-Woodblock.ttf",
+		"Quaerite Regnum Dei,Regular,a,0,0,",
+		"Quando,,,3,14,a",
+		"Quantico,Bold,,1,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Quattrocento,,a,,14,a",
+		",Bold,,,,a",
+		"Quattrocento Roman,Regular,a,,,",
+		"Quattrocento Sans,,a,,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Questrial,Regular,,4099,,a",
+		"Quick End Jerk,,a,0,4,",
+		"Quicksand,Bold,,4099,12,a",
+		",Bold Italic,,1,,",
+		",Italic,,,,",
+		",Light,,4099,,a",
+		",Light Italic,,1,,",
+		",Medium,,4099,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Dash,QuicksandDash-Regular,0,,",
+		"QuigleyWiggly,Regular,a,1,13,",
+		"Quintessential,,,3,,",
+		"QumpellkaNo12,,a,,,",
+		"Qwigley,,,4099,6,a",
+		"Qwitcher Grypen,Bold,,,,a",
+		",Regular,,,,a",
+		"Racing Sans One,,,3,4,a",
+		"Radley,,a,,14,",
+		",Italic,,1,,a",
+		",Regular,,3,,a",
+		"Railway,,a,,12,",
+		",RegularAlternate,RailwayAlternate,0,,",
+		"Rajdhani,Bold,,515,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		",Semibold,,,,",
+		"Rakkas,Regular,,33,4,a",
+		"Raleway,Black,,4107,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Raleway Dots ,Regular,,3,4,",
+		"Ramabhadra,,a,0,12,a",
+		"Ramaraja,,a,,14,a",
+		"Rambla,Bold,,1,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Rammetto One,,,,4,a",
+		"Rampart One,,,16525,,a",
+		"Ranchers,,,3,,",
+		"Rancho,,a,1,13,",
+		",,,,6,a",
+		"Ranga,Bold,,513,4,",
+		",Regular,,,,",
+		"Rapscallion,,a,0,0,",
+		"Rasa,Bold,,4099,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Rationale,Regular,,1,12,a",
+		"Rationale One,,,,4,",
+		"Ravi Prakash,,,0,,a",
+		"Rawengulk,Bold,RawengulkBold,3,15,",
+		",Demibold,RawengulkDemibold,,,",
+		",Light,RawengulkLight,,,",
+		"RawengulkPcs,Regular,a,,,",
+		"Rawengulk,,RawengulkRegular,,,",
+		"RawengulkSans,,a,,12,",
+		"Rawengulk,Ultralight,RawengulkUltralight,,15,",
+		"Readex Pro,Bold,,4099,12,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Rechtman,Plain,,0,13,",
+		"Recursive,Black,,4099,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Red Hat Display,Black,,3,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Red Hat Mono,Bold,,,7,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Red Hat Text,Bold,,,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Red Rose,Bold,,4099,4,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Redacted,Regular,,1,,a",
+		"Redacted Script,Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Redressed,,a,3,6,",
+		",,,,,a",
+		"Reem Kufi,Bold,,4099,12,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Reenie Beanie,Regular,a,1,6,a",
+		"Reggae One,,,16525,4,a",
+		"Resagnicto,,a,3,12,",
+		",Bold,ResagnictoBold,,,",
+		",Italic,ResagnictoItalic,,,",
+		"Resagokr,Regular,a,11,,",
+		",Bold,ResagokrBold,,,",
+		",Light,ResagokrLight,,,",
+		"Reswysokr,Regular,a,3,4,",
+		"Revalia,,,1,,a",
+		"Rhodium Libre,,,513,14,a",
+		"Ribeye,,,3,4,a",
+		"Ribeye Marrow,,,,,a",
+		"Riesling,,a,1,11,",
+		"Righteous,,,3,4,a",
+		"Risque,,,,,a",
+		"Ritaglio,,a,0,8,",
+		"Road Rage,,,4099,4,a",
+		"Roboto,Black,,4111,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Roboto Condensed,Bold,,,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		"Roboto Mono,Bold,,,7,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Roboto Slab,Black,,,14,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Rochester,Regular,a,1,13,",
+		",,,,6,a",
+		"Rock 3D,,,0,4,a",
+		"Rock Salt,,a,1,6,",
+		",,,,,a",
+		"RocknRoll One,,,16525,12,a",
+		"Rokkitt,Black,,4099,15,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Roman SD,Regular,a,1,1,",
+		"Romanesco,,,3,4,",
+		"Ropa Sans,Italic,,1,12,a",
+		",Regular,,,,a",
+		"Rosario,Bold,,4099,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Rosarivo,Italic,,1,14,a",
+		",Regular,,,,a",
+		"Rothenburg Decorative,Normal,,0,0,",
+		"Rothman,Plain,,,4,",
+		"Rouge Script,Regular,,1,13,",
+		"Rounded Mplus 1c,Black,,20639,12,a",
+		",Bold Bold,RoundedMplus1c-Bold,,,a",
+		",ExtraBold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Route 159,Bold,,3,,",
+		",Bold Italic,,,,",
+		",Heavy,,,,",
+		",Heavy Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",UltraLight,,,,",
+		",UltraLight Italic,,,,",
+		"Rowdies,Bold,,4099,4,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Rozha One,,a,513,15,",
+		",,,515,14,a",
+		"Rubik,Black,,27,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Rubik Beastly,Regular,,,4,a",
+		"Rubik Mono One,,,11,12,a",
+		"Ruda,,a,1,,",
+		",Black,,4107,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Rufina,Bold,,1,14,a",
+		",Regular,,,,a",
+		"Ruge Boogie,,,4099,6,a",
+		"Ruluko,,a,1,12,a",
+		"Rum Raisin,,,3,,a",
+		"Ruslan Display,,a,11,4,a",
+		"Russo One,,,,12,a",
+		"Ruthie,,,4099,6,a",
+		"Rye,,,1,4,",
+		"SF Arch Rival,,a,,2,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Arch Rival Extended,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Archery,Black,SFArcheryBlack,,4,",
+		",Black Oblique,SFArcheryBlack-Oblique,,,",
+		"SF Archery Black SC,Regular,a,,,",
+		",Oblique,,,,",
+		"SF Burlington Script,Regular,a,,13,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Cartoonist Hand,Regular,a,,2,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Cartoonist Hand SC,Regular,a,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Collegiate,Regular,a,0,4,",
+		"SF Collegiate Solid,,a,,,",
+		"SF Shai Fontai,,a,1,8,",
+		"SF Shai Fontai Distressed,,a,,,",
+		"SF Shai Fontai Extended,,a,,,",
+		"SF Slapstick Comic,,a,,4,",
+		"SF Speakeasy,,a,,11,",
+		",Oblique,,,,",
+		"SF Toontime,Regular,a,,2,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Toontime Blotch,Regular,a,,,",
+		",Italic,,,,",
+		"SF Wasabi,Regular,a,,8,",
+		"SF Wasabi Condensed,,a,,,",
+		"SF Wonder Comic,,a,,2,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"SF Wonder Comic Blotch,Regular,a,,,",
+		",Italic,,,,",
+		"SF Wonder Comic Inline,Regular,a,,,",
+		",Italic,,,,",
+		"STIX Two Text,Bold,,4111,14,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Sacramento,Regular,,3,6,a",
+		"Sahitya,Bold,,515,14,a",
+		",Regular,,,,a",
+		"Sail,,,1,13,",
+		"Saira,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Saira Condensed,Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Saira ExtraCondensed,Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Saira SemiCondensed,Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Saira Stencil One,Regular,,,4,a",
+		"Salaryman,,a,0,,",
+		"Salsa,,,1,,",
+		"Samba,,a,,12,",
+		"Sanchez,Italic,,3,14,a",
+		",Regular,,,,a",
+		"Sancreek,,,,4,a",
+		"Sansation,Bold,,15,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light Light,Sansation-Light,,,",
+		",Light Light Italic,Sansation-LightItalic,,,",
+		",Regular,,,,",
+		"Sansita,Black,,4099,4,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		"Sansita Swashed,Black,,,,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Sansumi,Regular,Sansumi-Bold,1,12,",
+		",ExtraBold,,,,",
+		"Santana,Regular,a,,4,",
+		",Black,,,,",
+		"Santana-BlackCondensed,Regular,a,,,",
+		"Santana,Bold,,,,",
+		"Santana-RegularCondensed,Regular,a,,,",
+		"Sarabun,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Sarala,Bold,,515,,a",
+		",Regular,,,,a",
+		"Sarina,,,3,13,",
+		"Sarpanch,Black,,513,4,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Sary Soft,ExtraLight,,1,12,",
+		",Light,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Sassy Frass,Regular,,4099,6,a",
+		"Satisfy,,,1,13,",
+		"Sawarabi Gothic,Medium,,16523,12,",
+		",Regular,,,,a",
+		"Sawarabi Mincho,Medium,,16515,,",
+		",Regular,,,14,a",
+		"Scada,Bold,,11,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"Scheherazade,Bold,,33,14,",
+		",Regular,,,,",
+		"Scheherazade New,Bold,,,,a",
+		",Regular,,,,a",
+		"Schoolbell,,a,1,8,",
+		",,,,6,a",
+		"Scope One,,,3,14,a",
+		"Scratch,,a,1,6,",
+		"Scriptina,,a,,13,",
+		"Scriptina - Alternates,,a,0,,",
+		"Scriptina Pro,,a,3,,",
+		"Sears Tower,,a,1,17,",
+		"SeasideResortNF,,a,,11,",
+		"Seaweed Script,,,,4,a",
+		"Secular One,,,19,12,a",
+		"Sedgwick Ave,,,4099,4,",
+		"Sedgwick Ave Display,,,,,",
+		"Sedgwick Co,,a,0,,",
+		"Selawik,Bold,,3,12,",
+		",Light,,,,",
+		",Regular,,,,",
+		",Semibold,,,,",
+		",Semilight,,,,",
+		"Selima,Regular,a,1,13,",
+		"Sen,Bold,,3,12,a",
+		",ExtraBold,,,,a",
+		",Regular,,,,a",
+		"Seshat,,,1,14,",
+		"Sesquipedalian,,a,0,11,",
+		"Sevillana,,,1,13,",
+		"Seymour One,Book,a,11,12,a",
+		"Shadows Into,Light,ShadowsIntoLight,3,6,a",
+		"Shadows Into Light,Two,ShadowsIntoLightTwo-Regular,,,a",
+		"Shalimar,Regular,,4099,,a",
+		"ShangriLaNF,,a,1,4,",
+		"ShangriLaNFSmallCaps,,a,,,",
+		"Shangshung Sgoba-KhraChen,,Shangshung-Sgoba-KhraChen,257,10,ex/tib/S12/Shangshung-sgoba-khrachen.ttf",
+		"Shangshung Sgoba-KhraChung,,Shangshung-Sgoba-KhraChung,,,ex/tib/S12/Shangshung-sgoba-khrachung.ttf",
+		"Shanti,,a,1,12,",
+		"Share,Bold,,,,",
+		"Share-BoldExp,Regular,a,,,",
+		"Share,Bold Italic,,,,",
+		"Share-BoldItalicExp,Regular,a,,,",
+		"Share-BoldItalicOSF,,a,,,",
+		"Share-BoldOSF,,a,,,",
+		"Share,Italic,,,,",
+		"Share-ItalicExp,Regular,a,,,",
+		"Share-ItalicOSF,,a,,,",
+		"Share,,,,,",
+		"Share-RegularExp,,a,,,",
+		"Share-RegularOSF,,a,,,",
+		"Share-Tech,,a,,,",
+		"Share-TechExp,,a,,,",
+		"Share-TechMono,,a,,,",
+		"Share-TechMonoExp,,a,,,",
+		"Share Tech,,,,,a",
+		"Share Tech Mono,,,,7,a",
+		"Shippori Antique,,,129,12,a",
+		"Shippori Antique B1,,,,,a",
+		"Shippori Mincho,Bold,,,14,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Shippori Mincho B1,Bold,,,,a",
+		",ExtraBold,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Shizuru,Regular,,0,4,a",
+		"Shojumaru,,,3,8,",
+		"Short Stack,,a,1,6,",
+		"Shrikhand,,,,14,",
+		"Siemreap,,a,2048,4,a",
+		"Sigmar,,a,3,,",
+		"Sigmar One,,,4099,,a",
+		"Signika,Bold,,,12,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Semibold,,1,,",
+		"Signika Negative,Bold,,4099,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Silkscreen,Normal,a,0,9,",
+		",Bold,,,,",
+		"Silkscreen Expanded,Normal,Silkscreen-Expanded,,,",
+		",Bold,Silkscreen-ExpandedBold,,,",
+		"Simonetta,Black,,1,14,",
+		",Black Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Simpel,Medium,,3,12,",
+		"Single Day,Regular,,64,4,a",
+		"Sinkin Sans,100 Thin,,3,12,",
+		",100 Thin Italic,,,,",
+		",200 X Light,,,,",
+		",200 X Light Italic,,,,",
+		",300 Light,,,,",
+		",300 Light Italic,,,,",
+		",400 Italic,,,,",
+		",400 Regular,,,,",
+		",500 Medium,,,,",
+		",500 Medium Italic,,,,",
+		",600 SemiBold,,,,",
+		",600 SemiBold Italic,,,,",
+		",700 Bold,,,,",
+		",700 Bold Italic,,,,",
+		",800 Black,,,,",
+		",800 Black Italic,,,,",
+		",900 X Black,,,,",
+		",900 X Black Italic,,,,",
+		"Sintony,Regular,a,1,,a",
+		",Bold,,,,a",
+		",Regular,,,,",
+		"SirinStencil,,,,4,a",
+		"Six Caps,,a,3,,",
+		"Sjonarbok Classic,,Sjonarbok-Classic,0,8,",
+		"Skranji,,a,1,4,",
+		",Bold,,,,",
+		"Slabo 13px,Regular,,3,15,",
+		"Slabo 27px,,,,,",
+		"Slackey,,,1,4,a",
+		"Slim Jim,,a,,12,",
+		"Sling,Normal,a,0,14,",
+		",Bold,,,,",
+		",Light,,,,",
+		"Slukoni,Medium,,,4,",
+		"Smokum,Regular,,3,,",
+		"Smooch,,,4099,6,a",
+		"Smythe,,a,1,4,a",
+		"Snickles,,a,0,6,",
+		"Sniglet,ExtraBold,,1,4,",
+		",Regular,,,,",
+		"Snippet,,a,,12,a",
+		"Snowburst One,,,,4,a",
+		"Sofadi One,,,,,",
+		"Sofia,,,,6,a",
+		"Solveig,Bold,SolveigBold,3,12,",
+		",Bold Italic,SolveigBold-Italic,,,",
+		"Solveig Demi,Bold,SolveigDemiBold,,,",
+		",Bold Italic,SolveigDemiBold-Italic,,,",
+		"Solveig Display,Regular,a,,,",
+		",Italic,,,,",
+		"Solveig Text,Regular,a,,,",
+		",Italic,,,,",
+		"Solway,Bold,,1,15,",
+		",ExtraBold,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"Some Time Later,,a,31,4,",
+		"Song Myung,,,0,14,a",
+		"Sonsie One,,a,3,4,",
+		",,,,,a",
+		"Sora,Bold,,,12,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Soria,Soria,,0,14,",
+		"Sorts Mill Goudy,Italic,,3,,a",
+		",Regular,,,,a",
+		"SouciSans,,a,1,4,",
+		"SoukouMincho,,a,140,14,",
+		"Source Code Pro,Black,,4111,7,",
+		",Black Italic,SourceCodePro-BlackIt,4099,,",
+		",,,20483,,a",
+		",Bold,,4111,,",
+		",Bold Italic,SourceCodePro-BoldIt,4099,,",
+		",,,20483,,a",
+		",ExtraBold,,20495,,a",
+		",ExtraBold Italic,,20483,,a",
+		",ExtraLight,,4111,,",
+		",ExtraLight Italic,SourceCodePro-ExtraLightIt,4099,,",
+		",,,20483,,a",
+		",Italic,SourceCodePro-It,4099,,",
+		",,,20483,,a",
+		",Light,,4111,,",
+		",Light Italic,SourceCodePro-LightIt,4099,,",
+		",,,20483,,a",
+		",Medium,,4111,,",
+		",Medium Italic,SourceCodePro-MediumIt,4099,,",
+		",,,20483,,a",
+		",Regular,,4111,,",
+		",SemiBold,,20495,,a",
+		",SemiBold Italic,,20483,,a",
+		",Semibold,,4111,,",
+		",Semibold Italic,SourceCodePro-SemiboldIt,4099,,",
+		"Source Han Sans,Bold,,20685,12,ex/shs/SourceHanSans-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSans-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSans-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSans-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSans-Medium.ttc",
+		",Normal,,,,ex/shs/SourceHanSans-Normal.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSans-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSans-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSans-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSans-Medium.ttc",
+		",Normal,,,,ex/shs/SourceHanSans-Normal.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HW,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HW HC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HW K,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HW SC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans HW TC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans K,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSans-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSans-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSans-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSans-Medium.ttc",
+		",Normal,,,,ex/shs/SourceHanSans-Normal.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans SC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSans-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSans-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSans-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSans-Medium.ttc",
+		",Normal,,,,ex/shs/SourceHanSans-Normal.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Sans TC,Bold,,,,ex/shs/SourceHanSans-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSans-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSans-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSans-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSans-Medium.ttc",
+		",Normal,,,,ex/shs/SourceHanSans-Normal.ttc",
+		",Regular,,,,ex/shs/SourceHanSans-Regular.ttc",
+		"Source Han Serif,Bold,,,,ex/shs/SourceHanSerif-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSerif-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSerif-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSerif-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSerif-Medium.ttc",
+		",Regular,,,,ex/shs/SourceHanSerif-Regular.ttc",
+		",SemiBold,,,,ex/shs/SourceHanSerif-SemiBold.ttc",
+		"Source Han Serif K,Bold,,,,ex/shs/SourceHanSerif-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSerif-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSerif-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSerif-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSerif-Medium.ttc",
+		",Regular,,,,ex/shs/SourceHanSerif-Regular.ttc",
+		",SemiBold,,,,ex/shs/SourceHanSerif-SemiBold.ttc",
+		"Source Han Serif SC,Bold,,,,ex/shs/SourceHanSerif-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSerif-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSerif-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSerif-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSerif-Medium.ttc",
+		",Regular,,,,ex/shs/SourceHanSerif-Regular.ttc",
+		",SemiBold,,,,ex/shs/SourceHanSerif-SemiBold.ttc",
+		"Source Han Serif TC,Bold,,,,ex/shs/SourceHanSerif-Bold.ttc",
+		",ExtraLight,,,,ex/shs/SourceHanSerif-ExtraLight.ttc",
+		",Heavy,,,,ex/shs/SourceHanSerif-Heavy.ttc",
+		",Light,,,,ex/shs/SourceHanSerif-Light.ttc",
+		",Medium,,,,ex/shs/SourceHanSerif-Medium.ttc",
+		",Regular,,,,ex/shs/SourceHanSerif-Regular.ttc",
+		",SemiBold,,,,ex/shs/SourceHanSerif-SemiBold.ttc",
+		"Source Sans 3,Black,,20495,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Source Sans Pro,Black,,4111,,a",
+		",Black Italic,SourceSansPro-BlackIt,4099,,",
+		",,,,,a",
+		",Bold,,4111,,a",
+		",Bold Italic,SourceSansPro-BoldIt,4099,,",
+		",,,,,a",
+		",ExtraLight,,4111,,a",
+		",ExtraLight Italic,SourceSansPro-ExtraLightIt,4099,,",
+		",,,,,a",
+		",Italic,SourceSansPro-It,,,",
+		",,,,,a",
+		",Light,,4111,,a",
+		",Light Italic,SourceSansPro-LightIt,4099,,",
+		",,,,,a",
+		",Regular,,4111,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,4099,,a",
+		",Semibold,,4111,,",
+		",Semibold Italic,SourceSansPro-SemiboldIt,4099,,",
+		"Source Serif 4,Black,,4111,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Source Serif Pro,Black,,,14,a",
+		",Black Italic,SourceSerifPro-BlackIt,,,a",
+		",Bold,,,,a",
+		",Bold Italic,SourceSerifPro-BoldIt,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,SourceSerifPro-ExtraLightIt,,,a",
+		",Italic,SourceSerifPro-It,,,a",
+		",Light,,,,a",
+		",Light Italic,SourceSerifPro-LightIt,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,SourceSerifPro-SemiBoldIt,,,a",
+		",Semibold,,,,",
+		",Semibold Italic,SourceSerifPro-SemiboldIt,3,,",
+		"Space Comics,Regular,a,0,2,ex/pu/Space Comics.ttf",
+		"Space Grotesk,Bold,,4099,12,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,a",
+		"Space Mono,Bold,,,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Spartan,Black,,3,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Spartan MB,Black,,,,",
+		",Bold,,,,",
+		",ExtraBold,,,,",
+		",ExtraLight,,,,",
+		",Light,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",Thin,,,,",
+		"Special Elite,Regular,,,17,",
+		"Spectral,Bold,,4107,14,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Spectral SC,Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Spicy Rice,Regular,,3,4,a",
+		"Spilt Ink,,a,0,8,",
+		"Spin Cycle 3D OT,,a,1,4,",
+		"Spin Cycle OT,,a,,,",
+		"Spinnaker,,,,12,a",
+		"Spirax,,,,4,",
+		"Spline Sans,Bold,,3,12,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Sporting Grotesque,Bold,,5,,",
+		",Regular,,,,",
+		"Sportrop,,,3,4,",
+		"Sprat,,a,1,14,",
+		",Condensed Black,,,,",
+		",Condensed Bold,,,,",
+		",Condensed Light,,,,",
+		",Condensed Medium,,,,",
+		",Condensed Thin,,,,",
+		",Condesed Regular,,,,",
+		",Extended Black,,,,",
+		",Extended Bold,,,,",
+		",Extended Light,,,,",
+		",Extended Medium,,,,",
+		",Extended Thin,,,,",
+		",Extended regular,,,,",
+		",Regular,,,,",
+		",Regular Black,,,,",
+		",Regular Bold,,,,",
+		",Regular Medium,,,,",
+		",Regular Thin,,,,",
+		",Regular light,,,,",
+		"Squada One,Regular,,,4,",
+		"Sree Krushnadevaraya,,a,0,14,a",
+		"Sriracha,,,5123,6,a",
+		"Srisakdi,Bold,,,4,a",
+		",Regular,,,,a",
+		"St Marie,Thin,,3,15,",
+		"Staatliches,Regular,,,4,a",
+		"Stalemate,,,,6,a",
+		"Stalinist One,,,9,4,a",
+		"Stardos Stencil,Bold,,1,16,",
+		",Regular,,,,",
+		"StateFace,,,0,3,",
+		"Stick,,,16525,12,a",
+		"Stick No Bills,Bold,,1,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Stilu,Bold,,,,",
+		",Bold Oblique,,,,",
+		",Light,,,,",
+		",Light Oblique,,,,",
+		",Oblique,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Oblique,,,,",
+		"Stint Ultra Condensed,Regular,,3,4,a",
+		"Stint Ultra Expanded,,,,,a",
+		"Stoke,Light,,,14,a",
+		",Regular,,,,a",
+		"Strait,,,1,12,a",
+		"Studebaker,,a,0,11,",
+		"Style Script,,,4099,6,a",
+		"Stylish,,,64,12,",
+		"Subjectivity,Black,,3,,",
+		",Black Slanted,,,,",
+		",Bold,,,,",
+		",Bold Slanted,,,,",
+		",Extra Bold,,,,",
+		",Extra Bold Slanted,,,,",
+		",Light,,,,",
+		",Light Slanted,,,,",
+		",Medium,,,,",
+		",Medium Slanted,,,,",
+		",Regular,,,,",
+		",Regular Slanted,,,,",
+		",Super,,,,",
+		",Super Slanted,,,,",
+		",Thin,,,,",
+		",Thin Slanted,,,,",
+		"Sue Ellen Francisco ,Regular,a,1,6,a",
+		"Suez One,,,19,14,a",
+		"Suit Icons,,SuitIconsRegular,1,3,",
+		"Sulphur Point,Bold,,,12,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		"Sumana,Bold,,513,14,a",
+		",Regular,,,,a",
+		"Sunflower,Bold,,0,12,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		"Sunshiney,Regular,,1,6,a",
+		"Supermercado,,,3,4,",
+		"Sura,Bold,,512,14,a",
+		",Regular,,,,a",
+		"Suranna,,a,0,,a",
+		"Suravaram,,a,,,a",
+		"Surface,Medium,,1,12,",
+		"Suwannaphum,Black,,2048,14,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Swanky and Moo Moo,Regular,a,3,6,a",
+		"Symbol Signs,Basis set,,0,3,",
+		"Syncopate,Bold,,3,4,",
+		",Regular,,,,",
+		"Syne,Bold,,,12,a",
+		",Extra,,,,",
+		",ExtraBold,,,,a",
+		",Italic,,,,",
+		",Medium,,,,a",
+		",Mono,,,,",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Syne Mono,Regular,,,7,a",
+		"Syne Tactile,,,,4,a",
+		"Synthetique OT,,a,1,,",
+		"TCRC Youtso Unicode,,a,256,10,ex/tib/S12/TCRC Youtso Uni.ttf",
+		"210 Sunflower,Light,TTSunflowerL,12,,ex/sunflower.ttf",
+		"Tagapagsalaysay Caps (Narrator),Regular,TagapagsalaysayCapsNarrator,0,2,",
+		",Bold,TagapagsalaysayCapsNarratorBold,,,",
+		",BoldItalic,TagapagsalaysayCapsNarratorBoldItalic,,,",
+		",Italic,TagapagsalaysayCapsNarratorItalic,,,",
+		"Tajawal,Black,,1,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Tangerine,,a,,13,",
+		",Bold,,,,",
+		",Regular,,,6,a",
+		"Tanohe Sans,,a,3,12,",
+		",Black,,,,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"Taprom,Regular,,2048,4,a",
+		"TarponMotel,,a,1,12,",
+		"Tauri,,TauriRegular,,,a",
+		"Taviraj,Black,,5123,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"TeX Gyre Adventor,Bold,,4111,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Bonum,Bold,,,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Cursor,Bold,,,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Heros,Bold,,,12,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Heros Cn,Bold,TeXGyreHerosCondensed-Bold,,,",
+		",Bold Italic,TeXGyreHerosCondensed-BoldItalic,,,",
+		",Italic,TeXGyreHerosCondensed-Italic,,,",
+		",Regular,TeXGyreHerosCondensed-Regular,,,",
+		"TeX Gyre Pagella,Bold,,,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Schola,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"TeX Gyre Termes,Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Techna Sans,,,1,12,",
+		"Technique BRK,Normal,a,0,4,",
+		"Technique OL BRK,,a,,,",
+		"Tecnico,Fino,TecnicoFino,4,12,",
+		",FinoInclinado,TecnicoFinoInclinado,,,",
+		",Grueso,TecnicoGrueso,,,",
+		",GruesoInclinado,TecnicoGruesoInclinado,,,",
+		"Teko,Bold,,513,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Telex,Regular,,1,,",
+		"Tenali Ramakrishna,,a,0,,a",
+		"Tenderness,,a,,,",
+		"Tenor Sans,,a,11,,a",
+		"Teutonic No1,DemiBold,,0,0,",
+		"Teutonic No2,,,,,",
+		"Teutonic No3,,,,,",
+		"Teutonic No4,,,,,",
+		"Text Me One,Regular,,1,12,a",
+		"Texturina 12pt,Black,,4099,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Thasadith,Bold,,5123,12,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Regular,,,,a",
+		"The Girl Next Door,,a,3,6,a",
+		"The Nautigal,Bold,,4099,,a",
+		",Regular,,,,a",
+		"Theano Didot,,,7,14,",
+		"Theano Modern,,,,,",
+		"Theano Old Style,,,,,",
+		"The script of Zhangzhung Smar,,a,257,10,ex/tib/S12/Shangzhung-Smar.ttf",
+		"Tibetan Machine Uni,,a,259,,ex/tib/S12/TibetanMachineUni.ttf",
+		"TibetanYigchung,,TibetanSambhotaYigchung,256,,ex/tib/S12/SambhotaYigchung.ttf",
+		"TibetanTsugRing,,a,,,ex/tib/S12/SambhotaTsugRing.otf",
+		"Tienne,,a,1,15,",
+		",Black,,,14,a",
+		",Bold,,,15,",
+		",Heavy,,,,",
+		",Regular,,,14,a",
+		"Tillana,Bold,,513,6,",
+		",ExtraBold,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		"Timmana,Regular,a,0,12,a",
+		"Tinet,,a,1,6,",
+		"Tinos,,a,4127,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,a",
+		"Tiresias Infofont,,a,1,12,",
+		",Italic,TiresiasInfofontItalic,,,",
+		"Titan One,Regular,a,3,4,",
+		"Titillium,Black,,,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Bold Upright,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Light Upright,,,,",
+		",Regular,,,,",
+		",Regular Italic,,,,",
+		",Regular Upright,,,,",
+		",Semibold,,,,",
+		",Semibold Italic,,,,",
+		",Semibold Upright,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		",Thin Upright,,,,",
+		"Titillium Web,Black,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Tiza,Regular,a,1,4,",
+		"Tomorrow,Black,,4099,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Top Secret,Bold,,0,16,",
+		"Tourney,Black,,4099,4,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Trade Winds,Regular,a,1,,",
+		"Train One,,,16525,,a",
+		"TrashHand,,a,1,6,",
+		"Trendy University,,a,0,16,",
+		"Trickster,,,3,0,",
+		"Trirong,Black,,5123,14,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Trispace,Bold,,4099,12,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"Trocchi,Regular,a,3,15,",
+		",Bold,,0,,",
+		",Regular,,3,14,a",
+		"Trochut,,a,1,4,a",
+		",Bold,,,,a",
+		",Italic,,,,a",
+		"TroglodyteNF,Regular,a,,11,",
+		"Troika,,a,15,4,",
+		"Truculenta,Black,,4099,12,a",
+		",Bold,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",Thin,,,,a",
+		"True Crimes,Regular,a,0,11,",
+		"Trump Town Pro,,a,3,4,",
+		"Trykker,,,,14,",
+		"Tuffy,,a,15,12,",
+		",Bold,,,,",
+		",Bold-Italic,,,,",
+		",Italic,,,,",
+		"Tulia,Regular,a,1,15,",
+		",Bold,,,,",
+		",Italic,,,,",
+		"Tulpen One,Regular,,,4,",
+		"Turret Road,Bold,,3,,a",
+		",ExtraBold,,,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Twinkle Star,,,4099,6,a",
+		"TypeMyMusic,Notation,,0,3,",
+		"TypoSlabserif,Light,,1,15,",
+		"Ubuntu,Regular,a,15,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,a",
+		"Ubuntu-Title,Title,a,0,4,",
+		"Ubuntu Condensed,Regular,,15,12,",
+		"Ubuntu Mono,Bold,,,7,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Ubuntu Titling,Bold,,1,4,",
+		"Uchen,Regular,,257,14,a",
+		"UglyQua,,a,1,4,",
+		",Italic,,,,",
+		"Ultra,Regular,a,3,,",
+		",,,,14,a",
+		"Umbrage,,a,1,4,",
+		"UnB Office,,a,15,12,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,1,,",
+		"UnB Pro,Black,,3,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Light,,,,",
+		",Regular,,,,",
+		",Regular Italic,,,,",
+		"Uncial Antiqua,Regular,,,4,a",
+		"Underdog,,,11,,a",
+		"Underwood Champion,,a,1,17,",
+		"Unica One,,,3,4,a",
+		"UnifrakturCook,Bold,,1,,a",
+		"UnifrakturMaguntia,Book,a,3,0,",
+		",16 Book,UnifrakturMaguntia16,0,,",
+		",17 Book,UnifrakturMaguntia17,,,",
+		",18 Book,UnifrakturMaguntia18,,,",
+		",19 Book,UnifrakturMaguntia19,,,",
+		",20 Book,UnifrakturMaguntia20,,,",
+		",21 Book,UnifrakturMaguntia21,3,,",
+		"Unkempt,Bold,,1,4,a",
+		",Regular,,,,a",
+		"Unlock,,,,,a",
+		"Unna,Bold,,4099,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		"UpperEastSide,,a,1,11,",
+		"Urbanist,Black,,3,12,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",ExtraLight,,,,a",
+		",ExtraLight Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Thin,,,,a",
+		",Thin Italic,,,,a",
+		"Utility,BoldCondensed,UtilityBoldCondensed,0,4,",
+		"VAG-HandWritten,VAG-HandWritten,a,4,6,",
+		"VG5000,Regular,,16385,12,",
+		"VT323,,,4099,9,",
+		"VTC Letterer Pro,,a,0,2,",
+		"VTF Victorianna,Thin,VTFVictoriannaThin,1,15,",
+		",Thin Italic,VTF_VictoriannaThin_italic,,,",
+		"Vampiro One,Regular,,,13,",
+		"VanBerger,Stencil,,,16,",
+		"Vanilla,Regular,a,0,4,",
+		"Varela,,a,4099,12,",
+		"Varela Round,,a,1,,",
+		",,,4115,,a",
+		"Varta,Bold,,4099,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Vast Shadow,Regular,,1,4,",
+		"Veggieburger,,a,,,",
+		",Bold,,,,",
+		",Light,,,,",
+		"Vegur,Bold,,,12,",
+		",Light,,,,",
+		",Regular,,,,",
+		"Verily Serif Mono,Book,a,,14,",
+		"Versa,Versa,,3,4,",
+		"Vesper Libre,Bold,,513,14,",
+		",Heavy,,,,",
+		",Medium,,,,",
+		",Regular,,,,",
+		"Veteran Typewriter,,a,0,17,",
+		"Viaoda Libre,,,4107,4,a",
+		"Vibes,,,33,,a",
+		"Vibur,Medium,a,1,13,",
+		"Victor Mono,Bold,,4111,12,",
+		",Bold Italic,,,,",
+		",Bold Oblique,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",ExtraLight Oblique,,,,",
+		",Italic,,,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Light Oblique,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Medium Oblique,,,,",
+		",Oblique,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",SemiBold Oblique,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		",Thin Oblique,,,,",
+		"Vidaloka ,Regular,,1,4,",
+		"Viga,,,,12,",
+		"Virgo 01,,a,,4,",
+		"Vladivostok,Bold,,11,12,",
+		",Regular,,,,",
+		"Voces,,,3,4,a",
+		"Volkhov,Bold,,1,14,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		",Regular,,,,",
+		"Vollkorn,Black,,4111,,a",
+		",Black Italic,,,,a",
+		",Bold,,,,a",
+		",Bold Italic,,,,a",
+		",ExtraBold,,,,a",
+		",ExtraBold Italic,,,,a",
+		",Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		",Semibold,,,,",
+		",Semibold Italic,,,,",
+		"Vollkorn SC,Black,,4107,,a",
+		",Bold,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Voltaire,Regular,a,1,4,",
+		"Vujahday Script,,,4099,6,a",
+		"WC Mano Negra Bta,,a,1,,",
+		",Bold,,,,",
+		"WC ROUGHTRAD Bta,Regular,a,,4,",
+		"WC Rhesus,A Bta,WCRhesusABta,,3,",
+		",B Bta Italic,WCRhesusBBta,,,",
+		"WC Sold Out,A Bta,WCSoldOutABta,0,,",
+		",B Bta,WCSoldOutBBta,,,",
+		",C Bta,WCSoldOutCBta,7,,",
+		"WC Wunderbach,Bta DemiBold,WCWunderbachBta-DemiBold,1,16,",
+		",Mix Bta,WCWunderbachMixBta,,,",
+		",Rough Bta,WCWunderbachRoughBta,,,",
+		",Rounded,WCWunderbachRounded,,,",
+		"Wagnasty,Regular,a,0,6,",
+		"Waiting for the Sunrise,,a,3,,a",
+		"Walkway,Black,WalkwayBlack,1,12,",
+		",Bold,WalkwayBold,,,",
+		",Oblique,WalkwayOblique,,,",
+		",Oblique Black,WalkwayObliqueBlack,,,",
+		",Oblique Bold,WalkwayObliqueBold,,,",
+		",Oblique SemiBold,WalkwayObliqueSemiBold,,,",
+		",Oblique UltraBold,WalkwayObliqueUltraBold,,,",
+		",SemiBold,WalkwaySemiBold,,,",
+		",UltraBold,WalkwayUltraBold,,,",
+		"Walleye,Regular,a,15,14,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",Italic,,,,",
+		"Wallpoet,Regular,a,1,4,a",
+		"Walter Turncoat,,a,,13,",
+		",,,,6,a",
+		"Wangdi,Medium,,257,10,ex/tib/S12/Wangdi.ttf",
+		"Warnes,Regular,,1,4,a",
+		"Water Street,,a,0,,",
+		"Water Street Detour,,a,,,",
+		"Waterfall,,,4099,6,a",
+		"WebHostingHub-Glyphs,,a,0,3,",
+		"Web Serveroff,,a,11,12,",
+		",Italic,,,,",
+		"Web Symbols,Regular,,0,3,",
+		"Wellfleet,,,3,4,",
+		"Wendy One,,,1,12,a",
+		"White Rabbit,,a,0,,",
+		"Whitehall,,a,1,4,",
+		"WindSong,Medium,,4099,6,a",
+		",Regular,,,,a",
+		"Windsong,,a,1,13,",
+		"WinterthurCondensed,,a,,12,",
+		",Italic,WinterthurCondensedOblique,,,",
+		"Wire One,Regular,a,,,a",
+		"WoodenNickelBlack,,a,,11,",
+		"Work Sans,Black,,4099,12,",
+		",Black Italic,,,,",
+		",Bold,,,,",
+		",Bold Italic,,,,",
+		",ExtraBold,,,,",
+		",ExtraBold Italic,,,,",
+		",ExtraLight,,,,",
+		",ExtraLight Italic,,,,",
+		",Hairline,,3,,",
+		",Italic,,4099,,",
+		",Light,,,,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		",Thin,,,,",
+		",Thin Italic,,,,",
+		"XTashi,Regular,a,259,10,ex/tib/S12/XTashi.ttf",
+		"Xanh Mono,Italic,,4099,7,a",
+		",Regular,,,,a",
+		"Xenophone,,a,1,4,",
+		"Yaldevi,Bold,,,12,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Yanone Kaffeesatz,Bold,,4107,,a",
+		",ExtraLight,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		"Yantramanav,Black,,513,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		",Thin,,,,a",
+		"Yataghan,Regular,a,1,4,",
+		"Yatra One,,,513,,a",
+		"Yellow Magician,,a,1,,",
+		"Yellowtail,,a,3,6,",
+		",,,,,a",
+		"Yeon Sung,,,0,4,a",
+		"Yeseva One,,a,11,,",
+		",,,4107,,a",
+		"Yesteryear,,,3,6,a",
+		"Yew Basturd,Bold,YewBasturdBold,0,2,",
+		",BoldItalic,YewBasturdBoldItalic,,,",
+		",Italic,YewBasturdItalic,,,",
+		",Normal,YewBasturdNormal,,,",
+		"Yokawerad,Regular,a,11,14,",
+		"Yomogi,,,4239,6,a",
+		"YoungSerif,,,3,14,",
+		"Yrsa,Bold,,4099,,a",
+		",Bold Italic,,,,a",
+		",Italic,,,,a",
+		",Light,,,,a",
+		",Light Italic,,,,a",
+		",Medium,,,,a",
+		",Medium Italic,,,,a",
+		",Regular,,,,a",
+		",SemiBold,,,,a",
+		",SemiBold Italic,,,,a",
+		"Yuji Boku,Regular,,16525,,a",
+		"Yuji Hentaigana Akari,,,1,6,a",
+		"Yuji Hentaigana Akebono,,,,,a",
+		"Yuji Mai,,,16525,14,a",
+		"Yuji Syuku,,,,,a",
+		"Yukarimobile,,a,1,4,",
+		"Yusei Magic,,,129,12,a",
+		"ZCOOL KuaiLe,,,128,4,a",
+		"ZCOOL QingKe HuangYou,,,,,a",
+		"ZCOOL XiaoWei,,,,14,a",
+		"Zambajoun,,a,0,8,",
+		"Zantroke,,a,11,15,",
+		"Zen Antique,,,141,14,a",
+		"Zen Antique Soft,,,,,a",
+		"Zen Dots,,,1,4,a",
+		"Zen Kaku Gothic Antique,Black,,137,12,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Zen Kaku Gothic New,Black,,,,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Zen Kurenaido,,,141,,a",
+		"Zen Loop,Italic,,1,4,a",
+		",Regular,,,,a",
+		"Zen Maru Gothic,Black,,141,12,a",
+		",Bold,,,,a",
+		",Light,,,,a",
+		",Medium,,,,a",
+		",Regular,,,,a",
+		"Zen Old Mincho,Black,,,14,a",
+		",Bold,,,,a",
+		",Regular,,,,a",
+		"Zen Tokyo Zoo,,,1,4,a",
+		"Zenda,,a,0,0,",
+		"Zero & Zero Is,,Zero&Zero-Is,,4,",
+		"Zeyada,,a,3,6,a",
+		"Zhi Mang Xing,,,128,,a",
+		"Zilla Slab,Bold,,3,15,",
+		",Bold Italic,,,,",
+		",Italic,,,14,a",
+		",Light,,,15,",
+		",Light Italic,,,,",
+		",Medium,,,,",
+		",Medium Italic,,,,",
+		",Regular,,,14,a",
+		",Regular Italic,,,15,",
+		",SemiBold,,,,",
+		",SemiBold Italic,,,,",
+		"Zilla Slab Highlight,Bold,,,,",
+		",Regular,,,,",
+		"Zilla Slab,,ZillaSlabRegular,,,",
+		"Znikomit,,a,11,14,",
+		"ZnikomitNo24,,a,,4,",
+		"exotica,Medium,,0,,",
+		"Heydings Controls,Regular,font3933,,3,",
+		"iA Writer Duospace,Bold,,4099,12,",
+		",BoldItalic,,,,",
+		",Regular,,,,",
+		",RegularItalic,,,,",
+		"itsadzoke,Regular,a,3,4,",
+		",S01,itsadzokeS01,,,",
+		"kawoszeh,Medium,a,,14,",
+		"konstytucyja,,a,,13,",
+		"mirror 82,Regular,a,9,12,",
+		"M+ 1c,black,mplus-1c-black,128,,",
+		",bold,mplus-1c-bold,,,",
+		",heavy,mplus-1c-heavy,,,",
+		",light,mplus-1c-light,,,",
+		",medium,mplus-1c-medium,,,",
+		",regular,mplus-1c-regular,,,",
+		",thin,mplus-1c-thin,,,",
+		"M+ 1m,bold,mplus-1m-bold,,7,",
+		",light,mplus-1m-light,,,",
+		",medium,mplus-1m-medium,,,",
+		",regular,mplus-1m-regular,,,",
+		",thin,mplus-1m-thin,,,",
+		"odstemplik,Regular,a,3,13,",
+		",Bold,odstemplikBold,,,",
+		"okolaks,,okolaksBold,11,14,",
+		",BoldItalic,okolaksBoldItalic,,,",
+		",Regular,okolaksRegular,,,",
+		",RegularItalic,okolaksRegularItalic,,,",
+		"saxMono,Regular,a,3,7,",
+		"spinwerad,Bold,spinweradBold,,14,",
+		"spinweradC,,spinweradCBold,,,"
+	]
+};
 
 Promise.all(Object.keys(BINDB).map(async key => {
 	let res = await window.fetch(BINDB[key], { responseType: "arrayBuffer" });

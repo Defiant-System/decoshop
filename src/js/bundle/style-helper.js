@@ -1036,7 +1036,7 @@ je.ao2 = function(l) {
 	je.MZ = 1;
 
 	function d() {
-		fetch("code/ext/fribidi.wasm").then(function(G) {
+		fetch("~/wasm/fribidi.wasm").then(function(G) {
 			return G.arrayBuffer()
 		}).then(function(G) {
 			return WebAssembly.instantiate(G)
@@ -1079,7 +1079,7 @@ je.ao2 = function(l) {
 			l.dispatch(M)
 		})
 	}
-	Typr.U.initHB("code/ext/hb.wasm", d);
+	Typr.U.initHB("~/wasm/hb.wasm", d);
 	return !1
 };
 

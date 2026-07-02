@@ -19,9 +19,10 @@
 		// console.log( event );
 		switch (event.type) {
 			case "load-sample":
-				event.names.map(async name => {
+				event.names.map(async url => {
 					// forward event to app
-					let file = await Self.openLocal(`/cdn/img/2d-samples/${name}`);
+					let file = await Self.openLocal(url);
+					// let file = await Self.openLocal(url`/cdn/img/2d-samples/${name}`);
 					Self.dispatch({ type: "prepare-file", isSample: true, file });
 				});
 				break;
