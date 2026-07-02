@@ -2073,7 +2073,8 @@ PhotopeaApp.prototype.Sh = function(l) {
 		for (var b in this.d.map)
 			if (this.d.map[b].x5) this.d.map[b].x5.BM(d, l);
 	if (l == PsdResourceTypes.jz) {
-		if (G != f.zl) this.d.map[f.zl].G.BM(d, l);
+		var typeTool = this.d.map[f.zl];
+		if (G != f.zl && typeTool) typeTool.G.BM(d, l);
 		this.awP()
 	}
 	this.gD.BM(d, l);

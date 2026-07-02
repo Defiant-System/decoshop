@@ -44,6 +44,11 @@ class File {
 				break;
 			case "file.blur":
 				break;
+
+			// file doc properties
+			case "toggle-layer-visibility":
+				console.log(event);
+				break;
 		}
 	}
 

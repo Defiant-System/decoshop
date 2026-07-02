@@ -243,8 +243,15 @@ const Panels = {
 					gEl = el.parents(".group");
 					// toggle visibility
 					if (el.hasClass("icon-eye-on")) {
-						if (rEl.index() === 0) gEl.toggleClass("hidden", el.hasClass("icon-eye-off"));
+						if (rEl.index() === 0) {
+							gEl.toggleClass("hidden", el.hasClass("icon-eye-off"));
+						}
 						el.toggleClass("icon-eye-off", el.hasClass("icon-eye-off"));
+						APP.file.dispatch({
+							type: "toggle-layer-visibility",
+							id: el.parents(".layer-row-body").data("id"),
+							value: !el.hasClass("icon-eye-off"),
+						});
 
 						if (el.parent().hasClass("fx-header")) {
 							let fxList = el.parents(".fx-list");
