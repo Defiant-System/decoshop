@@ -54,20 +54,28 @@ class File {
 				PP.update(true);
 				break;
 			case "toggle-fx-master-visibility":
-				this.layers[event.id].add.lmfx.masterFXSwitch.v = event.value;
+				this.layers[event.id].add
+					.lmfx.masterFXSwitch.v = event.value;
 				this.layers[event.id].hD.q6 = true;
 				this.doc.U();
 				this.doc.i_ = true;
 				PP.update(true);
 				break;
 			case "toggle-fx-visibility":
-				this.layers[event.id].add
-					.lmfx[LayerStyleConstants.effectMultiKeys[event.typeIndex]]
-					.v[event.instanceIndex].v.enab.v = event.value;
-				this.layers[event.id].hD.q6 = true;
-				this.doc.U();
-				this.doc.i_ = true;
-				PP.update(true);
+				// this.layers[event.id].add
+				// 	.lmfx[LayerStyleConstants.effectMultiKeys[event.typeIndex]]
+				// 	.v[event.instanceIndex].v.enab.v = event.value;
+				// this.layers[event.id].hD.q6 = true;
+				// this.doc.U();
+				// this.doc.i_ = true;
+				// PP.update(true);
+
+				var action = new Action(ActionTypes.E.v, true);
+				action.G = CanvasTools.yS;
+				action.data = { a: LayerRecord.M0, j: event.layerIndex };
+				PP.dispatch(action);
+
+				console.log( this.doc );
 				break;
 		}
 	}
