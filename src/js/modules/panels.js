@@ -180,7 +180,31 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "init-panel": break;
+				case "init-panel":
+					Self.root = APP.els.content.find(`.history-wrapper`);
+					break;
+				case "history-changed":
+					let str = event.doc.history.map((state, index) => {
+							let name = languageManager.get(state.name),
+								skip = state.skipInHistoryPanel,
+								xStr = `<i id="${state.aod}" icon="icon-folder-open" name="${name}" index="${index}" skip="${index}"/>`;
+							// add file history as xml
+							APP.file.addHistory($.nodeFromString(xStr));
+						})
+					// render 
+					window.render({
+						data: APP.file.xHistory,
+						template: "history-list",
+						match: "//History",
+						target: Self.root,
+					}).then((el) => {
+						el.find(".item:last").addClass("active");
+					});
+					break;
+				case "select-history-item":
+					console.log(event);
+					console.log(APP.file);
+					break;
 			}
 		}
 	},

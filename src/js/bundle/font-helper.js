@@ -180,7 +180,8 @@ FontHelper.prototype.apM = function() {
 	var l = this.Ws,
 		d = l[0],
 		G = l.length - 1;
-	alert("Font" + " " + d + (G == 0 ? "" : ", ... (" + G + ")") + " " + "loaded" + ".", 1500);
+	// hbi
+	// alert("Font" + " " + d + (G == 0 ? "" : ", ... (" + G + ")") + " " + "loaded" + ".", 1500);
 	this.Ws = []
 };
 

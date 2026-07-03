@@ -22,6 +22,7 @@ let {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	HistoryState,
 	PixelUtil,
 	Point2D,
 	Rect,
@@ -29,6 +30,8 @@ let {
 	languageManager,
 	Misc,
 } = await window.fetch("~/js/bundle.js");
+
+// DocActions.HistoryState = HistoryState;
 
 
 const DefaultSettings = {

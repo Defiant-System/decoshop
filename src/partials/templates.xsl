@@ -87,6 +87,27 @@
 </xsl:template>
 
 
+<xsl:template name="history-list">
+	<div>
+		<xsl:for-each select="./*">
+			<xsl:call-template name="history-list-row"/>
+		</xsl:for-each>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="history-list-row">
+	<div class="item">
+		<i>
+			<xsl:attribute name="class">icon 
+				<xsl:value-of select="@icon"/>
+			</xsl:attribute>
+		</i>
+		<span><xsl:value-of select="@name"/></span>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="layers-list">
 	<div class="box-content-list" data-click="select-layer">
 		<xsl:for-each select="./*">

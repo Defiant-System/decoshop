@@ -95,6 +95,7 @@ module.exports = {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	HistoryState,
 	PixelUtil,
 	Point2D,
 	Rect,

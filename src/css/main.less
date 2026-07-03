@@ -2106,7 +2106,7 @@ content {
 									height: 25px;
 									border-bottom: 1px solid #1227;
 
-									&.selected {
+									&.active {
 										background: #abb1;
 
 										.icon:after { opacity: .75; }
@@ -4039,6 +4039,74 @@ content {
 							}
 
 							&[data-size="2"] {
+								--multiplier: 1.5;
+
+								.row {
+									.layer-row-body {
+										.name {
+											padding-top: 16px;
+										}
+
+										.icon-mask-link {
+											top: 23px;
+										}
+
+										.icon-eye-off,
+										.icon-eye-on { top: 9px; }
+									}
+
+									.fx-applied {
+										height: 48px;
+									}
+
+									&:first-child {
+										.icon-folder {
+											top: 8px;
+										}
+									}
+
+									&[data-layer="text"] {
+										.thumbnail:before {
+											background-size: 23px auto;
+										}
+									}
+
+									// &:before { top: 0; height: 64px; }
+								}
+
+								.group {
+									&.expanded {
+										> div:not(:first-child) {
+											height: 49px;
+										}
+
+										> .row {
+											&:after { top: 17px; }
+
+											&[data-layer="text"] {
+												height: 49px;
+											}
+										}
+
+										> .row:first-child {
+											&:before { top: 30px; height: 19px; }
+											// &:after { top: 25px; }
+										}
+									}
+
+									> .row:first-child {
+										// &:before { top: 38px; height: 27px; }
+										&:after { top: 17px; }
+									}
+
+									> div:last-child {
+										&:before { height: 24px; }
+										&:after { top: 20px; }
+									}
+								}
+							}
+
+							&[data-size="3"] {
 								--multiplier: 2;
 
 								.row {
@@ -4065,6 +4133,12 @@ content {
 										}
 									}
 
+									&[data-layer="text"] {
+										.thumbnail:before {
+											background-size: 26px auto;
+										}
+									}
+
 									// &:before { top: 0; height: 64px; }
 								}
 
@@ -4079,10 +4153,6 @@ content {
 
 											&[data-layer="text"] {
 												height: 65px;
-												
-												.thumbnail:before {
-													background: 26px auto;
-												}
 											}
 										}
 

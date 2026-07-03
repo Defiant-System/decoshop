@@ -966,6 +966,10 @@ PsdDocument.prototype.pushHistoryState = function(l) {
 			break
 		}
 	}
+	// event: canvas added
+	var event = new Action(ActionTypes.E.hbi, !0);
+	event.data = { type: "history-changed", doc: this };
+	PP.dispatch(event);
 };
 // Current head state (only valid when at tip); used when building next state
 

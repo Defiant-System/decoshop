@@ -254,6 +254,10 @@ function PhotopeaApp() {
 		this.d.L7[A] = 0
 	}
 
+	for (var A = 0; A < this.d.Y9.length; A++) {
+		this.d.map[this.d.Y9[A].G.id] = this.d.Y9[A];
+	}
+
 	this.fB = {
 		av3: !1,
 		QN: null,
@@ -656,8 +660,9 @@ PhotopeaApp.prototype.refresh = function() {
 	if (r) r.textContent = "Sponsor links open in new window.";
 	this.dx.refresh();
 	this.gD.refresh();
-	for (var T in this.d.map)
+	for (var T in this.d.map) {
 		if (this.d.map[T].x5) this.d.map[T].x5.refresh()
+	}
 };
 
 PhotopeaApp.prototype.QG = function() {
@@ -688,23 +693,6 @@ PhotopeaApp.prototype.resize = function(l, d) {
 		else l -= I == 1 ? 180 : 320
 	}
 	BaseAppUI.prototype.resize.call(this, l, d);
-	if (y && this.U3) {
-		this.U3 = !1
-	}
-	if (!y && !this.U3) {
-		var e = function(r) {
-			// if (Math.random() < .002) {
-			// 	premiumSession.event("gota_1")
-			// }
-			this.aob(l, d);
-			var T = I == 0 ? V.body : this.e;
-		}.bind(this);
-
-		this.U3 = !0
-
-		// edited by hbi
-		e(1);
-	}
 	this.gD.resize(PP.window.innerWidth, PP.window.innerHeight);
 };
 
@@ -816,11 +804,15 @@ PhotopeaApp.prototype.TA = function(l) {
 		V = this.fB.QN,
 		Q = l.G;
 	if (Q == f.zl && V == f.zk) Q = f.zk;
-	if (V != Q && b.map[V].G.in() && !G && !(V == f.MU && Q == f.WH)) {
+	if (V != Q && b.map[V] && b.map[V].G.in() && !G && !(V == f.MU && Q == f.WH)) {
 		b.map[V].G.disable(d, this, this.fB, this.Ib)
 	}
-	var t = this.d.map[Q].G;
-	t.TA(l.data, this, d, this.Ib, this.fB);
+	var entry = this.d.map[Q];
+	if (!entry) {
+		console.warn("PhotopeaApp.TA: tool not registered:", Q, l.data);
+		return
+	}
+	entry.G.TA(l.data, this, d, this.Ib, this.fB);
 };
 
 PhotopeaApp.prototype.ah4 = function(l) {

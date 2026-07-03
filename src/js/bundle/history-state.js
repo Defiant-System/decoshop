@@ -5,5 +5,5 @@ function HistoryState(l, d, G) {
 	this.G = d;      // handler object (implements applyUndo / applyRedo)
 	this.skipInHistoryPanel = G;     // if true, step is not shown in History panel and not counted toward history limit
 	this.data = null; // state payload passed to applyUndo/applyRedo
-	this.aod = Date.now()
+	this.aod = Date.now();
 }

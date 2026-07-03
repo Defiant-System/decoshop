@@ -22,6 +22,10 @@ const Engine = {
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
 				break;
+			// proxy event to history panel
+			case "history-changed":
+				Panels.history.dispatch(event.data);
+				break;
 			
 			default:
 				// console.log(1111, event);

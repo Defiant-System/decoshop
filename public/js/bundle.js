@@ -21169,6 +21169,8 @@ FontHelper.prototype.apM = function() {
 		d = l[0],
 		G = l.length - 1;
 	alert("Font" + " " + d + (G == 0 ? "" : ", ... (" + G + ")") + " " + "loaded" + ".", 1500);
+	// hbi
+	// alert("Font" + " " + d + (G == 0 ? "" : ", ... (" + G + ")") + " " + "loaded" + ".", 1500);
 	this.Ws = [];
 };
 
@@ -70419,6 +70421,10 @@ PsdDocument.prototype.pushHistoryState = function(l) {
 			break
 		}
 	}
+	// event: canvas added
+	var event = new Action(ActionTypes.E.hbi, !0);
+	event.data = { type: "history-changed", doc: this };
+	PP.dispatch(event);
 };
 // Current head state (only valid when at tip); used when building next state
 
@@ -110035,8 +110041,75 @@ NamedTabPanel.Js = function (l, d, G) {
 	WebGLContext.ShaderProgram.call(this);
 	var _local4298 = d != 0,
 		_local4297 = G ? "true" : "in01(sCoord)",
-		_local4296 = "\t\t\tprecision mediump float;\t\t\t\t\t\tuniform sampler2D source;\t\t\tuniform sampler2D target;\t\t\t" + (l ? "uniform sampler2D lut;  uniform float N;  " + WebGLContext.Li.z7 : "") + "\t\t\tuniform vec3 contSizeZoom;\t\t\tuniform vec2 cnvSize;\t\t\tuniform mat4 ctrn; \t\t\t" + (_local4298 ? "uniform vec4 bgClr;  uniform vec4 ars[" + d + "]; " : "") + "\t\t\t\t\t\tvarying vec2 tCoord;\t\t\tvarying vec2 sCoord;\t\t\tvarying vec2 gCoord;\t\t\t\t\t\t/* This approximates the error function, needed for the gaussian integral */ \t\t\tvec4 erf(vec4 x) { \t\t\t  vec4 s = sign(x), a = abs(x);\t\t\t  x = 1.0 + (0.278393 + (0.230389 + 0.078108 * (a * a)) * a) * a;\t\t\t  x *= x;  \t\t\t  return s - s / (x * x); \t\t\t} \t\t\t/* Return the mask for the shadow of a box from lower to upper */  \t\t\tfloat boxShadow(vec2 lower, vec2 upper, vec2 point, float sigma) { \t\t\t  vec4 query = vec4(point - lower, point-upper); \t\t\t  vec4 integral = 0.5 + 0.5 * erf(query * (sqrt(0.5) / sigma)); \t\t\t  return (integral.z - integral.x) * (integral.w - integral.y); \t\t\t} \t\t\t\t\t\tvec4 simpleBlend(vec4 src, vec4 tgt) {\t\t\t\tfloat na = src.w + tgt.w*(1.0-src.w);\t\t\t\t/* avoid division by zero */ \t\t\t\treturn na==0.0 ? vec4(0,0,0,0) : vec4( (src.xyz*src.w + tgt.w*tgt.xyz*(1.0-src.w))*(1.0/na), na);\t\t\t} \t\t\t\t\t\t" + WebGLContext.Li.Qy + "\t\t\t\t\t\tvoid main(void) {\t\t\t\tvec4 src = texture2D(source, tCoord); \t\t\t\tvec4 tgt = texture2D(target, sCoord" + (G ? "-floor(sCoord)" : "") + "); \t\t\t\t" + (l ? "tgt.rgb = mapLut(tgt, lut, N).rgb; " : "") + "\t\t\t\ttgt = ctrn * tgt; " + (_local4298 ? "\t\t\t\t\tbool inr = false; vec4 BG = bgClr; \t\t\t\t\tfor(int i=0; i<" + d + "; i++) { \t\t\t\t\t\tvec4 ar = ars[i]; \t\t\t\t\t\tvec2 nsc = sCoord - ar.xy; \t\t\t\t\t\tif( ar.z!=0.0 && in01(nsc/ar.zw) ){\t\t\t\t\t\tinr=true; BG=mod(floor(gCoord.x) + floor(gCoord.y), 2.0)==1.0 ? vec4(0.784,0.784,0.784,1) : vec4(1,1,1,1); }\t\t\t\t\t}\t\t\t\t" : "\t\t\t\t\tfloat shdw = 0.3*boxShadow(vec2(0,0),contSizeZoom.xy, sCoord*contSizeZoom.xy+vec2(0.0,-6.0*contSizeZoom.z) , 10.0*contSizeZoom.z);\t\t\t\t\tvec4 grid = mod(floor(gCoord.x) + floor(gCoord.y), 2.0)==1.0 ? vec4(0.784,0.784,0.784,1) : vec4(1,1,1,1);\t\t\t\t\tvec4 BG = " + _local4297 + " ? grid : vec4(0.0,0.0,0.0,shdw); \t\t\t\t") + "\t\t\t\tvec4 outc = " + _local4297 + " ?  simpleBlend(tgt,BG) :  BG ;  \t\t\t\tif(src.b == 0.0 && src.a >0.5) gl_FragColor = mix(outc, vec4(vec3(1,1,1)-outc.rgb,1.0), src.w); \t\t\t\telse             gl_FragColor = simpleBlend(src,outc); \t\t\t\t\t\t\t}",
-		_local4299 = "\t\t\tattribute vec2 verPos;\t\t\tvarying vec2 tCoord;\t\t\tvarying vec2 sCoord;\t\t\tvarying vec2 gCoord;\t\t\t\t\t\tuniform mat3 tmat;\t\t\tuniform vec4 gsize;\t\t\tvoid main(void) {\t\t\t\ttCoord = verPos;\t\t\t\tsCoord = (tmat*vec3(verPos,1.0)).xy;\t\t\t\tgCoord = (verPos-gsize.zw) * gsize.xy ; \t\t\t\tgl_Position = vec4(vec2(-1.0, 1.0) + 2.0*vec2(verPos.x,-verPos.y), 0.0, 1.0);\t\t\t}";
+		_local4296 = `
+			precision mediump float;
+			uniform sampler2D source;
+			uniform sampler2D target;
+			${l ? "uniform sampler2D lut;  uniform float N;  " + WebGLContext.Li.z7 : ""}
+			uniform vec3 contSizeZoom;
+			uniform vec2 cnvSize;
+			uniform mat4 ctrn;
+			${_local4298 ? "uniform vec4 bgClr;  uniform vec4 ars[" + d + "]; " : ""}
+			varying vec2 tCoord;
+			varying vec2 sCoord;
+			varying vec2 gCoord;
+			/* This approximates the error function, needed for the gaussian integral */
+			vec4 erf(vec4 x) {
+				vec4 s = sign(x), a = abs(x);
+				x = 1.0 + (0.278393 + (0.230389 + 0.078108 * (a * a)) * a) * a;
+				x *= x;
+				return s - s / (x * x);
+			}
+			/* Return the mask for the shadow of a box from lower to upper */
+			float boxShadow(vec2 lower, vec2 upper, vec2 point, float sigma) {
+				vec4 query = vec4(point - lower, point-upper);
+				vec4 integral = 0.5 + 0.5 * erf(query * (sqrt(0.5) / sigma));
+				return (integral.z - integral.x) * (integral.w - integral.y);
+			}
+			vec4 simpleBlend(vec4 src, vec4 tgt) {
+				float na = src.w + tgt.w*(1.0-src.w);
+				/* avoid division by zero */
+				return na==0.0 ? vec4(0,0,0,0) : vec4( (src.xyz*src.w + tgt.w*tgt.xyz*(1.0-src.w))*(1.0/na), na);
+			}
+			${WebGLContext.Li.Qy}
+			void main(void) {
+				vec4 src = texture2D(source, tCoord);
+				vec4 tgt = texture2D(target, sCoord${G ? "-floor(sCoord)" : ""});
+				${l ? "tgt.rgb = mapLut(tgt, lut, N).rgb; " : ""}
+				tgt = ctrn * tgt;
+				${_local4298 ? `
+					bool inr = false; vec4 BG = bgClr;
+					for(int i=0; i<${d}; i++) {
+						vec4 ar = ars[i];
+						vec2 nsc = sCoord - ar.xy;
+						if( ar.z!=0.0 && in01(nsc/ar.zw) ){
+							inr=true; BG=mod(floor(gCoord.x) + floor(gCoord.y), 2.0)==1.0 ? vec4(0.784,0.784,0.784,1) : vec4(1,1,1,1);
+						}
+					}
+				` : `
+					float shdw = 0.3*boxShadow(vec2(0,0),contSizeZoom.xy, sCoord*contSizeZoom.xy+vec2(0.0,-6.0*contSizeZoom.z) , 10.0*contSizeZoom.z);
+					vec4 grid = mod(floor(gCoord.x) + floor(gCoord.y), 2.0)==1.0 ? vec4(0.62,0.67,0.67,1) : vec4(0.85,0.9,0.9,1);
+					vec4 BG = ${_local4297} ? grid : vec4(0.0,0.0,0.0,shdw);
+				`}
+				vec4 outc = ${_local4297} ?  simpleBlend(tgt,BG) :  BG ;
+				if(src.b == 0.0 && src.a >0.5) gl_FragColor = mix(outc, vec4(vec3(1,1,1)-outc.rgb,1.0), src.w);
+				else             gl_FragColor = simpleBlend(src,outc);
+			}
+		`,
+		_local4299 = `
+			attribute vec2 verPos;
+			varying vec2 tCoord;
+			varying vec2 sCoord;
+			varying vec2 gCoord;
+			uniform mat3 tmat;
+			uniform vec4 gsize;
+			void main(void) {
+				tCoord = verPos;
+				sCoord = (tmat*vec3(verPos,1.0)).xy;
+				gCoord = (verPos-gsize.zw) * gsize.xy ;
+				gl_Position = vec4(vec2(-1.0, 1.0) + 2.0*vec2(verPos.x,-verPos.y), 0.0, 1.0);
+			}
+		`;
 	this.compileProgram(_local4296, _local4299);
 };
 
@@ -113504,6 +113577,10 @@ function PhotopeaApp() {
 		this.d.L7[A] = 0;
 	}
 
+	for (var A = 0; A < this.d.Y9.length; A++) {
+		this.d.map[this.d.Y9[A].G.id] = this.d.Y9[A];
+	}
+
 	this.fB = {
 		av3: !1,
 		QN: null,
@@ -113906,8 +113983,9 @@ PhotopeaApp.prototype.refresh = function() {
 	if (r) r.textContent = "Sponsor links open in new window.";
 	this.dx.refresh();
 	this.gD.refresh();
-	for (var T in this.d.map)
+	for (var T in this.d.map) {
 		if (this.d.map[T].x5) this.d.map[T].x5.refresh();
+	}
 };
 
 PhotopeaApp.prototype.QG = function() {
@@ -113938,23 +114016,6 @@ PhotopeaApp.prototype.resize = function(l, d) {
 		else l -= I == 1 ? 180 : 320;
 	}
 	BaseAppUI.prototype.resize.call(this, l, d);
-	if (y && this.U3) {
-		this.U3 = !1;
-	}
-	if (!y && !this.U3) {
-		var e = function(r) {
-			// if (Math.random() < .002) {
-			// 	premiumSession.event("gota_1")
-			// }
-			this.aob(l, d);
-			var T = I == 0 ? V.body : this.e;
-		}.bind(this);
-
-		this.U3 = !0;
-
-		// edited by hbi
-		e(1);
-	}
 	this.gD.resize(PP.window.innerWidth, PP.window.innerHeight);
 };
 
@@ -114066,11 +114127,15 @@ PhotopeaApp.prototype.TA = function(l) {
 		V = this.fB.QN,
 		Q = l.G;
 	if (Q == f.zl && V == f.zk) Q = f.zk;
-	if (V != Q && b.map[V].G.in() && !G && !(V == f.MU && Q == f.WH)) {
+	if (V != Q && b.map[V] && b.map[V].G.in() && !G && !(V == f.MU && Q == f.WH)) {
 		b.map[V].G.disable(d, this, this.fB, this.Ib);
 	}
-	var t = this.d.map[Q].G;
-	t.TA(l.data, this, d, this.Ib, this.fB);
+	var entry = this.d.map[Q];
+	if (!entry) {
+		console.warn("PhotopeaApp.TA: tool not registered:", Q, l.data);
+		return
+	}
+	entry.G.TA(l.data, this, d, this.Ib, this.fB);
 };
 
 PhotopeaApp.prototype.ah4 = function(l) {
@@ -116375,6 +116440,7 @@ module.exports = {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	HistoryState,
 	PixelUtil,
 	Point2D,
 	Rect,

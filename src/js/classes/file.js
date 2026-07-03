@@ -6,6 +6,7 @@ class File {
 		this.id = fsFile.id;
 		this.layers = {};
 		this.xNode = $.nodeFromString(`<i id="${this.id}" name="${this.base}" />`);
+		this.xHistory = $.xmlFromString(`<History/>`).documentElement;
 
 		fsFile.blob.arrayBuffer().then(buffer => {
 			// last param "null" - optional completion callback
@@ -33,9 +34,15 @@ class File {
 		return this._file.base;
 	}
 
+	addHistory(xNode) {
+		if (this.xHistory.selectSingleNode(`./*[@id="${xNode.getAttribute("id")}"]`)) return;
+		this.xHistory.insertBefore(xNode, this.xHistory.firstChild);
+	}
+
 	dispatch(event) {
 		let APP = decoshop,
 			Self = this,
+			action,
 			el;
 		//console.log(event);
 		switch (event.type) {
@@ -47,35 +54,29 @@ class File {
 
 			// file doc properties
 			case "toggle-layer-visibility":
-				// return console.log(event);
-				this.layers[event.id].Oj(event.value);
-				this.doc.U();
-				this.doc.bV = true;
+				action = new Action(ActionTypes.E.v, true);
+				action.G = CanvasTools.yS;
+				action.data = { a: LayerRecord.mH, j: this.layers[event.id].index };
+				PP.dispatch(action);
 				PP.update(true);
 				break;
 			case "toggle-fx-master-visibility":
-				this.layers[event.id].add
-					.lmfx.masterFXSwitch.v = event.value;
-				this.layers[event.id].hD.q6 = true;
-				this.doc.U();
-				this.doc.i_ = true;
+				action = new Action(ActionTypes.E.v, true);
+				action.G = CanvasTools.yS;
+				action.data = { a: LayerRecord.M0, j: this.layers[event.id].index };
+				PP.dispatch(action);
 				PP.update(true);
 				break;
 			case "toggle-fx-visibility":
-				// this.layers[event.id].add
-				// 	.lmfx[LayerStyleConstants.effectMultiKeys[event.typeIndex]]
-				// 	.v[event.instanceIndex].v.enab.v = event.value;
-				// this.layers[event.id].hD.q6 = true;
-				// this.doc.U();
-				// this.doc.i_ = true;
-				// PP.update(true);
-
-				var action = new Action(ActionTypes.E.v, true);
+				action = new Action(ActionTypes.E.v, true);
 				action.G = CanvasTools.yS;
-				action.data = { a: LayerRecord.M0, j: event.layerIndex };
+				action.data = {
+					a: LayerRecord.f0,
+					j: this.layers[event.id].index,
+					index: [event.typeIndex, event.instanceIndex],
+				};
 				PP.dispatch(action);
-
-				console.log( this.doc );
+				PP.update(true);
 				break;
 		}
 	}
@@ -128,8 +129,6 @@ class File {
 
 			// save index of layer
 			layer.index = this.doc.B.indexOf(layer);
-
-			if (id == 4) console.log(layer);
 
 			if (hasCanvases && layer.at == null) {
 				layer.at = Misc.createCanvas({ width, height });
