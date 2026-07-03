@@ -30499,21 +30499,25 @@ PixelUtil.isSimpleFlatImage = function(l, d, G) {
 	return true
 };
 
-PixelUtil.fillCheckerboard = function(l, d, G, b, V, Q) {
+PixelUtil.fillCheckerboard = function(l, d, G, a, V, Q) {
 	if (V == null) V = Q = 0;
-	b = Math.log(b) / Math.log(2);
-	b = Math.round(b);
+	a = Math.log(a) / Math.log(2);
+	a = Math.round(a);
 	for (var A = 0; A < G; A++)
 		for (var t = 0; t < d; t++) {
 			var I = A * d + t << 2,
-				y = PixelUtil.checkerboardSample(A + Q, t + V, b);
-			l[I] = l[I + 1] = l[I + 2] = y;
-			l[I + 3] = 255;
+				c = PixelUtil.checkerboardSample(A + Q, t + V, a);
+			l[I] = c.r;
+			l[I+1] = c.g;
+			l[I+2] = c.b;
+			l[I+3] = 255;
 		}
 };
 
-PixelUtil.checkerboardSample = function(A, l, d) {
-	return 255 - ((A >>> d) + (l >>> d) & 1) * 51
+PixelUtil.checkerboardSample = function(row, col, log2CellSize) {
+	return ((row >>> log2CellSize) + (col >>> log2CellSize) & 1)
+		? { r: 150, g: 170, b: 170 }
+		: { r: 210, g: 230, b: 230 };
 };
 
 PixelUtil.intToRgb = function(l) {
@@ -46177,18 +46181,18 @@ PixelUtil.e2.ho = function(l, d, G, b, V, Q, t, I, y) {
 				F = k * 4,
 				D = ~~(b.x + Y * J),
 				q = ~~(b.y + A * n),
-				H = PixelUtil.checkerboardSample(A, Y, 2);
+				c = PixelUtil.checkerboardSample(A, Y, 2);
 			if (D < r || D >= T || q < j || q >= g || y) {
-				R[F] = H;
-				R[F + 1] = H;
-				R[F + 2] = H;
+				R[F] = c.r;
+				R[F + 1] = c.g;
+				R[F + 2] = c.b;
 				R[F + 3] = 255;
 			} else {
 				var W = (q - Q.y) * Q.m + (D - Q.x) << 2,
 					Z = V[W + 3] * (1 / 255);
-				R[F] = V[W + 0] * Z + H * (1 - Z);
-				R[F + 1] = V[W + 1] * Z + H * (1 - Z);
-				R[F + 2] = V[W + 2] * Z + H * (1 - Z);
+				R[F] = V[W + 0] * Z + c.r * (1 - Z);
+				R[F + 1] = V[W + 1] * Z + c.g * (1 - Z);
+				R[F + 2] = V[W + 2] * Z + c.b * (1 - Z);
 				R[F + 3] = 255;
 			}
 		}

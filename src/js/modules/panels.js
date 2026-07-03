@@ -225,8 +225,9 @@ const Panels = {
 				case "refresh-thumbnails":
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
 						let ctx = cvs.getContext("2d"),
-							lId = cvs.parentNode.parentNode.getAttribute("data-id");
-						if (!lId) return;
+							pEl = cvs.parentNode.parentNode,
+							lId = pEl.getAttribute("data-id");
+						if (!lId || pEl.parentNode.getAttribute("data-layer") === "text") return;
 						// copy contents of canvas in memory
 						let layer = APP.file.getlayerImageData(lId);
 						cvs.width = layer.at.cvs[0].width;

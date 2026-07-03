@@ -67,7 +67,6 @@ class File {
 
 	walkLayers(layerTreeNode, depth=0, x) {
 		let Settings = decoshop.Settings.pp.panels.layers,
-			G = true,
 			layer = layerTreeNode.j,
 			xNode = x || $.nodeFromString(`<Layers/>`),
 			walkChildren = xParent => {
@@ -80,23 +79,26 @@ class File {
 				buffer = layer.buffer,
 				rect = layer.rect,
 				id = layer.add.lyid,
+				hasCanvases = !this.layers[id],
 				size = Panels.layers.thumbSize,
 				{ width, height } = Misc.fitWithin(rect.m, rect.n, size, size),
 				w = Math.max(width, 8),
 				h = Math.max(height, 8),
 				{ fxEnabled, fxExpanded, xFxList } = this.getLayerFxList(layer),
-				types = {
+				ppTypes = {
 					"0": "layer-pixels", // Layer pixels (rect + buffer)
 					"1": "raster-mask",  // Raster mask (c3())
 					"2": "vector-mask",  // Vector mask (layer.add.vmsk)
 					"3": "smart-filter", // Smart-filter mask (vZ(doc).z)
 				},
+				ppType = ppTypes[layer.ht],
 				isHidden = !layer.zD() ? 1 : 0,
 				isFolder = layer.IQ(),
-				type = isFolder ? "folder" : types[layer.ht],
+				type = "image",
 				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
 				xStr;
-			if (G && layer.at == null) {
+
+			if (hasCanvases && layer.at == null) {
 				layer.at = Misc.createCanvas({ width, height });
 				layer.yY = Misc.createCanvas({ width, height });
 				layer.bX = Misc.createCanvas({ width, height });
@@ -113,48 +115,53 @@ class File {
 				// Enforce minimum thumb dimensions; fill/text/folder rows get a fixed square size.
 				if (layer.VF() && layer.add.vmsk == null || layer.add.TySh) {
 					tW =
-					tH = Math.max(tH, 16);
-				} else if (layer.IQ()) {
-					tW = tH = 16
+					tH = Math.max(tH, 32);
+				// } else if (isFolder) {
+				// 	tW = tH = 16
 				} else {
 					tW = Math.max(tW, 6);
 					tH = Math.max(tH, 6)
 				}
-
 				switch (true) {
 					case isFillWithVectorMask:
-						if (G && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
-						if (G) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
+						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
+						if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
 						break;
-					case layer.add.TySh:
-						if (G) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
+					case layer.add.TySh != null:
+						// if (hasCanvases) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
+						type = "text";
 						break;
 					case layer.add.SoCo:
-						if (G) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
+						if (hasCanvases) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
 						break;
 					case layer.add.GdFl:
-						if (G) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
+						if (hasCanvases) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
 						break;
 					case layer.add.PtFl:
-						if (G) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
+						if (hasCanvases) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
-						if (G) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
+						if (hasCanvases) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
 						break;
 					case layer.add.SoLd:
-						if (G) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
-						if (G) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
+						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
+						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
 						break;
-					case layer.IQ(): break;
+					case isFolder:
+						type = "folder";
+						break;
 					default:
-						if (G) {
-							if (layer.Eo()) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
-							else PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
+						if (hasCanvases) {
+							if (layer.Eo()) {
+								PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
+							} else {
+								PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
+							}
 						}
 				}
 				var rasterMask = layer.c3();
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
-				if (G) {
+				if (hasCanvases) {
 					if (rasterMask) PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, d, rasterMask);
 					if (layer.aW() && layer.vZ(l) && layer.vZ(l).z) {
 						var filterMask = layer.vZ(l).z;
@@ -168,12 +175,14 @@ class File {
 				h = tH;
 			}
 			switch (type) {
-				case "layer-pixels":
+				case "image":
 					xStr = `<i id="${id}" type="${type}" name="${name}" w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
-				case "raster-mask": break;
-				case "vector-mask": break;
-				case "smart-filter": break;
+				case "text":
+					xStr = `<i id="${id}" type="${type}" name="${name}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
+					break;
+				case "smart": break;
+				case "vector": break;
 				case "folder":
 					let expanded = layer.add.lsct === LayerSectionType.open ? 1 : 0;
 					xStr = `<i id="${id}" type="group" name="${name}" expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;
