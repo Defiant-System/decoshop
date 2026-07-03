@@ -114,7 +114,7 @@
 							<div class="mask"><canvas></canvas></div>
 						</xsl:if>
 						<div class="name"><xsl:value-of select="@name"/></div>
-						<i>
+						<i data-click="toggle-layer-visibility">
 							<xsl:attribute name="class">icon icon-eye-on 
 								<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 							</xsl:attribute>
@@ -175,7 +175,7 @@
 			<div class="mask"><canvas></canvas></div>
 		</xsl:if>
 		<div class="name"><xsl:value-of select="@name"/></div>
-		<i>
+		<i data-click="toggle-layer-visibility">
 			<xsl:attribute name="class">icon icon-eye-on 
 				<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 			</xsl:attribute>
@@ -192,7 +192,7 @@
 				<xsl:if test="@fx-enabled = 0">fx-disabled </xsl:if>
 			</xsl:attribute>
 			<li class="fx-header">
-				<i>
+				<i data-click="toggle-fx-visibility">
 					<xsl:attribute name="class">icon icon-eye-on 
 						<xsl:if test="@fx-enabled = 0">icon-eye-off</xsl:if>
 					</xsl:attribute>
@@ -201,7 +201,11 @@
 			</li>
 			<xsl:for-each select="./*">
 			<li>
-				<i>
+				<xsl:attribute name="data-typeId"><xsl:value-of select="@typeId"/></xsl:attribute>
+				<xsl:attribute name="data-multiKey"><xsl:value-of select="@multiKey"/></xsl:attribute>
+				<xsl:attribute name="data-typeIndex"><xsl:value-of select="@typeIndex"/></xsl:attribute>
+				<xsl:attribute name="data-instanceIndex"><xsl:value-of select="@instanceIndex"/></xsl:attribute>
+				<i data-click="toggle-fx-visibility">
 					<xsl:attribute name="class">icon icon-eye-on 
 						<xsl:if test="@hidden = 1">icon-eye-off</xsl:if>
 					</xsl:attribute>

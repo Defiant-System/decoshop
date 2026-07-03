@@ -53,6 +53,22 @@ class File {
 				this.doc.bV = true;
 				PP.update(true);
 				break;
+			case "toggle-fx-master-visibility":
+				this.layers[event.id].add.lmfx.masterFXSwitch.v = event.value;
+				this.layers[event.id].hD.q6 = true;
+				this.doc.U();
+				this.doc.i_ = true;
+				PP.update(true);
+				break;
+			case "toggle-fx-visibility":
+				this.layers[event.id].add
+					.lmfx[LayerStyleConstants.effectMultiKeys[event.typeIndex]]
+					.v[event.instanceIndex].v.enab.v = event.value;
+				this.layers[event.id].hD.q6 = true;
+				this.doc.U();
+				this.doc.i_ = true;
+				PP.update(true);
+				break;
 		}
 	}
 
@@ -104,6 +120,8 @@ class File {
 
 			// save index of layer
 			layer.index = this.doc.B.indexOf(layer);
+
+			if (id == 4) console.log(layer);
 
 			if (hasCanvases && layer.at == null) {
 				layer.at = Misc.createCanvas({ width, height });
@@ -230,7 +248,7 @@ class File {
 				// 	blendMode: fx.Md ? fx.Md.v.BlnM : null,
 				// 	descriptor: fx
 				// });
-				xFxList.push(`<fx name="${name}" hidden="${enabled}"/>`);
+				xFxList.push(`<fx name="${name}" typeId="${typeId}" multiKey="${multiKey}" typeIndex="${i}" instanceIndex="${j}" hidden="${enabled}"/>`);
 			}
 		}
 		return { fxEnabled, fxExpanded, xFxList };

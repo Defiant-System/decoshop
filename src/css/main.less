@@ -4642,11 +4642,13 @@ content {
 					--tc: #566;
 
 					&.hidden {
-						> div:not(:first-child) {
-							> .icon.icon-eye-on,
-							> .icon.icon-eye-off {
-								opacity: .35;
-								visibility: visible;
+						> .row:not(:first-child) {
+							> .layer-row-body {
+								> i.icon.icon-eye-on {
+									opacity: .35;
+									visibility: visible;
+									background-image: url(~/icons/icon-eye-off.png);
+								}
 							}
 						}
 					}
@@ -4832,7 +4834,6 @@ content {
 							height: 33px;
 							overflow: visible;
 							border-bottom-width: 1px;
-
 
 							&.fx-expand,
 							&.group {
@@ -5183,7 +5184,7 @@ content {
 							height: calc-size(auto, size);
 							padding-top: 3px;
 							padding-bottom: 3px;
-							border-top: 1px dashed #bcc1;
+							border-top: 1px dashed #0113;
 						}
 					}
 

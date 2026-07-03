@@ -235,31 +235,11 @@ const Panels = {
 						ctx.drawImage(layer.at.cvs[0], 0, 0);
 					});
 					break;
-				case "toggle-layer-visibility":
-					// layer.Oj(false); // set hidden (mutates layerFlags)
-					break;
 				case "select-layer":
 					el = $(event.target);
 					rEl = el.parents("?.row");
 					gEl = el.parents(".group");
-					// toggle visibility
-					if (el.hasClass("icon-eye-on")) {
-						if (rEl.index() === 0) {
-							gEl.toggleClass("hidden", el.hasClass("icon-eye-off"));
-						}
-						el.toggleClass("icon-eye-off", el.hasClass("icon-eye-off"));
-						APP.file.dispatch({
-							type: "toggle-layer-visibility",
-							id: el.parents(".layer-row-body").data("id"),
-							value: !el.hasClass("icon-eye-off"),
-						});
-
-						if (el.parent().hasClass("fx-header")) {
-							let fxList = el.parents(".fx-list");
-							fxList.toggleClass("fx-disabled", !el.hasClass("icon-eye-off"));
-						}
-						return;
-					}
+					
 					if (el.hasClass("fx-applied")) {
 						rEl.toggleClass("fx-expand", rEl.hasClass("fx-expand"));
 						return;
@@ -287,6 +267,47 @@ const Panels = {
 					break;
 				case "remove-layer":
 					Self.root.data({ size: "2" });
+					break;
+				
+				// proxied events
+				case "toggle-layer-visibility":
+					rEl = event.el.parents("?.row");
+					gEl = event.el.parents(".group");
+					if (rEl.index() === 0) {
+						gEl.toggleClass("hidden", event.el.hasClass("icon-eye-off"));
+					}
+					// eye icon update
+					event.el.toggleClass("icon-eye-off", event.el.hasClass("icon-eye-off"));
+
+					APP.file.dispatch({
+						type: "toggle-layer-visibility",
+						id: +event.el.parents(".layer-row-body").data("id"),
+						value: !event.el.hasClass("icon-eye-off"),
+					});
+					break;
+				case "toggle-fx-visibility":
+					rEl = event.el.parents("li");
+					event.el.toggleClass("icon-eye-off", event.el.hasClass("icon-eye-off"));
+
+					if (event.el.parent().hasClass("fx-header")) {
+						let fxList = event.el.parents(".fx-list");
+						fxList.toggleClass("fx-disabled", !event.el.hasClass("icon-eye-off"));
+
+						APP.file.dispatch({
+							type: "toggle-fx-master-visibility",
+							id: +event.el.parents(".row").find(".layer-row-body").data("id"),
+							value: !event.el.hasClass("icon-eye-off"),
+						});
+					} else {
+						// console.log("turn off one", rEl);
+						APP.file.dispatch({
+							type: "toggle-fx-visibility",
+							id: +event.el.parents(".row").find(".layer-row-body").data("id"),
+							value: !event.el.hasClass("icon-eye-off"),
+							typeIndex: +rEl.data("typeIndex"),
+							instanceIndex: +rEl.data("instanceIndex"),
+						});
+					}
 					break;
 			}
 		}
