@@ -202,8 +202,14 @@ const Panels = {
 					});
 					break;
 				case "select-history-item":
-					console.log(event);
-					console.log(APP.file);
+					// console.log(event);
+					// console.log(APP.file);
+
+					let action = new Action(ActionTypes.E.v, true);
+					action.G = CanvasTools.lv;
+					action.data = { a: "h_stepbck" };
+					PP.dispatch(action);
+					PP.update(true);
 					break;
 			}
 		}
