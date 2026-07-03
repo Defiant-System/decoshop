@@ -107,6 +107,7 @@
 				</xsl:attribute>
 				<div class="row" data-layer="folder">
 					<div class="layer-row-body">
+						<xsl:attribute name="data-id"><xsl:value-of select="@id"/></xsl:attribute>
 						<div class="icon icon-folder"></div>
 						<xsl:if test="@mask">
 							<i class="icon-mask-link"></i>

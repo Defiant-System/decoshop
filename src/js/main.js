@@ -18,6 +18,7 @@ let {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	LayerRecord,
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,

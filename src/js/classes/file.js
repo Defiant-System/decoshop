@@ -47,7 +47,11 @@ class File {
 
 			// file doc properties
 			case "toggle-layer-visibility":
-				console.log(event);
+				// return console.log(event);
+				this.layers[event.id].Oj(event.value);
+				this.doc.U();
+				this.doc.bV = true;
+				PP.update(true);
 				break;
 		}
 	}
@@ -97,6 +101,9 @@ class File {
 				type = "image",
 				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
 				xStr;
+
+			// save index of layer
+			layer.index = this.doc.B.indexOf(layer);
 
 			if (hasCanvases && layer.at == null) {
 				layer.at = Misc.createCanvas({ width, height });
