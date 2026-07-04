@@ -273,6 +273,7 @@ const Panels = {
 					});
 					break;
 				case "refresh-thumbnails":
+					// thumbnail canvases
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
 						let ctx = cvs.getContext("2d"),
 							pEl = cvs.parentNode.parentNode,
@@ -283,6 +284,18 @@ const Panels = {
 						cvs.width = layer.at.cvs[0].width;
 						cvs.height = layer.at.cvs[0].height;
 						ctx.drawImage(layer.at.cvs[0], 0, 0);
+					});
+					// mask canvases
+					Self.root.find(`.mask canvas`).map(cvs => {
+						let ctx = cvs.getContext("2d"),
+							pEl = cvs.parentNode.parentNode,
+							lId = pEl.getAttribute("data-id");
+						if (!lId) return;
+						// copy contents of canvas in memory
+						let layer = APP.file.getlayerImageData(lId);
+						cvs.width = layer.yY.cvs[0].width;
+						cvs.height = layer.yY.cvs[0].height;
+						ctx.drawImage(layer.yY.cvs[0], 0, 0);
 					});
 					break;
 				case "select-layer":
