@@ -293,7 +293,7 @@
 		<Menu name="place-holder-for-hotkey" click="toggle-quick-mask-mode" hotkey="q" type="hidden"/>
 		<Menu name="Edit in Quick Mask Mode" click="enter-quick-mask-mode"/>
 		<Menu name="Exit Quick Mask Mode" click="exit-quick-mask-mode" type="hidden"/>
-		<Menu name="Paint Selected Area" click="toggle-paint-masked-area" is-checked="1" check-group="paint-masked-rea"/>
+		<Menu name="Paint Selected Area" click="toggle-paint-masked-area" is-checked="1" check-group="paint-masked-area"/>
 		<Menu type="divider"/>
 		<Menu name="Save Selection"/>
 	</Menu>

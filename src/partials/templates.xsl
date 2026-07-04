@@ -701,8 +701,12 @@
 								<xsl:if test="@is-checked = 1">selected</xsl:if>
 							</xsl:attribute>
 							<xsl:if test="@icon"><i><xsl:attribute name="class">icon <xsl:value-of select="@icon"/></xsl:attribute></i></xsl:if>
+							<xsl:if test="@click">
+								<xsl:attribute name="data-click"><xsl:value-of select="@click"/></xsl:attribute>
+							</xsl:if>
 							<xsl:attribute name="data-value"><xsl:choose>
 								<xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
+								<xsl:when test="@arg"><xsl:value-of select="@arg"/></xsl:when>
 								<xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
 								<xsl:otherwise><xsl:value-of select="@name"/></xsl:otherwise>
 							</xsl:choose></xsl:attribute>

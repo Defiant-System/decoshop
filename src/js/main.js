@@ -4,6 +4,7 @@
 @import "classes/file.js"
 
 @import "modules/ui.js"
+@import "modules/color.js"
 @import "modules/panels.js"
 @import "modules/adjustments.js"
 @import "modules/dialogs.js"

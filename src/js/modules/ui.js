@@ -70,6 +70,11 @@ const UI = {
 						top = rect.top - window.top - rect.height - 39;
 						left = rect.left - window.left + (rect.width >> 1) - (Self.menu[0].offsetWidth >> 1);
 						break;
+					case "left":
+						Self.menu.addClass("arrow-right");
+						top = rect.top - window.top - 11;
+						left = rect.left - window.left - Self.menu[0].offsetWidth - 11;
+						break;
 					case "right":
 						Self.menu.addClass("arrow-left");
 						top = rect.top - window.top - 9;
@@ -100,6 +105,7 @@ const UI = {
 				break;
 			case "mousedown":
 				el = $(event.target);
+				// console.log(Self.srcEl[0]);
 				if (el.parents(".inline-menubox").length) {
 					if (this === document) return;
 					// forward event to fitting handler
@@ -1082,8 +1088,9 @@ const UI = {
 				// update source element
 				Self.srcEl.find(".value").css({ background: data.value });
 				// clean up
-				Self.srcEl = false;
-				Self.menu.remove();
+				// Self.srcEl = false;
+				// Self.menu.remove();
+				Self.dispatch({ type: "clear-menu" });
 				break;
 			// custom events
 			case "set-initial-value":
@@ -1122,7 +1129,7 @@ const UI = {
 				}
 
 				data = {
-					type: Self.srcEl.data("change"),
+					type: Self.srcEl.data("change") || el.data("click"),
 					el: Self.srcEl,
 					old: Self.srcEl.find(".value").html(),
 					text: el.html(),
@@ -1131,19 +1138,35 @@ const UI = {
 				if (data.old === data.value || !data.value) {
 					// clean up
 					Self.srcEl.removeClass("opened");
-					Self.srcEl = false;
-					Self.menu.remove();
+					// Self.srcEl = false;
+					// Self.menu.remove();
+					Self.dispatch({ type: "clear-menu" });
 					return;
 				}
-				// dispatch event to be forwarded
-				if (data.type) APP.dispatch(data);
+				// make sure correct option is "checked"
+				let xMenu = window.bluePrint.selectNodes(`//i[@type="option"][@click="${data.type}"]`);
+				if (xMenu.length > 1) {
+					xMenu.map(x => {
+						if (x.getAttribute("arg") === data.value) x.setAttribute("is-checked", "1");
+						else x.removeAttribute("is-checked");
+					});
+				}
+
+				if (Self.srcEl.parents(".box-head").length) {
+					// proxy to panel event handler
+					Panels[Self.srcEl.parent().data("content")].dispatch(data);
+				} else if (data.type) {
+					// dispatch event to be forwarded
+					APP.dispatch(data);
+				}
 
 				// update source element
 				Self.srcEl.find(".value").html(data.text);
 				// clean up
 				Self.srcEl.removeClass("opened");
-				Self.srcEl = false;
-				Self.menu.remove();
+				// Self.srcEl = false;
+				// Self.menu.remove();
+				Self.dispatch({ type: "clear-menu" });
 				break;
 			// custom events
 			case "set-initial-value":

@@ -269,6 +269,7 @@ const Panels = {
 					el = $(event.target);
 					rEl = el.parents("?.row");
 					gEl = el.parents(".group");
+					if (el[0] === event.el[0]) return; // exit if clicked on empty area
 					
 					if (el.hasClass("fx-applied")) {
 						rEl.toggleClass("fx-expand", rEl.hasClass("fx-expand"));
@@ -290,13 +291,10 @@ const Panels = {
 					break;
 				// box footer
 				case "add-layer-folder":
-					Self.root.data({ size: "0" });
 					break;
 				case "add-layer":
-					Self.root.data({ size: "1" });
 					break;
 				case "remove-layer":
-					Self.root.data({ size: "2" });
 					break;
 				
 				// proxied events
@@ -338,6 +336,12 @@ const Panels = {
 							instanceIndex: +rEl.data("instanceIndex"),
 						});
 					}
+					break;
+				case "set-thumbnail-size":
+					Self.root.data({ size: event.value });
+					break;
+				case "open-dialog":
+					APP.dispatch({ ...event, arg: event.value });
 					break;
 			}
 		}

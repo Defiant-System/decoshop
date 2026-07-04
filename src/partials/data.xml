@@ -1133,16 +1133,27 @@
 			<Layer shape="circle" res="8" size="6"/>
 		</Preset>
 	</Pixelator>
+	<PanelSwatches>
+		<i type="option" name="Define New"/>
+		<i type="divider"/>
+		<i type="option" name="Load ACO"/>
+		<i type="option" name="Save as ACO"/>
+	</PanelSwatches>
 	<PanelLayers>
 		<i type="option" name="Filter"/>
 		<i type="option" name="Blending Options" is-checked="1"/>
 		<i type="option" name="Lock" is-checked="1"/>
 		<i type="divider"/>
-		<i type="option" name="Small Thumbnails"/>
-		<i type="option" name="Medium Thumbnails" is-checked="1"/>
-		<i type="option" name="Big Thumbnails"/>
+		<i type="option" name="No Thumbnails" click="set-thumbnail-size" arg="0"/>
+		<i type="option" name="Normal Thumbnails" click="set-thumbnail-size" arg="1" is-checked="1"/>
+		<i type="option" name="Big Thumbnails" click="set-thumbnail-size" arg="2"/>
+		<i type="option" name="Giant Thumbnails" click="set-thumbnail-size" arg="3"/>
+		<i type="divider"/>
+		<i type="option" name="Settings" click="open-dialog" arg="dlgLayerPanelOptions"/>
 	</PanelLayers>
 	<PanelChannel type="option">
 		<i type="option" name="Merge Channels"/>
+		<i type="divider"/>
+		<i type="option" name="Settings"/>
 	</PanelChannel>
 </Data>
