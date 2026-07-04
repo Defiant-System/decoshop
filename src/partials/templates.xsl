@@ -160,6 +160,10 @@
 		</xsl:when>
 		<xsl:when test="@type = 'shape'">
 			<div class="row" data-layer="shape">
+				<xsl:attribute name="style">
+					--w: <xsl:value-of select="@w"/>px;
+					--h: <xsl:value-of select="@h"/>px;
+				</xsl:attribute>
 				<xsl:call-template name="layer-row-body"/>
 				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>

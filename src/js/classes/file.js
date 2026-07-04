@@ -159,7 +159,10 @@ class File {
 				switch (true) {
 					case isFillWithVectorMask:
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
-						if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
+						// if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
+						if (hasCanvases) {
+							type = "shape";
+						}
 						break;
 					case layer.add.TySh != null:
 						// if (hasCanvases) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
@@ -217,11 +220,13 @@ class File {
 				case "image":
 					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
+				case "shape":
+					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
+					break;
 				case "text":
 					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${rW}" h="${rH}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "smart": break;
-				case "vector": break;
 				case "folder":
 					let expanded = layer.add.lsct === LayerSectionType.open ? 1 : 0;
 					xStr = `<i id="${id}" type="group" name="${name}" ${extraAttr.join(" ")} expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;
