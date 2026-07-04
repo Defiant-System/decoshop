@@ -1057,6 +1057,8 @@ content {
 		&.icon-shape        { background-image: url(~/icons/icon-shape.png); }
 		&.icon-smart-object { background-image: url(~/icons/icon-smart-object.png); }
 
+		&.icon-undo         { background-image: url(~/icons/icon-undo.png); }
+		&.icon-redo         { background-image: url(~/icons/icon-redo.png); }
 
 		&.icon-trashcan         { background-image: url(~/icons/icon-trashcan.png); }
 		&.icon-folder           { background-image: url(~/icons/icon-folder.png); }
@@ -1899,10 +1901,6 @@ content {
 
 				&.show { right: 0; }
 
-				.box-foot {
-
-				}
-
 				.box-body {
 					position: relative;
 					flex: 1;
@@ -2083,6 +2081,13 @@ content {
 									bottom: -3px;
 									border-radius: 2px;
 								}
+							}
+						}
+
+						.box-foot {
+							.icon {
+								&.icon-undo:after,
+								&.icon-redo:after { background-size: 13px; }
 							}
 						}
 
@@ -5127,7 +5132,7 @@ content {
 						left: 0;
 						width: 10px;
 						height: 20px;
-						margin: 0 1px;
+						margin: 0 2px 0 1px;
 						background: url(~/icons/icon-mask-link.png) 50% 50%/10px 20px no-repeat;
 						filter: invert(1) opacity(.65) drop-shadow(0 1px 0 #0117);
 					}
@@ -5451,13 +5456,10 @@ content {
 			margin: 0 3px;
 			cursor: pointer;
 
-			&.mini {
-				background-image: url(~/icons/icon-mountain-mini.png);
-			}
-
-			&.maxi {
-				background-image: url(~/icons/icon-mountain.png);
-			}
+			&.mini { background-image: url(~/icons/icon-mountain-mini.png); }
+			&.maxi { background-image: url(~/icons/icon-mountain.png); }
+			&.icon-undo:after,
+			&.icon-redo:after { background-size: 13px; }
 
 			&.disabled {
 				opacity: 0.35;

@@ -91,7 +91,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.icon[data-click="zoom-in"]`).trigger("click"), 1700);
 
-		setTimeout(() => APP.els.content.find(`.layer-row-body[data-id="1"] .icon-eye-on`).trigger("click"), 1700);
+		// setTimeout(() => APP.els.content.find(`.layer-row-body[data-id="1"] .icon-eye-on`).trigger("click"), 1700);
 
 		/*
 		setTimeout(() => {

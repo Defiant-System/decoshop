@@ -177,6 +177,8 @@ const Panels = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.history,
+				action,
+				rEl,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -202,14 +204,32 @@ const Panels = {
 					});
 					break;
 				case "select-history-item":
-					// console.log(event);
-					// console.log(APP.file);
-
-					let action = new Action(ActionTypes.E.v, true);
+					el = $(event.target);
+					rEl = el.parents("?.item");
+					if (el[0] === event.el) return;
+					
+					action = new Action(ActionTypes.E.v, true);
+					action.G = CanvasTools.lv;
+					action.data = { a: "h_stepfwd", index: el.index() };
+					PP.dispatch(action);
+					PP.update(true);
+					break;
+				case "history-undo":
+					action = new Action(ActionTypes.E.v, true);
 					action.G = CanvasTools.lv;
 					action.data = { a: "h_stepbck" };
 					PP.dispatch(action);
 					PP.update(true);
+					break;
+				case "history-redo":
+					action = new Action(ActionTypes.E.v, true);
+					action.G = CanvasTools.lv;
+					action.data = { a: "h_stepfwd" };
+					PP.dispatch(action);
+					PP.update(true);
+					break;
+				case "clear-history":
+					// TODO
 					break;
 			}
 		}
