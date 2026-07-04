@@ -4270,9 +4270,28 @@ content {
 
 					> div {
 						position: absolute;
+
+						&:before {
+							content: "";
+							background: linear-gradient(45deg, #9fabab 25%, transparent 25%, transparent 75%, #9fabab 75%, #9fabab 0),
+										linear-gradient(45deg, #9fabab 25%, transparent 25%, transparent 75%, #9fabab 75%, #9fabab 0),
+										#dae5e5;
+							background-repeat: repeat, repeat;
+							background-position: 0px 0, 5px 5px;
+							background-origin: padding-box, padding-box;
+							background-clip: padding-box, padding-box;
+							background-size: 10px 10px;
+							position: absolute;
+							top: 0;
+							left: 0;
+							width: 100%;
+							height: 100%;
+						}
 					}
 
 					canvas.nav-cvs {
+						position: relative;
+						z-index: 2;
 						display: var(--d);
 						box-shadow: 0 0 0 1px #0119;
 						width: var(--w);
@@ -4292,6 +4311,7 @@ content {
 						height: var(--vh);
 						background: transparent;
 						border: 2px solid #ff4a4a;
+						z-index: 3;
 						cursor: move;
 					}
 				}
