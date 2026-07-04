@@ -257,6 +257,7 @@ const Panels = {
 				case "init-panel":
 					Self.root = APP.els.content.find(`[data-box="layers"] .box-content-wrapper`);
 					Self.thumbSize = 32;
+					Self.dispatch({ type: "set-thumbnail-size", value: APP.Settings.pp.panels.layers.thumbMultiplier });
 					break;
 				case "refresh":
 					window.render({
@@ -372,6 +373,8 @@ const Panels = {
 					break;
 				case "set-thumbnail-size":
 					Self.root.data({ size: event.value });
+					// save value to app settings
+					APP.Settings.pp.panels.layers.thumbMultiplier = event.value;
 					break;
 				case "open-dialog":
 					APP.dispatch({ ...event, arg: event.value });

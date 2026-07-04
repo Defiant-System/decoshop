@@ -126,7 +126,7 @@ class File {
 				isFolder = layer.IQ(),
 				type = "image",
 				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
-				maskAttr = "",
+				extraAttr = [],
 				xStr;
 
 			// save index of layer
@@ -197,15 +197,16 @@ class File {
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
 				if (hasCanvases) {
 					if (rasterMask) {
+				console.log(maskThumbSize);
 						PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, depth, rasterMask);
-						if (id === 17) maskAttr = `mask="shape-1"`;
+						extraAttr.push(`mask="1"`);
 					}
 					if (layer.aW() && layer.vZ(l) && layer.vZ(l).z) {
 						var filterMask = layer.vZ(l).z;
-						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, depth, filterMask)
+						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, depth, filterMask);
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
-						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, depth, layer.add.vmsk.c3(), !0)
+						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, depth, layer.add.vmsk.c3(), !0);
 					}
 				}
 				w = tW;
@@ -213,16 +214,16 @@ class File {
 			}
 			switch (type) {
 				case "image":
-					xStr = `<i id="${id}" type="${type}" name="${name}" ${maskAttr} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
+					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "text":
-					xStr = `<i id="${id}" type="${type}" name="${name}" ${maskAttr} w="${rW}" h="${rH}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
+					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${rW}" h="${rH}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "smart": break;
 				case "vector": break;
 				case "folder":
 					let expanded = layer.add.lsct === LayerSectionType.open ? 1 : 0;
-					xStr = `<i id="${id}" type="group" name="${name}" ${maskAttr} expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;
+					xStr = `<i id="${id}" type="group" name="${name}" ${extraAttr.join(" ")} expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;
 					break;
 			}
 			let xLayer = $.nodeFromString(xStr);

@@ -50,6 +50,7 @@ const DefaultSettings = {
 			layers: {
 				thumbBoundsMode: 0, // 0 = scale by layer rect, 1 = scale by document rect
 				thumbSize: 32,
+				thumbMultiplier: 1, // 0=none, 1=normal, 2=big, 3=giant
 			}
 		}
 	},

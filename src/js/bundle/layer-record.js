@@ -1678,30 +1678,30 @@ LayerTreeNode.prototype.Gx = function(l, d, G) {
 		V.at = LayerTreeNode.fw();
 		V.yY = LayerTreeNode.fw();
 		V.bX = LayerTreeNode.fw();
-		V.Fp = LayerTreeNode.fw()
+		V.Fp = LayerTreeNode.fw();
 	}
 	var R = V.VF() && V.add.vmsk;
 	if (R) {
 		if (G && V.add.vstk) PixelUtil.e2.ho(V.at, y, e, Q, V.buffer, V.rect, !1, null, !V.add.vstk.fillEnabled.v && !V.add.vstk.strokeEnabled.v);
-		if (G) PixelUtil.e2.alc(V.at, y, e)
+		if (G) PixelUtil.e2.alc(V.at, y, e);
 	} else if (V.add.TySh) {
-		if (G) PixelUtil.e2.ayR(V.at, e, e, V.add.TySh)
+		if (G) PixelUtil.e2.ayR(V.at, e, e, V.add.TySh);
 	} else if (V.add.SoCo) {
-		if (G) PixelUtil.e2.auB(V.at, e, e, V.add.SoCo)
+		if (G) PixelUtil.e2.auB(V.at, e, e, V.add.SoCo);
 	} else if (V.add.GdFl) {
-		if (G) PixelUtil.e2.aps(V.at, e, e, V.add.GdFl)
+		if (G) PixelUtil.e2.aps(V.at, e, e, V.add.GdFl);
 	} else if (V.add.PtFl) {
-		if (G) PixelUtil.e2.apY(V.at, e, e, V.add.PtFl, l)
+		if (G) PixelUtil.e2.apY(V.at, e, e, V.add.PtFl, l);
 	} else if (LayerEffectsHelper.detectAdjustmentKey(V.add) != null) {
-		if (G) PixelUtil.e2.aa7(V.at, e, e, V.add)
+		if (G) PixelUtil.e2.aa7(V.at, e, e, V.add);
 	} else if (V.add.SoLd) {
 		if (G) PixelUtil.e2.ho(V.at, y, e, Q, V.buffer, V.rect, !1);
-		if (G) PixelUtil.e2.alT(V.at, y, e, V.add.SoLd)
+		if (G) PixelUtil.e2.alT(V.at, y, e, V.add.SoLd);
 	} else if (V.IQ()) {} else {
 		if (G) {
 			if (V.Eo()) PixelUtil.e2.ho(V.at, y, e, Q, V.buffer, V.rect, !1);
 			else {
-				PixelUtil.e2.abf(V.at, e, e)
+				PixelUtil.e2.abf(V.at, e, e);
 			}
 		}
 	}

@@ -4947,6 +4947,7 @@ content {
 					--h: 28px;
 					--aW: calc( 32px * var( --multiplier ) );
 					--aH: calc( 32px * var( --multiplier ) );
+					--m: 4px;
 
 					&:hover {
 						&:not(.active) {
@@ -5049,6 +5050,10 @@ content {
 
 					&[data-layer="text"] {
 						.thumbnail {
+							--cW: calc( var( --aW ) * 0.875 );
+							--cH: calc( var( --aH ) * 0.875 );
+							--m: 6px;
+
 							&:before {
 								background: url(~/icons/tool-glyphs.png) 50% 50% no-repeat;
 								background-size: 17px auto;
@@ -5076,7 +5081,8 @@ content {
 						height: var( --aH );
 						--cW: calc( var( --w ) * var( --multiplier ) );
 						--cH: calc( var( --h ) * var( --multiplier ) );
-						--m: 4px;
+						// --cW: var( --aW );
+						// --cH: var( --aW );
 
 						&:before,
 						&:after {
@@ -5090,7 +5096,7 @@ content {
 						}
 
 						&:before {
-							transform: translate(2px,2px);
+							transform: translate( calc( var( --m ) * .5 ), calc( var( --m ) * .5 ) );
 							border: 1px solid #0110;
 							box-sizing: border-box;
 						}
@@ -5132,7 +5138,7 @@ content {
 						left: 0;
 						width: 10px;
 						height: 20px;
-						margin: 0 2px 0 1px;
+						margin: 0 2px;
 						background: url(~/icons/icon-mask-link.png) 50% 50%/10px 20px no-repeat;
 						filter: invert(1) opacity(.65) drop-shadow(0 1px 0 #0117);
 					}
