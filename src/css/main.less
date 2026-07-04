@@ -5268,31 +5268,43 @@ content {
 
 						&.fx-disabled {
 							li:not(:first-child) {
-								opacity: .5;
+								color: #eff7;
 							}
 						}
 
 						li {
+							position: relative;
 							padding: 1px 0 3px 13px;
 							font-size: 0;
+
+							&:hover {
+								color: #eff;
+
+								.icon,
+								.icon:after {
+									opacity: 1;
+								}
+							}
 
 							&.fx-header {
 								padding-left: 0;
 							}
 
 							.icon {
-								vertical-align: top;
-								display: inline-block;
+								position: absolute;
+								top: 1px;
+								right: 31px;
+								margin: 0;
 								width: 17px;
-								height: 17px;
-								margin: 0 3px 0 0;
-								opacity: 1;
+								height: 20px;
+								opacity: 0;
 								visibility: visible;
+								transition: opacity 80ms ease-in-out;
 
 								&:after { left: 0; }
 
 								&[class*="icon-eye-off"] + .fx-name {
-									opacity: .5;
+									color: #eff7;
 								}
 							}
 
@@ -5301,7 +5313,6 @@ content {
 								vertical-align: top;
 								display: inline-block;
 								padding-top: 1px;
-								cursor: pointer;
 							}
 						}
 					}
