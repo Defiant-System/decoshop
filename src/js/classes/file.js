@@ -125,7 +125,6 @@ class File {
 				isHidden = !layer.zD() ? 1 : 0,
 				isFolder = layer.IQ(),
 				type = "image",
-				isFillWithVectorMask = layer.VF() && layer.add.vmsk,
 				extraAttr = [],
 				xStr;
 
@@ -156,6 +155,7 @@ class File {
 					tW = Math.max(tW, 6);
 					tH = Math.max(tH, 6)
 				}
+				let isFillWithVectorMask = !!(layer.VF() && layer.add.vmsk);
 				switch (true) {
 					case isFillWithVectorMask:
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
@@ -207,6 +207,7 @@ class File {
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
 						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, layer.add.vmsk.c3(), !0);
+						// extraAttr.push(`vector="1"`);
 					}
 				}
 				w = tW;
