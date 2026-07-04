@@ -196,17 +196,17 @@ class File {
 				var rasterMask = layer.c3();
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
 				if (hasCanvases) {
+					let docBounds = new Rect(0, 0, this.doc.m, this.doc.n);
 					if (rasterMask) {
-				console.log(maskThumbSize);
-						PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, depth, rasterMask);
+						PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, rasterMask);
 						extraAttr.push(`mask="1"`);
 					}
-					if (layer.aW() && layer.vZ(l) && layer.vZ(l).z) {
-						var filterMask = layer.vZ(l).z;
-						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, depth, filterMask);
+					if (layer.aW() && layer.vZ(layerTreeNode) && layer.vZ(layerTreeNode).z) {
+						var filterMask = layer.vZ(layerTreeNode).z;
+						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, filterMask);
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
-						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, depth, layer.add.vmsk.c3(), !0);
+						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, layer.add.vmsk.c3(), !0);
 					}
 				}
 				w = tW;
