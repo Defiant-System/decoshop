@@ -76,7 +76,36 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "init-panel": break;
+				case "init-panel":
+					Self.root = APP.els.content.find(`[data-box="channels"] .box-content-wrapper`);
+					break;
+				case "refresh":
+					window.render({
+						data: event.file.xChannels,
+						template: "channels-list",
+						match: "//Channels",
+						target: Self.root,
+					}).then((el) => {
+						Self.dispatch({ type: "refresh-thumbnails" });
+					});
+					break;
+				case "refresh-thumbnails":
+						console.log(APP.file.channels);
+					// thumbnail canvases
+					Self.root.find(`.thumbnail canvas`).map(cvs => {
+						let ctx = cvs.getContext("2d"),
+							pEl = cvs.parentNode.parentNode,
+							cId = pEl.getAttribute("data-id");
+						if (!cId) return;
+						// copy contents of canvas in memory
+						let channel = APP.file.getChannelImageData(cId);
+						if (channel.cvs[0].width > 0) {
+							cvs.width = channel.cvs[0].width;
+							cvs.height = channel.cvs[0].height;
+							ctx.drawImage(channel.cvs[0], 0, 0);
+						}
+					});
+					break;
 			}
 		}
 	},
@@ -281,7 +310,7 @@ const Panels = {
 							lId = pEl.getAttribute("data-id");
 						if (!lId || ["text"].includes(pEl.parentNode.getAttribute("data-layer"))) return;
 						// copy contents of canvas in memory
-						let layer = APP.file.getlayerImageData(lId);
+						let layer = APP.file.getLayerImageData(lId);
 						if (layer.at.cvs[0].width > 0) {
 							cvs.width = layer.at.cvs[0].width;
 							cvs.height = layer.at.cvs[0].height;
@@ -295,7 +324,7 @@ const Panels = {
 							lId = pEl.getAttribute("data-id");
 						if (!lId) return;
 						// copy contents of canvas in memory
-						let layer = APP.file.getlayerImageData(lId);
+						let layer = APP.file.getLayerImageData(lId);
 						cvs.width = layer.yY.cvs[0].width;
 						cvs.height = layer.yY.cvs[0].height;
 						ctx.drawImage(layer.yY.cvs[0], 0, 0);
@@ -452,7 +481,7 @@ const Panels = {
 					break;
 				case "refresh":
 					let doc = event.file.doc,
-						{ width: w, height: h } = Misc.fitWithin(doc.Ch.m, doc.Ch.n, Self.maxW, Self.maxH);
+						{ width: w, height: h } = Misc.fitWithin(doc.m, doc.n, Self.maxW, Self.maxH);
 					// update width & height for navigator panel
 					Self.wrapper.css({ "--d": "block", "--w": `${w}px`, "--h": `${h}px` });
 					Self.vw = w;

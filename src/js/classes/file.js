@@ -22,11 +22,14 @@ class File {
 
 			if (Test.debug) {
 				let { width: w, height: h } = Misc.fitWithin(this.doc.m, this.doc.n, 32, 32),
-					xmlStr = Test.xLayers.replace(/\{\{w\}\}/g, w).replace(/\{\{h\}\}/g, h);
-				this.xLayers = $.nodeFromString(xmlStr);
+					xLayers = Test.xLayers.replace(/\{\{w\}\}/g, w).replace(/\{\{h\}\}/g, h),
+					xChannels = Test.xChannels.replace(/\{\{w\}\}/g, w).replace(/\{\{h\}\}/g, h);
+				this.xLayers = $.nodeFromString(xLayers);
+				this.xChannels = $.nodeFromString(xChannels);
 			} else {
 				this.xLayers = this.walkLayers(this.doc.root, 0);
 				console.log(this.xLayers);
+				this.xChannels = this.walkChannels();
 			}
 			// update panels
 			decoshop.dispatch({ type: "file-ready", file: this });
@@ -93,7 +96,44 @@ class File {
 		this.mipmap = mipmap;
 	}
 
-	getlayerImageData(id) {
+	getChannelImageData(id) {
+		return this.channels[id];
+	}
+
+	walkChannels() {
+		let xNode = $.nodeFromString(`<Channels/>`),
+			docWidth = this.doc.m,
+			docHeight = this.doc.n,
+			fullDocBounds = new Rect(0, 0, docWidth, docHeight),
+			// doc.u.MX = [R visible, G visible, B visible]; mirrored on the panel for click handlers
+			channelVisibility = this.Pj = this.doc.u.MX.slice(0),
+			visibleRgbCount = channelVisibility[0] + channelVisibility[1] + channelVisibility[2],
+			tW = Math.round(34 * window.devicePixelRatio),
+			tH = tW;
+		
+		// Keep thumbnail aspect ratio matching the document
+		if (docWidth > docHeight) tH = Math.round(tH * docHeight / docWidth);else
+		tW = Math.round(tW * docWidth / docHeight);
+
+		this.channels = {};
+
+		// --- RGB composite (index 0) + R, G, B channels (indices 1–3) ---
+		// Row ids are negative: -1 = RGB, -2 = R, -3 = G, -4 = B
+		let rgbLabels = ["RGB"].concat(LayerEffectsHelper.rgbChannels);
+		rgbLabels.map((name, index) => {
+			let xChannel = $.nodeFromString(`<i type="channel" name="${name}"/>`);
+			xNode.appendChild(xChannel);
+
+			let cThumb = Misc.createCanvas(tW, tH);
+			PixelUtil.e2.ho(cThumb.ctx, tW, tH, fullDocBounds, this.doc.LT(), fullDocBounds, !1, index == 0 ? null : index - 1);
+
+			this.channels[name] = cThumb;
+		});
+
+		return xNode;
+	}
+
+	getLayerImageData(id) {
 		return this.layers[id];
 	}
 
@@ -164,9 +204,7 @@ class File {
 						// if (layer.add.lyid === 37) console.log(1);
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
 						// if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
-						if (hasCanvases) {
-							type = "shape";
-						}
+						if (hasCanvases) type = "shape";
 						break;
 					case layer.add.TySh != null:
 						// if (hasCanvases) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
@@ -196,7 +234,7 @@ class File {
 						// if (layer.add.lyid === 37) console.log(4);
 						if (hasCanvases) {
 							tH = 24; tW = 16;
-							// PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, layerTreeNode);
+							PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, this.doc);
 							extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
 							type = "adj";
 							tW = w; tH = h;
