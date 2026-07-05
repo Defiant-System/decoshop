@@ -4197,6 +4197,8 @@ content {
 					}
 
 					&[data-box="channels"] {
+						--multiplier: 1;
+
 						.row {
 							padding: 0 7px;
 
@@ -4215,8 +4217,8 @@ content {
 							margin: 0 5px 0 3px;
 
 							canvas {
-								// filter: drop-shadow(0 0px 1px #0116);
-								// background: rgba(255,255,255,.1);
+								background: #eff1;
+								box-shadow: inset 0 0 0 1px #1227;
 							}
 						}
 
@@ -4226,7 +4228,24 @@ content {
 					}
 
 					&[data-box="paths"] {
-						
+						--multiplier: 1;
+
+						.row {
+							padding: 0 7px;
+
+							.icon {
+								margin: 7px 0 0 0;
+							}
+						}
+
+						.thumbnail {
+							margin: 0 5px 0 3px;
+
+							canvas {
+								background: #eff1;
+								box-shadow: inset 0 0 0 1px #1227;
+							}
+						}
 					}
 
 					.box-tools {
@@ -5142,6 +5161,10 @@ content {
 
 							i { display: none; }
 						}
+
+						// .icon-mask-link {
+						// 	margin: 0 4px 0 0;
+						// }
 					}
 
 					&[data-layer="text"] {

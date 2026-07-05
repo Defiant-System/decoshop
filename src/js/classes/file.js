@@ -161,7 +161,7 @@ class File {
 				let isFillWithVectorMask = !!(layer.VF() && layer.add.vmsk);
 				switch (true) {
 					case isFillWithVectorMask:
-						// if (layer.add.lyid === 29) console.log(1);
+						// if (layer.add.lyid === 19) console.log(1);
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
 						// if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
 						if (hasCanvases) {
@@ -173,23 +173,25 @@ class File {
 						type = "text";
 						break;
 					case layer.add.SoCo:
-						// if (layer.add.lyid === 29) console.log(2);
+						// if (layer.add.lyid === 19) console.log(2);
 						if (hasCanvases) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
 						break;
 					case layer.add.GdFl:
-						// if (layer.add.lyid === 29) console.log(3);
+						// if (layer.add.lyid === 19) console.log(3);
 						if (hasCanvases) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
 						break;
 					case layer.add.PtFl:
-						// if (layer.add.lyid === 29) console.log(4);
+						// if (layer.add.lyid === 19) console.log(4);
 						if (hasCanvases) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
-						// if (layer.add.lyid === 29) console.log(5);
-						if (hasCanvases) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
+						// if (layer.add.lyid === 19) console.log(5);
+						// if (hasCanvases) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
+						extraAttr.push(`target="dlgHueSaturation"`);
+						type = "adj";
 						break;
 					case layer.add.SoLd:
-						// if (layer.add.lyid === 29) console.log(6);
+						// if (layer.add.lyid === 19) console.log(6);
 						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
 						break;
@@ -199,19 +201,23 @@ class File {
 					default:
 						if (hasCanvases) {
 							if (layer.Eo()) {
-								// if (layer.add.lyid === 29) console.log(7);
+								// if (layer.add.lyid === 19) console.log(7);
 								PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 							} else {
-								// if (layer.add.lyid === 29) console.log(8);
+								// if (layer.add.lyid === 19) console.log(8);
+								if (layer.add.lyid === 19) console.log(layer);
 								PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
-								extraAttr.push(`fill="1"`);
+								extraAttr.push(`target="dlgFillColor"`);
+								type = "adj";
 							}
 						}
 				}
+				if (layer.usesClippingMask) extraAttr.push(`clip="1"`);
+
 				var rasterMask = layer.c3();
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
 				if (hasCanvases) {
-					// if (layer.add.lyid === 29) console.log(9);
+					// if (layer.add.lyid === 19) console.log(9);
 					let docBounds = new Rect(0, 0, this.doc.m, this.doc.n);
 					if (rasterMask) {
 						// smooth mask thumbnail
@@ -224,11 +230,12 @@ class File {
 						extraAttr.push(`mask="1"`);
 					}
 					if (layer.aW() && layer.vZ(layerTreeNode) && layer.vZ(layerTreeNode).z) {
+						// if (layer.add.lyid === 19) console.log(10);
 						var filterMask = layer.vZ(layerTreeNode).z;
 						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, filterMask);
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
-						if (layer.add.lyid === 29) console.log(11);
+						// if (layer.add.lyid === 19) console.log(11);
 						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, layer.add.vmsk.c3(), !0);
 						// extraAttr.push(`vector="1"`);
 					}
@@ -238,9 +245,8 @@ class File {
 			}
 			switch (type) {
 				case "image":
-					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
-					break;
 				case "shape":
+				case "adj":
 					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "text":

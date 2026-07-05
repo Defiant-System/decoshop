@@ -279,7 +279,7 @@ const Panels = {
 						let ctx = cvs.getContext("2d"),
 							pEl = cvs.parentNode.parentNode,
 							lId = pEl.getAttribute("data-id");
-						if (!lId || pEl.parentNode.getAttribute("data-layer") === "text") return;
+						if (!lId || ["text", "adj"].includes(pEl.parentNode.getAttribute("data-layer"))) return;
 						// copy contents of canvas in memory
 						let layer = APP.file.getlayerImageData(lId);
 						cvs.width = layer.at.cvs[0].width;
@@ -297,6 +297,18 @@ const Panels = {
 						cvs.width = layer.yY.cvs[0].width;
 						cvs.height = layer.yY.cvs[0].height;
 						ctx.drawImage(layer.yY.cvs[0], 0, 0);
+					});
+					// mask canvases
+					Self.root.find(`.row[data-layer="adj"] .mask canvas`).map(cvs => {
+						let ctx = cvs.getContext("2d"),
+							pEl = cvs.parentNode.parentNode,
+							lId = pEl.getAttribute("data-id");
+						if (!lId) return;
+						// copy contents of canvas in memory
+						let layer = APP.file.getlayerImageData(lId);
+						cvs.width = layer.at.cvs[0].width;
+						cvs.height = layer.at.cvs[0].height;
+						// ctx.drawImage(layer.yY.cvs[0], 0, 0);
 					});
 					break;
 				case "select-layer":

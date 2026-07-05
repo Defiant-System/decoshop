@@ -1,7 +1,7 @@
 
 let Test = {
 	init(APP) {
-		this.debug = 1;
+		this.debug = !1;
 		this.xLayers = xLayersSimple;
 
 		// return;
@@ -10,10 +10,11 @@ let Test = {
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
+		// setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/girl.psd"] });
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/beyond-2.psd"] });
-		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
+		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/filter-gallery.png"] });
+		APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
@@ -67,7 +68,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(0).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.inline-menu[data-match="//PanelLayers"]`).trigger("click"), 1200);
 
-		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="adjustments"]`).trigger("click"), 520);
+		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="paths"]`).trigger("click"), 520);
 		// setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgHueSaturation"]`).trigger("click"), 750);
 		// setTimeout(() => APP.els.content.find(`.panel-head .opt-group li[data-id="mask"]`).trigger("click"), 800);
 		
@@ -99,9 +100,10 @@ let Test = {
 
 let xLayersSimple = `<Layers>
 					<i type="adj" target="dlgLevels" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
-					<i type="adj" target="dlgCurves" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
-					<i type="adj" target="dlgExposure" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
-					<i type="adj" target="dlgVibrance" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="image" name="Flower" w="{{w}}" h="{{h}}" mask="shape-1">
+						<fx name="Inner Glow" hidden="1"/>
+						<fx name="Drop Shadow"/>
+					</i>
 					<i type="adj" target="dlgColorBalance" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
 					<i type="adj" target="dlgBrightnessContrast" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
 					<i type="adj" target="dlgFillColor" color="#f00" name="Color Fill" w="{{w}}" h="{{h}}" mask="shape-1"/>

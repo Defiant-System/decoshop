@@ -1,38 +1,48 @@
 <div data-box="channels" class="hidden">
-	<div class="box-content-wrapper">
+	<div class="box-content-wrapper" data-size="1">
 		<div class="box-content-list">
 			<!-- content list goes here -->
-			<div class="row" data-channel="rgb" style="--bg: url(/cdn/img/2d-samples/robert-collins.jpg); --w: 28px; --h: 20px;">
-				<div class="thumbnail">
-					<canvas width="32" height="32"></canvas>
+			<div class="row" data-layer="image" data-channel="rgb" style="--w: 32px;--h: 22px;">
+				<div class="layer-row-body" data-id="">
+					<div class="thumbnail">
+						<canvas width="32" height="22"></canvas>
+						<i></i>
+					</div>
+					<div class="name">RGB</div>
+					<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
 				</div>
-				<div class="name">RGB</div>
-				<div class="icon icon-eye-on" data-click="toggle-rgb-channel"></div>
+			</div>
+			<div class="row" data-layer="image" data-channel="red" style="--w: 32px;--h: 22px;">
+				<div class="layer-row-body" data-id="">
+					<div class="thumbnail">
+						<canvas width="32" height="22"></canvas>
+						<i></i>
+					</div>
+					<div class="name">Red</div>
+					<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
+				</div>
+			</div>
+			<div class="row" data-layer="image" data-channel="green" style="--w: 32px;--h: 22px;">
+				<div class="layer-row-body" data-id="">
+					<div class="thumbnail">
+						<canvas width="32" height="22"></canvas>
+						<i></i>
+					</div>
+					<div class="name">Green</div>
+					<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
+				</div>
+			</div>
+			<div class="row" data-layer="image" data-channel="blue" style="--w: 32px;--h: 22px;">
+				<div class="layer-row-body" data-id="">
+					<div class="thumbnail">
+						<canvas width="32" height="22"></canvas>
+						<i></i>
+					</div>
+					<div class="name">Blue</div>
+					<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
+				</div>
 			</div>
 
-			<div class="row" data-channel="red" style="--bg: url(/cdn/img/2d-samples/robert-collins.jpg); --w: 28px; --h: 20px;">
-				<div class="thumbnail channel-red">
-					<canvas width="32" height="32"></canvas>
-				</div>
-				<div class="name">Red</div>
-				<div class="icon icon-eye-on" data-click="toggle-channel"></div>
-			</div>
-
-			<div class="row" data-channel="green" style="--bg: url(/cdn/img/2d-samples/robert-collins.jpg); --w: 28px; --h: 20px;">
-				<div class="thumbnail channel-green">
-					<canvas width="32" height="32"></canvas>
-				</div>
-				<div class="name">Green</div>
-				<div class="icon icon-eye-on" data-click="toggle-channel"></div>
-			</div>
-
-			<div class="row" data-channel="blue" style="--bg: url(/cdn/img/2d-samples/robert-collins.jpg); --w: 28px; --h: 20px;">
-				<div class="thumbnail channel-blue">
-					<canvas width="32" height="32"></canvas>
-				</div>
-				<div class="name">Blue</div>
-				<div class="icon icon-eye-on" data-click="toggle-channel"></div>
-			</div>
 		</div>
 	</div>
 
