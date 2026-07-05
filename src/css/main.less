@@ -1053,9 +1053,10 @@ content {
 		&.icon-guide-hmid    { background-image: url(~/icons/icon-guide-hmid.png); }
 		&.icon-guide-vmid    { background-image: url(~/icons/icon-guide-vmid.png); }
 
-		&.icon-image        { background-image: url(~/icons/icon-image.png); }
-		&.icon-shape        { background-image: url(~/icons/icon-shape.png); }
-		&.icon-smart-object { background-image: url(~/icons/icon-smart-object.png); }
+		&.icon-image         { background-image: url(~/icons/icon-image.png); }
+		&.icon-shape         { background-image: url(~/icons/icon-shape.png); }
+		&.icon-smart-object  { background-image: url(~/icons/icon-smart-object.png); }
+		&.icon-clipping-mask { background-image: url(~/icons/icon-clipping-mask.png); }
 
 		&.icon-undo         { background-image: url(~/icons/icon-undo.png); }
 		&.icon-redo         { background-image: url(~/icons/icon-redo.png); }
@@ -5022,6 +5023,14 @@ content {
 								canvas { box-shadow: inset 0 0 0 2px #566; }
 							}
 						}
+
+						&[data-layer="adj"]:not([data-target="dlgFillGradient"], [data-target="dlgFillPattern"], [data-target="dlgFillColor"]) {
+							.thumbnail {
+								&:before {
+									filter: contrast(1.15) invert(1) drop-shadow(0 1px 0 #0117);
+								}
+							}
+						}
 						
 						.layer-row-body {
 							background-color: #4557;
@@ -5053,7 +5062,8 @@ content {
 								background-size: 13px auto;
 								width: 14px;
 								height: 14px;
-								bottom: var( --m );
+								bottom: 1px;
+								right: 1px;
 							}
 						}
 					}
@@ -5066,6 +5076,71 @@ content {
 								width: 14px;
 								height: 15px;
 							}
+						}
+					}
+
+					&[data-layer="adj"] {
+						&[data-target="dlgBrightnessContrast"] .thumbnail:before { background-image: url(~/icons/tool-brightness-contrast.png); }
+						&[data-target="dlgLevels"] .thumbnail:before { background-image: url(~/icons/tool-levels.png); }
+						&[data-target="dlgCurves"] .thumbnail:before { background-image: url(~/icons/tool-curves.png); }
+						&[data-target="dlgExposure"] .thumbnail:before { background-image: url(~/icons/tool-exposure.png); }
+						&[data-target="dlgVibrance"] .thumbnail:before { background-image: url(~/icons/tool-vibrance.png); }
+						&[data-target="dlgHueSaturation"] .thumbnail:before { background-image: url(~/icons/tool-hue-saturation.png); }
+						&[data-target="dlgColorBalance"] .thumbnail:before { background-image: url(~/icons/tool-color-balance.png); }
+						&[data-target="dlgBlackWhite"] .thumbnail:before { background-image: url(~/icons/tool-black-white.png); }
+						&[data-target="dlgPhotoFilter"] .thumbnail:before { background-image: url(~/icons/tool-photo-filter.png); }
+						&[data-target="dlgChannelMixer"] .thumbnail:before { background-image: url(~/icons/tool-channel-mixer.png); }
+						&[data-target="dlgColorLookup"] .thumbnail:before { background-image: url(~/icons/tool-color-lookup.png); }
+						&[data-target="dlgInvert"] .thumbnail:before { background-image: url(~/icons/tool-invert.png); }
+						&[data-target="dlgPosterize"] .thumbnail:before { background-image: url(~/icons/tool-posterize.png); }
+						&[data-target="dlgThreshold"] .thumbnail:before { background-image: url(~/icons/tool-threshold.png); }
+						&[data-target="dlgGradientMap"] .thumbnail:before { background-image: url(~/icons/tool-gradient-map.png); }
+						&[data-target="dlgSelectiveColor"] .thumbnail:before { background-image: url(~/icons/tool-selective-color.png); }
+						&[data-target="dlgReplaceColor"] .thumbnail:before { background-image: url(~/icons/tool-replace-color.png); }
+
+						&[data-target="dlgFillGradient"] .thumbnail,
+						&[data-target="dlgFillPattern"] .thumbnail,
+						&[data-target="dlgFillColor"] .thumbnail {
+							&:before {
+								top: 0;
+								left: 0;
+								width: inherit;
+								height: inherit;
+								background: url(~/icons/layer-fill.png) 50% 50% / contain no-repeat;
+								filter: none;
+								box-shadow: none;
+								border: 0;
+								transform: translate(0,0);
+							}
+
+							&:after {
+								top: 1px;
+								left: 1px;
+								width: 26px;
+								height: 26px;
+								display: block;
+							}
+						}
+
+						.thumbnail {
+							--cW: calc( var( --aW ) * 0.875 );
+							--cH: calc( var( --aH ) * 0.875 );
+							--m: 6px;
+
+							&:before {
+								box-shadow: none;
+								background-size: 17px auto;
+								background-position: 50% 50%;
+								background-repeat: no-repeat;
+								filter: contrast(.35) invert(1) drop-shadow(0 1px 0 #0117);
+								border: 0;
+							}
+
+							&:after {
+								display: none;
+							}
+
+							i { display: none; }
 						}
 					}
 
@@ -5091,6 +5166,17 @@ content {
 						.thumbnail {
 							canvas { box-shadow: inset 0 0 0 1px #233; }
 							i { display: none; }
+						}
+					}
+
+					.icon.icon-clipping-mask {
+						margin: 7px 0;
+						width: 17px;
+						height: 17px;
+
+						&:after {
+							opacity: .8;
+							left: 0;
 						}
 					}
 

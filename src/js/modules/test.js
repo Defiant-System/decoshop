@@ -1,80 +1,19 @@
 
 let Test = {
-	debug: !1,
-	xLayers: `<Layers>
-					<i type="image" name="Background" w="{{w}}" h="{{h}}">
-						<fx name="Inner Shadow"/>
-						<fx name="Inner Glow" hidden="1"/>
-						<fx name="Color Overlay"/>
-						<fx name="Gradient Overlay"/>
-						<fx name="Drop Shadow"/>
-					</i>
-					<i type="group" name="Folder" expanded="1">
-						<i type="text" name="Some Text 1"/>
-						<i type="group" name="Folder 1" expanded="1">
-							<i type="group" name="Folder 4" />
-							<i type="group" name="Folder 3">
-								<i type="text" name="Some Text 2"/>
-							</i>
-						</i>
-						<i type="group" name="Folder 2" />
-					</i>
-					<i type="image" name="Flower" w="{{w}}" h="{{h}}" mask="shape-1">
-						<fx name="Inner Glow" hidden="1"/>
-						<fx name="Drop Shadow"/>
-					</i>
-				</Layers>`,
-	xLayersBig: `<Layers>
-			<i type="group" name="Landscape" expanded="1">
-				<i type="smart" name="Flower1" bg="/cdn/img/2d-samples/robert-collins.jpg" w="{{w}}" h="{{h}}"/>
-				<i type="shape" name="Star Shape Very long name here" hidden="1"/>
-				<i type="group" name="Sub folder" hidden="1">
-					<i type="text" name="Some Text Very long name here"/>
-				</i>
-				<i type="text" name="Some Text">
-					<fx name="Inner Shadow"/>
-					<fx name="Inner Glow" hidden="1"/>
-					<fx name="Color Overlay"/>
-					<fx name="Gradient Overlay"/>
-					<fx name="Drop Shadow"/>
-				</i>
-			</i>
-			<i type="group" name="Folder" expanded="1">
-				<i type="text" name="Some Text 2"/>
-				<i type="group" name="Sub folder 1" expanded="1">
-					<i type="group" name="Sub folder 2" expanded="1">
-						<i type="group" name="Sub folder 3" expanded="1">
-							<i type="group" name="Sub folder 4" expanded="1">
-								<i type="text" name="Some Text Very long name here"/>
-							</i>
-							<i type="text" name="Some Text Very long name here"/>
-						</i>
-					</i>
-					<i type="text" name="Some Text Very long name here"/>
-				</i>
-			</i>
-			<i type="group" name="Folder" expanded="1">
-				<i type="text" name="Some Text 1"/>
-				<i type="group" name="Folder 1" expanded="1">
-					<i type="group" name="Folder 4" />
-					<i type="group" name="Folder 3">
-						<i type="text" name="Some Text 2"/>
-					</i>
-				</i>
-				<i type="group" name="Folder 2" />
-			</i>
-		</Layers>`,
 	init(APP) {
+		this.debug = 1;
+		this.xLayers = xLayersSimple;
+
 		// return;
 
 		// reset content view "animations"
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		// setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
+		setTimeout(() => APP.els.content.find(`.sample:nth(0)`).trigger("click"), 100);
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/girl.psd"] });
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/beyond-2.psd"] });
-		APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
+		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
@@ -157,4 +96,81 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.liq-tool:nth(0)`).trigger("click"), 900);
 	}
 };
+
+let xLayersSimple = `<Layers>
+					<i type="adj" target="dlgLevels" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgCurves" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgExposure" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgVibrance" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgColorBalance" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgBrightnessContrast" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgFillColor" color="#f00" name="Color Fill" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgFillGradient" gradient="#f00" name="Gradient Fill" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="adj" target="dlgFillPattern" pattern="#f00" name="Pattern Fill" w="{{w}}" h="{{h}}" mask="shape-1"/>
+					<i type="image" name="Clipping Mask" w="{{w}}" h="{{h}}" clip="1"/>
+					<i type="image" name="Flower" w="{{w}}" h="{{h}}"/>
+				</Layers>`;
+let xLayersMid = `<Layers>
+					<i type="image" name="Background" w="{{w}}" h="{{h}}">
+						<fx name="Inner Shadow"/>
+						<fx name="Inner Glow" hidden="1"/>
+						<fx name="Color Overlay"/>
+						<fx name="Gradient Overlay"/>
+						<fx name="Drop Shadow"/>
+					</i>
+					<i type="group" name="Folder" expanded="1">
+						<i type="text" name="Some Text 1"/>
+						<i type="group" name="Folder 1" expanded="1">
+							<i type="group" name="Folder 4" />
+							<i type="group" name="Folder 3">
+								<i type="text" name="Some Text 2"/>
+							</i>
+						</i>
+						<i type="group" name="Folder 2" />
+					</i>
+					<i type="image" name="Flower" w="{{w}}" h="{{h}}" mask="shape-1">
+						<fx name="Inner Glow" hidden="1"/>
+						<fx name="Drop Shadow"/>
+					</i>
+				</Layers>`;
+let xLayersBig = `<Layers>
+			<i type="group" name="Landscape" expanded="1">
+				<i type="smart" name="Flower1" bg="/cdn/img/2d-samples/robert-collins.jpg" w="{{w}}" h="{{h}}"/>
+				<i type="shape" name="Star Shape Very long name here" hidden="1"/>
+				<i type="group" name="Sub folder" hidden="1">
+					<i type="text" name="Some Text Very long name here"/>
+				</i>
+				<i type="text" name="Some Text">
+					<fx name="Inner Shadow"/>
+					<fx name="Inner Glow" hidden="1"/>
+					<fx name="Color Overlay"/>
+					<fx name="Gradient Overlay"/>
+					<fx name="Drop Shadow"/>
+				</i>
+			</i>
+			<i type="group" name="Folder" expanded="1">
+				<i type="text" name="Some Text 2"/>
+				<i type="group" name="Sub folder 1" expanded="1">
+					<i type="group" name="Sub folder 2" expanded="1">
+						<i type="group" name="Sub folder 3" expanded="1">
+							<i type="group" name="Sub folder 4" expanded="1">
+								<i type="text" name="Some Text Very long name here"/>
+							</i>
+							<i type="text" name="Some Text Very long name here"/>
+						</i>
+					</i>
+					<i type="text" name="Some Text Very long name here"/>
+				</i>
+			</i>
+			<i type="group" name="Folder" expanded="1">
+				<i type="text" name="Some Text 1"/>
+				<i type="group" name="Folder 1" expanded="1">
+					<i type="group" name="Folder 4" />
+					<i type="group" name="Folder 3">
+						<i type="text" name="Some Text 2"/>
+					</i>
+				</i>
+				<i type="group" name="Folder 2" />
+			</i>
+		</Layers>`;
 

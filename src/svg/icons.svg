@@ -169,12 +169,13 @@
 	<svg id="tool-curves" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
-			.st1{opacity:0.35;fill:none;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:none;stroke:#3334;stroke-miterlimit:10;}
+			.st2{fill:none;stroke:#333c;stroke-miterlimit:10;}
 		</style>
 		<rect x="1.5" y="1.6" class="st0" width="13.9" height="13.9"/>
 		<line class="st1" x1="8.5" y1="1.5" x2="8.5" y2="15.4"/>
 		<line class="st1" x1="15.4" y1="8.6" x2="1.5" y2="8.6"/>
-		<path class="st0" d=" "/>
+		<path class="st2" d="M1.9,15.5c3.1,0,6.5-3.1,6.5-6.9s3.6-7,6.4-7"/>
 	</svg>
 
 	<svg id="tool-exposure" viewBox="0 0 17 17">
@@ -2741,6 +2742,18 @@
 		<rect x="2" y="6" class="st0" width="10" height="2"/>
 	</svg>
 
+	<svg id="layer-fill" viewBox="0 0 32 32">
+		<style type="text/css">
+			.st0{fill:#eff2;stroke:#233;}
+			.st1{fill:#eff4;stroke:#233;}
+			.st2{fill:none;stroke:#233;stroke-miterlimit:10;}
+		</style>
+		<rect class="st0" x="3.5" y="3.5" class="st0" width="25" height="25"/>
+		<rect class="st1" x="3.5" y="20.5" class="st0" width="25" height="8"/>
+		<line class="st2" x1="6" y1="24.5" x2="26" y2="24.5"/>
+		<line class="st2" x1="21.5" y1="22.5" x2="21.5" y2="26.5"/>
+	</svg>
+
 	<svg id="icon-bars" viewBox="0 0 32 9">
 		<rect fill="#777" x="1" width="2" height="9"/>
 		<rect fill="#777" x="5" width="2" height="9"/>
@@ -2789,6 +2802,15 @@
 			.st0{fill:#fff7;stroke:#333;stroke-linejoin:round;stroke-miterlimit:10;}
 		</style>
 		<rect x=".5" y=".5" class="st0" width="3" height="11"/>
+	</svg>
+
+	<svg id="icon-clipping-mask" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:none;stroke:#333;stroke-miterlimit:10;}
+			.st1{fill:#333;}
+		</style>
+		<polyline class="st0" points="13.5,7.5 8.5,7.5 8.5,13.5 "/>
+		<polygon class="st1" points="8.5,14.5 5.5,11.5 11.5,11.5 "/>
 	</svg>
 
 	<svg id="icon-black-white" viewBox="0 0 17 17">

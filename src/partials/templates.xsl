@@ -168,6 +168,17 @@
 				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
 			</div>
 		</xsl:when>
+		<xsl:when test="@type = 'adj'">
+			<div class="row" data-layer="adj">
+				<xsl:attribute name="data-target"><xsl:value-of select="@target"/></xsl:attribute>
+				<xsl:attribute name="style">
+					--w: <xsl:value-of select="@w"/>px;
+					--h: <xsl:value-of select="@h"/>px;
+				</xsl:attribute>
+				<xsl:call-template name="layer-row-body"/>
+				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
+			</div>
+		</xsl:when>
 		<xsl:when test="@type = 'text'">
 			<div class="row" data-layer="text">
 				<xsl:attribute name="style">
@@ -198,6 +209,7 @@
 <xsl:template name="layer-row-body">
 	<div class="layer-row-body">
 		<xsl:attribute name="data-id"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:if test="@clip"><i class="icon icon-clipping-mask"></i></xsl:if>
 		<div class="thumbnail"><canvas></canvas><i></i></div>
 		<xsl:if test="@mask">
 			<i class="icon-mask-link"></i>

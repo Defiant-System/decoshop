@@ -8,6 +8,9 @@ class File {
 		this.xNode = $.nodeFromString(`<i id="${this.id}" name="${this.base}" />`);
 		this.xHistory = $.xmlFromString(`<History/>`).documentElement;
 
+		// to be used here and there
+		this.scratch = Misc.createCanvas(1, 1);
+
 		fsFile.blob.arrayBuffer().then(buffer => {
 			// last param "null" - optional completion callback
 			exportHelper.openFile({ name: this.base || "image.png" }, buffer, PP.DE, null);
@@ -132,10 +135,10 @@ class File {
 			layer.index = this.doc.B.indexOf(layer);
 
 			if (hasCanvases && layer.at == null) {
-				layer.at = Misc.createCanvas({ width, height });
-				layer.yY = Misc.createCanvas({ width, height });
-				layer.bX = Misc.createCanvas({ width, height });
-				layer.Fp = Misc.createCanvas({ width, height });
+				layer.at = Misc.createCanvas(width, height);
+				layer.yY = Misc.createCanvas(width, height);
+				layer.bX = Misc.createCanvas(width, height);
+				layer.Fp = Misc.createCanvas(width, height);
 				this.layers[id] = layer;
 
 				let maxThumbPx = Settings.thumbSize * window.devicePixelRatio,
@@ -158,6 +161,7 @@ class File {
 				let isFillWithVectorMask = !!(layer.VF() && layer.add.vmsk);
 				switch (true) {
 					case isFillWithVectorMask:
+						// if (layer.add.lyid === 29) console.log(1);
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
 						// if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
 						if (hasCanvases) {
@@ -169,18 +173,23 @@ class File {
 						type = "text";
 						break;
 					case layer.add.SoCo:
+						// if (layer.add.lyid === 29) console.log(2);
 						if (hasCanvases) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
 						break;
 					case layer.add.GdFl:
+						// if (layer.add.lyid === 29) console.log(3);
 						if (hasCanvases) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
 						break;
 					case layer.add.PtFl:
+						// if (layer.add.lyid === 29) console.log(4);
 						if (hasCanvases) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
+						// if (layer.add.lyid === 29) console.log(5);
 						if (hasCanvases) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
 						break;
 					case layer.add.SoLd:
+						// if (layer.add.lyid === 29) console.log(6);
 						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
 						break;
@@ -190,18 +199,28 @@ class File {
 					default:
 						if (hasCanvases) {
 							if (layer.Eo()) {
+								// if (layer.add.lyid === 29) console.log(7);
 								PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 							} else {
+								// if (layer.add.lyid === 29) console.log(8);
 								PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
+								extraAttr.push(`fill="1"`);
 							}
 						}
 				}
 				var rasterMask = layer.c3();
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
 				if (hasCanvases) {
+					// if (layer.add.lyid === 29) console.log(9);
 					let docBounds = new Rect(0, 0, this.doc.m, this.doc.n);
 					if (rasterMask) {
-						PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, rasterMask);
+						// smooth mask thumbnail
+						PixelUtil.e2.L6(this.scratch.ctx, maskThumbSize.x * 2, maskThumbSize.y * 2, docBounds, rasterMask);
+						layer.yY.ctx.imageSmoothingEnabled = true;
+						layer.yY.ctx.imageSmoothingQuality = "high";
+						PixelUtil.e2.OO(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y);
+						layer.yY.ctx.drawImage(this.scratch.cvs[0], 0, 0, maskThumbSize.x, maskThumbSize.y);
+						// OLD: PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, rasterMask);
 						extraAttr.push(`mask="1"`);
 					}
 					if (layer.aW() && layer.vZ(layerTreeNode) && layer.vZ(layerTreeNode).z) {
@@ -209,6 +228,7 @@ class File {
 						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, filterMask);
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
+						if (layer.add.lyid === 29) console.log(11);
 						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, layer.add.vmsk.c3(), !0);
 						// extraAttr.push(`vector="1"`);
 					}
