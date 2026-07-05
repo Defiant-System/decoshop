@@ -172,17 +172,35 @@ class File {
 						// if (hasCanvases) PixelUtil.e2.ayR(layer.at.ctx, tW, tH, layer.add.TySh);
 						type = "text";
 						break;
-					case layer.add.SoCo:
+					case !!layer.add.SoCo:
 						// if (layer.add.lyid === 37) console.log(2);
-						if (hasCanvases) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
+						if (hasCanvases) {
+							tH = 24; tW = 16;
+							PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
+							extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
+							type = "adj";
+							tW = w; tH = h;
+						}
 						break;
-					case layer.add.GdFl:
+					case !!layer.add.GdFl:
 						// if (layer.add.lyid === 37) console.log(3);
-						if (hasCanvases) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
+						if (hasCanvases) {
+							tH = 24; tW = 16;
+							PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
+							extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
+							type = "adj";
+							tW = w; tH = h;
+						}
 						break;
-					case layer.add.PtFl:
+					case !!layer.add.PtFl:
 						// if (layer.add.lyid === 37) console.log(4);
-						if (hasCanvases) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
+						if (hasCanvases) {
+							tH = 24; tW = 16;
+							// PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, layerTreeNode);
+							extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
+							type = "adj";
+							tW = w; tH = h;
+						}
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
 						// if (layer.add.lyid === 37) console.log(5);
@@ -190,7 +208,7 @@ class File {
 						extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
 						type = "adj";
 						break;
-					case layer.add.SoLd:
+					case !!layer.add.SoLd:
 						// if (layer.add.lyid === 37) console.log(6);
 						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
@@ -205,12 +223,11 @@ class File {
 								PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 							} else {
 								// if (layer.add.lyid === 37) console.log(8);
-								
 								PixelUtil.e2.abf(layer.at.ctx, w, h) // locked / no pixel data → placeholder
-								extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
-								type = "adj";
-								tW = w;
-								tH = h;
+								// extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
+								// type = "adj";
+								// tW = w;
+								// tH = h;
 							}
 						}
 				}
@@ -276,7 +293,7 @@ class File {
 	getLayerKindTarget(layer) {
 		switch (true) {
 			case !!layer.add.SoCo: return "dlgFillColor";
-			case !!layer.add.GrFl: return "dlgFillGradient";
+			case !!layer.add.GdFl: return "dlgFillGradient";
 			case !!layer.add.PtFl: return "dlgFillPattern";
 			default:
 				let rec = {

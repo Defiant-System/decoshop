@@ -15782,7 +15782,7 @@ PixelUtil.e2.auB = function(l, d, G, b) {
 	PixelUtil.e2.OO(l, d, G);
 	l.fillStyle = PixelUtil.e2.cc(b.Clr.v);
 	l.fillRect(0, 0, d, G);
-	PixelUtil.e2.LZ(l, d, G)
+	// PixelUtil.e2.LZ(l, d, G)
 };
 
 PixelUtil.e2.Tl = null;
@@ -15841,7 +15841,7 @@ PixelUtil.e2.aps = function(l, d, G, b) {
 		t = l.getImageData(0, 0, V, Q);
 	PixelUtil.color.renderGradient(b.Grad.v, new Uint8Array(t.data.buffer), new Rect(0, 0, V, Q), [1 / V, 0, 0, 1 / Q], V / 2, Q / 2, false, 0, 16711680, 65280);
 	l.putImageData(t, 0, 0);
-	PixelUtil.e2.LZ(l, d, G)
+	// PixelUtil.e2.LZ(l, d, G)
 };
 
 PixelUtil.e2.apY = function(l, d, G, b, V) {
@@ -15851,7 +15851,7 @@ PixelUtil.e2.apY = function(l, d, G, b, V) {
 	if (t == null) return;
 	var I = t.Rj[1];
 	PixelUtil.e2.ho(l, d, G, I, t.Rj[0], I, false);
-	PixelUtil.e2.LZ(Q, d, G)
+	// PixelUtil.e2.LZ(Q, d, G)
 };
 
 PixelUtil.e2.D9 = function(l, d, G) {
