@@ -161,7 +161,7 @@ class File {
 				let isFillWithVectorMask = !!(layer.VF() && layer.add.vmsk);
 				switch (true) {
 					case isFillWithVectorMask:
-						// if (layer.add.lyid === 19) console.log(1);
+						// if (layer.add.lyid === 37) console.log(1);
 						if (hasCanvases && layer.add.vstk) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1, null, !layer.add.vstk.fillEnabled.v && !layer.add.vstk.strokeEnabled.v);
 						// if (hasCanvases) PixelUtil.e2.alc(layer.at.ctx, tW, tH)
 						if (hasCanvases) {
@@ -173,25 +173,25 @@ class File {
 						type = "text";
 						break;
 					case layer.add.SoCo:
-						// if (layer.add.lyid === 19) console.log(2);
+						// if (layer.add.lyid === 37) console.log(2);
 						if (hasCanvases) PixelUtil.e2.auB(layer.at.ctx, tW, tH, layer.add.SoCo);
 						break;
 					case layer.add.GdFl:
-						// if (layer.add.lyid === 19) console.log(3);
+						// if (layer.add.lyid === 37) console.log(3);
 						if (hasCanvases) PixelUtil.e2.aps(layer.at.ctx, tW, tH, layer.add.GdFl);
 						break;
 					case layer.add.PtFl:
-						// if (layer.add.lyid === 19) console.log(4);
+						// if (layer.add.lyid === 37) console.log(4);
 						if (hasCanvases) PixelUtil.e2.apY(layer.at.ctx, tW, tH, layer.add.PtFl, l);
 						break;
 					case LayerEffectsHelper.detectAdjustmentKey(layer.add) != null:
-						// if (layer.add.lyid === 19) console.log(5);
+						// if (layer.add.lyid === 37) console.log(5);
 						// if (hasCanvases) PixelUtil.e2.aa7(layer.at.ctx, tW, tH, layer.add);
-						extraAttr.push(`target="dlgHueSaturation"`);
+						extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
 						type = "adj";
 						break;
 					case layer.add.SoLd:
-						// if (layer.add.lyid === 19) console.log(6);
+						// if (layer.add.lyid === 37) console.log(6);
 						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
 						break;
@@ -201,41 +201,46 @@ class File {
 					default:
 						if (hasCanvases) {
 							if (layer.Eo()) {
-								// if (layer.add.lyid === 19) console.log(7);
+								// if (layer.add.lyid === 37) console.log(7);
 								PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
 							} else {
-								// if (layer.add.lyid === 19) console.log(8);
-								if (layer.add.lyid === 19) console.log(layer);
-								PixelUtil.e2.abf(layer.at.ctx, tW, tH) // locked / no pixel data → placeholder
-								extraAttr.push(`target="dlgFillColor"`);
+								// if (layer.add.lyid === 37) console.log(8);
+								
+								PixelUtil.e2.abf(layer.at.ctx, w, h) // locked / no pixel data → placeholder
+								extraAttr.push(`target="${this.getLayerKindTarget(layer)}"`);
 								type = "adj";
+								tW = w;
+								tH = h;
 							}
 						}
 				}
 				if (layer.usesClippingMask) extraAttr.push(`clip="1"`);
-
+								
 				var rasterMask = layer.c3();
 				// Draw auxiliary thumbnails for masks (always scaled to document bounds).
 				if (hasCanvases) {
-					// if (layer.add.lyid === 19) console.log(9);
+					// if (layer.add.lyid === 37) console.log(9);
 					let docBounds = new Rect(0, 0, this.doc.m, this.doc.n);
 					if (rasterMask) {
+						// use thumbnail dimensions
+						tW = maskThumbSize.x;
+						tH = maskThumbSize.y;
 						// smooth mask thumbnail
-						PixelUtil.e2.L6(this.scratch.ctx, maskThumbSize.x * 2, maskThumbSize.y * 2, docBounds, rasterMask);
+						PixelUtil.e2.L6(this.scratch.ctx, tW * 2, tH * 2, docBounds, rasterMask);
 						layer.yY.ctx.imageSmoothingEnabled = true;
 						layer.yY.ctx.imageSmoothingQuality = "high";
-						PixelUtil.e2.OO(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y);
-						layer.yY.ctx.drawImage(this.scratch.cvs[0], 0, 0, maskThumbSize.x, maskThumbSize.y);
-						// OLD: PixelUtil.e2.L6(layer.yY.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, rasterMask);
+						PixelUtil.e2.OO(layer.yY.ctx, tW, tH);
+						layer.yY.ctx.drawImage(this.scratch.cvs[0], 0, 0, tW, tH);
+						// OLD: PixelUtil.e2.L6(layer.yY.ctx, tW, tH, docBounds, rasterMask);
 						extraAttr.push(`mask="1"`);
 					}
 					if (layer.aW() && layer.vZ(layerTreeNode) && layer.vZ(layerTreeNode).z) {
-						// if (layer.add.lyid === 19) console.log(10);
+						// if (layer.add.lyid === 37) console.log(10);
 						var filterMask = layer.vZ(layerTreeNode).z;
 						PixelUtil.e2.L6(layer.Fp.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, filterMask);
 					}
 					if (!isFillWithVectorMask && layer.add.vmsk) {
-						// if (layer.add.lyid === 19) console.log(11);
+						// if (layer.add.lyid === 37) console.log(11);
 						PixelUtil.e2.L6(layer.bX.ctx, maskThumbSize.x, maskThumbSize.y, docBounds, layer.add.vmsk.c3(), !0);
 						// extraAttr.push(`vector="1"`);
 					}
@@ -266,6 +271,39 @@ class File {
 			if (layerTreeNode.children) walkChildren(xNode);
 		}
 		return xNode;
+	}
+
+	getLayerKindTarget(layer) {
+		switch (true) {
+			case !!layer.add.SoCo: return "dlgFillColor";
+			case !!layer.add.GrFl: return "dlgFillGradient";
+			case !!layer.add.PtFl: return "dlgFillPattern";
+			default:
+				let rec = {
+						brit: "dlgBrightnessContrast", // brightnessEvent
+						levl: "dlgLevels", // levels
+						curv: "dlgCurves", // curves
+						expA: "dlgExposure", // exposure
+						vibA: "dlgVibrance", // vibrance
+						hue2: "dlgHueSaturation", // hueSaturation
+						blnc: "dlgColorBalance", // colorBalance
+						blwh: "dlgBlackWhite", // blackAndWhite
+						phfl: "dlgPhotoFilter", // photoFilter
+						mixr: "dlgChannelMixer", // channelMixer
+						clrL: "dlgColorLookup", // colorLookup
+						nvrt: "dlgInvert", // invert
+						post: "dlgPosterize", // posterization
+						thrs: "dlgThreshold", // thresholdClassEvent
+						grdm: "dlgGradientMap", // gradientMapEvent
+						selc: "dlgSelectiveColor", // selectiveColor
+						rplc: "dlgReplaceColor", // replaceColo
+					},
+					adjKey = LayerEffectsHelper.detectAdjustmentKey(layer.add);
+				return rec[adjKey]
+		}
+		/*
+		*/
+
 	}
 
 	getLayerFxList(layer) {

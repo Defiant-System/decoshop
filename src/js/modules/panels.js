@@ -306,9 +306,9 @@ const Panels = {
 						if (!lId) return;
 						// copy contents of canvas in memory
 						let layer = APP.file.getlayerImageData(lId);
-						cvs.width = layer.at.cvs[0].width;
-						cvs.height = layer.at.cvs[0].height;
-						// ctx.drawImage(layer.yY.cvs[0], 0, 0);
+						cvs.width = layer.yY.cvs[0].width;
+						cvs.height = layer.yY.cvs[0].height;
+						ctx.drawImage(layer.yY.cvs[0], 0, 0);
 					});
 					break;
 				case "select-layer":
