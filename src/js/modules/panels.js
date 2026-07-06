@@ -326,13 +326,51 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
+				// native events
+				case "mousemove":
+					var Doc = APP.file?.doc,
+						docPoint = Doc.u.Zx(event.offsetX, event.offsetY),
+						pixelCoord = new Point2D(Math.floor(docPoint.x), Math.floor(docPoint.y)),
+						r = 0,
+						g = 0,
+						b = 0,
+						a = 0;
+					// Sample composite pixels when cursor is in-bounds and no vector selection is active
+					if (!Doc.ajH() && new Rect(0, 0, Doc.m - 1, Doc.n - 1).xC(pixelCoord)) {
+						var composite = Doc.LT(),
+							pixelOffset = Doc.m * pixelCoord.y + pixelCoord.x << 2;
+						r = composite[pixelOffset + 0],
+						g = composite[pixelOffset + 1],
+						b = composite[pixelOffset + 2],
+						a = composite[pixelOffset + 3];
+					}
+					Self.els.rgbR.html(r);
+					Self.els.rgbG.html(g);
+					Self.els.rgbB.html(b);
+					Self.els.rgbA.html(a);
+					let hsv = PixelUtil.rgbToHsv(r, g, b);
+					Self.els.hslH.html(`${Math.round(hsv.Tq * 360)}°`);
+					Self.els.hslS.html(`${Math.round(hsv.Lm * 100)}%`);
+					Self.els.hslB.html(`${Math.round(hsv.k * 100 / 255)}%`);
+
+					let units = PP.fB,
+						displayCoord = Doc.u.N > 1 ? new Point2D(docPoint.x, docPoint.y) : pixelCoord,
+						mX = PixelUtil.y0.ij(displayCoord.x, Doc.m7, units, Doc.m),
+						mY = PixelUtil.y0.ij(displayCoord.y, Doc.m7, units, Doc.n);
+					Self.els.mouseX.html(mX);
+					Self.els.mouseY.html(mY);
+
+					// TODO: rect "width" & "height"
+					break;
+
+				// custom events
 				case "init-panel":
 					el = APP.els.content.find(`[data-box="info"] .info-wrapper`);
 					Self.els = {
 						root: el,
 						hslH: el.find(".value.hslH"),
 						hslS: el.find(".value.hslS"),
-						hslL: el.find(".value.hslL"),
+						hslB: el.find(".value.hslB"),
 						rgbR: el.find(".value.rgbR"),
 						rgbG: el.find(".value.rgbG"),
 						rgbB: el.find(".value.rgbB"),
@@ -345,10 +383,12 @@ const Panels = {
 					};
 					break;
 				case "enable-panel":
-					console.log(event);
+					// bind event handler
+					APP.els.cvs.on("mousemove", Self.dispatch);
 					break;
 				case "disable-panel":
-					console.log(event);
+					// unbind event handler
+					APP.els.cvs.off("mousemove", Self.dispatch);
 					break;
 			}
 		}
