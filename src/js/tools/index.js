@@ -32,7 +32,8 @@
 			case "toggle-sidebar":
 				value = APP.els.content.hasClass("slim-sidebar");
 				Self.els.toolSidebar.toggleClass("icon-toggle-sidebar", value);
-				APP.els.content.toggleClass("slim-sidebar", value);
+				Self.els.toolPanel.removeClass("icon-toggle-panels");
+				APP.els.content.removeClass("full-layers").toggleClass("slim-sidebar", value);
 				// auto close open extras box
 				APP.sidebar.els.extraBar.find(`.tool.down`).trigger("click");
 				// update view state / "available rect"

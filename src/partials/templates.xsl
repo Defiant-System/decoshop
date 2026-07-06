@@ -176,49 +176,10 @@
 				</xsl:for-each>
 			</div>
 		</xsl:when>
-		<xsl:when test="@type = 'smart'">
-			<div class="row" data-layer="smart">
-				<xsl:attribute name="style">
-					--w: <xsl:value-of select="@w"/>px;
-					--h: <xsl:value-of select="@h"/>px;
-				</xsl:attribute>
-				<xsl:call-template name="layer-row-body"/>
-				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
-			</div>
-		</xsl:when>
-		<xsl:when test="@type = 'shape'">
-			<div class="row" data-layer="shape">
-				<xsl:attribute name="style">
-					--w: <xsl:value-of select="@w"/>px;
-					--h: <xsl:value-of select="@h"/>px;
-				</xsl:attribute>
-				<xsl:call-template name="layer-row-body"/>
-				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
-			</div>
-		</xsl:when>
-		<xsl:when test="@type = 'adj'">
-			<div class="row" data-layer="adj">
-				<xsl:attribute name="data-target"><xsl:value-of select="@target"/></xsl:attribute>
-				<xsl:attribute name="style">
-					--w: <xsl:value-of select="@w"/>px;
-					--h: <xsl:value-of select="@h"/>px;
-				</xsl:attribute>
-				<xsl:call-template name="layer-row-body"/>
-				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
-			</div>
-		</xsl:when>
-		<xsl:when test="@type = 'text'">
-			<div class="row" data-layer="text">
-				<xsl:attribute name="style">
-					--w: <xsl:value-of select="@w"/>px;
-					--h: <xsl:value-of select="@h"/>px;
-				</xsl:attribute>
-				<xsl:call-template name="layer-row-body"/>
-				<xsl:if test="count(./fx)"><xsl:call-template name="layer-row-fx"/></xsl:if>
-			</div>
-		</xsl:when>
+
 		<xsl:otherwise>
-			<div data-layer="image">
+			<div>
+				<xsl:attribute name="data-layer"><xsl:value-of select="@type"/></xsl:attribute>
 				<xsl:attribute name="class">row 
 					<xsl:if test="@fx-expanded = 1">fx-expand </xsl:if>
 				</xsl:attribute>

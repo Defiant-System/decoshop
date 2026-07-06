@@ -25,6 +25,11 @@
 		switch (event.type) {
 			case "sidebar-tools":
 				el = $(event.target);
+				if (APP.els.content.hasClass("full-layers")) {
+					Self.els.root.find(`.box-head > div[data-content="${el.data("target")}"]`).trigger("click");
+					APP.tools.els.toolPanel.trigger("click");
+					return;
+				}
 				Self.els.root.find(`.box-head > div[data-content="${el.data("target")}"]`).trigger("click");
 				APP.tools.dispatch({ type: "toggle-sidebar" });
 				break;
