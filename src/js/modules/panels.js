@@ -127,6 +127,7 @@ const Panels = {
 							case -2: // r
 							case -3: // g
 							case -4: // b
+								if (rEl.parent().find(".icon-eye-off").length > 1) v = false;
 								rEl.parent().find(`.row[data-id="-1"] .icon-eye-on`).toggleClass(`icon-eye-off`, v);
 								break;
 						}
@@ -145,6 +146,20 @@ const Panels = {
 								break;
 						}
 					}
+
+					let MX = [0, 0, 0]
+					rEl.parent().find(`.icon-eye-on`).map(iElem => {
+						let iEl = $(iElem),
+							id = Math.abs(+iEl.parents(".row").data("id"));
+						if ([2, 3, 4].includes(id)) {
+							MX[id-2] = iEl.hasClass("icon-eye-off") ? 0 : 1;
+						}
+					});
+					let action = new Action(ActionTypes.E.v, true);
+					action.G = CanvasTools._O;
+					action.data = { a: "setcls", MX };
+					PP.dispatch(action);
+					PP.update(true);
 					break;
 			}
 		}

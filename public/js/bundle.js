@@ -106080,56 +106080,70 @@ ChannelsPanel.prototype.Yw = function (l) {
 	this._B = l;
 	this.AK();
 };
+// Rebuild the Channels panel list: RGB composite + components, layer masks, then alpha/spot channels.
 ChannelsPanel.prototype.AK = function () {
-	var _local3556 = this._B,
-		_local3553 = this.jo,
-		_local3557 = 4;
-	s.clearChildren(_local3553);
-	if (_local3556 == null || !s.isInDocument(_local3553)) return;
-	var _local3544 = _local3556.m,
-		_local3552 = _local3556.n,
-		_local3551 = new Rect(0, 0, _local3544, _local3552),
-		_local3548 = this.Pj = _local3556.u.MX.slice(0),
-		_local3559 = _local3548[0] + _local3548[1] + _local3548[2],
-		_local3545 = Math.round(34 * s.getDevicePixelRatio()),
-		_local3560 = _local3545;
-	if (_local3544 > _local3552) _local3560 = Math.round(_local3560 * _local3552 / _local3544);else
-	_local3545 = Math.round(_local3545 * _local3544 / _local3552);
-	var _local3554 = ["RGB"].concat(LayerEffectsHelper.rgbChannels);
-	for (var _local3543 = 0; _local3543 < 4; _local3543++) {
-		var _local3547 = this.fw(_local3543);
-		PixelUtil.e2.ho(_local3547, _local3545, _local3560, _local3551, _local3556.LT(), _local3551, !1, _local3543 == 0 ? null : _local3543 - 1);
-		var _local3549 = _local3543 == 0 ? _local3559 == 3 : _local3548[_local3543 - 1] == 1,
-			_local3546 = new ChannelLayerRow(-1 - _local3543, !0, !0, _local3547, _local3554[_local3543], _local3549, _local3549);
-		_local3546.parent = this;
-		_local3553.appendChild(_local3546.e);
-		s.setCanvasCssSizeForDpr(_local3547.canvas);
+	var doc = this._B,
+		listEl = this.jo,
+		nextThumbIndex = 4; // first 4 cached canvases are RGB composite + R/G/B
+	s.clearChildren(listEl);
+	if (doc == null || !s.isInDocument(listEl)) return;
+
+	var docWidth = doc.m,
+		docHeight = doc.n,
+		fullDocBounds = new Rect(0, 0, docWidth, docHeight),
+		// doc.u.MX = [R visible, G visible, B visible]; mirrored on the panel for click handlers
+		channelVisibility = this.Pj = doc.u.MX.slice(0),
+		visibleRgbCount = channelVisibility[0] + channelVisibility[1] + channelVisibility[2],
+		thumbWidth = Math.round(34 * s.getDevicePixelRatio()),
+		thumbHeight = thumbWidth;
+	// Keep thumbnail aspect ratio matching the document
+	if (docWidth > docHeight) thumbHeight = Math.round(thumbHeight * docHeight / docWidth);else
+	thumbWidth = Math.round(thumbWidth * docWidth / docHeight);
+
+	var rgbLabels = ["RGB"].concat(LayerEffectsHelper.rgbChannels);
+
+	// --- RGB composite (index 0) + R, G, B channels (indices 1–3) ---
+	// Row ids are negative: -1 = RGB, -2 = R, -3 = G, -4 = B
+	for (var channelIndex = 0; channelIndex < 4; channelIndex++) {
+		var thumbCtx = this.fw(channelIndex);
+		PixelUtil.e2.ho(thumbCtx, thumbWidth, thumbHeight, fullDocBounds, doc.LT(), fullDocBounds, !1, channelIndex == 0 ? null : channelIndex - 1);
+		var isSelected = channelIndex == 0 ? visibleRgbCount == 3 : channelVisibility[channelIndex - 1] == 1,
+			row = new ChannelLayerRow(-1 - channelIndex, !0, !0, thumbCtx, rgbLabels[channelIndex], isSelected, isSelected);
+		row.parent = this;
+		listEl.appendChild(row.e);
+		s.setCanvasCssSizeForDpr(thumbCtx.canvas);
 	}
-	for (var _local3543 = 0; _local3543 < _local3556.g.length; _local3543++) {
-		var _local3558 = _local3556.B[_local3556.g[_local3543]],
-			_local3550 = _local3558.ht;
-		if (_local3550 != 1 && _local3550 != 3) continue;
-		var _local3555 = _local3550 == 1 ? _local3558.c3() : _local3558.vZ(_local3556).z,
-			_local3547 = this.fw(_local3557 + _local3543);
-		_local3557++;
-		PixelUtil.e2.L6(_local3547, _local3545, _local3560, _local3551, _local3555);
-		var _local3546 = new ChannelLayerRow(_local3556.g[_local3543], !0, !0, _local3547, _local3558.getName() + (_local3550 == 1 ? "" : " Filter") + " Mask", !0, _local3555.jv);
-		_local3546.parent = this;
-		_local3553.appendChild(_local3546.e);
-		s.setCanvasCssSizeForDpr(_local3547.canvas);
+
+	// --- Layer masks for currently selected layers (doc.g) ---
+	// layer.ht: 1 = raster mask, 3 = filter mask; other edit targets are skipped
+	for (var selIndex = 0; selIndex < doc.g.length; selIndex++) {
+		var layer = doc.B[doc.g[selIndex]],
+			editTarget = layer.ht;
+		if (editTarget != 1 && editTarget != 3) continue;
+		var maskBuffer = editTarget == 1 ? layer.c3() : layer.vZ(doc).z,
+			thumbCtx = this.fw(nextThumbIndex + selIndex);
+		nextThumbIndex++;
+		PixelUtil.e2.L6(thumbCtx, thumbWidth, thumbHeight, fullDocBounds, maskBuffer);
+		var row = new ChannelLayerRow(doc.g[selIndex], !0, !0, thumbCtx, layer.getName() + (editTarget == 1 ? "" : " Filter") + " Mask", !0, maskBuffer.jv);
+		row.parent = this;
+		listEl.appendChild(row.e);
+		s.setCanvasCssSizeForDpr(thumbCtx.canvas);
 	}
-	for (var _local3543 = 0; _local3543 < _local3556.vj.length; _local3543++) {
-		var _local3555 = _local3556.vj[_local3543],
-			_local3547 = this.fw(_local3557 + _local3543);
-		PixelUtil.e2.L6(_local3547, _local3545, _local3560, _local3551, _local3555);
-		var _local3546 = new ChannelLayerRow(-5 - _local3543, !0, _local3555.name == "Quick Mask", _local3547, _local3555.name, _local3556.FB.indexOf(_local3543) != -1, _local3555.jv, f.yS, {
+
+	// --- Alpha / spot channels (doc.vj), including Quick Mask ---
+	// Row ids are -5 - channelIndex; doc.FB lists which alpha channels are active for editing
+	for (var alphaIndex = 0; alphaIndex < doc.vj.length; alphaIndex++) {
+		var alphaChannel = doc.vj[alphaIndex],
+			thumbCtx = this.fw(nextThumbIndex + alphaIndex);
+		PixelUtil.e2.L6(thumbCtx, thumbWidth, thumbHeight, fullDocBounds, alphaChannel);
+		var row = new ChannelLayerRow(-5 - alphaIndex, !0, alphaChannel.name == "Quick Mask", thumbCtx, alphaChannel.name, doc.FB.indexOf(alphaIndex) != -1, alphaChannel.jv, f.yS, {
 			a: LayerRecord.B1,
 			y3: "rnm",
-			sy: _local3543
+			sy: alphaIndex
 		});
-		_local3546.parent = this;
-		_local3553.appendChild(_local3546.e);
-		s.setCanvasCssSizeForDpr(_local3547.canvas);
+		row.parent = this;
+		listEl.appendChild(row.e);
+		s.setCanvasCssSizeForDpr(thumbCtx.canvas);
 	}
 };
 ChannelsPanel.prototype.resize = function (l, d) {
