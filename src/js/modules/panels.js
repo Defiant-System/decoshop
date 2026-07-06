@@ -254,7 +254,73 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "init-panel": break;
+				case "init-panel":
+					Self.root = APP.els.content.find(`.histogram-wrapper`);
+					Self.cvs = Self.root.find("canvas");
+					Self.ctx = Self.cvs[0].getContext("2d", { willReadFrequently: true });
+					
+					break;
+				case "refresh":
+					var Doc = APP.file?.doc,
+						rgba = Doc.LT(),
+						fullBounds = new Rect(0, 0, Doc.m, Doc.n),
+						pixelCount = fullBounds.O();  // Doc.m * Doc.n
+					if (Doc.P) {
+						// crop to selection, apply Doc.P.channel mask
+						pixelCount = Math.round(sum(selMask) / 255);
+					}
+					var histogram = PixelUtil.histogramFromRgba(rgba);
+					histogram[0][255] += 3 * (pixelCount - histogram[5]);
+					for (var ch = 1; ch < 4; ch++) {
+						histogram[ch][255] += pixelCount - histogram[5];
+					}
+
+
+					var channelView = 0, // Channel view: 0=RGB, 1=R, 2=G, 3=B, 4=all channels overlaid
+						// Scale bars so tallest peak uses ~60px of the 100px plot height
+						yScale = 6e3 / histogram[4];
+					
+					let drawFill = (ctx, bins, yScale) => {
+							ctx.beginPath();
+							ctx.moveTo(0, 0);
+							for (var level = 0; level < 256; level++) {
+								ctx.lineTo(level, bins[level] * yScale);
+							}
+							ctx.lineTo(256, 0);
+							ctx.closePath();
+							ctx.fillStyle = "#cddade";
+							ctx.fill();
+						};
+
+					// reset canvas
+					Self.cvs.attr({ width: 256, height: 117 });
+
+					Self.ctx.setTransform(1, 0, 0, -1, 0, 117);
+					Self.ctx.globalCompositeOperation = "lighter";
+
+					if (channelView == 0) drawFill(Self.ctx, histogram[0], yScale / 3);
+					else {
+						if (channelView < 4) drawFill(Self.ctx, histogram[channelView], yScale);
+						else {
+							drawFill(Self.ctx, histogram[1], yScale, "#ff0000");
+							drawFill(Self.ctx, histogram[2], yScale, "#00ff00");
+							drawFill(Self.ctx, histogram[3], yScale, "#0000ff");
+						}
+					}
+					Self.ctx.setTransform(1, 0, 0, 1, 0, 0);
+					if (pixelCount != null) {
+						if (channelView == 4) channelView = 0;
+						var levelSum = 0;
+						for (var level = 0; level < 256; level++) {
+							levelSum += level * histogram[channelView][level];
+						}
+						if (channelView == 0) levelSum /= 3; // luma hist sums R+G+B
+						console.log((levelSum / pixelCount).toFixed(1));
+						console.log(pixelCount);
+					}
+
+					console.log(event);
+					break;
 			}
 		}
 	},

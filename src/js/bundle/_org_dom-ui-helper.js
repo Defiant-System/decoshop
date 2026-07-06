@@ -4657,48 +4657,52 @@ HistoryPanelListItem.prototype.dispatchHistoryAction = function (l) {
 	this.dispatch(_local3497);
 };
 
+// Histogram panel: RGB channel histograms for the composite image (or current selection).
 function HistogramPanel() {
 	PanelTabBase.call(this, "Historgram", !1, "---panels/histogram", PanelTabBase.xA.a7r);
-	var _local3498 = s.createElement("div", "padded");
-	this.DK.appendChild(_local3498);
-	this.y9 = new LevelsHistogram(256, !0);
-	_local3498.appendChild(this.y9.e);
-	this.KP = null;
+	var paddedEl = s.createElement("div", "padded");
+	this.DK.appendChild(paddedEl);
+	this.y9 = new LevelsHistogram(256, !0); // 256 bins; show Mean/Pixels stats
+	paddedEl.appendChild(this.y9.e);
+	this.KP = null; // current document (set by Yw)
 }
 HistogramPanel.prototype = new PanelTabBase("");
-HistogramPanel.prototype.Yw = function (l) {
-	this.KP = l;
+HistogramPanel.prototype.Yw = function (doc) {
+	this.KP = doc;
 	this.VP();
 };
+// Rebuild histogram from composite pixels (masked to selection when doc.P is set).
 HistogramPanel.prototype.VP = function () {
-	var _local3506 = this.KP;
+	var doc = this.KP;
 	if (!s.isInDocument(this.DK)) return;
-	if (_local3506 == null || _local3506.g.length == 0) {
+	if (doc == null || doc.g.length == 0) {
 		this.y9.c(PixelUtil.histogramFromRgba(PixelUtil.allocBytes(4)));
 		return;
 	}
-	var _local3505 = _local3506.LT(),
-		_local3500 = new Rect(0, 0, _local3506.m, _local3506.n),
-		_local3504 = _local3500.O();
-	if (_local3506.P) {
-		var _local3503 = _local3506.P.rect,
-			_local3502 = PixelUtil.allocBytes(_local3503.O() * 4);
-		PixelUtil.blitRgbaRect(_local3505, _local3500, _local3502, _local3503);
-		PixelUtil.multiplyAlphaIntoRgba(_local3506.P.channel, _local3502);
-		_local3505 = _local3502;
-		_local3500 = _local3503;
-		var _local3507 = _local3506.P.channel;
-		_local3504 = 0;
-		for (var _local3499 = 0; _local3499 < _local3507.length; _local3499++) _local3504 += _local3507[_local3499];
-		_local3504 = Math.round(_local3504 / 255);
+	var rgba = doc.LT(),
+		fullBounds = new Rect(0, 0, doc.m, doc.n),
+		pixelCount = fullBounds.O();
+	if (doc.P) {
+		var selRect = doc.P.rect,
+			selRgba = PixelUtil.allocBytes(selRect.O() * 4);
+		PixelUtil.blitRgbaRect(rgba, fullBounds, selRgba, selRect);
+		PixelUtil.multiplyAlphaIntoRgba(doc.P.channel, selRgba);
+		rgba = selRgba;
+		fullBounds = selRect;
+		var selMask = doc.P.channel;
+		pixelCount = 0;
+		for (var i = 0; i < selMask.length; i++) pixelCount += selMask[i];
+		pixelCount = Math.round(pixelCount / 255);
 	}
-	var _local3501 = PixelUtil.histogramFromRgba(_local3505);
-	_local3501[0][255] += 3 * (_local3504 - _local3501[5]);
-	for (var _local3499 = 1; _local3499 < 4; _local3499++) _local3501[_local3499][255] += _local3504 - _local3501[5];
-	this.y9.c(_local3501, _local3504);
+	// histogramFromRgba returns [luma, R, G, B, totalSamples, weightedPixelSum]
+	var histogram = PixelUtil.histogramFromRgba(rgba);
+	// Correct the 255 bin when masked pixel count differs from histogram's internal sum
+	histogram[0][255] += 3 * (pixelCount - histogram[5]);
+	for (var ch = 1; ch < 4; ch++) histogram[ch][255] += pixelCount - histogram[5];
+	this.y9.c(histogram, pixelCount);
 };
-HistogramPanel.prototype.BM = function (l, d) {
-	this.y9.EB(ThemeManager.themes[l.j$]["--text-color"]);
+HistogramPanel.prototype.BM = function (prefs, theme) {
+	this.y9.EB(ThemeManager.themes[prefs.j$]["--text-color"]);
 };
 HistogramPanel.prototype.refresh = function () {
 	PanelTabBase.prototype.refresh.call(this);
@@ -4774,102 +4778,110 @@ SwatchesPanel.prototype.BM = function (l, d) {
 	}
 };
 
-function LevelsHistogram(l, d) {
+// Histogram chart widget: channel dropdown, canvas plot, optional Mean/Pixels readout.
+// binCount = number of levels (typically 256); showStats = add Mean/Pixels labels below.
+function LevelsHistogram(binCount, showStats) {
 	UIComponent.call(this);
 	this.e = s.createElement("span", "");
+	// Channel view: 0=RGB, 1=R, 2=G, 3=B, 4=all channels overlaid
 	this.HA = new DropdownMenu([12, 4], ["RGB", [13, 1, 1],
-	[13, 1, 4],
-	[13, 1, 5],
-	[12, 82]]
+		[13, 1, 4],
+		[13, 1, 5],
+		[12, 82]]
 	);
 	this.HA.addListener(ActionTypes.E.A, this.VP, this);
 	this.e.appendChild(this.HA.e);
 	s.appendBr(this.e);
-	var _local520 = s.createElement("div");
-	this.e.appendChild(_local520);
-	_local520.setAttribute("style", "background-color: var(--bg-canvas); margin:6px 0;");
+	var canvasWrap = s.createElement("div");
+	this.e.appendChild(canvasWrap);
+	canvasWrap.setAttribute("style", "background-color: var(--bg-canvas); margin:6px 0;");
 	this.T = s.createElement("canvas");
-	var _local524 = this.T;
-	_local520.appendChild(_local524);
-	_local524.width = Math.round(l * s.getDevicePixelRatio());
-	_local524.height = Math.round(100 * s.getDevicePixelRatio());
-	s.setElementSizePx(_local524, _local524.width, _local524.height);
-	_local524.style.display = "block";
-	this.k_ = _local524.getContext("2d", { willReadFrequently: true });
-	this.y9 = null;
-	this.JU = 0;
-	this.a3g = null;
-	this.ayZ = [];
-	this.xz = [];
-	var _local523 = ["Mean:", "Pixels:"],
-		_local522 = this.e;
-	if (d)
-	for (var _local519 = 0; _local519 < _local523.length; _local519++) {
-		var _local525 = new LabelItem(_local523[_local519]);
-		this.ayZ.push(_local525);
-		_local522.appendChild(_local525.e);
-		var _local521 = new LabelItem("hi");
-		this.xz.push(_local521);
-		_local522.appendChild(_local521.e);
-		s.appendBr(_local522);
+	var canvas = this.T;
+	canvasWrap.appendChild(canvas);
+	canvas.width = Math.round(binCount * s.getDevicePixelRatio());
+	canvas.height = Math.round(100 * s.getDevicePixelRatio());
+	s.setElementSizePx(canvas, canvas.width, canvas.height);
+	canvas.style.display = "block";
+	this.k_ = canvas.getContext("2d", { willReadFrequently: true });
+	this.y9 = null;   // histogram data from PixelUtil.histogramFromRgba
+	this.JU = 0;      // fill color (theme text color as int)
+	this.a3g = null;  // pixel count for stats
+	this.ayZ = [];    // stat title labels ("Mean:", "Pixels:")
+	this.xz = [];     // stat value labels
+	var statTitles = ["Mean:", "Pixels:"],
+		rootEl = this.e;
+	if (showStats)
+	for (var i = 0; i < statTitles.length; i++) {
+		var titleLabel = new LabelItem(statTitles[i]);
+		this.ayZ.push(titleLabel);
+		rootEl.appendChild(titleLabel.e);
+		var valueLabel = new LabelItem("hi");
+		this.xz.push(valueLabel);
+		rootEl.appendChild(valueLabel.e);
+		s.appendBr(rootEl);
 	}
 }
 LevelsHistogram.prototype = new UIComponent();
 LevelsHistogram.prototype.refresh = function () {
 	this.HA.refresh();
 };
-LevelsHistogram.prototype.dk = function (l) {
-	this.HA.c(l);
+LevelsHistogram.prototype.dk = function (channelIndex) {
+	this.HA.c(channelIndex);
 	this.VP();
 };
-LevelsHistogram.prototype.c = function (l, d) {
-	this.y9 = l;
-	this.a3g = d;
+// Set histogram data and redraw. histogram = [luma, R, G, B, sampleCount, weightedSum].
+LevelsHistogram.prototype.c = function (histogram, pixelCount) {
+	this.y9 = histogram;
+	this.a3g = pixelCount;
 	this.VP();
 };
-LevelsHistogram.prototype.EB = function (l) {
-	if (l == this.JU) return;
-	this.JU = l;
+LevelsHistogram.prototype.EB = function (fillColor) {
+	if (fillColor == this.JU) return;
+	this.JU = fillColor;
 	this.VP();
 };
 LevelsHistogram.prototype.VP = function () {
 	if (this.y9 == null) return;
-	var _local533 = this.T,
-		_local532 = this.k_,
-		_local527 = this.y9,
-		_local531 = this.a3g,
-		_local530 = this.HA.b(),
-		_local529 = 6e3 / _local527[4],
-		_local534 = "#" + PixelUtil.intToHex6(this.JU),
-		_local528 = LevelsHistogram.ail;
-	_local533.width = _local533.width;
-	_local532.setTransform(_local533.width / 256, 0, 0, -_local533.height / 100, 0, _local533.height);
-	_local532.globalCompositeOperation = "lighter";
-	if (_local530 == 0) _local528(_local532, _local527[0], _local529 / 3, _local534);else
-	if (_local530 < 4) _local528(_local532, _local527[_local530], _local529, _local534);else
-	{
-		_local528(_local532, _local527[1], _local529, "#ff0000");
-		_local528(_local532, _local527[2], _local529, "#00ff00");
-		_local528(_local532, _local527[3], _local529, "#0000ff");
+	var canvas = this.T,
+		ctx = this.k_,
+		histogram = this.y9,
+		pixelCount = this.a3g,
+		channelView = this.HA.b(),
+		// Scale bars so tallest peak uses ~60px of the 100px plot height
+		yScale = 6e3 / histogram[4],
+		fillHex = "#" + PixelUtil.intToHex6(this.JU),
+		drawFill = LevelsHistogram.drawHistogramFill;
+	canvas.width = canvas.width; // clear previous frame
+	ctx.setTransform(canvas.width / 256, 0, 0, -canvas.height / 100, 0, canvas.height);
+	ctx.globalCompositeOperation = "lighter";
+	if (channelView == 0) drawFill(ctx, histogram[0], yScale / 3, fillHex);
+	else {
+		if (channelView < 4) drawFill(ctx, histogram[channelView], yScale, fillHex);
+		else {
+			drawFill(ctx, histogram[1], yScale, "#ff0000");
+			drawFill(ctx, histogram[2], yScale, "#00ff00");
+			drawFill(ctx, histogram[3], yScale, "#0000ff");
+		}
 	}
-	_local532.setTransform(1, 0, 0, 1, 0, 0);
-	if (_local531 != null) {
-		if (_local530 == 4) _local530 = 0;
-		var _local535 = 0;
-		for (var _local526 = 0; _local526 < 256; _local526++) _local535 += _local526 * _local527[_local530][_local526];
-		if (_local530 == 0) _local535 /= 3;
-		this.xz[0].c((_local535 / _local531).toFixed(1) + "");
-		this.xz[1].c(_local531 + "");
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	if (pixelCount != null) {
+		if (channelView == 4) channelView = 0;
+		var levelSum = 0;
+		for (var level = 0; level < 256; level++) levelSum += level * histogram[channelView][level];
+		if (channelView == 0) levelSum /= 3; // luma hist sums R+G+B
+		this.xz[0].c((levelSum / pixelCount).toFixed(1) + "");
+		this.xz[1].c(pixelCount + "");
 	}
 };
-LevelsHistogram.ail = function (l, d, G, b) {
-	l.beginPath();
-	l.moveTo(0, 0);
-	for (var _local536 = 0; _local536 < 256; _local536++) l.lineTo(_local536, d[_local536] * G);
-	l.lineTo(256, 0);
-	l.closePath();
-	l.fillStyle = b;
-	l.fill();
+// Filled area chart for one channel's 256-bin histogram.
+LevelsHistogram.drawHistogramFill = function (ctx, bins, yScale, fillColor) {
+	ctx.beginPath();
+	ctx.moveTo(0, 0);
+	for (var level = 0; level < 256; level++) ctx.lineTo(level, bins[level] * yScale);
+	ctx.lineTo(256, 0);
+	ctx.closePath();
+	ctx.fillStyle = fillColor;
+	ctx.fill();
 };
 
 

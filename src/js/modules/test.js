@@ -71,7 +71,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(2).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.inline-menu[data-match="//PanelLayers"]`).trigger("click"), 1200);
 
-		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="channels"]`).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.box-head div[data-content="histogram"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgHueSaturation"]`).trigger("click"), 750);
 		// setTimeout(() => APP.els.content.find(`.panel-head .opt-group li[data-id="mask"]`).trigger("click"), 800);
 		
