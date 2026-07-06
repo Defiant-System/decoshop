@@ -64,6 +64,26 @@
 		<polygon class="st0" points="2.7,2.7 5.8,10.8 7.8,8.7 15.4,16.3 16.3,15.4 8.7,7.8 10.7,5.8 "/>
 	</svg>
 
+	<svg id="icon-toggle-panels" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#3332;stroke:#333;}
+			.st1{fill:#3337;stroke:#3337;}
+		</style>
+		<rect x="11.5" y="9.5" class="st0" width="5" height="6"/>
+		<rect x="11.5" y="1.5" class="st1" width="5" height="6"/>
+		<rect x="0.5" y="1.5" class="st1" width="8" height="14"/>
+	</svg>
+
+	<svg id="icon-toggle-panels-off" viewBox="0 0 17 17">
+		<style type="text/css">
+			.st0{fill:#3332;stroke:#333;}
+			.st1{fill:#3337;stroke:#3337;}
+		</style>
+		<rect x="11.5" y="4.5" class="st0" width="5" height="11"/>
+		<rect x="11.5" y="1.5" class="st1" width="5" height="1"/>
+		<rect x="0.5" y="1.5" class="st1" width="8" height="14"/>
+	</svg>
+
 	<svg id="icon-toggle-sidebar" viewBox="0 0 17 17">
 		<style type="text/css">
 			.st0{fill:#3332;stroke:#333;}

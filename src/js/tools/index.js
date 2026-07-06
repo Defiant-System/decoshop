@@ -6,7 +6,8 @@
 		// fast references
 		this.els = {
 			toolBar: window.find(".tools-bar"),
-			toolPanel: window.find(`.panel-tools .tool[data-click="toggle-sidebar"]`),
+			toolSidebar: window.find(`.panel-tools .tool[data-click="toggle-sidebar"]`),
+			toolPanel: window.find(`.panel-tools .tool[data-click="toggle-layers-panel"]`),
 			optionBar: window.find(".tools-options-bar"),
 		};
 		// all tools
@@ -30,12 +31,17 @@
 			// proxied events
 			case "toggle-sidebar":
 				value = APP.els.content.hasClass("slim-sidebar");
-				Self.els.toolPanel.toggleClass("icon-toggle-sidebar", value);
+				Self.els.toolSidebar.toggleClass("icon-toggle-sidebar", value);
 				APP.els.content.toggleClass("slim-sidebar", value);
 				// auto close open extras box
 				APP.sidebar.els.extraBar.find(`.tool.down`).trigger("click");
 				// update view state / "available rect"
 				Engine.dispatch({ type: "update-view-state" });
+				break;
+			case "toggle-layers-panel":
+				value = APP.els.content.hasClass("full-layers");
+				Self.els.toolPanel.toggleClass("icon-toggle-panels", value);
+				APP.els.content.toggleClass("full-layers", value);
 				break;
 			case "select-tool":
 				el = $(event.target);

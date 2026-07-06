@@ -5,6 +5,7 @@
 @import "bundle/ext/uzip.js"
 @import "bundle/ext/utif.js"
 @import "bundle/ext/typr.js"
+@import "bundle/ext/icc.js"
 @import "bundle/dbs.js"
 
 @import "modules/misc.js"

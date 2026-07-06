@@ -158,12 +158,63 @@ content {
 		}
 	}
 
+	&.full-layers {
+		.workspace {
+			.sidebar-wrapper {
+				.sidebar-box:nth-child(1),
+				.sidebar-box:nth-child(2) {
+					height: 27px;
+					opacity: 0;
+
+					.box-body {
+						overflow: hidden;
+					}
+				}
+
+				.sidebar-box:nth-child(2) {
+					height: 0;
+				}
+			}
+
+			.sidebar-bar {
+				opacity: 1;
+				visibility: visible;
+				bottom: auto;
+				width: 273px;
+				height: 35px;
+				border-bottom: 2px solid rgba(0,17,17,0.65);
+
+				.box-group {
+					display: inline-block;
+					padding: 0;
+					border-bottom: 0;
+					border-right: 2px solid rgba(0,17,17,0.65);
+
+					.tool {
+						margin-top: 0;
+					}
+
+					&:nth-child(3) { display: none; }
+				}
+			}
+		}
+	}
+
 	&.slim-sidebar {
+		.tools-bar {
+			.panel-tools {
+				.tool[data-click="toggle-layers-panel"] {
+					display: none;
+				}
+			}
+		}
+
 		.cvs-wrapper {
 			.cvs-helpers {
 				right: 73px;
 			}
 		}
+
 		.workspace {
 			.sidebar-wrapper {
 				right: -273px;
@@ -393,7 +444,7 @@ content {
 
 		.panel-tools {
 			position: absolute;
-			top: 36px;
+			top: 37px;
 			right: 3px;
 			// width: 80px;
 			height: 34px;
@@ -401,8 +452,11 @@ content {
 
 			.tool {
 				position: relative;
+				top: -1px;
 				display: inline-block;
 				margin: 0;
+				height: 31px;
+				width: 31px;
 
 				&:before {
 					content: "";
@@ -944,6 +998,8 @@ content {
 		&.icon-zoom-plus            { background-image: url(~/icons/icon-zoom-plus.png); }
 		&.icon-zoom-minus           { background-image: url(~/icons/icon-zoom-minus.png); }
 
+		&.icon-toggle-panels-off    { background-image: url(~/icons/icon-toggle-panels-off.png); }
+		&.icon-toggle-panels        { background-image: url(~/icons/icon-toggle-panels.png); }
 		&.icon-toggle-sidebar-off   { background-image: url(~/icons/icon-toggle-sidebar-off.png); }
 		&.icon-toggle-sidebar       { background-image: url(~/icons/icon-toggle-sidebar.png); }
 	}

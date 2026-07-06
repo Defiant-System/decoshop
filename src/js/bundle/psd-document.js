@@ -108,7 +108,6 @@ PsdDocument.prototype.Dm = function(l) {
 			this.Dm(null);
 			return
 		}
-		console.log("We got an ICC profile!", d, V);
 		try {
 			var t = ICC.U.sampleLUT(d, Q)
 		} catch (dk) {

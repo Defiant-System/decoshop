@@ -90,7 +90,7 @@ const Panels = {
 					}).then((el) => {
 						Self.dispatch({ type: "refresh-thumbnails" });
 						// auto click on a row
-						el.find(`.row:nth-child(2) .icon`).trigger("click");
+						el.find(`.row:nth-child(1) .name`).trigger("click");
 					});
 					break;
 				case "refresh-thumbnails":
@@ -155,10 +155,11 @@ const Panels = {
 							MX[id-2] = iEl.hasClass("icon-eye-off") ? 0 : 1;
 						}
 					});
-					let action = new Action(ActionTypes.E.v, true);
-					action.G = CanvasTools._O;
-					action.data = { a: "setcls", MX };
-					PP.dispatch(action);
+					// setcls is handled by Hand tool (f.Mi / _O) in the bundle, but that tool
+					// is not registered in d.map — mutate channel visibility directly instead
+					let doc = APP.file.doc;
+					doc.u.MX = MX;
+					doc.uK = doc.bV = true;
 					PP.update(true);
 					break;
 			}
