@@ -326,7 +326,30 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "init-panel": break;
+				case "init-panel":
+					el = APP.els.content.find(`[data-box="info"] .info-wrapper`);
+					Self.els = {
+						root: el,
+						hslH: el.find(".value.hslH"),
+						hslS: el.find(".value.hslS"),
+						hslL: el.find(".value.hslL"),
+						rgbR: el.find(".value.rgbR"),
+						rgbG: el.find(".value.rgbG"),
+						rgbB: el.find(".value.rgbB"),
+						rgbA: el.find(".value.rgbA"),
+						mouseX: el.find(".value.mouseX"),
+						mouseY: el.find(".value.mouseY"),
+						selHeight: el.find(".value.selHeight"),
+						selWidth: el.find(".value.selWidth"),
+						fileSize: el.find(".value.fileSize"),
+					};
+					break;
+				case "enable-panel":
+					console.log(event);
+					break;
+				case "disable-panel":
+					console.log(event);
+					break;
 			}
 		}
 	},

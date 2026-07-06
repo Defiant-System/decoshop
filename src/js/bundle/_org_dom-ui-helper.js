@@ -6732,96 +6732,106 @@ ModalDialogBase.prototype.a6i = function (l) {
 	} else this.close();
 };
 
+// Info panel: pixel values under cursor (RGBA, HSV), coordinates, and selection size.
 function InfoPanel() {
 	PanelTabBase.call(this, "Info", !1, "---panels/info", PanelTabBase.xA.aoQ);
 	this.DK.setAttribute("style", "min-width:240px;");
-	this.KP = null;
-	this.mN = null;
-	var _local3710 = this.pK = [];
-	for (var _local3709 = 0; _local3709 < 3; _local3709++) {
-		var _local3705 = s.createElement("div", "marged row");
-		this.DK.appendChild(_local3705);
-		var _local3708 = s.createElement("div", "cell");
-		_local3708.setAttribute("style", "width:10em");
-		_local3705.appendChild(_local3708);
-		var _local3707 = s.createElement("div", "cell");
-		_local3707.setAttribute("style", "width:10em");
-		_local3705.appendChild(_local3707);
-		for (var _local3704 = 0; _local3704 < (_local3709 == 2 ? 3 : 4); _local3704++) {
-			var _local3706 = new LabelItem("");
-			_local3710.push(_local3706);
-			_local3706.c(0);
-			_local3706.e.style.padding = "0";
-			var _local3711 = _local3709 != 1 || _local3704 < 2 ? _local3708 : _local3707;
-			_local3711.appendChild(_local3706.e);
-			s.appendBr(_local3711);
+	this.KP = null;  // current document (set by Yw)
+	this.mN = null;  // unit/preference settings for display (set by Yw)
+	// Flat list of all value labels; indices used by JP / XK:
+	//   0–3 = R,G,B,A  4–5 = X,Y  6–7 = W,H  8–10 = H,S,B (HSV)
+	var allLabels = this.pK = [];
+	for (var rowIndex = 0; rowIndex < 3; rowIndex++) {
+		var rowEl = s.createElement("div", "marged row");
+		this.DK.appendChild(rowEl);
+		var leftCell = s.createElement("div", "cell");
+		leftCell.setAttribute("style", "width:10em");
+		rowEl.appendChild(leftCell);
+		var rightCell = s.createElement("div", "cell");
+		rightCell.setAttribute("style", "width:10em");
+		rowEl.appendChild(rightCell);
+		var labelsInRow = rowIndex == 2 ? 3 : 4;
+		for (var labelIndex = 0; labelIndex < labelsInRow; labelIndex++) {
+			var label = new LabelItem("");
+			allLabels.push(label);
+			label.c(0);
+			label.e.style.padding = "0";
+			// Row 1 splits across two columns: X,Y left; W,H right. Rows 0 and 2 use left only.
+			var targetCell = rowIndex != 1 || labelIndex < 2 ? leftCell : rightCell;
+			targetCell.appendChild(label.e);
+			s.appendBr(targetCell);
 		}
-		if (_local3709 < 2) s.appendHr(this.DK);
+		if (rowIndex < 2) s.appendHr(this.DK);
 	}
-	this.Nt = _local3710[4];
-	this.lw = _local3710[5];
-	this.SU = _local3710[6];
-	this.it = _local3710[7];
+	this.Nt = allLabels[4];  // X coordinate label
+	this.lw = allLabels[5];  // Y coordinate label
+	this.SU = allLabels[6];  // selection width label
+	this.it = allLabels[7];  // selection height label
 }
 InfoPanel.prototype = new PanelTabBase("");
-InfoPanel.prototype.JP = function (l, d, G, b, V) {
-	if (!s.isInDocument(this.DK) || l == null) return;
-	var _local3716 = l.u.Zx(V.x, V.y),
-		_local3721 = new Point2D(Math.floor(_local3716.x), Math.floor(_local3716.y));
-	if (!V.oW) {
-		var _local3713 = 0,
-			_local3722 = 0,
-			_local3718 = 0,
-			_local3715 = 0,
-			_local3717 = this.pK;
-		if (!V.oW && !l.ajH() && new Rect(0, 0, l.m - 1, l.n - 1).xC(_local3721)) {
-			var _local3714 = l.LT(),
-				_local3712 = l.m * _local3721.y + _local3721.x << 2;
-			_local3713 = _local3714[_local3712 + 0];
-			_local3722 = _local3714[_local3712 + 1];
-			_local3718 = _local3714[_local3712 + 2];
-			_local3715 = _local3714[_local3712 + 3];
+// Update cursor readout on pointer move. Called from PanelListContainer.JP.
+// doc = document, app = Photopea app, units = display units, kbState = keyboard state, pointer = {x,y,oW} in device px.
+InfoPanel.prototype.JP = function (doc, app, units, kbState, pointer) {
+	if (!s.isInDocument(this.DK) || doc == null) return;
+	var docPoint = doc.u.Zx(pointer.x, pointer.y),
+		pixelCoord = new Point2D(Math.floor(docPoint.x), Math.floor(docPoint.y));
+	if (!pointer.oW) {
+		var r = 0,
+			g = 0,
+			b = 0,
+			a = 0,
+			labels = this.pK;
+		// Sample composite pixels when cursor is in-bounds and no vector selection is active
+		if (!pointer.oW && !doc.ajH() && new Rect(0, 0, doc.m - 1, doc.n - 1).xC(pixelCoord)) {
+			var composite = doc.LT(),
+				pixelOffset = doc.m * pixelCoord.y + pixelCoord.x << 2;
+			r = composite[pixelOffset + 0];
+			g = composite[pixelOffset + 1];
+			b = composite[pixelOffset + 2];
+			a = composite[pixelOffset + 3];
 		}
-		_local3717[0].c("R: " + _local3713);
-		_local3717[1].c("G: " + _local3722);
-		_local3717[2].c("B: " + _local3718);
-		_local3717[3].c("A: " + _local3715);
-		var _local3719 = PixelUtil.rgbToHsv(_local3713, _local3722, _local3718);
-		_local3717[8].c("H: " + Math.round(_local3719.Tq * 360) + "\xB0");
-		_local3717[9].c("S: " + Math.round(_local3719.Lm * 100) + "%");
-		_local3717[10].c("B: " + Math.round(_local3719.k * 100 / 255) + "%");
+		labels[0].c("R: " + r);
+		labels[1].c("G: " + g);
+		labels[2].c("B: " + b);
+		labels[3].c("A: " + a);
+		var hsv = PixelUtil.rgbToHsv(r, g, b);
+		labels[8].c("H: " + Math.round(hsv.Tq * 360) + "\xB0");
+		labels[9].c("S: " + Math.round(hsv.Lm * 100) + "%");
+		labels[10].c("B: " + Math.round(hsv.k * 100 / 255) + "%");
 	}
-	var _local3720 = l.u.N > 1 ? new Point2D(_local3716.x, _local3716.y) : _local3721;
-	this.Nt.c("X: " + PixelUtil.y0.ij(_local3720.x, l.m7, G, l.m));
-	this.lw.c("Y: " + PixelUtil.y0.ij(_local3720.y, l.m7, G, l.n));
+	// Show sub-pixel coordinates when zoomed in past 100%
+	var displayCoord = doc.u.N > 1 ? new Point2D(docPoint.x, docPoint.y) : pixelCoord;
+	this.Nt.c("X: " + PixelUtil.y0.ij(displayCoord.x, doc.m7, units, doc.m));
+	this.lw.c("Y: " + PixelUtil.y0.ij(displayCoord.y, doc.m7, units, doc.n));
 	this.XK();
 };
+// Update W/H from the active selection (marquee rect or path bounds).
 InfoPanel.prototype.XK = function () {
-	var _local3726 = this.KP,
-		_local3725 = this.mN,
-		_local3723 = 0,
-		_local3724 = 0;
-	if (_local3726 && _local3725) {
-		if (_local3726.u.M9) {
-			_local3723 = _local3726.u.M9.m;
-			_local3724 = _local3726.u.M9.n;
-		} else if (_local3726.P) {
-			_local3723 = _local3726.P.rect.m;
-			_local3724 = _local3726.P.rect.n;
+	var doc = this.KP,
+		units = this.mN,
+		selWidth = 0,
+		selHeight = 0;
+	if (doc && units) {
+		if (doc.u.M9) {
+			selWidth = doc.u.M9.m;
+			selHeight = doc.u.M9.n;
+		} else if (doc.P) {
+			selWidth = doc.P.rect.m;
+			selHeight = doc.P.rect.n;
 		}
-		_local3723 = PixelUtil.y0.ij(Math.abs(_local3723), _local3726.m7, _local3725, _local3726.m);
-		_local3724 = PixelUtil.y0.ij(Math.abs(_local3724), _local3726.m7, _local3725, _local3726.n);
+		selWidth = PixelUtil.y0.ij(Math.abs(selWidth), doc.m7, units, doc.m);
+		selHeight = PixelUtil.y0.ij(Math.abs(selHeight), doc.m7, units, doc.n);
 	}
-	this.SU.c("Width".charAt(0) + ": " + _local3723);
-	this.it.c("Height".charAt(0) + ": " + _local3724);
+	this.SU.c("Width".charAt(0) + ": " + selWidth);
+	this.it.c("Height".charAt(0) + ": " + selHeight);
 };
 InfoPanel.prototype.refresh = function () {
 	PanelTabBase.prototype.refresh.call(this);
 	this.XK();
 };
-InfoPanel.prototype.Yw = function (l, d, G) {
-	this.KP = l;
-	this.mN = G;
+InfoPanel.prototype.Yw = function (doc, app, units) {
+	this.KP = doc;
+	this.mN = units;
 	this.XK();
 };
 

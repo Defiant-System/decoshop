@@ -19,7 +19,7 @@ let Test = {
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
 
 
-		setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-layers-panel"]`).trigger("click"), 1500);
+		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-layers-panel"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-sidebar"]`).trigger("click"), 100);
 		// setTimeout(() => APP.els.content.find(`.sidebar-bar .tool[data-target="color"]`).trigger("click"), 700);
 
@@ -68,7 +68,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
 
 
-		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(0).trigger("click"), 500);
+		setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(2).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.inline-menu[data-match="//PanelLayers"]`).trigger("click"), 1200);
 
 		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="channels"]`).trigger("click"), 500);

@@ -79,12 +79,14 @@
 			case "extras-tool-box":
 				el = $(event.target).parents("?.tool");
 				if (!el.length) return;
-				pEl = Self.els.extras.find(`div[data-box="${el.data("target")}"]`).parents(".extra-box");
+				name = el.data("target");
+				pEl = Self.els.extras.find(`div[data-box="${name}"]`).parents(".extra-box");
 
 				if (el.hasClass("down")) { // already open - close
 					event.el.find(".down").removeClass("down");
 					pEl.cssSequence("!show", "transitionend", bEl => {
-							// console.log(bEl);
+							let el = bEl.find(`.box-body > div[data-box="${name}"]`);
+							Panels[name]?.dispatch({ type: "disable-panel", el });
 						});
 				} else {
 					// check if any opened
@@ -95,9 +97,11 @@
 					// pressed state
 					el.addClass("down");
 					// open right box
-					pEl.find(`.box-head div[data-content="${el.data("target")}"]`).trigger("click");
+					name = el.data("target");
+					pEl.find(`.box-head div[data-content="${name}"]`).trigger("click");
 					pEl.cssSequence("show", "transitionend", bEl => {
-							// console.log(bEl);
+							let el = bEl.find(`.box-body > div[data-box="${name}"]`);
+							Panels[name]?.dispatch({ type: "enable-panel", el });
 						});
 				}
 				break;
