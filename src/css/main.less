@@ -4205,6 +4205,28 @@ content {
 							.icon {
 								margin: 7px 0 0 0;
 							}
+
+							&.active {
+								.thumbnail,
+								.mask {
+									--m: 2px;
+
+									&:before {
+										border: 0;
+										box-shadow: 0 0 0 1px #122;
+									}
+
+									&:after {
+										border: 1px dashed #effc;
+									}
+								}
+							}
+
+							&:hover {
+								.layer-row-body {
+									background: #4557;
+								}
+							}
 						}
 
 						.thumbnail {

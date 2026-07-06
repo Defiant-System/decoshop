@@ -73,6 +73,8 @@ const Panels = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Panels.channels,
+				value,
+				rEl,
 				el;
 			// console.log(event);
 			switch (event.type) {
@@ -87,15 +89,16 @@ const Panels = {
 						target: Self.root,
 					}).then((el) => {
 						Self.dispatch({ type: "refresh-thumbnails" });
+						// auto click on a row
+						el.find(`.row:nth-child(2) .icon`).trigger("click");
 					});
 					break;
 				case "refresh-thumbnails":
-						console.log(APP.file.channels);
 					// thumbnail canvases
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
 						let ctx = cvs.getContext("2d"),
-							pEl = cvs.parentNode.parentNode,
-							cId = pEl.getAttribute("data-id");
+							pEl = $(cvs).parents(".row[data-id]"),
+							cId = pEl.data("id");
 						if (!cId) return;
 						// copy contents of canvas in memory
 						let channel = APP.file.getChannelImageData(cId);
@@ -105,6 +108,43 @@ const Panels = {
 							ctx.drawImage(channel.cvs[0], 0, 0);
 						}
 					});
+					break;
+				case "select-channel":
+					el = $(event.target);
+					rEl = el.parents("?.row");
+					value = +rEl.data("id");
+					if (el[0] === event.el[0]) return;
+
+					if (el.hasClass("icon-eye-on")) {
+						let icon = rEl.find(`.icon-eye-on`),
+							v = icon.hasClass("icon-eye-off");
+						icon.toggleClass(`icon-eye-off`, v);
+						// toggle icon of sibling channels
+						switch (value) {
+							case -1: // rgb
+								rEl.parent().find(`.icon-eye-on`).toggleClass(`icon-eye-off`, v);
+								break;
+							case -2: // r
+							case -3: // g
+							case -4: // b
+								rEl.parent().find(`.row[data-id="-1"] .icon-eye-on`).toggleClass(`icon-eye-off`, v);
+								break;
+						}
+					} else {
+						event.el.find(".active").removeClass("active");
+						rEl.addClass("active");
+						Self.root.find(`.icon-eye-off`).removeClass("icon-eye-off");
+						// toggle icon of sibling channels
+						switch (value) {
+							case -1: // rgb
+								break;
+							case -2: // r
+							case -3: // g
+							case -4: // b
+								rEl.parent().find(`.row:not([data-id="${value}"]) .icon-eye-on`).addClass(`icon-eye-off`);
+								break;
+						}
+					}
 					break;
 			}
 		}
@@ -235,7 +275,7 @@ const Panels = {
 				case "select-history-item":
 					el = $(event.target);
 					rEl = el.parents("?.item");
-					if (el[0] === event.el) return;
+					if (el[0] === event.el[0]) return;
 					
 					action = new Action(ActionTypes.E.v, true);
 					action.G = CanvasTools.lv;

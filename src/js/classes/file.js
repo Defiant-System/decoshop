@@ -28,7 +28,7 @@ class File {
 				this.xChannels = $.nodeFromString(xChannels);
 			} else {
 				this.xLayers = this.walkLayers(this.doc.root, 0);
-				console.log(this.xLayers);
+				// console.log(this.xLayers);
 				this.xChannels = this.walkChannels();
 			}
 			// update panels
@@ -108,12 +108,12 @@ class File {
 			// doc.u.MX = [R visible, G visible, B visible]; mirrored on the panel for click handlers
 			channelVisibility = this.Pj = this.doc.u.MX.slice(0),
 			visibleRgbCount = channelVisibility[0] + channelVisibility[1] + channelVisibility[2],
-			tW = Math.round(34 * window.devicePixelRatio),
-			tH = tW;
+			w = Math.round(32 * window.devicePixelRatio),
+			h = w;
 		
 		// Keep thumbnail aspect ratio matching the document
-		if (docWidth > docHeight) tH = Math.round(tH * docHeight / docWidth);else
-		tW = Math.round(tW * docWidth / docHeight);
+		if (docWidth > docHeight) h = Math.round(h * docHeight / docWidth);else
+		w = Math.round(w * docWidth / docHeight);
 
 		this.channels = {};
 
@@ -121,13 +121,13 @@ class File {
 		// Row ids are negative: -1 = RGB, -2 = R, -3 = G, -4 = B
 		let rgbLabels = ["RGB"].concat(LayerEffectsHelper.rgbChannels);
 		rgbLabels.map((name, index) => {
-			let xChannel = $.nodeFromString(`<i type="channel" name="${name}"/>`);
+			let id = -1 - index,
+				cThumb = Misc.createCanvas(w, h),
+				xChannel = $.nodeFromString(`<i type="channel" id="${id}" name="${name}" w="${w}" h="${h}"/>`);
 			xNode.appendChild(xChannel);
-
-			let cThumb = Misc.createCanvas(tW, tH);
-			PixelUtil.e2.ho(cThumb.ctx, tW, tH, fullDocBounds, this.doc.LT(), fullDocBounds, !1, index == 0 ? null : index - 1);
-
-			this.channels[name] = cThumb;
+			// creaate channel thumbnail
+			PixelUtil.e2.ho(cThumb.ctx, w, h, fullDocBounds, this.doc.LT(), fullDocBounds, !1, index == 0 ? null : index - 1);
+			this.channels[id] = cThumb;
 		});
 
 		return xNode;

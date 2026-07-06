@@ -110,49 +110,27 @@
 
 <xsl:template name="channels-list">
 	<div class="box-content-list" data-click="select-channel">
-		<!-- <xsl:for-each select="./*">
+		<xsl:for-each select="./*">
 			<xsl:call-template name="channels-list-row"/>
-		</xsl:for-each> -->
+		</xsl:for-each>
+	</div>
+</xsl:template>
 
-		<div class="row" data-layer="image" data-channel="rgb" style="--w: 32px;--h: 22px;">
-			<div class="layer-row-body" data-id="RGB">
-				<div class="thumbnail">
-					<canvas width="32" height="22"></canvas>
-					<i></i>
-				</div>
-				<div class="name">RGB</div>
-				<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
+
+<xsl:template name="channels-list-row">
+	<div class="row" data-layer="image">
+		<xsl:attribute name="data-id"><xsl:value-of select="@id"/></xsl:attribute>
+		<xsl:attribute name="style">
+			--w: <xsl:value-of select="@w"/>px;
+			--h: <xsl:value-of select="@h"/>px;
+		</xsl:attribute>
+		<div class="layer-row-body">
+			<div class="thumbnail">
+				<canvas></canvas>
+				<i></i>
 			</div>
-		</div>
-		<div class="row" data-layer="image" data-channel="red" style="--w: 32px;--h: 22px;">
-			<div class="layer-row-body" data-id="Red">
-				<div class="thumbnail">
-					<canvas width="32" height="22"></canvas>
-					<i></i>
-				</div>
-				<div class="name">Red</div>
-				<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
-			</div>
-		</div>
-		<div class="row" data-layer="image" data-channel="green" style="--w: 32px;--h: 22px;">
-			<div class="layer-row-body" data-id="Green">
-				<div class="thumbnail">
-					<canvas width="32" height="22"></canvas>
-					<i></i>
-				</div>
-				<div class="name">Green</div>
-				<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
-			</div>
-		</div>
-		<div class="row" data-layer="image" data-channel="blue" style="--w: 32px;--h: 22px;">
-			<div class="layer-row-body" data-id="Blue">
-				<div class="thumbnail">
-					<canvas width="32" height="22"></canvas>
-					<i></i>
-				</div>
-				<div class="name">Blue</div>
-				<i data-click="toggle-layer-visibility" class="icon icon-eye-on"></i>
-			</div>
+			<div class="name"><xsl:value-of select="@name"/></div>
+			<i class="icon icon-eye-on"></i>
 		</div>
 	</div>
 </xsl:template>
