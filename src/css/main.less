@@ -163,7 +163,7 @@ content {
 			.sidebar-wrapper {
 				.sidebar-box:nth-child(1),
 				.sidebar-box:nth-child(2) {
-					height: 27px;
+					max-height: 31px;
 					opacity: 0;
 
 					.box-body {
@@ -172,7 +172,7 @@ content {
 				}
 
 				.sidebar-box:nth-child(2) {
-					height: 0;
+					max-height: 0;
 				}
 			}
 
@@ -3858,6 +3858,8 @@ content {
 			display: flex;
 			flex-direction: column;
 			border-top: 2px solid rgba(#011, .65);
+			max-height: 100%;
+			transition: max-height 200ms ease-in-out;
 
 			&:first-child {
 				border-top-width: 0;
