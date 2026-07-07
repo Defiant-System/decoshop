@@ -4,7 +4,7 @@ const Engine = {
 		// listen to events from engine
 		PP.addEventListener(ActionTypes.E.hbi, this.fromEngine);
 		// keeps track of open files
-		this.xFiles = $.xmlFromString(`<Files/>`).documentElement;
+		this.xMemory = $.xmlFromString(`<Files/>`).documentElement;
 	},
 	fromEngine(event) {
 		let APP = decoshop,
@@ -23,6 +23,10 @@ const Engine = {
 			// open file -> canvas added to DOM
 			case "file-canvas-added":
 				APP.els.cvs = event.data.el;
+				// temp
+				$.xmlFromString(Test.xMemoryFiles).selectNodes("//Memory/*").map(xMemoryFile => {
+					Self.xMemory.appendChild(xMemoryFile);
+				});
 				break;
 			// proxy event to history panel
 			case "history-changed":

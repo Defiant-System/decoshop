@@ -621,7 +621,7 @@ const Panels = {
 					break;
 				case "update":
 					window.render({
-						data: Engine.xFiles,
+						data: Engine.xMemory,
 						template: "memory-files-list",
 						match: "//Files",
 						target: Self.root,

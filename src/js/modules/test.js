@@ -4,6 +4,7 @@ let Test = {
 		this.debug = !1;
 		this.xLayers = xLayersSimple;
 		this.xChannels = xChannelsSimple;
+		this.xMemoryFiles = xMemoryFiles;
 
 		// return;
 
@@ -72,7 +73,7 @@ let Test = {
 		setTimeout(() => APP.els.content.find(`.tool[data-target="memory"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.inline-menu[data-match="//PanelLayers"]`).trigger("click"), 1200);
 
-		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="historgram"]`).trigger("click"), 500);
+		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="histogram"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.adjustments-wrapper .tool[data-target="dlgHueSaturation"]`).trigger("click"), 750);
 		// setTimeout(() => APP.els.content.find(`.panel-head .opt-group li[data-id="mask"]`).trigger("click"), 800);
 		
@@ -101,6 +102,17 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.liq-tool:nth(0)`).trigger("click"), 900);
 	}
 };
+
+
+let xMemoryFiles = `<Memory>
+		<i type="file" name="File 1">
+			<i type="layer" name="Layer 1.1" ram="524288" gpu="524288"/>
+			<i type="layer" name="Layer 1.2" ram="768000" gpu="768000"/>
+		</i>
+		<i type="file" name="File 2">
+			<i type="layer" name="Background" ram="524288" gpu="524288"/>
+		</i>
+	</Memory>`;
 
 let xLayersSimple = `<Layers>
 					<i type="adj" target="dlgLevels" name="Hue Saturation" w="{{w}}" h="{{h}}" mask="shape-1"/>
@@ -186,4 +198,5 @@ let xChannelsSimple = `<Channels>
 		<i type="channel" name="Green"/>
 		<i type="channel" name="Blue"/>
 	</Channels>`;
+
 
