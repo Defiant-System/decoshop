@@ -81,19 +81,19 @@ const Panels = {
 				case "init-panel":
 					Self.root = APP.els.content.find(`[data-box="channels"] .box-content-wrapper`);
 					break;
-				case "refresh":
+				case "update":
 					window.render({
 						data: event.file.xChannels,
 						template: "channels-list",
 						match: "//Channels",
 						target: Self.root,
 					}).then((el) => {
-						Self.dispatch({ type: "refresh-thumbnails" });
+						Self.dispatch({ type: "update-thumbnails" });
 						// auto click on a row
 						el.find(`.row:nth-child(1) .name`).trigger("click");
 					});
 					break;
-				case "refresh-thumbnails":
+				case "update-thumbnails":
 					// thumbnail canvases
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
 						let ctx = cvs.getContext("2d"),
@@ -258,68 +258,71 @@ const Panels = {
 					Self.root = APP.els.content.find(`.histogram-wrapper`);
 					Self.cvs = Self.root.find("canvas");
 					Self.ctx = Self.cvs[0].getContext("2d", { willReadFrequently: true });
-					
+					Self.cW = 256;
+					Self.cH = 117;
+					// Channel view: 0=RGB, 1=R, 2=G, 3=B, 4=all channels overlaid
+					Self.channelView = 4;
 					break;
-				case "refresh":
+				case "set-channel-view":
+					if (event.el.hasClass("down")) return;
+					event.el.parent().find(".down").removeClass("down");
+					event.el.addClass("down");
+
+					Self.channelView = +event.arg;
+					/* falls through */
+				case "update":
 					var Doc = APP.file?.doc,
 						rgba = Doc.LT(),
 						fullBounds = new Rect(0, 0, Doc.m, Doc.n),
-						pixelCount = fullBounds.O();  // Doc.m * Doc.n
-					if (Doc.P) {
-						// crop to selection, apply Doc.P.channel mask
-						pixelCount = Math.round(sum(selMask) / 255);
-					}
-					var histogram = PixelUtil.histogramFromRgba(rgba);
+						pixelCount = fullBounds.O(),
+						histogram = PixelUtil.histogramFromRgba(rgba);
+					// channel view info
 					histogram[0][255] += 3 * (pixelCount - histogram[5]);
-					for (var ch = 1; ch < 4; ch++) {
+					for (var ch=1; ch<4; ch++) {
 						histogram[ch][255] += pixelCount - histogram[5];
 					}
-
-
-					var channelView = 0, // Channel view: 0=RGB, 1=R, 2=G, 3=B, 4=all channels overlaid
-						// Scale bars so tallest peak uses ~60px of the 100px plot height
-						yScale = 6e3 / histogram[4];
-					
-					let drawFill = (ctx, bins, yScale) => {
+					// Scale bars so tallest peak uses ~60px of the 117px plot height
+					let yScale = 6e3 / histogram[4],
+						drawFill = (ctx, bins, yScale, color="#cdd") => {
 							ctx.beginPath();
 							ctx.moveTo(0, 0);
-							for (var level = 0; level < 256; level++) {
+							for (var level = 0; level < Self.cW; level++) {
 								ctx.lineTo(level, bins[level] * yScale);
 							}
-							ctx.lineTo(256, 0);
+							ctx.lineTo(Self.cW, 0);
 							ctx.closePath();
-							ctx.fillStyle = "#cddade";
+							ctx.fillStyle = color;
 							ctx.fill();
 						};
-
 					// reset canvas
-					Self.cvs.attr({ width: 256, height: 117 });
-
-					Self.ctx.setTransform(1, 0, 0, -1, 0, 117);
+					Self.cvs.attr({ width: Self.cW, height: Self.cH });
+					Self.ctx.setTransform(1, 0, 0, -1, 0, Self.cH);
 					Self.ctx.globalCompositeOperation = "lighter";
 
-					if (channelView == 0) drawFill(Self.ctx, histogram[0], yScale / 3);
-					else {
-						if (channelView < 4) drawFill(Self.ctx, histogram[channelView], yScale);
-						else {
-							drawFill(Self.ctx, histogram[1], yScale, "#ff0000");
-							drawFill(Self.ctx, histogram[2], yScale, "#00ff00");
-							drawFill(Self.ctx, histogram[3], yScale, "#0000ff");
-						}
+					switch (Self.channelView) {
+						case 0: drawFill(Self.ctx, histogram[0], yScale/3); break;
+						case 1:
+						case 2:
+						case 3: drawFill(Self.ctx, histogram[Self.channelView], yScale); break;
+						case 4:
+							drawFill(Self.ctx, histogram[1], yScale, "#f00");
+							drawFill(Self.ctx, histogram[2], yScale, "#0f0");
+							drawFill(Self.ctx, histogram[3], yScale, "#00f");
+							break;
 					}
+					/*
 					Self.ctx.setTransform(1, 0, 0, 1, 0, 0);
 					if (pixelCount != null) {
-						if (channelView == 4) channelView = 0;
+						if (Self.channelView == 4) Self.channelView = 0;
 						var levelSum = 0;
-						for (var level = 0; level < 256; level++) {
-							levelSum += level * histogram[channelView][level];
+						for (var level = 0; level < Self.cW; level++) {
+							levelSum += level * histogram[Self.channelView][level];
 						}
-						if (channelView == 0) levelSum /= 3; // luma hist sums R+G+B
-						console.log((levelSum / pixelCount).toFixed(1));
-						console.log(pixelCount);
+						if (Self.channelView == 0) levelSum /= 3; // luma hist sums R+G+B
+						// console.log((levelSum / pixelCount).toFixed(1));
+						// console.log(pixelCount);
 					}
-
-					console.log(event);
+					*/
 					break;
 			}
 		}
@@ -473,7 +476,7 @@ const Panels = {
 					Self.thumbSize = 32;
 					Self.dispatch({ type: "set-thumbnail-size", value: APP.Settings.pp.panels.layers.thumbMultiplier });
 					break;
-				case "refresh":
+				case "update":
 					window.render({
 						data: event.file.xLayers,
 						template: "layers-list",
@@ -484,10 +487,10 @@ const Panels = {
 						el.find(".row:nth(0) .name").trigger("click");
 						// el.find(".row:nth(0)").addClass("fx-expand");
 
-						Self.dispatch({ type: "refresh-thumbnails" });
+						Self.dispatch({ type: "update-thumbnails" });
 					});
 					break;
-				case "refresh-thumbnails":
+				case "update-thumbnails":
 					// thumbnail canvases
 					Self.root.find(`.thumbnail canvas`).map(cvs => {
 						let ctx = cvs.getContext("2d"),
@@ -664,7 +667,7 @@ const Panels = {
 					Self.miniRange.on("input", Self.dispatch);
 					Self.viewRect.on("mousedown", Self.doPan);
 					break;
-				case "refresh":
+				case "update":
 					let doc = event.file.doc,
 						{ width: w, height: h } = Misc.fitWithin(doc.m, doc.n, Self.maxW, Self.maxH);
 					// update width & height for navigator panel

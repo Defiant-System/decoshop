@@ -144,7 +144,7 @@ const decoshop = {
 
 			case "file-ready":
 				Self.tools.zoom.dispatch({ type: "center-actual" });
-				Self.sidebar.dispatch({ ...event, type: "refresh-panels" });
+				Self.sidebar.dispatch({ ...event, type: "update-panels" });
 				break;
 
 			// proxy events

@@ -33,9 +33,9 @@
 				Self.els.root.find(`.box-head > div[data-content="${el.data("target")}"]`).trigger("click");
 				APP.tools.dispatch({ type: "toggle-sidebar" });
 				break;
-			case "refresh-panels":
-				// forward event to panels to refresh
-				Self.livePanels.map(name => Panels[name].dispatch({ ...event, type: "refresh" }));
+			case "update-panels":
+				// forward event to panels to update
+				Self.livePanels.map(name => Panels[name].dispatch({ ...event, type: "update" }));
 				break;
 			// proxied events
 			case "box-head-tab":
