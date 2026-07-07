@@ -35,7 +35,9 @@ const Engine = {
 		docNode.LK.push(compositeNode);
 		for (var i = 0; i < doc.B.length; i++) {
 			var layerNode = this.buildLayerNode(doc.B[i], xFile);
-			if (layerNode.LK.length != 0) docNode.LK.push(layerNode);
+			if (layerNode.LK.length != 0) {
+				docNode.LK.push(layerNode);
+			}
 		}
 		var smartObjects = doc.add.lnk2;
 		if (smartObjects)
@@ -51,18 +53,24 @@ const Engine = {
 				MS: "Raw file",
 				E3: [so.raw.length, 0]
 			});
-			if (so.hF)
-			for (var j = 0; j < so.hF.length; j += 2) decodedBytes += so.hF[j].length;
-			if (decodedBytes != 0) soNode.LK.push({
-				MS: "Decoded pixels",
-				E3: [decodedBytes, 0]
-			});
+			if (so.hF) {
+				for (var j = 0; j < so.hF.length; j += 2) {
+					decodedBytes += so.hF[j].length;
+				}
+			}
+			if (decodedBytes != 0) {
+				soNode.LK.push({
+					MS: "Decoded pixels",
+					E3: [decodedBytes, 0]
+				});
+			}
 			this.sumChildBytes(soNode);
 			docNode.LK.push(soNode);
 		}
 		this.sumChildBytes(docNode);
 
-		// console.log(xFile);
+		// console.log(docNode);
+		console.log(xFile);
 		this.xMemory.appendChild(xFile);
 
 		return docNode;
@@ -77,17 +85,20 @@ const Engine = {
 			ramOnLayer = 1 - gpuOnLayer,
 			pixelCount = layer.rect.O();
 
-		let xLayer = $.nodeFromString(`<i type="layer" name="${layer.getName()}"/>`);
+		let xLayer = $.nodeFromString(`<i type="layer" name="${layer.getName()}" ram="0" gpu="0"/>`);
 		xFile.insertBefore(xLayer, xFile.firstChild);
 
 		if (pixelCount != 0) {
-			layerNode.LK.push({
-				MS: "Layer pixels",
-				E3: [pixelCount * 4, gpuOnLayer * pixelCount * 4]
-			});
+			// layerNode.LK.push({
+			// 	MS: "Layer pixels",
+			// 	E3: [pixelCount * 4, gpuOnLayer * pixelCount * 4]
+			// });
 			xLayer.setAttribute("desc", "Layer pixels");
 			xLayer.setAttribute("ram", pixelCount * 4);
 			xLayer.setAttribute("gpu", gpuOnLayer * pixelCount * 4);
+		}
+		if (layer.add.SoLd) {
+			xLayer.setAttribute("icon", "icon-smart-object");
 		}
 		if (layer.add.lmfx && layer.hD.Pr.type) {
 			var effectBuffers = layer.hD.Pr.type,
@@ -102,15 +113,15 @@ const Engine = {
 					if (effectBuffers[effectKey][inst].gp) effectBytes += effectBuffers[effectKey][inst].gp.We.O();
 				} else effectBytes += effectBuffers[effectKey][inst].We.O();
 				if (effectBytes != 0) {
-					layerNode.LK.push({
-						MS: languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(effectKey)]),
-						E3: [ramOnLayer * effectBytes * 4, gpuOnLayer * effectBytes * 4],
-						Ts: 3
-					});
+					// layerNode.LK.push({
+					// 	MS: languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(effectKey)]),
+					// 	E3: [ramOnLayer * effectBytes * 4, gpuOnLayer * effectBytes * 4],
+					// 	Ts: 3
+					// });
 
 					let name = languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(effectKey)]),
 						ram = ramOnLayer * effectBytes * 4,
-						xChild = $.nodeFromString(`<i type="layer" icon="icon-layer-fx" name="${name}" ram="${ram}" gpu="${ram * gpuOnLayer}"/>`);
+						xChild = $.nodeFromString(`<i type="data" icon="icon-layer-fx" name="${name}" ram="${ram}" gpu="${ram * gpuOnLayer}"/>`);
 					xLayer.insertBefore(xChild, xLayer.firstChild);
 				}
 			}
@@ -122,44 +133,44 @@ const Engine = {
 			if (layer.hD.dO) blendPixelCount += pixelCount;
 			var extraBytes = layer.hD.tw ? layer.hD.tw.length : 0;
 			if (blendPixelCount + extraBytes != 0) {
-				layerNode.LK.push({
-					MS: "Additional Blending Data",
-					E3: [ramOnLayer * blendPixelCount * 4 + extraBytes, gpuOnLayer * blendPixelCount * 4]
-				});
+				// layerNode.LK.push({
+				// 	MS: "Additional Blending Data",
+				// 	E3: [ramOnLayer * blendPixelCount * 4 + extraBytes, gpuOnLayer * blendPixelCount * 4]
+				// });
 
 				let name = "Additional Blending Data",
 					ram = ramOnLayer * blendPixelCount * 4 + extraBytes,
-					xChild = $.nodeFromString(`<i type="layer" name="${name}" ram="${ram}" gpu="${gpuOnLayer * blendPixelCount * 4}"/>`);
+					xChild = $.nodeFromString(`<i type="data" name="${name}" ram="${ram}" gpu="${gpuOnLayer * blendPixelCount * 4}"/>`);
 				xLayer.insertBefore(xChild, xLayer.firstChild);
 			}
 		}
 		var rasterMask = layer.c3(),
 			rasterMaskBytes = rasterMask ? rasterMask.rect.O() : 0;
 		if (rasterMaskBytes != 0) {
-			layerNode.LK.push({
-				MS: "Raster Mask",
-				E3: [rasterMaskBytes, 0]
-			});
+			// layerNode.LK.push({
+			// 	MS: "Raster Mask",
+			// 	E3: [rasterMaskBytes, 0]
+			// });
 
 			let name = "Raster Mask",
 				ram = rasterMaskBytes,
-				xChild = $.nodeFromString(`<i type="layer" icon="icon-layer-mask" name="${name}" ram="${ram}" gpu="${0}"/>`);
+				xChild = $.nodeFromString(`<i type="data" icon="icon-layer-mask" name="${name}" ram="${ram}" gpu="${0}"/>`);
 			xLayer.insertBefore(xChild, xLayer.firstChild);
 		}
 		var vectorMask = layer.add.vmsk,
 			vectorMaskBytes = vectorMask && vectorMask.UG ? vectorMask.UG.rect.O() : 0;
 		if (vectorMaskBytes != 0) {
-			layerNode.LK.push({
-				MS: "Vector Mask",
-				E3: [vectorMaskBytes, 0]
-			});
+			// layerNode.LK.push({
+			// 	MS: "Vector Mask",
+			// 	E3: [vectorMaskBytes, 0]
+			// });
 
 			let name = "Vector Mask",
 				ram = vectorMaskBytes,
-				xChild = $.nodeFromString(`<i type="layer" icon="tool-paths" name="${name}" ram="${ram}" gpu="${0}"/>`);
+				xChild = $.nodeFromString(`<i type="data" icon="icon-vector-layer" name="${name}" ram="${ram}" gpu="${0}"/>`);
 			xLayer.insertBefore(xChild, xLayer.firstChild);
 		}
-		this.sumChildBytes(layerNode);
+		// this.sumChildBytes(layerNode);
 		return layerNode;
 	},
 

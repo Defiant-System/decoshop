@@ -141,14 +141,14 @@
 			</div>
 		</xsl:when>
 		<xsl:when test="@type = 'layer'">
-			<div class="item">
-				<div class="row">
-					<i><xsl:attribute name="class">icon 
-						<xsl:choose>
-							<xsl:when test="@icon"><xsl:value-of select="@icon"/></xsl:when>
-							<xsl:otherwise>icon-image</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute></i>
+			<div class="layer">
+				<div class="row expanded">
+				<i><xsl:attribute name="class">icon 
+					<xsl:choose>
+						<xsl:when test="@icon"><xsl:value-of select="@icon"/></xsl:when>
+						<xsl:otherwise>icon-image</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute></i>
 					<span class="cell-3"><xsl:value-of select="@name"/></span>
 					<span class="cell-4">
 						<xsl:call-template name="file-size">
@@ -161,6 +161,34 @@
 						</xsl:call-template>
 					</span>
 				</div>
+				<xsl:if test="count(./*)">
+					<div class="children">
+						<xsl:for-each select="./*">
+							<xsl:call-template name="memory-files-list-row"/>
+						</xsl:for-each>
+					</div>
+				</xsl:if>
+			</div>
+		</xsl:when>
+		<xsl:when test="@type = 'data'">
+			<div class="row data">
+				<i><xsl:attribute name="class">icon 
+					<xsl:choose>
+						<xsl:when test="@icon"><xsl:value-of select="@icon"/></xsl:when>
+						<xsl:otherwise>icon-new</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute></i>
+				<span class="cell-3"><xsl:value-of select="@name"/></span>
+				<span class="cell-4">
+					<xsl:call-template name="file-size">
+						<xsl:with-param name="bytes" select="@ram" />
+					</xsl:call-template>
+				</span>
+				<span class="cell-5">
+					<xsl:call-template name="file-size">
+						<xsl:with-param name="bytes" select="@gpu" />
+					</xsl:call-template>
+				</span>
 			</div>
 		</xsl:when>
 	</xsl:choose>
@@ -172,7 +200,7 @@
 	<xsl:param name="kind"/>
 	<xsl:choose>
 		<xsl:when test="$kind = '_dir'">--</xsl:when>
-		<xsl:when test="format-number($bytes div 1024, '0') = 0"><xsl:value-of select="$bytes"/> bytes</xsl:when>
+		<xsl:when test="format-number($bytes div 1024, '0') = 0"><xsl:value-of select="$bytes"/> byte<xsl:if test="$bytes &gt; 0">s</xsl:if></xsl:when>
 		<xsl:when test="format-number($bytes div 1073741824, '###0.000') &gt;= 1"><xsl:value-of select="format-number($bytes div 1073741824, '###0.0')"/> GB</xsl:when>
 		<xsl:when test="format-number($bytes div 1048576, '###0.000') &gt;= 1"><xsl:value-of select="format-number($bytes div 1048576, '###0.0')"/> MB</xsl:when>
 		<xsl:otherwise><xsl:value-of select="format-number($bytes div 1048576, '###0.0')"/> MB</xsl:otherwise>

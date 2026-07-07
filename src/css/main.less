@@ -3560,11 +3560,65 @@ content {
 												}
 											}
 
+											&.icon-smart-object,
 											&.icon-image {
 												margin-left: 17px;
 
 												&:after {
 													background-size: 15px auto;
+												}
+											}
+
+											&.icon-vector-layer:after { background-size: 13px auto; }
+											&.icon-smart-object:after { background-size: 17px auto; }
+										}
+									}
+
+									.layer > .children {
+										position: relative;
+										overflow: visible;
+
+										&:before {
+											content: "";
+											position: absolute;
+											top: -14px;
+											left: 11px;
+											width: 5px;
+											height: 13px;
+											border-top: 1px solid #788;
+											border-left: 1px solid #788;
+										}
+
+										> .row {
+											&:before {
+												content: "";
+												position: absolute;
+												top: 0;
+												bottom: 0;
+												left: -6px;
+												width: 1px;
+												border-left: 1px solid #788;
+											}
+
+											&:after {
+												content: "";
+												position: absolute;
+												top: 10px;
+												left: -6px;
+												width: 5px;
+												border-top: 1px solid #788;
+											}
+											
+											&:last-child {
+												&:before {
+													top: 0;
+													width: 5px;
+													height: 10px;
+													border-bottom: 1px solid #788;
+												}
+
+												&:after {
+													display: none;
 												}
 											}
 										}
@@ -3575,6 +3629,10 @@ content {
 										overflow: hidden;
 										border-bottom: 1px solid #1227;
 										transition: height 120ms ease-in-out;
+
+										.children {
+											padding-left: 17px;
+										}
 									}
 								}
 
