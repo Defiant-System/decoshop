@@ -283,31 +283,39 @@ const Panels = {
 					}
 					// Scale bars so tallest peak uses ~60px of the 117px plot height
 					let yScale = 6e3 / histogram[4],
+						palette = [null, "#f99", "#7f7", "#99f"],
 						drawFill = (ctx, bins, yScale, color="#cdd") => {
+							let gradient = ctx.createLinearGradient(0, 0, 0, 117);
+							gradient.addColorStop(0, color +"1");
+							gradient.addColorStop(1, color +"5");
+
 							ctx.beginPath();
-							ctx.moveTo(0, 0);
+							ctx.moveTo(-2, -2);
 							for (var level = 0; level < Self.cW; level++) {
 								ctx.lineTo(level, bins[level] * yScale);
 							}
-							ctx.lineTo(Self.cW, 0);
+							ctx.lineTo(Self.cW+2, -2);
 							ctx.closePath();
-							ctx.fillStyle = color;
+							ctx.fillStyle = gradient;
+							ctx.strokeStyle = color;
+							ctx.lineWidth = .5;
 							ctx.fill();
+							ctx.stroke();
 						};
 					// reset canvas
 					Self.cvs.attr({ width: Self.cW, height: Self.cH });
 					Self.ctx.setTransform(1, 0, 0, -1, 0, Self.cH);
-					Self.ctx.globalCompositeOperation = "lighter";
+					Self.ctx.globalCompositeOperation = "color-burn";
 
 					switch (Self.channelView) {
 						case 0: drawFill(Self.ctx, histogram[0], yScale/3); break;
 						case 1:
 						case 2:
-						case 3: drawFill(Self.ctx, histogram[Self.channelView], yScale); break;
+						case 3: drawFill(Self.ctx, histogram[Self.channelView], yScale, palette[Self.channelView]); break;
 						case 4:
-							drawFill(Self.ctx, histogram[1], yScale, "#f00");
-							drawFill(Self.ctx, histogram[2], yScale, "#0f0");
-							drawFill(Self.ctx, histogram[3], yScale, "#00f");
+							drawFill(Self.ctx, histogram[1], yScale, palette[1]);
+							drawFill(Self.ctx, histogram[2], yScale, palette[2]);
+							drawFill(Self.ctx, histogram[3], yScale, palette[3]);
 							break;
 					}
 					/*
