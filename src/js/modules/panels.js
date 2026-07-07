@@ -620,14 +620,14 @@ const Panels = {
 					Self.root = APP.els.content.find(`.extras-wrapper div[data-box="memory"] .memory-wrapper`);
 					break;
 				case "update":
+					
+
 					window.render({
 						data: Engine.xMemory,
 						template: "memory-files-list",
 						match: "//Files",
 						target: Self.root,
-					}).then((el) => {
-						
-					});
+					}).then((el) => {});
 					break;
 
 				case "toggle-child-rows":

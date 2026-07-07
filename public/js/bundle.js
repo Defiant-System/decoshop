@@ -117286,5 +117286,6 @@ module.exports = {
 	Rect,
 	exportHelper,
 	languageManager,
+	WebGLContext,
 	Misc,
 };

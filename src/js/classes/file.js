@@ -249,7 +249,11 @@ class File {
 					case !!layer.add.SoLd:
 						// if (layer.add.lyid === 37) console.log(6);
 						if (hasCanvases) PixelUtil.e2.ho(layer.at.ctx, tW, tH, contentBounds, layer.buffer, rect, !1);
-						if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
+						// if (hasCanvases) PixelUtil.e2.alT(layer.at.ctx, tW, tH, layer.add.SoLd);
+						type = "smart";
+						break;
+					case !!layer.add.artb:
+						type = "artboard";
 						break;
 					case isFolder:
 						type = "folder";
@@ -303,16 +307,17 @@ class File {
 				w = tW;
 				h = tH;
 			}
+			if (id === 43) console.log(layer);
 			switch (type) {
 				case "image":
 				case "shape":
+				case "smart":
 				case "adj":
 					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${w}" h="${h}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
 				case "text":
 					xStr = `<i id="${id}" type="${type}" name="${name}" ${extraAttr.join(" ")} w="${rW}" h="${rH}" hidden="${isHidden}" fx-enabled="${fxEnabled}" fx-expanded="${fxExpanded}">${xFxList.join("")}</i>`;
 					break;
-				case "smart": break;
 				case "folder":
 					let expanded = layer.add.lsct === LayerSectionType.open ? 1 : 0;
 					xStr = `<i id="${id}" type="group" name="${name}" ${extraAttr.join(" ")} expanded="${expanded}" hidden="${isHidden}">${xFxList.join("")}</i>`;

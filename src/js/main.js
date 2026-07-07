@@ -29,6 +29,7 @@ let {
 	Rect,
 	exportHelper,
 	languageManager,
+	WebGLContext,
 	Misc,
 } = await window.fetch("~/js/bundle.js");
 
