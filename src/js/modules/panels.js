@@ -287,7 +287,7 @@ const Panels = {
 						drawFill = (ctx, bins, yScale, color="#cdd") => {
 							let gradient = ctx.createLinearGradient(0, 0, 0, 117);
 							gradient.addColorStop(0, color +"1");
-							gradient.addColorStop(1, color +"5");
+							gradient.addColorStop(.3, color +"5");
 
 							ctx.beginPath();
 							ctx.moveTo(-2, -2);
@@ -620,7 +620,6 @@ const Panels = {
 					Self.root = APP.els.content.find(`.extras-wrapper div[data-box="memory"] .memory-wrapper`);
 					break;
 				case "update":
-					
 
 					window.render({
 						data: Engine.xMemory,

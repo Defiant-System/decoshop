@@ -143,7 +143,12 @@
 		<xsl:when test="@type = 'layer'">
 			<div class="item">
 				<div class="row">
-					<i class="icon icon-image"></i>
+					<i><xsl:attribute name="class">icon 
+						<xsl:choose>
+							<xsl:when test="@icon"><xsl:value-of select="@icon"/></xsl:when>
+							<xsl:otherwise>icon-image</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute></i>
 					<span class="cell-3"><xsl:value-of select="@name"/></span>
 					<span class="cell-4">
 						<xsl:call-template name="file-size">
@@ -269,6 +274,9 @@
 		<xsl:otherwise>
 			<div>
 				<xsl:attribute name="data-layer"><xsl:value-of select="@type"/></xsl:attribute>
+				<xsl:if test="@target">
+					<xsl:attribute name="data-target"><xsl:value-of select="@target"/></xsl:attribute>
+				</xsl:if>
 				<xsl:attribute name="class">row 
 					<xsl:if test="@fx-expanded = 1">fx-expand </xsl:if>
 				</xsl:attribute>

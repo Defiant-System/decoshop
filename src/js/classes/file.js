@@ -307,7 +307,7 @@ class File {
 				w = tW;
 				h = tH;
 			}
-			if (id === 43) console.log(layer);
+			// if (id === 39) console.log(extraAttr);
 			switch (type) {
 				case "image":
 				case "shape":
