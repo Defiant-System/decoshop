@@ -19230,203 +19230,213 @@ ToolPresetsPanel.prototype.refresh = function () {
 
 
 
+// Memory usage panel: drill-down tree of RAM/GPU bytes per open document, layer, and asset.
+// Built as an IIFE so navigation state (stack, DOM refs) stays in a closure shared by helpers.
 var MemoryPanel = function () {
-	var _local4373 = [],
-		_local4371 = null,
-		_local4364 = null,
-		_local4370 = null,
-		_local4369 = [
-		[100, 180, 255],
-		[100, 255, 100],
-		[255, 200, 100],
-		[200, 100, 255],
-		[255, 100, 200]];
+	var navStack = [],       // drill-down breadcrumb stack of memory tree nodes
+		listEl = null,        // scrollable row container
+		backBtn = null,
+		openDocs = null,      // pp.Mt — array of open PsdDocument instances
+		// Background tint per node category (index = node.Ts)
+		categoryColors = [
+		[100, 180, 255],   // 0 = document
+		[100, 255, 100],   // 1 = layer
+		[255, 200, 100],   // 2 = final composite
+		[200, 100, 255],   // 3 = layer effect
+		[255, 100, 200]];  // 4 = smart object / linked file
 
-
-	function _local4367() {
+	function MemoryPanelCtor() {
 		PanelTabBase.call(this, "Memory", !1, null, PanelTabBase.xA.al6);
-		var _local4376 = s.createElement("div", "padded");
-		this.DK.appendChild(_local4376);
-		_local4364 = new ToolbarButton("<< Back", !1, null, !0);
-		_local4364.addEventListener("click", function (n) {
-			_local4373.pop();
-			_local4365();
+		var paddedEl = s.createElement("div", "padded");
+		this.DK.appendChild(paddedEl);
+		backBtn = new ToolbarButton("<< Back", !1, null, !0);
+		backBtn.addEventListener("click", function (evt) {
+			navStack.pop();
+			renderCurrentView();
 		});
-		_local4376.appendChild(_local4364.e);
-		_local4371 = s.createElement("div", "scrollable");
-		_local4371.setAttribute("style", "width:20em;  height:26em; margin-top:8px;");
-		_local4376.appendChild(_local4371);
+		paddedEl.appendChild(backBtn.e);
+		listEl = s.createElement("div", "scrollable");
+		listEl.setAttribute("style", "width:20em;  height:26em; margin-top:8px;");
+		paddedEl.appendChild(listEl);
 	}
-	_local4367.prototype = new PanelTabBase("");
-	_local4367.prototype.Yw = function (J, n, r) {
-		_local4370 = n;
+	MemoryPanelCtor.prototype = new PanelTabBase("");
+	// doc = active doc, docList = pp.Mt (all open tabs), prefs = pp.fB (unused here)
+	MemoryPanelCtor.prototype.Yw = function (doc, docList, prefs) {
+		openDocs = docList;
 		this.KN();
 	};
-	_local4367.prototype.KN = function () {
-		_local4364.setEnabled(!1);
-		if (!s.isInDocument(_local4371)) return;
-		var _local4378 = {
+	// Rebuild the top-level "Total:" tree from all open documents.
+	MemoryPanelCtor.prototype.KN = function () {
+		backBtn.setEnabled(!1);
+		if (!s.isInDocument(listEl)) return;
+		var totalNode = {
 			MS: "Total:",
 			LK: []
 		};
-		for (var _local4377 = 0; _local4377 < _local4370.length; _local4377++) _local4378.LK.push(_local4372(_local4370[_local4377]));
-		_local4368(_local4378);
-		_local4373 = [_local4378];
-		_local4365();
+		for (var i = 0; i < openDocs.length; i++) totalNode.LK.push(buildDocNode(openDocs[i]));
+		sumChildBytes(totalNode);
+		navStack = [totalNode];
+		renderCurrentView();
 	};
-	_local4367.prototype.refresh = function () {
+	MemoryPanelCtor.prototype.refresh = function () {
 		PanelTabBase.prototype.refresh.call(this);
-		_local4364.refresh();
+		backBtn.refresh();
 	};
 
-	function _local4374(J) {
-		var _local4380 = J.currentTarget,
-			_local4379 = 0;
-		while ((_local4380 = _local4380.previousSibling) != null) _local4379++;
-		_local4373.push(_local4373[_local4373.length - 1].LK[_local4379 - 1]);
-		_local4365();
+	// Click a drill-down row: push that child node onto the nav stack.
+	function onRowClick(evt) {
+		var rowEl = evt.currentTarget,
+			siblingIndex = 0;
+		while ((rowEl = rowEl.previousSibling) != null) siblingIndex++;
+		navStack.push(navStack[navStack.length - 1].LK[siblingIndex - 1]);
+		renderCurrentView();
 	}
 
-	function _local4365() {
-		_local4364.setEnabled(_local4373.length > 1);
-		var _local4382 = _local4373[_local4373.length - 1];
-		s.clearChildren(_local4371);
-		_local4375(_local4382, _local4371, 0);
-		_local4382.LK.sort(function (n, r) {
-			return r.E3[0] - n.E3[0];
+	// Render the current nav-stack level: header row + children sorted by RAM descending.
+	function renderCurrentView() {
+		backBtn.setEnabled(navStack.length > 1);
+		var currentNode = navStack[navStack.length - 1];
+		s.clearChildren(listEl);
+		renderMemoryRow(currentNode, listEl, 0);
+		currentNode.LK.sort(function (a, b) {
+			return b.E3[0] - a.E3[0];
 		});
-		for (var _local4381 = 0; _local4381 < _local4382.LK.length; _local4381++) _local4375(_local4382.LK[_local4381], _local4371, 1);
+		for (var i = 0; i < currentNode.LK.length; i++) renderMemoryRow(currentNode.LK[i], listEl, 1);
 	}
 
-	function _local4375(J, n, r) {
-		var _local4383 = SaveForWebDialog.fa,
-			_local4386 = r != 0 && J.LK,
-			_local4385 = "margin-left:" + r * 10 + "px; margin-bottom:8px; padding:3px 5px;";
-		if (_local4386) _local4385 += "cursor:pointer;";
-		if (J.Ts != null) _local4385 += "background-color:rgba(" + _local4369[J.Ts].join(",") + ",0.2);";
-		var _local4384 = s.createElement("div");
-		n.appendChild(_local4384);
-		_local4384.setAttribute("style", _local4385);
-		_local4384.innerHTML = s.escapeHtml(J.MS) + "<br />RAM: <b>" + _local4383(J.E3[0]) + "</b>\u2001GPU: <b>" + _local4383(J.E3[1]) + "</b>";
-		if (_local4386) _local4384.addEventListener("click", _local4374, !1);
+	// One memory row. node.E3 = [ramBytes, gpuBytes]. indentLevel 0 = header, 1 = child.
+	function renderMemoryRow(node, parentEl, indentLevel) {
+		var formatBytes = SaveForWebDialog.fa,
+			isDrillable = indentLevel != 0 && node.LK,
+			style = "margin-left:" + indentLevel * 10 + "px; margin-bottom:8px; padding:3px 5px;";
+		if (isDrillable) style += "cursor:pointer;";
+		if (node.Ts != null) style += "background-color:rgba(" + categoryColors[node.Ts].join(",") + ",0.2);";
+		var rowEl = s.createElement("div");
+		parentEl.appendChild(rowEl);
+		rowEl.setAttribute("style", style);
+		rowEl.innerHTML = s.escapeHtml(node.MS) + "<br />RAM: <b>" + formatBytes(node.E3[0]) + "</b>\u2001GPU: <b>" + formatBytes(node.E3[1]) + "</b>";
+		if (isDrillable) rowEl.addEventListener("click", onRowClick, !1);
 	}
 
-	function _local4372(J) {
-		var _local4395 = {
-				MS: J.name,
+	// Build memory tree node for one open document.
+	function buildDocNode(doc) {
+		var docNode = {
+				MS: doc.name,
 				LK: [],
 				Ts: 0
 			},
-			_local4396 = WebGLContext.webglAvailable ? 1 : 0,
-			_local4390 = 1 - _local4396,
-			_local4393 = {
+			gpuOnDoc = WebGLContext.webglAvailable ? 1 : 0,
+			ramOnDoc = 1 - gpuOnDoc,
+			compositeNode = {
 				MS: "Final Image",
-				E3: [J.m * J.n * 4, _local4396 * J.m * J.n * 4],
+				E3: [doc.m * doc.n * 4, gpuOnDoc * doc.m * doc.n * 4],
 				Ts: 2
 			};
-		_local4395.LK.push(_local4393);
-		for (var _local4387 = 0; _local4387 < J.B.length; _local4387++) {
-			var _local4392 = _local4366(J.B[_local4387]);
-			if (_local4392.LK.length != 0) _local4395.LK.push(_local4392);
+		docNode.LK.push(compositeNode);
+		for (var i = 0; i < doc.B.length; i++) {
+			var layerNode = buildLayerNode(doc.B[i]);
+			if (layerNode.LK.length != 0) docNode.LK.push(layerNode);
 		}
-		var _local4391 = J.add.lnk2;
-		if (_local4391)
-		for (var _local4387 = 0; _local4387 < _local4391.length; _local4387++) {
-			var _local4392 = _local4391[_local4387],
-				_local4394 = {
-					MS: _local4392.bf,
+		var smartObjects = doc.add.lnk2;
+		if (smartObjects)
+		for (var i = 0; i < smartObjects.length; i++) {
+			var so = smartObjects[i],
+				soNode = {
+					MS: so.bf,
 					LK: [],
 					Ts: 4
 				},
-				_local4389 = 0;
-			_local4394.LK.push({
+				decodedBytes = 0;
+			soNode.LK.push({
 				MS: "Raw file",
-				E3: [_local4392.raw.length, 0]
+				E3: [so.raw.length, 0]
 			});
-			if (_local4392.hF)
-			for (var _local4388 = 0; _local4388 < _local4392.hF.length; _local4388 += 2) _local4389 += _local4392.hF[_local4388].length;
-			if (_local4389 != 0) _local4394.LK.push({
+			if (so.hF)
+			for (var j = 0; j < so.hF.length; j += 2) decodedBytes += so.hF[j].length;
+			if (decodedBytes != 0) soNode.LK.push({
 				MS: "Decoded pixels",
-				E3: [_local4389, 0]
+				E3: [decodedBytes, 0]
 			});
-			_local4368(_local4394);
-			_local4395.LK.push(_local4394);
+			sumChildBytes(soNode);
+			docNode.LK.push(soNode);
 		}
-		_local4368(_local4395);
-		return _local4395;
+		sumChildBytes(docNode);
+		return docNode;
 	}
 
-	function _local4366(J) {
-		var _local4406 = {
-				MS: J.getName(),
+	// Build memory tree node for one layer (pixels, effects, masks).
+	function buildLayerNode(layer) {
+		var layerNode = {
+				MS: layer.getName(),
 				LK: [],
 				Ts: 1
 			},
-			_local4408 = WebGLContext.webglAvailable ? 1 : 0,
-			_local4400 = 1 - _local4408,
-			_local4404 = J.rect.O();
-		if (_local4404 != 0) _local4406.LK.push({
+			gpuOnLayer = WebGLContext.webglAvailable ? 1 : 0,
+			ramOnLayer = 1 - gpuOnLayer,
+			pixelCount = layer.rect.O();
+		if (pixelCount != 0) layerNode.LK.push({
 			MS: "Layer pixels",
-			E3: [_local4404 * 4, _local4408 * _local4404 * 4]
+			E3: [pixelCount * 4, gpuOnLayer * pixelCount * 4]
 		});
-		if (J.add.lmfx && J.hD.Pr.type) {
-			var _local4403 = J.hD.Pr.type,
-				_local4397 = 0;
-			for (var _local4402 in _local4403) {
-				var _local4405 = 0;
-				for (var _local4398 = 0; _local4398 < _local4403[_local4402].length; _local4398++)
-				if (_local4402 == "ebbl") {
-					if (_local4403[_local4402][_local4398].Ei) _local4405 += _local4403[_local4402][_local4398].Ei.We.O();
-					if (_local4403[_local4402][_local4398].p9) _local4405 += _local4403[_local4402][_local4398].p9.We.O();
-					if (_local4403[_local4402][_local4398].l2) _local4405 += _local4403[_local4402][_local4398].l2.We.O();
-					if (_local4403[_local4402][_local4398].gp) _local4405 += _local4403[_local4402][_local4398].gp.We.O();
-				} else _local4405 += _local4403[_local4402][_local4398].We.O();
-				if (_local4405 != 0) _local4406.LK.push({
-					MS: languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(_local4402)]),
-					E3: [_local4400 * _local4405 * 4, _local4408 * _local4405 * 4],
+		if (layer.add.lmfx && layer.hD.Pr.type) {
+			var effectBuffers = layer.hD.Pr.type,
+				blendPixelCount = 0;
+			for (var effectKey in effectBuffers) {
+				var effectBytes = 0;
+				for (var inst = 0; inst < effectBuffers[effectKey].length; inst++)
+				if (effectKey == "ebbl") {
+					if (effectBuffers[effectKey][inst].Ei) effectBytes += effectBuffers[effectKey][inst].Ei.We.O();
+					if (effectBuffers[effectKey][inst].p9) effectBytes += effectBuffers[effectKey][inst].p9.We.O();
+					if (effectBuffers[effectKey][inst].l2) effectBytes += effectBuffers[effectKey][inst].l2.We.O();
+					if (effectBuffers[effectKey][inst].gp) effectBytes += effectBuffers[effectKey][inst].gp.We.O();
+				} else effectBytes += effectBuffers[effectKey][inst].We.O();
+				if (effectBytes != 0) layerNode.LK.push({
+					MS: languageManager.get(LayerStyleConstants.effectDisplayNames[LayerStyleConstants.effectOrder.indexOf(effectKey)]),
+					E3: [ramOnLayer * effectBytes * 4, gpuOnLayer * effectBytes * 4],
 					Ts: 3
 				});
 			}
-			if (J.hD.VK) _local4397 += _local4404;
-			if (J.hD.GA) _local4397 += _local4404;
-			if (J.hD.Vn) _local4397 += _local4404;
-			if (J.hD.Vn) _local4397 += _local4404;
-			if (J.hD.me) _local4397 += _local4404;
-			if (J.hD.dO) _local4397 += _local4404;
-			var _local4407 = J.hD.tw ? J.hD.tw.length : 0;
-			if (_local4397 + _local4407 != 0) _local4406.LK.push({
+			if (layer.hD.VK) blendPixelCount += pixelCount;
+			if (layer.hD.GA) blendPixelCount += pixelCount;
+			if (layer.hD.Vn) blendPixelCount += pixelCount;
+			if (layer.hD.Vn) blendPixelCount += pixelCount;
+			if (layer.hD.me) blendPixelCount += pixelCount;
+			if (layer.hD.dO) blendPixelCount += pixelCount;
+			var extraBytes = layer.hD.tw ? layer.hD.tw.length : 0;
+			if (blendPixelCount + extraBytes != 0) layerNode.LK.push({
 				MS: "Additional Blending Data",
-				E3: [_local4400 * _local4397 * 4 + _local4407, _local4408 * _local4397 * 4]
+				E3: [ramOnLayer * blendPixelCount * 4 + extraBytes, gpuOnLayer * blendPixelCount * 4]
 			});
 		}
-		var _local4399 = J.c3(),
-			_local4401 = _local4399 ? _local4399.rect.O() : 0;
-		if (_local4401 != 0) {
-			_local4406.LK.push({
+		var rasterMask = layer.c3(),
+			rasterMaskBytes = rasterMask ? rasterMask.rect.O() : 0;
+		if (rasterMaskBytes != 0) {
+			layerNode.LK.push({
 				MS: "Raster Mask",
-				E3: [_local4401, 0]
+				E3: [rasterMaskBytes, 0]
 			});
 		}
-		var _local4399 = J.add.vmsk,
-			_local4401 = _local4399 && _local4399.UG ? _local4399.UG.rect.O() : 0;
-		if (_local4401 != 0) {
-			_local4406.LK.push({
+		var vectorMask = layer.add.vmsk,
+			vectorMaskBytes = vectorMask && vectorMask.UG ? vectorMask.UG.rect.O() : 0;
+		if (vectorMaskBytes != 0) {
+			layerNode.LK.push({
 				MS: "Vector Mask",
-				E3: [_local4401, 0]
+				E3: [vectorMaskBytes, 0]
 			});
 		}
-		_local4368(_local4406);
-		return _local4406;
+		sumChildBytes(layerNode);
+		return layerNode;
 	}
 
-	function _local4368(J) {
-		J.E3 = [0, 0];
-		for (var _local4409 = 0; _local4409 < J.LK.length; _local4409++) {
-			J.E3[0] += J.LK[_local4409].E3[0];
-			J.E3[1] += J.LK[_local4409].E3[1];
+	// Roll up E3 = [totalRam, totalGpu] from all children onto parent node.
+	function sumChildBytes(node) {
+		node.E3 = [0, 0];
+		for (var i = 0; i < node.LK.length; i++) {
+			node.E3[0] += node.LK[i].E3[0];
+			node.E3[1] += node.LK[i].E3[1];
 		}
 	}
-	return _local4367;
+	return MemoryPanelCtor;
 }();
 
 

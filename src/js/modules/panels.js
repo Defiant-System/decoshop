@@ -608,7 +608,20 @@ const Panels = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "init-panel": break;
+				case "init-panel":
+					Self.root = APP.els.content.find(`.extras-wrapper div[data-box="memory"] .memory-wrapper`);
+					break;
+				case "update":
+					window.render({
+						data: Engine.xFiles,
+						template: "memory-files-list",
+						match: "//Files",
+						target: Self.root,
+					}).then((el) => {
+						
+					});
+					break;
+
 				case "toggle-child-rows":
 					el = event.el.parent();
 					if (el.hasClass("expanded")) {

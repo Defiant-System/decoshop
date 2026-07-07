@@ -87,6 +87,74 @@
 </xsl:template>
 
 
+<xsl:template name="memory-files-list">
+	<div class="list-head">
+		<span class="cell-3">Name</span>
+		<span class="cell-4">RAM</span>
+		<span class="cell-5">GPU</span>
+	</div>
+	<div class="list-body">
+		<xsl:call-template name="memory-files-list-rows"/>
+	</div>
+	<div class="list-foot">
+		<span class="cell-3">Total</span>
+		<span class="cell-4">2.1 MB</span>
+		<span class="cell-5">2.5 MB</span>
+	</div>
+</xsl:template>
+
+
+<xsl:template name="memory-files-list-rows">
+	<div class="file">
+		<div class="row expanded">
+			<i class="icon icon-chevron" data-click="toggle-child-rows"></i>
+			<i class="icon icon-new"></i>
+			<span class="cell-3">File 1</span>
+			<span class="cell-4">2 MB</span>
+			<span class="cell-5">1.9 MB</span>
+		</div>
+		<div class="children">
+			<div class="item">
+				<div class="row">
+					<i class="icon icon-image"></i>
+					<span class="cell-3">Layer 1.1</span>
+					<span class="cell-4">1 MB</span>
+					<span class="cell-5">0.9 MB</span>
+				</div>
+			</div>
+			<div class="item">
+				<div class="row">
+					<i class="icon icon-image"></i>
+					<span class="cell-3">Layer 1.2</span>
+					<span class="cell-4">1 MB</span>
+					<span class="cell-5">1 MB</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="file">
+		<div class="row">
+			<i class="icon icon-chevron" data-click="toggle-child-rows"></i>
+			<i class="icon icon-new"></i>
+			<span class="cell-3">File 2</span>
+			<span class="cell-4">1 MB</span>
+			<span class="cell-5">1 MB</span>
+		</div>
+		<div class="children">
+			<div class="item">
+				<div class="row">
+					<i class="icon icon-image"></i>
+					<span class="cell-3">Layer 2.1</span>
+					<span class="cell-4">1 MB</span>
+					<span class="cell-5">1 MB</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</xsl:template>
+
+
 <xsl:template name="history-list">
 	<div>
 		<xsl:for-each select="./*">

@@ -3,6 +3,8 @@ const Engine = {
 	init() {
 		// listen to events from engine
 		PP.addEventListener(ActionTypes.E.hbi, this.fromEngine);
+		// keeps track of open files
+		this.xFiles = $.xmlFromString(`<Files/>`).documentElement;
 	},
 	fromEngine(event) {
 		let APP = decoshop,

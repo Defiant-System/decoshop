@@ -10,7 +10,7 @@
 			extraBar: window.find(".extras-bar"),
 		};
 		// 
-		this.livePanels = ["navigator", "histogram", "layers", "channels"];
+		this.livePanels = ["navigator", "histogram", "layers", "channels", "memory"];
 	},
 	dispatch(event) {
 		let APP = decoshop,
