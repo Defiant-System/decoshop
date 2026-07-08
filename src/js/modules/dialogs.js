@@ -5,7 +5,7 @@ const Dialogs = {
 		Object.keys(this)
 			.filter(i => !["init"].includes(i))
 			.map(i => this[i].dispatch({
-				type: "init-dialog",
+				type: "dlg-init",
 				dEl: window.find(`div[data-dlg="${i}"]`),
 			}));
 	},
@@ -31,7 +31,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// make sure layer style is covered
@@ -116,7 +116,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.dEl.find(".style-list .option").length) {
@@ -157,7 +157,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// make sure layer style is covered
@@ -275,7 +275,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.dEl.find(".bubble-options fieldset > div").length) {
@@ -332,7 +332,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
@@ -352,7 +352,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
@@ -371,7 +371,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
@@ -390,7 +390,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
@@ -410,7 +410,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
@@ -543,7 +543,7 @@ const Dialogs = {
 					break;
 				
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// fast references
@@ -630,7 +630,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				default:
 					/* Falls through to "master UI"
@@ -673,7 +673,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				default:
 					/* Falls through to "master UI"
@@ -695,7 +695,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -718,7 +718,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -745,7 +745,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -772,7 +772,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -799,7 +799,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -826,7 +826,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -853,7 +853,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -880,7 +880,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -916,7 +916,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -945,7 +945,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -974,7 +974,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1003,7 +1003,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1016,6 +1016,7 @@ const Dialogs = {
 	},
 	dlgGaussianBlur: {
 		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgGaussianBlur,
@@ -1036,18 +1037,43 @@ const Dialogs = {
 
 					// selected layer
 					Doc.g = [0];
+					// save raf
+					let fn = () => {
+							let qv = FilterHelper.oT("GsnB");
+							qv.Rds.v.val =
+							Self.values.radius.value = event.value;
+							PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
+							PP.update();
+							delete Self.timer;
+						};
+					if (Self.timer) {
+						cancelAnimationFrame(Self.timer);
+						delete Self.timer;
+					} else Self.timer = requestAnimationFrame(fn);
 
-					// 
-					let qv = FilterHelper.oT("GsnB");
-					qv.Rds.v.val = event.value;
-					PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
-					PP.update();
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				case "dlg-open":
+					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					break;
+				case "dlg-reset":
+					Self.values.radius.value = Self.values.radius.default;
+					Self.root.find(`.field-row input[name="radius"]`).val(Self.values.radius.value);
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.default });
+					break;
+				case "dlg-ok":
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -1077,7 +1103,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1106,7 +1132,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1135,7 +1161,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1164,7 +1190,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1193,7 +1219,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1222,7 +1248,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1251,7 +1277,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1280,7 +1306,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1309,7 +1335,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1338,7 +1364,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1367,7 +1393,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1396,7 +1422,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1425,7 +1451,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1454,7 +1480,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1483,7 +1509,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1512,7 +1538,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1541,7 +1567,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1570,7 +1596,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1599,7 +1625,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1628,7 +1654,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1657,7 +1683,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1686,7 +1712,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1715,7 +1741,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1744,7 +1770,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1773,7 +1799,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1802,7 +1828,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1831,7 +1857,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1860,7 +1886,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1889,7 +1915,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1918,7 +1944,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1947,7 +1973,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1976,7 +2002,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2005,7 +2031,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2034,7 +2060,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2063,7 +2089,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2092,7 +2118,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2121,7 +2147,7 @@ const Dialogs = {
 					return;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2185,7 +2211,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2247,7 +2273,7 @@ const Dialogs = {
 					});
 					break;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// initial values
@@ -2304,7 +2330,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// click on a preset
@@ -2331,7 +2357,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2355,7 +2381,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2379,7 +2405,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2408,7 +2434,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2462,7 +2488,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					Self.colorRanges = {
@@ -2498,7 +2524,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2525,7 +2551,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2552,7 +2578,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2579,7 +2605,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2606,7 +2632,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2633,7 +2659,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2662,7 +2688,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2682,7 +2708,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2707,7 +2733,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2737,7 +2763,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2762,7 +2788,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2787,7 +2813,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2812,7 +2838,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2837,7 +2863,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2862,7 +2888,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2887,7 +2913,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2912,7 +2938,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2945,7 +2971,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2970,7 +2996,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -2995,7 +3021,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3020,7 +3046,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3045,7 +3071,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3070,7 +3096,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3095,7 +3121,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3128,7 +3154,7 @@ const Dialogs = {
 					break;
 
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3151,7 +3177,7 @@ const Dialogs = {
 					event.el.parents(".options-wrapper").data({ show: event.text.toLowerCase() });
 					break;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (event.args.length) {
@@ -3177,7 +3203,7 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (event.args.length) {
@@ -3212,7 +3238,7 @@ const Dialogs = {
 					el.parents(".dlg-content").find(".pref-details").data({ show: selEl.html().replace("&amp; ", "") });
 					break;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
@@ -3258,7 +3284,7 @@ const Dialogs = {
 					}
 					break;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.args.length) {
@@ -3288,7 +3314,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// click on a preset
@@ -3326,7 +3352,7 @@ const Dialogs = {
 					break;
 					
 				// run once app opens
-				case "init-dialog": break;
+				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// position cursors

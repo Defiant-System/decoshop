@@ -824,7 +824,7 @@ const UI = {
 					// update input field
 					iEl.val(value);
 					// update knob, if any
-					iEl.parents(".field-row").find(".knob, .pan-knob").data({ value });
+					iEl.parents(".field-row").find(".knob, .pan-knob").data({ value: parseInt(value, 10) });
 				});
 				// TODO: auto-trigger new render
 				break;
