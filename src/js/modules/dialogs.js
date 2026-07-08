@@ -1064,16 +1064,39 @@ const Dialogs = {
 							value = parseInt(el.val(), 10);
 						Self.values[el.attr("name")] = { default: value, value };
 					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
 					break;
 				case "dlg-preview":
 					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });
+						PP.update();
+					}
 					break;
 				case "dlg-reset":
-					Self.values.radius.value = Self.values.radius.default;
-					Self.root.find(`.field-row input[name="radius"]`).val(Self.values.radius.value);
+					Self.root.find(`.field-row input[data-default]`).map(iEl => {
+						Self.values[iEl.getAttribute("name")].value = Self.values[iEl.getAttribute("name")].default;
+						iEl.value = iEl.getAttribute("data-default");
+					});
+					// make sure knobs in dialog is synced with its sibling input element
+					UI.doDialogKnob({ type: "set-initial-value", dEl: Self.root });
+
 					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.default });
 					break;
 				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "GsnB" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: "dlgGaussianBlur" });
+					break;
+				case "dlg-close": // cancel
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
 					break;
 				default:
 					/* Falls through to "master UI"

@@ -43,6 +43,7 @@
 @import "bundle/canvas-tools.js"
 @import "bundle/riff-chunk-parser.js"
 @import "bundle/filter-helper.js"
+@import "bundle/filter-effect-panel.js"
 @import "bundle/text-style-helper.js"
 @import "bundle/action.js"
 
@@ -93,6 +94,7 @@ module.exports = {
 	ActionTypes,
 	CanvasTools,
 	FilterHelper,
+	FilterEffectPanel,
 	LayerRecord,
 	LayerSectionType,
 	LayerStyleConstants,
