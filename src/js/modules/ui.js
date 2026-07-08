@@ -183,7 +183,7 @@ const UI = {
 				// forward event
 				dEl = Self.srcEl.parents(".dialog-box");
 				if (dEl.length) {
-					let func = Dialogs[dEl.data("dlg")],
+					let func = Dialogs[dEl.data("dlg")].dispatch,
 						type = Self.srcEl.data("change");
 					if (func) func({ ...event, type });
 					// clean up
@@ -214,9 +214,7 @@ const UI = {
 					type = el.data("change"),
 					val = Math.round(((parseInt(el.text() || "0", 10) - min) / (max - min)) * 100),
 					offset = val + event.clientY,
-					_min = Math.min,
-					_max = Math.max,
-					func = Dialogs[dId];
+					func = Dialogs[dId].dispatch;
 
 				// this might be panel element
 				if (!dEl.length) {
@@ -225,7 +223,7 @@ const UI = {
 					func = Adjustments[dId]
 				}
 
-				Self.drag = { el, bEl, kEl, min, max, type, offset, suffix, func, _min, _max };
+				Self.drag = { el, bEl, kEl, min, max, type, offset, suffix, func };
 
 				// reset knob
 				kEl.data({ value: val });
@@ -242,7 +240,7 @@ const UI = {
 				break;
 			case "mousemove":
 				// update knob
-				let value = Drag._max(Drag._min(Drag.offset - event.clientY, 100), 0);
+				let value = Math.max(Math.min(Drag.offset - event.clientY, 100), 0);
 				Drag.kEl.data({ value });
 				// update origin element value
 				value = Math.round((value / 100) * (Drag.max - Drag.min));
@@ -284,10 +282,8 @@ const UI = {
 					offset = parseInt(el.cssProp("--value"), 10) - event.clientX,
 					type = el.data("change"),
 					min = 0,
-					max = 100,
-					_min = Math.min,
-					_max = Math.max;
-				Self.drag = { el, bEl, dId, min, max, type, offset, _min, _max };
+					max = 100;
+				Self.drag = { el, bEl, dId, min, max, type, offset };
 
 				// show bubble
 				bEl.removeClass("hidden")
@@ -302,7 +298,7 @@ const UI = {
 				break;
 			case "mousemove":
 				// update bars icon UI
-				let value = Drag._max(Drag._min(Drag.offset + event.clientX, Drag.max), Drag.min);
+				let value = Math.max(Math.min(Drag.offset + event.clientX, Drag.max), Drag.min);
 				Drag.el.css({ "--value": `${value}%` });
 				// show value in bubble
 				Drag.bEl.html(`${value}%`);
@@ -311,11 +307,11 @@ const UI = {
 				Drag.value = value;
 
 				// proxy changed value
-				Dialogs[Drag.dId]({ type: Drag.type, value: Drag.value });
+				Dialogs[Drag.dId].dispatch({ type: Drag.type, value: Drag.value });
 				break;
 			case "mouseup":
 				// proxy changed value
-				Dialogs[Drag.dId]({ type: `after:${Drag.type}`, value: Drag.value });
+				Dialogs[Drag.dId].dispatch({ type: `after:${Drag.type}`, value: Drag.value });
 				// hide bubble
 				Drag.bEl.cssSequence("close", "animationend", el => el.addClass("hidden").removeClass("close"));
 				// unbind event handlers
@@ -338,7 +334,7 @@ const UI = {
 					pEl = el.parents(".track"),
 					gEl = el.parents(".gradient-slider"),
 					dEl = el.parents(".dialog-box[data-dlg]"),
-					dlgFunc = Dialogs[dEl.data("dlg")],
+					dlgFunc = Dialogs.dispatch[dEl.data("dlg")],
 					target = {},
 					ux = el.data("ux"),
 					offset = {
@@ -453,7 +449,7 @@ const UI = {
 					},
 					min = 0,
 					max = +pEl.prop("offsetWidth"),
-					func = Dialogs[dEl.data("dlg")];
+					func = Dialogs[dEl.data("dlg")].dispatch;
 
 				// this might be panel element
 				if (!dEl.length) {
@@ -773,7 +769,7 @@ const UI = {
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				// auto forward open event
 
-				if (Dialogs[event.name]) Dialogs[event.name]({ ...event, dEl });
+				if (Dialogs[event.name]) Dialogs[event.name].dispatch({ ...event, dEl });
 				else Self.doDialog({ ...event, type: `${event.type}-common` });
 				// prevent mouse from triggering mouseover
 				Self.content.addClass("cover");
@@ -792,6 +788,7 @@ const UI = {
 						el.removeClass("showing closing");
 					});
 				break;
+			/*
 			case "dlg-undo-filter":
 				// revert layer to initial state
 				pixels = Dialogs.data.pixels;
@@ -799,7 +796,7 @@ const UI = {
 				// update layer
 				Dialogs.data.layer.putImageData({ data: copy, noEmit: 1 });
 				break;
-
+			*/
 			case "dlg-open-common":
 				if (!event.dEl) return;
 				// collect default values
@@ -812,7 +809,7 @@ const UI = {
 				// read preview toggler state
 				Dialogs.preview = event.dEl.find(`.toggler[data-click="dlg-preview"]`).data("value") === "on";
 				// apply -- In case Preview is turned off, apply filter on image
-				Dialogs[event.name]({ type: "apply-filter-data" });
+				Dialogs[event.name].dispatch({ type: "apply-filter-data" });
 				break;
 			case "dlg-ok-common":
 				// TODO: apply changes
@@ -1210,10 +1207,6 @@ const UI = {
 					},
 					hue: parseInt(Self.els.iHue.val(), 10),
 					alpha: parseInt(Self.els.iAlpha.val(), 10) / 100,
-					_max: Math.max,
-					_min: Math.min,
-					_abs: Math.abs,
-					_round: Math.round,
 				};
 				// trigger mousemove
 				Self.doColorBox({ type: "mousemove", clientY: event.clientY, clientX: event.clientX });
@@ -1223,15 +1216,15 @@ const UI = {
 				Self.doc.on("mousemove mouseup", Self.doColorBox);
 				break;
 			case "mousemove":
-				let left = Drag._min(Drag._max(event.clientX + Drag.clickX, Drag.min.x), Drag.max.x),
-					top = Drag._min(Drag._max(event.clientY + Drag.clickY, Drag.min.y), Drag.max.y);
+				let left = Math.min(Math.max(event.clientX + Drag.clickX, Drag.min.x), Drag.max.x),
+					top = Math.min(Math.max(event.clientY + Drag.clickY, Drag.min.y), Drag.max.y);
 				Drag.cursor.css({ top, left });
 
 				// calculate color from pos
 				let hsvValue = 1 - ((top / Drag.max.y * 100) / 100),
 					hsvSaturation = (left / Drag.max.x * 100) / 100;
 				Drag.lgh = (hsvValue / 2) * (2 - hsvSaturation);
-				Drag.sat = (hsvValue * hsvSaturation) / (1.0001 - Drag._abs(2 * Drag.lgh - 1));
+				Drag.sat = (hsvValue * hsvSaturation) / (1.0001 - Math.abs(2 * Drag.lgh - 1));
 
 				let hsl = { h: Drag.hue, s: Drag.sat, l: Drag.lgh, a: Drag.alpha };
 				Drag.hex = ColorLib.hslToHex(hsl);
@@ -1240,8 +1233,8 @@ const UI = {
 				// update color
 				Drag.cEl.css({ "--color": Drag.hex });
 				// saturation & lightness
-				Self.els.iSaturation.val(Drag._round(Drag.sat * 100) +"%");
-				Self.els.iLightness.val(Drag._round(Drag.lgh * 100) +"%");
+				Self.els.iSaturation.val(Math.round(Drag.sat * 100) +"%");
+				Self.els.iLightness.val(Math.round(Drag.lgh * 100) +"%");
 				// rgb values
 				Self.els.iRed.val(Drag.rgb.r);
 				Self.els.iGreen.val(Drag.rgb.g);
@@ -1292,9 +1285,6 @@ const UI = {
 					alpha: parseInt(Self.els.iAlpha.val(), 10) / 100,
 					sat: parseInt(Self.els.iSaturation.val(), 10) / 100,
 					lgh: parseInt(Self.els.iLightness.val(), 10) / 100,
-					_max: Math.max,
-					_min: Math.min,
-					_round: Math.round,
 				};
 				// trigger mousemove
 				Self.doHueBar({ type: "mousemove", clientY: event.clientY });
@@ -1304,8 +1294,8 @@ const UI = {
 				Self.doc.on("mousemove mouseup", Self.doHueBar);
 				break;
 			case "mousemove":
-				let top = Drag._min(Drag._max(event.clientY + Drag.clickY, Drag.min.y), Drag.max.y),
-					hue = Drag._round((1-(top / Drag.max.y)) * 360);
+				let top = Math.min(Math.max(event.clientY + Drag.clickY, Drag.min.y), Drag.max.y),
+					hue = Math.round((1-(top / Drag.max.y)) * 360);
 				if (hue >= 360) hue = 0;
 				// move cursor
 				Drag.cursor.css({ top });
@@ -1320,8 +1310,8 @@ const UI = {
 				// hue value
 				Self.els.iHue.val(hue +"°");
 				// saturation & lightness
-				Self.els.iSaturation.val(Drag._round(Drag.sat * 100) +"%");
-				Self.els.iLightness.val(Drag._round(Drag.lgh * 100) +"%");
+				Self.els.iSaturation.val(Math.round(Drag.sat * 100) +"%");
+				Self.els.iLightness.val(Math.round(Drag.lgh * 100) +"%");
 				// rgb values
 				Self.els.iRed.val(Drag.rgb.r);
 				Self.els.iGreen.val(Drag.rgb.g);
@@ -1382,7 +1372,7 @@ const UI = {
 					dEl = pEl.parents(".dialog-box"),
 					dlg = {
 						dEl,
-						func: Dialogs[dEl.data("dlg")],
+						func: Dialogs[dEl.data("dlg")].dispatch,
 						type: el.data("change"),
 					},
 					src = pEl.find(".value input"),
@@ -1408,16 +1398,23 @@ const UI = {
 					max: isPanKnob ? 100 : 100,
 					value: +el.data("value"),
 					clientY: event.clientY,
-					val: {
+				};
+
+				if (src.data("scale")) {
+					// drag object
+					Self.drag.spectrum = Misc.generateSpectrum(JSON.parse(src.data("scale")));
+					Self.drag.sLen = Self.drag.spectrum.length-1;
+
+					return console.log( Self.drag.spectrum );
+				} else {
+					Self.drag.val = {
 						min: isPanKnob ? 0 : +src.data("min"),
 						max: +src.data("max") - +src.data("min"),
 						step: +src.data("step") || 1,
 						value: +src.val(),
-					},
-					_min: Math.min,
-					_max: Math.max,
-					_round: Math.round,
-				};
+					};
+				}
+
 				// pre-knob twist event
 				dlg.func({ ...dlg, type: `before:${dlg.type}`, value: +el.data("value") });
 				// bind event handlers
@@ -1426,7 +1423,7 @@ const UI = {
 				break;
 			case "mousemove":
 				let value = (Drag.clientY - event.clientY) + (Drag.isPanKnob ? Drag.value * 2 : Drag.value);
-				value = Drag._min(Drag._max(value, Drag.min), Drag.max);
+				value = Math.min(Math.max(value, Drag.min), Drag.max);
 				if (Drag.isPanKnob) value = value >> 1;
 				Drag.el.data({ value });
 

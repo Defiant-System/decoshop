@@ -18,6 +18,7 @@ let {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	FilterHelper,
 	LayerRecord,
 	LayerSectionType,
 	LayerStyleConstants,
@@ -173,7 +174,7 @@ const decoshop = {
 					if (rEl.length) {
 						let name = rEl.data("dlg");
 						return Dialogs[name]
-							? Dialogs[name](event)
+							? Dialogs[name].dispatch(event)
 							: UI.doDialog({ ...event, type: `${event.type}-common` });;
 					}
 				} else {

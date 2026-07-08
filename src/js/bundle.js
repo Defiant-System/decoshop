@@ -92,6 +92,7 @@ module.exports = {
 	Action,
 	ActionTypes,
 	CanvasTools,
+	FilterHelper,
 	LayerRecord,
 	LayerSectionType,
 	LayerStyleConstants,
