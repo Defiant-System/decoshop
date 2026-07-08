@@ -11,6 +11,8 @@ const Dialogs = {
 	},
 	// panel sub objects
 	dlgLensCorrection: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			/*
 			 * 
@@ -54,6 +56,8 @@ const Dialogs = {
 		}
 	},
 	dlgLayerStyle: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			/*
 			 * 
@@ -142,6 +146,8 @@ const Dialogs = {
 		}
 	},
 	dlgContourEditor: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			/*
 			 * 
@@ -180,6 +186,8 @@ const Dialogs = {
 		}
 	},
 	dlgFilterGallery: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			/*
 			 * 
@@ -307,6 +315,8 @@ const Dialogs = {
 		}
 	},
 	dlgBrightnessContrast: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			/*
 			 * Brightness -  Min: -150   Max: 150
@@ -314,8 +324,7 @@ const Dialogs = {
 			 */
 			let APP = decoshop,
 				Self = Dialogs.dlgBrightnessContrast,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-contrast":
@@ -345,6 +354,8 @@ const Dialogs = {
 		}
 	},
 	dlgLayerPanelOptions: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgBrightnessContrast,
@@ -364,6 +375,8 @@ const Dialogs = {
 		}
 	},
 	dlgScaleEffects: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgScaleEffects,
@@ -383,6 +396,8 @@ const Dialogs = {
 		}
 	},
 	dlgWarp: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgWarp,
@@ -402,11 +417,12 @@ const Dialogs = {
 		}
 	},
 	dlgStroke: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgStroke,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// run once app opens
@@ -422,6 +438,8 @@ const Dialogs = {
 		}
 	},
 	dlgGradientEditor: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgGradientEditor,
@@ -600,6 +618,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectMagicCut: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectMagicCut,
@@ -643,6 +663,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectRefineEdge: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectRefineEdge,
@@ -686,6 +708,8 @@ const Dialogs = {
 		}
 	},
 	dlgQuickMaskOptions: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgQuickMaskOptions,
@@ -707,6 +731,8 @@ const Dialogs = {
 		}
 	},
 	dlgFlame: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFlame,
@@ -746,15 +772,14 @@ const Dialogs = {
 				case "apply-filter-data":
 					if (!Doc) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.value = event.value;
+					Self.values.amount.value = event.value;
 
 					// selected layer
 					Doc.g = [0];
 					// save raf
 					let fn = () => {
 							let qv = FilterHelper.oT("thrs");
-							qv.Lvl.v =
-							Self.values.amount.value = event.value;
+							qv.Lvl.v = event.value;
 							PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
 							PP.update();
 							delete Self.timer;
@@ -791,11 +816,12 @@ const Dialogs = {
 		}
 	},
 	dlgCrystallize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCrystallize,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-size":
@@ -818,11 +844,12 @@ const Dialogs = {
 		}
 	},
 	dlgPointillize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPointillize,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-size":
@@ -845,11 +872,12 @@ const Dialogs = {
 		}
 	},
 	dlgMosaic: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMosaic,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-size":
@@ -872,11 +900,12 @@ const Dialogs = {
 		}
 	},
 	dlgMezzoint: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMezzoint,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-type":
@@ -899,11 +928,12 @@ const Dialogs = {
 		}
 	},
 	dlgColorHalftone: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorHalftone,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			switch (event.type) {
 				// "fast events"
 				case "set-type":
@@ -926,12 +956,12 @@ const Dialogs = {
 		}
 	},
 	dlgFill: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFill,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -962,12 +992,12 @@ const Dialogs = {
 		}
 	},
 	dlgNormalMap: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgNormalMap,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -991,12 +1021,12 @@ const Dialogs = {
 		}
 	},
 	dlgTextureDilation: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgTextureDilation,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1020,12 +1050,12 @@ const Dialogs = {
 		}
 	},
 	dlgBoxBlur: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgBoxBlur,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1065,15 +1095,14 @@ const Dialogs = {
 				case "apply-filter-data":
 					if (!Doc) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.value = event.value;
+					Self.values.radius.value = event.value;
 
 					// selected layer
 					Doc.g = [0];
 					// save raf
 					let fn = () => {
 							let qv = FilterHelper.oT("GsnB");
-							qv.Rds.v.val =
-							Self.values.radius.value = event.value;
+							qv.Rds.v.val = event.value;
 							PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
 							PP.update();
 							delete Self.timer;
@@ -1143,12 +1172,12 @@ const Dialogs = {
 		}
 	},
 	dlgLensBlur: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLensBlur,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1172,12 +1201,12 @@ const Dialogs = {
 		}
 	},
 	dlgMotionBlur: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMotionBlur,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1201,12 +1230,12 @@ const Dialogs = {
 		}
 	},
 	dlgRadialBlur: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgRadialBlur,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1230,12 +1259,12 @@ const Dialogs = {
 		}
 	},
 	dlgSurfaceBlur: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSurfaceBlur,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1259,12 +1288,12 @@ const Dialogs = {
 		}
 	},
 	dlgDisplace: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDisplace,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1288,12 +1317,12 @@ const Dialogs = {
 		}
 	},
 	dlgKaleidoscope: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgKaleidoscope,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1317,12 +1346,12 @@ const Dialogs = {
 		}
 	},
 	dlgPinch: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPinch,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1346,12 +1375,12 @@ const Dialogs = {
 		}
 	},
 	dlgPolarCoordinates: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPolarCoordinates,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1375,12 +1404,12 @@ const Dialogs = {
 		}
 	},
 	dlgRipple: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgRipple,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1404,12 +1433,12 @@ const Dialogs = {
 		}
 	},
 	dlgShear: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgShear,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1433,12 +1462,12 @@ const Dialogs = {
 		}
 	},
 	dlgSpherize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSpherize,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1462,12 +1491,12 @@ const Dialogs = {
 		}
 	},
 	dlgTwirl: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgTwirl,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1491,12 +1520,12 @@ const Dialogs = {
 		}
 	},
 	dlgWave: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgWave,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1520,12 +1549,12 @@ const Dialogs = {
 		}
 	},
 	dlgZigZag: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgZigZag,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1549,12 +1578,12 @@ const Dialogs = {
 		}
 	},
 	dlgAddNoise: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgAddNoise,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1578,12 +1607,12 @@ const Dialogs = {
 		}
 	},
 	dlgDustScratches: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDustScratches,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1607,12 +1636,12 @@ const Dialogs = {
 		}
 	},
 	dlgMedian: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMedian,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1636,12 +1665,12 @@ const Dialogs = {
 		}
 	},
 	dlgReduceNoise: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgReduceNoise,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1665,12 +1694,12 @@ const Dialogs = {
 		}
 	},
 	dlgFibers: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFibers,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1694,12 +1723,12 @@ const Dialogs = {
 		}
 	},
 	dlgLensFlare: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLensFlare,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1723,12 +1752,12 @@ const Dialogs = {
 		}
 	},
 	dlgSmartSharpen: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSmartSharpen,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1752,12 +1781,12 @@ const Dialogs = {
 		}
 	},
 	dlgUnsharpMask: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgUnsharpMask,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1781,12 +1810,12 @@ const Dialogs = {
 		}
 	},
 	dlgDiffuse: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDiffuse,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1810,12 +1839,12 @@ const Dialogs = {
 		}
 	},
 	dlgEmboss: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgEmboss,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1839,12 +1868,12 @@ const Dialogs = {
 		}
 	},
 	dlgOilPaint: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgOilPaint,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1868,12 +1897,12 @@ const Dialogs = {
 		}
 	},
 	dlgTraceContour: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgTraceContour,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1897,12 +1926,12 @@ const Dialogs = {
 		}
 	},
 	dlgWind: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgWind,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1926,24 +1955,55 @@ const Dialogs = {
 		}
 	},
 	dlgHighPass: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHighPass,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-radius":
 					// exit if "preview" is not enabled
 					if (!Self.preview) return;
 					/* falls-through */
 				case "apply-filter-data":
+					if (!Doc) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values.radius.value = event.value;
+
+					// selected layer
+					Doc.g = [0];
+					// save raf
+					let fn = () => {
+							let qv = FilterHelper.oT("HghP");
+							qv.Rds.v.val = event.value;
+							PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "HghP", qv, ve: false } });
+							PP.update();
+							delete Self.timer;
+						};
+					if (Self.timer) {
+						cancelAnimationFrame(Self.timer);
+						delete Self.timer;
+					} else Self.timer = requestAnimationFrame(fn);
+
 					return;
 
 				// run once app opens
 				case "dlg-init": break;
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1955,12 +2015,12 @@ const Dialogs = {
 		}
 	},
 	dlgHsbHsl: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHsbHsl,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1984,12 +2044,12 @@ const Dialogs = {
 		}
 	},
 	dlgMaximum: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMaximum,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2013,12 +2073,12 @@ const Dialogs = {
 		}
 	},
 	dlgMinimum: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMinimum,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2042,12 +2102,12 @@ const Dialogs = {
 		}
 	},
 	dlgOffset: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgOffset,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2071,12 +2131,12 @@ const Dialogs = {
 		}
 	},
 	dlgRepeat: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgRepeat,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2100,12 +2160,12 @@ const Dialogs = {
 		}
 	},
 	dlgColorToAlpha: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorToAlpha,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2129,12 +2189,12 @@ const Dialogs = {
 		}
 	},
 	dlgDither: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDither,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2158,12 +2218,12 @@ const Dialogs = {
 		}
 	},
 	dlgParticles: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgParticles,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2187,12 +2247,12 @@ const Dialogs = {
 		}
 	},
 	dlgCameraRaw: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCameraRaw,
-				pixels,
-				copy,
-				pEl;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -2216,6 +2276,8 @@ const Dialogs = {
 		}
 	},
 	dlgLiquify: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLiquify,
@@ -2257,6 +2319,8 @@ const Dialogs = {
 		}
 	},
 	dlgAddGuides: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgAddGuides,
@@ -2281,6 +2345,8 @@ const Dialogs = {
 		}
 	},
 	dlgCanvasSize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCanvasSize;
@@ -2366,6 +2432,8 @@ const Dialogs = {
 		}
 	},
 	dlgImageSize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgImageSize,
@@ -2403,6 +2471,8 @@ const Dialogs = {
 		}
 	},
 	dlgBlackWhite: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgBlackWhite,
@@ -2427,6 +2497,8 @@ const Dialogs = {
 		}
 	},
 	dlgExposure: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExposure,
@@ -2451,6 +2523,8 @@ const Dialogs = {
 		}
 	},
 	dlgVibrance: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgVibrance,
@@ -2475,6 +2549,8 @@ const Dialogs = {
 		}
 	},
 	dlgColorBalance: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorBalance,
@@ -2504,6 +2580,8 @@ const Dialogs = {
 		}
 	},
 	dlgHueSaturation: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHueSaturation,
@@ -2567,6 +2645,8 @@ const Dialogs = {
 		}
 	},
 	dlgLevels: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLevels,
@@ -2594,6 +2674,8 @@ const Dialogs = {
 		}
 	},
 	dlgMatchColor: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMatchColor,
@@ -2621,6 +2703,8 @@ const Dialogs = {
 		}
 	},
 	dlgPhotoFilter: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPhotoFilter,
@@ -2648,6 +2732,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectiveColor: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectiveColor,
@@ -2675,6 +2761,8 @@ const Dialogs = {
 		}
 	},
 	dlgCurves: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
@@ -2702,6 +2790,8 @@ const Dialogs = {
 		}
 	},
 	dlgChannelMixer: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgChannelMixer,
@@ -2729,6 +2819,8 @@ const Dialogs = {
 		}
 	},
 	dlgGradientMap: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgGradientMap,
@@ -2758,6 +2850,8 @@ const Dialogs = {
 		}
 	},
 	dlgPosterize: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPosterize,
@@ -2778,6 +2872,8 @@ const Dialogs = {
 		}
 	},
 	dlgReplaceColor: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgReplaceColor,
@@ -2803,6 +2899,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectColorRange: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectColorRange,
@@ -2833,6 +2931,8 @@ const Dialogs = {
 		}
 	},
 	dlgShadowHighlights: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgShadowHighlights,
@@ -2858,6 +2958,8 @@ const Dialogs = {
 		}
 	},
 	dlgTrim: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgTrim,
@@ -2883,6 +2985,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectModifyBorder: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectModifyBorder,
@@ -2908,6 +3012,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectModifySmooth: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectModifySmooth,
@@ -2933,6 +3039,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectModifyExpand: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectModifyExpand,
@@ -2958,6 +3066,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectModifyContract: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectModifyContract,
@@ -2983,6 +3093,8 @@ const Dialogs = {
 		}
 	},
 	dlgSelectModifyFeather: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectModifyFeather,
@@ -3008,6 +3120,8 @@ const Dialogs = {
 		}
 	},
 	dlgApplyImage: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgApplyImage,
@@ -3041,6 +3155,8 @@ const Dialogs = {
 		}
 	},
 	dlgArtboard: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgArtboard,
@@ -3066,6 +3182,8 @@ const Dialogs = {
 		}
 	},
 	dlgColorLookup: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorLookup,
@@ -3091,6 +3209,8 @@ const Dialogs = {
 		}
 	},
 	dlgDuplicateInto: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDuplicateInto,
@@ -3116,6 +3236,8 @@ const Dialogs = {
 		}
 	},
 	dlgFileInfo: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFileInfo,
@@ -3141,6 +3263,8 @@ const Dialogs = {
 		}
 	},
 	dlgVariables: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgVariables,
@@ -3166,6 +3290,8 @@ const Dialogs = {
 		}
 	},
 	dlgExportColorLookUp: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportColorLookUp,
@@ -3191,6 +3317,8 @@ const Dialogs = {
 		}
 	},
 	dlgExportLayers: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportLayers,
@@ -3224,6 +3352,8 @@ const Dialogs = {
 		}
 	},
 	dlgExportAs: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportAs,
@@ -3253,6 +3383,8 @@ const Dialogs = {
 		}
 	},
 	dlgToolShape: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgToolShape,
@@ -3278,6 +3410,8 @@ const Dialogs = {
 		}
 	},
 	dlgPreferences: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPreferences,
@@ -3308,6 +3442,8 @@ const Dialogs = {
 		}
 	},
 	dlgPresetManager: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPresetManager,
@@ -3360,6 +3496,8 @@ const Dialogs = {
 		}
 	},
 	dlgPixelator: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPixelator,
@@ -3387,6 +3525,8 @@ const Dialogs = {
 		}
 	},
 	dlgColors: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColors,
