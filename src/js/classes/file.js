@@ -42,7 +42,8 @@ class File {
 
 	addHistory(xNode) {
 		if (this.xHistory.selectSingleNode(`./*[@id="${xNode.getAttribute("id")}"]`)) return;
-		this.xHistory.insertBefore(xNode, this.xHistory.firstChild);
+		// this.xHistory.insertBefore(xNode, this.xHistory.firstChild);
+		this.xHistory.appendChild(xNode);
 	}
 
 	dispatch(event) {

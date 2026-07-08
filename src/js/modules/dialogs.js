@@ -730,11 +730,13 @@ const Dialogs = {
 		}
 	},
 	dlgThreshold: {
+		preview: true,
+		values: {},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgThreshold,
-				pixels,
-				copy;
+				Doc = Self.doc;
+			// console.log(event);
 			switch (event.type) {
 				// "fast events"
 				case "set-amount":
@@ -742,10 +744,42 @@ const Dialogs = {
 					if (!Self.preview) return;
 					/* falls-through */
 				case "apply-filter-data":
+					if (!Doc) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.value = event.value;
+
+					// selected layer
+					Doc.g = [0];
+					// save raf
+					let fn = () => {
+							let qv = FilterHelper.oT("thrs");
+							qv.Lvl.v =
+							Self.values.amount.value = event.value;
+							PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
+							PP.update();
+							delete Self.timer;
+						};
+					if (Self.timer) {
+						cancelAnimationFrame(Self.timer);
+						delete Self.timer;
+					} else Self.timer = requestAnimationFrame(fn);
+
 					return;
 
 				// run once app opens
 				case "dlg-init": break;
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.amount.value });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1020,9 +1054,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgGaussianBlur,
-				Doc = Self.doc,
-				pixels,
-				copy;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
@@ -1091,6 +1123,8 @@ const Dialogs = {
 					PP.update();
 					// close dialog
 					UI.doDialog({ ...event, type: `dlg-close-common`, name: "dlgGaussianBlur" });
+
+					// console.log(Doc);
 					break;
 				case "dlg-close": // cancel
 					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });

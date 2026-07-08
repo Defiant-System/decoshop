@@ -348,13 +348,14 @@ const Panels = {
 					Self.root = APP.els.content.find(`.history-wrapper`);
 					break;
 				case "history-changed":
-					let str = event.doc.history.map((state, index) => {
-							let name = languageManager.get(state.name),
-								skip = state.skipInHistoryPanel,
-								xStr = `<i id="${state.aod}" icon="icon-folder-open" name="${name}" index="${index}" skip="${index}"/>`;
-							// add file history as xml
-							APP.file.addHistory($.nodeFromString(xStr));
-						})
+					event.doc.history.map((state, index) => {
+						let name = languageManager.get(state.name),
+							skip = state.skipInHistoryPanel,
+							icon = index === 0 ? "icon-folder-open" : "icon-blank",
+							xStr = `<i id="${state.aod}" icon="${icon}" name="${name}" index="${index}" skip="${index}"/>`;
+						// add file history as xml
+						APP.file.addHistory($.nodeFromString(xStr));
+					});
 					// render 
 					window.render({
 						data: APP.file.xHistory,
