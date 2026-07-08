@@ -1041,7 +1041,7 @@ const Dialogs = {
 					let qv = FilterHelper.oT("GsnB");
 					qv.Rds.v.val = event.value;
 					PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
-					PP.update(true);
+					PP.update();
 					return;
 
 				// run once app opens

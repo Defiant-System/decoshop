@@ -16,6 +16,10 @@ const ZOOM =   [{ level: 12.5, rG: [200, 100, 50] },
 
 
 const Misc = {
+	precision(i, p=1e-3) {
+		const d = -Math.log10(p);
+		return Number((i).toFixed(d));
+	},
 	bresenhamLine(x0, y0, x1, y1, cb) {
 		let dx = Math.abs(x1 - x0),
 			dy = Math.abs(y1 - y0),
@@ -37,12 +41,13 @@ const Misc = {
 		return { cvs, ctx }
 	},
 	generateSpectrum(scale) {
-		let spectrum = [];
+		let spectrum = [],
+			precision = 1e-3;
 		scale.map(g => {
 			switch (g.constructor) {
 				case Array:
 					for (var i=g[0]; i<g[1]; i+=g[2]) {
-						if (spectrum.at(-1) !== i) spectrum.push(i);
+						if (spectrum.at(-1) !== i) spectrum.push(this.precision(i));
 					}
 					if (spectrum.at(-1) !== g[1]) spectrum.push(g[1]);
 					break;

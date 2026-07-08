@@ -1396,22 +1396,20 @@ const UI = {
 					suffix: src.data("suffix") || "",
 					min: isPanKnob ? -100 : 0,
 					max: isPanKnob ? 100 : 100,
-					value: +el.data("value"),
+					value: parseInt(el.data("value"), 10),
 					clientY: event.clientY,
 				};
 
 				if (src.data("scale")) {
+					let spectrum = Misc.generateSpectrum(JSON.parse(src.data("scale"))),
+						sLen = spectrum.length-1;
 					// drag object
-					Self.drag.spectrum = Misc.generateSpectrum(JSON.parse(src.data("scale")));
-					Self.drag.sLen = Self.drag.spectrum.length-1;
-
-					return console.log( Self.drag.spectrum );
+					Self.drag.val = { spectrum, sLen };
 				} else {
 					Self.drag.val = {
 						min: isPanKnob ? 0 : +src.data("min"),
 						max: +src.data("max") - +src.data("min"),
 						step: +src.data("step") || 1,
-						value: +src.val(),
 					};
 				}
 
@@ -1427,12 +1425,18 @@ const UI = {
 				if (Drag.isPanKnob) value = value >> 1;
 				Drag.el.data({ value });
 
-				let i = Drag.val.step.toString().split(".")[1],
-					perc = value / 100,
+				let perc = value / 100,
+					val, i;
+				if (Drag.val.spectrum) {
+					i = Math.round(Math.lerp(0, Drag.val.sLen, perc));
+					val = Drag.val.spectrum[i];
+				} else {
+					i = Drag.val.step.toString().split(".")[1];
 					val = +((Drag.val.max * perc) + Drag.val.min).toFixed(i ? i.length : 0);
+				}
 				Drag.src.val(val + Drag.suffix);
-				// forward event
-				Drag.dlg.func({ ...Drag.dlg, value: val });
+				// forward event (only if value has changed since last time)
+				if (Drag.newValue != val) Drag.dlg.func({ ...Drag.dlg, value: val });
 				// save value
 				Drag.newValue = val;
 				break;
@@ -1450,16 +1454,23 @@ const UI = {
 				// initial value of knob
 				event.dEl.find(".field-row.has-knob").map(rEl => {
 					let row = $(rEl),
-						iEl = row.find("input"),
-						min = +iEl.data("min"),
-						max = +iEl.data("max"),
-						val = parseInt(iEl.val(), 10),
-						kEl = row.find(".knob");
-					if (kEl.length) {
-						kEl.data({ value: Math.round((val-min) / (max-min) * 100) });
+						iEl = row.find("input");
+					if (iEl.data("scale")) {
+						let spectrum = Misc.generateSpectrum(JSON.parse(iEl.data("scale"))),
+							index = spectrum.indexOf(parseInt(iEl.val(), 10)),
+							value = Math.round((index / spectrum.length) * 100);
+						row.find(".knob").data({ value });
 					} else {
-						kEl = row.find(".pan-knob");
-						kEl.data({ value: Math.round((Math.invLerp(min, max, val) - .5) * 100) });
+						let min = +iEl.data("min"),
+							max = +iEl.data("max"),
+							val = parseInt(iEl.val(), 10),
+							kEl = row.find(".knob");
+						if (kEl.length) {
+							kEl.data({ value: Math.round((val-min) / (max-min) * 100) });
+						} else {
+							kEl = row.find(".pan-knob");
+							kEl.data({ value: Math.round((Math.invLerp(min, max, val) - .5) * 100) });
+						}
 					}
 				});
 				break;
