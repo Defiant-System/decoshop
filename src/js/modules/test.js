@@ -12,12 +12,12 @@ let Test = {
 		// APP.els.content.removeClass("no-anim");
 
 		// setTimeout(() => APP.els.content.find(`.preset:nth(0)`).trigger("click"), 100);
-		// setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
+		setTimeout(() => APP.els.content.find(`.sample:nth(4)`).trigger("click"), 100);
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/girl.psd"] });
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["/cdn/img/2d-samples/beyond-2.psd"] });
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/filter-gallery.png"] });
 		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/logo-xslt.psd"] });
-		APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
+		// APP.statusbar.dispatch({ type: "load-sample", names: ["//localhost:8000/photopea/samples/beyond.psd"] });
 
 
 		// setTimeout(() => APP.els.content.find(`.tool[data-click="toggle-layers-panel"]`).trigger("click"), 1500);
@@ -70,7 +70,7 @@ let Test = {
 
 
 		// setTimeout(() => APP.els.content.find(`.extras-bar .tool`).get(2).trigger("click"), 1500);
-		setTimeout(() => APP.els.content.find(`.tool[data-target="memory"]`).trigger("click"), 500);
+		// setTimeout(() => APP.els.content.find(`.tool[data-target="memory"]`).trigger("click"), 500);
 		// setTimeout(() => APP.els.content.find(`.inline-menu[data-match="//PanelLayers"]`).trigger("click"), 1200);
 
 		// setTimeout(() => APP.els.content.find(`.box-head div[data-content="histogram"]`).trigger("click"), 500);
@@ -105,9 +105,34 @@ let Test = {
 
 
 let xMemoryFiles = `<Memory>
-		<i type="file" name="File 1">
-			<i type="layer" name="Layer 1.1" ram="524288" gpu="524288"/>
-			<i type="layer" name="Layer 1.2" ram="768000" gpu="768000"/>
+		<i type="file" name="beyond.psd" ram="960000" gpu="960000" desc="Final Image">
+		    <i type="layer" name="casey-lee" ram="269664" gpu="269664" desc="Layer pixels" icon="icon-smart-object"/>
+		    <i type="layer" name="This is a TEXT" ram="34680" gpu="34680" desc="Layer pixels">
+		        <i type="data" name="Blending Data" ram="8672" gpu="104040"/>
+		        <i type="data" icon="icon-layer-fx" name="Drop Shadow" ram="0" gpu="50568"/>
+		        <i type="data" icon="icon-layer-fx" name="Gradient Overlay" ram="0" gpu="37248"/>
+		    </i>
+		    <i type="layer" name="Shape 1" ram="71288" gpu="71288" desc="Layer pixels">
+		        <i type="data" icon="icon-vector-layer" name="Vector Mask" ram="17822" gpu="0"/>
+		    </i>
+		    <i type="layer" name="Layer 2" ram="111296" gpu="111296" desc="Layer pixels">
+		        <i type="data" name="Blending Data" ram="27824" gpu="333888"/>
+		        <i type="data" icon="icon-layer-fx" name="Drop Shadow" ram="0" gpu="133824"/>
+		        <i type="data" icon="icon-layer-fx" name="Bevel and Emboss" ram="0" gpu="233472"/>
+		    </i>
+		    <i type="layer" name="Color Fill 1" ram="960000" gpu="960000" desc="Layer pixels">
+		        <i type="data" icon="icon-layer-mask" name="Raster Mask" ram="240000" gpu="0"/>
+		    </i>
+		    <i type="layer" name="Pattern Fill 1" ram="250368" gpu="250368" desc="Layer pixels">
+		        <i type="data" icon="icon-layer-mask" name="Raster Mask" ram="62592" gpu="0"/>
+		    </i>
+		    <i type="layer" name="Gradient Fill 1" ram="294000" gpu="294000" desc="Layer pixels">
+		        <i type="data" icon="icon-layer-mask" name="Raster Mask" ram="73500" gpu="0"/>
+		    </i>
+		    <i type="layer" name="Channel Mixer 1" ram="0" gpu="0">
+		        <i type="data" icon="icon-layer-mask" name="Raster Mask" ram="240000" gpu="0"/>
+		    </i>
+		    <i type="layer" name="Background" ram="960000" gpu="960000" desc="Layer pixels"/>
 		</i>
 		<i type="file" name="File 2">
 			<i type="layer" name="Background" ram="524288" gpu="524288"/>

@@ -1,6 +1,7 @@
 
 @import "registry/index.js"
 
+@import "bundle/memory.js"
 @import "classes/file.js"
 
 @import "modules/ui.js"
@@ -9,9 +10,7 @@
 @import "modules/adjustments.js"
 @import "modules/dialogs.js"
 @import "modules/engine.js"
-
-@import "./modules/test.js"
-
+@import "modules/test.js"
 
 
 let {

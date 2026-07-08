@@ -152,12 +152,12 @@
 					<span class="cell-3"><xsl:value-of select="@name"/></span>
 					<span class="cell-4">
 						<xsl:call-template name="file-size">
-							<xsl:with-param name="bytes" select="@ram" />
+							<xsl:with-param name="bytes" select="sum(.//@ram)" />
 						</xsl:call-template>
 					</span>
 					<span class="cell-5">
 						<xsl:call-template name="file-size">
-							<xsl:with-param name="bytes" select="@gpu" />
+							<xsl:with-param name="bytes" select="sum(.//@gpu)" />
 						</xsl:call-template>
 					</span>
 				</div>
@@ -199,12 +199,11 @@
 	<xsl:param name="bytes"/>
 	<xsl:param name="kind"/>
 	<xsl:choose>
-		<xsl:when test="$kind = '_dir'">--</xsl:when>
+		<xsl:when test="$bytes = 0">-</xsl:when>
 		<xsl:when test="format-number($bytes div 1024, '0') = 0"><xsl:value-of select="$bytes"/> byte<xsl:if test="$bytes &gt; 0">s</xsl:if></xsl:when>
 		<xsl:when test="format-number($bytes div 1073741824, '###0.000') &gt;= 1"><xsl:value-of select="format-number($bytes div 1073741824, '###0.0')"/> GB</xsl:when>
-		<xsl:when test="format-number($bytes div 1048576, '###0.000') &gt;= 1"><xsl:value-of select="format-number($bytes div 1048576, '###0.0')"/> MB</xsl:when>
-		<xsl:otherwise><xsl:value-of select="format-number($bytes div 1048576, '###0.0')"/> MB</xsl:otherwise>
-		<!-- <xsl:otherwise><xsl:value-of select="format-number($bytes div 1024, '###0')"/> KB</xsl:otherwise> -->
+		<xsl:when test="format-number($bytes div 1048576, '###0.000') &gt;= 0.3"><xsl:value-of select="format-number($bytes div 1048576, '###0.0')"/> MB</xsl:when>
+		<xsl:otherwise><xsl:value-of select="format-number($bytes div 1024, '###0')"/> KB</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
 
