@@ -65,7 +65,7 @@ let Test = {
 		// setTimeout(() => APP.els.content.find(`.option[data-options="pop-font-selector"] span`).get(0).trigger("click"), 600);
 		// setTimeout(() => APP.els.content.find(`.font-explorer .icon-burger`).trigger("click"), 800);
 
-		setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 1500);
+		// setTimeout(() => APP.els.content.find(`.tool[data-content="brush"]`).trigger("click"), 1500);
 		// setTimeout(() => APP.els.content.find(`.box-content-list .row`).get(0).trigger("click"), 500);
 
 
@@ -82,7 +82,7 @@ let Test = {
 		/* 
 		 * 
 		 */
-		// setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgHighPass" }), 1600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgTwirl" }), 1600);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 

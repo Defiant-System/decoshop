@@ -553,17 +553,10 @@ const Panels = {
 					break;
 				// box footer
 				case "add-layer-folder":
-					PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.C2, Xu: "My Folder", wg: 3 } });
-					// If multiple layers are selected, the UI uses LayerRecord.mQ instead (groups selected layers into a folder):
-					// PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.mQ } });
-					break;
 				case "add-layer":
-					PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.vx, Xu: "My Layer" } });
-					break;
 				case "remove-layer":
-					PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.Qe } });
-					// delete layer at index 2
-					// PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.Qe, j: 2 } });
+					// proxy event to active file
+					APP.file.dispatch(event);
 					break;
 				
 				// proxied events

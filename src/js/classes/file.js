@@ -74,6 +74,45 @@ class File {
 				PP.dispatch(action);
 				break;
 
+			case "add-layer-folder":
+				PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.C2, Xu: "My Folder", wg: 3 } });
+				// If multiple layers are selected, the UI uses LayerRecord.mQ instead (groups selected layers into a folder):
+				// PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.mQ } });
+				break;
+			case "add-layer":
+				PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.vx, Xu: "My Layer" } });
+
+				let Settings = APP.Settings.pp.panels.layers,
+					layer = Self.doc.root.children[1].j,
+					id = layer.add.lyid,
+					rect = layer.rect,
+					maxThumbPx = Settings.thumbSize * DPR,
+					contentBounds = Settings.thumbBoundsMode == 0 ? rect : Self.doc.Ch,
+					contentThumbSize = Misc.scaleRectTo(contentBounds, maxThumbPx),
+					tW = contentThumbSize.x,
+					tH = contentThumbSize.y,
+					xStr = `<i id="${id}" type="image" name="My Layer" w="${tW}" h="${tH}" />`,
+					xLayer = $.nodeFromString(xStr);
+				Self.xLayers.insertBefore(xLayer, Self.xLayers.firstChild)
+
+
+				let size = Panels.layers.thumbSize,
+					{ width, height } = Misc.fitWithin(rect.m, rect.n, size, size);
+
+				layer.at = Misc.createCanvas(width, height);
+				layer.yY = Misc.createCanvas(width, height);
+				layer.bX = Misc.createCanvas(width, height);
+				layer.Fp = Misc.createCanvas(width, height);
+				Self.layers[id] = layer;
+
+				Panels.layers.dispatch({ type: "update", file: this });
+				break;
+			case "remove-layer":
+				PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.Qe } });
+				// delete layer at index 2
+				// PP.TA({ G: CanvasTools.yS, data: { a: LayerRecord.Qe, j: 2 } });
+				break;
+
 			// file doc properties
 			case "toggle-layer-visibility":
 				action = new Action(ActionTypes.E.v, true);

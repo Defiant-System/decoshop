@@ -1053,15 +1053,39 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-radius":
 					// exit if "preview" is not enabled
 					if (!Self.preview) return;
 					/* falls-through */
 				case "apply-filter-data":
+					if (!Doc) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values.radius.value = event.value;
+					// selected layer
+					Doc.g = [0];
+					// save raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("boxblur");
+						qv.Rds.v.val = event.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "boxblur", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				// run once app opens
 				case "dlg-init": break;
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1139,8 +1163,6 @@ const Dialogs = {
 					PP.update();
 					// close dialog
 					UI.doDialog({ ...event, type: `dlg-close-common`, name: "dlgGaussianBlur" });
-
-					// console.log(Doc);
 					break;
 				case "dlg-close": // cancel
 					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });
@@ -1487,15 +1509,39 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-angle":
 					// exit if "preview" is not enabled
 					if (!Self.preview) return;
 					/* falls-through */
 				case "apply-filter-data":
+					if (!Doc) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values.angle.value = event.value;
+					// selected layer
+					Doc.g = [0];
+					// save raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("Twrl");
+						qv.Angl.v = event.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Twrl", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				// run once app opens
 				case "dlg-init": break;
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.angle.value });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -2836,19 +2882,51 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPosterize,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
+				// "fast events"
+				case "set-levels":
+					// exit if "preview" is not enabled
+					if (!Self.preview) return;
+					/* falls-through */
+				case "apply-filter-data":
+					if (!Doc) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values.levels.value = event.value;
+
+					// selected layer
+					Doc.g = [0];
+					// save raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("post");
+						qv.Lvls.v = event.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "post", qv, ve: false } });
+						PP.update();
+					});
+					return;
+
 				// run once app opens
 				case "dlg-init": break;
-				// standard dialog events
 				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPosterize" });
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", value: Self.values.levels.value });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPosterize" });
 			}
 		}
 	},
