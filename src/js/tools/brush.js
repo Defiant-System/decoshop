@@ -56,7 +56,7 @@
 				// active canvas tool
 				Self.tool = new CanvasTools.Yv();
 				// mousemove for tool tip
-				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`);
+				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`).removeClass("hidden");
 				// replaces mouse cursor with tip canvas
 				APP.els.cvs.addClass("show-tip");
 
@@ -67,6 +67,10 @@
 				APP.els.cvs.on("mousedown mousemove", Self.dispatch);
 				break;
 			case "disable":
+				// hide tip canvas
+				Self.tip.addClass("hidden");
+				// reset canvas
+				APP.els.cvs.removeClass("show-tip");
 				// unbind event handlers
 				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
 				break;
