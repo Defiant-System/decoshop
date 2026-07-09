@@ -138,7 +138,6 @@
 					y = (event.clientY - Drag.rect.top) * DPR;
 				Self.tool.JP(Drag.doc, Drag.pp, Drag.pp.fB, Drag.pp.Ib, { ...Drag.pointer, x, y });
 				Drag.pp.update(true);
-
 				Self.dispatch({ type: "mousemove", top: y, left: x });
 				break;
 			case "mouseup":

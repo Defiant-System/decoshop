@@ -777,18 +777,12 @@ const Dialogs = {
 					// selected layer
 					Doc.g = [0];
 					// save raf
-					let fn = () => {
-							let qv = FilterHelper.oT("thrs");
-							qv.Lvl.v = event.value;
-							PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
-							PP.update();
-							delete Self.timer;
-						};
-					if (Self.timer) {
-						cancelAnimationFrame(Self.timer);
-						delete Self.timer;
-					} else Self.timer = requestAnimationFrame(fn);
-
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("thrs");
+						qv.Lvl.v = event.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				// run once app opens
@@ -1096,22 +1090,15 @@ const Dialogs = {
 					if (!Doc) return;
 					// save applied value - to prevent re-render if it is same value as before
 					Self.values.radius.value = event.value;
-
 					// selected layer
 					Doc.g = [0];
 					// save raf
-					let fn = () => {
-							let qv = FilterHelper.oT("GsnB");
-							qv.Rds.v.val = event.value;
-							PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
-							PP.update();
-							delete Self.timer;
-						};
-					if (Self.timer) {
-						cancelAnimationFrame(Self.timer);
-						delete Self.timer;
-					} else Self.timer = requestAnimationFrame(fn);
-
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("GsnB");
+						qv.Rds.v.val = event.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				// run once app opens
@@ -1976,18 +1963,12 @@ const Dialogs = {
 					// selected layer
 					Doc.g = [0];
 					// save raf
-					let fn = () => {
-							let qv = FilterHelper.oT("HghP");
-							qv.Rds.v.val = event.value;
-							PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "HghP", qv, ve: false } });
-							PP.update();
-							delete Self.timer;
-						};
-					if (Self.timer) {
-						cancelAnimationFrame(Self.timer);
-						delete Self.timer;
-					} else Self.timer = requestAnimationFrame(fn);
-
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("HghP");
+						qv.Rds.v.val = event.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "HghP", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				// run once app opens

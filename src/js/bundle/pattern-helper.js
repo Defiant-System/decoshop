@@ -1643,7 +1643,7 @@ PatternHelper.at$ = function(l) {
 			b.push(G);
 			d.O += G.rect.O();
 			if (b.length > 1e3 || d.O > 100 * 100 * 1600) {
-				console.log("pruning", d.O, b.length);
+				// console.log("pruning", d.O, b.length);
 				b.sort(function(Q, t) {
 					return t.eg - Q.eg
 				});

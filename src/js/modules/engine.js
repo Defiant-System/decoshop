@@ -6,6 +6,17 @@ const Engine = {
 		// keeps track of open files
 		this.xMemory = $.xmlFromString(`<Files/>`).documentElement;
 	},
+	raf(func) {
+		if (this.timer) {
+			cancelAnimationFrame(this.timer);
+			delete this.timer;
+		} else {
+			this.timer = requestAnimationFrame(() => {
+				func();
+				delete this.timer;
+			});
+		}
+	},
 	fromEngine(event) {
 		let APP = decoshop,
 			Self = Engine,
