@@ -119,6 +119,50 @@ content {
 			}
 		}
 	}
+
+	&.show-tip {
+		.cvs-wrapper {
+			canvas {
+				&[data-file] {
+					cursor: none;
+				}
+			}
+
+			&:hover {
+				canvas {
+					&.tool-tip {
+						display: block;
+					}
+				}
+			}
+		}
+
+		// &.show-rulers {
+		// 	.cvs-helpers {
+		// 		&:before {
+		// 			content: "";
+		// 			pointer-events: all;
+		// 			background: transparent;
+		// 			position: absolute;
+		// 			top: 0;
+		// 			left: 0;
+		// 			right: 0;
+		// 			height: 17px;
+		// 		}
+
+		// 		&:after {
+		// 			content: "";
+		// 			pointer-events: all;
+		// 			background: transparent;
+		// 			position: absolute;
+		// 			top: 0;
+		// 			bottom: 0;
+		// 			left: 0;
+		// 			width: 17px;
+		// 		}
+		// 	}
+		// }
+	}
 	
 	// transitions for blank view / work view
 	.tools-bar,
@@ -5875,25 +5919,8 @@ content {
 			bottom: 0;
 			border-radius: 5px;
 		}
-
-		/* temp START * /
-		&:after {
-			content: "";
-			background: url(/cdn/img/2d-samples/robert-collins.jpg) 10% 59% no-repeat;
-			background-size: 790px auto;
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			filter: drop-shadow(0 0 1px #122)
-					drop-shadow(0 1px 5px #1228);
-			pointer-events: none;
-		}
-		/* temp END */
 	
 		canvas {
-			// background: #f002;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -5902,9 +5929,9 @@ content {
 				z-index: 99;
 				transform: translate(-50%, -50%);
 				pointer-events: none;
+				display: none;
 
 				&.hidden {
-					display: none;
 				}
 			}
 			
@@ -5914,11 +5941,6 @@ content {
 				left: 0;
 				z-index: 2;
 				border-radius: 7px;
-				// cursor: crosshair;
-
-				&.show-tip {
-					cursor: none;
-				}
 			}
 		}
 	}

@@ -43,16 +43,21 @@
 					el = APP.els.cvs;
 					rect = el[0].getBoundingClientRect();
 				}
+				// move tip
 				top = event.top || (event.clientY - rect.top) * DPR;
 				left = event.left || (event.clientX - rect.left) * DPR;
-				// move tip
 				Self.tip.css({ top, left });
+				// update tip canvas if needed
+				let docZoom = Self.doc?.u?.N || 1;
+				if (Self.tipZoom !== docZoom) Self.updateTip();
 				break;
 
 			case "select-option":
 				Self.option = event.arg || Self.option || "brush";
 				break;
 			case "enable":
+				// fast reference to doc
+				Self.doc = APP.file?.doc;
 				// active canvas tool
 				Self.tool = new CanvasTools.Yv();
 				// mousemove for tool tip
@@ -60,7 +65,7 @@
 				Self.tipCtx = Self.tip[0].getContext("2d", { willReadFrequently: true });
 				Self.updateTip();
 				// replaces mouse cursor with tip canvas
-				APP.els.cvs.addClass("show-tip");
+				APP.els.content.addClass("show-tip");
 
 				// set draw color
 				APP.file?.dispatch({ type: "set-foreground-color", rgb: [255,180,0] });
@@ -72,7 +77,7 @@
 				// hide tip canvas
 				Self.tip.addClass("hidden");
 				// reset canvas
-				APP.els.cvs.removeClass("show-tip");
+				APP.els.content.removeClass("show-tip");
 				// unbind event handlers
 				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
 				break;
@@ -80,27 +85,18 @@
 	},
 	updateTip() {
 		let APP = decoshop,
-			Self = APP.tools.brush,
-			doc = APP.file?.doc,
-			zoom = doc?.u?.N || 1,
-			brush, data, cvs, vD;
+			Self = APP.tools.brush;
 
 		if (!Self.tool) Self.tool = new CanvasTools.Yv();
-		brush = Self.tool.HS.brush;
-		Self.tipZoom = zoom;
-		data = BrushEngine.$I(brush, PP.fB.pO.BF, zoom, false);
-		Self.tipData = data;
+		Self.tipZoom = Self.doc?.u?.N || 1;
+		Self.tipData = BrushEngine.$I(Self.tool.HS.brush, PP.fB.pO.BF, Self.tipZoom, false);
 		if (!Self.tipCtx) return;
 
-		cvs = Self.tip[0];
-		vD = data.vD;
-		cvs.width = vD.m;
-		cvs.height = vD.n;
-		Self.tipCtx.putImageData(
-			new ImageData(new Uint8ClampedArray(data.Wq.buffer), vD.m, vD.n),
-			0, 0
-		);
-		Self.tip.css({ width: vD.m / DPR, height: vD.n / DPR });
+		let { m: width, n: height } = Self.tipData.vD,
+			iData = new ImageData(new Uint8ClampedArray(Self.tipData.Wq.buffer), width, height);
+		Self.tip.attr({ width, height });
+		Self.tipCtx.putImageData(iData, 0, 0);
+		Self.tip.css({ width, height });
 	},
 	pencilTool(event) {
 		console.log("pencil", event);
