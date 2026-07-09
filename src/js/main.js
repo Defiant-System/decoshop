@@ -26,6 +26,7 @@ let {
 	HistoryState,
 	PixelUtil,
 	Point2D,
+	PsdResourceTypes,
 	Rect,
 	exportHelper,
 	languageManager,
@@ -35,6 +36,7 @@ let {
 
 // DocActions.HistoryState = HistoryState;
 
+const DPR = window.devicePixelRatio || 1;
 
 const DefaultSettings = {
 	pp: {

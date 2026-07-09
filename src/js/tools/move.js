@@ -47,8 +47,8 @@
 					func = CanvasTools.Mi.if,
 					offset = doc.u.R.clone(),
 					click = {
-						x: offset.x - (event.clientX * window.devicePixelRatio),
-						y: offset.y - (event.clientY * window.devicePixelRatio),
+						x: offset.x - (event.clientX * DPR),
+						y: offset.y - (event.clientY * DPR),
 					};
 				// drag details
 				Self.drag = { PP, func, doc, click };
@@ -83,8 +83,8 @@
 					func = CanvasTools.Mi.if,
 					offset = doc.u.R.clone(),
 					click = {
-						x: offset.x - (event.clientX * window.devicePixelRatio),
-						y: offset.y - (event.clientY * window.devicePixelRatio),
+						x: offset.x - (event.clientX * DPR),
+						y: offset.y - (event.clientY * DPR),
 					};
 				// drag details
 				Self.drag = { PP, func, doc, click };

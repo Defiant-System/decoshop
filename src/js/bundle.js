@@ -102,6 +102,7 @@ module.exports = {
 	HistoryState,
 	PixelUtil,
 	Point2D,
+	PsdResourceTypes,
 	Rect,
 	exportHelper,
 	languageManager,

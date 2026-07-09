@@ -6791,7 +6791,9 @@ NamedTabPanel.prototype.KN = function () {
 
 	// hbi
 	if (!workCvs.parentNode) {
+		let file = PP.fk();
 		let el = PP.APP.els.cvsWrapper.append(workCvs);
+		el.data({ file: file.$a });
 		PP.e3();
 		PP.resize();
 		PP.update();

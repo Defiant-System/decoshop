@@ -5897,14 +5897,26 @@ content {
 			position: absolute;
 			top: 0;
 			left: 0;
-			z-index: 2;
-			border-radius: 7px;
+
+			&.tool-tip {
+				background: #f005;
+				border-radius: 50%;
+				z-index: 99;
+				pointer-events: none;
+				transform: translate(-50%, -50%);
+			}
 			
-			&.canvas {
+			&[data-file] {
 				position: absolute;
 				top: 0;
 				left: 0;
+				z-index: 2;
+				border-radius: 7px;
 				// cursor: crosshair;
+
+				&.show-tip {
+					cursor: none;
+				}
 			}
 		}
 	}

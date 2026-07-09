@@ -703,7 +703,7 @@ const Panels = {
 					Self.vh = h;
 
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
-					var edge = Self.maxW * window.devicePixelRatio,
+					var edge = Self.maxW * DPR,
 						count = 0,
 						// Seed the pyramid with the full-resolution composite and its bounds.
 						mipmap = [...APP.statusbar._activeFile.mipmap];

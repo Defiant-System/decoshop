@@ -59,6 +59,21 @@ class File {
 			case "file.blur":
 				break;
 
+			case "set-background-color":
+			case "set-foreground-color":
+				let [r, g, b] = event.rgb,
+					color = (r << 16) | (g << 8) | b;
+				// hex = PixelUtil.hex6ToInt("ff6600")
+				action = new Action(ActionTypes.E.L, true);
+				action.data = {
+					a: ActionTypes.$.kI,
+					Oo: PsdResourceTypes.K5,
+					y3: event.type === "set-foreground-color" ? 0 : 1, // 0 = foreground, 1 = background
+					Z: color
+				};
+				PP.dispatch(action);
+				break;
+
 			// file doc properties
 			case "toggle-layer-visibility":
 				action = new Action(ActionTypes.E.v, true);
@@ -109,7 +124,7 @@ class File {
 			// doc.u.MX = [R visible, G visible, B visible]; mirrored on the panel for click handlers
 			channelVisibility = this.Pj = this.doc.u.MX.slice(0),
 			visibleRgbCount = channelVisibility[0] + channelVisibility[1] + channelVisibility[2],
-			w = Math.round(32 * window.devicePixelRatio),
+			w = Math.round(32 * DPR),
 			h = w;
 		
 		// Keep thumbnail aspect ratio matching the document
@@ -182,7 +197,7 @@ class File {
 				layer.Fp = Misc.createCanvas(width, height);
 				this.layers[id] = layer;
 
-				let maxThumbPx = Settings.thumbSize * window.devicePixelRatio,
+				let maxThumbPx = Settings.thumbSize * DPR,
 					contentBounds = Settings.thumbBoundsMode == 0 ? rect : this.doc.Ch,
 					contentThumbSize = Misc.scaleRectTo(contentBounds, maxThumbPx),
 					tW = contentThumbSize.x,

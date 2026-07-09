@@ -1555,3 +1555,781 @@ PatternHelper.at$ = function(l) {
 		purity: "{\"t\":\"UntF\",\"v\":{\"type\":\"#Prc\",\"val\":0}}",
 		colorDynamicsPerTip: "{\"t\":\"bool\",\"v\":false}"
 	};
+	function gA(l, d) {
+		this.a5l = l;
+		this.Ay = d == null ? 0 : d;
+		this.dir = 0
+	}
+	gA.prototype.kx = function(l, d) {
+		var G = this.a5l,
+			b = new Point2D(l.x - G.x, l.y - G.y),
+			V = new Matrix2D;
+		V.rotate(-this.Ay);
+		b = V.kD(b);
+		if (this.dir == 0 && !G.XB(l)) this.dir = Math.abs(b.x) < Math.abs(b.y) ? 1 : 2;
+		if (d.l(KeyboardHandler.Zz)) {
+			if (this.dir == 1) b.x = 0;
+			if (this.dir == 2) b.y = 0
+		}
+		V.hI();
+		b = V.kD(b);
+		var Q = new Point2D(G.x + b.x, G.y + b.y);
+		return Q
+	};
+	gA.prototype.aoW = function(l) {
+		if (l.l(KeyboardHandler.Zz)) return this.dir;
+		return 0
+	};
+	var b4 = function() {
+		function l() {
+			this.arh = {}
+		}
+		l.a1b = function(d, G) {
+			var b = d.clone();
+			b.cI -= Math.floor(b.cI);
+			b.xu -= Math.floor(b.xu);
+			var V = new Point2D(G, 0),
+				Q = new Point2D(0, G),
+				t = b.kD(V),
+				I = b.kD(Q),
+				y = new Point2D(b.cI, b.xu);
+			return [t, I, y]
+		};
+		l.afb = function(d, G) {
+			var b = Point2D.yZ;
+			return b(d[0], G[0]) + b(d[1], G[1]) + b(d[2], G[2]);
+			return dsum
+		};
+		l.prototype.ar$ = function(d) {
+			var G = this.arh,
+				b = G[d];
+			if (b == null) b = G[d] = {
+				G_: [],
+				eg: 0,
+				O: 0,
+				ato: 0,
+				aqj: 0
+			};
+			b.eg = Date.now();
+			while (Object.keys(G).length > 3) {
+				var V = "",
+					Q = Date.now();
+				for (var t in G) {
+					var I = G[t].eg;
+					if (I < Q) {
+						Q = I;
+						V = t
+					}
+				}
+				delete G[V]
+			}
+			return b
+		};
+		l.prototype.aeQ = function(d, G) {
+			var b = d.G_,
+				V, Q = 1e6;
+			for (var A = 0; A < b.length; A++) {
+				var t = b[A],
+					I = l.afb(t.Vx, G);
+				if (I < Q) {
+					V = t;
+					Q = I
+				}
+			}
+			return V
+		};
+		l.prototype.ald = function(d, G) {
+			var b = d.G_;
+			b.push(G);
+			d.O += G.rect.O();
+			if (b.length > 1e3 || d.O > 100 * 100 * 1600) {
+				console.log("pruning", d.O, b.length);
+				b.sort(function(Q, t) {
+					return t.eg - Q.eg
+				});
+				while (b.length > 500 || d.O > 100 * 100 * 800) {
+					var V = b.pop();
+					d.O -= V.rect.O()
+				}
+			}
+		};
+		return l
+	}();
+
+	function iU(l, d, G, b, V, Q, t, I, y) {
+		this.BF = d;
+		this.yO = G;
+		this.GF = Q;
+		this.X9 = b;
+		this.ne = null;
+		this.FE = null;
+		this.en = 0;
+		this.a8i = 0;
+		this.adr = 0;
+		this.eK = 0;
+		this.xF = 0;
+		this.ED = y == null ? Math.floor(Math.random() * 16777215) : y;
+		this.tY = y == null ? Math.floor(Math.random() * 16777215) : y;
+		this.uA = new Rect;
+		this.mn = new Rect;
+		if (I != null) {
+			this.QI = I
+		} else {
+			var e = iU.a9K;
+			if (e.length != t.O() * 4) e = PixelUtil.allocBytes(t.O() * 4);
+			else e.fill(0);
+			this.QI = iU.a9K = e
+		}
+		this.rect = t.clone();
+		this.pS = [];
+		this.wO = [];
+		this.Xm = null;
+		this.Y7 = 0;
+		this.k = null;
+		this.a9C = "";
+		this._e = null;
+		this.akZ(l, V)
+	}
+	iU.a9K = PixelUtil.allocBytes(16);
+	iU.prototype.akZ = function(l, d) {
+		this.Y7 = d;
+		this.k = l;
+		this.a9C = JSON.stringify(l) + JSON.stringify(this.X9.Xi);
+		this._e = iU.a4l(this.k, this.BF, this.yO)
+	};
+	iU.prototype.moveTo = function(l, d, G) {
+		G = this.adh(G);
+		this.en = G;
+		var b = new Point2D(l, d),
+			V = this.k.Brsh.v.Dmtr.v.val;
+		this.ne = b.clone();
+		this.FE = b.clone();
+		this.Xm = b.clone();
+		this.pS = [l, d];
+		this.wO = [G];
+		if (this.X9.FL != iU.K1) {
+			var Q = this.k.angleDynamics,
+				t = Q ? Q.v.bVTy.v == 6 : !1;
+			this.mj(t ? new Rect : this.aqh(b, this.a6u(G), G, new Point2D(0, 0)))
+		}
+		this.eK = b.clone()
+	};
+	iU.prototype.lineTo = function(l, d, G) {
+		G = this.adh(G);
+		var b = this.pS,
+			V = b.length,
+			Q = b[V - 2],
+			t = b[V - 1];
+		if (l == Q && d == t) return;
+		var I = this.k.Brsh.v.Dmtr.v.val,
+			y = Math.ceil(I) + 1,
+			e = new Rect(Math.round(Q), Math.round(t), 0, 0);
+		e.rC(y, y);
+		var M = new Rect(Math.round(l), Math.round(d), 0, 0);
+		M.rC(y, y);
+		this.pS.push(l, d);
+		this.wO.push(G);
+		V += 2;
+		if (V >= 6) this.mj(this.aj7(V))
+	};
+	iU.prototype.adh = function(l) {
+		if (l == null) l = 1;
+		l = Math.max(.05, Math.min(5, l));
+		if (isNaN(l)) {
+			alert("Pressure is not a number");
+			throw "e"
+		}
+		return l
+	};
+	iU.prototype.mj = function(l) {
+		this.uA = l;
+		this.mn = this.mn.Cw(l)
+	};
+	iU.prototype.finish = function() {
+		var l = this.pS,
+			d = l.length,
+			G;
+		if (d == 4) G = this.a5c(l[d - 2], l[d - 1], this.wO[(d >> 1) - 1], !0);
+		if (d > 4) G = this.aj7(d + 2);
+		if (G) this.mj(G)
+	};
+	iU.prototype.Pa = function() {
+		return this.rect.clone()
+	};
+	iU.prototype.Ae = function() {
+		return this.uA.wD(this.rect)
+	};
+	iU.prototype.Y2 = function() {
+		return this.mn.wD(this.rect)
+	};
+	iU.prototype.XI = function() {
+		return this.QI
+	};
+	iU.prototype.aj7 = function(l) {
+		var d = this.pS,
+			G = this.wO,
+			b = d[l - 6],
+			V = d[l - 5],
+			Q = d[l - 4],
+			t = d[l - 3],
+			I = G[(l >> 1) - 3],
+			y = G[(l >> 1) - 2],
+			e = new Point2D(0, 0),
+			M = new Point2D(0, 0);
+		if (8 <= l) e = iU.a1L(d[l - 8], d[l - 7], b, V, Q, t);
+		if (l <= d.length) M = iU.a1L(d[l - 2], d[l - 1], Q, t, b, V);
+		var R = b + e.x,
+			J = V + e.y,
+			n = Q + M.x,
+			r = t + M.y,
+			T = new Rect,
+			j = this.a7k() ? 1 : 10;
+		for (var A = 0; A < j; A++) {
+			var g = (A + 1) / j,
+				Y = 1 - g,
+				k = Y * Y * Y * b + 3 * g * Y * Y * R + 3 * g * g * Y * n + g * g * g * Q,
+				F = Y * Y * Y * V + 3 * g * Y * Y * J + 3 * g * g * Y * r + g * g * g * t,
+				D = this.a5c(k, F, I + g * (y - I));
+			T = T.Cw(D)
+		}
+		return T
+	};
+	iU.a1L = function(l, d, G, b, V, Q) {
+		var t = l - G,
+			I = d - b,
+			y = V - G,
+			e = Q - b,
+			M = Math.sqrt(t * t + I * I),
+			R = Math.sqrt(y * y + e * e),
+			J = Math.acos((t * y + I * e) / (M * R)) / Math.PI,
+			n = .35,
+			r = .1;
+		J = r + J * (n - r);
+		var T = V - l,
+			j = Q - d,
+			g = Math.sqrt(T * T + j * j),
+			Y = J * R / g;
+		return new Point2D(T * Y, j * Y)
+	};
+	iU.prototype.a5c = function(l, d, G, b) {
+		var V = new Rect,
+			Q = this.X9.a5w;
+		if (Q == null) Q = 0;
+		if (Q == 0 || b) {
+			V = this.a5u(l, d, G);
+			return V
+		}
+		var t = this.Xm,
+			I = l - t.x,
+			y = d - t.y,
+			e = Math.sqrt(I * I + y * y);
+		I /= e;
+		y /= e;
+		if (e > Q) {
+			var M = t.x + I * (e - Q),
+				R = t.y + y * (e - Q);
+			V = this.a5u(M, R, G);
+			this.Xm.T6(M, R)
+		}
+		return V
+	};
+	iU.prototype.a7k = function() {
+		var l = this.k,
+			d = l.Brsh.v.Dmtr.v.val;
+		return this.X9.Xi && d == 1
+	};
+	iU.prototype.a5u = function(l, d, G) {
+		var b = new Rect,
+			V = new Point2D(l, d),
+			Q = this.X9.FL,
+			t = V.gu(this.FE);
+		t.normalize(1);
+		var I = Point2D.yZ(this.FE, V),
+			y = -this.a8i,
+			e = this.FE.clone();
+		if (this.a7k()) {
+			if (I > .99) {
+				var M = this.FE;
+				iU.abK(M, V, this.QI, this.rect, this.v8(this.k));
+				b = PixelUtil.vec.flattenPath([M.x, M.y, V.x, V.y]);
+				y = I
+			} else V = this.FE
+		} else
+			while (!0) {
+				var R = this.en + (G - this.en) * (Math.max(0, y) / I),
+					J = this.a6u(R),
+					n = this.avh() * (J + this.adr) / 2 * this._e.a9F;
+				if (Q == iU.K1) n = 1;
+				n = Math.max(n, .5);
+				if (y + n < I) {
+					y += n;
+					this.xF += n;
+					var r = new Point2D(this.FE.x + t.x * y, this.FE.y + t.y * y),
+						g = 1;
+					if (Q == iU.K1) {
+						var T = e.clone();
+						T.x += t.x > 0 ? 1 : -1;
+						var j = e.clone();
+						j.y += t.y > 0 ? 1 : -1;
+						if (Point2D.yZ(T, r) < Point2D.yZ(j, r)) r = T;
+						else r = j;
+						y = Point2D.yZ(r, this.FE)
+					}
+					if (this.k.useScatter.v == !0) {
+						g = this.k.Cnt.v;
+						var Y = this.k.countDynamics.v.jitter.v.val / 100,
+							k = Y * (-1 + 2 * this.Yj());
+						g += Math.round(g * k)
+					}
+					for (var A = 0; A < g; A++) {
+						var F = this.aqh(r, J, G, t);
+						b = b.Cw(F)
+					}
+					e = r
+				} else break
+			}
+		this.a8i = I - y;
+		this.FE = V;
+		this.en = G;
+		return b
+	};
+	iU.prototype.avh = function() {
+		var l = this.k.Brsh.v,
+			d = l.Spcn.v.val,
+			G = Math.max(5, l.Rndn.v.val);
+		return G / 100 * (d / 100)
+	};
+	iU.prototype.a6u = function(l) {
+		var d = this.k,
+			G = d.Brsh.v.Dmtr.v.val;
+		if (d.useTipDynamics.v) {
+			var b = G * (d.minimumDiameter.v.val / 100);
+			G = b + (G - b) * (1 - this.Yj(this.tY) * (d.szVr.v.jitter.v.val / 100));
+			G *= iU.Pk(d, "szVr", l, this.xF)
+		}
+		return G
+	};
+	iU.Pk = function(l, d, G, b) {
+		var V = 1,
+			Q = l[d].v,
+			t = Q.bVTy.v,
+			I = Q.fStp.v;
+		if (t == 1) V *= Math.max(0, (I - b) / I);
+		if (t == 2) V *= G;
+		return V
+	};
+	iU.prototype.aqh = function(l, d, G, b) {
+		var V = this.X9.uh,
+			T = 0;
+		V = Math.min(1, V);
+		var Q = this.k,
+			t = this.k.Brsh.v,
+			I = t.Dmtr.v.val,
+			y = this.X9,
+			e = y.FL,
+			M = y.amR,
+			R = this._e.Rj[1],
+			J = new Matrix2D;
+		J.translate(-R.m / 2, -R.n / 2);
+		J.scale(1 / this._e.a70, 1 / this._e.a70);
+		J.scale(d / I, d / I);
+		J.scale(1, Math.max(5, t.Rndn.v.val) / 100);
+		if (Q.usePaintDynamics && Q.usePaintDynamics.v) {
+			var n = Q.opVr.v.jitter.v.val / 100,
+				r = Q.prVr.v.jitter.v.val / 100;
+			V *= 1 - this.Yj() * n;
+			V *= 1 - this.Yj() * r;
+			V *= iU.Pk(Q, "opVr", G, this.xF) * iU.Pk(Q, "prVr", G, this.xF)
+		}
+		if (Q.useTipDynamics.v) {
+			var j = Q.angleDynamics.v,
+				g = Q.minimumRoundness.v.val / 100;
+			J.scale(1, g + (1 - g) * Math.round(100 - this.Yj() * Q.roundnessDynamics.v.jitter.v.val) / 100);
+			T += (-.5 + this.Yj()) * 4 * Math.PI * (j.jitter.v.val / 100);
+			T += iU.Pk(Q, "angleDynamics", G, this.xF) * 2 * Math.PI;
+			if (j.bVTy.v == 6) T += Math.atan2(-b.y, b.x)
+		}
+		T += t.Angl.v.val * (Math.PI / 180);
+		J.rotate(T);
+		if (Q.useScatter.v) {
+			var Y = (-1 + 2 * this.Yj()) * Q.scatterDynamics.v.jitter.v.val / 100;
+			J.translate(-Y * d * b.y, Y * d * b.x)
+		}
+		J.translate(l.x, l.y);
+		var k = this.a0L(J, l, d),
+			F = k.rect.clone();
+		if (e == null) {
+			var D = this.v8(Q);
+			PixelUtil.andMaskUint32(k.bY, Math.round(D.k * 255) << 16 | Math.round(D.J * 255) << 8 | Math.round(D.o * 255) << 0, 4278190080);
+			if (this.mn.W6() && this.rect.XB(k.rect) && V == 1) this.QI = k.bY.slice(0);
+			else {
+				var q = -1,
+					H = 2,
+					W = -1,
+					Z = 2;
+				if (!y.ZV) {
+					q = W = 0;
+					H = Z = 1
+				}
+				for (var B = W; B < Z; B++)
+					for (var a = q; a < H; a++) {
+						var m = k.rect.clone();
+						m.x += a * this.rect.m;
+						m.y += B * this.rect.n;
+						if (m.N1(this.rect)) {
+							F = F.Cw(m);
+							PixelUtil.blend.ayk(k.bY, m, this.QI, this.rect, m, V)
+						}
+					}
+			}
+		}
+		if (e == iU.K1) {
+			var p = new Point2D(k.rect.x + k.rect.m / 2, k.rect.y + k.rect.n / 2),
+				c = Math.round(p.x - this.eK.x),
+				v = Math.round(p.y - this.eK.y),
+				i = k.rect.clone();
+			i.offset(-c, -v);
+			var z = i.wD(this.rect);
+			z.offset(c, v);
+			PixelUtil.blitRgbaRect(this.QI, this.rect, k.bY, i);
+			PixelUtil.blend.xR(k.bY, k.rect, this.QI, this.rect, k.Ir, k.rect, V)
+		}
+		if (e == iU.Yx || e == iU.tf || e == iU.wB) {
+			var P = k.rect.wD(this.rect),
+				C;
+			if (P.XB(k.rect)) C = k.Ir;
+			else {
+				C = PixelUtil.allocBytes(P.O());
+				PixelUtil.copyBufferRect(k.Ir, k.rect, C, P)
+			}
+			var h = PixelUtil.allocBytes(P.O() * 4);
+			PixelUtil.blitRgbaRect(this.QI, this.rect, h, P);
+			if (e == iU.tf) {
+				var L = h.slice(0),
+					U = PixelUtil.s9.nn([-1, -1, -1, -1, 25, -1, -1, -1, -1]);
+				PixelUtil.s9.iZ(h, L, P.m, P.n, U, 0);
+				PixelUtil.copyByteBuffer(L, h)
+			} else if (e == iU.wB) {
+				var S = FilterHelper.oT("UnsM");
+				S.Amnt.v.val = 15;
+				S.Thsh.v = 0;
+				S.Rds.v.val = 5;
+				var L = PixelUtil.allocBytes(h.length);
+				FilterHelper.Qz("UnsM", {
+					buffer: h,
+					rect: P
+				}, S, 0, 0, {
+					buffer: L,
+					rect: P
+				});
+				PixelUtil.copyByteBuffer(L, h)
+			} else {
+				FilterHelper.OR(1, PixelUtil.sX.Eh, h, P)
+			}
+			PixelUtil.blend.xR(h, P, this.QI, this.rect, C, P, V)
+		}
+		this.adr = d;
+		this.eK = p;
+		this.tY++;
+		return F
+	};
+	iU.prototype.v8 = function(l) {
+		var d = iU.ar9(this.Y7);
+		if (l.useColorDynamics && l.useColorDynamics.v) {
+			var G = 1 - this.Yj() * l.clVr.v.jitter.v.val / 100,
+				b = iU.ar9(this.GF);
+			d.o = G * d.o + (1 - G) * b.o;
+			d.J = G * d.J + (1 - G) * b.J;
+			d.k = G * d.k + (1 - G) * b.k;
+			var V = (-.5 + this.Yj()) * l.H.v.val / 100,
+				Q = (-1 + 2 * this.Yj()) * l.Strt.v.val / 100,
+				t = (-1 + 2 * this.Yj()) * l.Brgh.v.val / 100,
+				I = PixelUtil.rgbToHsb(d.o, d.J, d.k);
+			I.Tq = (I.Tq + V + 1) % 1;
+			I.Lm = I.Lm + Q;
+			if (I.Lm < 0) I.Lm = -I.Lm;
+			if (I.Lm > 1) I.Lm = 1 - (I.Lm - 1);
+			I.qv = I.qv + t;
+			if (I.qv < 0) I.qv = -I.qv;
+			if (I.qv > 1) I.qv = 1 - (I.qv - 1);
+			d = PixelUtil.hsbToRgb(I.Tq, I.Lm, I.qv)
+		}
+		return d
+	};
+	iU.prototype.HW = function(l) {
+		return Math.max(0, Math.min(1, l))
+	};
+	iU.prototype.Yj = function(l) {
+		if (l == null) {
+			l = this.ED++
+		}
+		return iU.hash(l)
+	};
+	iU.ar9 = function(l) {
+		return {
+			o: (l >> 16 & 255) / 255,
+			J: (l >> 8 & 255) / 255,
+			k: (l >> 0 & 255) / 255
+		}
+	};
+	iU.hash = function(l) {
+		l = l ^ 61 ^ l >> 16;
+		l = l + (l << 3);
+		l = l ^ l >> 4;
+		l = l * 668265261;
+		l = l ^ l >> 15;
+		return (l & 16777215) / 16777215
+	};
+	iU.ayd = new b4;
+	iU.prototype.a0L = function(l, d, G) {
+		var b = Math.sqrt(this._e.Rj[1].O()),
+			V = b * l.Nw(),
+			Q = V < 10 ? 1 : V < 50 ? 1.5 : V < 200 ? 3 : 8;
+		if (V < 30) Q = 0;
+		var t = iU.ayd,
+			I = t.ar$(this.a9C),
+			y = this.X9.Xi;
+		if (y) {
+			l = l.clone();
+			l.cI = Math.floor(l.cI);
+			l.xu = Math.floor(l.xu)
+		}
+		var e = b4.a1b(l, b),
+			M = t.aeQ(I, e);
+		if (M && b4.afb(M.Vx, e) > Q) M = null;
+		if (M) {
+			M.rect.x = Math.round(M.apT.x + l.cI);
+			M.rect.y = Math.round(M.apT.y + l.xu);
+			if (y) {
+				M.rect.x = Math.round(d.x - M.rect.m / 2);
+				M.rect.y = Math.round(d.y - M.rect.n / 2)
+			}
+			M.eg = Date.now()
+		} else {
+			var R = Math.round(this.k.Brsh.v.Dmtr.v.val),
+				J;
+			if (y && R <= 3) {
+				J = {
+					channel: PixelUtil.allocBytes(R * R),
+					rect: new Rect(Math.round(d.x - R / 2), Math.round(d.y - R / 2), R, R)
+				};
+				J.channel.fill(255)
+			} else if (l.aS == 1 && l.k == 0 && l.S5 == 0 && l.Qd == 1) {
+				J = {
+					channel: this._e.Rj[0],
+					rect: this._e.Rj[1].clone()
+				};
+				J.rect.x = Math.round(l.cI);
+				J.rect.y = Math.round(l.xu)
+			} else {
+				if (l.Nw() > 1e-4) J = f.NH.aie(this._e.Rj, l)
+			}
+			if (y) {
+				for (var A = 0; A < J.channel.length; A++) J.channel[A] = J.channel[A] > 127 ? 255 : 0
+			}
+			if (J == null) J = {
+				channel: PixelUtil.allocBytes(0),
+				rect: new Rect
+			};
+			M = {
+				bY: PixelUtil.allocBytes(J.rect.O() * 4),
+				Ir: J.channel,
+				rect: J.rect,
+				apT: new Point2D(J.rect.x - l.cI, J.rect.y - l.xu),
+				Vx: e,
+				eg: Date.now()
+			};
+			PixelUtil.writeChannelToRgba(M.Ir, M.bY, 3);
+			if (I) t.ald(I, M)
+		}
+		return M
+	};
+	iU.a4l = function(l, d, G) {
+		var b, V, Q, t = l.Brsh.v.Dmtr.v.val,
+			I = l.Brsh.v.classID;
+		if (I == "computedBrush") {
+			var y = l.Brsh.v.Hrdn.v.val / 100;
+			V = t < 100 ? 1.4 : 1;
+			Q = 1;
+			b = PixelUtil.aze.a0q(t, y, V)
+		}
+		if (I == "sampledBrush") {
+			var e;
+			for (var A = 0; A < d.length; A++)
+				if (d[A].id == l.Brsh.v.sampledData.v) e = d[A];
+			b = e.Rj;
+			var M = b[1];
+			V = Math.max(M.m, M.n) / t;
+			Q = Math.min(M.m, M.n) / Math.max(M.m, M.n)
+		}
+		return {
+			a70: V,
+			a9F: Q,
+			Rj: b
+		}
+	};
+	iU.T = null;
+	iU.k_ = null;
+	iU.Gx = function(l, d, G, b, V, Q) {
+		var t = iU.T,
+			I = iU.k_;
+		if (t == null) {
+			iU.T = t = document.createElement("canvas");
+			iU.k_ = I = t.getContext("2d", { willReadFrequently: true })
+		}
+		if (Q == null) Q = b;
+		if (t.width != Q || t.height != V) {
+			t.width = Q;
+			t.height = V
+		} else I.clearRect(0, 0, Q, V);
+		I.fillStyle = "#000000";
+		I.font = Math.floor(10 * window.devicePixelRatio) + "px sans-serif";
+		var y = l.Brsh.v.Dmtr.v.val,
+			e = "" + y,
+			M = l.useBrushSize;
+		if (M && M.v) e = "---";
+		var R = I.measureText(e);
+		I.fillText(e, (b - R.width) / 2, V - 2);
+		var J = b,
+			n = V - 10 * window.devicePixelRatio,
+			r = Math.min(J, n),
+			T = l.Brsh.v.classID;
+		if (T == "computedBrush") {
+			I.translate(J / 2, n / 2);
+			I.rotate(-l.Brsh.v.Angl.v.val * Math.PI / 180);
+			I.scale(1, .1 + .9 * l.Brsh.v.Rndn.v.val / 100);
+			var j = Math.min(.95 * r / 2, y / 2) + .5,
+				Y = .9 * l.Brsh.v.Hrdn.v.val / 100,
+				k = I.createRadialGradient(0, 0, 0, 0, 0, j);
+			k.addColorStop(Y, "rgba(0,0,0,1)");
+			k.addColorStop((.5 + Y) / 1.5, "rgba(0,0,0,.5)");
+			k.addColorStop(1, "rgba(0,0,0,0)");
+			I.fillStyle = k;
+			I.fillRect(-j, -j, 2 * j, 2 * j);
+			I.setTransform(1, 0, 0, 1, 0, 0)
+		} else if (T == "sampledBrush") {
+			var F, Z = 0;
+			for (var A = 0; A < d.length; A++)
+				if (d[A].id == l.Brsh.v.sampledData.v) F = d[A];
+			var D = F.Rj;
+			PixelUtil.pyramidDownsampleMask(D);
+			var q = D[0],
+				H = D[1].m,
+				W = D[1].n;
+			while ((H > J || W > n) && D[Z + 2]) {
+				Z += 2;
+				q = D[Z];
+				H = D[Z + 1].m;
+				W = D[Z + 1].n
+			}
+			if (H * W != 0) {
+				var B = PixelUtil.allocBytes(H * W * 4);
+				PixelUtil.writeChannelToRgba(q, B, 3);
+				var a = new ImageData(new Uint8ClampedArray(B.buffer), H, W);
+				I.putImageData(a, Math.round((J - H) / 2), Math.round((n - W) / 2))
+			}
+		} else {}
+		return t.toDataURL()
+	};
+	iU.o4 = function(l, d, G, b) {
+		if (G == 0) G = 1;
+		var V = l.Brsh.v,
+			Q = V.Dmtr.v.val,
+			t = V.Dmtr.v.val = Math.min(b != null ? Math.round(b * 2.6) : 3e3, Q * G),
+			I = V.Hrdn ? V.Hrdn.v.val / 100 : 1,
+			y = b != null ? b : Math.round(t * (1 + .55 * (1 - I))) + 4,
+			R;
+		y = Math.max(15, Math.min(y, 3e3));
+		var e = new Rect(0, 0, y, y),
+			M = new iU(l, d, null, {
+				uh: 1
+			}, 16711712, 0, e);
+		V.Dmtr.v.val = Q;
+		M.moveTo(e.m / 2, e.n / 2);
+		var J = M.XI(),
+			n = M.Pa();
+		if (e.XB(n)) R = J;
+		else {
+			R = PixelUtil.allocBytes(e.O() * 4);
+			PixelUtil.blitRgbaRect(J, n, R, e)
+		}
+		return [R, e, t]
+	};
+	iU.aAc = function(l, d, G, b) {
+		var V = d.m,
+			Q = V >>> 1;
+		for (var A = 0; A < 4; A++) {
+			var t = 6 - A;
+			l[V * (Q - t) + Q - 1] = b;
+			l[V * (Q - t) + Q] = G;
+			l[V * (Q - t) + Q + 1] = b;
+			l[V * (Q + t) + Q - 1] = b;
+			l[V * (Q + t) + Q] = G;
+			l[V * (Q + t) + Q + 1] = b;
+			l[V * (Q - 1) + Q - t] = b;
+			l[V * Q + Q - t] = G;
+			l[V * (Q + 1) + Q - t] = b;
+			l[V * (Q - 1) + Q + t] = b;
+			l[V * Q + Q + t] = G;
+			l[V * (Q + 1) + Q + t] = b
+		}
+	};
+	iU.$I = function(l, d, G, b) {
+		var V = iU.o4(l, d, G),
+			Q = V[0].slice(0),
+			t = V[1],
+			I = V[2],
+			y = t.O(),
+			e = PixelUtil.allocBytes(y);
+		PixelUtil.extractChannelFromRgba(Q, e, 3);
+		var M = PixelUtil.allocBytes(y);
+		PixelUtil.P.alH(e, M, t, window.devicePixelRatio > 1.9);
+		if (I < 3 || PixelUtil.bufferUniformValue(M, 0) || b && I > 12) {
+			iU.aAc(M, t, 255, 0)
+		}
+		var R = [3, 5, 3, 4, 8, 4, 3, 5, 3];
+		R = PixelUtil.s9.nn(R);
+		PixelUtil.s9.Eu(M, e, t.m, t.n, R);
+		PixelUtil.andMaskUint32(Q, 4294967295);
+		PixelUtil.writeChannelToRgba(e, Q, 3);
+		for (var A = 0; A < y; A++)
+			if (M[A] == 255) {
+				Q[A << 2] = Q[(A << 2) + 1] = Q[(A << 2) + 2] = 0;
+				Q[(A << 2) + 3] = 255
+			}
+		return {
+			Wq: Q,
+			vD: t,
+			Vl: new Point2D(t.m / 2, t.n / 2)
+		}
+	};
+	iU.abK = function(l, d, G, b, V) {
+		var Q = 4278190080 | Math.round(V.k * 255) << 16 | Math.round(V.J * 255) << 8 | Math.round(V.o * 255) << 0;
+		G = new Uint32Array(G.buffer);
+		var t = Math.floor(l.x),
+			I = Math.floor(l.y),
+			y = Math.floor(d.x),
+			e = Math.floor(d.y),
+			M = Math.abs(y - t),
+			R = Math.abs(e - I),
+			J = t < y ? 1 : -1,
+			n = I < e ? 1 : -1,
+			r = M - R;
+		while (!0) {
+			G[I * b.m + t] = Q;
+			if (t == y && I == e) break;
+			var T = 2 * r;
+			if (T > -R) {
+				r -= R;
+				t += J
+			}
+			if (T < M) {
+				r += M;
+				I += n
+			}
+		}
+	};
+	iU.K1 = "0";
+	iU.Yx = "1";
+	iU.tf = "2";
+	iU.wB = "3";

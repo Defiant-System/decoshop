@@ -21,27 +21,16 @@
 			roundness : +xShape.getAttribute("roundness"),
 			angle     : +xShape.getAttribute("angle"),
 			size      : +xShape.getAttribute("size"),
-			tip       : Misc.createCanvas(1, 1),
+			tip       : Misc.createCanvas(30, 30),
 			blend     : "normal",
 			opacity   : 1,
 		};
-
-		// subscribe to events
-		window.on("set-fg-color", this.dispatch);
-		window.on("set-bg-color", this.dispatch);
 	},
 	dispatch(event) {
 		let APP = decoshop,
-			// File = Proj.file,
 			Self = APP.tools.brush,
-			name,
-			size,
-			tip,
-			image,
-			width,
-			height,
-			roundness,
-			angle,
+			top, left,
+			rect,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -49,149 +38,95 @@
 			case "mousedown":
 				Self[`${Self.option}Tool`](event);
 				break;
-
-			// subscribed events
-			case "set-fg-color":
-				// update file fg
-				File.fgColor = event.detail.hex;
-				// update content level variable
-				APP.els.content.css({ "--fg-color": File.fgColor });
-				// resize / rotate tip
-				// Self.dispatch({ type: "resize-rotate-tip" });
-				break;
-			case "set-bg-color":
-				// update file bg
-				File.bgColor = event.detail.hex;
-				// update content level variable
-				APP.els.content.css({ "--bg-color": File.bgColor });
-				break;
-
-			// custom events
-			case "select-color":
-				name = event.el.hasClass("fg-color") ? "fg-color" : "bg-color";
-				// open dialog
-				UI.doDialog({
-					type: "dlg-open",
-					name: event.el.data("arg"),
-					value: APP.els.content.cssProp(`--${name}`),
-					// broadcast event
-					callback: ev => window.emit(`set-${name}`, { hex: ev.value }),
-				});
-				break;
-			case "switch-color":
-				let c1 = APP.els.content.cssProp("--fg-color"),
-					c2 = APP.els.content.cssProp("--bg-color");
-				// broadcast event
-				window.emit("set-fg-color", { hex: c2 });
-				window.emit("set-bg-color", { hex: c1 });
-				break;
-			case "reset-color":
-				// broadcast event
-				window.emit("set-fg-color", { hex: "#ffffff" });
-				window.emit("set-bg-color", { hex: "#000000" });
-				break;
-			case "select-preset-tip":
-				el = APP.els.content.find(".option[data-change='select-preset-tip']");
-				// get brush tip details
-				name      = event.arg       ||  el.data("name")      || Self.preset.name;
-				size      = event.size      || +el.data("size")      || Self.preset.size;
-				roundness = event.roundness || +el.data("roundness") || Self.preset.roundness;
-				angle     = event.angle     || +el.data("angle")     || Self.preset.angle;
-
-				// prepare to load image into tip-canvas
-				Self.preset.tipImage = new Image(size, size);
-				Self.preset.name = name;
-				Self.preset.tipImage.onload = () => {
-					// resize / rotate tip
-					Self.dispatch({ type: "resize-rotate-tip" });
-					// callback if any
-					if (event.callback) event.callback();
-				};
-				
-				// load tip image
-				Self.preset.tipImage.src = "~/icons/brush-preset-"+ Self.preset.name +".png";
-				// update toolbar
-				el.find(".tip-icon").css({"background-image": `url(${Self.preset.tipImage.src})`});
-				el.find(".value span").html(size + el.data("suffix"));
-				// update toolbar option
-				el.data({ name, size, roundness, angle });
-				break;
-			case "resize-rotate-tip":
-				// resize tip canvas
-				size = Self.preset.size;
-				angle = event.angle || Self.preset.angle;
-				roundness = event.roundness || Self.preset.roundness;
-				height = Math.round(size * (roundness / 100));
-
-				let y = (size - height) >> 1,
-					hS = size >> 1;
-				Self.preset.tip.cvs.prop({ width: size, height: size });
-				Self.preset.tip.ctx.translate(hS, hS);
-				Self.preset.tip.ctx.rotate(angle * Math.PI / 180);
-				Self.preset.tip.ctx.translate(-hS, -hS);
-				Self.preset.tip.ctx.drawImage(Self.preset.tipImage, 0, y, size, height);
-				Self.preset.tip.ctx.globalCompositeOperation = "source-atop"; // difference
-				Self.preset.tip.ctx.fillStyle = APP.els.content.cssProp("--fg-color") || "#fff";
-				Self.preset.tip.ctx.fillRect(0, 0, size, size);
-				break;
-			case "change-blend-mode":
-				Self.preset.blend = event.value.toLowerCase().replace(/ /g, "-");
-				break;
-			case "change-size":
-				// set tip size
-				Self.preset.size = event.value;
-				// update tip canvas
-				Self.dispatch({ type: "resize-rotate-tip" });
-				// update toolbar
-				el = APP.els.content.find(".option[data-change='select-preset-tip']");
-				el.find(".value span").html(event.value + el.data("suffix"));
-				break;
-			case "change-opacity":
-				Self.preset.opacity = event.value / 100;
-				break;
-			case "change-hardness":
-			case "change-flow":
-				// console.log(event);
-				break;
-			// FEATHER
-			case "change-feather-mode":
-				Self.feather.brush = event.value.toLowerCase();
-				break;
-			case "change-feather-blend-mode":
-				Self.feather.blend = event.value;
-				break;
-			case "change-feather-size":
-				Self.feather.size = event.value;
-				break;
-			case "change-feather-pressure":
-				Self.feather.pressure = event.value;
+			case "mousemove":
+				if (!event.top) {
+					el = APP.els.cvs;
+					rect = el[0].getBoundingClientRect();
+				}
+				top = event.top || (event.clientY - rect.top) * DPR;
+				left = event.left || (event.clientX - rect.left) * DPR;
+				// move tip
+				Self.tip.css({ top, left });
 				break;
 
 			case "select-option":
 				Self.option = event.arg || Self.option || "brush";
 				break;
 			case "enable":
-				// auto load preset tip
-				Self.dispatch({ type: "select-preset-tip", ...this.preset });
+				// active canvas tool
+				Self.tool = new CanvasTools.Yv();
+				// mousemove for tool tip
+				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`);
+				// replaces mouse cursor with tip canvas
+				APP.els.cvs.addClass("show-tip");
 
-				// Proj.cvs.on("mousedown", Self.dispatch);
+				// set draw color
+				APP.file?.dispatch({ type: "set-foreground-color", rgb: [255,180,0] });
+
+				// bind event handlers
+				APP.els.cvs.on("mousedown mousemove", Self.dispatch);
 				break;
 			case "disable":
-				// Proj.cvs.off("mousedown", Self.dispatch);
+				// unbind event handlers
+				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
 				break;
 		}
 	},
 	pencilTool(event) {
-		return console.log("pencil", event);
+		console.log("pencil", event);
 	},
 	brushTool(event) {
 		let APP = decoshop,
-			image;
+			Self = APP.tools.brush,
+			Drag = Self.drag;
 
 		switch (event.type) {
 			// native events
 			case "mousedown":
+				// prevent default behaviour
+				event.preventDefault();
+
+				let el = APP.els.cvs,
+					rect = el[0].getBoundingClientRect(),
+					doc = APP.file?.doc,
+					pp = PP,
+					pointer = {
+						x: (event.clientX - rect.left) * DPR,
+						y: (event.clientY - rect.top) * DPR,
+						oW: true,
+						uT: 1,
+					};
+				// select layer
+				doc.g = [0];
+				// init tool
+				Self.tool.enable(doc, PP, PP.fB, PP.Ib);
+				Self.tool.dJ(doc, PP, PP.fB, PP.Ib, pointer);
+				PP.update(true);
+				// drag info
+				Self.drag = { el, pp, doc, pointer, rect };
+
+				// prevent mouse from triggering mouseover
+				APP.els.content.addClass("cover");
+				// bind event handlers
+				APP.els.doc.on("mousemove mouseup", Self.brushTool);
+				break;
+			case "mousemove":
+				let x = (event.clientX - Drag.rect.left) * DPR,
+					y = (event.clientY - Drag.rect.top) * DPR;
+				Self.tool.JP(Drag.doc, Drag.pp, Drag.pp.fB, Drag.pp.Ib, { ...Drag.pointer, x, y });
+				Drag.pp.update(true);
+
+				Self.dispatch({ type: "mousemove", top: y, left: x });
+				break;
+			case "mouseup":
+				Self.tool.Nl(Drag.doc, Drag.pp, Drag.pp.fB, Drag.pp.Ib, { ...Drag.pointer, oW: false });
+				Drag.pp.update(true);
+
+				// remove class
+				APP.els.content.removeClass("cover");
+				// unbind event handlers
+				APP.els.doc.off("mousemove mouseup", Self.brushTool);
 				break;
 		}
-	}
+	},
 }
