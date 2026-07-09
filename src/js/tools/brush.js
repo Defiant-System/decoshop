@@ -98,9 +98,6 @@
 		Self.tipCtx.putImageData(iData, 0, 0);
 		Self.tip.css({ width, height });
 	},
-	pencilTool(event) {
-		console.log("pencil", event);
-	},
 	brushTool(event) {
 		let APP = decoshop,
 			Self = APP.tools.brush,
@@ -154,5 +151,11 @@
 				APP.els.doc.off("mousemove mouseup", Self.brushTool);
 				break;
 		}
+	},
+	pencilTool(event) {
+		console.log("pencil", event);
+	},
+	heatherTool(event) {
+		console.log("pencil", event);
 	},
 }

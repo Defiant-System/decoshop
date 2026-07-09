@@ -9,7 +9,7 @@
 	<div class="divider"></div>
 	
 	<div class="tool tool-brush down" title="Brush Tool" data-click="select-option" data-arg="brush" data-group="options" data-option="main" data-subOptions="brush"></div>
-	<div class="tool tool-pencil" title="Pencil Tool" data-click="select-option" data-arg="pencil" data-group="options" data-option="main" data-subOptions="brush"></div>
+	<div class="tool tool-pencil" title="Pencil Tool" data-click="select-option" data-arg="pencil" data-group="options" data-option="main" data-subOptions="pencil"></div>
 	<div class="tool tool-feather" title="Feather Tool" data-click="select-option" data-arg="feather" data-group="options" data-option="main" data-subOptions="feather"></div>
 	
 	<div class="divider"></div>
@@ -27,26 +27,48 @@
 				<span>20px</span>
 			</span>
 		</div>
-
 		<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
 			<span class="label">Blend</span>
 			<span class="value">Normal</span>
 		</div>
-
 		<div class="divider"></div>
-
 		<div class="option opt-tiny" data-arg="opacity" data-change="change-opacity" data-options="knob" data-min="0" data-max="100" data-suffix="%">
 			<span class="label">Opacity</span>
 			<span class="value">100%</span>
 		</div>
-
 		<div class="option opt-tiny" data-arg="flow" data-change="change-flow" data-options="knob" data-min="0" data-max="100" data-suffix="%">
 			<span class="label">Flow</span>
 			<span class="value">100%</span>
 		</div>
-
+		<div class="option opt-tiny" data-arg="flow" data-change="change-smooth" data-options="knob" data-min="0" data-max="100" data-suffix="%">
+			<span class="label">Smooth</span>
+			<span class="value">100%</span>
+		</div>
 		<div class="divider"></div>
+		<div class="tool tool-pressure disabled" data-arg="pressure"></div>
+	</span>
 
+	<span class="tool-group active" data-subName="pencil">
+		<div class="option opt-medium" data-arg="tip-presets" data-change="select-preset-tip" data-options="pop-brush-tips" data-match="//TipShapes" data-suffix="px">
+			<span class="value prefix-icon">
+				<i class="tip-icon" style="background-image: url(/app/ant/keane/icons/brush-preset-hard-round.png);"></i>
+				<span>20px</span>
+			</span>
+		</div>
+		<div class="option select" data-arg="blend" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
+			<span class="label">Blend</span>
+			<span class="value">Normal</span>
+		</div>
+		<div class="divider"></div>
+		<div class="option opt-tiny" data-arg="opacity" data-change="change-opacity" data-options="knob" data-min="0" data-max="100" data-suffix="%">
+			<span class="label">Opacity</span>
+			<span class="value">100%</span>
+		</div>
+		<div class="option opt-tiny" data-arg="flow" data-change="change-smooth" data-options="knob" data-min="0" data-max="100" data-suffix="%">
+			<span class="label">Smooth</span>
+			<span class="value">100%</span>
+		</div>
+		<div class="divider"></div>
 		<div class="tool tool-pressure disabled" data-arg="pressure"></div>
 	</span>
 
@@ -55,17 +77,14 @@
 			<span class="label">Mode</span>
 			<span class="value">Sketchy</span>
 		</div>
-
 		<div class="option opt-tiny" data-arg="size" data-change="change-feather-size" data-options="knob" data-min="1" data-max="10" data-suffix="px">
 			<span class="label">Size</span>
 			<span class="value">1px</span>
 		</div>
-
 		<div class="option opt-tiny" data-arg="pressure" data-change="change-feather-pressure" data-options="knob" data-min="1" data-max="100" data-suffix="%">
 			<span class="label">Pressure</span>
 			<span class="value">100%</span>
 		</div>
-
 		<div class="option select" data-arg="blend" data-change="change-feather-blend-mode" data-options="fieldset-inline-menubox" data-match="//BlendModes">
 			<span class="label">Blend</span>
 			<span class="value">Normal</span>
