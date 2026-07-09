@@ -92,6 +92,7 @@ module.exports = {
 	PP,
 	Action,
 	ActionTypes,
+	BrushEngine,
 	CanvasTools,
 	FilterHelper,
 	FilterEffectPanel,

@@ -272,7 +272,7 @@ f.BrushToolBase.prototype.dq = function(l, d, G) {
 	R.Brsh.v.Dmtr.v.val = I;
 	if (y != -1) R.Brsh.v.Hrdn.v.val = y;
 	this.PX = [I, y, e, R, G];
-	var J = iU.o4(R, d.pO.BF, V),
+	var J = BrushEngine.o4(R, d.pO.BF, V),
 		n = J[1];
 	n.x = Math.round(this.wt.x - n.m / 2);
 	n.y = Math.round(this.wt.y - n.n / 2);
@@ -685,7 +685,7 @@ f.BrushToolBase.prototype.ed = function(l, d, G, b) {
 				M = this.Sg,
 				R = this.cn,
 				J = new Rect(R.x + e.x, R.y + e.y, R.m, R.n),
-				n = iU.o4(I, l.pO.BF, t),
+				n = BrushEngine.o4(I, l.pO.BF, t),
 				r = n[0],
 				T = n[1],
 				j = Math.ceil(T.m / t),
@@ -710,13 +710,13 @@ f.BrushToolBase.prototype.ed = function(l, d, G, b) {
 			}
 			var H = this.HS.opacity / 255;
 			for (var A = 0; A < k.length; A += 4) k[A + 3] = H * (r[A + 3] * k[A + 3]);
-			iU.aAc(new Uint32Array(k.buffer), F, 4278190080, 4294967295);
+			BrushEngine.aAc(new Uint32Array(k.buffer), F, 4278190080, 4294967295);
 			Q = {
 				Wq: k,
 				vD: F,
 				Vl: new Point2D(F.m / 2, F.n / 2)
 			}
-		} else Q = iU.$I(I, l.pO.BF, t, V == f.gS || V == f.Nm)
+		} else Q = BrushEngine.$I(I, l.pO.BF, t, V == f.gS || V == f.Nm)
 	}
 	var W = new Action(ActionTypes.E.L, !0);
 	W.data = {
@@ -829,7 +829,7 @@ f.BrushToolBase.prototype.Us = function(l, d, G, b, V, Q) {
 			n = r
 		}
 		var T = this.id == f.aQ ? this.XM : t;
-		this.CR = new iU(R.brush, d.pO.BF, d.pO.yO, {
+		this.CR = new BrushEngine(R.brush, d.pO.BF, d.pO.yO, {
 			uh: V,
 			FL: Q,
 			a5w: R.smth * 50 / l.u.N,
@@ -2356,7 +2356,7 @@ f.ZM = function() {
 };
 f.ZM.prototype = new f.BrushToolBase;
 f.ZM.prototype.dJ = function(l, d, G, b, V) {
-	var Q = b.l(KeyboardHandler.Jm) ? iU.wB : iU.Yx;
+	var Q = b.l(KeyboardHandler.Jm) ? BrushEngine.wB : BrushEngine.Yx;
 	this.Us(l, G, b, V, this.HS.strn, Q);
 	if (this.CR == null) return;
 	this.zX(l)
@@ -7614,8 +7614,8 @@ f.vL = function() {
 };
 f.vL.prototype = new f.BrushToolBase;
 f.vL.prototype.dJ = function(l, d, G, b, V) {
-	var Q = this.HS.pdetail ? iU.wB : iU.tf;
-	if (b.l(KeyboardHandler.Jm)) Q = iU.Yx;
+	var Q = this.HS.pdetail ? BrushEngine.wB : BrushEngine.tf;
+	if (b.l(KeyboardHandler.Jm)) Q = BrushEngine.Yx;
 	this.Us(l, G, b, V, this.HS.strn, Q);
 	if (this.CR == null) return;
 	this.zX(l)
@@ -7662,7 +7662,7 @@ f.zB = function() {
 };
 f.zB.prototype = new f.BrushToolBase;
 f.zB.prototype.dJ = function(l, d, G, b, V) {
-	this.Us(l, G, b, V, this.HS.strn, iU.K1);
+	this.Us(l, G, b, V, this.HS.strn, BrushEngine.K1);
 	if (this.CR == null) return;
 	this.zX(l)
 };

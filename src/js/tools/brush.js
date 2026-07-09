@@ -57,6 +57,8 @@
 				Self.tool = new CanvasTools.Yv();
 				// mousemove for tool tip
 				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`).removeClass("hidden");
+				Self.tipCtx = Self.tip[0].getContext("2d", { willReadFrequently: true });
+				Self.updateTip();
 				// replaces mouse cursor with tip canvas
 				APP.els.cvs.addClass("show-tip");
 
@@ -75,6 +77,30 @@
 				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
 				break;
 		}
+	},
+	updateTip() {
+		let APP = decoshop,
+			Self = APP.tools.brush,
+			doc = APP.file?.doc,
+			zoom = doc?.u?.N || 1,
+			brush, data, cvs, vD;
+
+		if (!Self.tool) Self.tool = new CanvasTools.Yv();
+		brush = Self.tool.HS.brush;
+		Self.tipZoom = zoom;
+		data = BrushEngine.$I(brush, PP.fB.pO.BF, zoom, false);
+		Self.tipData = data;
+		if (!Self.tipCtx) return;
+
+		cvs = Self.tip[0];
+		vD = data.vD;
+		cvs.width = vD.m;
+		cvs.height = vD.n;
+		Self.tipCtx.putImageData(
+			new ImageData(new Uint8ClampedArray(data.Wq.buffer), vD.m, vD.n),
+			0, 0
+		);
+		Self.tip.css({ width: vD.m / DPR, height: vD.n / DPR });
 	},
 	pencilTool(event) {
 		console.log("pencil", event);
@@ -110,7 +136,7 @@
 				Self.drag = { el, pp, doc, pointer, rect };
 
 				// prevent mouse from triggering mouseover
-				APP.els.content.addClass("cover");
+				APP.els.content.addClass("no-cursor");
 				// bind event handlers
 				APP.els.doc.on("mousemove mouseup", Self.brushTool);
 				break;
@@ -127,7 +153,7 @@
 				Drag.pp.update(true);
 
 				// remove class
-				APP.els.content.removeClass("cover");
+				APP.els.content.removeClass("no-cursor");
 				// unbind event handlers
 				APP.els.doc.off("mousemove mouseup", Self.brushTool);
 				break;

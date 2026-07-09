@@ -1656,7 +1656,7 @@ PatternHelper.at$ = function(l) {
 		return l
 	}();
 
-	function iU(l, d, G, b, V, Q, t, I, y) {
+	function BrushEngine(l, d, G, b, V, Q, t, I, y) {
 		this.BF = d;
 		this.yO = G;
 		this.GF = Q;
@@ -1690,14 +1690,15 @@ PatternHelper.at$ = function(l) {
 		this._e = null;
 		this.akZ(l, V)
 	}
-	iU.a9K = PixelUtil.allocBytes(16);
-	iU.prototype.akZ = function(l, d) {
+	let iU = BrushEngine;
+	BrushEngine.a9K = PixelUtil.allocBytes(16);
+	BrushEngine.prototype.akZ = function(l, d) {
 		this.Y7 = d;
 		this.k = l;
 		this.a9C = JSON.stringify(l) + JSON.stringify(this.X9.Xi);
-		this._e = iU.a4l(this.k, this.BF, this.yO)
+		this._e = BrushEngine.a4l(this.k, this.BF, this.yO)
 	};
-	iU.prototype.moveTo = function(l, d, G) {
+	BrushEngine.prototype.moveTo = function(l, d, G) {
 		G = this.adh(G);
 		this.en = G;
 		var b = new Point2D(l, d),
@@ -1707,14 +1708,14 @@ PatternHelper.at$ = function(l) {
 		this.Xm = b.clone();
 		this.pS = [l, d];
 		this.wO = [G];
-		if (this.X9.FL != iU.K1) {
+		if (this.X9.FL != BrushEngine.K1) {
 			var Q = this.k.angleDynamics,
 				t = Q ? Q.v.bVTy.v == 6 : !1;
 			this.mj(t ? new Rect : this.aqh(b, this.a6u(G), G, new Point2D(0, 0)))
 		}
 		this.eK = b.clone()
 	};
-	iU.prototype.lineTo = function(l, d, G) {
+	BrushEngine.prototype.lineTo = function(l, d, G) {
 		G = this.adh(G);
 		var b = this.pS,
 			V = b.length,
@@ -1732,7 +1733,7 @@ PatternHelper.at$ = function(l) {
 		V += 2;
 		if (V >= 6) this.mj(this.aj7(V))
 	};
-	iU.prototype.adh = function(l) {
+	BrushEngine.prototype.adh = function(l) {
 		if (l == null) l = 1;
 		l = Math.max(.05, Math.min(5, l));
 		if (isNaN(l)) {
@@ -1741,11 +1742,11 @@ PatternHelper.at$ = function(l) {
 		}
 		return l
 	};
-	iU.prototype.mj = function(l) {
+	BrushEngine.prototype.mj = function(l) {
 		this.uA = l;
 		this.mn = this.mn.Cw(l)
 	};
-	iU.prototype.finish = function() {
+	BrushEngine.prototype.finish = function() {
 		var l = this.pS,
 			d = l.length,
 			G;
@@ -1753,19 +1754,19 @@ PatternHelper.at$ = function(l) {
 		if (d > 4) G = this.aj7(d + 2);
 		if (G) this.mj(G)
 	};
-	iU.prototype.Pa = function() {
+	BrushEngine.prototype.Pa = function() {
 		return this.rect.clone()
 	};
-	iU.prototype.Ae = function() {
+	BrushEngine.prototype.Ae = function() {
 		return this.uA.wD(this.rect)
 	};
-	iU.prototype.Y2 = function() {
+	BrushEngine.prototype.Y2 = function() {
 		return this.mn.wD(this.rect)
 	};
-	iU.prototype.XI = function() {
+	BrushEngine.prototype.XI = function() {
 		return this.QI
 	};
-	iU.prototype.aj7 = function(l) {
+	BrushEngine.prototype.aj7 = function(l) {
 		var d = this.pS,
 			G = this.wO,
 			b = d[l - 6],
@@ -1776,8 +1777,8 @@ PatternHelper.at$ = function(l) {
 			y = G[(l >> 1) - 2],
 			e = new Point2D(0, 0),
 			M = new Point2D(0, 0);
-		if (8 <= l) e = iU.a1L(d[l - 8], d[l - 7], b, V, Q, t);
-		if (l <= d.length) M = iU.a1L(d[l - 2], d[l - 1], Q, t, b, V);
+		if (8 <= l) e = BrushEngine.a1L(d[l - 8], d[l - 7], b, V, Q, t);
+		if (l <= d.length) M = BrushEngine.a1L(d[l - 2], d[l - 1], Q, t, b, V);
 		var R = b + e.x,
 			J = V + e.y,
 			n = Q + M.x,
@@ -1794,7 +1795,7 @@ PatternHelper.at$ = function(l) {
 		}
 		return T
 	};
-	iU.a1L = function(l, d, G, b, V, Q) {
+	BrushEngine.a1L = function(l, d, G, b, V, Q) {
 		var t = l - G,
 			I = d - b,
 			y = V - G,
@@ -1811,7 +1812,7 @@ PatternHelper.at$ = function(l) {
 			Y = J * R / g;
 		return new Point2D(T * Y, j * Y)
 	};
-	iU.prototype.a5c = function(l, d, G, b) {
+	BrushEngine.prototype.a5c = function(l, d, G, b) {
 		var V = new Rect,
 			Q = this.X9.a5w;
 		if (Q == null) Q = 0;
@@ -1833,12 +1834,12 @@ PatternHelper.at$ = function(l) {
 		}
 		return V
 	};
-	iU.prototype.a7k = function() {
+	BrushEngine.prototype.a7k = function() {
 		var l = this.k,
 			d = l.Brsh.v.Dmtr.v.val;
 		return this.X9.Xi && d == 1
 	};
-	iU.prototype.a5u = function(l, d, G) {
+	BrushEngine.prototype.a5u = function(l, d, G) {
 		var b = new Rect,
 			V = new Point2D(l, d),
 			Q = this.X9.FL,
@@ -1850,7 +1851,7 @@ PatternHelper.at$ = function(l) {
 		if (this.a7k()) {
 			if (I > .99) {
 				var M = this.FE;
-				iU.abK(M, V, this.QI, this.rect, this.v8(this.k));
+				BrushEngine.abK(M, V, this.QI, this.rect, this.v8(this.k));
 				b = PixelUtil.vec.flattenPath([M.x, M.y, V.x, V.y]);
 				y = I
 			} else V = this.FE
@@ -1859,14 +1860,14 @@ PatternHelper.at$ = function(l) {
 				var R = this.en + (G - this.en) * (Math.max(0, y) / I),
 					J = this.a6u(R),
 					n = this.avh() * (J + this.adr) / 2 * this._e.a9F;
-				if (Q == iU.K1) n = 1;
+				if (Q == BrushEngine.K1) n = 1;
 				n = Math.max(n, .5);
 				if (y + n < I) {
 					y += n;
 					this.xF += n;
 					var r = new Point2D(this.FE.x + t.x * y, this.FE.y + t.y * y),
 						g = 1;
-					if (Q == iU.K1) {
+					if (Q == BrushEngine.K1) {
 						var T = e.clone();
 						T.x += t.x > 0 ? 1 : -1;
 						var j = e.clone();
@@ -1893,23 +1894,23 @@ PatternHelper.at$ = function(l) {
 		this.en = G;
 		return b
 	};
-	iU.prototype.avh = function() {
+	BrushEngine.prototype.avh = function() {
 		var l = this.k.Brsh.v,
 			d = l.Spcn.v.val,
 			G = Math.max(5, l.Rndn.v.val);
 		return G / 100 * (d / 100)
 	};
-	iU.prototype.a6u = function(l) {
+	BrushEngine.prototype.a6u = function(l) {
 		var d = this.k,
 			G = d.Brsh.v.Dmtr.v.val;
 		if (d.useTipDynamics.v) {
 			var b = G * (d.minimumDiameter.v.val / 100);
 			G = b + (G - b) * (1 - this.Yj(this.tY) * (d.szVr.v.jitter.v.val / 100));
-			G *= iU.Pk(d, "szVr", l, this.xF)
+			G *= BrushEngine.Pk(d, "szVr", l, this.xF)
 		}
 		return G
 	};
-	iU.Pk = function(l, d, G, b) {
+	BrushEngine.Pk = function(l, d, G, b) {
 		var V = 1,
 			Q = l[d].v,
 			t = Q.bVTy.v,
@@ -1918,7 +1919,7 @@ PatternHelper.at$ = function(l) {
 		if (t == 2) V *= G;
 		return V
 	};
-	iU.prototype.aqh = function(l, d, G, b) {
+	BrushEngine.prototype.aqh = function(l, d, G, b) {
 		var V = this.X9.uh,
 			T = 0;
 		V = Math.min(1, V);
@@ -1939,14 +1940,14 @@ PatternHelper.at$ = function(l) {
 				r = Q.prVr.v.jitter.v.val / 100;
 			V *= 1 - this.Yj() * n;
 			V *= 1 - this.Yj() * r;
-			V *= iU.Pk(Q, "opVr", G, this.xF) * iU.Pk(Q, "prVr", G, this.xF)
+			V *= BrushEngine.Pk(Q, "opVr", G, this.xF) * BrushEngine.Pk(Q, "prVr", G, this.xF)
 		}
 		if (Q.useTipDynamics.v) {
 			var j = Q.angleDynamics.v,
 				g = Q.minimumRoundness.v.val / 100;
 			J.scale(1, g + (1 - g) * Math.round(100 - this.Yj() * Q.roundnessDynamics.v.jitter.v.val) / 100);
 			T += (-.5 + this.Yj()) * 4 * Math.PI * (j.jitter.v.val / 100);
-			T += iU.Pk(Q, "angleDynamics", G, this.xF) * 2 * Math.PI;
+			T += BrushEngine.Pk(Q, "angleDynamics", G, this.xF) * 2 * Math.PI;
 			if (j.bVTy.v == 6) T += Math.atan2(-b.y, b.x)
 		}
 		T += t.Angl.v.val * (Math.PI / 180);
@@ -1983,7 +1984,7 @@ PatternHelper.at$ = function(l) {
 					}
 			}
 		}
-		if (e == iU.K1) {
+		if (e == BrushEngine.K1) {
 			var p = new Point2D(k.rect.x + k.rect.m / 2, k.rect.y + k.rect.n / 2),
 				c = Math.round(p.x - this.eK.x),
 				v = Math.round(p.y - this.eK.y),
@@ -1994,7 +1995,7 @@ PatternHelper.at$ = function(l) {
 			PixelUtil.blitRgbaRect(this.QI, this.rect, k.bY, i);
 			PixelUtil.blend.xR(k.bY, k.rect, this.QI, this.rect, k.Ir, k.rect, V)
 		}
-		if (e == iU.Yx || e == iU.tf || e == iU.wB) {
+		if (e == BrushEngine.Yx || e == BrushEngine.tf || e == BrushEngine.wB) {
 			var P = k.rect.wD(this.rect),
 				C;
 			if (P.XB(k.rect)) C = k.Ir;
@@ -2004,12 +2005,12 @@ PatternHelper.at$ = function(l) {
 			}
 			var h = PixelUtil.allocBytes(P.O() * 4);
 			PixelUtil.blitRgbaRect(this.QI, this.rect, h, P);
-			if (e == iU.tf) {
+			if (e == BrushEngine.tf) {
 				var L = h.slice(0),
 					U = PixelUtil.s9.nn([-1, -1, -1, -1, 25, -1, -1, -1, -1]);
 				PixelUtil.s9.iZ(h, L, P.m, P.n, U, 0);
 				PixelUtil.copyByteBuffer(L, h)
-			} else if (e == iU.wB) {
+			} else if (e == BrushEngine.wB) {
 				var S = FilterHelper.oT("UnsM");
 				S.Amnt.v.val = 15;
 				S.Thsh.v = 0;
@@ -2033,11 +2034,11 @@ PatternHelper.at$ = function(l) {
 		this.tY++;
 		return F
 	};
-	iU.prototype.v8 = function(l) {
-		var d = iU.ar9(this.Y7);
+	BrushEngine.prototype.v8 = function(l) {
+		var d = BrushEngine.ar9(this.Y7);
 		if (l.useColorDynamics && l.useColorDynamics.v) {
 			var G = 1 - this.Yj() * l.clVr.v.jitter.v.val / 100,
-				b = iU.ar9(this.GF);
+				b = BrushEngine.ar9(this.GF);
 			d.o = G * d.o + (1 - G) * b.o;
 			d.J = G * d.J + (1 - G) * b.J;
 			d.k = G * d.k + (1 - G) * b.k;
@@ -2056,23 +2057,23 @@ PatternHelper.at$ = function(l) {
 		}
 		return d
 	};
-	iU.prototype.HW = function(l) {
+	BrushEngine.prototype.HW = function(l) {
 		return Math.max(0, Math.min(1, l))
 	};
-	iU.prototype.Yj = function(l) {
+	BrushEngine.prototype.Yj = function(l) {
 		if (l == null) {
 			l = this.ED++
 		}
-		return iU.hash(l)
+		return BrushEngine.hash(l)
 	};
-	iU.ar9 = function(l) {
+	BrushEngine.ar9 = function(l) {
 		return {
 			o: (l >> 16 & 255) / 255,
 			J: (l >> 8 & 255) / 255,
 			k: (l >> 0 & 255) / 255
 		}
 	};
-	iU.hash = function(l) {
+	BrushEngine.hash = function(l) {
 		l = l ^ 61 ^ l >> 16;
 		l = l + (l << 3);
 		l = l ^ l >> 4;
@@ -2080,13 +2081,13 @@ PatternHelper.at$ = function(l) {
 		l = l ^ l >> 15;
 		return (l & 16777215) / 16777215
 	};
-	iU.ayd = new b4;
-	iU.prototype.a0L = function(l, d, G) {
+	BrushEngine.ayd = new b4;
+	BrushEngine.prototype.a0L = function(l, d, G) {
 		var b = Math.sqrt(this._e.Rj[1].O()),
 			V = b * l.Nw(),
 			Q = V < 10 ? 1 : V < 50 ? 1.5 : V < 200 ? 3 : 8;
 		if (V < 30) Q = 0;
-		var t = iU.ayd,
+		var t = BrushEngine.ayd,
 			I = t.ar$(this.a9C),
 			y = this.X9.Xi;
 		if (y) {
@@ -2144,7 +2145,7 @@ PatternHelper.at$ = function(l) {
 		}
 		return M
 	};
-	iU.a4l = function(l, d, G) {
+	BrushEngine.a4l = function(l, d, G) {
 		var b, V, Q, t = l.Brsh.v.Dmtr.v.val,
 			I = l.Brsh.v.classID;
 		if (I == "computedBrush") {
@@ -2168,14 +2169,14 @@ PatternHelper.at$ = function(l) {
 			Rj: b
 		}
 	};
-	iU.T = null;
-	iU.k_ = null;
-	iU.Gx = function(l, d, G, b, V, Q) {
-		var t = iU.T,
-			I = iU.k_;
+	BrushEngine.T = null;
+	BrushEngine.k_ = null;
+	BrushEngine.Gx = function(l, d, G, b, V, Q) {
+		var t = BrushEngine.T,
+			I = BrushEngine.k_;
 		if (t == null) {
-			iU.T = t = document.createElement("canvas");
-			iU.k_ = I = t.getContext("2d", { willReadFrequently: true })
+			BrushEngine.T = t = document.createElement("canvas");
+			BrushEngine.k_ = I = t.getContext("2d", { willReadFrequently: true })
 		}
 		if (Q == null) Q = b;
 		if (t.width != Q || t.height != V) {
@@ -2231,7 +2232,7 @@ PatternHelper.at$ = function(l) {
 		} else {}
 		return t.toDataURL()
 	};
-	iU.o4 = function(l, d, G, b) {
+	BrushEngine.o4 = function(l, d, G, b) {
 		if (G == 0) G = 1;
 		var V = l.Brsh.v,
 			Q = V.Dmtr.v.val,
@@ -2255,7 +2256,7 @@ PatternHelper.at$ = function(l) {
 		}
 		return [R, e, t]
 	};
-	iU.aAc = function(l, d, G, b) {
+	BrushEngine.aAc = function(l, d, G, b) {
 		var V = d.m,
 			Q = V >>> 1;
 		for (var A = 0; A < 4; A++) {
@@ -2274,8 +2275,8 @@ PatternHelper.at$ = function(l) {
 			l[V * (Q + 1) + Q + t] = b
 		}
 	};
-	iU.$I = function(l, d, G, b) {
-		var V = iU.o4(l, d, G),
+	BrushEngine.$I = function(l, d, G, b) {
+		var V = BrushEngine.o4(l, d, G),
 			Q = V[0].slice(0),
 			t = V[1],
 			I = V[2],
@@ -2285,7 +2286,7 @@ PatternHelper.at$ = function(l) {
 		var M = PixelUtil.allocBytes(y);
 		PixelUtil.P.alH(e, M, t, window.devicePixelRatio > 1.9);
 		if (I < 3 || PixelUtil.bufferUniformValue(M, 0) || b && I > 12) {
-			iU.aAc(M, t, 255, 0)
+			BrushEngine.aAc(M, t, 255, 0)
 		}
 		var R = [3, 5, 3, 4, 8, 4, 3, 5, 3];
 		R = PixelUtil.s9.nn(R);
@@ -2303,7 +2304,7 @@ PatternHelper.at$ = function(l) {
 			Vl: new Point2D(t.m / 2, t.n / 2)
 		}
 	};
-	iU.abK = function(l, d, G, b, V) {
+	BrushEngine.abK = function(l, d, G, b, V) {
 		var Q = 4278190080 | Math.round(V.k * 255) << 16 | Math.round(V.J * 255) << 8 | Math.round(V.o * 255) << 0;
 		G = new Uint32Array(G.buffer);
 		var t = Math.floor(l.x),
@@ -2329,7 +2330,7 @@ PatternHelper.at$ = function(l) {
 			}
 		}
 	};
-	iU.K1 = "0";
-	iU.Yx = "1";
-	iU.tf = "2";
-	iU.wB = "3";
+	BrushEngine.K1 = "0";
+	BrushEngine.Yx = "1";
+	BrushEngine.tf = "2";
+	BrushEngine.wB = "3";

@@ -17,6 +17,7 @@ let {
 	PP,
 	Action,
 	ActionTypes,
+	BrushEngine,
 	CanvasTools,
 	FilterHelper,
 	LayerRecord,
