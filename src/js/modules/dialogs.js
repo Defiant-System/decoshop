@@ -374,7 +374,7 @@ const Dialogs = {
 					// togglers
 					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
 						let el = $(elem),
-							value = el.data("on") ? true : false;
+							value = el.data("value") === "on" ? true : false;
 						Self.values[el.attr("data-name")] = { default: value, value };
 					});
 					// initial apply
@@ -2318,13 +2318,95 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-cleanliness":
+					event.values = Self.values; // first copy values
+					event.values.cleanliness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-brushScale":
+					event.values = Self.values; // first copy values
+					event.values.brushScale.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-microBrush":
+					event.values = Self.values; // first copy values
+					event.values.microBrush.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-specularity":
+					event.values = Self.values; // first copy values
+					event.values.specularity.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-angle":
+					event.values = Self.values; // first copy values
+					event.values.angle.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-lighting":
+					event.values = Self.values; // first copy values
+					event.values.lighting.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("oilPaint");
+						qv.lightingOn.v = Self.values.lighting.value;
+						qv.stylization.v = Self.values.radius.value;
+						qv.brushScale.v = Self.values.brushScale.value;
+						qv.microBrush.v = Self.values.microBrush.value;
+						qv.LghD.v = Self.values.angle.value;
+						qv.specularity.v = Self.values.specularity.value;
+						qv.cleanliness.v = Self.values.cleanliness.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "oilPaint", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// Self.values.angle = { default: 0, value: 0 };
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

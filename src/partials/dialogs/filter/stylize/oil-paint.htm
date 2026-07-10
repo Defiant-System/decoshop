@@ -10,7 +10,7 @@
 				<div class="option input">
 					<span class="label">Radius</span>
 					<span class="value">
-						<input type="text" name="radius" data-min="0" data-max="400" value="3px" data-default="3px" data-suffix="px"/>
+						<input type="text" name="radius" data-min="0.1" data-max="10" value="3px" data-default="3px" data-step="0.1" data-suffix="px"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-radius"></div>
@@ -20,7 +20,7 @@
 				<div class="option input">
 					<span class="label">Cleanliness</span>
 					<span class="value">
-						<input type="text" name="cleanliness" data-min="0" data-max="400" value="2px" data-default="2px" data-suffix="px"/>
+						<input type="text" name="cleanliness" data-min="0" data-max="10" value="2px" data-default="2px" data-step="0.1" data-suffix="px"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-cleanliness"></div>
@@ -30,30 +30,30 @@
 				<div class="option input">
 					<span class="label">Scale</span>
 					<span class="value">
-						<input type="text" name="scale" data-min="0" data-max="10" value="1" data-default="1"/>
+						<input type="text" name="brushScale" data-min="0.1" data-max="10" value="1" data-default="1" data-step="0.1"/>
 					</span>
 				</div>
-				<div class="knob" data-change="set-scale"></div>
+				<div class="knob" data-change="set-brushScale"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Bristle Detail</span>
 					<span class="value">
-						<input type="text" name="bristle-detail" data-min="0" data-max="10" value="0" data-default="0"/>
+						<input type="text" name="microBrush" data-min="0" data-max="10" value="0" data-default="0" data-step="0.1"/>
 					</span>
 				</div>
-				<div class="knob" data-change="set-bristle-detail"></div>
+				<div class="knob" data-change="set-microBrush"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Shine</span>
 					<span class="value">
-						<input type="text" name="shine" data-min="0" data-max="10" value="1" data-default="1"/>
+						<input type="text" name="specularity" data-min="0" data-max="10" value="1" data-default="1" data-step="0.1"/>
 					</span>
 				</div>
-				<div class="knob" data-change="set-shine"></div>
+				<div class="knob" data-change="set-specularity"></div>
 			</div>
 
 			<div class="field-row slim-row has-knob">
@@ -61,7 +61,7 @@
 					<span class="label">Angle</span>
 					<span class="value">
 						<div class="ring-input"></div>
-						<input type="text" name="angle" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+						<input type="text" name="angle" data-min="-180" data-max="180" value="45°" data-default="45°" data-suffix="°"/>
 					</span>
 					<div class="knob" data-change="set-angle"></div>
 				</div>
@@ -80,6 +80,10 @@
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>
+			<div class="button" data-click="dlg-reset">Reset</div>
+			<div class="toggler" data-value="on" data-click="dlg-preview">
+				<span>Preview</span>
+			</div>
 		</div>
 	</div>
 </div>
