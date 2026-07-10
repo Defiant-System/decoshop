@@ -43,29 +43,22 @@
 					el = APP.els.cvs;
 					rect = el[0].getBoundingClientRect();
 				}
-				// move tip
 				top = event.top || (event.clientY - rect.top) * DPR;
 				left = event.left || (event.clientX - rect.left) * DPR;
+				// move tip
 				Self.tip.css({ top, left });
-				// update tip canvas if needed
-				let docZoom = Self.doc?.u?.N || 1;
-				if (Self.tipZoom !== docZoom) Self.updateTip();
 				break;
 
 			case "select-option":
 				Self.option = event.arg || Self.option || "brush";
 				break;
 			case "enable":
-				// fast reference to doc
-				Self.doc = APP.file?.doc;
 				// active canvas tool
 				Self.tool = new CanvasTools.Yv();
 				// mousemove for tool tip
 				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`).removeClass("hidden");
-				Self.tipCtx = Self.tip[0].getContext("2d", { willReadFrequently: true });
-				Self.updateTip();
 				// replaces mouse cursor with tip canvas
-				APP.els.content.addClass("show-tip");
+				APP.els.cvs.addClass("show-tip");
 
 				// set draw color
 				APP.file?.dispatch({ type: "set-foreground-color", rgb: [255,180,0] });
@@ -77,26 +70,14 @@
 				// hide tip canvas
 				Self.tip.addClass("hidden");
 				// reset canvas
-				APP.els.content.removeClass("show-tip");
+				APP.els.cvs.removeClass("show-tip");
 				// unbind event handlers
 				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
 				break;
 		}
 	},
-	updateTip() {
-		let APP = decoshop,
-			Self = APP.tools.brush;
-
-		if (!Self.tool) Self.tool = new CanvasTools.Yv();
-		Self.tipZoom = Self.doc?.u?.N || 1;
-		Self.tipData = BrushEngine.$I(Self.tool.HS.brush, PP.fB.pO.BF, Self.tipZoom, false);
-		if (!Self.tipCtx) return;
-
-		let { m: width, n: height } = Self.tipData.vD,
-			iData = new ImageData(new Uint8ClampedArray(Self.tipData.Wq.buffer), width, height);
-		Self.tip.attr({ width, height });
-		Self.tipCtx.putImageData(iData, 0, 0);
-		Self.tip.css({ width, height });
+	pencilTool(event) {
+		console.log("pencil", event);
 	},
 	brushTool(event) {
 		let APP = decoshop,
@@ -129,7 +110,7 @@
 				Self.drag = { el, pp, doc, pointer, rect };
 
 				// prevent mouse from triggering mouseover
-				APP.els.content.addClass("no-cursor");
+				APP.els.content.addClass("cover");
 				// bind event handlers
 				APP.els.doc.on("mousemove mouseup", Self.brushTool);
 				break;
@@ -138,6 +119,7 @@
 					y = (event.clientY - Drag.rect.top) * DPR;
 				Self.tool.JP(Drag.doc, Drag.pp, Drag.pp.fB, Drag.pp.Ib, { ...Drag.pointer, x, y });
 				Drag.pp.update(true);
+
 				Self.dispatch({ type: "mousemove", top: y, left: x });
 				break;
 			case "mouseup":
@@ -145,16 +127,10 @@
 				Drag.pp.update(true);
 
 				// remove class
-				APP.els.content.removeClass("no-cursor");
+				APP.els.content.removeClass("cover");
 				// unbind event handlers
 				APP.els.doc.off("mousemove mouseup", Self.brushTool);
 				break;
 		}
-	},
-	pencilTool(event) {
-		console.log("pencil", event);
-	},
-	heatherTool(event) {
-		console.log("pencil", event);
 	},
 }

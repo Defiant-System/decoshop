@@ -797,6 +797,9 @@ const UI = {
 				Dialogs.data.layer.putImageData({ data: copy, noEmit: 1 });
 				break;
 			*/
+			case "dlg-init-common":
+				// anything todo?
+				break;
 			case "dlg-open-common":
 				if (!event.dEl) return;
 				// collect default values
@@ -823,10 +826,9 @@ const UI = {
 						value = iEl.data("default");
 					// update input field
 					iEl.val(value);
-					// update knob, if any
-					iEl.parents(".field-row").find(".knob, .pan-knob").data({ value: parseInt(value, 10) });
 				});
-				// TODO: auto-trigger new render
+				// make sure knobs in dialog is synced with its sibling input element
+				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				break;
 			case "dlg-preview-common":
 				// TODO: toggle canvas render

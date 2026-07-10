@@ -11,6 +11,7 @@ const Dialogs = {
 	},
 	// panel sub objects
 	dlgLensCorrection: {
+		name: "dlgLensCorrection",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -32,8 +33,6 @@ const Dialogs = {
 				case "apply-filter-data":
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// make sure layer style is covered
@@ -43,7 +42,7 @@ const Dialogs = {
 					// make sure layer style is covered
 					window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensCorrection" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -51,11 +50,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensCorrection" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgLayerStyle: {
+		name: "dlgLayerStyle",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -119,8 +119,6 @@ const Dialogs = {
 					event.el.parents(".field-row").data({ show: event.text });
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.dEl.find(".style-list .option").length) {
@@ -141,11 +139,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFilterGallery" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgContourEditor: {
+		name: "dlgContourEditor",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -162,8 +161,6 @@ const Dialogs = {
 				case "selected-style-item":
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// make sure layer style is covered
@@ -173,7 +170,7 @@ const Dialogs = {
 					// make sure layer style is covered
 					window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -181,11 +178,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgContourEditor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgFilterGallery: {
+		name: "dlgFilterGallery",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -282,8 +280,6 @@ const Dialogs = {
 					console.log(event);
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.dEl.find(".bubble-options fieldset > div").length) {
@@ -310,11 +306,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFilterGallery" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgBrightnessContrast: {
+		name: "dlgBrightnessContrast",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -340,20 +337,19 @@ const Dialogs = {
 				case "before:set-brightness":
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgBrightnessContrast" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgLayerPanelOptions: {
+		name: "dlgLayerPanelOptions",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -362,19 +358,18 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLayerPanelOptions" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgScaleEffects: {
+		name: "dlgScaleEffects",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -383,19 +378,18 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgScaleEffects" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgWarp: {
+		name: "dlgWarp",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -404,19 +398,18 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgWarp" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgStroke: {
+		name: "dlgStroke",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -425,19 +418,18 @@ const Dialogs = {
 				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-ok":
 				case "dlg-open":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgStroke" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgGradientEditor: {
+		name: "dlgGradientEditor",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -560,8 +552,6 @@ const Dialogs = {
 					Self.els.trackColors.html(cTrack.join(""));
 					break;
 				
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// fast references
@@ -605,7 +595,7 @@ const Dialogs = {
 					// make sure layer style is covered
 					window.find(`.dialog-box[data-dlg="dlgLayerStyle"]`).removeClass("covered");
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -613,11 +603,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientEditor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgSelectMagicCut: {
+		name: "dlgSelectMagicCut",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -649,8 +640,6 @@ const Dialogs = {
 					karaqu.shell("fs -u '~/help/toc.md'");
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				default:
 					/* Falls through to "master UI"
@@ -658,11 +647,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectMagicCut" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgSelectRefineEdge: {
+		name: "dlgSelectRefineEdge",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -694,8 +684,6 @@ const Dialogs = {
 					karaqu.shell("fs -u '~/help/toc.md'");
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				default:
 					/* Falls through to "master UI"
@@ -703,11 +691,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectRefineEdge" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgQuickMaskOptions: {
+		name: "dlgQuickMaskOptions",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -718,19 +707,18 @@ const Dialogs = {
 				case "select-style":
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgQuickMaskOptions" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgFlame: {
+		name: "dlgFlame",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -743,19 +731,18 @@ const Dialogs = {
 					event.el.parents(".fields").data({ show: el.data("id") });
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFlame" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgThreshold: {
+		name: "dlgThreshold",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -766,30 +753,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-amount":
+					event.values = Self.values; // first copy values
+					event.values.amount.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.amount.value = event.value;
-
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("thrs");
-						qv.Lvl.v = event.value;
+						qv.Lvl.v = Self.values.amount.value;
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -797,7 +783,36 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.amount.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "thrs" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "thrs" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "thrs" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -805,11 +820,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgThreshold" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgCrystallize: {
+		name: "dlgCrystallize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -825,19 +841,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCrystallize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgPointillize: {
+		name: "dlgPointillize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -853,19 +868,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPointillize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMosaic: {
+		name: "dlgMosaic",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -881,19 +895,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMosaic" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMezzoint: {
+		name: "dlgMezzoint",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -909,19 +922,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMezzoint" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgColorHalftone: {
+		name: "dlgColorHalftone",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -937,19 +949,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorHalftone" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgFill: {
+		name: "dlgFill",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -973,19 +984,18 @@ const Dialogs = {
 					// TODO: do something with event.value
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFill" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgNormalMap: {
+		name: "dlgNormalMap",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1002,19 +1012,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgNormalMap" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgTextureDilation: {
+		name: "dlgTextureDilation",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1031,19 +1040,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTextureDilation" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgBoxBlur: {
+		name: "dlgBoxBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1054,29 +1062,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.radius.value = event.value;
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("boxblur");
-						qv.Rds.v.val = event.value;
+						qv.Rds.v.val = Self.values.radius.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "boxblur", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -1084,7 +1092,36 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "boxblur" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "boxblur" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "boxblur" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -1092,11 +1129,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgBoxBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgGaussianBlur: {
+		name: "dlgGaussianBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1107,29 +1145,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.radius.value = event.value;
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("GsnB");
-						qv.Rds.v.val = event.value;
+						qv.Rds.v.val = Self.values.radius.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "GsnB", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -1137,38 +1175,36 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-preview":
 					Self.preview = event.el.data("value") === "on";
 					if (Self.preview) {
-						Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					} else {
 						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });
 						PP.update();
 					}
 					break;
-				case "dlg-reset":
-					Self.root.find(`.field-row input[data-default]`).map(iEl => {
-						Self.values[iEl.getAttribute("name")].value = Self.values[iEl.getAttribute("name")].default;
-						iEl.value = iEl.getAttribute("data-default");
-					});
-					// make sure knobs in dialog is synced with its sibling input element
-					UI.doDialogKnob({ type: "set-initial-value", dEl: Self.root });
-
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.default });
-					break;
 				case "dlg-ok":
 					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "GsnB" } });
 					PP.update();
 					// close dialog
-					UI.doDialog({ ...event, type: `dlg-close-common`, name: "dlgGaussianBlur" });
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
 					break;
-				case "dlg-close": // cancel
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
 					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "GsnB" } });
 					PP.update();
 					// close dialog
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -1176,11 +1212,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGaussianBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgLensBlur: {
+		name: "dlgLensBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1197,19 +1234,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMotionBlur: {
+		name: "dlgMotionBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1226,19 +1262,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMotionBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgRadialBlur: {
+		name: "dlgRadialBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1255,19 +1290,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgRadialBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgSurfaceBlur: {
+		name: "dlgSurfaceBlur",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1284,19 +1318,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSurfaceBlur" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgDisplace: {
+		name: "dlgDisplace",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1313,19 +1346,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDisplace" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgKaleidoscope: {
+		name: "dlgKaleidoscope",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1342,19 +1374,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgKaleidoscope" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgPinch: {
+		name: "dlgPinch",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1371,19 +1402,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPinch" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgPolarCoordinates: {
+		name: "dlgPolarCoordinates",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1400,19 +1430,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPolarCoordinates" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgRipple: {
+		name: "dlgRipple",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1429,19 +1458,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgRipple" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgShear: {
+		name: "dlgShear",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1458,19 +1486,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgShear" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgSpherize: {
+		name: "dlgSpherize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1487,19 +1514,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSpherize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgTwirl: {
+		name: "dlgTwirl",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1510,29 +1536,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-angle":
+					event.values = Self.values; // first copy values
+					event.values.angle.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.angle.value = event.value;
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("Twrl");
-						qv.Angl.v = event.value;
+						qv.Angl.v = Self.values.angle.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Twrl", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -1540,7 +1566,35 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.angle.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Twrl" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "Twrl" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Twrl" } });
+					PP.update();
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -1548,11 +1602,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTwirl" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgWave: {
+		name: "dlgWave",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1569,19 +1624,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgWave" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgZigZag: {
+		name: "dlgZigZag",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1598,19 +1652,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgZigZag" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgAddNoise: {
+		name: "dlgAddNoise",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1627,19 +1680,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgAddNoise" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgDustScratches: {
+		name: "dlgDustScratches",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1656,19 +1708,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDustScratches" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMedian: {
+		name: "dlgMedian",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1685,19 +1736,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMedian" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgReduceNoise: {
+		name: "dlgReduceNoise",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1714,19 +1764,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgReduceNoise" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgFibers: {
+		name: "dlgFibers",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1743,19 +1792,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFibers" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgLensFlare: {
+		name: "dlgLensFlare",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1772,19 +1820,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLensFlare" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgSmartSharpen: {
+		name: "dlgSmartSharpen",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1801,19 +1848,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSmartSharpen" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgUnsharpMask: {
+		name: "dlgUnsharpMask",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1830,19 +1876,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgUnsharpMask" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgDiffuse: {
+		name: "dlgDiffuse",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1859,19 +1904,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDiffuse" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgEmboss: {
+		name: "dlgEmboss",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1888,19 +1932,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgEmboss" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgOilPaint: {
+		name: "dlgOilPaint",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1917,19 +1960,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgOilPaint" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgTraceContour: {
+		name: "dlgTraceContour",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1946,19 +1988,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTraceContour" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgWind: {
+		name: "dlgWind",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1975,19 +2016,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgWind" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgHighPass: {
+		name: "dlgHighPass",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -1998,30 +2038,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.radius.value = event.value;
-
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("HghP");
-						qv.Rds.v.val = event.value;
+						qv.Rds.v.val = Self.values.radius.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "HghP", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -2029,7 +2068,36 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.radius.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "HghP" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "HghP" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "HghP" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -2037,11 +2105,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHighPass" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgHsbHsl: {
+		name: "dlgHsbHsl",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2058,19 +2127,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHsbHsl" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMaximum: {
+		name: "dlgMaximum",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2087,19 +2155,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMaximum" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgMinimum: {
+		name: "dlgMinimum",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2116,19 +2183,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMinimum" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgOffset: {
+		name: "dlgOffset",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2145,19 +2211,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgOffset" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgRepeat: {
+		name: "dlgRepeat",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2174,19 +2239,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgRepeat" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgColorToAlpha: {
+		name: "dlgColorToAlpha",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2203,19 +2267,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorToAlpha" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgDither: {
+		name: "dlgDither",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2232,19 +2295,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDither" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgParticles: {
+		name: "dlgParticles",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2261,19 +2323,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgParticles" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgCameraRaw: {
+		name: "dlgCameraRaw",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2290,19 +2351,18 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCameraRaw" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgLiquify: {
+		name: "dlgLiquify",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2341,11 +2401,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLiquify" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgAddGuides: {
+		name: "dlgAddGuides",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2358,20 +2419,19 @@ const Dialogs = {
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgAddGuides" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgCanvasSize: {
+		name: "dlgCanvasSize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2422,8 +2482,6 @@ const Dialogs = {
 						aEl.prop({ className: cn.join(" ") });
 					});
 					break;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// initial values
@@ -2453,12 +2511,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCanvasSize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgImageSize: {
+		name: "dlgImageSize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2481,8 +2540,6 @@ const Dialogs = {
 						.find(".option").toggleClass("disabled", event.el.data("value") === "on");
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// click on a preset
@@ -2492,12 +2549,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgImageSize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgBlackWhite: {
+		name: "dlgBlackWhite",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2510,20 +2568,19 @@ const Dialogs = {
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgBlackWhite" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgExposure: {
+		name: "dlgExposure",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2536,20 +2593,19 @@ const Dialogs = {
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExposure" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgVibrance: {
+		name: "dlgVibrance",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2562,20 +2618,19 @@ const Dialogs = {
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgVibrance" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgColorBalance: {
+		name: "dlgColorBalance",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2593,20 +2648,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorBalance" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgHueSaturation: {
+		name: "dlgHueSaturation",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2649,8 +2703,6 @@ const Dialogs = {
 					console.log(el.data("arg"));
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					Self.colorRanges = {
@@ -2666,12 +2718,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgHueSaturation" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgLevels: {
+		name: "dlgLevels",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2687,20 +2740,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgLevels" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgMatchColor: {
+		name: "dlgMatchColor",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2716,20 +2768,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgMatchColor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgPhotoFilter: {
+		name: "dlgPhotoFilter",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2745,20 +2796,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPhotoFilter" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectiveColor: {
+		name: "dlgSelectiveColor",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2774,20 +2824,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectiveColor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgCurves: {
+		name: "dlgCurves",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2803,20 +2852,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgCurves" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgChannelMixer: {
+		name: "dlgChannelMixer",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2832,20 +2880,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgChannelMixer" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgGradientMap: {
+		name: "dlgGradientMap",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2863,20 +2910,19 @@ const Dialogs = {
 				case "select-gradient":
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgGradientMap" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgPosterize: {
+		name: "dlgPosterize",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2887,30 +2933,29 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-levels":
+					event.values = Self.values; // first copy values
+					event.values.levels.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
+					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
 				case "apply-filter-data":
-					if (!Doc) return;
+					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
-					Self.values.levels.value = event.value;
-
-					// selected layer
-					Doc.g = [0];
-					// save raf
+					Self.values = event.values;
+					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("post");
-						qv.Lvls.v = event.value;
+						qv.Lvls.v = Self.values.levels.value;
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "post", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
-				// run once app opens
-				case "dlg-init": break;
 				case "dlg-open":
 					Self.root = event.dEl;
 					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
 					Self.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
@@ -2918,7 +2963,36 @@ const Dialogs = {
 						Self.values[el.attr("name")] = { default: value, value };
 					});
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", value: Self.values.levels.value });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "post" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "post" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "post" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"
@@ -2926,11 +3000,12 @@ const Dialogs = {
 					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
 					 */
 					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPosterize" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
 	dlgReplaceColor: {
+		name: "dlgReplaceColor",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2944,20 +3019,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgReplaceColor" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectColorRange: {
+		name: "dlgSelectColorRange",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -2976,20 +3050,19 @@ const Dialogs = {
 					event.el.parents(".fields").data({ mode: event.value });
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectColorRange" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgShadowHighlights: {
+		name: "dlgShadowHighlights",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3003,20 +3076,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgShadowHighlights" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgTrim: {
+		name: "dlgTrim",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3030,20 +3102,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgTrim" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectModifyBorder: {
+		name: "dlgSelectModifyBorder",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3057,20 +3128,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyBorder" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectModifySmooth: {
+		name: "dlgSelectModifySmooth",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3084,20 +3154,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifySmooth" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectModifyExpand: {
+		name: "dlgSelectModifyExpand",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3111,20 +3180,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyExpand" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectModifyContract: {
+		name: "dlgSelectModifyContract",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3138,20 +3206,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyContract" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgSelectModifyFeather: {
+		name: "dlgSelectModifyFeather",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3165,20 +3232,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgSelectModifyFeather" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgApplyImage: {
+		name: "dlgApplyImage",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3200,20 +3266,19 @@ const Dialogs = {
 					event.el.parents(".fields").data({ target: event.value });
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgApplyImage" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgArtboard: {
+		name: "dlgArtboard",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3227,20 +3292,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgArtboard" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgColorLookup: {
+		name: "dlgColorLookup",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3254,20 +3318,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgColorLookup" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgDuplicateInto: {
+		name: "dlgDuplicateInto",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3281,20 +3344,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgDuplicateInto" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgFileInfo: {
+		name: "dlgFileInfo",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3308,20 +3370,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgFileInfo" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgVariables: {
+		name: "dlgVariables",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3335,20 +3396,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgVariables" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgExportColorLookUp: {
+		name: "dlgExportColorLookUp",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3362,20 +3422,19 @@ const Dialogs = {
 					/* falls through */
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportColorLookUp" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgExportLayers: {
+		name: "dlgExportLayers",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3397,20 +3456,19 @@ const Dialogs = {
 					event.el.parents(".fields").data({ export: event.text.toLowerCase() });
 					break;
 
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportLayers" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgExportAs: {
+		name: "dlgExportAs",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3422,8 +3480,6 @@ const Dialogs = {
 				case "set-export-format":
 					event.el.parents(".options-wrapper").data({ show: event.text.toLowerCase() });
 					break;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (event.args.length) {
@@ -3436,12 +3492,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgExportAs" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgToolShape: {
+		name: "dlgToolShape",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3450,8 +3507,6 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (event.args.length) {
@@ -3463,12 +3518,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgToolShape" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgPreferences: {
+		name: "dlgPreferences",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3487,20 +3543,19 @@ const Dialogs = {
 					selEl = el.find("label").length ? el.find("label") : el;
 					el.parents(".dlg-content").find(".pref-details").data({ show: selEl.html().replace("&amp; ", "") });
 					break;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 				case "dlg-ok":
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPreferences" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgPresetManager: {
+		name: "dlgPresetManager",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3535,8 +3590,6 @@ const Dialogs = {
 						window.render({ ...records[pEl.data("show")], target });
 					}
 					break;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					if (!event.args.length) {
@@ -3549,12 +3602,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPresetManager" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgPixelator: {
+		name: "dlgPixelator",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3567,8 +3621,6 @@ const Dialogs = {
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// click on a preset
@@ -3578,12 +3630,13 @@ const Dialogs = {
 				case "dlg-reset":
 				case "dlg-preview":
 				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: "dlgPixelator" });
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 			}
 		}
 	},
 	dlgColors: {
+		name: "dlgColors",
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -3607,8 +3660,6 @@ const Dialogs = {
 				case "after:set-color-opacity":
 					break;
 					
-				// run once app opens
-				case "dlg-init": break;
 				// standard dialog events
 				case "dlg-open":
 					// position cursors
