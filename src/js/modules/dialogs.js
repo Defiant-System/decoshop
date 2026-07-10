@@ -325,26 +325,60 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-contrast":
-				case "set-brightness":
+					event.values = Self.values; // first copy values
+					event.values.contrast.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-brightness":
+					event.values = Self.values; // first copy values
+					event.values.brightness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("brit");
+						qv.Brgh.v = Self.values.brightness.value;
+						qv.Cntr.v = Self.values.contrast.value;
+						qv.useLegacy.v = Self.values.legacy.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "brit", qv, ve: false } });
+						PP.update();
+					});
 					return;
 				
-				// slow/once events
-				case "before:set-contrast":
-				case "before:set-brightness":
-					break;
-
-				// standard dialog events
-				case "dlg-ok":
 				case "dlg-open":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+
+					// temp
+					Self.values.legacy.value = !1;
+
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
+				// standard dialog events
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
