@@ -468,10 +468,10 @@
 		<i type="option" name="Wrap Around" value="2"/>
 	</UndefinedArea>
 	<DiffuseModes>
-		<i type="option" name="Normal" value="0"/>
-		<i type="option" name="Darker Clor" value="1"/>
-		<i type="option" name="Lighter Color" value="2"/>
-		<i type="option" name="Anistropic" value="3"/>
+		<i type="option" name="Normal" value="Nrml"/>
+		<i type="option" name="Darker Clor" value="DrkO"/>
+		<i type="option" name="Lighter Color" value="LghO"/>
+		<i type="option" name="Anistropic" value="anisotropic"/>
 	</DiffuseModes>
 	<LensFlareTypes>
 		<i type="option" name="50-300mm Zoom" value="0"/>
