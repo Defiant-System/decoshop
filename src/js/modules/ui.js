@@ -827,6 +827,11 @@ const UI = {
 					// update input field
 					iEl.val(value);
 				});
+				// make sure togglers are returned to default state
+				dEl.find(`.field-row .toggler[data-default]`).map(elem => {
+					let tEl = $(elem);
+					tEl.data({ value: tEl.data("default") });
+				});
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				break;
