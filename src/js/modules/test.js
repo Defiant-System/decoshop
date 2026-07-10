@@ -82,7 +82,7 @@ let Test = {
 		/* 
 		 * 
 		 */
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgOilPaint" }), 1600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgPointillize" }), 1600);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 
