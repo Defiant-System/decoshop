@@ -9,33 +9,33 @@
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Scale</span>
-					<span class="value"><input type="text" name="radius" data-min="10" data-max="300" data-default="100%" value="100%" data-suffix="%"></span>
+					<span class="value"><input type="text" name="scale" data-min="10" data-max="300" data-default="100%" value="100%" data-suffix="%"></span>
 				</div>
-				<div class="knob" data-change="set-scale" data-value="100"></div>
+				<div class="knob" data-change="set-scale"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Row Shift</span>
-					<span class="value"><input type="text" name="radius" data-min="-50" data-max="50" value="0%" data-default="0%" data-suffix="%"></span>
+					<span class="value"><input type="text" name="shift" data-min="-50" data-max="50" value="0%" data-default="0%" data-suffix="%"></span>
 				</div>
-				<div class="pan-knob" data-change="set-amount" data-value="0"></div>
+				<div class="pan-knob" data-change="set-shift"></div>
 			</div>
 			
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Space X</span>
-					<span class="value"><input type="text" name="radius" data-min="-99" data-max="200" value="0%" data-default="0%" data-suffix="%"></span>
+					<span class="value"><input type="text" name="spacex" data-min="-99" data-max="200" value="0%" data-default="0%" data-suffix="%"></span>
 				</div>
-				<div class="knob" data-value="0"></div>
+				<div class="knob" data-change="set-spacex"></div>
 			</div>
 			
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Space Y</span>
-					<span class="value"><input type="text" name="radius" data-min="-99" data-max="200" value="0%" data-default="0%" data-suffix="%"></span>
+					<span class="value"><input type="text" name="spacey" data-min="-99" data-max="200" value="0%" data-default="0%" data-suffix="%"></span>
 				</div>
-				<div class="knob" data-value="0"></div>
+				<div class="knob" data-change="set-spacey"></div>
 			</div>
 
 			<div class="field-row slim-row has-knob">
@@ -43,9 +43,9 @@
 					<span class="label">Angle</span>
 					<span class="value">
 						<div class="ring-input"></div>
-						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+						<input type="text" name="angle" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
 					</span>
-					<div class="knob" data-value="0"></div>
+					<div class="knob" data-change="set-angle"></div>
 				</div>
 			</div>
 

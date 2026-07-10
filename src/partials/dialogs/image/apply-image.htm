@@ -47,10 +47,10 @@
 				<div class="field-opacity">
 					<div class="option input">
 						<span class="label">Opacity</span>
-						<span class="value"><input type="text" name="color-opacity" disabled value="100%" data-min="0" data-max="100" data-suffix="%"></span>
+						<span class="value"><input type="text" name="opacity" disabled value="100%" data-min="0" data-max="100" data-suffix="%"></span>
 					</div>
 				</div>
-				<div class="knob" data-change="set-color-opacity"></div>
+				<div class="knob" data-change="set-opacity"></div>
 			</div>
 
 			<div class="field-row">
@@ -66,20 +66,20 @@
 				<div class="field-opacity">
 					<div class="option input">
 						<span class="label">Scale</span>
-						<span class="value"><input type="text" name="color-opacity" data-min="1" data-max="2" value="1" data-default="1" data-step="0.05"></span>
+						<span class="value"><input type="text" name="scale" data-min="1" data-max="2" value="1" data-default="1" data-step="0.05"></span>
 					</div>
 				</div>
-				<div class="knob" data-value="1"></div>
+				<div class="knob" data-change="set-scale"></div>
 			</div>
 
 			<div class="field-row has-knob" data-id="target-offset">
 				<div class="field-opacity">
 					<div class="option input">
 						<span class="label">Offset</span>
-						<span class="value"><input type="text" name="color-opacity" data-min="-255" data-max="255" value="128" data-default="128"></span>
+						<span class="value"><input type="text" name="offset" data-min="-255" data-max="255" value="128" data-default="128"></span>
 					</div>
 				</div>
-				<div class="pan-knob" data-value="128"></div>
+				<div class="pan-knob" data-change="set-offset"></div>
 			</div>
 
 		</div>

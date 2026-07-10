@@ -16,10 +16,10 @@
 			<div class="option input">
 				<span class="label">Opacity</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+					<input type="text" name="opacity" data-min="1" data-max="100" value="100%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-change="set-filter-value" data-value="100"></div>
+			<div class="knob" data-change="set-opacity"></div>
 		</div>
 
 		<div class="field-row has-knob">
@@ -59,20 +59,20 @@
 			<div class="option input">
 				<span class="label">Spread</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+					<input type="text" name="spread" data-min="1" data-max="100" value="100%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="100"></div>
+			<div class="knob" data-change="set-spread"></div>
 		</div>
 
 		<div class="field-row has-knob">
 			<div class="option input">
 				<span class="label">Size</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="200" value="5px" data-suffix="px"/>
+					<input type="text" name="size" data-min="1" data-max="200" value="5px" data-suffix="px"/>
 				</span>
 			</div>
-			<div class="knob" data-value="5"></div>
+			<div class="knob" data-change="set-size"></div>
 		</div>
 	</fieldset>
 
@@ -95,20 +95,20 @@
 			<div class="option input">
 				<span class="label">Range</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="100" value="50%" data-suffix="%"/>
+					<input type="text" name="range" data-min="1" data-max="100" value="50%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="50"></div>
+			<div class="knob" data-change="set-range"></div>
 		</div>
 
 		<div class="field-row has-knob">
 			<div class="option input">
 				<span class="label">Jitter</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="0" data-max="100" value="0%" data-suffix="%"/>
+					<input type="text" name="jitter" data-min="0" data-max="100" value="0%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="0"></div>
+			<div class="knob" data-change="set-jitter"></div>
 		</div>
 	</fieldset>
 </div>

@@ -515,11 +515,11 @@ const Dialogs = {
 				// "fast events"
 				case "update-gcp-handle":
 					Self.vars.preset.Clrs.v[0].v.Lctn.v = event.perc * Self.vars.locationScale;
-					Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+					Self.dispatch({ type: "draw-gradient-preset", gradient: Self.vars.preset });
 					return; // exit function for perf
 				case "update-alpha-value":
 					Self.vars.preset.Trns.v[0].v.Opct.v.val = event.value;
-					Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+					Self.dispatch({ type: "draw-gradient-preset", gradient: Self.vars.preset });
 					return; // exit function for perf
 				case "update-alpha-location":
 					return; // exit function for perf
@@ -562,8 +562,8 @@ const Dialogs = {
 					el.addClass("active");
 
 					Self.vars.preset = { ...Registry.gradients.list[el.index()] };
-					Self.dlgGradientEditor({ type: "draw-gradient-preset", gradient: Self.vars.preset });
-					Self.dlgGradientEditor({ type: "plot-gradient-points", gradient: Self.vars.preset });
+					Self.dispatch({ type: "draw-gradient-preset", gradient: Self.vars.preset });
+					Self.dispatch({ type: "plot-gradient-points", gradient: Self.vars.preset });
 					break;
 				case "draw-gradient-preset":
 					let sw2 = Self.vars.stripWidth / 2,
@@ -824,9 +824,9 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-amount":
+				case "set-threshold":
 					event.values = Self.values; // first copy values
-					event.values.amount.value = event.value; // then partial overwrite
+					event.values.threshold.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					/* falls-through */
@@ -837,7 +837,7 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("thrs");
-						qv.Lvl.v = Self.values.amount.value;
+						qv.Lvl.v = Self.values.threshold.value;
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "thrs", qv, ve: false } });
 						PP.update();
 					});

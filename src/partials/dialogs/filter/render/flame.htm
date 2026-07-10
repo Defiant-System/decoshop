@@ -39,20 +39,20 @@
 					<div class="option input">
 						<span class="label">Length</span>
 						<span class="value">
-							<input type="text" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
+							<input type="text" name="length" data-min="20" data-max="1000" value="140px" data-default="140px" data-suffix="px"/>
 						</span>
 					</div>
-					<div class="knob" data-value="140"></div>
+					<div class="knob" data-change="set-length"></div>
 				</div>
 
 				<div class="field-row has-knob">
 					<div class="option input">
 						<span class="label">Width</span>
 						<span class="value">
-							<input type="text" data-min="5" data-max="600" value="100px" data-default="100px" data-suffix="px"/>
+							<input type="text" name="width" data-min="5" data-max="600" value="100px" data-default="100px" data-suffix="px"/>
 						</span>
 					</div>
-					<div class="knob" data-value="100"></div>
+					<div class="knob" data-change="set-width"></div>
 				</div>
 
 				<div class="field-row fat-ring-row has-knob">
@@ -60,9 +60,9 @@
 						<span class="label">Angle</span>
 						<span class="value">
 							<div class="ring-input"></div>
-							<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+							<input type="text" name="name" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
 						</span>
-						<div class="knob" data-value="0"></div>
+						<div class="knob" data-change="set-angle"></div>
 					</div>
 				</div>
 
@@ -70,10 +70,10 @@
 					<div class="option input">
 						<span class="label">Interval</span>
 						<span class="value">
-							<input type="text" data-min="5" data-max="200" value="100px" data-default="100px" data-suffix="px"/>
+							<input type="text" name="interval" data-min="5" data-max="200" value="100px" data-default="100px" data-suffix="px"/>
 						</span>
 					</div>
-					<div class="knob" data-value="100"></div>
+					<div class="knob" data-change="set-interval"></div>
 				</div>
 
 				<div class="field-row">
@@ -99,50 +99,50 @@
 					<div class="option input">
 						<span class="label">Turbulent</span>
 						<span class="value">
-							<input type="text" data-min="0" data-max="100" value="50" data-default="50"/>
+							<input type="text" name="turbulent" data-min="0" data-max="100" value="50" data-default="50"/>
 						</span>
 					</div>
-					<div class="knob" data-value="50"></div>
+					<div class="knob" data-change="set-turbulent"></div>
 				</div>
 
 				<div class="field-row has-knob">
 					<div class="option input">
 						<span class="label">Jag</span>
 						<span class="value">
-							<input type="text" data-min="0" data-max="100" value="0" data-default="0"/>
+							<input type="text" name="jag" data-min="0" data-max="100" value="0" data-default="0"/>
 						</span>
 					</div>
-					<div class="knob" data-value="0"></div>
+					<div class="knob" data-change="set-jag"></div>
 				</div>
 
 				<div class="field-row has-knob">
 					<div class="option input">
 						<span class="label">Opacity</span>
 						<span class="value">
-							<input type="text" data-min="0" data-max="100" value="25" data-default="25"/>
+							<input type="text" name="opacity" data-min="0" data-max="100" value="25" data-default="25"/>
 						</span>
 					</div>
-					<div class="knob" data-value="25"></div>
+					<div class="knob" data-change="set-opacity"></div>
 				</div>
 
 				<div class="field-row has-knob">
 					<div class="option input">
 						<span class="label">Lines</span>
 						<span class="value">
-							<input type="text" data-min="2" data-max="30" value="10" data-default="10"/>
+							<input type="text" name="lines" data-min="2" data-max="30" value="10" data-default="10"/>
 						</span>
 					</div>
-					<div class="knob" data-value="10"></div>
+					<div class="knob" data-change="set-lines"></div>
 				</div>
 
 				<div class="field-row has-knob">
 					<div class="option input">
 						<span class="label">Bottom</span>
 						<span class="value">
-							<input type="text" data-min="0" data-max="100" value="30" data-default="30"/>
+							<input type="text" name="bottom" data-min="0" data-max="100" value="30" data-default="30"/>
 						</span>
 					</div>
-					<div class="knob" data-value="30"></div>
+					<div class="knob" data-change="set-bottom"></div>
 				</div>
 
 				<div class="field-row">
@@ -166,10 +166,10 @@
 					<div class="option input">
 						<span class="label">Seed</span>
 						<span class="value">
-							<input type="text" data-min="0" data-max="100" value="18" data-default="18"/>
+							<input type="text" name="seed" data-min="0" data-max="100" value="18" data-default="18"/>
 						</span>
 					</div>
-					<div class="knob" data-value="18"></div>
+					<div class="knob" data-change="set-seed"></div>
 				</div>
 			</div>
 

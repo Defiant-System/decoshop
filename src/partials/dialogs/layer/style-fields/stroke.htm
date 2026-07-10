@@ -9,10 +9,10 @@
 			<div class="option input">
 				<span class="label">Size</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="200" value="10px" data-suffix="px"/>
+					<input type="text" name="size" data-min="1" data-max="200" value="10px" data-suffix="px"/>
 				</span>
 			</div>
-			<div class="knob" data-value="10"></div>
+			<div class="knob" data-change="set-size"></div>
 		</div>
 
 		<div class="field-row">
@@ -33,10 +33,10 @@
 			<div class="option input">
 				<span class="label">Opacity</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="1" data-max="100" value="100%" data-suffix="%"/>
+					<input type="text" name="opacity" data-min="1" data-max="100" value="100%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="100"></div>
+			<div class="knob" data-change="set-opacity"></div>
 		</div>
 	</fieldset>
 
@@ -85,9 +85,9 @@
 					<span class="label">Angle</span>
 					<span class="value">
 						<div class="ring-input"></div>
-						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+						<input type="text" name="gradient-angle" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
 					</span>
-					<div class="knob" data-value="0"></div>
+					<div class="knob" data-change="set-gradient-angle"></div>
 				</div>
 			</div>
 
@@ -106,30 +106,30 @@
 				<div class="option input">
 					<span class="label">Scale</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="0" data-max="400" value="100%" data-suffix="%"/>
+						<input type="text" name="gradient-scale" data-min="0" data-max="400" value="100%" data-suffix="%"/>
 					</span>
 				</div>
-				<div class="knob" data-value="100"></div>
+				<div class="knob" data-change="set-gradient-scale"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Off X</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+						<input type="text" name="offx" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="pan-knob" data-value="0"></div>
+				<div class="pan-knob" data-value="set-gradient-offx"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Off Y</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+						<input type="text" name="offy" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="pan-knob" data-value="0"></div>
+				<div class="pan-knob" data-value="set-gradient-offy"></div>
 			</div>
 		</div>
 		
@@ -152,7 +152,7 @@
 					<span class="label">Angle</span>
 					<span class="value">
 						<div class="ring-input"></div>
-						<input type="text" name="field-4" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
+						<input type="text" name="pattern-angle" data-min="-180" data-max="180" value="0°" data-suffix="°"/>
 					</span>
 				</div>
 			</div>
@@ -172,30 +172,30 @@
 				<div class="option input">
 					<span class="label">Scale</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="0" data-max="400" value="100%" data-suffix="%"/>
+						<input type="text" name="pattern-scale" data-min="0" data-max="400" value="100%" data-suffix="%"/>
 					</span>
 				</div>
-				<div class="knob" data-value="100"></div>
+				<div class="knob" data-change="set-pattern-scale"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Off X</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+						<input type="text" name="pattern-offx" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="pan-knob" data-value="0"></div>
+				<div class="pan-knob" data-change="set-pattern-offx"></div>
 			</div>
 
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Off Y</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
+						<input type="text" name="pattern-offy" data-min="-100" data-max="100" value="0px" data-suffix="px"/>
 					</span>
 				</div>
-				<div class="pan-knob" data-value="0"></div>
+				<div class="pan-knob" data-change="set-pattern-offy"></div>
 			</div>
 		</div>
 

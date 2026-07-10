@@ -31,28 +31,28 @@
 			<div class="option input">
 				<span class="label">Depth</span>
 				<span class="value">
-					<input type="text" name="field-1" data-min="0" data-max="1000" value="157%" data-suffix="%"/>
+					<input type="text" name="depth" data-min="0" data-max="1000" value="157%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="157"></div>
+			<div class="knob" data-change=set-depth""></div>
 		</div>
 		<div class="field-row has-knob">
 			<div class="option input">
 				<span class="label">Size</span>
 				<span class="value">
-					<input type="text" name="field-2" data-min="0" data-max="200" value="5px" data-suffix="px"/>
+					<input type="text" name="size" data-min="0" data-max="200" value="5px" data-suffix="px"/>
 				</span>
 			</div>
-			<div class="knob" data-value="5"></div>
+			<div class="knob" data-change=set-size""></div>
 		</div>
 		<div class="field-row has-knob">
 			<div class="option input">
 				<span class="label">Soften</span>
 				<span class="value">
-					<input type="text" name="field-3" data-min="0" data-max="20" value="0px" data-suffix="px"/>
+					<input type="text" name="soften" data-min="0" data-max="20" value="0px" data-suffix="px"/>
 				</span>
 			</div>
-			<div class="knob" data-value="0"></div>
+			<div class="knob" data-change=set-soften""></div>
 		</div>
 	</fieldset>
 
@@ -64,10 +64,10 @@
 				<span class="label">Angle</span>
 				<span class="value">
 					<div class="ring-input size-3"></div>
-					<input type="text" name="field-4" data-min="-180" data-max="180" value="30°" data-suffix="°"/>
+					<input type="text" name="angle" data-min="-180" data-max="180" value="30°" data-suffix="°"/>
 				</span>
 			</div>
-			<div class="pan-knob" data-value="30"></div>
+			<div class="pan-knob" data-change=set-angle""></div>
 		</div>
 
 		<div class="field-row slim-row">
@@ -85,10 +85,10 @@
 			<div class="option input push-value">
 				<span class="label">Altitude</span>
 				<span class="value">
-					<input type="text" name="field-5" data-min="-180" data-max="180" value="30°" data-suffix="°"/>
+					<input type="text" name="altitude" data-min="-180" data-max="180" value="30°" data-suffix="°"/>
 				</span>
 			</div>
-			<div class="pan-knob" data-value="30"></div>
+			<div class="pan-knob" data-change="set-altitude"></div>
 		</div>
 
 		<div class="field-row has-preview-box">
@@ -113,10 +113,10 @@
 			<div class="option input">
 				<span class="label">Opacity</span>
 				<span class="value">
-					<input type="text" name="field-3" data-min="0" data-max="100" value="50%" data-suffix="%"/>
+					<input type="text" name="highlight-opacity" data-min="0" data-max="100" value="50%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="50"></div>
+			<div class="knob" data-change="set-highlight-opacity"></div>
 		</div>
 		<div class="field-row has-preset">
 			<div class="option select">
@@ -129,10 +129,10 @@
 			<div class="option input">
 				<span class="label">Opacity</span>
 				<span class="value">
-					<input type="text" name="field-3" data-min="0" data-max="100" value="50%" data-suffix="%"/>
+					<input type="text" name="shadow-opacity" data-min="0" data-max="100" value="50%" data-suffix="%"/>
 				</span>
 			</div>
-			<div class="knob" data-value="50"></div>
+			<div class="knob" data-change="set-shadow-opacity"></div>
 		</div>
 	</fieldset>
 </div>
