@@ -322,16 +322,16 @@
 			<Menu name="Surface Blur&#8230;" click="open-dialog" arg="dlgSurfaceBlur"/>
 		</Menu>
 		<Menu name="Distort">
-			<Menu name="Displace" click="open-dialog" arg="dlgDisplace"/>
-			<Menu name="Kaleidoscope" click="open-dialog" arg="dlgKaleidoscope"/>
-			<Menu name="Pinch" click="open-dialog" arg="dlgPinch"/>
-			<Menu name="Polar Coordinates" click="open-dialog" arg="dlgPolarCoordinates"/>
-			<Menu name="Ripple" click="open-dialog" arg="dlgRipple"/>
-			<Menu name="Shear" click="open-dialog" arg="dlgShear"/>
-			<Menu name="Spherize" click="open-dialog" arg="dlgSpherize"/>
-			<Menu name="Twirl" click="open-dialog" arg="dlgTwirl"/>
-			<Menu name="Wave" click="open-dialog" arg="dlgWave"/>
-			<Menu name="ZigZag" click="open-dialog" arg="dlgZigZag"/>
+			<Menu name="Displace&#8230;" click="open-dialog" arg="dlgDisplace"/>
+			<Menu name="Kaleidoscope&#8230;" click="open-dialog" arg="dlgKaleidoscope"/>
+			<Menu name="Pinch&#8230;" click="open-dialog" arg="dlgPinch"/>
+			<Menu name="Polar Coordinates&#8230;" click="open-dialog" arg="dlgPolarCoordinates"/>
+			<Menu name="Ripple&#8230;" click="open-dialog" arg="dlgRipple"/>
+			<Menu name="Shear&#8230;" click="open-dialog" arg="dlgShear"/>
+			<Menu name="Spherize&#8230;" click="open-dialog" arg="dlgSpherize"/>
+			<Menu name="Twirl&#8230;" click="open-dialog" arg="dlgTwirl"/>
+			<Menu name="Wave&#8230;" click="open-dialog" arg="dlgWave"/>
+			<Menu name="ZigZag&#8230;" click="open-dialog" arg="dlgZigZag"/>
 		</Menu>
 		<Menu name="Noise">
 			<Menu name="Add Noise&#8230;" click="open-dialog" arg="dlgAddNoise"/>
