@@ -1329,13 +1329,116 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-blur":
+					event.values = Self.values; // first copy values
+					event.values.blur.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-scale":
+					event.values = Self.values; // first copy values
+					event.values.scale.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-invert":
+					event.values = Self.values; // first copy values
+					event.values.invert.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-high":
+					event.values = Self.values; // first copy values
+					event.values.high.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-medium":
+					event.values = Self.values; // first copy values
+					event.values.medium.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-low":
+					event.values = Self.values; // first copy values
+					event.values.low.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("lightFilterGradient");
+						qv.blur.v = Self.values.blur.value;
+						qv.textureScale.v = Self.values.scale.value / 100;
+						qv.Scl.v = Self.values.invert.value ? 1 : -1;
+						qv.Dtl.v[0].v = Self.values.high.value;
+						qv.Dtl.v[1].v = Self.values.medium.value;
+						qv.Dtl.v[2].v = Self.values.low.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "lightFilterGradient", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "lightFilterGradient" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "lightFilterGradient" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "lightFilterGradient" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -1357,13 +1460,77 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-crop":
+					event.values = Self.values; // first copy values
+					event.values.crop.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("Dila");
+						qv.Crop.v.val = Self.values.crop.value;
+						qv.Rds.v.val = Self.values.radius.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Dila", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Dila" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "Dila" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Dila" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
