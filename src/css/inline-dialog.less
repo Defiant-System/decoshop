@@ -214,6 +214,12 @@
 		}
 	}
 
+	&[data-dlg="dlgDiffuse"] {
+		.dlg-content .fields {
+			min-width: 230px;
+		}
+	}
+
 	&[data-dlg="dlgMezzoint"] {
 		.dlg-content .fields {
 			min-width: 230px;
@@ -5264,7 +5270,9 @@
 				&:hover .pan-knob,
 				&.hover .pan-knob,
 				&:hover .knob,
-				&.hover .knob {
+				&.hover .knob,
+				.knob.hover,
+				.pan-knob.hover {
 					visibility: visible;
 					opacity: 1;
 				}
@@ -5531,6 +5539,7 @@
 
 				&.has-ring {
 					z-index: 2;
+					--angle: 0deg;
 
 					.knob {
 						top: -7px;
@@ -5546,6 +5555,7 @@
 					border-radius: 50%;
 					border: 2px solid #1339;
 					background: radial-gradient(circle at center, #cee7 0%, #cee2 55%, #fff0 70%);
+					transform: rotate(var(--angle));
 					cursor: crosshair;
 
 					&.line {

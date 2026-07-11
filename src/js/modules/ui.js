@@ -105,9 +105,11 @@ const UI = {
 				break;
 			case "mousedown":
 				el = $(event.target);
+
 				// console.log(Self.srcEl[0]);
 				if (el.parents(".inline-menubox").length) {
 					if (this === document) return;
+					if (Self.dEl.length) Self.dEl.removeClass("covered");
 					// forward event to fitting handler
 					Self[this.dataset.ui](event);
 					// handles event differently for brush menu box
@@ -146,6 +148,7 @@ const UI = {
 			// custom event
 			case "clear-submenu":
 				if (Self.srcEl) Self.srcEl.removeClass("opened");
+				if (Self.dEl) Self.dEl.removeClass("covered");
 				Self.srcMenu.removeClass("push-back");
 				Self.menu.remove();
 				Self.menu = Self.srcMenu;
@@ -624,10 +627,10 @@ const UI = {
 	},
 	doPanel(event) {
 		let Self = UI,
-			Drag = Self.drag,
-			file,
-			value,
-			dEl,
+			// Drag = Self.drag,
+			// file,
+			// value,
+			// dEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -647,6 +650,8 @@ const UI = {
 						return Self.doHueBar(event);
 					case ux === "dlg-knob":
 						return Self.doDialogKnobValue(event);
+					// case ux === "ring-input":
+					// 	return Self.doRing(event);
 					case ux === "dlg-bars":
 						return Self.doDialogBars(event);
 					case ux === "gc-track":
@@ -680,11 +685,11 @@ const UI = {
 	doDialog(event) {
 		let Self = UI,
 			Drag = Self.drag,
-			file,
+			// file,
 			// layer,
 			// pixels,
 			// copy,
-			value,
+			// value,
 			dEl,
 			el;
 		// console.log(event);
@@ -705,6 +710,8 @@ const UI = {
 						return Self.doHueBar(event);
 					case ux === "dlg-knob":
 						return Self.doDialogKnobValue(event);
+					case ux === "ring-input":
+						return Self.doRing(event);
 					case ux === "dlg-bars":
 						return Self.doDialogBars(event);
 					case ux === "gc-track":
@@ -767,6 +774,7 @@ const UI = {
 				dEl = $(`.dialog-box[data-dlg="${event.name}"]`);
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
+				Self.doRing({ type: "set-initial-value", dEl });
 				// auto forward open event
 
 				if (Dialogs[event.name]) Dialogs[event.name].dispatch({ ...event, dEl });
@@ -798,7 +806,9 @@ const UI = {
 				break;
 			*/
 			case "dlg-init-common":
-				// anything todo?
+				// obey "preview" flag
+				event.dEl.find(`.buttons .toggler[data-click="dlg-preview"]`)
+					.data({ value: Dialogs[event.name].preview ? "on" : "off" });
 				break;
 			case "dlg-open-common":
 				if (!event.dEl) return;
@@ -1104,6 +1114,75 @@ const UI = {
 				break;
 		}
 	},
+	doRing(event) {
+		let APP = decoshop,
+			Self = UI,
+			Drag = Self.drag;
+		// console.log(event);
+		switch (event.type) {
+			// native events
+			case "mousedown":
+				let el = $(event.target),
+					dEl = el.parents(".dialog-box"),
+					dlg = {
+						dEl,
+						func: Dialogs[dEl.data("dlg")].dispatch,
+						type: el.data("change"),
+					},
+					iEl = el.nextAll("input:first"),
+					deg = parseInt(el.css("--angle"), 10),
+					min = -180,
+					max = 180,
+					clickY = event.clientY - deg;
+				//drag info
+				Self.drag = { el, iEl, clickY, min, max, dlg };
+				// handle adjacent knobs
+				let knob = iEl.parent().nextAll(".knob, .pan-knob");
+				if (knob.length) {
+					Self.drag.knob = knob;
+					Self.drag.isPan = knob.hasClass("pan-knob") ? 50 : 0;
+				}
+				// pre-knob twist event
+				dlg.func({ ...dlg, type: `before:${dlg.type}`, value: +el.data("value") });
+				// prevent mouse from triggering mouseover
+				APP.els.content.addClass("no-dlg-cursor");
+				// bind event handlers
+				Self.doc.on("mousemove mouseup", Self.doRing);
+				break;
+			case "mousemove":
+				let angle = Math.min(Math.max(event.clientY - Drag.clickY, Drag.min), Drag.max);
+				Drag.el.css({ "--angle": `${angle}deg` });
+				// input element
+				Drag.iEl.val(`${angle}°`).trigger("change");
+				if (Drag.knob) {
+					let v = Math.invLerp(-180, 180, angle) * 100;
+					Drag.knob.data({ value: Math.round(v) - Drag.isPan });
+				}
+				// forward event (only if value has changed since last time)
+				if (Drag.newValue != angle) Drag.dlg.func({ ...Drag.dlg, value: angle });
+				// save value
+				Drag.newValue = angle;
+				break;
+			case "mouseup":
+				// post-knob twist event
+				Drag.dlg.func({ ...Drag.dlg, type: `after:${Drag.dlg.type}`, value: Drag.newValue });
+				// prevent mouse from triggering mouseover
+				APP.els.content.removeClass("no-dlg-cursor");
+				// bind event handlers
+				Self.doc.off("mousemove mouseup", Self.doRing);
+				break;
+			// custom events
+			case "set-initial-value":
+				// initial value of ring input
+				event.dEl.find(".ring-input").map(elem => {
+					let rEl = $(elem),
+						iEl = rEl.nextAll("input:first"),
+						deg = parseInt(iEl.val(), 10);
+					rEl.css({ "--angle": `${deg}deg` });
+				});
+				break;
+		}
+	},
 	doSelectbox(event) {
 		let APP = decoshop,
 			Self = UI,
@@ -1368,13 +1447,14 @@ const UI = {
 	doDialogKnob(event) {
 		let Self = UI,
 			Drag = Self.drag;
+		// console.log(event);
 		switch (event.type) {
 			// native events
 			case "mousedown":
 				// prevent default behaviour
 				event.preventDefault();
 				// prepare drag event object
-				let el = $(event.target),
+				let el = $(event.target).addClass("hover"),
 					pEl = el.parent().addClass("hover"),
 					dEl = pEl.parents(".dialog-box"),
 					dlg = {
@@ -1406,6 +1486,11 @@ const UI = {
 					value: parseInt(el.data("value"), 10),
 					clientY: event.clientY,
 				};
+
+				let ringEl = src.parent().find(".ring-input");
+				if (ringEl.length) {
+					Self.drag.ringEl = ringEl;
+				}
 
 				if (src.data("scale")) {
 					let spectrum = Misc.generateSpectrum(JSON.parse(src.data("scale"))),
@@ -1442,6 +1527,7 @@ const UI = {
 					val = +((Drag.val.max * perc) + Drag.val.min).toFixed(i ? i.length : 0);
 				}
 				Drag.src.val(val + Drag.suffix);
+				if (Drag.ringEl) Drag.ringEl.css({ "--angle": `${val}deg` });
 				// forward event (only if value has changed since last time)
 				if (Drag.newValue != val) Drag.dlg.func({ ...Drag.dlg, value: val });
 				// save value
@@ -1452,6 +1538,7 @@ const UI = {
 				Drag.dlg.func({ ...Drag.dlg, type: `after:${Drag.dlg.type}`, value: Drag.newValue });
 				// reset parent element
 				Drag.el.parent().removeClass("hover");
+				Drag.el.removeClass("hover");
 				// unbind event handlers
 				Self.content.removeClass("no-dlg-cursor");
 				Self.doc.off("mousemove mouseup", Self.doDialogKnob);
@@ -1500,6 +1587,7 @@ const UI = {
 			Self = UI,
 			Drag = Self.drag,
 			value;
+		// console.log(event);
 		switch (event.type) {
 			// native events
 			case "mousedown":
