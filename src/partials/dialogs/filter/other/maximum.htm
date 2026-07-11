@@ -10,7 +10,7 @@
 				<div class="option input">
 					<span class="label">Radius</span>
 					<span class="value">
-						<input type="text" name="radius" data-min="0" data-max="400" value="8px" data-default="8px" data-suffix="px"/>
+						<input type="text" name="radius" data-min="0" data-max="100" value="8px" data-default="8px" data-suffix="px"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-radius"></div>
@@ -20,9 +20,9 @@
 				<div class="option opt-group">
 					<span class="label">Shape</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li class="active">Square</li>
-							<li>Circle</li>
+						<ul class="opt-group" data-default="squareness" data-name="shape" data-click="set-shape">
+							<li data-value="squareness" class="active">Square</li>
+							<li data-value="Rndn">Circle</li>
 						</ul>
 					</span>
 				</div>
