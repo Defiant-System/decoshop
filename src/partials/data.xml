@@ -480,9 +480,9 @@
 		<i type="option" name="Movie Prime" value="3"/>
 	</LensFlareTypes>
 	<ZigZagStyles>
-		<i type="option" name="Around Center" value="0"/>
-		<i type="option" name="Out From Center" value="1"/>
-		<i type="option" name="Pond Ripples" value="2"/>
+		<i type="option" name="Around Center" value="ArnC"/>
+		<i type="option" name="Out From Center" value="OtFr"/>
+		<i type="option" name="Pond Ripples" value="PndR"/>
 	</ZigZagStyles>
 	<LensBlurDepthMaps>
 		<i type="option" name="None" value="0"/>

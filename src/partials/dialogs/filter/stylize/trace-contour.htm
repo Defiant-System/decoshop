@@ -10,7 +10,7 @@
 				<div class="option input">
 					<span class="label">Level</span>
 					<span class="value">
-						<input type="text" name="level" data-min="0" data-max="200" value="143" data-default="143"/>
+						<input type="text" name="level" data-min="0" data-max="255" value="128" data-default="128"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-level"></div>
@@ -20,9 +20,9 @@
 				<div class="option opt-group">
 					<span class="label">Edge</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li class="active">Down</li>
-							<li>Up</li>
+						<ul class="opt-group" data-default="Lwr" data-name="edge" data-click="set-edge">
+							<li data-value="Lwr" class="active">Down</li>
+							<li data-value="Up">Up</li>
 						</ul>
 					</span>
 				</div>
