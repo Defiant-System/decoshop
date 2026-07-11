@@ -7,9 +7,9 @@
 			</h2>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//DitherPalette">
+				<div class="option select" data-change="set-palette" data-name="palette" data-options="fieldset-inline-menubox" data-match="//DitherPalette">
 					<span class="label">Palette</span>
-					<span class="value">Black &amp; White</span>
+					<span class="value" data-default="Black &amp; White">Black &amp; White</span>
 				</div>
 			</div>
 
@@ -17,10 +17,10 @@
 				<div class="option opt-group">
 					<span class="label">Channels</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li>None</li>
-							<li class="active">Floyd-Steinberg</li>
-							<li>Bayer 4x4</li>
+						<ul class="opt-group" data-default="1" data-name="channels" data-click="set-channels">
+							<li data-value="0">None</li>
+							<li data-value="1" class="active">Floyd-Steinberg</li>
+							<li data-value="2">Bayer 4x4</li>
 						</ul>
 					</span>
 				</div>
