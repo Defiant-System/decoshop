@@ -9,7 +9,9 @@
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Amount</span>
-					<span class="value"><input type="text" name="amount" data-min="-999" data-max="999" value="2" data-default="2"</span>
+					<span class="value">
+						<input type="text" name="amount" data-min="-999" data-max="999" value="200" data-default="200"/>
+					</span>
 				</div>
 				<div class="pan-knob" data-change="set-amount"></div>
 			</div>
@@ -18,10 +20,10 @@
 				<div class="option opt-group">
 					<span class="label">Size</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li data-value="0">Small</li>
-							<li data-value="1" class="active">Medium</li>
-							<li data-value="2">Large</li>
+						<ul class="opt-group" data-default="Mdm" data-name="size" data-click="set-size">
+							<li data-value="Sml">Small</li>
+							<li data-value="Mdm" class="active">Medium</li>
+							<li data-value="Lrg">Large</li>
 						</ul>
 					</span>
 				</div>

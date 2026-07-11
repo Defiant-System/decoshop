@@ -844,6 +844,14 @@ const UI = {
 					// update option select field
 					iEl.html(value);
 				});
+				// select opt-groups
+				dEl.find(`.field-row .opt-group[data-default]`).map(elem => {
+					let iEl = $(elem),
+						value = iEl.data("default");
+					// update option select field
+					iEl.find(".active").removeClass("active");
+					iEl.find(`li[data-value="${value}"]`).addClass("active");
+				});
 				// make sure togglers are returned to default state
 				dEl.find(`.field-row .toggler[data-default]`).map(elem => {
 					let tEl = $(elem);
