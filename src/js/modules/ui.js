@@ -837,6 +837,13 @@ const UI = {
 					// update input field
 					iEl.val(value);
 				});
+				// select options
+				dEl.find(`.field-row .option.select .value[data-default]`).map(elem => {
+					let iEl = $(elem),
+						value = iEl.data("default");
+					// update option select field
+					iEl.html(value);
+				});
 				// make sure togglers are returned to default state
 				dEl.find(`.field-row .toggler[data-default]`).map(elem => {
 					let tEl = $(elem);

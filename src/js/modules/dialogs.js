@@ -2798,7 +2798,7 @@ const Dialogs = {
 							val = el.find(".value").text(),
 							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
 							value = xVal.getAttribute("value");
-						Self.values[el.data("name")] = { default: value, value };
+						Self.values[el.data("name")] = { text: val, default: value, value };
 					});
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
