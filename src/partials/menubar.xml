@@ -361,7 +361,7 @@
 			<Menu name="Sharpen Edges"/>
 			<Menu name="Sharpen More"/>
 			<Menu name="Smart Sharpen&#8230;" click="open-dialog" arg="dlgSmartSharpen"/>
-			<Menu name="Unsharp Mask&#8230;" click="open-dialog" arg="dlgUnshartMask"/>
+			<Menu name="Unsharp Mask&#8230;" click="open-dialog" arg="dlgUnsharpMask"/>
 		</Menu>
 		<Menu name="Stylize">
 			<Menu name="Diffuse&#8230;" click="open-dialog" arg="dlgDiffuse"/>
