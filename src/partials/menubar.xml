@@ -344,7 +344,7 @@
 			<Menu name="Color Halftone&#8230;" click="open-dialog" arg="dlgColorHalftone"/>
 			<Menu name="Crystallize&#8230;" click="open-dialog" arg="dlgCrystallize"/>
 			<Menu name="Fragment"/>
-			<Menu name="Mezzotint&#8230;" click="open-dialog" arg="dlgMezzoint"/>
+			<Menu name="Mezzotint&#8230;" click="open-dialog" arg="dlgMezzotint"/>
 			<Menu name="Mosaic&#8230;" click="open-dialog" arg="dlgMosaic"/>
 			<Menu name="Pointillize&#8230;" click="open-dialog" arg="dlgPointillize"/>
 		</Menu>

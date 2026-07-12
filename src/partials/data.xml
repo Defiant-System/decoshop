@@ -497,18 +497,18 @@
 		<i type="option" name="Heptagon (7)" value="4"/>
 		<i type="option" name="Octagon (8)" value="5"/>
 	</LensBlurShapes>
-	<MezzointTypes>
-		<i type="option" name="Fine Dots" value="0"/>
-		<i type="option" name="Medium Dots" value="1"/>
-		<i type="option" name="Grainy Dots" value="2"/>
-		<i type="option" name="Coarse Dots" value="3"/>
-		<i type="option" name="Short Lines" value="4"/>
-		<i type="option" name="Medium Lines" value="5"/>
-		<i type="option" name="Long Lines" value="6"/>
-		<i type="option" name="Short Strokes" value="7"/>
-		<i type="option" name="Medium Strokes" value="8"/>
-		<i type="option" name="Long Strokes" value="9"/>
-	</MezzointTypes>
+	<MezzotintTypes>
+		<i type="option" name="Fine Dots" value="FnDt"/>
+		<i type="option" name="Medium Dots" value="MdmD"/>
+		<i type="option" name="Grainy Dots" value="GrnD"/>
+		<i type="option" name="Coarse Dots" value="CrsD"/>
+		<i type="option" name="Short Lines" value="ShrL"/>
+		<i type="option" name="Medium Lines" value="MdmL"/>
+		<i type="option" name="Long Lines" value="LngL"/>
+		<i type="option" name="Short Strokes" value="ShSt"/>
+		<i type="option" name="Medium Strokes" value="MdmS"/>
+		<i type="option" name="Long Strokes" value="LngS"/>
+	</MezzotintTypes>
 	<GlowFillTypes>
 		<i type="option" name="Color" value="0"/>
 		<i type="option" name="Gradient" value="1"/>
