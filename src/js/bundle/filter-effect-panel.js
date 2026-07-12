@@ -57,12 +57,17 @@ FilterEffectPanel.register = function (keys) {
 	}
 };
 
-(function () {
-	var keys = {};
-	var key;
-	for (key in FilterHelper.Tb) keys[key] = 1;
-	for (key in FilterHelper.names) keys[key] = 1;
-	for (key in FilterHelper.It)
-		if (key.charAt(0) === "s") keys[key.slice(1)] = 1;
-	FilterEffectPanel.register(Object.keys(keys));
-})();
+// (function () {
+// 	var keys = {};
+// 	var key;
+// 	for (key in FilterHelper.Tb) keys[key] = 1;
+// 	for (key in FilterHelper.names) keys[key] = 1;
+// 	for (key in FilterHelper.It)
+// 		if (key.charAt(0) === "s") keys[key.slice(1)] = 1;
+// 	FilterEffectPanel.register(Object.keys(keys));
+// })();
+
+// Do not bulk-register FilterEffectPanel[key] entries.
+// f.uY "start" treats a registered key + qv:null as "open Photopea DialogManager
+// (afw_<key>)". Decoshop uses custom HTML dialogs and direct edit/confirm instead.
+// FilterEffectPanel.define() remains available if a specific stub is ever needed.

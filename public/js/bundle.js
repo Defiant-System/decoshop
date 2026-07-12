@@ -29806,74 +29806,74 @@ DialogManager.prototype = new UIComponent;
 DialogManager.prototype.Eg = function(l) {
 	var d = Date.now(),
 		G = [];
-	if (l == "-") G = [
-		new AccountDialog,
-		new AddGuidesDialog,
-		new PdfConvertDialog("pdfpres"),
-		new PdfConvertDialog("cformat"),
-		new FileInfoDialog,
-		new MergeChannelsDialog,
-		new SaveForWebDialog,
-		new SliceOptionsDialog,
-		new NewProjectDialog,
-		new OpenFromUrlDialog,
-		new ScriptDialog,
-		new CameraCaptureDialog,
-		new PreferencesDialog,
-		new KeyboardShortcutsDialog,
-		new ColorPickerDialog,
-		new GradientEditorDialog,
-		new ContourEditorDialog,
-		new LayerStyleDialog,
-		new CanvasSizeDialog,
-		new ImageSizeDialog,
-		new TrimDialog,
-		new ImportRawDialog,
-		new DuplicateIntoDialog,
-		new TextWarpDialog,
-		new ColorRangeDialog,
-		new RawPhotopeaDialog,
-		new FillDialog,
-		new StrokeDialog,
-		new ColorQuantizeDialog(!1),
-		new ColorQuantizeDialog(!0),
-		new EdgeRefineDialog(0),
-		new EdgeRefineDialog(1),
-		new ExportLayersDialog,
-		new ExportLutDialog,
-		new CreateShapeDialog,
-		new DivideSlicesDialog,
-		new LocalStorageDialog,
-		new PresetManagerDialog,
-		new ResourceDialog(0),
-		new ResourceDialog(1),
-		new ResourceDialog(2),
-		new ResourceDialog(3),
-		new ResourceDialog(4),
-		new ResourceDialog(5),
-		new ResourceDialog(6),
-		new ResourceDialog(7),
-		new ResourceDialog(8),
-		new MakeSelectionDialog,
-		new SavePsbDialog,
-		new AboutDialog,
-		new ConfirmDialog,
-		new NewArtboardDialog,
-		new StorageWindowDialog,
-		new VariablesDialog,
-		new SelectionModifyDialog("border", [7, 9], "px"),
-		new SelectionModifyDialog("smoothness", [19, 3, 0], "px"),
-		new SelectionModifyDialog("expand", [7, 4], "px"),
-		new SelectionModifyDialog("contract", [7, 5], "px"),
-		new SelectionModifyDialog("feather", [7, 6], "px"),
-		new ValuePromptDialog(0, "namewindow", [12, 48]),
-		new ValuePromptDialog(2, "billto", "Bill To"),
-		new ValuePromptDialog(1, "cornerradius", [12, 94, 0], "px", !0, !0),
-		new ValuePromptDialog(1, "scaleeffects", [6, 30, 1], "%", !0),
-		new ValuePromptDialog(1, "doczoom", "Zoom", "%", !0),
-		new ValuePromptDialog(1, "setFPS", "Set FPS", "fps", !1)];
-	else G = [new FilterEffectDialog(l.slice(4))];
-	this.av1(G);
+	// if (l == "-") G = [
+	// 	new AccountDialog,
+	// 	new AddGuidesDialog,
+	// 	new PdfConvertDialog("pdfpres"),
+	// 	new PdfConvertDialog("cformat"),
+	// 	new FileInfoDialog,
+	// 	new MergeChannelsDialog,
+	// 	new SaveForWebDialog,
+	// 	new SliceOptionsDialog,
+	// 	new NewProjectDialog,
+	// 	new OpenFromUrlDialog,
+	// 	new ScriptDialog,
+	// 	new CameraCaptureDialog,
+	// 	new PreferencesDialog,
+	// 	new KeyboardShortcutsDialog,
+	// 	new ColorPickerDialog,
+	// 	new GradientEditorDialog,
+	// 	new ContourEditorDialog,
+	// 	new LayerStyleDialog,
+	// 	new CanvasSizeDialog,
+	// 	new ImageSizeDialog,
+	// 	new TrimDialog,
+	// 	new ImportRawDialog,
+	// 	new DuplicateIntoDialog,
+	// 	new TextWarpDialog,
+	// 	new ColorRangeDialog,
+	// 	new RawPhotopeaDialog,
+	// 	new FillDialog,
+	// 	new StrokeDialog,
+	// 	new ColorQuantizeDialog(!1),
+	// 	new ColorQuantizeDialog(!0),
+	// 	new EdgeRefineDialog(0),
+	// 	new EdgeRefineDialog(1),
+	// 	new ExportLayersDialog,
+	// 	new ExportLutDialog,
+	// 	new CreateShapeDialog,
+	// 	new DivideSlicesDialog,
+	// 	new LocalStorageDialog,
+	// 	new PresetManagerDialog,
+	// 	new ResourceDialog(0),
+	// 	new ResourceDialog(1),
+	// 	new ResourceDialog(2),
+	// 	new ResourceDialog(3),
+	// 	new ResourceDialog(4),
+	// 	new ResourceDialog(5),
+	// 	new ResourceDialog(6),
+	// 	new ResourceDialog(7),
+	// 	new ResourceDialog(8),
+	// 	new MakeSelectionDialog,
+	// 	new SavePsbDialog,
+	// 	new AboutDialog,
+	// 	new ConfirmDialog,
+	// 	new NewArtboardDialog,
+	// 	new StorageWindowDialog,
+	// 	new VariablesDialog,
+	// 	new SelectionModifyDialog("border", [7, 9], "px"),
+	// 	new SelectionModifyDialog("smoothness", [19, 3, 0], "px"),
+	// 	new SelectionModifyDialog("expand", [7, 4], "px"),
+	// 	new SelectionModifyDialog("contract", [7, 5], "px"),
+	// 	new SelectionModifyDialog("feather", [7, 6], "px"),
+	// 	new ValuePromptDialog(0, "namewindow", [12, 48]),
+	// 	new ValuePromptDialog(2, "billto", "Bill To"),
+	// 	new ValuePromptDialog(1, "cornerradius", [12, 94, 0], "px", !0, !0),
+	// 	new ValuePromptDialog(1, "scaleeffects", [6, 30, 1], "%", !0),
+	// 	new ValuePromptDialog(1, "doczoom", "Zoom", "%", !0),
+	// 	new ValuePromptDialog(1, "setFPS", "Set FPS", "fps", !1)];
+	// else G = [new FilterEffectDialog(l.slice(4))];
+	// this.av1(G);
 	this.u6[l] = !0;
 };
 
@@ -102432,15 +102432,10 @@ FilterEffectPanel.register = function (keys) {
 	}
 };
 
-(function () {
-	var keys = {};
-	var key;
-	for (key in FilterHelper.Tb) keys[key] = 1;
-	for (key in FilterHelper.names) keys[key] = 1;
-	for (key in FilterHelper.It)
-		if (key.charAt(0) === "s") keys[key.slice(1)] = 1;
-	FilterEffectPanel.register(Object.keys(keys));
-})();
+// Do not bulk-register FilterEffectPanel[key] entries.
+// f.uY "start" treats a registered key + qv:null as "open Photopea DialogManager
+// (afw_<key>)". Decoshop uses custom HTML dialogs and direct edit/confirm instead.
+// FilterEffectPanel.define() remains available if a specific stub is ever needed.
 
 /**
 * textStyleHelper (de-obfuscated partial from rest.js)

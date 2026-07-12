@@ -7,6 +7,7 @@
 @import "modules/ui.js"
 @import "modules/color.js"
 @import "modules/panels.js"
+@import "modules/filters.js"
 @import "modules/adjustments.js"
 @import "modules/dialogs.js"
 @import "modules/engine.js"
@@ -95,6 +96,7 @@ const decoshop = {
 		Engine.init();
 		UI.init();
 		Panels.init();
+		Filters.init();
 		Adjustments.init();
 		Dialogs.init();
 
@@ -108,6 +110,7 @@ const decoshop = {
 	},
 	dispatch(event) {
 		let Self = decoshop,
+			args,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -149,6 +152,11 @@ const decoshop = {
 			case "file-ready":
 				Self.tools.zoom.dispatch({ type: "center-actual" });
 				Self.sidebar.dispatch({ ...event, type: "update-panels" });
+				break;
+
+			case "filter-render":
+				args = event.arg.split(",");
+				Filters[args[0]](...args.slice(1));
 				break;
 
 			// proxy events

@@ -313,7 +313,7 @@
 		<Menu name="Blur">
 			<Menu name="Avergage"/>
 			<Menu name="Blur" click="filter-render" arg="blur"/>
-			<Menu name="Blur More" click="filter-render" arg="gaussianBlur,2"/>
+			<Menu name="Blur More" click="filter-render" arg="blur,BlrM"/>
 			<Menu name="Box Blur&#8230;" click="open-dialog" arg="dlgBoxBlur"/>
 			<Menu name="Gaussian Blur&#8230;" click="open-dialog" arg="dlgGaussianBlur"/>
 			<Menu name="Lens Blur&#8230;" click="open-dialog" arg="dlgLensBlur"/>
@@ -350,16 +350,16 @@
 		</Menu>
 		<Menu name="Render">
 			<Menu name="Flame&#8230;" click="open-dialog" arg="dlgFlame"/>
-			<Menu name="Clouds" click="filter-render" arg="clouds"/>
+			<Menu name="Clouds" click="filter-render" arg="clouds,Clds"/>
 			<Menu name="Noise" click="filter-render" arg="noise"/>
-			<Menu name="Difference Clouds"/>
+			<Menu name="Difference Clouds" click="filter-render" arg="clouds,DfrC"/>
 			<Menu name="Fibers&#8230;" click="open-dialog" arg="dlgFibers"/>
 			<Menu name="Lens Flare&#8230;" click="open-dialog" arg="dlgLensFlare"/>
 		</Menu>
 		<Menu name="Sharpen">
-			<Menu name="Sharpen" click="filter-render" arg="sharpen"/>
-			<Menu name="Sharpen Edges"/>
-			<Menu name="Sharpen More"/>
+			<Menu name="Sharpen" click="filter-render" arg="sharpen,Shrp"/>
+			<Menu name="Sharpen Edges" click="filter-render" arg="sharpen,ShrM"/>
+			<Menu name="Sharpen More" click="filter-render" arg="sharpen,ShrE"/>
 			<Menu name="Smart Sharpen&#8230;" click="open-dialog" arg="dlgSmartSharpen"/>
 			<Menu name="Unsharp Mask&#8230;" click="open-dialog" arg="dlgUnsharpMask"/>
 		</Menu>
