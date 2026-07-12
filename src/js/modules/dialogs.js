@@ -4715,13 +4715,160 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-size":
+					event.values = Self.values; // first copy values
+					event.values.size.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-depth":
+					event.values = Self.values; // first copy values
+					event.values.depth.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-brightness":
+					event.values = Self.values; // first copy values
+					event.values.brightness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-color":
+					event.values = Self.values; // first copy values
+					event.values.color.value = ColorLib.hexToRgb(event.value);
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-time":
+					event.values = Self.values; // first copy values
+					event.values.time.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-turbulance":
+					event.values = Self.values; // first copy values
+					event.values.turbulance.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-blink":
+					event.values = Self.values; // first copy values
+					event.values.blink.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-fall":
+					event.values = Self.values; // first copy values
+					event.values.fall.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "randomize-seed":
+					event.values = Self.values; // first copy values
+					event.values.random.value = Math.floor(Math.random() * 4294967295); // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("Part");
+						qv.Cont.v = Self.values.count.value;
+						qv.Size.v = Self.values.size.value;
+						qv.Dpth.v = Self.values.depth.value;
+						qv.Brgh.v = Self.values.brightness.value;
+
+						qv.Clr.v.Rd.v = Self.values.color.value.r;
+						qv.Clr.v.Grn.v = Self.values.color.value.g;
+						qv.Clr.v.Bl.v = Self.values.color.value.b;
+
+						qv.Time.v = Self.values.time.value;
+						qv.Turb.v = Self.values.turbulance.value;
+						qv.Blnk.v = Self.values.blink.value;
+						qv.Fall.v = Self.values.fall.value;
+						qv.RndS.v = Self.values.random.value;
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Part", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// color palettes initial values
+					Self.root.find(`.field-row .color-preset`).map(elem => {
+						let el = $(elem),
+							value = ColorLib.parseRgb(el.css("background-color"));
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// random seed
+					let value = Math.floor(Math.random() * 4294967295);
+					Self.values.random = { default: value, value };
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Part " } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "Part " } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Part " } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

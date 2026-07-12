@@ -48,7 +48,7 @@
 			<div class="field-row has-knob">
 				<div class="option input">
 					<span class="label">Time</span>
-					<span class="value"><input type="text" name="time" data-min="0" data-max="1000" value="70%" data-default="70%" data-suffix="%"></span>
+					<span class="value"><input type="text" name="time" data-min="0" data-max="1" value="0" data-default="0" data-step="0.005"></span>
 				</div>
 				<div class="knob" data-change="set-time"></div>
 			</div>
@@ -77,7 +77,7 @@
 				<div class="option input">
 					<span class="label">Seed</span>
 					<span class="value">
-						<div class="button">Randomize</div>
+						<div class="button" data-click="randomize-seed">Randomize</div>
 					</span>
 				</div>
 			</div>
