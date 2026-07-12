@@ -857,6 +857,11 @@ const UI = {
 					let tEl = $(elem);
 					tEl.data({ value: tEl.data("default") });
 				});
+				// make sure color presets are returned to default state
+				dEl.find(`.field-row .color-preset[data-default]`).map(elem => {
+					let pEl = $(elem);
+					pEl.css({ "background-color": pEl.data("default") });
+				});
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				// make sure ring-input is returned to default state
@@ -1105,11 +1110,12 @@ const UI = {
 				// selected option - UI update
 				el.parent().find(".selected").removeClass("selected");
 				el.addClass("selected");
-
+				
+				let srcEl = Self.srcEl.hasClass("color-preset") ? Self.srcEl : Self.srcEl.find(".value");
 				data = {
 					type: Self.srcEl.data("change"),
 					el: Self.srcEl,
-					old: ColorLib.rgbToHex(Self.srcEl.find(".value").css("background-color")),
+					old: ColorLib.rgbToHex(srcEl.css("background-color")),
 					value: ColorLib.rgbToHex(el.css("background-color")),
 				};
 				if (data.old === data.value) return;
@@ -1117,7 +1123,7 @@ const UI = {
 				if (data.type) APP.dispatch(data);
 
 				// update source element
-				Self.srcEl.find(".value").css({ background: data.value });
+				srcEl.css({ "background-color": data.value });
 				// clean up
 				// Self.srcEl = false;
 				// Self.menu.remove();

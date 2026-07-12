@@ -4507,11 +4507,7 @@ const Dialogs = {
 				// "fast events"
 				case "set-color":
 					event.values = Self.values; // first copy values
-					event.values.color.value = {
-						red: 0,
-						green: 0,
-						blue: 0,
-					};
+					event.values.color.value = ColorLib.hexToRgb(event.value);
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -4537,9 +4533,9 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("Ctoa");
-						qv.Clr.v.Rd.v = Self.values.color.value.red;
-						qv.Clr.v.Grn.v = Self.values.color.value.green;
-						qv.Clr.v.Bl.v = Self.values.color.value.blue;
+						qv.Clr.v.Rd.v = Self.values.color.value.r;
+						qv.Clr.v.Grn.v = Self.values.color.value.g;
+						qv.Clr.v.Bl.v = Self.values.color.value.b;
 						qv.Trsp.v.val = Self.values.transparency.value;
 						qv.Opct.v.val = Self.values.opacity.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Ctoa", qv, ve: false } });
@@ -4558,9 +4554,12 @@ const Dialogs = {
 							value = parseInt(el.val(), 10);
 						Self.values[el.attr("name")] = { default: value, value };
 					});
-					// color palette
-					let value = { red: 0, green: 0, blue: 0 };
-					Self.values.color = { defaukl: value, value };
+					// color palettes initial values
+					Self.root.find(`.field-row .color-preset`).map(elem => {
+						let el = $(elem),
+							value = ColorLib.parseRgb(el.css("background-color"));
+						Self.values[el.data("name")] = { default: value, value };
+					});
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
