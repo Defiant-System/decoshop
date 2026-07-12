@@ -2707,7 +2707,6 @@ FilterHelper.It = {
 	sMtnB: function(l, d) {
 		d[0] = [l.Angl.v];
 		d[1] = l.Dstn.v.val;
-		console.log(d)
 	},
 	gMtnB: function(l, d) {
 		l.Angl.v = typeof d[0] == "number" ? d[0] : d[0][0];
@@ -4215,7 +4214,6 @@ FilterHelper.Qz = function(l, d, G, b, V, Q, t) {
 			by.hI();
 			h = f.NH.eJ([h.buffer, h.rect], by, !1, Q.buffer.buffer, !0, Q.rect)
 		}
-		console.log(Date.now() - jj)
 	}
 	if (l == "RdlB") {
 		var T = d.rect.m,

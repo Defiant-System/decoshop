@@ -52707,7 +52707,7 @@ PatternHelper.at$ = function(l) {
 			b.push(G);
 			d.O += G.rect.O();
 			if (b.length > 1e3 || d.O > 100 * 100 * 1600) {
-				console.log("pruning", d.O, b.length);
+				// console.log("pruning", d.O, b.length);
 				b.sort(function(Q, t) {
 					return t.eg - Q.eg
 				});
@@ -100291,7 +100291,6 @@ FilterHelper.It = {
 	sMtnB: function(l, d) {
 		d[0] = [l.Angl.v];
 		d[1] = l.Dstn.v.val;
-		console.log(d);
 	},
 	gMtnB: function(l, d) {
 		l.Angl.v = typeof d[0] == "number" ? d[0] : d[0][0];
@@ -101799,7 +101798,6 @@ FilterHelper.Qz = function(l, d, G, b, V, Q, t) {
 			by.hI();
 			h = f.NH.eJ([h.buffer, h.rect], by, !1, Q.buffer.buffer, !0, Q.rect);
 		}
-		console.log(Date.now() - jj);
 	}
 	if (l == "RdlB") {
 		var T = d.rect.m,

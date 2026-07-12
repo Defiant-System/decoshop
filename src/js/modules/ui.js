@@ -859,6 +859,8 @@ const UI = {
 				});
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
+				// make sure ring-input is returned to default state
+				Self.doRing({ type: "set-initial-value", dEl });
 				break;
 			case "dlg-preview-common":
 				// TODO: toggle canvas render

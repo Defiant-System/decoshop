@@ -463,9 +463,9 @@
 		<i type="option" name="RGB 8x8x4" value="3"/>
 	</DitherPalette>
 	<UndefinedArea>
-		<i type="option" name="Repeat Edge Pixels" value="0"/>
-		<i type="option" name="Set to Transparent" value="1"/>
-		<i type="option" name="Wrap Around" value="2"/>
+		<i type="option" name="Repeat Edge Pixels" value="Rpt"/>
+		<i type="option" name="Set to Transparent" value="Bckg"/>
+		<i type="option" name="Wrap Around" value="Wrp"/>
 	</UndefinedArea>
 	<DiffuseModes>
 		<i type="option" name="Normal" value="Nrml"/>
