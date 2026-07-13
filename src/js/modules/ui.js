@@ -464,6 +464,12 @@ const UI = {
 				// drag related info
 				Self.drag = { el, pEl, func, type, target, value, newValue, range, offset, min, max };
 
+				// proxy changed value
+				let l = +el.prop("offsetLeft"),
+					v = Math.round(Math.lerp(range.min, range.max, l / max));
+				target.html(v);
+				func({ type, target, value: v });
+
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
 				Self.doc.on("mousemove mouseup", Self.doRange);

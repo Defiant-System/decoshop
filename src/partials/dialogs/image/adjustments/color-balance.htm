@@ -10,10 +10,10 @@
 				<div class="option opt-group">
 					<span class="label">Tone Balance</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li>Shadows</li>
-							<li class="active">Midtones</li>
-							<li>Highlights</li>
+						<ul class="opt-group" data-default="midtones" data-name="tone" data-click="set-tone">
+							<li data-value="shadows">Shadows</li>
+							<li data-value="midtones" class="active">Midtones</li>
+							<li data-value="highlights">Highlights</li>
 						</ul>
 					</span>
 				</div>
@@ -22,7 +22,7 @@
 			<div class="field-row">
 				<div class="option">
 					<span class="label">Luminosity</span>
-					<div class="toggler" data-value="on" data-name="preserve" data-default="on" data-click="toggle-preserve">
+					<div class="toggler" data-value="on" data-name="luminosity" data-default="on" data-click="toggle-luminosity">
 						<span>Preserve</span>
 					</div>
 				</div>

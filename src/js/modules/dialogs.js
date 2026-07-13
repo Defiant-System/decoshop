@@ -5237,10 +5237,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgImageSize,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
@@ -5486,26 +5483,157 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorBalance,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
+				case "set-tone":
+					Self.values.tone.value = event.target.getAttribute("data-value");
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					break;
+				case "toggle-luminosity":
+					event.values = Self.values; // first copy values
+					event.values.luminosity.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-cyan-red-value":
+					event.values = Self.values; // first copy values
+					event.values.levels.value[Self.values.tone.value]["cyan-red"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-magenta-green-value":
+					event.values = Self.values; // first copy values
+					event.values.levels.value[Self.values.tone.value]["magenta-green"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-yellow-blue-value":
-					event.target.html(event.value)
-					/* falls through */
+					event.values = Self.values; // first copy values
+					event.values.levels.value[Self.values.tone.value]["yellow-blue"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("blnc");
+						// Shadows
+						qv.ShdL.v[0].v = Self.values.levels.value.shadows["cyan-red"];
+						qv.ShdL.v[1].v = Self.values.levels.value.shadows["magenta-green"];
+						qv.ShdL.v[2].v = Self.values.levels.value.shadows["yellow-blue"];
+						// Midtones
+						qv.MdtL.v[0].v = Self.values.levels.value.midtones["cyan-red"];
+						qv.MdtL.v[1].v = Self.values.levels.value.midtones["magenta-green"];
+						qv.MdtL.v[2].v = Self.values.levels.value.midtones["yellow-blue"];
+						// Highlights
+						qv.HghL.v[0].v = Self.values.levels.value.highlights["cyan-red"];
+						qv.HghL.v[1].v = Self.values.levels.value.highlights["magenta-green"];
+						qv.HghL.v[2].v = Self.values.levels.value.highlights["yellow-blue"];
+						// "Preserve Luminosity" toggler
+						qv.PrsL.v = Self.values.luminosity.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "blnc", qv, ve: false } });
+						PP.update();
+					});
 					return;
-				// standard dialog events
+
+				case "sync-ui-with-levels":
+					Self.root.find(".slider[data-range]").map(elem => {
+						let sEl = $(elem),
+							rng = sEl.data("range"),
+							val = Self.values.levels.value[Self.values.tone.value][rng],
+							min = parseInt(sEl.data("min"), 10),
+							max = parseInt(sEl.data("max"), 10),
+							sW = +sEl.prop("offsetWidth"),
+							left = Math.invLerp(min, max, val) * sW;
+						// handle left
+						sEl.find(".handle").css({ left });
+						// input value
+						sEl.parent().find(`.value span[data-id="${rng}"]`).html(val);
+					});
+					break;
+
 				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row .opt-group[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("default");
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// prepare  level values
+					Self.values.levels = {
+						default: {
+							shadows: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+							midtones: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+							highlights: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+						},
+						value: {
+							shadows: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+							midtones: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+							highlights: { "cyan-red": 0, "magenta-green": 0, "yellow-blue": 0 },
+						},
+					};
+					// return console.log(Self.values);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "blnc " } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "blnc " } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// reset group values of levels
+					Self.values.levels.value = structuredClone(Self.values.levels.default);
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "blnc " } });
+					PP.update();
+					// close dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
@@ -5580,10 +5708,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLevels,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -5608,10 +5733,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgMatchColor,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -5636,10 +5758,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPhotoFilter,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -5664,10 +5783,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectiveColor,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -5692,10 +5808,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -5720,10 +5833,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgChannelMixer,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-cyan-red-value":
 					event.target.html(event.value)
@@ -6464,10 +6574,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgPixelator,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "apply-filter-data":
 					return;
