@@ -5121,21 +5121,24 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgAddGuides,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
+			// console.log(event);
 			switch (event.type) {
+				// "fast events"
+				case "set-type":
+					// exit if "preview" is not enabled
+					if (!Self.preview) return;
+					/* falls-through */
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5270,21 +5273,59 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgBlackWhite,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
+			// console.log(event);
 			switch (event.type) {
+				// "fast events"
+				case "toggle-resample":
+					break;
+				case "set-color":
+					break;
+				case "set-red":
+				case "set-yellow":
+				case "set-green":
+				case "set-cyan":
+				case "set-blue":
+				case "set-magenta":
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
+
 				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row.has-basic-range .value span[data-default]`).map(elem => {
+						let el = $(elem),
+							def = parseInt(el.data("default"), 10),
+							value = parseInt(el.html(), 10);
+						Self.values[el.data("id")] = { default: def, value };
+					});
+					// color palettes initial values
+					Self.root.find(`.field-row .color-preset`).map(elem => {
+						let el = $(elem),
+							value = ColorLib.parseRgb(el.css("background-color"));
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					return console.log(Self.values);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
@@ -5295,21 +5336,24 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExposure,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
+			// console.log(event);
 			switch (event.type) {
+				// "fast events"
+				case "set-type":
+					// exit if "preview" is not enabled
+					if (!Self.preview) return;
+					/* falls-through */
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5320,21 +5364,24 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgVibrance,
-				layers,
-				pixels,
-				copy,
-				el;
+				Doc = Self.doc;
+			// console.log(event);
 			switch (event.type) {
+				// "fast events"
+				case "set-type":
+					// exit if "preview" is not enabled
+					if (!Self.preview) return;
+					/* falls-through */
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},

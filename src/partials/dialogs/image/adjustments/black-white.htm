@@ -12,70 +12,82 @@
 					<div class="toggler" data-value="on" data-name="resample" data-default="on" data-click="toggle-resample">
 						<span>Resample</span>
 					</div>
-					<span class="color-preset pull inline-menu" style="background: #f00;" data-options="swatches" data-match="//Swatches"></span>
+					<span class="color-preset pull inline-menu" style="background: #ffffff;" data-default="#ffffff" data-name="color" data-change="set-color" data-options="swatches" data-match="//Swatches"></span>
 				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
 					<span class="label">Red</span>
 					<span class="value">
-						<input type="text" name="red" data-min="-200" data-max="300" value="40" data-default="40"/>
+						<span data-id="channelRed" data-default="40">40</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-red"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelRed" data-ux="br-track" data-range="range-red" data-change="set-red">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
 					<span class="label">Yellow</span>
 					<span class="value">
-						<input type="text" name="yellow" data-min="-200" data-max="300" value="85" data-default="85"/>
+						<span data-id="channelYellow" data-default="85">85</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-yellow"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelYellow" data-ux="br-track" data-range="range-yellow" data-change="set-yellow">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
-					<span class="label">green</span>
+					<span class="label">Green</span>
 					<span class="value">
-						<input type="text" name="green" data-min="-200" data-max="300" value="204" data-default="204"/>
+						<span data-id="channelGreen" data-default="204">204</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-green"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelGreen" data-ux="br-track" data-range="range-green" data-change="set-green">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
 					<span class="label">Cyan</span>
 					<span class="value">
-						<input type="text" name="cyan" data-min="-200" data-max="300" value="60" data-default="60"/>
+						<span data-id="channelCyan" data-default="60">60</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-cyan"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelCyan" data-ux="br-track" data-range="range-cyan" data-change="set-cyan">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
 					<span class="label">Blue</span>
 					<span class="value">
-						<input type="text" name="blue" data-min="-200" data-max="300" value="20" data-default="20"/>
+						<span data-id="channelBlue" data-default="20">20</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-blue"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelBlue" data-ux="br-track" data-range="range-blue" data-change="set-blue">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
 
-			<div class="field-row has-knob">
+			<div class="field-row has-basic-range">
 				<div class="option input">
 					<span class="label">Magenta</span>
 					<span class="value">
-						<input type="text" name="magenta" data-min="-200" data-max="300" value="80" data-default="80"/>
+						<span data-id="channelMagenta" data-default="80">80</span>
 					</span>
 				</div>
-				<div class="knob" data-change="set-magenta"></div>
+				<div class="slider" data-min="-200" data-max="300" data-target="channelMagenta" data-ux="br-track" data-range="range-magenta" data-change="set-magenta">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
 			</div>
-			
+
 		</div>
 		<div class="buttons">
 			<div class="button" data-click="dlg-ok">OK</div>

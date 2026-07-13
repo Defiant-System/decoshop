@@ -3832,6 +3832,35 @@
 		}
 	}
 
+	&[data-dlg="dlgBlackWhite"] {
+		.dlg-content {
+			.fields {
+				min-width: 365px;
+
+				.field-row {
+					&.has-basic-range {
+						.option {
+							.value {
+								> span {
+									width: 47px;
+								}
+							}
+						}
+					}
+
+					.slider {
+						left: 145px;
+						width: 200px;
+
+						.handle {
+							left: 100px;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	&[data-dlg="dlgChannelMixer"] {
 		.dlg-content {
 			.fields {

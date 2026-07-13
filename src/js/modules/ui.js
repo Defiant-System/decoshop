@@ -477,6 +477,7 @@ const UI = {
 				// let val = Math.round((left / Drag.max) * 255);
 				let val = Math.round(Math.lerp(Drag.range.min, Drag.range.max, left / Drag.max));
 				if (Drag.newValue === val) return;
+				Drag.target.html(val);
 				Drag.newValue = val;
 
 				// proxy changed value
@@ -486,6 +487,22 @@ const UI = {
 				// unbind event handlers
 				Self.content.removeClass("no-dlg-cursor");
 				Self.doc.off("mousemove mouseup", Self.doRange);
+				break;
+			case "set-initial-value":
+				// initial value of slider
+				event.dEl.find(".has-basic-range").map(elem => {
+					let fEl = $(elem),
+						vEl = fEl.find(".value span[data-default]"),
+						sEl = fEl.find(".slider"),
+						hEl = sEl.find(".handle"),
+						val = parseInt(vEl.text(), 10),
+						min = parseInt(sEl.data("min"), 10),
+						max = parseInt(sEl.data("max"), 10),
+						sW = +sEl.prop("offsetWidth"),
+						left = Math.invLerp(min, max, val) * sW;
+					// move handle
+					hEl.css({ left });
+				});
 				break;
 		}
 	},
@@ -775,6 +792,7 @@ const UI = {
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				Self.doRing({ type: "set-initial-value", dEl });
+				Self.doRange({ type: "set-initial-value", dEl });
 				// auto forward open event
 
 				if (Dialogs[event.name]) Dialogs[event.name].dispatch({ ...event, dEl });
@@ -856,6 +874,20 @@ const UI = {
 				dEl.find(`.field-row .toggler[data-default]`).map(elem => {
 					let tEl = $(elem);
 					tEl.data({ value: tEl.data("default") });
+				});
+				// make sure color presets are returned to default state
+				dEl.find(`.field-row.has-basic-range`).map(elem => {
+					let pEl = $(elem),
+						vEl = pEl.find(".value span[data-default]"),
+						hEl = pEl.find(".slider .handle"),
+						sEl = hEl.parent(),
+						val = parseInt(vEl.data("default"), 10),
+						min = parseInt(sEl.data("min"), 10),
+						max = parseInt(sEl.data("max"), 10),
+						sW = +sEl.prop("offsetWidth"),
+						left = Math.invLerp(min, max, val) * sW;
+					vEl.html(val);
+					hEl.css({ left });
 				});
 				// make sure color presets are returned to default state
 				dEl.find(`.field-row .color-preset[data-default]`).map(elem => {
@@ -1106,7 +1138,12 @@ const UI = {
 		switch (event.type) {
 			// native events
 			case "mousedown":
-				el = $(event.target);
+				el = $(event.target).parents("?.swatch");
+				if (!el.length) {
+					event.preventDefault();
+					event.stopPropagation();
+					return;
+				}
 				// selected option - UI update
 				el.parent().find(".selected").removeClass("selected");
 				el.addClass("selected");
