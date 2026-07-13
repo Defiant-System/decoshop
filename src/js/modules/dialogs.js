@@ -1785,7 +1785,7 @@ const Dialogs = {
 					break;
 				case "set-focal":
 					event.values = Self.values; // first copy values
-					event.values.angle.value = event.value; // then partial overwrite
+					event.values.focal.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -1863,16 +1863,21 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("Bokh");
-						
-						qv.BkDi.v.BtDi = Self.values.depth.value;
+
+						if (+Self.values.depth.value === 0) {
+							qv.BkDi.v.BtDi = "BeIn";
+							delete qv.BkDc;
+						} else {
+							qv.BkDi.v.BtDi = "BeIt";
+							qv.BkDc = { t: "enum", v: { BtDc: +Self.values.depth.value === 1 ? "BeCt" : "BeCm" } };
+						}
 						qv.BkDp.v = Self.values.focal.value;
-						qv.BkIs.v.BtIs = Self.values.shape.value;
 						qv.BkDs.v = Self.values.invert.value;
+						qv.BkIs.v.BtIs = Self.values.shape.value;
 						qv.BkIb.v = Self.values.radius.value;
-						qv.BkIc.v = Self.values.angle.value;
-						qv.BkIr.v = Self.values.brightness.value;
+						qv.BkIr.v = Self.values.angle.value;
+						qv.BkSb.v = Self.values.brightness.value;
 						qv.BkSt.v = Self.values.threshold.value;
-						qv.BkSb.v = 0;
 						qv.BkNa.v = Self.values.noise.value;
 						qv.BkNt.v.BtNt = Self.values.distribution.value;
 						qv.BkNm.v = Self.values.monochromatic.value;

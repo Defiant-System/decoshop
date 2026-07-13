@@ -485,9 +485,9 @@
 		<i type="option" name="Pond Ripples" value="PndR"/>
 	</ZigZagStyles>
 	<LensBlurDepthMaps>
-		<i type="option" name="None" value="BeIn"/>
-		<i type="option" name="From Transparency" value="BeIt"/>
-		<i type="option" name="Raster Mask" value="BeCm"/>
+		<i type="option" name="None" value="0"/>
+		<i type="option" name="From Transparency" value="1"/>
+		<i type="option" name="Raster Mask" value="2"/>
 	</LensBlurDepthMaps>
 	<LensBlurShapes>
 		<i type="option" name="Triangle" value="BeS3"/>
