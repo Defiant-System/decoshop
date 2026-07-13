@@ -1863,13 +1863,10 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("Bokh");
-
-						if (+Self.values.depth.value === 0) {
-							qv.BkDi.v.BtDi = "BeIn";
-							delete qv.BkDc;
-						} else {
-							qv.BkDi.v.BtDi = "BeIt";
-							qv.BkDc = { t: "enum", v: { BtDc: +Self.values.depth.value === 1 ? "BeCt" : "BeCm" } };
+						switch (Self.values.depth.value) {
+							case "BeIn": qv.BkDi.v.BtDi = "BeIn"; delete qv.BkDc; break;
+							case "BeCt": qv.BkDi.v.BtDi = "BeIt"; qv.BkDc = { t: "enum", v: { BtDc: "BeCt" } }; break;
+							case "BeCm": qv.BkDi.v.BtDi = "BeIt"; qv.BkDc = { t: "enum", v: { BtDc: "BeCm" } }; break;
 						}
 						qv.BkDp.v = Self.values.focal.value;
 						qv.BkDs.v = Self.values.invert.value;
@@ -1881,7 +1878,6 @@ const Dialogs = {
 						qv.BkNa.v = Self.values.noise.value;
 						qv.BkNt.v.BtNt = Self.values.distribution.value;
 						qv.BkNm.v = Self.values.monochromatic.value;
-
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Bokh", qv, ve: false } });
 						PP.update();
 					});
