@@ -7,7 +7,7 @@
 			</h2>
 			
 			<div class="field-row">
-				<div class="option select" data-change="change-depth-map" data-options="fieldset-inline-menubox" data-match="//LensBlurDepthMaps">
+				<div class="option select" data-change="set-depth" data-name="depth" data-options="fieldset-inline-menubox" data-match="//LensBlurDepthMaps">
 					<span class="label">Depth Map</span>
 					<span class="value">None</span>
 				</div>
@@ -17,15 +17,15 @@
 				<div class="option input">
 					<span class="label">Focal Distance</span>
 					<span class="value">
-						<input type="text" name="focal-distance" data-min="0" data-max="255" value="0" data-default="0"/>
+						<input type="text" name="focal" data-min="0" data-max="255" value="0" data-default="0"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-focal-distance"></div>
 			</div>
 			
 			<div class="field-row">
-				<div class="option select" data-change="change-blend-mode" data-options="fieldset-inline-menubox" data-match="//LensBlurShapes">
-					<span class="label">Depth Map</span>
+				<div class="option select" data-change="set-shape" data-name="shape" data-options="fieldset-inline-menubox" data-match="//LensBlurShapes">
+					<span class="label">Shape</span>
 					<span class="value">Hexagon</span>
 				</div>
 			</div>
@@ -94,9 +94,9 @@
 				<div class="option opt-group">
 					<span class="label">Distribution</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li class="active">Uniform</li>
-							<li>Gausian</li>
+						<ul class="opt-group" data-default="BeNu" data-name="distribution" data-click="set-distribution">
+							<li data-value="BeNu" class="active">Uniform</li>
+							<li data-value="BeNg">Gausian</li>
 						</ul>
 					</span>
 				</div>

@@ -1776,13 +1776,175 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-depth":
+					event.values = Self.values; // first copy values
+					event.values.depth.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-focal":
+					event.values = Self.values; // first copy values
+					event.values.angle.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-shape":
+					event.values = Self.values; // first copy values
+					event.values.shape.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-invert":
+					event.values = Self.values; // first copy values
+					event.values.invert.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-radius":
+					event.values = Self.values; // first copy values
+					event.values.radius.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-angle":
+					event.values = Self.values; // first copy values
+					event.values.angle.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-brightness":
+					event.values = Self.values; // first copy values
+					event.values.brightness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-threshold":
+					event.values = Self.values; // first copy values
+					event.values.threshold.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-noise":
+					event.values = Self.values; // first copy values
+					event.values.noise.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-distribution":
+					// first copy values
+					event.values = Self.values;
+					// then partial overwrite
+					event.values.distribution.value = event.target.getAttribute("data-value");
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-monochromatic":
+					event.values = Self.values; // first copy values
+					event.values.monochromatic.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("Bokh");
+						
+						qv.BkDi.v.BtDi = Self.values.depth.value;
+						qv.BkDp.v = Self.values.focal.value;
+						qv.BkIs.v.BtIs = Self.values.shape.value;
+						qv.BkDs.v = Self.values.invert.value;
+						qv.BkIb.v = Self.values.radius.value;
+						qv.BkIc.v = Self.values.angle.value;
+						qv.BkIr.v = Self.values.brightness.value;
+						qv.BkSt.v = Self.values.threshold.value;
+						qv.BkSb.v = 0;
+						qv.BkNa.v = Self.values.noise.value;
+						qv.BkNt.v.BtNt = Self.values.distribution.value;
+						qv.BkNm.v = Self.values.monochromatic.value;
+
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Bokh", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// select options
+					Self.root.find(`.field-row .option.select`).map(elem => {
+						let el = $(elem),
+							val = el.find(".value").text(),
+							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
+							value = xVal.getAttribute("value");
+						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// save initial state values
+					Self.root.find(`.field-row .opt-group[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("default");
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Bokh" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "Bokh" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "Bokh" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

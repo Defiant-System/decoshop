@@ -485,17 +485,17 @@
 		<i type="option" name="Pond Ripples" value="PndR"/>
 	</ZigZagStyles>
 	<LensBlurDepthMaps>
-		<i type="option" name="None" value="0"/>
-		<i type="option" name="From Transparency" value="1"/>
-		<i type="option" name="Raster Mask" value="2"/>
+		<i type="option" name="None" value="BeIn"/>
+		<i type="option" name="From Transparency" value="BeIt"/>
+		<i type="option" name="Raster Mask" value="BeCm"/>
 	</LensBlurDepthMaps>
 	<LensBlurShapes>
-		<i type="option" name="Triangle (3)" value="0"/>
-		<i type="option" name="Square (4)" value="1"/>
-		<i type="option" name="Pentagon (5)" value="2"/>
-		<i type="option" name="Hexagon (6)" value="3"/>
-		<i type="option" name="Heptagon (7)" value="4"/>
-		<i type="option" name="Octagon (8)" value="5"/>
+		<i type="option" name="Triangle" value="BeS3"/>
+		<i type="option" name="Square" value="BeS4"/>
+		<i type="option" name="Pentagon" value="BeS5"/>
+		<i type="option" name="Hexagon" value="BeS6"/>
+		<i type="option" name="Heptagon" value="BeS7"/>
+		<i type="option" name="Octagon" value="BeS8"/>
 	</LensBlurShapes>
 	<MezzotintTypes>
 		<i type="option" name="Fine Dots" value="FnDt"/>
