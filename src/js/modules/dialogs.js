@@ -5844,19 +5844,23 @@ const Dialogs = {
 				Self = Dialogs.dlgLevels,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5869,19 +5873,23 @@ const Dialogs = {
 				Self = Dialogs.dlgMatchColor,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5894,19 +5902,109 @@ const Dialogs = {
 				Self = Dialogs.dlgPhotoFilter,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-color":
+					event.values = Self.values; // first copy values
+					let { r, g, b } = ColorLib.hexToRgb(event.value);
+					event.values.color.value = PixelUtil.rgbToLab(r, g, b);
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-density":
+					event.values = Self.values; // first copy values
+					event.values.density.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-luminosity":
+					event.values = Self.values; // first copy values
+					event.values.luminosity.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("phfl");
+						qv.Clr.v.Lmnc.v = Self.values.color.value.Hm;
+						qv.Clr.v.A.v = Self.values.color.value.aS;
+						qv.Clr.v.B.v = Self.values.color.value.k;
+						qv.Dnst.v = Self.values.density.value;
+						qv.PrsL.v = Self.values.luminosity.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "phfl", qv, ve: false } });
+						PP.update();
+					});
 					return;
-				// standard dialog events
+
 				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// color palettes initial values
+					Self.root.find(`.field-row .color-preset`).map(elem => {
+						let el = $(elem),
+							{ r, g, b } = ColorLib.parseRgb(el.css("background-color")),
+							def = PixelUtil.rgbToLab(r, g, b),
+							value = PixelUtil.rgbToLab(r, g, b);
+						Self.values[el.data("name")] = { default: def, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "phfl" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "phfl" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "phfl" } });
+					PP.update();
+					// close dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
@@ -5919,19 +6017,23 @@ const Dialogs = {
 				Self = Dialogs.dlgSelectiveColor,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5944,19 +6046,23 @@ const Dialogs = {
 				Self = Dialogs.dlgCurves,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5969,19 +6075,28 @@ const Dialogs = {
 				Self = Dialogs.dlgChannelMixer,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-channel":
+					break;
+				case "set-red-value":
+					break;
+				case "set-green-value":
+					break;
+				case "set-blue-value":
+					break;
+				case "set-total-value":
+					break;
+				case "toggle-monochromatic":
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -5995,23 +6110,27 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
 
 				case "select-gradient":
 					break;
 
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6108,19 +6227,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6134,9 +6257,13 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
 
@@ -6144,14 +6271,14 @@ const Dialogs = {
 					event.el.parents(".fields").data({ mode: event.value });
 					break;
 
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6165,19 +6292,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6191,19 +6322,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6217,19 +6352,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6243,19 +6382,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6269,19 +6412,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6295,19 +6442,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6321,19 +6472,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6347,9 +6502,13 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
 
@@ -6360,14 +6519,14 @@ const Dialogs = {
 					event.el.parents(".fields").data({ target: event.value });
 					break;
 
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6381,19 +6540,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6407,19 +6570,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6433,19 +6600,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6459,19 +6630,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6485,19 +6660,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6511,19 +6690,23 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6537,9 +6720,13 @@ const Dialogs = {
 				el;
 			// console.log(event);
 			switch (event.type) {
-				case "set-cyan-red-value":
-					event.target.html(event.value)
-					/* falls through */
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					return;
 
@@ -6550,14 +6737,14 @@ const Dialogs = {
 					event.el.parents(".fields").data({ export: event.text.toLowerCase() });
 					break;
 
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},
@@ -6637,14 +6824,14 @@ const Dialogs = {
 					selEl = el.find("label").length ? el.find("label") : el;
 					el.parents(".dlg-content").find(".pref-details").data({ show: selEl.html().replace("&amp; ", "") });
 					break;
-				// standard dialog events
-				case "dlg-open":
-				case "dlg-ok":
-				case "dlg-reset":
-				case "dlg-preview":
-				case "dlg-close":
+					
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					break;
 			}
 		}
 	},

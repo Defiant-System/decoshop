@@ -391,11 +391,6 @@
 		<i type="option" name="Midtones" value="2"/>
 		<i type="option" name="Highlights" value="3"/>
 	</ColorRangeSelect>
-	<ChannelMixerOutput>
-		<i type="option" name="Red" value="0"/>
-		<i type="option" name="Green" value="1"/>
-		<i type="option" name="Blue" value="2"/>
-	</ChannelMixerOutput>
 	<CurvesPresets>
 		<i type="option" name="Default" value="0"/>
 		<i type="divider"/>

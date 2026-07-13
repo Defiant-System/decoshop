@@ -440,8 +440,11 @@ const UI = {
 
 				let pEl = el.parent(),
 					dEl = pEl.parents(".dialog-box"),
+					// get target elements for value update
+					target = dEl.find(`[data-id="${pEl.data("target")}"]`),
 					value = +pEl.cssProp("--val"),
 					newValue = +pEl.cssProp("--val"),
+					suffix = target.data("suffix") || "",
 					type = pEl.data("change"),
 					offset = {
 						x: +el.prop("offsetLeft") - event.clientX,
@@ -459,15 +462,13 @@ const UI = {
 					dEl = el.parents("[data-for]");
 					func = Adjustments[dEl.data("for")]
 				}
-				// get target elements for value update
-				let target = dEl.find(`[data-id="${pEl.data("target")}"]`);
 				// drag related info
-				Self.drag = { el, pEl, func, type, target, value, newValue, range, offset, min, max };
+				Self.drag = { el, pEl, func, type, target, value, newValue, suffix, range, offset, min, max };
 
 				// proxy changed value
 				let l = +el.prop("offsetLeft"),
 					v = Math.round(Math.lerp(range.min, range.max, l / max));
-				target.html(v);
+				target.html(v + suffix);
 				func({ type, target, value: v });
 
 				// bind event handlers
@@ -483,7 +484,7 @@ const UI = {
 				// let val = Math.round((left / Drag.max) * 255);
 				let val = Math.round(Math.lerp(Drag.range.min, Drag.range.max, left / Drag.max));
 				if (Drag.newValue === val) return;
-				Drag.target.html(val);
+				Drag.target.html(val + Drag.suffix);
 				Drag.newValue = val;
 
 				// proxy changed value
