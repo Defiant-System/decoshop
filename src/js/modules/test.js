@@ -83,7 +83,11 @@ let Test = {
 		 * 
 		 */
 		// setTimeout(() => APP.dispatch({ type: "filter-render", arg: "clouds" }), 1600);
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgChannelMixer" }), 1600);
+		// setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgColorLookup" }), 1600);
+		setTimeout(() => {
+			APP.dispatch({ type: "open-dialog", arg: "dlgColorLookup" });
+			setTimeout(() => Dialogs.dlgColorLookup.dispatch({ type: "set-lut", value: "Arabica 12" }), 200);
+		}, 1600);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 

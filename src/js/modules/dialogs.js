@@ -6703,19 +6703,91 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgColorLookup,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
-				case "set-count":
-					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
-					// exit if "preview" is not enabled
-					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+				case "set-lut":
+					if (Self.lutCache[event.value]) {
+						// get cached lut
+						Self.values.lutProfile = Self.lutCache[event.value];
+						// initial apply
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						let url = `/cdn/img/luts/${event.value}.cube`;
+						window.fetch(url, { responseType: "arrayBuffer" })
+							.then(buf => {
+								// save lut to cache
+								Self.lutCache[event.value] = LutProfileResource.Cd(buf, `${event.value}.cube`)[0];
+								Self.values.lutProfile = Self.lutCache[event.value];
+								// initial apply
+								Self.dispatch({ type: "apply-filter-data", values: Self.values });
+							});
+					}
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview || !Self.values.lutProfile) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("clrL");
+						// merge profile fields (same as FilterEffectPanel.clrL.PY)
+						qv.Nm = Self.values.lutProfile.Nm;
+						qv.Dthr = Self.values.lutProfile.Dthr;
+						qv.lookupType = Self.values.lutProfile.lookupType;
+						qv.profile = Self.values.lutProfile.profile;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "clrL", qv, ve: false } });
+						PP.update();
+					});
 					return;
-					
+
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// select options
+					Self.root.find(`.field-row .option.select`).map(elem => {
+						let el = $(elem),
+							val = el.find(".value").text(),
+							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
+							value = xVal.getAttribute("value");
+						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// store loaded luts
+					Self.lutCache = {};
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "clrL" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "clrL" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "clrL" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -6733,7 +6805,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgDuplicateInto,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6763,7 +6835,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFileInfo,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6793,7 +6865,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgVariables,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6823,7 +6895,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportColorLookUp,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6853,7 +6925,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportLayers,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6891,7 +6963,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgExportAs,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-export-format":
@@ -6921,7 +6993,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgToolShape,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				// standard dialog events
