@@ -20,6 +20,7 @@
 @import "bundle/style-helper.js"
 @import "bundle/font-helper.js"
 @import "bundle/format-handler.js"
+@import "bundle/growable-byte-buffer.js"
 @import "bundle/keyboard-handler.js"
 @import "bundle/clipboard-handler.js"
 @import "bundle/link-bar.js"
@@ -100,6 +101,7 @@ module.exports = {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	LutProfileResource,
 	HistoryState,
 	PixelUtil,
 	Point2D,

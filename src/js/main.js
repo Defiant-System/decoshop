@@ -25,6 +25,7 @@ let {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	LutProfileResource,
 	HistoryState,
 	PixelUtil,
 	Point2D,

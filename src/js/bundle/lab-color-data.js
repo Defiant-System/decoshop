@@ -165,6 +165,7 @@ LabColorHelper.temperatureTable = [{
 	qv: .36051,
 	sA: -116.45
 }];
+// LabColorHelper.estimateColorTemperature — xy chromaticity → correlated color temperature (K) + tint
 LabColorHelper.estimateColorTemperature = function(l) {
 	var d = LabColorHelper.temperatureTable,
 		G = 2 * l.x / (1.5 - l.x + 6 * l.y),
@@ -204,6 +205,7 @@ LabColorHelper.estimateColorTemperature = function(l) {
 	}
 };
 
+// LabColorHelper.temperatureToChromaticity — color temperature (K) + tint → xy chromaticity
 LabColorHelper.temperatureToChromaticity = function(l, d) {
 	var G = LabColorHelper.temperatureTable,
 		b = 1e6 / l,
@@ -235,6 +237,7 @@ LabColorHelper.temperatureToChromaticity = function(l, d) {
 	}
 };
 
+// LabColorHelper.xyzToChromaticity — XYZ tristimulus → xy chromaticity
 LabColorHelper.xyzToChromaticity = function(l) {
 	var d = l[0] + l[1] + l[2];
 	return {
@@ -243,6 +246,7 @@ LabColorHelper.xyzToChromaticity = function(l) {
 	}
 };
 
+// LabColorHelper.chromaticityToTristimulus — xy chromaticity → normalized XYZ (Y=1)
 LabColorHelper.chromaticityToTristimulus = function(l) {
 	return {
 		x: l.x / l.y,
@@ -251,6 +255,7 @@ LabColorHelper.chromaticityToTristimulus = function(l) {
 	}
 };
 
+// LabColorHelper.computeChromaticAdaptationMatrix — Bradford chromatic adaptation matrix between two whites
 LabColorHelper.computeChromaticAdaptationMatrix = function(l, d) {
 	var G = PixelUtil.mat4._3([.8951, .2664, -.1614, -.7502, 1.7135, .0367, .0389, -.0685, 1.0296]),
 		b = [l.x, l.y, l.V8, 0],
@@ -1774,6 +1779,7 @@ PixelUtil.GJ.azh = function(l, d, G) {
 	b(l, (I - 1) * d - 2, I * d - 1)
 };
 
+// PixelUtil.brushStamp — brush tip stamp / preset thumbnail rendering helpers
 PixelUtil.fd = function() {
 	function l(e, M, R, J) {
 		var n = new Float32Array(e * e),
@@ -2977,6 +2983,7 @@ PixelUtil.UR.a20 = function(l, d, G, b) {
 		if (b[A] == 0) b[A] = 1
 };
 
+// PixelUtil.brushPresetTree — parse ABR r4000 brush preset folder tree
 PixelUtil.R7 = function() {
 	function l() {
 		return 1953e6 + Math.floor(Math.random() * 999999)
@@ -3362,6 +3369,7 @@ PixelUtil.R7 = function() {
 		atK: T
 	}
 }();
+// PixelUtil.meshWarp — displacement mesh grid sampling and warp application
 PixelUtil.mv = function() {
 	var l = 0,
 		d = 0,
@@ -3476,6 +3484,7 @@ PixelUtil.mv = function() {
 		a0U: e
 	}
 }();
+// PixelUtil.meshDetect — detect mesh control points from displacement map
 PixelUtil.a3m = function() {
 	function l(d, G) {
 		var b = [
@@ -4849,6 +4858,7 @@ PixelUtil.YW.a9U = function() {
 	}
 	return e
 }();
+// PixelUtil.bezierPatch — cubic Bezier patch evaluation for mesh warping
 PixelUtil.az5 = function() {
 	var l = 6,
 		d = l >>> 1,
@@ -6053,6 +6063,7 @@ var j0 = function() {
 		az_: b
 	}
 }();
+// j0.traceContours — extract closed paths from binary mask (marching squares + simplification)
 j0.Hu = function(l, d, G, b) {
 	var V = {
 			K7: "minority",
@@ -6066,6 +6077,7 @@ j0.Hu = function(l, d, G, b) {
 	return Q
 };
 
+// j0.contoursToPaths — convert internal contour records → SVG-style path { F, C }
 j0.LW = function(l) {
 	var d = [];
 	for (var A = 0; A < l.length; A++) {
@@ -6096,6 +6108,7 @@ j0.LW = function(l) {
 	return d
 };
 
+// j0.pointInPolygon — ray-casting point-in-polygon test
 j0._S = function(l, d, G) {
 	var hZ = l.length >> 1,
 		b, V = l[2 * hZ - 3] - G,
@@ -6131,6 +6144,7 @@ j0._S = function(l, d, G) {
 	return (y & 1) == 1
 };
 
+// j0.fillPolygon — scanline fill polygon into raster mask
 j0.fill = function(l, d, G, b) {
 	var V = d[l],
 		Q = [l],
@@ -6288,7 +6302,9 @@ var cL = function() {
 	return t
 }();
 
+// d3 - BrushResource (.abr brush presets resource handler)
 function d3() {}
+// BrushResource.importFromBuffer — parse .abr v6+ → { BF samples, yO patterns, list descriptors }
 d3.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 0,
@@ -6333,10 +6349,12 @@ d3.Cd = function(l) {
 	return b
 };
 
+// BrushResource.setName — rename brush descriptor (Nm field)
 d3.Pl = function(l, d) {
 	l.v.Nm.v = d
 };
 
+// BrushResource.importLegacy — parse .abr v2 sample list format
 d3.aaE = function(l) {
 	var d = {
 			BF: [],
@@ -6390,6 +6408,7 @@ d3.aaE = function(l) {
 	return d
 };
 
+// BrushResource.exportToBuffer — brush set → .abr file bytes
 d3.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0,
@@ -6428,6 +6447,7 @@ d3.IN = function(l) {
 	return d.data.slice(0, G).buffer
 };
 
+// BrushResource.parseSamples — read 8BIMsamp brush sample records
 d3.Vs = function(l, d, G, b, V) {
 	var Q = X.q,
 		t = X.NK,
@@ -6474,12 +6494,14 @@ d3.Vs = function(l, d, G, b, V) {
 	return y
 };
 
+// BrushResource.attachSamplePixels — bind decoded tip pixels to brush entry
 d3.wE = function(l, d) {
 	var G = l.vD.clone();
 	G.x = G.y = 0;
 	l.Rj = [d, G]
 };
 
+// BrushResource.writeSamples — serialize sample records into .abr
 d3.sD = function(l, d, G) {
 	var b = X._b,
 		V = X.ZE;
@@ -6530,7 +6552,9 @@ d3.sD = function(l, d, G) {
 };
 
 
+// cb - CurvesResource (.acv curves adjustment preset resource handler)
 function cb() {}
+// CurvesResource.importFromBuffer — parse .acv → curves adjustment descriptor
 cb.Cd = function(l, d) {
 	var G = new Uint8Array(l),
 		b = [],
@@ -6568,6 +6592,7 @@ cb.Cd = function(l, d) {
 	return [R]
 };
 
+// CurvesResource.readFromPsd — read curves data from PSD resource block
 cb.nj = function(l, d, G) {
 	var b = d,
 		V = [],
@@ -6592,6 +6617,7 @@ cb.nj = function(l, d, G) {
 	return e
 };
 
+// CurvesResource.buildDescriptor — channel curve arrays → ActionDescriptor
 cb.EQ = function(l, d) {
 	var G = FilterHelper.oT("curv");
 	for (var A = 0; A < 4; A++) {
@@ -6605,6 +6631,7 @@ cb.EQ = function(l, d) {
 	return G
 };
 
+// CurvesResource.writeToPsd — curves descriptor → PSD resource bytes
 cb.qJ = function(l, d, G) {
 	var b = [];
 	for (var A = 0; A < 4; A++) {
@@ -6638,12 +6665,14 @@ cb.qJ = function(l, d, G) {
 	return d - I
 };
 
+// CurvesResource.defaultCurve — flat 0–255 identity curve points
 cb.aoh = function() {
 	var l = [];
 	for (var A = 0; A < 256; A++) l.push(A);
 	return l
 };
 
+// CurvesResource.setChannelCurve — set curve points for channel index
 cb.fZ = function(l, d, G) {
 	var b = hg.M_("CrvA", d);
 	if (G.length < 256) b.Crv = {
@@ -6670,6 +6699,7 @@ cb.fZ = function(l, d, G) {
 	else V[Q] = b
 };
 
+// CurvesResource.getChannelCurve — get curve points for channel index
 cb.RX = function(l, d) {
 	var G = l.Adjs.v,
 		b = hg._o(G, d);
@@ -6690,6 +6720,7 @@ cb.RX = function(l, d) {
 	return [PixelUtil.presetThumb.yR(0, 0, !0), PixelUtil.presetThumb.yR(255, 255, !0)]
 };
 
+// CurvesResource.readChannelName — read ASCII channel name from .acv
 cb.oN = function(l, d) {
 	var G = [],
 		b = X.TD(l, d);
@@ -6704,6 +6735,7 @@ cb.oN = function(l, d) {
 	return G
 };
 
+// CurvesResource.findChannelIndex — find channel by enum id
 cb.a7g = function(l, d, G) {
 	var b = G.length / 2;
 	X.pg(l, d, b);
@@ -6716,19 +6748,23 @@ cb.a7g = function(l, d, G) {
 	}
 };
 
+// CurvesResource.makeChannelRef — build channel enum reference object
 cb.agt = function(l, d) {
 	var G = [];
 	for (var A = 0; A < 256; A++) G.push(l[d + A]);
 	return G
 };
 
+// CurvesResource.interpolateCurve — evaluate curve at input level
 cb.anq = function(l, d, G) {
 	l.ensureCapacity(d, 256);
 	for (var A = 0; A < 256; A++) l.data[d + A] = G[A]
 };
 
 
+// d8 - HueSaturationHelper (hue2 adjustment preset binary codec)
 function d8() {}
+// HueSaturationHelper.readFromPsd — parse hue2 preset block → adjustment descriptor
 d8.nj = function(l, d, G) {
 	var b = {},
 		V = X.TD(l, d);
@@ -6763,6 +6799,7 @@ d8.nj = function(l, d, G) {
 	return t
 };
 
+// HueSaturationHelper.makeHslObject — [H,S,L] → Hst2 descriptor object
 d8.axd = function(l) {
 	return {
 		classID: "Hst2",
@@ -6781,6 +6818,7 @@ d8.axd = function(l) {
 	}
 };
 
+// HueSaturationHelper.findAdjustmentIndex — find Adjs entry by channel/local id
 d8._o = function(l, d) {
 	for (var A = 0; A < l.length; A++) {
 		var G = l[A].v.LclR;
@@ -6789,6 +6827,7 @@ d8._o = function(l, d) {
 	return -1
 };
 
+// HueSaturationHelper.setAdjustment — write one hue/sat channel adjustment
 d8.fZ = function(l, d, G) {
 	var b = d == 0 ? G : G.I3,
 		V = d8.axd(b);
@@ -6824,6 +6863,7 @@ d8.fZ = function(l, d, G) {
 	else t[I] = V
 };
 
+// HueSaturationHelper.getAdjustment — read one hue/sat channel adjustment
 d8.RX = function(l, d) {
 	var G = l.Adjs.v,
 		b = d8._o(G, d);
@@ -6858,6 +6898,7 @@ d8.RX = function(l, d) {
 	}
 };
 
+// HueSaturationHelper.writeToPsd — hue2 descriptor → preset binary block
 d8.qJ = function(l, d, G) {
 	var b = {
 		_s: G.Clrz ? G.Clrz.v : !1,
@@ -6898,7 +6939,9 @@ d8.qJ = function(l, d, G) {
 };
 
 
+// hg - LevelsResource (.alv levels adjustment preset resource handler)
 function hg() {}
+// LevelsResource.importFromBuffer — parse .alv → levels adjustment descriptor
 hg.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 2,
@@ -6928,6 +6971,7 @@ hg.Cd = function(l) {
 	return M
 };
 
+// LevelsResource.makeChannelRef — build channel enum reference for levels
 hg.M_ = function(l, A) {
 	var d = ["Cmps", "Rd", "Grn", "Bl"],
 		G = {
@@ -6947,6 +6991,7 @@ hg.M_ = function(l, A) {
 	}
 };
 
+// LevelsResource.findChannelIndex — find channel entry by id
 hg._o = function(l, d) {
 	var G = {
 		Cmps: 0,
@@ -6962,6 +7007,7 @@ hg._o = function(l, d) {
 	return -1
 };
 
+// LevelsResource.setChannelLevels — set input/output/gamma for channel
 hg.fZ = function(l, d, G) {
 	var b = hg.M_("LvlA", d);
 	b.Inpt = {
@@ -6998,6 +7044,7 @@ hg.fZ = function(l, d, G) {
 	else V[Q] = b
 };
 
+// LevelsResource.getChannelLevels — read [inBlack,inWhite,gamma,outBlack,outWhite] for channel
 hg.RX = function(l, d) {
 	var G = [0, 255, 0, 255, 100],
 		b = l.Adjs.v,
@@ -7018,6 +7065,7 @@ hg.RX = function(l, d) {
 	return G
 };
 
+// LevelsResource.exportToBuffer — levels descriptor → .alv file bytes
 hg.IN = function(l, d) {
 	var G = [],
 		b = 0;
@@ -7049,7 +7097,9 @@ hg.IN = function(l, d) {
 };
 
 
+// d1 - LayerStyleResource (.asl layer styles resource handler)
 function d1() {}
+// LayerStyleResource.importFromBuffer — parse .asl → layer style descriptor list
 d1.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 2,
@@ -7095,10 +7145,12 @@ d1.Cd = function(l) {
 	return b
 };
 
+// LayerStyleResource.setName — rename style (Nm field)
 d1.Pl = function(l, d) {
 	l.Zc.Nm.v = d
 };
 
+// LayerStyleResource.exportToBuffer — style list → .asl file bytes
 d1.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0;
@@ -7137,7 +7189,9 @@ d1.IN = function(l) {
 };
 
 
+// iX - SelectiveColorHelper (selc adjustment preset binary codec)
 function iX() {}
+// SelectiveColorHelper.readFromPsd — parse selc preset block → adjustment descriptor
 iX.nj = function(l, d, G) {
 	var b = X.TD(l, d);
 	d += 2;
@@ -7158,6 +7212,7 @@ iX.nj = function(l, d, G) {
 };
 
 iX.K6 = "Rds Ylws Grns Cyns Bls Mgnt Whts Ntrl Blks".split(" ");
+// SelectiveColorHelper.makeColorRef — build color-range enum reference object
 iX.M_ = function(l, A) {
 	var d = ["Cmps", "Rd", "Grn", "Bl"],
 		G = {
@@ -7177,6 +7232,7 @@ iX.M_ = function(l, A) {
 	}
 };
 
+// SelectiveColorHelper.findColorIndex — find ClrC entry by color name
 iX._o = function(l, d) {
 	var G = iX.K6;
 	for (var A = 0; A < l.length; A++) {
@@ -7187,6 +7243,7 @@ iX._o = function(l, d) {
 	return -1
 };
 
+// SelectiveColorHelper.setColorAdjust — write CMYK offsets for one color range
 iX.fZ = function(l, d, G) {
 	var b = ["Cyn", "Mgnt", "Ylw", "Blck"],
 		V = {
@@ -7215,6 +7272,7 @@ iX.fZ = function(l, d, G) {
 	else t[I] = V
 };
 
+// SelectiveColorHelper.getColorAdjust — read [C,M,Y,K] offsets for color range
 iX.RX = function(l, d) {
 	var G = [0, 0, 0, 0],
 		b = l.ClrC.v,
@@ -7226,6 +7284,7 @@ iX.RX = function(l, d) {
 	return G
 };
 
+// SelectiveColorHelper.writeToPsd — selc descriptor → preset binary block
 iX.qJ = function(l, d, G) {
 	var b = {
 		h4: G.Mthd.v.CrcM == "Absl",
@@ -7248,7 +7307,9 @@ iX.qJ = function(l, d, G) {
 };
 
 
+// eU - ShapeResource (.csh custom shapes resource handler)
 function eU() {}
+// ShapeResource.createDefault — empty custom shape template
 eU.oT = function() {
 	return {
 		W5: new Rect(0, 0, 50, 50),
@@ -7258,6 +7319,7 @@ eU.oT = function() {
 	}
 };
 
+// ShapeResource.importFromBuffer — parse .csh → shape descriptor list
 eU.Cd = function(l) {
 	l = new Uint8Array(l);
 	var d = 0,
@@ -7278,6 +7340,7 @@ eU.Cd = function(l) {
 	return G
 };
 
+// ShapeResource.readShapeRecord — read one shape record from .csh
 eU.xl = function(l, d, G, b) {
 	var V = X.q(l, d);
 	d += 4;
@@ -7304,10 +7367,12 @@ eU.xl = function(l, d, G, b) {
 	return d
 };
 
+// ShapeResource.setName — rename shape (Nm field)
 eU.Pl = function(l, d) {
 	l.GC = d
 };
 
+// ShapeResource.exportToBuffer — shape list → .csh file bytes
 eU.IN = function(l) {
 	var items = [];
 	for (var hP = 0; hP < l.length; hP++) {
@@ -7348,6 +7413,7 @@ eU.IN = function(l) {
 	return d.data.slice(0, G).buffer
 };
 
+// ShapeResource.normalizePath — scale/translate shape path to unit bounds
 eU.axP = function(l) {
 	var d = [];
 	for (var A = 0; A < l.length; A++) {
@@ -7371,6 +7437,7 @@ eU.axP = function(l) {
 	return d
 };
 
+// ShapeResource.pathBounds — compute bounding rect of shape path
 eU.aK = function(l) {
 	var d = [];
 	for (var A = 0; A < l.length; A++) {
@@ -7397,6 +7464,7 @@ eU.aK = function(l) {
 	return d
 };
 
+// ShapeResource.writeShapeRecord — serialize one shape into .csh
 eU.xv = function(l, d, G, b, V) {
 	if (b == null) b = 1;
 	if (V == null) V = 1;
@@ -7464,6 +7532,7 @@ eU.xv = function(l, d, G, b, V) {
 	return I
 };
 
+// ShapeResource.writeShapeList — serialize all shapes into buffer
 eU.nb = function(l, d, G, b, V) {
 	var Q = X.RD,
 		t = X.azT,
@@ -7501,7 +7570,9 @@ eU.nb = function(l, d, G, b, V) {
 };
 
 
+// bA - SwatchResource (.aco color swatches resource handler)
 function bA() {}
+// SwatchResource.importFromBuffer — parse .aco → color swatch list
 bA.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = [],
@@ -7517,6 +7588,7 @@ bA.Cd = function(l) {
 	return G
 };
 
+// SwatchResource.readSwatch — read one ACO color entry
 bA.afj = function(l) {
 	var d = [],
 		G = 8,
@@ -7567,6 +7639,7 @@ bA.afj = function(l) {
 	return d
 };
 
+// SwatchResource.rgbToDescriptor — RGB (+optional name) → color descriptor
 bA.MR = function(l, d, G) {
 	var b = X.TD,
 		V = X.Ar,
@@ -7586,6 +7659,7 @@ bA.MR = function(l, d, G) {
 	return d
 };
 
+// SwatchResource.descriptorToAco — color descriptor → ACO binary entry
 bA.eq = function(l, d) {
 	var G = X.TD,
 		b = X.Ar,
@@ -7655,6 +7729,7 @@ bA.eq = function(l, d) {
 	return n
 };
 
+// SwatchResource.exportToBuffer — swatch list → .aco file bytes
 bA.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0,
@@ -7675,10 +7750,12 @@ bA.IN = function(l) {
 	return d.data.slice(0, G).buffer
 };
 
+// SwatchResource.setName — rename swatch
 bA.Pl = function(l, d) {
 	l.X$ = d
 };
 
+// SwatchResource.writeSwatchList — serialize swatches into buffer
 bA.L4 = function(l, d, G) {
 	var b = 65535 / 255,
 		V = X.fh;
@@ -7690,7 +7767,9 @@ bA.L4 = function(l, d, G) {
 };
 
 
+// jn - ActionResource (.atn Photoshop actions resource handler)
 function jn() {}
+// ActionResource.importFromBuffer — parse .atn → action set tree
 jn.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 4,
@@ -7758,16 +7837,19 @@ jn.Cd = function(l) {
 	return [b]
 };
 
+// ActionResource.setName — rename action set
 jn.tG = function(l, d) {
 	var G = X.q(l, d);
 	return X.Ko(l, d + 4, G)
 };
 
+// ActionResource.findAction — locate action by name in set
 jn.Im = function(l, d, G) {
 	X._b(l, d, G.length);
 	X.zr(l, d + 4, G)
 };
 
+// ActionResource.exportToBuffer — action set → .atn file bytes
 jn.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0;
@@ -7827,7 +7909,9 @@ jn.IN = function(l) {
 };
 
 
+// ei - MeshResource (3D displacement mesh preset resource handler)
 function ei() {}
+// MeshResource.importFromBuffer — parse mesh preset → { iJ, Tq, map }
 ei.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 0,
@@ -7878,6 +7962,7 @@ ei.Cd = function(l) {
 	}
 };
 
+// MeshResource.exportToBuffer — mesh data → preset file bytes
 ei.CO = function(l) {
 	var d = l.iJ,
 		G = l.Tq,
@@ -7915,7 +8000,9 @@ ei.CO = function(l) {
 };
 
 
+// hT - ContourResource (.shc layer style contours resource handler)
 function hT() {}
+// ContourResource.importFromBuffer — parse .shc → contour curve list
 hT.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 0,
@@ -7970,10 +8057,12 @@ hT.Cd = function(l) {
 	return t
 };
 
+// ContourResource.setName — rename contour preset
 hT.Pl = function(l, d) {
 	l.Nm.v = d
 };
 
+// ContourResource.exportToBuffer — contour list → .shc file bytes
 hT.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0;
@@ -8015,7 +8104,9 @@ hT.IN = function(l) {
 };
 
 
+// fv - PatternResource (.pat fill patterns resource handler)
 function fv() {}
+// PatternResource.importFromBuffer — parse .pat → pattern descriptor list
 fv.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 4,
@@ -8032,10 +8123,12 @@ fv.Cd = function(l) {
 	return Q
 };
 
+// PatternResource.setName — rename pattern
 fv.Pl = function(l, d) {
 	l.name = d
 };
 
+// PatternResource.exportToBuffer — pattern list → .pat file bytes
 fv.IN = function(l) {
 	var b = [];
 	for (var A = 0; A < l.length; A++)
@@ -8052,6 +8145,7 @@ fv.IN = function(l) {
 	return d.data.slice(0, G).buffer
 };
 
+// PatternResource.readPatternList — read embedded pattern records from brush file
 fv.V_ = function(l, d, G) {
 	var b = d + G,
 		V = [];
@@ -8068,6 +8162,7 @@ fv.V_ = function(l, d, G) {
 	return V
 };
 
+// PatternResource.writePatternList — write pattern records into brush file
 fv.WQ = function(l, d, G) {
 	for (var A = 0; A < G.length; A++) {
 		var b = G[A];
@@ -8083,6 +8178,7 @@ fv.WQ = function(l, d, G) {
 	return d
 };
 
+// PatternResource.readPattern — read one pattern tile + name
 fv.Tj = function(l, d, G) {
 	var b = X.q(l, d);
 	d += 4;
@@ -8122,6 +8218,7 @@ fv.Tj = function(l, d, G) {
 	return d
 };
 
+// PatternResource.decodePatternPixels — decompress pattern channel data
 fv.Zh = function(l, d, G) {
 	if (G == null || G.Rj == null) return d;
 	var b = G.Rj[0],
@@ -8146,6 +8243,7 @@ fv.Zh = function(l, d, G) {
 	return d
 };
 
+// PatternResource.encodePatternPixels — compress pattern channel data
 fv.aea = function(l, d, G) {
 	var b = d,
 		V = {
@@ -8195,6 +8293,7 @@ fv.aea = function(l, d, G) {
 	return d
 };
 
+// PatternResource.writePattern — serialize one pattern tile
 fv.atL = function(l, d, G, b) {
 	var V = d,
 		Q = {
@@ -8237,7 +8336,9 @@ fv.atL = function(l, d, G, b) {
 };
 
 
+// eu - GradientResource (.grd gradients resource handler)
 function eu() {}
+// GradientResource.importFromBuffer — parse .grd → gradient descriptor list
 eu.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = 0;
@@ -8268,10 +8369,12 @@ eu.Cd = function(l) {
 	return Q
 };
 
+// GradientResource.setName — rename gradient
 eu.Pl = function(l, d) {
 	l.Nm.v = d
 };
 
+// GradientResource.exportToBuffer — gradient list → .grd file bytes
 eu.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0;
@@ -8304,6 +8407,7 @@ eu.IN = function(l) {
 	return d.data.slice(0, G).buffer
 };
 
+// GradientResource.readGradient — read one gradient definition
 eu.l3 = function(l, d, G) {
 	var b = {
 			classID: "Grdn",
@@ -8417,6 +8521,7 @@ eu.l3 = function(l, d, G) {
 	return [b, d]
 };
 
+// GradientResource.writeGradient — serialize one gradient
 eu.asL = function(l, d, G) {
 	var b = G.Clrs.v.length;
 	X.pg(l, d, b);
@@ -8450,6 +8555,7 @@ eu.asL = function(l, d, G) {
 	return d
 };
 
+// GradientResource.interpolateColor — sample gradient at position t
 eu.aqi = function(l) {
 	var d = X.Kw(l, 0, l.length).split("\n"),
 		G = parseFloat(d[2]),
@@ -8490,7 +8596,9 @@ eu.aqi = function(l) {
 };
 
 
+// cG - ToolPresetResource (.tpl tool presets resource handler)
 function cG() {}
+// ToolPresetResource.importFromBuffer — parse .tpl → tool preset descriptor list
 cG.Cd = function(l) {
 	var d = new Uint8Array(l),
 		G = [],
@@ -8583,10 +8691,12 @@ cG.Cd = function(l) {
 	}
 };
 
+// ToolPresetResource.setName — rename tool preset
 cG.Pl = function(l, d) {
 	l[0] = d
 };
 
+// ToolPresetResource.exportToBuffer — preset list → .tpl file bytes
 cG.IN = function(l) {
 	var d = new GrowableByteBuffer,
 		G = 0;
@@ -8630,7 +8740,11 @@ cG.IN = function(l) {
 };
 
 
+// iZ - LutProfileResource (Color Lookup LUT/ICC profile resource handler)
 function iZ() {}
+const LutProfileResource = iZ;
+
+// LutProfileResource.importFromBuffer — parse .cube/.3dl/.look/.icc → Color Lookup descriptor
 iZ.Cd = function(l, d) {
 	var G = new Uint8Array(l),
 		b;
@@ -8668,16 +8782,19 @@ iZ.Cd = function(l, d) {
 	}]
 };
 
+// LutProfileResource.exportToBuffer — descriptor → raw ICC profile bytes
 iZ.IN = function(l) {
 	var d = l[0],
 		G = new Uint8Array(d.profile.v);
 	return G.buffer
 };
 
+// LutProfileResource.setName — rename profile (Nm field)
 iZ.Pl = function(l, d) {
 	l.Nm.v = d
 };
 
+// LutProfileResource.buildIccFromLut — wrap 3D LUT grid as synthetic ICC profile (A2B0 table)
 iZ.axc = function(l, d) {
 	var G = new GrowableByteBuffer,
 		b = 128;
@@ -8751,6 +8868,7 @@ iZ.axc = function(l, d) {
 	return G.data.slice(0, I)
 };
 
+// LutProfileResource.parseLutFile — parse CUBE / 3DL / LOOK text → [gridSize, rgbSamples]
 iZ.am6 = function(l, d) {
 	d = "LUTFormat" + d.toUpperCase();
 	var G = [],
@@ -8816,6 +8934,7 @@ iZ.am6 = function(l, d) {
 	return [b, G]
 };
 
+// LutProfileResource.exportToCube — LUT rgb samples → .cube file bytes
 iZ.aqp = function(l, d, G) {
 	var b = ["#Created by www.Photopea.com", "TITLE \"" + G + "\"", "", "#LUT size", "LUT_3D_SIZE " + d, "", "#data domain", "DOMAIN_MIN 0.0 0.0 0.0", "DOMAIN_MAX 1.0 1.0 1.0", "", "#LUT data points"],
 		V = 6;
@@ -8826,6 +8945,7 @@ iZ.aqp = function(l, d, G) {
 	return X.zE(b.join("\n")).buffer
 };
 
+// LutProfileResource.reorderLutAxes — remap CUBE axis order to internal LUT grid order
 iZ.Rs = function(l, d) {
 	var G = [],
 		b = l * l * l;
@@ -8843,7 +8963,9 @@ iZ.Rs = function(l, d) {
 };
 
 
+// jO - ActionDescriptorCodec (Adobe ActionDescriptor binary read/write)
 function jO() {}
+// ActionDescriptorCodec.readDescriptor — parse ActionDescriptor from buffer at offset
 jO.V$ = function(l, d, G, b, V) {
 	var Q = G,
 		t;
@@ -8873,6 +8995,7 @@ jO.V$ = function(l, d, G, b, V) {
 	return G - Q
 };
 
+// ActionDescriptorCodec.writeDescriptor — serialize ActionDescriptor to GrowableByteBuffer
 jO.TH = function(l, d, G, b) {
 	var V = G,
 		Q = d.__name;
@@ -8894,6 +9017,7 @@ jO.TH = function(l, d, G, b) {
 	return G - V
 };
 
+// ActionDescriptorCodec.readValue — read one typed descriptor value (obj/doub/bool/…)
 jO.Hd = function(l, d, G, b) {
 	var V = d,
 		Q = X.Ko(l, d, 4);
@@ -9095,6 +9219,7 @@ jO.fX = {
 	Idnt: ["classID"]
 };
 
+// ActionDescriptorCodec.writeValue — write one typed descriptor value
 jO.Fo = function(l, d, G) {
 	var b = d,
 		V = G.t;
@@ -9242,6 +9367,7 @@ jO.Fo = function(l, d, G) {
 	return d - b
 };
 
+// ActionDescriptorCodec.readFourCharId — read 4-char type/class ID (padded ASCII)
 jO.eE = function(l, d) {
 	var G = X.YU(l, d);
 	if (G > 1e3) throw "e";
@@ -9249,11 +9375,13 @@ jO.eE = function(l, d) {
 	return X.Ko(l, d + 4, G).trim()
 };
 
+// ActionDescriptorCodec.fourCharIdLength — byte length of padded 4-char ID field
 jO.Hl = function(l, d) {
 	var G = X.YU(l, d);
 	return G == 0 ? 8 : 4 + G
 };
 
+// ActionDescriptorCodec.writeFourCharId — write padded 4-char ID
 jO.Dr = function(l, d, G) {
 	var b = "warp list Comp None xx xy yx yy tx ty PinP PnRt PnOv PnDp xor PuX0 PuX1 PuX2 PuX3 PuY0 PuY1 PuY2 PuY3 base kana ruby box flow time hold trim then else".split(" "),
 		V = 4 < G.length || b.indexOf(G) != -1;
@@ -9266,6 +9394,7 @@ jO.Dr = function(l, d, G) {
 	}
 };
 
+// ActionDescriptorCodec.cloneDescriptor — deep clone ActionDescriptor tree
 jO.axD = function(l) {
 	var d = {};
 	for (var G in l) {
@@ -9276,6 +9405,7 @@ jO.axD = function(l) {
 	return d
 };
 
+// ActionDescriptorCodec.unwrapValue — extract raw .v from typed descriptor node
 jO.aAb = function(l) {
 	if (l.sA == "Objc") return jO.axD(l.v);
 	else if (l.sA == "VlLs") {
@@ -9287,7 +9417,9 @@ jO.aAb = function(l) {
 };
 
 
+// ia - LayerAdditionalInfoParser (PSD layer extra data / tagged blocks parser)
 function ia() {}
+// LayerAdditionalInfoParser.readLayerInfo — parse 8BIM tagged blocks into layer.add
 ia.ajh = function(l, d, G, b, V, Q) {
 	while (d < G) {
 		var t = X.Ko(l, d, 4);
@@ -9901,6 +10033,7 @@ ia.ajh = function(l, d, G, b, V, Q) {
 	return d
 };
 
+// LayerAdditionalInfoParser.readMergedLayerInfo — parse merged / artboard layer extras
 ia.ad0 = function(l, d, G, b, V) {
 	for (var Q in G)
 		if (G[Q] == null) {
@@ -10498,6 +10631,7 @@ ia.ad0 = function(l, d, G, b, V) {
 	return d
 };
 
+// LayerAdditionalInfoParser.readLayerName — read Pascal/Unicode layer name block
 ia.sB = function(l) {
 	for (var A = 0; A < LayerStyleConstants.effectOrder.length; A++) {
 		var d = LayerStyleConstants.effectOrder[A],
@@ -10519,6 +10653,7 @@ ia.sB = function(l) {
 	}
 };
 
+// LayerAdditionalInfoParser.writeLayerName — serialize layer name block
 ia.Kk = function(l) {
 	for (var A = 0; A < LayerStyleConstants.effectOrder.length; A++) {
 		var d = LayerStyleConstants.effectOrder[A],
@@ -10536,6 +10671,7 @@ ia.Kk = function(l) {
 	}
 };
 
+// LayerAdditionalInfoParser.readVectorMask — parse vector mask / path data
 ia.Bp = function(l, d) {
 	if (d == "GdFl") {
 		if (l.Angl == null) l.Angl = {
@@ -10621,6 +10757,7 @@ ia.Bp = function(l, d) {
 	}
 };
 
+// LayerAdditionalInfoParser.cloneLayerExtras — deep clone layer.add object
 ia.clone = function(l, d) {
 	var G = {};
 	if (l == "TySh") {
@@ -10640,17 +10777,21 @@ ia.clone = function(l, d) {
 };
 
 
+// aZ - EmbeddedFileReader (linked / embedded smart object payload reader)
 function aZ(l, d) {}
+// EmbeddedFileReader.importFromBuffer — read embedded/linked file payload from smart object
 aZ.Cd = function(l, d, G, b) {
 	b = aZ.ana(l, d, G, b);
 	return b
 };
 
+// EmbeddedFileReader.exportToBuffer — write embedded file payload
 aZ.CO = function(l, d, G, b, V) {
 	b = aZ.azo(l, d, G, b, V);
 	return b
 };
 
+// EmbeddedFileReader.readPsdEmbedded — parse embedded PSD header + channel index
 aZ.ana = function(l, d, G, b) {
 	var V = b;
 	l.rect = X.NK(G, b);
@@ -10700,6 +10841,7 @@ aZ.ana = function(l, d, G, b) {
 	return b
 };
 
+// EmbeddedFileReader.readRawEmbedded — parse raw embedded image data
 aZ.azo = function(l, d, G, b, V) {
 	var Q = b;
 	X.ZE(G, b, l.rect);
@@ -10761,6 +10903,7 @@ aZ.azo = function(l, d, G, b, V) {
 	return b
 };
 
+// EmbeddedFileReader.decodeEmbeddedPixels — decompress embedded layer channels
 aZ.a6S = function(l, d, G) {
 	var b = X.q(d, G);
 	G += 4;
@@ -10816,6 +10959,7 @@ aZ.a6S = function(l, d, G) {
 	return V + b
 };
 
+// EmbeddedFileReader.readEmbeddedDescriptor — read smart object linked file descriptor
 aZ.a1j = function(l, d, G) {
 	X._b(d, G, 0);
 	G += 4;
@@ -10852,6 +10996,7 @@ aZ.a1j = function(l, d, G) {
 	return G
 };
 
+// EmbeddedFileReader.getEmbeddedBounds — read embedded document dimensions
 aZ.alF = function(l, d) {
 	var G = new LayerRecord.LayerMask;
 	aZ.azp(G, l, d);
@@ -10863,6 +11008,7 @@ aZ.alF = function(l, d) {
 	return G
 };
 
+// EmbeddedFileReader.readEmbeddedThumbnail — parse embedded preview JPEG/PNG
 aZ.ar4 = function(l, d, G) {
 	aZ.ayX(G, l, d, !1);
 	d += 1;
@@ -10872,6 +11018,7 @@ aZ.ar4 = function(l, d, G) {
 	d += 16
 };
 
+// EmbeddedFileReader.readEmbeddedMetadata — parse XMP / metadata block
 aZ.azp = function(l, d, G) {
 	var b = d[G];
 	l.cv = (b >> 0 & 1) == 0;
@@ -10880,6 +11027,7 @@ aZ.azp = function(l, d, G) {
 	return b >> 4 & 1
 };
 
+// EmbeddedFileReader.writeEmbeddedMetadata — serialize metadata block
 aZ.ayX = function(l, d, G, b) {
 	var V = 0;
 	if (!l.cv) V += 1 << 0;
@@ -10889,6 +11037,7 @@ aZ.ayX = function(l, d, G, b) {
 	X.s8(d, G, V)
 };
 
+// EmbeddedFileReader.readEmbeddedTransform — parse smart object transform warp
 aZ.akU = function(l, d, G) {
 	var b = X.q(d, G);
 	G += 4;
@@ -10896,6 +11045,7 @@ aZ.akU = function(l, d, G) {
 	return G + b
 };
 
+// EmbeddedFileReader.writeEmbeddedTransform — serialize transform warp data
 aZ.as$ = function(l, d, G) {
 	X._b(d, G, l.channelRectDefaults.length);
 	G += 4;
@@ -10907,17 +11057,21 @@ aZ.as$ = function(l, d, G) {
 };
 
 
+// db - PsdChannelCodec (encode/decode PSD layer channel image data)
 function db() {}
+// PsdChannelCodec.decodeLayer — decode all channels for one layer record
 db.Cd = function(l, d, G, b) {
 	b = db.avY(d, d.v_, d.dP, d.RU, l, G, b);
 	return b
 };
 
+// PsdChannelCodec.encodeLayer — encode all channels for one layer record
 db.IN = function(l, d, G, b, V, Q) {
 	b = db.anc(l, d, G, b, V, Q);
 	return b
 };
 
+// PsdChannelCodec.decodeChannels — per-channel RLE/zip decode into RgbaFloatPlanes
 db.avY = function(l, d, G, b, V, Q, t) {
 	var I = V.nB,
 		y = {},
@@ -11003,6 +11157,7 @@ db.avY = function(l, d, G, b, V, Q, t) {
 	return t
 };
 
+// PsdChannelCodec.encodeChannels — per-channel RLE/zip encode from RgbaFloatPlanes
 db.anc = function(l, d, G, b, V, Q) {
 	var t = d.and(),
 		I = new WebGLContext.RgbaFloatPlanes(d.rect.O());
@@ -11029,12 +11184,14 @@ db.anc = function(l, d, G, b, V, Q) {
 	return b
 };
 
+// PsdChannelCodec.decodeChannel — decode single channel plane
 db.C1 = function(l, d, G, b, V, Q, t) {
 	var I = X.TD(G, Q);
 	Q += 2;
 	return db.c7(l, d, G, b, V, Q, I, t - 2)
 };
 
+// PsdChannelCodec.encodeChannel — encode single channel plane
 db.L5 = function(l, d, G, b, V, Q, t) {
 	X.RD(G, Q, t);
 	Q += 2;
@@ -11042,6 +11199,7 @@ db.L5 = function(l, d, G, b, V, Q, t) {
 	return Q
 };
 
+// PsdChannelCodec.decodeRle — RLE decompress one channel row set
 db.c7 = function(l, d, G, b, V, Q, t, I) {
 	var y, e = b * V * (d >>> 3),
 		M = e & 3,
@@ -11106,6 +11264,7 @@ db.c7 = function(l, d, G, b, V, Q, t, I) {
 	return y
 };
 
+// PsdChannelCodec.encodeRle — RLE compress one channel row set
 db.hH = function(l, d, G, b, V, Q, t) {
 	var I = b * V;
 	if (t == 0)
@@ -11141,6 +11300,7 @@ db.hH = function(l, d, G, b, V, Q, t) {
 	return Q
 };
 
+// PsdChannelCodec.decodeZip — ZIP/packBits decompress channel
 db.adm = function(l, d, G, b, V, Q, t) {
 	if (!(l instanceof Uint8Array) || !(d instanceof Uint8Array)) throw "e";
 	var I = Q,
@@ -11159,6 +11319,7 @@ db.adm = function(l, d, G, b, V, Q, t) {
 	return Q - I
 };
 
+// PsdChannelCodec.encodeZip — ZIP/packBits compress channel
 db.ak3 = function(l, d, G, b, V, Q, t) {
 	var I = Q;
 	if (t == 2)
@@ -11175,6 +11336,7 @@ db.ak3 = function(l, d, G, b, V, Q, t) {
 	return Q - I
 };
 
+// PsdChannelCodec.applyAlphaMatte — apply layer alpha matte to color channels
 db.atC = function(l, d, hZ, G, b) {
 	var V, Q, t, I, y, f5, e;
 	I = d + hZ;
@@ -11198,6 +11360,7 @@ db.atC = function(l, d, hZ, G, b) {
 	return Q - b
 };
 
+// PsdChannelCodec.copyRect — copy pixel rect between channel buffers
 db.YA = function(l, d, G, b, V, Q) {
 	for (var t = 0; t < G;) {
 		var hZ = l[d++];
@@ -11217,7 +11380,9 @@ db.YA = function(l, d, G, b, V, Q) {
 };
 
 
+// c4 - PsdReader (Adobe PSD file format reader)
 function c4() {}
+// PsdReader.debugLog — optional debug offset logger (disabled)
 c4.fp = function(l, d, G) {
 	return;
 	var b = "",
@@ -11233,6 +11398,7 @@ c4.fp = function(l, d, G) {
 	console.log("===", b, "\t".repeat(l), ": " + G)
 };
 
+// PsdReader.readMinimal — quick read PSD dimensions + composite buffer only
 c4.axw = function(l) {
 	var d = {
 			yQ: {}
@@ -11260,6 +11426,7 @@ c4.axw = function(l) {
 	}]
 };
 
+// PsdReader.importFromBuffer — full PSD parse → document model
 c4.Cd = function(l, d) {
 	d.v_ = !1;
 	d.dP = 8;
@@ -11688,6 +11855,7 @@ c4.Cd = function(l, d) {
 	for (var A = 0; A < aD.length; A++) d.B[aD[A]].add.lyid = et + 1 + A
 };
 
+// PsdReader.readThumbnail — parse image resource thumbnail block
 c4.aj_ = function(l, d) {
 	var G = X.q(l, d + 12),
 		b = [];
@@ -11699,6 +11867,7 @@ c4.aj_ = function(l, d) {
 	return b
 };
 
+// PsdReader.readGlobalLayerMask — parse global layer mask info
 c4.a7b = function(l) {
 	var d = new DOMParser,
 		G = d.parseFromString(l, "text/xml").firstChild.children[0],
@@ -11721,6 +11890,7 @@ c4.a7b = function(l) {
 	return V
 };
 
+// PsdReader.readResolutionInfo — parse resolution / print info block
 c4.asJ = function(l) {
 	var d = new DOMParser,
 		G = d.parseFromString(l, "text/xml").firstChild.children,
@@ -11741,6 +11911,7 @@ c4.asJ = function(l) {
 	return b
 };
 
+// PsdReader.exportToBuffer — document model → PSD file bytes
 c4.CO = function(l, d, G) {
 	f.hE.aw(l);
 	f.hE.Uc(l, !1);
@@ -12115,6 +12286,7 @@ c4.CO = function(l, d, G) {
 	return kq
 };
 
+// PsdReader.readHeader — parse PSD file header (version, size, depth)
 c4.Zr = function(l, d, G) {
 	var b = X.Ko(d, G, 4);
 	G += 4;
@@ -12137,6 +12309,7 @@ c4.Zr = function(l, d, G) {
 	return G
 };
 
+// PsdReader.readLayerRecord — parse one layer record from layer info section
 c4.a0C = function(l, d, G, b) {
 	d.ensureCapacity(0, 64);
 	X.KQ(d.data, G, "8BPS");
@@ -12160,6 +12333,7 @@ c4.a0C = function(l, d, G, b) {
 	return G
 };
 
+// PsdReader.readColorModeData — skip/read color mode data section
 c4.apV = function(l, d, G) {
 	var b = X.YU(d, G);
 	G += 4;
@@ -12168,12 +12342,14 @@ c4.apV = function(l, d, G) {
 	return G
 };
 
+// PsdReader.readImageResources — parse 8BIM image resources section
 c4.arf = function(l, d, G) {
 	X.Kl(d, G, 0);
 	G += 4;
 	return G
 };
 
+// PsdReader.readLayerAndMaskInfo — parse layer and mask information section
 c4.a4V = function(l, d, G) {
 	var b = X.q(d, G),
 		V = 0;
@@ -12200,6 +12376,7 @@ c4.a4V = function(l, d, G) {
 	return G + b
 };
 
+// PsdReader.readLayerInfo — parse layer info sub-section
 c4.apH = function(l, d, G) {
 	var b = G,
 		t = 0;
@@ -12231,6 +12408,7 @@ c4.apH = function(l, d, G) {
 	return G + t
 };
 
+// PsdReader.readGlobalLayerMaskInfo — parse global layer mask sub-section
 c4.ahD = function(l, d, G) {
 	var b = G,
 		V, Q, t = l.v_ ? 8 : 4;
@@ -12250,6 +12428,7 @@ c4.ahD = function(l, d, G) {
 	return b + t + V
 };
 
+// PsdReader.readAdditionalLayerInfo — parse tagged layer info at end of LM section
 c4.aa9 = function(l, d, G, b, V) {
 	var Q = G;
 	X._b(d, G, 0);
@@ -12266,6 +12445,7 @@ c4.aa9 = function(l, d, G, b, V) {
 	return G
 };
 
+// PsdReader.readChannelImageData — read composite / layer channel image data
 c4.ads = function(l, d, G) {
 	var b, V = l.v_ ? 8 : 4;
 	if (l.v_) b = X.fD(d, G);
@@ -12275,6 +12455,7 @@ c4.ads = function(l, d, G) {
 	return G + b
 };
 
+// PsdReader.readPascalString — read 1-byte length Pascal string
 c4.C7 = function(l, d, G) {
 	var b = X.Ar(d, G);
 	G += 2;
@@ -12296,7 +12477,9 @@ c4.C7 = function(l, d, G) {
 	}
 };
 
+// PsdReader.skipPadding — align offset to 4-byte boundary (no-op stub)
 c4.at3 = function(l, d) {};
+// PsdReader.writeHeader — serialize PSD file header
 c4.akH = function(l, d, G, b, V) {
 	var Q = G,
 		t = l.v_;
@@ -12309,6 +12492,7 @@ c4.akH = function(l, d, G, b, V) {
 	return Q + I + (t ? 8 : 4)
 };
 
+// PsdReader.writeColorModeData — serialize color mode data section
 c4.ank = function(l, d, G, b, V) {
 	var Q = l.B.length;
 	X.bz(d, G, V ? -Q : Q);
@@ -12319,6 +12503,7 @@ c4.ank = function(l, d, G, b, V) {
 	return G
 };
 
+// PsdReader.writeImageResources — serialize image resources section
 c4.avv = function(l, d, G) {
 	var b = X.q(d, G);
 	G += 4;
@@ -12326,12 +12511,14 @@ c4.avv = function(l, d, G) {
 	return G
 };
 
+// PsdReader.writeLayerAndMaskInfo — serialize layer/mask section
 c4.aqs = function(l, d, G) {
 	var b = X._b(d, G, 0);
 	G += 4;
 	return G
 };
 
+// PsdReader.readCompositeImage — read merged composite channel data
 c4.a04 = function(l, d, G) {
 	var b = l.RU,
 		V = "Bitmap Grayscale Indexed RGB CMYK Multichannel Duotone Lab".split(" "),
@@ -12417,6 +12604,7 @@ c4.a04 = function(l, d, G) {
 	return G
 };
 
+// PsdReader.writeCompositeImage — write merged composite channel data
 c4.ab5 = function(l, d, G, b, V) {
 	var Q = 1,
 		t = 16,
@@ -12462,19 +12650,23 @@ c4.ab5 = function(l, d, G, b, V) {
 };
 
 
+// gS - PdfDictReader (PDF/PostScript dictionary syntax parser)
 function gS() {}
+// PdfDictReader.parse — parse PDF dictionary bytes → JS object tree
 gS.Cd = function(l) {
 	var d = {};
 	gS.M5(l, d, 0, 0);
 	return d
 };
 
+// PdfDictReader.serialize — JS object tree → PDF dictionary bytes
 gS.CO = function(l, d) {
 	var G = 0;
 	G = gS.Ms(l, d, G, 0);
 	return G
 };
 
+// PdfDictReader.readDict — recursively read << … >> dictionary
 gS.M5 = function(l, d, G, b) {
 	while (l[G] != "<".charCodeAt(0)) G++;
 	G += 2;
@@ -12506,6 +12698,7 @@ gS.M5 = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictReader.writeDict — recursively write dictionary
 gS.Ms = function(l, d, G, b) {
 	X.zr(d, G, "<<\n");
 	G += 3;
@@ -12535,6 +12728,7 @@ gS.Ms = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictReader.readValue — read one PDF value (dict/array/string/number)
 gS.ZS = function(l, d, G, b) {
 	var V = d,
 		Q = {
@@ -12599,6 +12793,7 @@ gS.ZS = function(l, d, G, b) {
 	return Q
 };
 
+// PdfDictReader.writeValue — write one PDF value
 gS.Zn = function(l, d, G, b) {
 	if (l instanceof Array) {
 		var V = l.length == 0 || typeof l[0] == "number";
@@ -12647,19 +12842,23 @@ gS.Zn = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictReader.isInlineValue — true if value should stay on same line
 gS.a22 = function(l) {
 	var d = typeof l;
 	return d == "string" || d == "number" || d == "boolean"
 };
 
 
+// i0 - PdfDictWriter (serialize object tree to PDF dictionary syntax)
 function i0() {}
+// PdfDictWriter.parse — alias: parse PDF dictionary (delegates to gS)
 i0.Cd = function(l) {
 	var d = {};
 	i0.a3f(l, d, 0, 0);
 	return d
 };
 
+// PdfDictWriter.serialize — alias: serialize to PDF dictionary bytes
 i0.CO = function(l, d) {
 	var G = 0;
 	X.zr(d, G, " ");
@@ -12672,6 +12871,7 @@ i0.CO = function(l, d) {
 	return G
 };
 
+// PdfDictWriter.readDict — read dictionary (shared with gS)
 i0.M5 = function(l, d, G, b) {
 	while (l[G] != "<".charCodeAt(0)) {
 		G++;
@@ -12682,6 +12882,7 @@ i0.M5 = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictWriter.writeDict — write dictionary (shared with gS)
 i0.Ms = function(l, d, G, b) {
 	X.zr(d, G, "<< ");
 	G += 3;
@@ -12691,10 +12892,12 @@ i0.Ms = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictWriter.readStream — read PDF stream object + decode
 i0.QW = function(l) {
 	return l == 9 || l == 10 || l == 32
 };
 
+// PdfDictWriter.writeStream — write PDF stream object
 i0.a3f = function(l, d, G, b) {
 	while (!0) {
 		while (i0.QW(l[G]) || l[G] == 0) G++;
@@ -12723,6 +12926,7 @@ i0.a3f = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictWriter.readArray — read PDF array value
 i0.al5 = function(l, d, G, b) {
 	for (var V in l) {
 		var Q = V.substring(1, V.length);
@@ -12737,6 +12941,7 @@ i0.al5 = function(l, d, G, b) {
 	return G
 };
 
+// PdfDictWriter.readValue — read one PDF value
 i0.ZS = function(l, d, G, b) {
 	var V = d,
 		Q = {
@@ -12811,6 +13016,7 @@ i0.ZS = function(l, d, G, b) {
 	return Q
 };
 
+// PdfDictWriter.isInlineValue — inline-value layout check
 i0.a7Y = function(l) {
 	if (l == Math.round(l)) return l + ".0";
 	var d = l.toFixed(5);
@@ -12820,6 +13026,7 @@ i0.a7Y = function(l) {
 	return d
 };
 
+// PdfDictWriter.writeValue — write one PDF value
 i0.Zn = function(l, d, G, b) {
 	var V = typeof l == "string" ? l.charAt(0) : "";
 	if (l instanceof Array) {
@@ -12867,19 +13074,23 @@ i0.Zn = function(l, d, G, b) {
 };
 
 
+// X - BinaryUtil (big-endian binary read/write helpers for PSD and resources)
 function X() {}
+// BinaryUtil.int32ToFourChar — uint32 → 4-char ASCII string (big-endian)
 X.a5J = function(hZ) {
 	var l = "";
 	for (var A = 3; A >= 0; A--) l += String.fromCharCode(hZ >> A * 8 & 255);
 	return l
 };
 
+// BinaryUtil.fourCharToInt32 — 4-char ASCII string → uint32
 X.afT = function(l) {
 	var hZ = 0;
 	for (var A = l.length - 1; A >= 0; A--) hZ |= l.charCodeAt(A) << (3 - A) * 8;
 	return hZ
 };
 
+// BinaryUtil.indexOf — indexOf byte value in Uint8Array
 X.indexOf = function(l, d, G, b) {
 	if (G == null) G = 0;
 	if (b == null) b = l.length;
@@ -12889,6 +13100,7 @@ X.indexOf = function(l, d, G, b) {
 	return -1
 };
 
+// BinaryUtil.indexOfSequence — find byte subsequence in buffer
 X.dp = function(l, d, G) {
 	if (G == null) G = 0;
 	var b = d.length,
@@ -12914,6 +13126,7 @@ X.dp = function(l, d, G) {
 	return -1
 };
 
+// BinaryUtil.readPostScriptHexString — decode PostScript hex string pairs → Unicode
 X.ac7 = function(l, d, G) {
 	var b = [],
 		Q = "";
@@ -12926,6 +13139,7 @@ X.ac7 = function(l, d, G) {
 	return Q
 };
 
+// BinaryUtil.writePostScriptString — write PostScript escaped UTF-16BE string
 X.aw0 = function(l, d, G) {
 	var b = new Uint8Array(2);
 	for (var A = 0; A < G.length; A++) {
@@ -12946,11 +13160,13 @@ X.aw0 = function(l, d, G) {
 	return d
 };
 
+// BinaryUtil.writePostScriptStringToBuffer — GrowableByteBuffer wrapper for aw0
 X.a9h = function(l, d, G) {
 	l.ensureCapacity(d, 4 * G.length);
 	return X.aw0(l.data, d, G)
 };
 
+// BinaryUtil.readUtf16LE — read count UTF-16LE code units → string
 X.Di = function(l, d, G) {
 	var b = "";
 	for (var A = 0; A < G; A++) {
@@ -12960,6 +13176,7 @@ X.Di = function(l, d, G) {
 	return b
 };
 
+// BinaryUtil.readUtf16BE — read count UTF-16BE code units → string
 X.tj = function(l, d, G) {
 	var b = "";
 	for (var A = 0; A < G; A++) {
@@ -12969,6 +13186,7 @@ X.tj = function(l, d, G) {
 	return b
 };
 
+// BinaryUtil.writeUtf16BE — write string as UTF-16BE code units
 X.ayG = function(l, d, G) {
 	for (var A = 0; A < G.length; A++) {
 		var b = G.charCodeAt(A);
@@ -12976,6 +13194,7 @@ X.ayG = function(l, d, G) {
 	}
 };
 
+// BinaryUtil.writeUtf16LE — write string as UTF-16LE code units
 X.a37 = function(l, d, G) {
 	for (var A = 0; A < G.length; A++) {
 		var b = G.charCodeAt(A);
@@ -12983,11 +13202,13 @@ X.a37 = function(l, d, G) {
 	}
 };
 
+// BinaryUtil.writeUtf16LEToBuffer — GrowableByteBuffer wrapper for a37
 X.awV = function(l, d, G) {
 	l.ensureCapacity(d, 2 * G.length);
 	X.a37(l.data, d, G)
 };
 
+// BinaryUtil.readUtf8Codepoints — manual UTF-8 decode → codepoint array
 X.aw8 = function(l, A, d) {
 	var G = [],
 		b = 0,
@@ -13021,6 +13242,7 @@ X.aw8 = function(l, A, d) {
 };
 
 X.az0 = window.TextDecoder ? new window.TextDecoder("utf8") : null;
+// BinaryUtil.readUtf8 — UTF-8 bytes → JS string
 X.Kw = function(l, d, G) {
 	if (d == null) d = 0;
 	if (G == null) G = l.length;
@@ -13032,6 +13254,7 @@ X.Kw = function(l, d, G) {
 };
 
 X.aqQ = window.TextEncoder ? new window.TextEncoder("utf8") : null;
+// BinaryUtil.writeUtf8 — JS string → UTF-8 Uint8Array
 X.zE = function(l) {
 	if (X.aqQ) return X.aqQ.encode(l);
 	var d = new Uint8Array(l.length * 4),
@@ -13039,6 +13262,7 @@ X.zE = function(l) {
 	return d.slice(0, G)
 };
 
+// BinaryUtil.writeUtf8Into — write UTF-8 into existing buffer, return byte count
 X.nR = function(l, d, G) {
 	var b = l.length,
 		A = 0;
@@ -13067,6 +13291,7 @@ X.nR = function(l, d, G) {
 	return A
 };
 
+// BinaryUtil.readPascalUtf8 — length-prefixed UTF-8 string
 X.sC = function(l, d) {
 	var G = X.q(l, d),
 		b = X.Kw(l, d + 4, G - 1);
@@ -13076,52 +13301,61 @@ X.sC = function(l, d) {
 	}
 };
 
+// BinaryUtil.readLengthPrefixedUtf16LE — uint32 length + UTF-16LE string
 X.aza = function(l, d) {
 	var G = X.Lv(l, d),
 		b = X.Di(l, d + 4, G);
 	return b
 };
 
+// BinaryUtil.readLengthPrefixedUtf16BE — uint32 length + UTF-16BE string
 X.RP = function(l, d) {
 	var G = X.q(l, d),
 		b = X.tj(l, d + 4, G);
 	return b
 };
 
+// BinaryUtil.readUnicodeString — PSD Unicode string (uint32 char count + UTF-16BE + nul)
 X.zf = function(l, d) {
 	var G = X.q(l, d),
 		b = X.tj(l, d + 4, G - 1);
 	return b
 };
 
+// BinaryUtil.writeLengthPrefixedUtf16BE — write uint32 length + UTF-16BE
 X.anW = function(l, d, G) {
 	X.iy(l, d, G.length);
 	d += 4;
 	X.ayG(l, d, G)
 };
 
+// BinaryUtil.writeUnicodeString — write PSD Unicode string
 X.apI = function(l, d, G) {
 	X.m1(l, d, G.length);
 	d += 4;
 	X.a37(l, d, G)
 };
 
+// BinaryUtil.writeUnicodeStringToBuffer — GrowableByteBuffer wrapper for apI
 X.ZI = function(l, d, G) {
 	l.ensureCapacity(d, 4 + 2 * G.length);
 	X.apI(l.data, d, G)
 };
 
+// BinaryUtil.writeLengthPrefixedUtf16BEToBuffer — buffer wrapper for anW
 X.a2D = function(l, d, G) {
 	l.ensureCapacity(d, 4 + 2 * G.length);
 	X.anW(l.data, d, G)
 };
 
+// BinaryUtil.readAsciiBytes — read count ASCII bytes → char array
 X.Ly = function(l, d, G) {
 	var b = [];
 	for (var A = 0; A < G; A++) b.push(String.fromCharCode(l[d + A]));
 	return b
 };
 
+// BinaryUtil.indexOfString — find ASCII substring in byte buffer
 X.ahN = function(l, d, G) {
 	var b = !1,
 		V = l.length - G.length;
@@ -13133,21 +13367,25 @@ X.ahN = function(l, d, G) {
 	}
 };
 
+// BinaryUtil.readAscii — read fixed-length ASCII string
 X.Ko = function(l, d, G) {
 	var b = "";
 	for (var A = 0; A < G; A++) b += String.fromCharCode(l[d + A]);
 	return b
 };
 
+// BinaryUtil.writeAscii — write fixed-length ASCII string
 X.KQ = function(l, d, G) {
 	for (var A = 0; A < G.length; A++) l[d + A] = G.charCodeAt(A)
 };
 
+// BinaryUtil.writeAsciiToBuffer — write ASCII to GrowableByteBuffer
 X.zr = function(l, d, G) {
 	l.ensureCapacity(d, G.length);
 	X.KQ(l.data, d, G)
 };
 
+// BinaryUtil.writeAsciiPadded — write ASCII padded to 4-byte boundary
 X.aAs = function(l, d, G) {
 	var b = "";
 	for (var A = 0; A < G; A++) {
@@ -13159,26 +13397,31 @@ X.aAs = function(l, d, G) {
 	return b
 };
 
+// BinaryUtil.readUint16BE — read big-endian uint16
 X.TD = function(l, d) {
 	return l[d] << 8 | l[d + 1]
 };
 
+// BinaryUtil.writeUint16BE — write big-endian uint16
 X.fh = function(l, d, hZ) {
 	l[d] = hZ >> 8 & 255;
 	l[d + 1] = hZ & 255
 };
 
+// BinaryUtil.writeUint16BEToBuffer — buffer wrapper for fh
 X.pg = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.fh(l.data, d, hZ)
 };
 
+// BinaryUtil.readFixedPointU16 — read 16.16 fixed-point (2× uint16 BE)
 X.anN = function(l, d) {
 	var G = X.TD(l, d),
 		b = X.TD(l, d + 2);
 	return G + b * (1 / 65536)
 };
 
+// BinaryUtil.writeFixedPointU16 — write 16.16 fixed-point
 X.aeo = function(l, d, hZ) {
 	var G = Math.floor(hZ),
 		b = Math.floor((hZ - G) * 65536);
@@ -13186,26 +13429,31 @@ X.aeo = function(l, d, hZ) {
 	X.fh(l, d + 2, b)
 };
 
+// BinaryUtil.readUint16LE — read little-endian uint16
 X._w = function(l, d) {
 	return l[d + 1] << 8 | l[d]
 };
 
+// BinaryUtil.writeUint16LE — write little-endian uint16
 X.qW = function(l, d, hZ) {
 	l[d + 1] = hZ >> 8 & 255;
 	l[d] = hZ & 255
 };
 
+// BinaryUtil.writeUint16LEToBuffer — buffer wrapper for qW
 X.Ke = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.qW(l.data, d, hZ)
 };
 
+// BinaryUtil.readInt16LE — read little-endian int16
 X.Ar = function(l, d) {
 	X.DD[0] = l[d + 1];
 	X.DD[1] = l[d];
 	return X.Id[0]
 };
 
+// BinaryUtil.readInt16BE — read big-endian int16
 X.V6 = function(l, d) {
 	X.DD[0] = l[d];
 	X.DD[1] = l[d + 1];
@@ -13214,6 +13462,7 @@ X.V6 = function(l, d) {
 
 X.RD = X.fh;
 X.bz = X.pg;
+// BinaryUtil.readInt32BE — read big-endian int32
 X.YU = function(l, d) {
 	X.ou[0] = l[d + 3];
 	X.ou[1] = l[d + 2];
@@ -13222,6 +13471,7 @@ X.YU = function(l, d) {
 	return X.HP[0]
 };
 
+// BinaryUtil.writeInt32BE — write big-endian int32
 X.Mb = function(l, d, hZ) {
 	X.HP[0] = hZ;
 	l[d + 3] = X.ou[0];
@@ -13230,11 +13480,13 @@ X.Mb = function(l, d, hZ) {
 	l[d + 0] = X.ou[3]
 };
 
+// BinaryUtil.writeInt32BEToBuffer — buffer wrapper for Mb
 X.Kl = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.Mb(l.data, d, hZ)
 };
 
+// BinaryUtil.readUint32Bytes — copy 4 bytes into typed array view
 X.Nh = function(l, d, G, b) {
 	G[b + 0] = l[d + 0];
 	G[b + 1] = l[d + 1];
@@ -13242,41 +13494,49 @@ X.Nh = function(l, d, G, b) {
 	G[b + 3] = l[d + 3]
 };
 
+// BinaryUtil.readUint32BE — read big-endian uint32 (alias via DataView)
 X.Lv = function(l, d) {
 	X.Nh(l, d, X.ou, 0);
 	return X.a3v[0]
 };
 
+// BinaryUtil.writeUint32BE — write big-endian uint32 (alias)
 X.iy = function(l, d, hZ) {
 	X.a3v[0] = hZ;
 	X.Nh(X.ou, 0, l, d)
 };
 
+// BinaryUtil.writeUint32BEToBuffer — buffer wrapper for iy
 X.zU = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.iy(l.data, d, hZ)
 };
 
+// BinaryUtil.readFloat32BE — read big-endian float32
 X.EY = function(l, d) {
 	X.Nh(l, d, X.ou, 0);
 	return X.HP[0]
 };
 
+// BinaryUtil.writeFloat32BE — write big-endian float32
 X.aum = function(l, d, hZ) {
 	X.HP[0] = hZ;
 	X.Nh(X.ou, 0, l, d)
 };
 
+// BinaryUtil.writeFloat32BEToBuffer — buffer wrapper
 X.anQ = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.aum(l.data, d, hZ)
 };
 
+// BinaryUtil.readUint32BE — read big-endian uint32 (PSD standard)
 X.q = function(l, d) {
 	var G = l[d] * (256 * 256 * 256) + (l[d + 1] << 16 | l[d + 2] << 8 | l[d + 3]);
 	return G
 };
 
+// BinaryUtil.writeUint32BEToBuffer — write uint32 via buffer (alias Kl path)
 X.m1 = function(l, d, hZ) {
 	l[d] = hZ >> 24 & 255;
 	l[d + 1] = hZ >> 16 & 255;
@@ -13284,25 +13544,30 @@ X.m1 = function(l, d, hZ) {
 	l[d + 3] = hZ >> 0 & 255
 };
 
+// BinaryUtil.writeUint32BEAt — write uint32 at offset in GrowableByteBuffer
 X._b = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.m1(l.data, d, hZ)
 };
 
+// BinaryUtil.readUint64BE — read big-endian uint64 as Number
 X.fD = function(l, d) {
 	return X.q(l, d) << 32 | X.q(l, d + 4)
 };
 
+// BinaryUtil.writeUint64BE — write big-endian uint64
 X.ab6 = function(l, d, hZ) {
 	X.m1(l, d, hZ >> 16 >> 16);
 	X.m1(l, d + 4, hZ & 4294967295)
 };
 
+// BinaryUtil.writeUint64BEToBuffer — buffer wrapper
 X.TB = function(l, d, hZ) {
 	l.ensureCapacity(d, 8);
 	X.ab6(l.data, d, hZ)
 };
 
+// BinaryUtil.readFloat64BE — read big-endian float64
 X.o_ = function(l, d) {
 	var G = new Uint8Array(8);
 	for (var A = 0; A < 8; A++) G[A] = l[d + 7 - A];
@@ -13310,6 +13575,7 @@ X.o_ = function(l, d) {
 	return b[0]
 };
 
+// BinaryUtil.writeFloat64BE — write big-endian float64
 X.Ub = function(l, d) {
 	var G = new Uint8Array(8);
 	for (var A = 0; A < 8; A++) G[A] = l[d + A];
@@ -13317,6 +13583,7 @@ X.Ub = function(l, d) {
 	return b[0]
 };
 
+// BinaryUtil.writeFloat64BEToBuffer — buffer wrapper for Ub
 X.jp = function(l, d, hZ) {
 	var G = new Float64Array(1);
 	G[0] = hZ;
@@ -13329,11 +13596,13 @@ X.jp = function(l, d, hZ) {
 	for (var A = 0; A < 8; A++) l[d + A] = b[A]
 };
 
+// BinaryUtil.writeFloat64BEToBuffer — alias write path for descriptor doubles
 X.j_ = function(l, d, hZ) {
 	l.ensureCapacity(d, 8);
 	X.jp(l.data, d, hZ)
 };
 
+// BinaryUtil.readFloat64LE — read little-endian float64
 X.f_ = function(l, d) {
 	X.ou[0] = l[d + 3];
 	X.ou[1] = l[d + 2];
@@ -13342,6 +13611,7 @@ X.f_ = function(l, d) {
 	return X.mL[0]
 };
 
+// BinaryUtil.readFloat64LEPair — read two float64 LE (mesh coords)
 X.kY = function(l, d) {
 	X.ou[0] = l[d + 0];
 	X.ou[1] = l[d + 1];
@@ -13350,6 +13620,7 @@ X.kY = function(l, d) {
 	return X.mL[0]
 };
 
+// BinaryUtil.writeFloat64LE — write little-endian float64
 X.kf = function(l, d, hZ) {
 	X.mL[0] = hZ;
 	l[d + 0] = X.ou[3];
@@ -13358,11 +13629,13 @@ X.kf = function(l, d, hZ) {
 	l[d + 3] = X.ou[0]
 };
 
+// BinaryUtil.writeFloat64LEToBuffer — buffer wrapper
 X.ayS = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.kf(l.data, d, hZ)
 };
 
+// BinaryUtil.writeFloat64LEPair — write two float64 LE
 X.pF = function(l, d, hZ) {
 	X.mL[0] = hZ;
 	l[d + 0] = X.ou[0];
@@ -13371,27 +13644,32 @@ X.pF = function(l, d, hZ) {
 	l[d + 3] = X.ou[3]
 };
 
+// BinaryUtil.writeFloat64LEPairToBuffer — buffer wrapper
 X.awu = function(l, d, hZ) {
 	l.ensureCapacity(d, 4);
 	X.pF(l.data, d, hZ)
 };
 
+// BinaryUtil.readRectFloat64 — read Rect as four float64 BE values
 X.any = function(l, d) {
 	var G = X.YU(l, d),
 		b = G * (1 / (1 << 24));
 	return b
 };
 
+// BinaryUtil.writeRectFloat64 — write Rect as four float64 BE
 X.azT = function(l, d, G) {
 	var b = Math.floor(G * (1 << 24));
 	X.Mb(l, d, b)
 };
 
+// BinaryUtil.writeRectFloat64ToBuffer — buffer wrapper
 X.avk = function(l, d, G) {
 	l.ensureCapacity(d, 4);
 	X.azT(l.data, d, G)
 };
 
+// BinaryUtil.readUuid — read 16-byte UUID string from buffer
 X.Qh = function(l, d) {
 	var G = l[d],
 		b = X.Ko(l, d + 1, G);
@@ -13402,6 +13680,7 @@ X.Qh = function(l, d) {
 	}
 };
 
+// BinaryUtil.writeUuid — write UUID string to buffer
 X.ar0 = function(l, d, G) {
 	var b = G.length;
 	l[d] = b;
@@ -13413,11 +13692,13 @@ X.ar0 = function(l, d, G) {
 	return b + 1
 };
 
+// BinaryUtil.writeUuidToBuffer — write UUID via GrowableByteBuffer
 X.OH = function(l, d, G) {
 	l.ensureCapacity(d, G.length + 2);
 	return X.ar0(l.data, d, G)
 };
 
+// BinaryUtil.readLengthPrefixedBytes — uint32 length + raw bytes
 X.Aw = function(l, d) {
 	var G = new Matrix2D;
 	G.aS = X.o_(l, d + 0 * 8);
@@ -13429,6 +13710,7 @@ X.Aw = function(l, d) {
 	return G
 };
 
+// BinaryUtil.writeLengthPrefixedBytes — write length-prefixed byte array
 X.YI = function(l, d, G) {
 	X.jp(l, d + 0 * 8, G.aS);
 	X.jp(l, d + 1 * 8, G.k);
@@ -13438,11 +13720,13 @@ X.YI = function(l, d, G) {
 	X.jp(l, d + 5 * 8, G.xu)
 };
 
+// BinaryUtil.writeLengthPrefixedBytesToBuffer — buffer wrapper
 X.a6F = function(l, d, G) {
 	l.ensureCapacity(d, 48);
 	X.YI(l.data, d, G)
 };
 
+// BinaryUtil.readPascalString — 1-byte length + ASCII (PSD pascal string)
 X.a1D = function(l, d) {
 	var G = X.f_(l, d),
 		b = X.f_(l, d + 4),
@@ -13451,6 +13735,7 @@ X.a1D = function(l, d) {
 	return new Rect(G, b, V - G, Q - b)
 };
 
+// BinaryUtil.writePascalString — write PSD pascal string
 X.a4X = function(l, d, G) {
 	X.kf(l, d, G.x);
 	X.kf(l, d + 4, G.y);
@@ -13458,11 +13743,13 @@ X.a4X = function(l, d, G) {
 	X.kf(l, d + 12, G.y + G.n)
 };
 
+// BinaryUtil.writePascalStringToBuffer — buffer wrapper
 X.apm = function(l, d, G) {
 	l.ensureCapacity(d, 16);
 	X.a4X(l.data, d, G)
 };
 
+// BinaryUtil.readRectInt32 — read Rect (top,left,bottom,right) as 4× int32 BE
 X.NK = function(l, d) {
 	var G = X.YU(l, d),
 		b = X.YU(l, d + 4),
@@ -13471,6 +13758,7 @@ X.NK = function(l, d) {
 	return new Rect(b, G, Q - b, V - G)
 };
 
+// BinaryUtil.writeRectInt32 — write Rect as 4× int32 BE
 X.a36 = function(l, d, G) {
 	X.Mb(l, d, G.y);
 	X.Mb(l, d + 4, G.x);
@@ -13478,31 +13766,37 @@ X.a36 = function(l, d, G) {
 	X.Mb(l, d + 12, G.x + G.m)
 };
 
+// BinaryUtil.writeRectInt32ToBuffer — buffer wrapper for a36
 X.ZE = function(l, d, G) {
 	l.ensureCapacity(d, 16);
 	X.a36(l.data, d, G)
 };
 
+// BinaryUtil.readRectInt16 — read Rect as 4× int16 BE
 X.lK = function(l, d, G) {
 	var b = new Uint8Array(G);
 	for (var A = 0; A < G; A++) b[A] = l[d + A];
 	return b
 };
 
+// BinaryUtil.writeRectInt16 — write Rect as 4× int16 BE
 X.a65 = function(l, d, G) {
 	l.set(G, d)
 };
 
+// BinaryUtil.writeBytes — copy byte array into GrowableByteBuffer
 X.i7 = function(l, d, G) {
 	l.ensureCapacity(d, G.length);
 	X.a65(l.data, d, G)
 };
 
+// BinaryUtil.writeByte — write single byte, optionally repeated
 X.awS = function(l, d, G, hZ) {
 	if (!hZ) hZ = 1;
 	for (var A = 0; A < hZ; A++) l[d + A] = G
 };
 
+// BinaryUtil.writeBytesToBuffer — write raw bytes with optional repeat
 X.s8 = function(l, d, G, hZ) {
 	if (!hZ) hZ = 1;
 	l.ensureCapacity(d, hZ);
@@ -13516,7 +13810,9 @@ X.a3v = new Uint32Array(X.HP.buffer);
 X.ou = new Uint8Array(X.HP.buffer);
 X.mL = new Float32Array(X.HP.buffer);
 
+// az - XcfReader (GIMP XCF file format reader)
 function az() {}
+// XcfReader.importFromBuffer — parse GIMP .xcf → document model
 az.Cd = function(l, d) {
 	var G = new Uint8Array(l),
 		b = 0,
@@ -13567,6 +13863,7 @@ az.Cd = function(l, d) {
 	}
 };
 
+// XcfReader.readProperty — read one XCF property record
 az.a2S = function(l, d, G, b, V, Q) {
 	var t = G.V4(),
 		I = X.q(l, d),
@@ -13713,6 +14010,7 @@ az.a2S = function(l, d, G, b, V, Q) {
 	G.B.push(t)
 };
 
+// XcfReader.readPropList — read property list until sentinel
 az.a2P = function(l) {
 	var d = "(" + X.Kw(l, 0, l.length - 1) + ")",
 		G = [],
@@ -13722,6 +14020,7 @@ az.a2P = function(l) {
 	return b
 };
 
+// XcfReader.readLayer — read one XCF layer record
 az.apf = function(l, d) {
 	for (var A = 0; A < l.length; A++) {
 		var G = l[A],
@@ -13731,6 +14030,7 @@ az.apf = function(l, d) {
 	}
 };
 
+// XcfReader.readChannel — read one XCF layer channel
 az.abV = function(l, d, G) {
 	while (!0) {
 		if (d >= l.length) throw "e";
@@ -13758,6 +14058,7 @@ az.abV = function(l, d, G) {
 	}
 };
 
+// XcfReader.readHierarchy — read XCF layer group hierarchy
 az.a7R = function(l, d, G, b, V) {
 	var Q = X.q(l, d);
 	d += 4;
@@ -13778,6 +14079,7 @@ az.a7R = function(l, d, G, b, V) {
 	}
 };
 
+// XcfReader.readTile — read RLE/zip tile for channel
 az.a3F = function(l, d, G, b, V, Q) {
 	var t = X.q(l, d);
 	d += 4;
@@ -13791,6 +14093,7 @@ az.a3F = function(l, d, G, b, V, Q) {
 	az.ann(l, M, G, b, y, V, Q)
 };
 
+// XcfReader.decodeTile — decompress tile pixels into buffer
 az.ann = function(l, d, G, b, V, Q, t) {
 	var I = X.q(l, d),
 		M = 0,
@@ -13854,6 +14157,7 @@ az.ann = function(l, d, G, b, V, Q, t) {
 			}
 };
 
+// XcfReader.createEmptyDoc — default empty XCF document shell
 az.ao6 = function() {
 	var l = az.awK;
 	if (l != null) return l;
@@ -13862,6 +14166,7 @@ az.ao6 = function() {
 	return l
 };
 
+// XcfReader.readParasites — read XCF parasite (metadata) records
 az.a6G = function(l, d, G, b, V, Q) {
 	if (b == 1) {
 		for (var t = 0; t < V; t++) {
@@ -13913,6 +14218,7 @@ az.a6G = function(l, d, G, b, V, Q) {
 	} else alert("Unknown compression " + b)
 };
 
+// XcfReader.readFloatingSelection — read XCF floating selection
 az.$H = function(l, d, G, b) {
 	var V = b == 4 ? X.q : X.fD;
 	while (!0) {
@@ -13924,6 +14230,7 @@ az.$H = function(l, d, G, b) {
 	return d
 };
 
+// XcfReader.readPath — read XCF vector path
 az.Hi = function(l, d, G) {
 	while (!0) {
 		var b = X.q(l, d);
@@ -13938,6 +14245,7 @@ az.Hi = function(l, d, G) {
 	return d
 };
 
+// XcfReader.readGuide — read XCF guide / grid info
 az.a7j = function(l, d, G) {
 	var b = {};
 	while (d < G) {
