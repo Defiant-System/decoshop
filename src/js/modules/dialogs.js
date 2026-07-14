@@ -6714,10 +6714,10 @@ const Dialogs = {
 						Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					} else {
 						let url = `/cdn/img/luts/${event.value}.cube`;
-						window.fetch(url, { responseType: "arrayBuffer" })
-							.then(buf => {
+						$.fetch_(url, { responseType: "arrayBuffer" })
+							.then(res => {
 								// save lut to cache
-								Self.lutCache[event.value] = LutProfileResource.Cd(buf, `${event.value}.cube`)[0];
+								Self.lutCache[event.value] = LutProfileResource.Cd(res.arrayBuffer, `${event.value}.cube`)[0];
 								Self.values.lutProfile = Self.lutCache[event.value];
 								// initial apply
 								Self.dispatch({ type: "apply-filter-data", values: Self.values });
