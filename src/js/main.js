@@ -31,6 +31,7 @@ let {
 	Point2D,
 	PsdResourceTypes,
 	Rect,
+	SelectiveColorHelper,
 	exportHelper,
 	languageManager,
 	WebGLContext,

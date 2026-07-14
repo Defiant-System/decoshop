@@ -6022,6 +6022,13 @@ const Dialogs = {
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-colors" });
 					break;
+				case "toggle-absolute":
+					event.values = Self.values; // first copy values
+					event.values.absolute.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-cyan":
 					event.values = Self.values; // first copy values
 					event.values.colors.value[Self.values.mode.value].cyan = event.value; // then partial overwrite
@@ -6055,25 +6062,20 @@ const Dialogs = {
 					// save applied value - to prevent re-render if it is same value as before
 					Self.values = event.values;
 					// safe & smooth raf
-					// Engine.raf(() => {
-					// 	let qv = FilterHelper.oT("selc");
-					// 	// Shadows
-					// 	qv.ShdL.v[0].v = Self.values.levels.value.shadows["cyan-red"];
-					// 	qv.ShdL.v[1].v = Self.values.levels.value.shadows["magenta-green"];
-					// 	qv.ShdL.v[2].v = Self.values.levels.value.shadows["yellow-blue"];
-					// 	// Midtones
-					// 	qv.MdtL.v[0].v = Self.values.levels.value.midtones["cyan-red"];
-					// 	qv.MdtL.v[1].v = Self.values.levels.value.midtones["magenta-green"];
-					// 	qv.MdtL.v[2].v = Self.values.levels.value.midtones["yellow-blue"];
-					// 	// Highlights
-					// 	qv.HghL.v[0].v = Self.values.levels.value.highlights["cyan-red"];
-					// 	qv.HghL.v[1].v = Self.values.levels.value.highlights["magenta-green"];
-					// 	qv.HghL.v[2].v = Self.values.levels.value.highlights["yellow-blue"];
-					// 	// "Preserve Luminosity" toggler
-					// 	qv.PrsL.v = Self.values.luminosity.value;
-					// 	PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "selc", qv, ve: false } });
-					// 	PP.update();
-					// });
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("selc");
+						qv.Mthd = {
+							t: "enum",
+							v: { CrcM: Self.values.absolute.value ? "Absl" : "Rltv" }
+						};
+						let colorKeys = Object.keys(Self.values.colors.value);
+						for (let i=0, il=colorKeys.length; i<il; i++) {
+							let c = Self.values.colors.value[colorKeys[i]];
+							SelectiveColorHelper.fZ(qv, i, [c.cyan, c.magenta, c.yellow, c.black]);
+						}
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "selc", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				case "sync-ui-with-colors":
@@ -6105,6 +6107,12 @@ const Dialogs = {
 							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
 							value = xVal.getAttribute("value");
 						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
 					});
 					// prepare  level values
 					Self.values.colors = {
@@ -6159,6 +6167,9 @@ const Dialogs = {
 					Self.values.colors.value = structuredClone(Self.values.colors.default);
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-colors" });
+					// un-apply preview LUT (same as Cancel / preview off)
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "selc" } });
+					PP.update();
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;

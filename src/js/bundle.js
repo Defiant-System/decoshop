@@ -106,6 +106,7 @@ module.exports = {
 	PixelUtil,
 	Point2D,
 	PsdResourceTypes,
+	SelectiveColorHelper,
 	Rect,
 	exportHelper,
 	languageManager,

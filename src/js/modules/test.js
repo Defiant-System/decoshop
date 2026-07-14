@@ -83,7 +83,7 @@ let Test = {
 		 * 
 		 */
 		// setTimeout(() => APP.dispatch({ type: "filter-render", arg: "clouds" }), 1600);
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgSelectiveColor" }), 1600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgShadowHighlights" }), 1600);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 

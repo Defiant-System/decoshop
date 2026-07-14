@@ -60607,6 +60607,8 @@ d1.IN = function(l) {
 
 // iX - SelectiveColorHelper (selc adjustment preset binary codec)
 function iX() {}
+const SelectiveColorHelper = iX;
+
 // SelectiveColorHelper.readFromPsd — parse selc preset block → adjustment descriptor
 iX.nj = function(l, d, G) {
 	var b = X.TD(l, d);
@@ -118469,6 +118471,7 @@ module.exports = {
 	PixelUtil,
 	Point2D,
 	PsdResourceTypes,
+	SelectiveColorHelper,
 	Rect,
 	exportHelper,
 	languageManager,
