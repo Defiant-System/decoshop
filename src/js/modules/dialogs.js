@@ -6775,12 +6775,15 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
 					break;
 				case "dlg-reset":
-					// close dialog
+					// reset dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					// make sure internally stored values are reverted to default values
-					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
-					// initial apply
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					// un-apply preview LUT (same as Cancel / preview off)
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "clrL" } });
+					PP.update();
+					Object.keys(Self.values).map(key => {
+						Self.values[key].value = Self.values[key].default;
+					});
+					delete Self.values.lutProfile;
 					break;
 				case "dlg-close":
 					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "clrL" } });
