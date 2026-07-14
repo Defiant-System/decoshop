@@ -690,7 +690,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectMagicCut,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "set-workarea-layout":
 					el = $(event.target).parents("?li[data-id]");
@@ -778,7 +778,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgQuickMaskOptions,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "select-style":
 					break;
@@ -800,7 +800,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgFlame,
-				el;
+				Doc = Self.doc;
 			switch (event.type) {
 				case "select-style":
 					el = $(event.target);
@@ -6399,7 +6399,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgGradientMap,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
@@ -6516,19 +6516,122 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgReplaceColor,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
-				case "set-count":
+				case "select-color-from-canvas":
+					// TODO
+					console.log(event);
+					break;
+				case "set-fuzziness":
 					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
+					event.values.fuzziness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-color":
+					event.values = Self.values; // first copy values
+					let { r, g, b } = ColorLib.hexToRgb(event.value);
+					event.values.color.value = PixelUtil.rgbToLab(r, g, b);
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-hue":
+					event.values = Self.values; // first copy values
+					event.values.hue.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-saturation":
+					event.values = Self.values; // first copy values
+					event.values.saturation.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-lightness":
+					event.values = Self.values; // first copy values
+					event.values.lightness.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("rplc");
+						qv.Fzns.v = Self.values.fuzziness.value;
+						qv.H.v = Self.values.hue.value;
+						qv.Strt.v = Self.values.saturation.value;
+						qv.Lght.v = Self.values.lightness.value;
+						qv.Mnm.v.Lmnc.v = Self.values.color.value.Hm;
+						qv.Mnm.v.A.v = Self.values.color.value.aS;
+						qv.Mnm.v.B.v = Self.values.color.value.k;
+						qv.Mxm.v.Lmnc.v = Self.values.color.value.Hm;
+						qv.Mxm.v.A.v = Self.values.color.value.aS;
+						qv.Mxm.v.B.v = Self.values.color.value.k;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "rplc", qv, ve: false } });
+						PP.update();
+					});
 					return;
-					
+
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// color palettes initial values
+					Self.root.find(`.field-row .color-preset`).map(elem => {
+						let el = $(elem),
+							{ r, g, b } = ColorLib.parseRgb(el.css("background-color")),
+							def = PixelUtil.rgbToLab(r, g, b),
+							value = PixelUtil.rgbToLab(r, g, b);
+						Self.values[el.data("name")] = { default: def, value };
+					});
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "rplc" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "rplc" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "rplc" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
@@ -6546,7 +6649,7 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgSelectColorRange,
-				el;
+				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
