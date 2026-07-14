@@ -6075,21 +6075,157 @@ const Dialogs = {
 				Self = Dialogs.dlgChannelMixer,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-channel":
+				case "set-input":
+					Self.values.input.value = event.target.getAttribute("data-value");
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-channels" });
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-red-value":
+				case "set-red-output":
+					event.values = Self.values; // first copy values
+					event.values.channels.value[Self.values.input.value]["range-red"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-green-value":
+				case "set-green-output":
+					event.values = Self.values; // first copy values
+					event.values.channels.value[Self.values.input.value]["range-green"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-blue-value":
+				case "set-blue-output":
+					event.values = Self.values; // first copy values
+					event.values.channels.value[Self.values.input.value]["range-blue"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-total-value":
-					break;
-				case "toggle-monochromatic":
+				case "set-total-output":
+					event.values = Self.values; // first copy values
+					event.values.channels.value[Self.values.input.value]["range-total"] = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+
+					// safe & smooth raf
+					Engine.raf(() => {
+						// console.log(Self.values.channels.value);
+						let Mo = Self.values.input.value === "gray",
+							// 40% R + 40% G + 20% B → grayscale
+							Z = Mo
+								? [40, 40, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+								: Self.dispatch({ type: "channels-to-Z", channels: Self.values.channels.value }),
+							qv = LayerEffectsHelper.buildChannelMixerDescriptor({ Mo, Z });
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "mixr", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "channels-to-Z":
+					let Z = new Array(20).fill(0);
+					let map = [
+						["red", 0],
+						["green", 5],
+						["blue", 10],
+					];
+					for (let [name, base] of map) {
+						let ch = event.channels[name];
+						Z[base + 0] = ch["range-red"];
+						Z[base + 1] = ch["range-green"];
+						Z[base + 2] = ch["range-blue"];
+						Z[base + 4] = ch["range-total"];
+					}
+					return Z;
+				case "sync-ui-with-channels":
+					Self.root.find(".slider[data-range]").map(elem => {
+						let sEl = $(elem),
+							rng = sEl.data("range"),
+							val = Self.values.channels.value[Self.values.input.value][rng],
+							min = parseInt(sEl.data("min"), 10),
+							max = parseInt(sEl.data("max"), 10),
+							sW = +sEl.prop("offsetWidth"),
+							left = Math.invLerp(min, max, val) * sW;
+						// handle left
+						sEl.find(".handle").css({ left });
+						// input value
+						sEl.parent().find(`.value span[data-id="${rng}"]`).html(val);
+					});
+					break;
+
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row .opt-group[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("default");
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// prepare  level values
+					Self.values.channels = {
+						default: {
+							red: { "range-red": 100, "range-green": 0, "range-blue": 0, "range-total": 0 },
+							green: { "range-red": 0, "range-green": 100, "range-blue": 0, "range-total": 0 },
+							blue: { "range-red": 0, "range-green": 0, "range-blue": 100, "range-total": 0 },
+							gray: { "range-red": 40, "range-green": 40, "range-blue": 20, "range-total": 0 },
+						},
+						value: {
+							red: { "range-red": 100, "range-green": 0, "range-blue": 0, "range-total": 0 },
+							green: { "range-red": 0, "range-green": 100, "range-blue": 0, "range-total": 0 },
+							blue: { "range-red": 0, "range-green": 0, "range-blue": 100, "range-total": 0 },
+							gray: { "range-red": 40, "range-green": 40, "range-blue": 20, "range-total": 0 },
+						},
+					};
+					// return console.log(Self.values);
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-channels" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "mixr " } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "mixr " } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// reset group values of channels
+					Self.values.channels.value = structuredClone(Self.values.channels.default);
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-channels" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "mixr " } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

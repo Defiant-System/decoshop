@@ -10,10 +10,11 @@
 				<div class="option opt-group">
 					<span class="label">Channel</span>
 					<span class="value">
-						<ul class="opt-group" data-default="red" data-name="channel" data-click="set-channel">
+						<ul class="opt-group" data-default="red" data-name="input" data-click="set-input">
 							<li data-value="red" class="active">Red</li>
 							<li data-value="green">Green</li>
 							<li data-value="blue">Blue</li>
+							<li data-value="gray">Monochromatic</li>
 						</ul>
 					</span>
 				</div>
@@ -26,7 +27,7 @@
 						<span data-id="channel-red" data-suffix="%">0%</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-200" data-max="200" data-change="set-red-value" data-target="channel-red" data-ux="br-track" data-range="range-red">
+				<div class="slider" data-min="-200" data-max="200" data-change="set-red-output" data-target="channel-red" data-ux="br-track" data-range="range-red">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
@@ -38,7 +39,7 @@
 						<span data-id="channel-green" data-suffix="%">0%</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-200" data-max="200" data-change="set-green-value" data-target="channel-green" data-ux="br-track" data-range="range-green">
+				<div class="slider" data-min="-200" data-max="200" data-change="set-green-output" data-target="channel-green" data-ux="br-track" data-range="range-green">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
@@ -50,29 +51,20 @@
 						<span data-id="channel-blue" data-suffix="%">0%</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-200" data-max="200" data-change="set-blue-value" data-target="channel-blue" data-ux="br-track" data-range="range-blue">
+				<div class="slider" data-min="-200" data-max="200" data-change="set-blue-output" data-target="channel-blue" data-ux="br-track" data-range="range-blue">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
 
 			<div class="field-row has-basic-range">
 				<div class="option input">
-					<span class="label">Constant</span>
+					<span class="label">Total</span>
 					<span class="value">
 						<span data-id="channel-total" data-suffix="%">0%</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-200" data-max="200" data-change="set-total-value" data-target="channel-total" data-ux="br-track" data-range="range-total">
+				<div class="slider" data-min="-200" data-max="200" data-change="set-total-output" data-target="channel-total" data-ux="br-track" data-range="range-total">
 					<span class="handle" data-ux="br-handle"></span>
-				</div>
-			</div>
-
-			<div class="field-row">
-				<div class="option">
-					<span class="label">Monochromatic</span>
-					<div class="toggler" data-value="off" data-name="monochromatic" data-default="off" data-click="toggle-monochromatic">
-						<span>Apply</span>
-					</div>
 				</div>
 			</div>
 			
