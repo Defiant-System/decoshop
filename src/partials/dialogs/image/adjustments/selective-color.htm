@@ -6,51 +6,61 @@
 				Selective Color
 			</h2>
 
-			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//SelectiveColors">
+			<div class="field-row has-toggler">
+				<div class="option select" data-change="set-mode" data-name="mode" data-options="fieldset-inline-menubox" data-match="//SelectiveColors">
 					<span class="label">Colors</span>
-					<span class="value">Red</span>
-				</div>
-			</div>
-
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Cyan</span>
-					<span class="value"><input type="text" name="cyan" data-min="-100" data-max="100" value="0%" data-default="0%" data-suffix="%"></span>
-				</div>
-				<div class="pan-knob" data-change="set-cyan"></div>
-			</div>
-
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Magenta</span>
-					<span class="value"><input type="text" name="magenta" data-min="-100" data-max="100" value="0%" data-default="0%" data-suffix="%"></span>
-				</div>
-				<div class="pan-knob" data-change="set-magenta"></div>
-			</div>
-
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Yellow</span>
-					<span class="value"><input type="text" name="yellow" data-min="-100" data-max="100" value="0%" data-default="0%" data-suffix="%"></span>
-				</div>
-				<div class="pan-knob" data-change="set-yellow"></div>
-			</div>
-
-			<div class="field-row has-knob">
-				<div class="option input">
-					<span class="label">Black</span>
-					<span class="value"><input type="text" name="black" data-min="-100" data-max="100" value="0%" data-default="0%" data-suffix="%"></span>
-				</div>
-				<div class="pan-knob" data-change="set-black"></div>
-			</div>
-
-			<div class="field-row">
-				<div class="option">
-					<span class="label"></span>
+					<span class="value" data-default="Red">Red</span>
 					<div class="toggler" data-value="off" data-name="absolute" data-default="off" data-click="toggle-absolute">
 						<span>Absolute</span>
 					</div>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Cyan</span>
+					<span class="value">
+						<span data-id="channel-cyan" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-100" data-max="100" data-change="set-cyan" data-target="channel-cyan" data-ux="br-track" data-range="cyan">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Magenta</span>
+					<span class="value">
+						<span data-id="channel-magenta" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-100" data-max="100" data-change="set-magenta" data-target="channel-magenta" data-ux="br-track" data-range="magenta">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Yellow</span>
+					<span class="value">
+						<span data-id="channel-yellow" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-100" data-max="100" data-change="set-yellow" data-target="channel-yellow" data-ux="br-track" data-range="yellow">
+					<span class="handle" data-ux="br-handle"></span>
+				</div>
+			</div>
+
+			<div class="field-row has-basic-range">
+				<div class="option input">
+					<span class="label">Black</span>
+					<span class="value">
+						<span data-id="channel-black" data-suffix="%">0%</span>
+					</span>
+				</div>
+				<div class="slider" data-min="-100" data-max="100" data-change="set-black" data-target="channel-black" data-ux="br-track" data-range="black">
+					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
 		</div>

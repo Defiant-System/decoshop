@@ -403,15 +403,15 @@
 		<i type="option" name="Brightness &amp; Contrast" value="3"/>
 	</CurveAlgorithms>
 	<SelectiveColors>
-		<i type="option" name="Red" value="0"/>
-		<i type="option" name="Yellow" value="1"/>
-		<i type="option" name="Green" value="2"/>
-		<i type="option" name="Cyan" value="3"/>
-		<i type="option" name="Blue" value="4"/>
-		<i type="option" name="Magenta" value="5"/>
-		<i type="option" name="White" value="6"/>
-		<i type="option" name="Neutral" value="7"/>
-		<i type="option" name="Black" value="8"/>
+		<i type="option" name="Red" value="red"/>
+		<i type="option" name="Yellow" value="yellow"/>
+		<i type="option" name="Green" value="green"/>
+		<i type="option" name="Cyan" value="cyan"/>
+		<i type="option" name="Blue" value="blue"/>
+		<i type="option" name="Magenta" value="magenta"/>
+		<i type="option" name="White" value="white"/>
+		<i type="option" name="Neutral" value="neutral"/>
+		<i type="option" name="Black" value="black"/>
 	</SelectiveColors>
 	<LevelChannels>
 		<i type="option" name="RGB" value="0"/>

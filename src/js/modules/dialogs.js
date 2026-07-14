@@ -5744,7 +5744,7 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
 					break;
 				case "dlg-reset":
-					// close dialog
+					// reset dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
@@ -6017,16 +6017,157 @@ const Dialogs = {
 				Self = Dialogs.dlgSelectiveColor,
 				Doc = Self.doc;
 			switch (event.type) {
-				case "set-count":
+				case "set-mode":
+					Self.values.mode.value = event.value;
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-colors" });
+					break;
+				case "set-cyan":
 					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
+					event.values.colors.value[Self.values.mode.value].cyan = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-magenta":
+					event.values = Self.values; // first copy values
+					event.values.colors.value[Self.values.mode.value].magenta = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-yellow":
+					event.values = Self.values; // first copy values
+					event.values.colors.value[Self.values.mode.value].yellow = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-black":
+					event.values = Self.values; // first copy values
+					event.values.colors.value[Self.values.mode.value].black = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					// Engine.raf(() => {
+					// 	let qv = FilterHelper.oT("selc");
+					// 	// Shadows
+					// 	qv.ShdL.v[0].v = Self.values.levels.value.shadows["cyan-red"];
+					// 	qv.ShdL.v[1].v = Self.values.levels.value.shadows["magenta-green"];
+					// 	qv.ShdL.v[2].v = Self.values.levels.value.shadows["yellow-blue"];
+					// 	// Midtones
+					// 	qv.MdtL.v[0].v = Self.values.levels.value.midtones["cyan-red"];
+					// 	qv.MdtL.v[1].v = Self.values.levels.value.midtones["magenta-green"];
+					// 	qv.MdtL.v[2].v = Self.values.levels.value.midtones["yellow-blue"];
+					// 	// Highlights
+					// 	qv.HghL.v[0].v = Self.values.levels.value.highlights["cyan-red"];
+					// 	qv.HghL.v[1].v = Self.values.levels.value.highlights["magenta-green"];
+					// 	qv.HghL.v[2].v = Self.values.levels.value.highlights["yellow-blue"];
+					// 	// "Preserve Luminosity" toggler
+					// 	qv.PrsL.v = Self.values.luminosity.value;
+					// 	PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "selc", qv, ve: false } });
+					// 	PP.update();
+					// });
 					return;
 
+				case "sync-ui-with-colors":
+					Self.root.find(".slider[data-range]").map(elem => {
+						let sEl = $(elem),
+							tgt = sEl.data("target"),
+							clr = tgt.split("-")[1],
+							val = Self.values.colors.value[Self.values.mode.value][clr],
+							min = parseInt(sEl.data("min"), 10),
+							max = parseInt(sEl.data("max"), 10),
+							sW = +sEl.prop("offsetWidth"),
+							left = Math.invLerp(min, max, val) * sW;
+						// handle left
+						sEl.find(".handle").css({ left });
+						// input value
+						sEl.parent().find(`.value span[data-id="${tgt}"]`).html(val);
+					});
+					break;
+
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// select options
+					Self.root.find(`.field-row .option.select`).map(elem => {
+						let el = $(elem),
+							val = el.find(".value").text(),
+							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
+							value = xVal.getAttribute("value");
+						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// prepare  level values
+					Self.values.colors = {
+						default: {
+							red: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							yellow: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							green: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							cyan: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							blue: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							magenta: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							white: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							neutral: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							black: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+						},
+						value: {
+							red: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							yellow: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							green: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							cyan: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							blue: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							magenta: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							white: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							neutral: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+							black: { cyan: 0, magenta: 0, yellow: 0, black: 0 },
+						},
+					};
+					// return console.log(Self.values);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "selc" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "selc" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// reset dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// reset group values of colors
+					Self.values.colors.value = structuredClone(Self.values.colors.default);
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-colors" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "selc" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
