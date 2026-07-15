@@ -6403,18 +6403,12 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				case "set-count":
-					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
-					// exit if "preview" is not enabled
-					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
 					return;
 
 				case "select-gradient":
 					break;
-
 
 				default:
 					/* Falls through to "master UI"

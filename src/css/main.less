@@ -5865,6 +5865,18 @@ content {
 	.cvs-wrapper {
 		height: 0;
 
+		&.show-tip {
+			canvas {
+				&.tool-tip {
+					display: block;
+				}
+
+				&[data-file] {
+					cursor: none;
+				}
+			}
+		}
+
 		&:before {
 			content: "";
 			background-color: #2f3437;
@@ -5903,13 +5915,9 @@ content {
 				border-radius: 50%;
 				background: #f005;
 				z-index: 99;
-				transform: translate(-50%, -50%);
 				pointer-events: none;
 				transform: translate(-50%, -50%);
-
-				&.hidden {
-					display: none;
-				}
+				display: none;
 			}
 			
 			&[data-file] {
@@ -5919,10 +5927,6 @@ content {
 				z-index: 2;
 				border-radius: 7px;
 				// cursor: crosshair;
-
-				&.show-tip {
-					cursor: none;
-				}
 			}
 		}
 	}

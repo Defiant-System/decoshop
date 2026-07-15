@@ -109,7 +109,7 @@ const UI = {
 				// console.log(Self.srcEl[0]);
 				if (el.parents(".inline-menubox").length) {
 					if (this === document) return;
-					if (Self.dEl.length) Self.dEl.removeClass("covered");
+					if (Self.dEl?.length) Self.dEl.removeClass("covered");
 					// forward event to fitting handler
 					Self[this.dataset.ui](event);
 					// handles event differently for brush menu box

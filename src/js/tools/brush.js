@@ -35,6 +35,14 @@
 		// console.log(event);
 		switch (event.type) {
 			// native events
+			case "mouseenter":
+				// replaces mouse cursor with tip canvas
+				Self.els.wrapper.addClass("show-tip");
+				break;
+			case "mouseleave":
+				// reset canvas
+				Self.els.wrapper.removeClass("show-tip");
+				break;
 			case "mousedown":
 				Self[`${Self.option}Tool`](event);
 				break;
@@ -46,7 +54,7 @@
 				top = event.top || (event.clientY - rect.top) * DPR;
 				left = event.left || (event.clientX - rect.left) * DPR;
 				// move tip
-				Self.tip.css({ top, left });
+				Self.els.tip.css({ top, left });
 				break;
 
 			case "select-option":
@@ -55,24 +63,24 @@
 			case "enable":
 				// active canvas tool
 				Self.tool = new CanvasTools.Yv();
-				// mousemove for tool tip
-				Self.tip = APP.els.content.find(`.cvs-wrapper .tool-tip`).removeClass("hidden");
-				// replaces mouse cursor with tip canvas
-				APP.els.cvs.addClass("show-tip");
+				// fast references
+				Self.els = {
+					wrapper: APP.els.content.find(`.cvs-wrapper`),
+					tip: APP.els.content.find(`.cvs-wrapper .tool-tip`),
+				};
 
 				// set draw color
 				APP.file?.dispatch({ type: "set-foreground-color", rgb: [255,180,0] });
 
 				// bind event handlers
-				APP.els.cvs.on("mousedown mousemove", Self.dispatch);
+				APP.els.cvs.on("mousedown mousemove mouseenter mouseleave", Self.dispatch);
 				break;
 			case "disable":
 				// hide tip canvas
-				Self.tip.addClass("hidden");
-				// reset canvas
-				APP.els.cvs.removeClass("show-tip");
+				// Self.els.tip.addClass("hidden");
+				Self.els.wrapper.removeClass("show-tip");
 				// unbind event handlers
-				APP.els.cvs.off("mousedown mousemove", Self.dispatch);
+				APP.els.cvs.off("mousedown mousemove mouseenter mouseleave", Self.dispatch);
 				break;
 		}
 	},
@@ -83,7 +91,7 @@
 		let APP = decoshop,
 			Self = APP.tools.brush,
 			Drag = Self.drag;
-
+		// console.log(event);
 		switch (event.type) {
 			// native events
 			case "mousedown":
