@@ -47,9 +47,9 @@ const UI = {
 				if (!value || el.hasClass("disabled")) return;
 				// make option active
 				if (el.data("options") === "pop-gradient-strips") {
-					let gs = el.find(".gradient-strip").cssProp("--gs"),
+					let hash = el.find(".gradient-strip").data("hash"),
 						aNode = window.bluePrint.selectSingleNode(`//Gradients/i[@active]`),
-						gNode = window.bluePrint.selectSingleNode(`//Gradients/i[@g="${gs}"]`);
+						gNode = window.bluePrint.selectSingleNode(`//Gradients/i[@hash="${hash}"]`);
 					if (aNode) aNode.removeAttribute("active");
 					if (gNode) gNode.setAttribute("active", 1);
 				}
