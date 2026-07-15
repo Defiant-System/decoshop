@@ -800,7 +800,8 @@ const UI = {
 				rect = dEl.offset();
 				top = rect.top + Math.random() * 80 | 0;
 				left = rect.left + Math.random() * 80 | 0;
-				let zIndex = 101 + dEl.parent().find(".dialog-box.showing").length;
+				let pDlg = dEl.parent().find(".dialog-box.showing").addClass("has-child"),
+					zIndex = 101 + pDlg.length;
 
 				dEl.css({ top, left, zIndex });
 				// make sure knobs in dialog is synced with its sibling input element
@@ -824,6 +825,8 @@ const UI = {
 					.cssSequence("closing", "animationend", el => {
 						// prevent mouse from triggering mouseover
 						Self.content.removeClass("cover");
+						// re-activate "parent" dialog
+						el.parent().find(".showing.has-child").removeClass("has-child");
 						// reset element
 						el.removeClass("showing closing").css({ top: "", left: "" });
 					});
