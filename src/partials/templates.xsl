@@ -373,7 +373,7 @@
 
 
 <xsl:template name="preset-brush-list">
-	<ul class="preset-list">
+	<ul class="preset-list brushes">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -388,7 +388,7 @@
 
 
 <xsl:template name="preset-gradient-list">
-	<ul class="preset-list">
+	<ul class="preset-list gradients">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -402,7 +402,7 @@
 
 
 <xsl:template name="preset-pattern-list">
-	<ul class="preset-list">
+	<ul class="preset-list patterns">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -416,7 +416,7 @@
 
 
 <xsl:template name="preset-layer-style-list">
-	<ul class="preset-list">
+	<ul class="preset-list layers">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -430,7 +430,7 @@
 
 
 <xsl:template name="preset-shapes-list">
-	<ul class="preset-list">
+	<ul class="preset-list shapes">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -444,7 +444,7 @@
 
 
 <xsl:template name="preset-contour-list">
-	<ul class="preset-list">
+	<ul class="preset-list contours">
 		<xsl:for-each select="./*">
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
@@ -600,13 +600,7 @@
 <xsl:template name="pop-gradient-strips">
 	<div class="inline-menubox" data-ui="doGradients">
 		<div class="inline-content gradient-strips" data-click="select-gradient-strip">
-			<xsl:for-each select="./*">
-				<div class="strip">
-					<xsl:if test="@active = 1"><xsl:attribute name="class">strip active</xsl:attribute></xsl:if>
-					<xsl:attribute name="style">--gs: <xsl:value-of select="@g"/>;</xsl:attribute>
-				</div>
-			</xsl:for-each>
-			<div class="add-strip" data-click="add-gradient-strip"></div>
+			<xsl:call-template name="preset-gradient-list" />
 		</div>
 	</div>
 </xsl:template>

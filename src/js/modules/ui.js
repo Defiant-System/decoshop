@@ -170,19 +170,23 @@ const UI = {
 		}
 	},
 	doGradients(event) {
-		let Self = UI,
+		let APP = decoshop,
+			Self = UI,
 			dEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
-			case "add-gradient-strip":
-				console.log(event);
+			case "add-gradient-preset":
+				APP.dispatch({ type: "open-dialog", arg: "dlgGradientEditor" });
+				Self.dispatch({ type: "clear-menu" });
 				break;
 			case "select-gradient-strip":
+				el = $(event.target).parents("?[data-hash]");
+				if (!el.length) return;
 				event.el.find(".active").removeClass("active");
-				el = $(event.target).addClass("active");
+				el.addClass("active");
 				// update toolbar option selectbox
-				Self.srcEl.find(".gradient-strip").css({ "--gs": el.cssProp("--gs") });
+				Self.srcEl.find(".gradient-strip").data({ "hash": el.data("hash") });
 				// forward event
 				dEl = Self.srcEl.parents(".dialog-box");
 				if (dEl.length) {
@@ -190,7 +194,7 @@ const UI = {
 						type = Self.srcEl.data("change");
 					if (func) func({ ...event, type });
 					// clean up
-					Self.menu.remove();
+					Self.dispatch({ type: "clear-menu" });
 				}
 				break;
 		}
@@ -709,11 +713,7 @@ const UI = {
 	doDialog(event) {
 		let Self = UI,
 			Drag = Self.drag,
-			// file,
-			// layer,
-			// pixels,
-			// copy,
-			// value,
+			rect, top, left, x, y,
 			dEl,
 			el;
 		// console.log(event);
@@ -780,8 +780,8 @@ const UI = {
 				Self.doc.on("mousemove mouseup", Self.doDialog);
 				break;
 			case "mousemove":
-				let top = event.clientY + Drag.offset.y,
-					left = event.clientX + Drag.offset.x;
+				top = event.clientY + Drag.offset.y;
+				left = event.clientX + Drag.offset.x;
 				Drag.dlg.css({ top, left });
 				break;
 			case "mouseup":
@@ -796,6 +796,13 @@ const UI = {
 				event.args = param.slice(1);
 				event.name = param[0];
 				dEl = $(`.dialog-box[data-dlg="${event.name}"]`);
+
+				rect = dEl.offset();
+				top = rect.top + Math.random() * 80 | 0;
+				left = rect.left + Math.random() * 80 | 0;
+				let zIndex = 101 + dEl.parent().find(".dialog-box.showing").length;
+
+				dEl.css({ top, left, zIndex });
 				// make sure knobs in dialog is synced with its sibling input element
 				Self.doDialogKnob({ type: "set-initial-value", dEl });
 				Self.doRing({ type: "set-initial-value", dEl });
@@ -818,7 +825,7 @@ const UI = {
 						// prevent mouse from triggering mouseover
 						Self.content.removeClass("cover");
 						// reset element
-						el.removeClass("showing closing");
+						el.removeClass("showing closing").css({ top: "", left: "" });
 					});
 				break;
 			/*

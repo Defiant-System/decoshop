@@ -597,7 +597,7 @@
 					height: 1px;
 				}
 
-				ul.preset-list {
+				ul.preset-list.gradients {
 					position: absolute;
 					top: 0;
 					left: 0;
@@ -617,39 +617,10 @@
 						border-radius: 2px;
 						cursor: pointer;
 
-						&[data-hash]:after {
-							background: url(~/img/gradients.webp) no-repeat;
-							filter: opacity(.85);
-						}
-						&[data-hash="d694cd76f42e01052cd127a68f62d3244a2674bc"]:after { background-position: 0 0; }
-						&[data-hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"]:after { background-position: -38px 0; }
-						&[data-hash="d711ee5384b1edb68555f98659464b1682865481"]:after { background-position: -76px 0; }
-						&[data-hash="8da5800c1acdc85dc54afd33809f214bddcef36d"]:after { background-position: -114px 0; }
-						&[data-hash="3586c49351dc16bbfdab1b10d675d5334561a70a"]:after { background-position: -152px 0; }
-						&[data-hash="303f11d95718c632e430f3d4959cc521abe5dea4"]:after { background-position: -190px 0; }
-						&[data-hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"]:after { background-position: -228px 0; }
-						&[data-hash="36623964ca0c3ae46d5a1352b59126a927a7a204"]:after { background-position: -266px 0; }
-						&[data-hash="19a7d0151dd54246e7660a2f678dceda85d76786"]:after { background-position: -304px 0; }
-						&[data-hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"]:after { background-position: -342px 0; }
-						&[data-hash="392696b691848e1c2e14231fecd9edd150d7521e"]:after { background-position: 0 -38px; }
-						&[data-hash="218e75c7a912404b048fff0747e40108873b6334"]:after { background-position: -38px -38px; }
-						&[data-hash="9620cf2803289fe004997a280224318c045871a0"]:after { background-position: -76px -38px; }
-						&[data-hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"]:after { background-position: -114px -38px; }
-						&[data-hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"]:after { background-position: -152px -38px; }
-						&[data-hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"]:after { background-position: -190px -38px; }
+						&[data-hash]:after { filter: opacity(.85); }
 
 						&:not(.add-new):hover:after {
 							filter: opacity(1);
-						}
-
-						&:after {
-							content: "";
-							position: absolute;
-							top: 0;
-							left: 0;
-							right: 0;
-							bottom: 0;
-							border-radius: inherit;
 						}
 
 						&.active {
@@ -664,7 +635,8 @@
 						&.add-new {
 							box-shadow: none;
 							background: none;
-							border: 2px dashed #1224;
+							border-radius: 3px;
+							border: 1px dashed #eff4;
 							filter: opacity(.65);
 
 							&:after {
