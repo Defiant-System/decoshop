@@ -50,6 +50,7 @@ const UI = {
 					let hash = el.find(".gradient-strip").data("hash"),
 						aNode = window.bluePrint.selectSingleNode(`//Gradients/i[@active]`),
 						gNode = window.bluePrint.selectSingleNode(`//Gradients/i[@hash="${hash}"]`);
+					if (!gNode) gNode = window.bluePrint.selectSingleNode(`//Gradients/i[1]`);
 					if (aNode) aNode.removeAttribute("active");
 					if (gNode) gNode.setAttribute("active", 1);
 				}

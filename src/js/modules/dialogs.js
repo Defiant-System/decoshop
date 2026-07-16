@@ -6402,14 +6402,49 @@ const Dialogs = {
 				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
-				case "set-count":
+				case "set-gradient":
+					break;
+				case "toggle-reverse":
+					event.values = Self.values; // first copy values
+					event.values.reverse.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("grdm");
+						qv.Rvrs.v = Self.values.reverse.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "grdm", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
-				case "select-gradient":
+				case "dlg-open":
+					Self.root = event.dEl;
+					Self.doc = APP.file?.doc;
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.root.find(`.field-row .opt-gradient`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// togglers
+					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					console.log(Self.values);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
