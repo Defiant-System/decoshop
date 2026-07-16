@@ -2626,6 +2626,79 @@ const Dialogs = {
 					});
 					return;
 
+				case "render-canvas":
+					let ctx = Self.els.ctx,
+						{ width: w, height: h } = Self.vars,
+						amount = -Self.values.amount.value/100,
+						spacing = 30,
+						ox = 25,
+						oy = 24,
+						cx = 125,
+						cy = 126,
+						oxl = w + ox,
+						oyl = h + oy,
+						refine = 2;
+					// reset canvas
+					Self.els.cvs.attr({ width: w, height: h });
+					ctx.translate(-.5, -.5);
+					ctx.lineWidth = 1;
+					// vertical grid lines
+					for(let gx=-ox; gx<=oxl; gx+=spacing) {
+						ctx.strokeStyle = gx === cx ? "#788" : "#677";
+						ctx.beginPath();
+						for(let gy=-oy; gy<=oyl; gy+=refine) {
+							let p = Self.dispatch({ type: "project", cx, cy, gx, gy, amount });
+							if (gy === -oy) ctx.moveTo(p.x, p.y);
+							else ctx.lineTo(p.x, p.y);
+						}
+						ctx.stroke();
+					}
+					//------------------------------------------
+					// horizontal
+					//------------------------------------------
+					for(let gy=-oy; gy<=oyl; gy+=spacing) {
+						ctx.beginPath();
+						for(let gx=-ox; gx<=oxl; gx+=refine) {
+							ctx.strokeStyle = gy === cy ? "#788" : "#677";
+							let p= Self.dispatch({ type: "project", cx, cy, gx, gy, amount });
+							if (gx === -ox) ctx.moveTo(p.x, p.y);
+							else ctx.lineTo(p.x, p.y);
+						}
+						ctx.stroke();
+					}
+					break;
+				case "project":
+					let sphereRadius = 115;
+					let dx = event.gx - event.cx;
+					let dy = event.gy - event.cy;
+					let r2 = dx * dx + dy * dy;
+					if (r2 >= sphereRadius * sphereRadius) return { x: event.gx, y: event.gy };
+					//--------------------------------------------------------
+					// Point on sphere
+					//--------------------------------------------------------
+					let nx = dx / sphereRadius;
+					let ny = dy / sphereRadius;
+					let nz = Math.sqrt(1 - nx * nx - ny * ny);
+					//--------------------------------------------------------
+					// Negative sphere
+					//--------------------------------------------------------
+					if (event.amount < 0) nz = -nz * .4;
+					//--------------------------------------------------------
+					// Orthographic projection
+					//--------------------------------------------------------
+					// perspective factor
+					let scale = 1 / (1 + 0.5 * nz);
+					let sx = nx * scale * sphereRadius;
+					let sy = ny * scale * sphereRadius;
+					//--------------------------------------------------------
+					// Blend with original grid
+					//--------------------------------------------------------
+					let t = Math.abs(event.amount);
+					return {
+						x: Math.lerp(event.gx, event.cx + sx, t),
+						y: Math.lerp(event.gy, event.cy + sy, t)
+					};
+
 				case "dlg-open":
 					// fast references
 					Self.els = {
@@ -2732,7 +2805,7 @@ const Dialogs = {
 				case "render-canvas":
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
-						amount = Self.values.amount.value,
+						amount = Self.values.amount.value / 900,
 						spacing = 50,
 						oh = spacing >> 1,
 						cx = 125,
@@ -2740,12 +2813,10 @@ const Dialogs = {
 						oxl = w + oh,
 						oyl = h + oh,
 						refine = 4;
-
 					// reset canvas
 					Self.els.cvs.attr({ width: w, height: h });
 					ctx.translate(-.5, -.5);
 					ctx.lineWidth = 1;
-
 					// vertical grid lines
 					for(let gx=-oh; gx<=oxl; gx+=spacing) {
 						ctx.strokeStyle = gx === cx ? "#899" : "#677";
@@ -2779,11 +2850,9 @@ const Dialogs = {
 					let maxR = event.w * 0.5;
 					// normalized distance
 					let t = Math.max(0, 1 - r / maxR);
-					// slider amount
-					let k = event.amount / 900;
 					// stronger near center
 					// weaker toward edges
-					let twist = k * t * t * Math.TAU,
+					let twist = event.amount * t * t * Math.TAU,
 						a = Math.atan2(dy, dx) + twist;
 					return {
 						x: event.cx + Math.cos(a) * r,
