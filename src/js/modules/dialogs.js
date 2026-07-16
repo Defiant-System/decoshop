@@ -6403,6 +6403,11 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				case "set-gradient":
+					event.values = Self.values; // first copy values
+					event.values.gradient.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "toggle-reverse":
 					event.values = Self.values; // first copy values
@@ -6418,6 +6423,8 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("grdm");
+						let idx = +Self.values.gradient.value.idx;
+						qv.Grad = { t: "Objc", v: Registry.gradients.list[idx] };
 						qv.Rvrs.v = Self.values.reverse.value;
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "grdm", qv, ve: false } });
 						PP.update();
@@ -6432,8 +6439,12 @@ const Dialogs = {
 					// save initial state values
 					Self.root.find(`.field-row .opt-gradient`).map(elem => {
 						let el = $(elem),
-							value = parseInt(el.val(), 10);
-						Self.values[el.attr("name")] = { default: value, value };
+							vEl = el.find(".gradient-strip"),
+							[d1, d2] = vEl.data("default").split(","),
+							def = { idx: d1, hash: d2 },
+							[v1, v2] = vEl.data("value").split(","),
+							value = { idx: v1, hash: v2 };
+						Self.values[el.data("name")] = { default: def, value };
 					});
 					// togglers
 					Self.root.find(`.field-row .toggler[data-name]`).map(elem => {
@@ -6441,9 +6452,37 @@ const Dialogs = {
 							value = el.data("value") === "on" ? true : false;
 						Self.values[el.attr("data-name")] = { default: value, value };
 					});
-					console.log(Self.values);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "grdm" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "grdm" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "grdm" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
 				default:
 					/* Falls through to "master UI"

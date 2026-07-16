@@ -393,7 +393,7 @@
 			<li>
 				<xsl:attribute name="title"><xsl:value-of select="@name"/></xsl:attribute>
 				<xsl:if test="@active"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
-				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
+				<xsl:if test="@hash"><xsl:attribute name="data-hash"><xsl:value-of select="@idx"/>,<xsl:value-of select="@hash"/></xsl:attribute></xsl:if>
 				<xsl:if test="@path"><xsl:attribute name="style">--gr: url(~/cache/<xsl:value-of select="@path"/>);</xsl:attribute></xsl:if>
 			</li>
 		</xsl:for-each>

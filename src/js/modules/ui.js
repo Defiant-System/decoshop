@@ -187,13 +187,14 @@ const UI = {
 				event.el.find(".active").removeClass("active");
 				el.addClass("active");
 				// update toolbar option selectbox
-				Self.srcEl.find(".gradient-strip").data({ "hash": el.data("hash") });
+				Self.srcEl.find(".gradient-strip").data({ hash: el.data("hash") });
 				// forward event
 				dEl = Self.srcEl.parents(".dialog-box");
 				if (dEl.length) {
 					let func = Dialogs[dEl.data("dlg")].dispatch,
-						type = Self.srcEl.data("change");
-					if (func) func({ ...event, type });
+						type = Self.srcEl.data("change"),
+						[idx, hash] = el.data("hash").split(",");
+					if (func) func({ ...event, type, value: { idx, hash } });
 					// clean up
 					Self.dispatch({ type: "clear-menu" });
 				}

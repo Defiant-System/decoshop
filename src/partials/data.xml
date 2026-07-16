@@ -69,22 +69,22 @@
 		<i name="Wet marker 02" size="87" hash="2f518e9a3c4e11f80258a6605992a86821af6207"/>
 	</Brushes>
 	<Gradients>
-		<i name="Foreground to Background" hash="d694cd76f42e01052cd127a68f62d3244a2674bc"/>
-		<i name="Foreground to Transparent" hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"/>
-		<i name="Black, White" hash="d711ee5384b1edb68555f98659464b1682865481"/>
-		<i name="Red, Green" hash="8da5800c1acdc85dc54afd33809f214bddcef36d"/>
-		<i name="Violet, Orange" hash="3586c49351dc16bbfdab1b10d675d5334561a70a"/>
-		<i name="Blue, Red, Yellow" hash="303f11d95718c632e430f3d4959cc521abe5dea4"/>
-		<i name="Blue, Yellow, Blue" hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"/>
-		<i name="Orange, Yellow, Orange" hash="36623964ca0c3ae46d5a1352b59126a927a7a204"/>
-		<i name="Violet, Green, Orange" hash="19a7d0151dd54246e7660a2f678dceda85d76786"/>
-		<i name="Yellow, Violet, Orange, Blue" hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"/>
-		<i name="Copper" hash="392696b691848e1c2e14231fecd9edd150d7521e"/>
-		<i name="Chrome" hash="218e75c7a912404b048fff0747e40108873b6334"/>
-		<i name="Spectrum" hash="9620cf2803289fe004997a280224318c045871a0"/>
-		<i name="Transparent Rainbow" hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"/>
-		<i name="Transparent Stripes" hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"/>
-		<i name="Neutral Density" hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"/>
+		<i idx="0" name="Foreground to Background" hash="d694cd76f42e01052cd127a68f62d3244a2674bc"/>
+		<i idx="1" name="Foreground to Transparent" hash="a01a42f9c8d0d77dd4c96b1250d9759677c33c39"/>
+		<i idx="2" name="Black, White" hash="d711ee5384b1edb68555f98659464b1682865481"/>
+		<i idx="3" name="Red, Green" hash="8da5800c1acdc85dc54afd33809f214bddcef36d"/>
+		<i idx="4" name="Violet, Orange" hash="3586c49351dc16bbfdab1b10d675d5334561a70a"/>
+		<i idx="5" name="Blue, Red, Yellow" hash="303f11d95718c632e430f3d4959cc521abe5dea4"/>
+		<i idx="6" name="Blue, Yellow, Blue" hash="b3f638a83b887454a0ef8dabc7e004ae74d035e1"/>
+		<i idx="7" name="Orange, Yellow, Orange" hash="36623964ca0c3ae46d5a1352b59126a927a7a204"/>
+		<i idx="8" name="Violet, Green, Orange" hash="19a7d0151dd54246e7660a2f678dceda85d76786"/>
+		<i idx="9" name="Yellow, Violet, Orange, Blue" hash="9bdda87f63c17e9c22bd67f617c6eed979462eb0"/>
+		<i idx="10" name="Copper" hash="392696b691848e1c2e14231fecd9edd150d7521e"/>
+		<i idx="11" name="Chrome" hash="218e75c7a912404b048fff0747e40108873b6334"/>
+		<i idx="12" name="Spectrum" hash="9620cf2803289fe004997a280224318c045871a0"/>
+		<i idx="13" name="Transparent Rainbow" hash="4080920a55a2f5283362b052ef7c80d30cd4ba22"/>
+		<i idx="14" name="Transparent Stripes" hash="862fa84c0c19d392a51ed40318b3fad3a03fd256"/>
+		<i idx="15" name="Neutral Density" hash="ec32095600ceda98ec46f4c240854141f3ff6eb0"/>
 	</Gradients>
 	<Shapes>
 		<i name="refresh" hash="26b56c1bdfb048c3e46419fde332bab76deb2cd3"/>
