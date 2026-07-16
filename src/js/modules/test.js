@@ -83,8 +83,8 @@ let Test = {
 		 * 
 		 */
 		// setTimeout(() => APP.dispatch({ type: "filter-render", arg: "clouds" }), 1600);
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgGradientMap" }), 1600);
-		setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgGradientMap"] .opt-gradient .value`).trigger("click"), 2000);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgTwirl" }), 1600);
+		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgGradientMap"] .opt-gradient .value`).trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .filter`).get(0).trigger("click"), 1400);
 

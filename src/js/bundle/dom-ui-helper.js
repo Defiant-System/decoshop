@@ -7208,7 +7208,7 @@ NamedTabPanel.prototype.ak0 = function (doc, ctx, view, blendWithCanvas) {
 				F: ["M"]
 			};
 			for (var ci = 1; ci < 30; ci++) {
-				var ang = Math.PI * 2 * ci / 30;
+				var ang = Math.TAU * ci / 30;
 				unitCircle.C.push(Math.cos(ang), Math.sin(ang));
 				unitCircle.F.push("L");
 			}
@@ -9231,7 +9231,7 @@ GridSelector.prototype.c = function (l) {
 	}
 	_local287.fillStyle = "#000000";
 	_local287.beginPath();
-	_local287.arc(_local283, _local281, _local285 / 8, 0, Math.PI * 2);
+	_local287.arc(_local283, _local281, _local285 / 8, 0, Math.TAU);
 	_local287.fill();
 };
 GridSelector.prototype.Z1 = function (l) {

@@ -35892,7 +35892,7 @@ PixelUtil.fx.xq = function(l, d, G, b, V) {
 	var I = 3 << 13,
 		y = Math.PI / 2.43,
 		e = y / 256,
-		M = Math.PI * 2 / 256;
+		M = Math.TAU / 256;
 
 	function R() {
 		var H = Q.random() * 256,
@@ -55306,9 +55306,9 @@ PixelUtil.fd = function() {
 				p = B.get() * R,
 				c = B.get() * j,
 				v = B.get() * T * 4,
-				i = (B.get() + k) * Math.PI * 2,
+				i = (B.get() + k) * Math.TAU,
 				z = B.get() * T * 4,
-				P = (B.get() + 2 * k) * Math.PI * 2;
+				P = (B.get() + 2 * k) * Math.TAU;
 			m += q * (v * Math.cos(i) + z * Math.cos(P));
 			p += q * (v * Math.sin(i) + z * Math.sin(P));
 			if (D) p = p + k * R * H;
@@ -86783,7 +86783,7 @@ f.Ur.prototype.Ew = function(l, d, G, b) {
 		F: ["M"]
 	};
 	for (var A = 1; A < 30; A++) {
-		var n = Math.PI * 2 * A / 30;
+		var n = Math.TAU * A / 30;
 		J.C.push(Math.cos(n), Math.sin(n));
 		J.F.push("L");
 	}
@@ -101516,8 +101516,8 @@ FilterHelper.Qz = function(l, d, G, b, V, Q, t) {
 			j7 = -G.BkIr.v * Math.PI / 180,
 			iM = [];
 		for (var A = 0; A < 8; A++) {
-			var jr = j7 + A * (Math.PI * 2 / hZ),
-				bH = j7 + (A + 1) * (Math.PI * 2 / hZ),
+			var jr = j7 + A * (Math.TAU / hZ),
+				bH = j7 + (A + 1) * (Math.TAU / hZ),
 				gi = Math.cos(jr),
 				cj = Math.sin(jr),
 				iA = Math.cos(bH),
@@ -102436,7 +102436,7 @@ FilterHelper.Qz = function(l, d, G, b, V, Q, t) {
 					gO = (c8 - 1) * .5,
 					bW = G.MRot.v * Math.PI / 180 + Math.PI / 2 + 4 * Math.PI,
 					kl = G.Mirr.v,
-					gM = Math.PI * 2 / kl,
+					gM = Math.TAU / kl,
 					iz = .5 * gM;
 				for (var H = 0; H < c8; H++)
 					for (var W = 0; W < fU; W++) {
@@ -111683,7 +111683,7 @@ NamedTabPanel.prototype.ak0 = function (doc, ctx, view, blendWithCanvas) {
 				F: ["M"]
 			};
 			for (var ci = 1; ci < 30; ci++) {
-				var ang = Math.PI * 2 * ci / 30;
+				var ang = Math.TAU * ci / 30;
 				unitCircle.C.push(Math.cos(ang), Math.sin(ang));
 				unitCircle.F.push("L");
 			}
@@ -113706,7 +113706,7 @@ GridSelector.prototype.c = function (l) {
 	}
 	_local287.fillStyle = "#000000";
 	_local287.beginPath();
-	_local287.arc(_local283, _local281, _local285 / 8, 0, Math.PI * 2);
+	_local287.arc(_local283, _local281, _local285 / 8, 0, Math.TAU);
 	_local287.fill();
 };
 GridSelector.prototype.Z1 = function (l) {

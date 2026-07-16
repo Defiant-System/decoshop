@@ -4619,7 +4619,7 @@ PixelUtil.fx.xq = function(l, d, G, b, V) {
 	var I = 3 << 13,
 		y = Math.PI / 2.43,
 		e = y / 256,
-		M = Math.PI * 2 / 256;
+		M = Math.TAU / 256;
 
 	function R() {
 		var H = Q.random() * 256,

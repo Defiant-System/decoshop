@@ -2624,12 +2624,15 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-angle":
+				case "set-amount":
 					event.values = Self.values; // first copy values
-					event.values.angle.value = event.value; // then partial overwrite
+					event.values.amount.value = event.value; // then partial overwrite
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
-					/* falls-through */
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
 					// save applied value - to prevent re-render if it is same value as before
@@ -2637,23 +2640,96 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("Twrl");
-						qv.Angl.v = Self.values.angle.value;
+						qv.Angl.v = Self.values.amount.value;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "Twrl", qv, ve: false } });
 						PP.update();
 					});
 					return;
 
+				case "render-canvas":
+					let ctx = Self.els.ctx,
+						{ width: w, height: h } = Self.vars,
+						amount = Self.values.amount.value,
+						spacing = 50,
+						oh = spacing >> 1,
+						cx = 125,
+						cy = 125,
+						oxl = w + oh,
+						oyl = h + oh,
+						refine = 4;
+
+					// reset canvas
+					Self.els.cvs.attr({ width: w, height: h });
+					ctx.translate(-.5, -.5);
+					ctx.lineWidth = 1;
+
+					// vertical grid lines
+					for(let gx=-oh; gx<=oxl; gx+=spacing) {
+						ctx.strokeStyle = gx === cx ? "#899" : "#677";
+						ctx.beginPath();
+						for(let gy=-oh; gy<=oyl; gy+=refine) {
+							let p = Self.dispatch({ type: "twirl", w, h, gx, gy, cx, cy, amount });
+							if (gy === -oh) ctx.moveTo(p.x, p.y);
+							else ctx.lineTo(p.x, p.y);
+						}
+						ctx.stroke();
+					}
+					// horizontal grid lines
+					for(let gy=-oh; gy<=oyl; gy+=spacing) {
+						ctx.strokeStyle = gy === cy ? "#899" : "#677";
+						ctx.beginPath();
+						for(let gx=-oh; gx<=oxl; gx+=refine) {
+							let p = Self.dispatch({ type: "twirl", w, h, gx, gy, cx, cy, amount });
+							if (gx === -oh) ctx.moveTo(p.x, p.y);
+							else ctx.lineTo(p.x, p.y);
+						}
+						ctx.stroke();
+					}
+					break;
+				case "twirl":
+					// centered coordinates
+					let dx = event.gx - event.cx;
+					let dy = event.gy - event.cy;
+					// distance from center
+					let r = Math.sqrt(dx*dx + dy*dy);
+					// max influence radius
+					let maxR = event.w * 0.5;
+					// normalized distance
+					let t = Math.max(0, 1 - r / maxR);
+					// slider amount
+					let k = event.amount / 900;
+					// stronger near center
+					// weaker toward edges
+					let twist = k * t * t * Math.TAU,
+						a = Math.atan2(dy, dx) + twist;
+					return {
+						x: event.cx + Math.cos(a) * r,
+						y: event.cy + Math.sin(a) * r
+					};
+
 				case "dlg-open":
-					Self.root = event.dEl;
+					// fast references
+					Self.els = {
+						root: event.dEl,
+						cvs: event.dEl.find(".twirl-cvs canvas"),
+					};
 					Self.doc = APP.file?.doc;
+					// vars
+					let width = +Self.els.cvs.prop("offsetWidth"),
+						height = +Self.els.cvs.prop("offsetHeight");
+					Self.vars = { width, height };
+					// prepare canvas element
+					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
 					// reset values
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// save initial state values
-					Self.root.find(`.field-row input[data-default]`).map(elem => {
+					Self.els.root.find(`.field-row input[data-default]`).map(elem => {
 						let el = $(elem),
 							value = parseInt(el.val(), 10);
 						Self.values[el.attr("name")] = { default: value, value };
 					});
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;

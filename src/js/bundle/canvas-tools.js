@@ -12416,7 +12416,7 @@ f.Ur.prototype.Ew = function(l, d, G, b) {
 		F: ["M"]
 	};
 	for (var A = 1; A < 30; A++) {
-		var n = Math.PI * 2 * A / 30;
+		var n = Math.TAU * A / 30;
 		J.C.push(Math.cos(n), Math.sin(n));
 		J.F.push("L")
 	}
