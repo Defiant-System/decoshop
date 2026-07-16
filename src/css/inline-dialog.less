@@ -3372,12 +3372,21 @@
 
 	&[data-dlg="dlgSpherize"] {
 		.dlg-content {
-			--clr1: #dee1;
-			--clr2: #cee2;
+			--clr1: #8991;
 			--bW1: 25px;
 			--bW2: 300px;
 
-			.sample-grid {
+			.fields {
+				.field-row {
+					margin-right: 0;
+					
+					.value {
+						padding-right: 0;
+					}
+				}
+			}
+
+			.sphere-cvs {
 				background: #3443;
 				position: relative;
 				width: 259px;
@@ -3402,7 +3411,7 @@
 					),
 					repeating-linear-gradient(90deg,
 						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
-						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
+						var( --clr1 ) calc( var( --bW2 ) - 1px ), var( --clr1 ) var( --bW2 )
 					),
 					repeating-linear-gradient(0deg,
 						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
@@ -3410,7 +3419,7 @@
 					),
 					repeating-linear-gradient(0deg,
 						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
-						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
+						var( --clr1 ) calc( var( --bW2 ) - 1px ), var( --clr1 ) var( --bW2 )
 					);
 				}
 
@@ -3425,8 +3434,12 @@
 				}
 
 				canvas {
-					width: 100%;
-					height: 100%;
+					// background: #f003;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 249px;
+					height: 249px;
 				}
 			}
 		}

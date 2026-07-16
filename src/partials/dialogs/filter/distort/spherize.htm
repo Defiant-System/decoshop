@@ -10,7 +10,7 @@
 				<div class="option input">
 					<span class="label">Amount</span>
 					<span class="value">
-						<input type="text" name="amount" data-min="-100" data-max="100" value="0°" data-suffix="°"/>
+						<input type="text" name="amount" data-min="-100" data-max="100" data-default="0" value="0"/>
 					</span>
 				</div>
 				<div class="pan-knob" data-change="set-amount"></div>
@@ -20,16 +20,18 @@
 				<div class="option opt-group">
 					<span class="label">Mode</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li data-value="0" class="active">Normal</li>
-							<li data-valie="1">Horizontal</li>
-							<li data-valie="2">Vertical</li>
+						<ul class="opt-group" data-default="Nrml" data-name="mode" data-click="set-mode">
+							<li data-value="Nrml" class="active">Normal</li>
+							<li data-valie="HrzO">Horizontal</li>
+							<li data-valie="VrtO">Vertical</li>
 						</ul>
 					</span>
 				</div>
 			</div>
 			
-			<div class="sample-grid"></div>
+			<div class="sphere-cvs">
+				<canvas></canvas>
+			</div>
 
 		</div>
 		<div class="buttons">
