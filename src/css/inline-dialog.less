@@ -3698,12 +3698,12 @@
 								margin-right: 7px;
 								text-align: center;
 
-								&[data-id="input-1"] { left: 25px; }
-								&[data-id="input-2"] { left: 52px; }
-								&[data-id="input-3"] { left: 81px; }
+								&[data-id="input-shadows"] { left: 25px; }
+								&[data-id="input-midtones"] { left: 52px; }
+								&[data-id="input-highlights"] { left: 81px; }
 
-								&[data-id="output-1"] { width: 53px; left: 0; }
-								&[data-id="output-2"] { width: 53px; left: 103px; }
+								&[data-id="output-shadows"] { width: 53px; left: 0; }
+								&[data-id="output-highlights"] { width: 53px; left: 103px; }
 							}
 						}
 					}
@@ -3763,11 +3763,11 @@
 					filter: drop-shadow(0 1px 1px #1337);
 					cursor: ew-resize;
 
-					&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
-					&[data-for="input-2"] { left: var( --v2 ); }
-					&[data-for="input-3"] { left: var( --v3 ); background-image: url(~/icons/icon-slider-light-handle.png); }
-					&[data-for="output-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
-					&[data-for="output-2"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
+					&[data-for="input-shadows"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
+					&[data-for="input-midtones"] { left: var( --v2 ); }
+					&[data-for="input-highlights"] { left: var( --v3 ); background-image: url(~/icons/icon-slider-light-handle.png); }
+					&[data-for="output-shadows"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
+					&[data-for="output-highlights"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
 				}
 			}
 
@@ -3795,6 +3795,15 @@
 						var( --clr2 ) calc( 100% - 1px ), var( --clr2 ) 100%,
 					);
 				background-position: 5px -5px;
+
+				canvas {
+					// background: #f002;
+					position: absolute;
+					top: 4px;
+					left: 5px;
+					width: 300px;
+					height: 151px;
+				}
 			}
 		}
 	}

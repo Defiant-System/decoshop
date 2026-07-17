@@ -2053,7 +2053,7 @@ const Dialogs = {
 	},
 	dlgRadialBlur: {
 		name: "dlgRadialBlur",
-		preview: true,
+		preview: false,
 		values: {},
 		dispatch(event) {
 			let APP = decoshop,
@@ -2061,6 +2061,31 @@ const Dialogs = {
 				Doc = Self.doc;
 			// console.log(event);
 			switch (event.type) {
+				// native events
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
+					// bind events
+					UI.doc.on("mousemove mouseup", Self.dispatch);
+					break;
+				case "mousemove":
+					Self.vars.cx = Math.min(Math.max(event.offsetX, 19), Self.vars.width);
+					Self.vars.cy = Math.min(Math.max(event.offsetY, 19), Self.vars.height);
+
+					Self.values.mid.value.x = Self.vars.cx / Self.vars.width;
+					Self.values.mid.value.y = Self.vars.cy / Self.vars.height;
+
+					Self.vars.maxDist = Math.hypot(Self.vars.cx, Self.vars.cy);
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
+					// exit if "preview" is not enabled
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "mouseup":
+					// unbind events
+					UI.doc.off("mousemove mouseup", Self.dispatch);
+					break;
 				// "fast events"
 				case "set-amount":
 					event.values = Self.values; // first copy values
@@ -2089,14 +2114,79 @@ const Dialogs = {
 						let qv = FilterHelper.oT("RdlB");
 						qv.Amnt.v = Self.values.amount.value;
 						qv.BlrM.v.BlrM = Self.values.mode.value;
-
-						qv.Cntr.v.Hrzn.v = .5;
-						qv.Cntr.v.Vrtc.v = .5;
-
+						qv.Cntr.v.Hrzn.v = Self.values.mid.value.x;
+						qv.Cntr.v.Vrtc.v = Self.values.mid.value.y;
 						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "RdlB", qv, ve: false } });
 						PP.update();
 					});
 					return;
+
+				case "render-canvas":
+					let ctx = Self.els.ctx,
+						{ width: w, height: h, maxDist, cx, cy, spacing } = Self.vars,
+						mode = Self.values.mode.value,
+						amount = Self.values.amount.value / 100;
+					// reset canvas
+					Self.els.cvs.attr({ width: w, height: h });
+					ctx.translate(-.5, -.5);
+					ctx.strokeStyle = "#9aa";
+					ctx.fillStyle="#788";
+
+					if (mode === "Spn") {
+						for (let y=19; y<h; y+=spacing) {
+							for (let x=19; x<w; x+=spacing) {
+								let dx = x - cx;
+								let dy = y - cy;
+								let r = Math.hypot(dx, dy);
+								if (r < 5) {
+									ctx.fillRect(x - 1, y - 1, 2, 2);
+									continue;
+								}
+								// Arc length grows with distance from center and slider amount
+								let len = 1 + amount * (r / maxDist) * 96;
+								if (len < 2.5) {
+									ctx.fillRect(Math.round(x) - 1, Math.round(y) - 1, 2, 2);
+									continue;
+								}
+								// Arc of the circle centered at the focal point, through (x, y)
+								let angle = Math.atan2(dy, dx);
+								let half = (len / 2) / r;
+								ctx.beginPath();
+								ctx.arc(cx, cy, r, angle - half, angle + half);
+								ctx.stroke();
+							}
+						}
+					} else {
+						for (let y=19; y<w; y+=spacing) {
+							for (let x=19; x<h; x+=spacing) {
+								let dx = cx - x;
+								let dy = cy - y;
+								let d = Math.hypot(dx, dy);
+								if (d < 1e-3) {
+									ctx.beginPath();
+									ctx.arc(x, y, 1, 0, Math.TAU);
+									ctx.fill();
+									continue;
+								}
+								dx /= d;
+								dy /= d;
+								// length grows with distance from center
+								let len = amount * (d/maxDist) * spacing * 1.85;
+								if (len < 1) {
+									ctx.beginPath();
+									ctx.arc(x, y, 1, 0, Math.TAU);
+									ctx.fill();
+								} else {
+									let l2 = len / 2;
+									ctx.beginPath();
+									ctx.moveTo(x - dx * l2, y - dy * l2);
+									ctx.lineTo(x + dx * l2, y + dy * l2);
+									ctx.stroke();
+								}
+							}
+						}
+					}
+					break;
 
 				case "dlg-open":
 					// fast references
@@ -2108,7 +2198,8 @@ const Dialogs = {
 					// vars
 					let width = +Self.els.cvs.prop("offsetWidth"),
 						height = +Self.els.cvs.prop("offsetHeight");
-					Self.vars = { width, height };
+					Self.vars = { width, height, cx: 125, cy: 125, spacing: 30 };
+					Self.vars.maxDist = Math.hypot(Self.vars.cx, Self.vars.cy);
 					// prepare canvas element
 					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
 					// reset values
@@ -2125,8 +2216,14 @@ const Dialogs = {
 							value = el.data("default");
 						Self.values[el.data("name")] = { default: value, value };
 					});
+					Self.values.mid = {
+						default: { x: .5, y: .5 },
+						value: { x: .5, y: .5 },
+					};
 					// update cavas
 					Self.dispatch({ type: "render-canvas" });
+					// bind events
+					Self.els.cvs.on("mousedown", Self.dispatch);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
@@ -2150,12 +2247,17 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// reset mid-point
+					Self.values.mid.value = structuredClone(Self.values.mid.default);
 					// update cavas
 					Self.dispatch({ type: "render-canvas" });
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
+					// unbind events
+					Self.els.cvs.off("mousedown", Self.dispatch);
+					// common close
 					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "RdlB" } });
 					PP.update();
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
@@ -6219,6 +6321,60 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
+				case "dlg-open":
+					// fast references
+					Self.els = {
+						root: event.dEl,
+						cvs: event.dEl.find(".graph.levels canvas"),
+					};
+					Self.doc = APP.file?.doc;
+					// vars
+					let width = +Self.els.cvs.prop("offsetWidth"),
+						height = +Self.els.cvs.prop("offsetHeight");
+					Self.vars = { width, height };
+					// prepare canvas element
+					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
+					// select options
+					Self.root.find(`.field-row .option.select`).map(elem => {
+						let el = $(elem),
+							val = el.find(".value").text(),
+							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
+							value = xVal.getAttribute("value");
+						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "levl" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "levl" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "levl" } });
+					PP.update();
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

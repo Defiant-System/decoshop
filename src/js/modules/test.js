@@ -83,7 +83,8 @@ let Test = {
 		 * 
 		 */
 		// setTimeout(() => APP.dispatch({ type: "filter-render", arg: "clouds" }), 1600);
-		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgRadialBlur" }), 1600);
+		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgLevels" }), 1600);
+		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgRadialBlur"] li[data-value="Zm"]`).trigger("mousedown").trigger("mouseup").trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgSpherize"] li[data-value="VrtO"]`).trigger("mousedown").trigger("mouseup").trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgGradientMap"] .opt-gradient .value`).trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.active-filters .icon-arrow`).get(0).trigger("click"), 1000);

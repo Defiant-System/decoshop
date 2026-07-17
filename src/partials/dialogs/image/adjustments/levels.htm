@@ -20,16 +20,18 @@
 						<i class="icon-1"></i>
 						<i class="icon-2"></i>
 						<i class="icon-3"></i>
-						<span data-id="input-1">0</span>
-						<span data-id="input-2">0</span>
-						<span data-id="input-3">0</span>
+						<span data-id="input-shadows">0</span>
+						<span data-id="input-midtones">0</span>
+						<span data-id="input-highlights">0</span>
 					</span>
 				</div>
-				<div class="graph levels"></div>
+				<div class="graph levels">
+					<canvas></canvas>
+				</div>
 				<div class="slider-handles" style="--v1: 0px; --v2: 149px; --v3: 299px;">
-					<span class="handle" data-for="input-1"></span>
-					<span class="handle" data-for="input-2"></span>
-					<span class="handle" data-for="input-3"></span>
+					<span class="handle" data-for="input-shadows"></span>
+					<span class="handle" data-for="input-midtones"></span>
+					<span class="handle" data-for="input-highlights"></span>
 				</div>
 			</div>
 			
@@ -37,13 +39,13 @@
 				<div class="option input">
 					<span class="label">Output Levels</span>
 					<span class="value">
-						<span data-id="output-1">0</span>
-						<span data-id="output-2">0</span>
+						<span data-id="output-shadows">0</span>
+						<span data-id="output-highlights">0</span>
 					</span>
 				</div>
 				<div class="slider" data-range="lightness" style="--v1: 0px; --v2: 299px;">
-					<span class="handle" data-for="output-1"></span>
-					<span class="handle" data-for="output-2"></span>
+					<span class="handle" data-for="output-shadows"></span>
+					<span class="handle" data-for="output-highlights"></span>
 				</div>
 			</div>
 
