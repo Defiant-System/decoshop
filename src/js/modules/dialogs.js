@@ -6292,34 +6292,13 @@ const Dialogs = {
 				case "apply-filter-data":
 					return;
 
-				default:
-					/* Falls through to "master UI"
-					 * Can be handled here if needed - just capture events:
-					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
-					 */
-					// handler standard dialog events
-					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-			}
-		}
-	},
-	dlgMatchColor: {
-		name: "dlgMatchColor",
-		preview: true,
-		values: {},
-		dispatch(event) {
-			let APP = decoshop,
-				Self = Dialogs.dlgMatchColor,
-				Doc = Self.doc;
-			switch (event.type) {
-				case "set-count":
-					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
-					// exit if "preview" is not enabled
-					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+				case "render-canvas":
+					let ctx = Self.els.ctx,
+						{ width: w, height: h } = Self.vars;
+					// reset canvas
+					Self.els.cvs.attr({ width: w, height: h });
+					
 					break;
-				case "apply-filter-data":
-					return;
 
 				case "dlg-open":
 					// fast references
@@ -6375,6 +6354,35 @@ const Dialogs = {
 					PP.update();
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+			}
+		}
+	},
+	dlgMatchColor: {
+		name: "dlgMatchColor",
+		preview: true,
+		values: {},
+		dispatch(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgMatchColor,
+				Doc = Self.doc;
+			switch (event.type) {
+				case "set-count":
+					event.values = Self.values; // first copy values
+					event.values.count.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "apply-filter-data":
+					return;
+
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:
