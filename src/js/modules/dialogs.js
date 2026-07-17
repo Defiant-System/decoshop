@@ -2608,6 +2608,8 @@ const Dialogs = {
 				case "set-mode":
 					event.values = Self.values; // first copy values
 					event.values.mode.value = event.target.getAttribute("data-value"); // then partial overwrite
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -2629,8 +2631,10 @@ const Dialogs = {
 				case "render-canvas":
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
-						amount = -Self.values.amount.value/100,
+						mode = Self.values.mode.value,
+						amount = -Self.values.amount.value / 100,
 						spacing = 30,
+						radius = 115,
 						ox = 25,
 						oy = 24,
 						cx = 125,
@@ -2642,62 +2646,69 @@ const Dialogs = {
 					Self.els.cvs.attr({ width: w, height: h });
 					ctx.translate(-.5, -.5);
 					ctx.lineWidth = 1;
-					// vertical grid lines
+					// vertical lines
 					for(let gx=-ox; gx<=oxl; gx+=spacing) {
 						ctx.strokeStyle = gx === cx ? "#788" : "#677";
 						ctx.beginPath();
 						for(let gy=-oy; gy<=oyl; gy+=refine) {
-							let p = Self.dispatch({ type: "project", cx, cy, gx, gy, amount });
+							let p = Self.dispatch({ type: mode, cx, cy, gx, gy, amount, radius });
 							if (gy === -oy) ctx.moveTo(p.x, p.y);
 							else ctx.lineTo(p.x, p.y);
 						}
 						ctx.stroke();
 					}
-					//------------------------------------------
-					// horizontal
-					//------------------------------------------
+					// horizontal lines
 					for(let gy=-oy; gy<=oyl; gy+=spacing) {
 						ctx.beginPath();
 						for(let gx=-ox; gx<=oxl; gx+=refine) {
 							ctx.strokeStyle = gy === cy ? "#788" : "#677";
-							let p= Self.dispatch({ type: "project", cx, cy, gx, gy, amount });
+							let p = Self.dispatch({ type: mode, cx, cy, gx, gy, amount, radius });
 							if (gx === -ox) ctx.moveTo(p.x, p.y);
 							else ctx.lineTo(p.x, p.y);
 						}
 						ctx.stroke();
 					}
 					break;
-				case "project":
-					let sphereRadius = 115;
+				case "Nrml":
 					let dx = event.gx - event.cx;
 					let dy = event.gy - event.cy;
 					let r2 = dx * dx + dy * dy;
-					if (r2 >= sphereRadius * sphereRadius) return { x: event.gx, y: event.gy };
-					//--------------------------------------------------------
+					if (r2 >= event.radius * event.radius) return { x: event.gx, y: event.gy };
 					// Point on sphere
-					//--------------------------------------------------------
-					let nx = dx / sphereRadius;
-					let ny = dy / sphereRadius;
+					let nx = dx / event.radius;
+					let ny = dy / event.radius;
 					let nz = Math.sqrt(1 - nx * nx - ny * ny);
-					//--------------------------------------------------------
 					// Negative sphere
-					//--------------------------------------------------------
 					if (event.amount < 0) nz = -nz * .4;
-					//--------------------------------------------------------
 					// Orthographic projection
-					//--------------------------------------------------------
 					// perspective factor
 					let scale = 1 / (1 + 0.5 * nz);
-					let sx = nx * scale * sphereRadius;
-					let sy = ny * scale * sphereRadius;
-					//--------------------------------------------------------
+					let sx = nx * scale * event.radius;
+					let sy = ny * scale * event.radius;
 					// Blend with original grid
-					//--------------------------------------------------------
 					let t = Math.abs(event.amount);
 					return {
 						x: Math.lerp(event.gx, event.cx + sx, t),
 						y: Math.lerp(event.gy, event.cy + sy, t)
 					};
+				case "HrzO":
+				case "VrtO":
+					let func = v => {
+							if (event.amount === 0) return v;
+							// normalize to [-1,1]
+							let u = (v - event.cx) / event.cx;
+							// exponent from 0.35..3
+							let exp = event.amount < 0
+									? 1 + event.amount * 0.5
+									: 1 + event.amount * 2.0;
+							let s = Math.sign(u);
+							u = Math.abs(u);
+							u = Math.pow(u, exp);
+							return event.cx + s * u * event.cx;
+						};
+					return event.type === "HrzO"
+								? { x: func(event.gx), y: event.gy }
+								: { x: event.gx, y: func(event.gy) };
 
 				case "dlg-open":
 					// fast references
@@ -2751,6 +2762,8 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;

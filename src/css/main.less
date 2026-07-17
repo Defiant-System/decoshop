@@ -813,7 +813,7 @@ content {
 		}
 
 		&.disabled {
-			opacity: .125;
+			opacity: .25;
 			cursor: default;
 		}
 
@@ -914,11 +914,17 @@ content {
 		&.icon-align-right          { background-image: url(~/icons/icon-align-right.png); }
 		&.icon-horizontal-centers   { background-image: url(~/icons/icon-horizontal-centers.png); }
 		&.icon-vertical-centers     { background-image: url(~/icons/icon-vertical-centers.png); }
+		&[data-content="blur"][data-opt="blur"],
 		&.tool-blur                 { background-image: url(~/icons/tool-blur.png); }
+		&[data-content="blur"][data-opt="sharpen"],
 		&.tool-sharpen              { background-image: url(~/icons/tool-sharpen.png); }
+		&[data-content="blur"][data-opt="smudge"],
 		&.tool-smudge               { background-image: url(~/icons/tool-smudge.png); }
+		&[data-content="blur"][data-opt="dodge"],
 		&.tool-dodge                { background-image: url(~/icons/tool-dodge.png); }
+		&[data-content="blur"][data-opt="burn"],
 		&.tool-burn                 { background-image: url(~/icons/tool-burn.png); }
+		&[data-content="blur"][data-opt="sponge"],
 		&.tool-sponge               { background-image: url(~/icons/tool-sponge.png); }
 
 		&[data-content="brush"][data-opt="brush"],
@@ -930,15 +936,23 @@ content {
 
 		&[data-content="brush"][data-opt="eraser"],
 		&.tool-eraser               { background-image: url(~/icons/tool-eraser.png); }
+		&[data-content="brush"][data-opt="eraser-bg"],
 		&.tool-eraser-bg            { background-image: url(~/icons/tool-eraser-bg.png); }
+		&[data-content="brush"][data-opt="eraser-magic"],
 		&.tool-eraser-magic         { background-image: url(~/icons/tool-eraser-magic.png); }
 
 		&.tool-pressure             { background-image: url(~/icons/tool-pressure.png); }
+		&[data-content="crop"][data-opt="crop"],
 		&.tool-crop                 { background-image: url(~/icons/tool-crop.png); }
+		&[data-content="crop"][data-opt="perspective"],
 		&.tool-perspective          { background-image: url(~/icons/tool-perspective.png); }
+		&[data-content="crop"][data-opt="slice"],
 		&.tool-slice                { background-image: url(~/icons/tool-slice.png); }
+		&[data-content="crop"][data-opt="slice-select"],
 		&.tool-slice-select         { background-image: url(~/icons/tool-slice-select.png); }
+		&[data-content="gradient"][data-opt="gradient"],
 		&.tool-gradient             { background-image: url(~/icons/tool-gradient.png); }
+		&[data-content="gradient"][data-opt="fill"],
 		&.tool-fill                 { background-image: url(~/icons/tool-fill.png); }
 
 
@@ -948,7 +962,6 @@ content {
 		&.tool-marquee-circle       { background-image: url(~/icons/tool-marquee-circle.png); }
 		&[data-content="marquee"][data-opt="magic-wand"],
 		&.tool-wand                 { background-image: url(~/icons/tool-wand.png); }
-
 		&[data-content="marquee"][data-opt="lasso"],
 		&.tool-lasso                { background-image: url(~/icons/tool-lasso.png); }
 		&[data-content="marquee"][data-opt="polygon"],
@@ -960,16 +973,24 @@ content {
 		&.icon-marquee-union        { background-image: url(~/icons/icon-marquee-union.png); }
 		&.icon-marquee-subtract     { background-image: url(~/icons/icon-marquee-subtract.png); }
 		&.icon-marquee-intersect    { background-image: url(~/icons/icon-marquee-intersect.png); }
+		&[data-content="pen"][data-opt="tool-pen"],
 		&.tool-pen                  { background-image: url(~/icons/tool-pen.png); }
+		&[data-content="pen"][data-opt="pen-plus-anchor"],
 		&.tool-pen-plus-anchor      { background-image: url(~/icons/tool-pen-plus-anchor.png); }
+		&[data-content="pen"][data-opt="pen-minus-anchor"],
 		&.tool-pen-minus-anchor     { background-image: url(~/icons/tool-pen-minus-anchor.png); }
+		&[data-content="pen"][data-opt="pen-free"],
 		&.tool-pen-free             { background-image: url(~/icons/tool-pen-free.png); }
+		&[data-content="pen"][data-opt="pen-convert"],
 		&.tool-pen-convert          { background-image: url(~/icons/tool-pen-convert.png); }
 		&[data-content="pipette"][data-opt="pipette"],
 		&.tool-pipette              { background-image: url(~/icons/tool-pipette.png); }
 		&[data-content="pipette"][data-opt="ruler"],
 		&.tool-ruler                { background-image: url(~/icons/tool-ruler.png); }
+
+		&[data-content="pointer"][data-opt="pointer"],
 		&.tool-pointer              { background-image: url(~/icons/tool-pointer.png); }
+		&[data-content="pointer"][data-opt="pointer-object"],
 		&.tool-pointer-object       { background-image: url(~/icons/tool-pointer-object.png); }
 		&[data-content="shape"][data-opt="rectangle"],
 		&.tool-shape-rect           { background-image: url(~/icons/tool-shape-rect.png); }
@@ -981,22 +1002,32 @@ content {
 		&.tool-shape-star           { background-image: url(~/icons/tool-shape-star.png); }
 		&[data-content="shape"][data-opt="line"],
 		&.tool-shape-line           { background-image: url(~/icons/tool-shape-line.png); }
+		&[data-content="stamp"][data-opt="stamp-clone"],
 		&.tool-stamp-clone          { background-image: url(~/icons/tool-stamp-clone.png); }
+		&[data-content="stamp"][data-opt="stamp-pattern"],
 		&.tool-stamp-pattern        { background-image: url(~/icons/tool-stamp-pattern.png); }
 		&.tool-healing-brush        { background-image: url(~/icons/tool-healing-brush.png); }
 		&.tool-spot-healing-brush   { background-image: url(~/icons/tool-spot-healing-brush.png); }
 		&.tool-content-move         { background-image: url(~/icons/tool-content-move.png); }
 		&.tool-patch                { background-image: url(~/icons/tool-patch.png); }
 		&.tool-red-eye              { background-image: url(~/icons/tool-red-eye.png); }
+
+		&[data-content="type"][data-opt="horizontal"],
 		&.tool-type-horizontal      { background-image: url(~/icons/tool-type-horizontal.png); }
+		&[data-content="type"][data-opt="vertical"],
 		&.tool-type-vertical        { background-image: url(~/icons/tool-type-vertical.png); }
+		&[data-content="type"][data-opt="horizontal-mask"],
 		&.tool-type-horizontal-mask { background-image: url(~/icons/tool-type-horizontal-mask.png); }
+		&[data-content="type"][data-opt="vertical-mask"],
 		&.tool-type-vertical-mask   { background-image: url(~/icons/tool-type-vertical-mask.png); }
 		&.icon-justify-left         { background-image: url(~/icons/icon-justify-left.png); }
 		&.icon-justify-center       { background-image: url(~/icons/icon-justify-center.png); }
 		&.icon-justify-right        { background-image: url(~/icons/icon-justify-right.png); }
+		&[data-content="zoom"][data-opt="zoom"],
 		&.tool-zoom                 { background-image: url(~/icons/tool-zoom.png); }
+		&[data-content="zoom"][data-opt="zoom-plus"],
 		&.icon-zoom-plus            { background-image: url(~/icons/icon-zoom-plus.png); }
+		&[data-content="zoom"][data-opt="zoom-minus"],
 		&.icon-zoom-minus           { background-image: url(~/icons/icon-zoom-minus.png); }
 
 		&.icon-toggle-panels-off    { background-image: url(~/icons/icon-toggle-panels-off.png); }
