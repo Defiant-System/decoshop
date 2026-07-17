@@ -10,7 +10,7 @@
 				<div class="option input">
 					<span class="label">Amount</span>
 					<span class="value">
-						<input type="text" name="field-1" data-min="1" data-max="100" value="10" data-default="10"/>
+						<input type="text" name="amount" data-min="1" data-max="100" value="10" data-default="10"/>
 					</span>
 				</div>
 				<div class="knob" data-change="set-amount"></div>
@@ -20,15 +20,15 @@
 				<div class="option opt-group">
 					<span class="label">Mode</span>
 					<span class="value">
-						<ul class="opt-group">
-							<li class="active">Spin</li>
-							<li>Zom</li>
+						<ul class="opt-group" data-default="Spn" data-name="mode" data-click="set-mode">
+							<li data-value="Spn" class="active">Spin</li>
+							<li data-value="Zm">Zoom</li>
 						</ul>
 					</span>
 				</div>
 			</div>
 
-			<div class="sample-grid">
+			<div class="blur-cvs">
 				<canvas></canvas>
 			</div>
 

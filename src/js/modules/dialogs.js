@@ -2062,13 +2062,104 @@ const Dialogs = {
 			// console.log(event);
 			switch (event.type) {
 				// "fast events"
-				case "set-type":
+				case "set-amount":
+					event.values = Self.values; // first copy values
+					event.values.amount.value = event.value; // then partial overwrite
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
 					// exit if "preview" is not enabled
-					if (!Self.preview) return;
-					/* falls-through */
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-mode":
+					event.values = Self.values; // first copy values
+					event.values.mode.value = event.target.getAttribute("data-value"); // then partial overwrite
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+					// safe & smooth raf
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("RdlB");
+						qv.Amnt.v = Self.values.amount.value;
+						qv.BlrM.v.BlrM = Self.values.mode.value;
+
+						qv.Cntr.v.Hrzn.v = .5;
+						qv.Cntr.v.Vrtc.v = .5;
+
+						PP.TA({ G: CanvasTools.WH, data: { a: "edit", _K: "RdlB", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
+				case "dlg-open":
+					// fast references
+					Self.els = {
+						root: event.dEl,
+						cvs: event.dEl.find(".blur-cvs canvas"),
+					};
+					Self.doc = APP.file?.doc;
+					// vars
+					let width = +Self.els.cvs.prop("offsetWidth"),
+						height = +Self.els.cvs.prop("offsetHeight");
+					Self.vars = { width, height };
+					// prepare canvas element
+					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// save initial state values
+					Self.els.root.find(`.field-row input[data-default]`).map(elem => {
+						let el = $(elem),
+							value = parseInt(el.val(), 10);
+						Self.values[el.attr("name")] = { default: value, value };
+					});
+					// save initial state values
+					Self.els.root.find(`.field-row .opt-group[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("default");
+						Self.values[el.data("name")] = { default: value, value };
+					});
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "RdlB" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.WH, data: { a: "confirm", _K: "RdlB" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// update cavas
+					Self.dispatch({ type: "render-canvas" });
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-close":
+					PP.TA({ G: CanvasTools.WH, data: { a: "cancel", _K: "RdlB" } });
+					PP.update();
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

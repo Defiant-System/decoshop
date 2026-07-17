@@ -3261,7 +3261,7 @@
 				position: relative;
 				width: 249px;
 				height: 249px;
-				overflow: hidden;
+				// overflow: hidden;
 				margin-bottom: 5px;
 				border-radius: 3px;
 				box-shadow: inset 0 2px 7px #0001,
@@ -3316,14 +3316,14 @@
 				position: relative;
 				width: 249px;
 				height: 249px;
-				overflow: hidden;
+				// overflow: hidden;
 				margin-top: 5px;
 				border-radius: 3px;
 				box-shadow: inset 0 2px 7px #0001,
 							0 0 0 1px #1226;
 				// cursor: move;
 
-				&:before {
+				&:-before {
 					content: "";
 					position: absolute;
 					top: -175px;
@@ -3391,7 +3391,7 @@
 				position: relative;
 				width: 249px;
 				height: 249px;
-				overflow: hidden;
+				// overflow: hidden;
 				margin-top: 5px;
 				border-radius: 3px;
 				box-shadow: inset 0 2px 7px #0001,
@@ -3438,46 +3438,37 @@
 
 	&[data-dlg="dlgRadialBlur"] {
 		.dlg-content {
-			--clr1: #dee1;
-			--clr2: #cee2;
-			--bW1: 50px;
-			--bW2: 300px;
+			--clr1: #cee1;
+			--bW1: 30px;
 
-			.sample-grid {
+			.blur-cvs {
 				background: #3443;
 				position: relative;
 				width: 249px;
 				height: 249px;
-				overflow: hidden;
+				// overflow: hidden;
 				margin-top: 5px;
 				border-radius: 3px;
 				box-shadow: inset 0 2px 7px #0001,
 							0 0 0 1px #1226;
-				cursor: move;
+				cursor: crosshair;
 
 				&:before {
 					content: "";
 					position: absolute;
-					top: -175px;
-					left: -175px;
-					width: 600px;
-					height: 600px;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
 					background-image: repeating-linear-gradient(90deg,
-						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-					),
-					repeating-linear-gradient(90deg,
-						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
-						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
-					),
-					repeating-linear-gradient(0deg,
-						transparent 0px, transparent calc( var( --bW1 ) - 1px ),
-						var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
-					),
-					repeating-linear-gradient(0deg,
-						transparent 0px, transparent calc( var( --bW2 ) - 1px ),
-						var( --clr2 ) calc( var( --bW2 ) - 1px ), var( --clr2 ) var( --bW2 )
-					);
+							transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+							var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+						),
+						repeating-linear-gradient(0deg,
+							transparent 0px, transparent calc( var( --bW1 ) - 1px ),
+							var( --clr1 ) calc( var( --bW1 ) - 1px ), var( --clr1 ) var( --bW1 )
+						);
+					background-position: -11px 9px;
 				}
 
 				&:after {
@@ -3491,8 +3482,11 @@
 				}
 
 				canvas {
-					width: 100%;
-					height: 100%;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 249px;
+					height: 249px;
 				}
 			}
 		}
