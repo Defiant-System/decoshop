@@ -6304,6 +6304,7 @@ const Dialogs = {
 						tgt2 = Self.els.root.find(`.value span[data-id="${h2.data("for")}"] input`),
 						tgt3 = Self.els.root.find(`.value span[data-id="${h3.data("for")}"] input`),
 						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
+						c = Self.values.channel.value,
 						m0 = 0,
 						m2 = 255,
 						max = pEl.prop("offsetWidth"),
@@ -6332,7 +6333,7 @@ const Dialogs = {
 					el.addClass("moved");
 					perc = Math.invLerp(+h1.prop("offsetLeft"), +h3.prop("offsetLeft"), +h2.prop("offsetLeft"));
 					// drag object
-					Self.drag = { el, fFor, h1, h2, h3, tgt1, tgt2, tgt3, perc, clickX, min, max };
+					Self.drag = { el, fFor, h1, h2, h3, tgt1, tgt2, tgt3, c, perc, clickX, min, max };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
@@ -6348,7 +6349,7 @@ const Dialogs = {
 							Drag.h2.css({ left: l2 });
 							v = Math.lerp(0, 255, left/300) | 0;
 							Drag.tgt1.val(v);
-							Self.values.levels.value[0] = v;
+							Self.values.levels.value[Drag.c][0] = v;
 							break;
 						case "input-midtones":
 							il = Math.invLerp(Drag.min, Drag.max, left);
@@ -6356,24 +6357,24 @@ const Dialogs = {
 								? Math.lerp(9.9, 1, il*2)
 								: Math.lerp(1.9, 0.1, il);
 							Drag.tgt2.val(Misc.precision(v, 1e-2));
-							Self.values.levels.value[4] = (v * 100) | 0;
+							Self.values.levels.value[Drag.c][4] = (v * 100) | 0;
 							break;
 						case "input-highlights":
 							l2 = Math.lerp(Drag.min, left, Drag.perc);
 							Drag.h2.css({ left: l2 });
 							v = Math.lerp(1, 255, left/300) | 0;
 							Drag.tgt3.val(v);
-							Self.values.levels.value[1] = v;
+							Self.values.levels.value[Drag.c][1] = v;
 							break;
 						case "output-shadows":
 							v = Math.lerp(0, 255, left/300) | 0;
 							Drag.tgt1.val(v);
-							Self.values.levels.value[2] = v;
+							Self.values.levels.value[Drag.c][2] = v;
 							break;
 						case "output-highlights":
 							v = Math.lerp(1, 255, left/300) | 0;
 							Drag.tgt2.val(v);
-							Self.values.levels.value[3] = v;
+							Self.values.levels.value[Drag.c][3] = v;
 							break;
 					}
 
@@ -6404,8 +6405,9 @@ const Dialogs = {
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("levl");
 						// preferably loop channels 0..3 from Self.values.levels[ch]
-						let ch = +Self.values.channel.value;
-						LevelsResource.fZ(qv, ch, Self.values.levels.value);
+						let ch = Self.values.channel.value;
+						let value = Self.values.levels.value[ch];
+						LevelsResource.fZ(qv, ch, value);
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "levl", qv, ve: false } });
 						PP.update();
 					});
@@ -6478,7 +6480,15 @@ const Dialogs = {
 					});
 					// default levels
 					let value = [0, 255, 0, 255, 100];
-					Self.values.levels = { default: structuredClone(value), value };
+					Self.values.levels = {
+						default: structuredClone(value),
+						value: [
+							structuredClone(value),
+							structuredClone(value),
+							structuredClone(value),
+							structuredClone(value),
+						]
+					};
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
 					// bind events
@@ -6510,12 +6520,15 @@ const Dialogs = {
 						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
 					});
 					// reset mid-point
-					Self.values.levels.value = structuredClone(Self.values.levels.default);
-					Self.els.i1.val(Self.values.levels.value[0]);
-					Self.els.i2.val(Self.values.levels.value[4] / 100);
-					Self.els.i3.val(Self.values.levels.value[1]);
-					Self.els.o1.val(Self.values.levels.value[2]);
-					Self.els.o2.val(Self.values.levels.value[3]);
+					Self.values.levels.value.map((r, i) => {
+						Self.values.levels.value[i] = structuredClone(Self.values.levels.default);
+					});
+					let ch = Self.values.channel.value;
+					Self.els.i1.val(Self.values.levels.value[ch][0]);
+					Self.els.i2.val(Self.values.levels.value[ch][4] / 100);
+					Self.els.i3.val(Self.values.levels.value[ch][1]);
+					Self.els.o1.val(Self.values.levels.value[ch][2]);
+					Self.els.o2.val(Self.values.levels.value[ch][3]);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					// update cavas
