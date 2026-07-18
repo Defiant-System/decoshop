@@ -6340,32 +6340,46 @@ const Dialogs = {
 					break;
 				case "mousemove":
 					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max),
-						l2, il;
+						l2, il, v;
 
 					switch (Drag.fFor) {
 						case "input-shadows":
 							l2 = Math.lerp(left, Drag.max, Drag.perc);
 							Drag.h2.css({ left: l2 });
-							Drag.tgt1.val(Math.lerp(0, 255, left/300) | 0);
+							v = Math.lerp(0, 255, left/300) | 0;
+							Drag.tgt1.val(v);
+							Self.values.levels.value[0] = v;
 							break;
 						case "input-midtones":
 							il = Math.invLerp(Drag.min, Drag.max, left);
-							Drag.tgt2.val(Misc.precision(Math.lerp(9.9, 0.1, il), 1e-2));
+							v = il <= 0.5
+								? Math.lerp(9.9, 1, il*2)
+								: Math.lerp(1.9, 0.1, il);
+							Drag.tgt2.val(Misc.precision(v, 1e-2));
+							Self.values.levels.value[4] = (v * 100) | 0;
 							break;
 						case "input-highlights":
 							l2 = Math.lerp(Drag.min, left, Drag.perc);
 							Drag.h2.css({ left: l2 });
-							Drag.tgt3.val(Math.lerp(1, 255, left/300) | 0);
+							v = Math.lerp(1, 255, left/300) | 0;
+							Drag.tgt3.val(v);
+							Self.values.levels.value[1] = v;
 							break;
 						case "output-shadows":
-							Drag.tgt1.val(Math.lerp(0, 255, left/300) | 0);
+							v = Math.lerp(0, 255, left/300) | 0;
+							Drag.tgt1.val(v);
+							Self.values.levels.value[2] = v;
 							break;
 						case "output-highlights":
-							Drag.tgt2.val(Math.lerp(1, 255, left/300) | 0);
+							v = Math.lerp(1, 255, left/300) | 0;
+							Drag.tgt2.val(v);
+							Self.values.levels.value[3] = v;
 							break;
 					}
 
 					Drag.el.css({ left });
+					// exit if "preview" is not enabled
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "mouseup":
 					// cover dialog UI
@@ -6385,6 +6399,16 @@ const Dialogs = {
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					Self.values = event.values;
+					Engine.raf(() => {
+						let qv = FilterHelper.oT("levl");
+						// preferably loop channels 0..3 from Self.values.levels[ch]
+						let ch = +Self.values.channel.value;
+						LevelsResource.fZ(qv, ch, Self.values.levels.value);
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "levl", qv, ve: false } });
+						PP.update();
+					});
 					return;
 
 				case "render-canvas":
@@ -6428,6 +6452,11 @@ const Dialogs = {
 					// fast references
 					Self.els = {
 						root: event.dEl,
+						i1: event.dEl.find(`.value span[data-id="input-shadows"] input`),
+						i2: event.dEl.find(`.value span[data-id="input-midtones"] input`),
+						i3: event.dEl.find(`.value span[data-id="input-highlights"] input`),
+						o1: event.dEl.find(`.value span[data-id="output-shadows"] input`),
+						o2: event.dEl.find(`.value span[data-id="output-highlights"] input`),
 						cvs: event.dEl.find(".graph.levels canvas"),
 					};
 					Self.doc = APP.file?.doc;
@@ -6447,6 +6476,9 @@ const Dialogs = {
 							value = xVal.getAttribute("value");
 						Self.values[el.data("name")] = { text: val, default: value, value };
 					});
+					// default levels
+					let value = [0, 255, 0, 255, 100];
+					Self.values.levels = { default: structuredClone(value), value };
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
 					// bind events
@@ -6477,9 +6509,17 @@ const Dialogs = {
 						Self.values[key].value = Self.values[key].default;
 						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
 					});
-					Self.dispatch({ type: "render-canvas" });
+					// reset mid-point
+					Self.values.levels.value = structuredClone(Self.values.levels.default);
+					Self.els.i1.val(Self.values.levels.value[0]);
+					Self.els.i2.val(Self.values.levels.value[4] / 100);
+					Self.els.i3.val(Self.values.levels.value[1]);
+					Self.els.o1.val(Self.values.levels.value[2]);
+					Self.els.o2.val(Self.values.levels.value[3]);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					// update cavas
+					// Self.dispatch({ type: "render-canvas" });
 					break;
 				case "dlg-close":
 					// unbind events

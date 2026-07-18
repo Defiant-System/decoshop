@@ -6941,6 +6941,8 @@ d8.qJ = function(l, d, G) {
 
 // hg - LevelsResource (.alv levels adjustment preset resource handler)
 function hg() {}
+const LevelsResource = hg;
+
 // LevelsResource.importFromBuffer — parse .alv → levels adjustment descriptor
 hg.Cd = function(l) {
 	var d = new Uint8Array(l),

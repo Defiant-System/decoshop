@@ -101,6 +101,7 @@ module.exports = {
 	LayerSectionType,
 	LayerStyleConstants,
 	LayerEffectsHelper,
+	LevelsResource,
 	LutProfileResource,
 	HistoryState,
 	PixelUtil,
