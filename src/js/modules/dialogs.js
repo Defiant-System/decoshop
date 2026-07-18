@@ -6887,18 +6887,151 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
-				Doc = Self.doc;
+				Doc = Self.doc,
+				Drag = Self.drag;
 			switch (event.type) {
-				case "set-count":
-					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
+				// native events
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
+					// drag info
+					let el = $(event.target).parents("?.handle");
+					if (!el.length) return;
+
+					let pEl = el.parent(),
+						fFor = el.data("for"),
+						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
+						c = Self.values.channel.value,
+						m0 = 0,
+						m2 = 255,
+						max = pEl.prop("offsetWidth"),
+						min = 0;
+
+					switch (fFor) {
+						case "input":
+							// max = +h3.prop("offsetLeft") - 2;
+							break;
+						case "output":
+							// min = +h1.prop("offsetLeft") + 1;
+							break;
+					}
+					// moves dragged handle on top
+					el.addClass("moved");
+					// drag object
+					Self.drag = { el, fFor, c, clickX, min, max };
+					// cover dialog UI
+					Self.els.root.addClass("covered no-cursor");
+					// bind events
+					UI.doc.on("mousemove mouseup", Self.dispatch);
+					break;
+				case "mousemove":
+					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max);
+					Drag.el.css({ left });
+					break;
+				case "mouseup":
+					// cover dialog UI
+					Self.els.root.removeClass("covered no-cursor");
+					// unbind events
+					UI.doc.off("mousemove mouseup", Self.dispatch);
+					break;
+
+				case "render-canvas":
+					break;
+				case "sync-ui-with-levels":
+					break;
+
+				// "fast" events
+				case "set-channel":
+					event.values = Self.values;
+					event.values.channel.value = event.value;
+					event.values.channel.text = event.text;
+					Self.dispatch({ type: "render-canvas" });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					Self.values = event.values;
+					Engine.raf(() => {
+						
+					});
 					return;
 
+				case "dlg-open":
+					// fast references
+					Self.els = {
+						root: event.dEl,
+						cvs: event.dEl.find(".graph.curves canvas"),
+					};
+					Self.doc = APP.file?.doc;
+					// vars
+					let width = +Self.els.cvs.prop("offsetWidth"),
+						height = +Self.els.cvs.prop("offsetHeight");
+					Self.vars = { width, height };
+					// prepare canvas element
+					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// select options
+					Self.els.root.find(`.field-row .option.select`).map(elem => {
+						let el = $(elem),
+							val = el.find(".value").text(),
+							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
+							value = xVal.getAttribute("value");
+						Self.values[el.data("name")] = { text: val, default: value, value };
+					});
+					// draw input levels histogram for the current document
+					Self.dispatch({ type: "render-canvas" });
+					// bind events
+					Self.els.cvs.on("mousedown", Self.dispatch);
+					Self.els.root.find(".slider").on("mousedown", Self.dispatch);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "curv" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => {
+						Self.values[key].value = Self.values[key].default;
+						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
+					});
+					// reset mid-point
+					Self.values.levels.value = structuredClone(Self.values.levels.default);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					// update cavas
+					// Self.dispatch({ type: "render-canvas" });
+					break;
+				case "dlg-close":
+					// unbind events
+					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					// common dialog close
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+					PP.update();
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					break;
 				default:
 					/* Falls through to "master UI"
 					 * Can be handled here if needed - just capture events:

@@ -396,6 +396,12 @@
 		<i type="divider"/>
 		<i type="option" name="Custom" value="1"/>
 	</CurvesPresets>
+	<CurveChannels>
+		<i type="option" name="RGB" value="0"/>
+		<i type="option" name="Red" value="1"/>
+		<i type="option" name="Green" value="2"/>
+		<i type="option" name="Blue" value="3"/>
+	</CurveChannels>
 	<CurveAlgorithms>
 		<i type="option" name="None" value="-"/>
 		<i type="option" name="Monochromatic Contrast" value="0"/>

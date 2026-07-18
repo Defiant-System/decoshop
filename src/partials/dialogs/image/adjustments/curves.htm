@@ -7,22 +7,22 @@
 			</h2>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//CurvesPresets">
+				<div class="option select" data-change="set-preset" data-name="preset" data-options="fieldset-inline-menubox" data-match="//CurvesPresets">
 					<span class="label">Preset</span>
 					<span class="value">Custom</span>
 				</div>
 			</div>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//LevelChannels">
+				<div class="option select" data-change="set-channel" data-name="channel" data-options="fieldset-inline-menubox" data-match="//CurveChannels">
 					<span class="label">Channel</span>
-					<span class="value">RGB</span>
+					<span class="value" data-default="RGB">RGB</span>
 					<!-- <span class="button">Auto</span> -->
 				</div>
 			</div>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//CurveAlgorithms">
+				<div class="option select" data-change="set-algorithm" data-name="algorithm" data-options="fieldset-inline-menubox" data-match="//CurveAlgorithms">
 					<span class="label">Algorithm</span>
 					<span class="value" data-default="None">None</span>
 				</div>
@@ -39,6 +39,7 @@
 					<i class="tool-pipette-light"></i>
 				</div>
 				<div class="graph curves">
+					<canvas></canvas>
 					<div class="range-h"></div>
 					<div class="slider range-v">
 						<span class="handle" data-for="input" style="left: 0px;"></span>
