@@ -17,21 +17,21 @@
 				<div class="option select" data-options="fieldset-inline-menubox" data-match="//LevelChannels">
 					<span class="label">Channel</span>
 					<span class="value">RGB</span>
-					<span class="button">Auto</span>
+					<!-- <span class="button">Auto</span> -->
 				</div>
 			</div>
 
 			<div class="field-row">
 				<div class="option select" data-options="fieldset-inline-menubox" data-match="//CurveAlgorithms">
 					<span class="label">Algorithm</span>
-					<span class="value">Brightness &amp; Contrast</span>
+					<span class="value" data-default="None">None</span>
 				</div>
 			</div>
 
 			<div class="field-row has-graph">
 				<div class="option-bar">
 					<i class="tool-ns-resize"></i>
-					<i class="tool-spline"></i>
+					<i class="tool-spline active"></i>
 					<i class="tool-sketch"></i>
 
 					<i class="tool-pipette-dark"></i>
@@ -40,9 +40,9 @@
 				</div>
 				<div class="graph curves">
 					<div class="range-h"></div>
-					<div class="slider range-v" style="--v1: 0px; --v2: 249px;">
-						<span class="handle" data-for="input-1"></span>
-						<span class="handle" data-for="input-2"></span>
+					<div class="slider range-v">
+						<span class="handle" data-for="input" style="left: 0px;"></span>
+						<span class="handle" data-for="output" style="left: 249px;"></span>
 					</div>
 				</div>
 			</div>

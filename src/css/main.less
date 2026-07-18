@@ -6590,6 +6590,7 @@ content {
 				background-color:  #0113;
 			}
 
+			&.active:before,
 			&:active:before {
 				background-color:  #0114;
 			}
@@ -6654,8 +6655,8 @@ content {
 			filter: drop-shadow(0 1px 1px #1337);
 			cursor: ew-resize;
 
-			&[data-for="input-1"] { left: var( --v1 ); background-image: url(~/icons/icon-slider-dark-handle.png); }
-			&[data-for="input-2"] { left: var( --v2 ); background-image: url(~/icons/icon-slider-light-handle.png); }
+			&[data-for="input"] { background-image: url(~/icons/icon-slider-dark-handle.png); }
+			&[data-for="output"] { background-image: url(~/icons/icon-slider-light-handle.png); }
 		}
 	}
 

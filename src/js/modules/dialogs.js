@@ -6395,6 +6395,8 @@ const Dialogs = {
 					event.values.channel.value = event.value;
 					event.values.channel.text = event.text;
 					Self.dispatch({ type: "render-canvas" });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6449,6 +6451,16 @@ const Dialogs = {
 					ctx.fill();
 					ctx.stroke();
 					break;
+				case "sync-ui-with-levels":
+					// select and loop "handle" elements and set "left"
+
+					let ch = Self.values.channel.value;
+					Self.els.i1.val(Self.values.levels.value[ch][0]);
+					Self.els.i2.val(Self.values.levels.value[ch][4] / 100);
+					Self.els.i3.val(Self.values.levels.value[ch][1]);
+					Self.els.o1.val(Self.values.levels.value[ch][2]);
+					Self.els.o2.val(Self.values.levels.value[ch][3]);
+					break;
 
 				case "dlg-open":
 					// fast references
@@ -6479,16 +6491,13 @@ const Dialogs = {
 						Self.values[el.data("name")] = { text: val, default: value, value };
 					});
 					// default levels
-					let value = [0, 255, 0, 255, 100];
-					Self.values.levels = {
-						default: structuredClone(value),
-						value: [
-							structuredClone(value),
-							structuredClone(value),
-							structuredClone(value),
-							structuredClone(value),
-						]
-					};
+					let value = [
+						[0, 255, 0, 255, 100],
+						[0, 255, 0, 255, 100],
+						[0, 255, 0, 255, 100],
+						[0, 255, 0, 255, 100],
+					];
+					Self.values.levels = { default: structuredClone(value), value };
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
 					// bind events
@@ -6520,17 +6529,11 @@ const Dialogs = {
 						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
 					});
 					// reset mid-point
-					Self.values.levels.value.map((r, i) => {
-						Self.values.levels.value[i] = structuredClone(Self.values.levels.default);
-					});
-					let ch = Self.values.channel.value;
-					Self.els.i1.val(Self.values.levels.value[ch][0]);
-					Self.els.i2.val(Self.values.levels.value[ch][4] / 100);
-					Self.els.i3.val(Self.values.levels.value[ch][1]);
-					Self.els.o1.val(Self.values.levels.value[ch][2]);
-					Self.els.o2.val(Self.values.levels.value[ch][3]);
+					Self.values.levels.value = structuredClone(Self.values.levels.default);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
 					// update cavas
 					// Self.dispatch({ type: "render-canvas" });
 					break;

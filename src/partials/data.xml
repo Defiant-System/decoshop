@@ -397,6 +397,7 @@
 		<i type="option" name="Custom" value="1"/>
 	</CurvesPresets>
 	<CurveAlgorithms>
+		<i type="option" name="None" value="-"/>
 		<i type="option" name="Monochromatic Contrast" value="0"/>
 		<i type="option" name="Per Channel Contrast" value="1"/>
 		<i type="option" name="Dark &amp; Light Colors" value="2"/>
@@ -419,6 +420,13 @@
 		<i type="option" name="Green" value="2"/>
 		<i type="option" name="Blue" value="3"/>
 	</LevelChannels>
+	<LevelAlgorithms>
+		<i type="option" name="None" value="-"/>
+		<i type="option" name="Monochromatic Contrast" value="0"/>
+		<i type="option" name="Per Channel Contrast" value="1"/>
+		<i type="option" name="Dark &amp; Light Colors" value="2"/>
+		<i type="option" name="Brightness &amp; Contrast" value="3"/>
+	</LevelAlgorithms>
 	<HSRanges>
 		<i type="option" name="Master" value="0"/>
 		<i type="option" name="Red" value="1"/>
