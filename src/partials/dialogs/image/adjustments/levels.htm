@@ -7,9 +7,9 @@
 			</h2>
 
 			<div class="field-row">
-				<div class="option select" data-options="fieldset-inline-menubox" data-match="//LevelChannels">
+				<div class="option select" data-change="set-channel" data-name="channel" data-options="fieldset-inline-menubox" data-match="//LevelChannels">
 					<span class="label">Channel</span>
-					<span class="value">RGB</span>
+					<span class="value" data-default="RGB">RGB</span>
 				</div>
 			</div>
 
@@ -21,17 +21,17 @@
 						<i class="icon-2"></i>
 						<i class="icon-3"></i>
 						<span data-id="input-shadows">0</span>
-						<span data-id="input-midtones">0</span>
-						<span data-id="input-highlights">0</span>
+						<span data-id="input-midtones">1.0</span>
+						<span data-id="input-highlights">255</span>
 					</span>
 				</div>
 				<div class="graph levels">
 					<canvas></canvas>
 				</div>
-				<div class="slider-handles" style="--v1: 0px; --v2: 149px; --v3: 299px;">
-					<span class="handle" data-for="input-shadows"></span>
-					<span class="handle" data-for="input-midtones"></span>
-					<span class="handle" data-for="input-highlights"></span>
+				<div class="slider" data-range="input">
+					<span class="handle" data-for="input-shadows" style="left: 0px;"></span>
+					<span class="handle" data-for="input-midtones" style="left: 149px;"></span>
+					<span class="handle" data-for="input-highlights" style="left: 299px;"></span>
 				</div>
 			</div>
 			
@@ -40,12 +40,12 @@
 					<span class="label">Output Levels</span>
 					<span class="value">
 						<span data-id="output-shadows">0</span>
-						<span data-id="output-highlights">0</span>
+						<span data-id="output-highlights">255</span>
 					</span>
 				</div>
-				<div class="slider" data-range="lightness" style="--v1: 0px; --v2: 299px;">
-					<span class="handle" data-for="output-shadows"></span>
-					<span class="handle" data-for="output-highlights"></span>
+				<div class="slider" data-range="output">
+					<span class="handle" data-for="output-shadows" style="left: 0px;"></span>
+					<span class="handle" data-for="output-highlights" style="left: 299px;"></span>
 				</div>
 			</div>
 

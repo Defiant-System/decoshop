@@ -2053,7 +2053,7 @@ const Dialogs = {
 	},
 	dlgRadialBlur: {
 		name: "dlgRadialBlur",
-		preview: false,
+		preview: true,
 		values: {},
 		dispatch(event) {
 			let APP = decoshop,
@@ -2066,6 +2066,8 @@ const Dialogs = {
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
+					// trigger fake mousemove to re-render
+					Self.dispatch({ type: "mousemove", offsetY: event.offsetY, offsetX: event.offsetX });
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.dispatch);
 					break;
@@ -2086,6 +2088,7 @@ const Dialogs = {
 					// unbind events
 					UI.doc.off("mousemove mouseup", Self.dispatch);
 					break;
+
 				// "fast events"
 				case "set-amount":
 					event.values = Self.values; // first copy values
@@ -6280,11 +6283,46 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgLevels,
-				Doc = Self.doc;
+				Doc = Self.doc,
+				Drag = Self.drag;
 			switch (event.type) {
-				case "set-count":
-					event.values = Self.values; // first copy values
-					event.values.count.value = event.value; // then partial overwrite
+				// native events
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
+					// drag info
+					let el = $(event.target).parents("?.handle");
+					if (!el.length) return;
+
+					let handle = el.data("for"),
+						clickX = event.clientX - event.offsetX - +el.prop("offsetLeft"),
+						min = 0,
+						max = 255;
+					
+					Self.drag = { el, clickX, min, max };
+					// cover dialog UI
+					Self.els.root.addClass("covered");
+					// bind events
+					UI.doc.on("mousemove mouseup", Self.dispatch);
+					break;
+				case "mousemove":
+					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max);
+					Drag.el.css({ left });
+					break;
+				case "mouseup":
+					// cover dialog UI
+					Self.els.root.removeClass("covered");
+					// unbind events
+					UI.doc.off("mousemove mouseup", Self.dispatch);
+					break;
+
+				// "fast" events
+				case "set-channel":
+					event.values = Self.values;
+					event.values.channel.value = event.value;
+					event.values.channel.text = event.text;
+					Self.dispatch({ type: "render-canvas" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6294,10 +6332,39 @@ const Dialogs = {
 
 				case "render-canvas":
 					let ctx = Self.els.ctx,
-						{ width: w, height: h } = Self.vars;
-					// reset canvas
+						{ width: w, height: h } = Self.vars,
+						channel = +(Self.values.channel?.value ?? 0),
+						rgba = Doc.LT(),
+						pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
+						histogram = PixelUtil.histogramFromRgba(rgba),
+						yScale = 6e3 / histogram[4],
+						palette = ["#cdd", "#f99", "#7f7", "#99f"],
+						color = palette[channel] || palette[0],
+						gradient = ctx.createLinearGradient(0, 0, 0, h);
+					gradient.addColorStop(0, color +"1");
+					gradient.addColorStop(.3, color +"5");
+					// account for fully transparent samples (same as histogram panel)
+					histogram[0][255] += 3 * (pixelCount - histogram[5]);
+					for (let ch = 1; ch < 4; ch++) {
+						histogram[ch][255] += pixelCount - histogram[5];
+					}
+					let bins = histogram[channel] || histogram[0];
+					if (channel === 0) yScale /= 3;
+					// reset canvas — logical space is 256×100, scaled to graph size
 					Self.els.cvs.attr({ width: w, height: h });
-					
+					ctx.setTransform(w / 256, 0, 0, -h / 100, 0, h);
+					ctx.beginPath();
+					ctx.moveTo(-2, -2);
+					for (let l=0; l<256; l++) {
+						ctx.lineTo(l, bins[l] * yScale);
+					}
+					ctx.lineTo(258, -2);
+					ctx.closePath();
+					ctx.fillStyle = gradient;
+					ctx.strokeStyle = color;
+					ctx.lineWidth = .5;
+					ctx.fill();
+					ctx.stroke();
 					break;
 
 				case "dlg-open":
@@ -6313,16 +6380,20 @@ const Dialogs = {
 					Self.vars = { width, height };
 					// prepare canvas element
 					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// select options
-					Self.root.find(`.field-row .option.select`).map(elem => {
+					Self.els.root.find(`.field-row .option.select`).map(elem => {
 						let el = $(elem),
 							val = el.find(".value").text(),
 							xVal = window.bluePrint.selectSingleNode(`${el.data("match")}/*[@type="option"][@name="${val}"]`),
 							value = xVal.getAttribute("value");
 						Self.values[el.data("name")] = { text: val, default: value, value };
 					});
-					// reset values
-					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					// draw input levels histogram for the current document
+					Self.dispatch({ type: "render-canvas" });
+					// bind events
+					Self.els.root.find(".slider").on("mousedown", Self.dispatch);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
@@ -6345,11 +6416,18 @@ const Dialogs = {
 					// close dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
-					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					Object.keys(Self.values).map(key => {
+						Self.values[key].value = Self.values[key].default;
+						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
+					});
+					Self.dispatch({ type: "render-canvas" });
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
+					// unbind events
+					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					// common dialog close
 					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "levl" } });
 					PP.update();
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
