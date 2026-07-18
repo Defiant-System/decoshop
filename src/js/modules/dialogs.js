@@ -6937,6 +6937,42 @@ const Dialogs = {
 					break;
 
 				case "render-canvas":
+					if (!Doc) return;
+					let ctx = Self.els.ctx,
+						{ width: w, height: h } = Self.vars,
+						channel = +(Self.values.channel?.value ?? 0),
+						rgba = Doc.LT(),
+						pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
+						histogram = PixelUtil.histogramFromRgba(rgba),
+						yScale = 6e3 / histogram[4],
+						// Photopea curves tint: RGB / R / G / B
+						palette = ["#cdd", "#fcc", "#cfc", "#ccf"],
+						color = palette[channel] || palette[0],
+						gradient = ctx.createLinearGradient(0, 0, 0, h);
+					gradient.addColorStop(0, color + "1");
+					gradient.addColorStop(.3, color + "5");
+					// account for fully transparent samples (same as histogram panel / levels)
+					histogram[0][255] += 3 * (pixelCount - histogram[5]);
+					for (let ch = 1; ch < 4; ch++) {
+						histogram[ch][255] += pixelCount - histogram[5];
+					}
+					let bins = histogram[channel] || histogram[0];
+					if (channel === 0) yScale /= 3;
+					// reset canvas — logical space is 256×100, scaled to graph size
+					Self.els.cvs.attr({ width: w, height: h });
+					ctx.setTransform(w / 256, 0, 0, -h / 100, 0, h);
+					ctx.beginPath();
+					ctx.moveTo(-2, -2);
+					for (let l = 0; l < 256; l++) {
+						ctx.lineTo(l, bins[l] * yScale);
+					}
+					ctx.lineTo(258, -2);
+					ctx.closePath();
+					ctx.fillStyle = gradient;
+					ctx.strokeStyle = color;
+					ctx.lineWidth = .5;
+					ctx.fill();
+					ctx.stroke();
 					break;
 				case "sync-ui-with-levels":
 					break;
@@ -7021,8 +7057,8 @@ const Dialogs = {
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-levels" });
-					// update cavas
-					// Self.dispatch({ type: "render-canvas" });
+					// update canvas
+					Self.dispatch({ type: "render-canvas" });
 					break;
 				case "dlg-close":
 					// unbind events
