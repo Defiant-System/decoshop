@@ -6295,24 +6295,75 @@ const Dialogs = {
 					let el = $(event.target).parents("?.handle");
 					if (!el.length) return;
 
-					let handle = el.data("for"),
-						clickX = event.clientX - event.offsetX - +el.prop("offsetLeft"),
+					let pEl = el.parent(),
+						fFor = el.data("for"),
+						h1 = pEl.find(".handle:nth-child(1)").removeClass("moved"),
+						h2 = pEl.find(".handle:nth-child(2)").removeClass("moved"),
+						h3 = pEl.find(".handle:nth-child(3)").removeClass("moved"),
+						tgt1 = Self.els.root.find(`.value span[data-id="${h1.data("for")}"] input`),
+						tgt2 = Self.els.root.find(`.value span[data-id="${h2.data("for")}"] input`),
+						tgt3 = Self.els.root.find(`.value span[data-id="${h3.data("for")}"] input`),
+						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
+						m0 = 0,
+						m2 = 255,
+						max = pEl.prop("offsetWidth"),
 						min = 0,
-						max = 255;
-					
-					Self.drag = { el, clickX, min, max };
+						perc;
+
+					switch (fFor) {
+						case "input-shadows":
+							max = +h3.prop("offsetLeft") - 2;
+							break;
+						case "input-midtones":
+							min = +h1.prop("offsetLeft") + 1;
+							max = +h3.prop("offsetLeft") - 1;
+							break;
+						case "input-highlights":
+							min = +h1.prop("offsetLeft") + 1;
+							break;
+						case "output-shadows":
+							max = +h2.prop("offsetLeft") - 1;
+							break;
+						case "output-highlights":
+							min = +h1.prop("offsetLeft") + 1;
+							break;
+					}
+					// moves dragged handle on top
+					el.addClass("moved");
+					perc = Math.invLerp(+h1.prop("offsetLeft"), +h3.prop("offsetLeft"), +h2.prop("offsetLeft"));
+					// drag object
+					Self.drag = { el, fFor, h1, h2, h3, tgt1, tgt2, tgt3, perc, clickX, min, max };
 					// cover dialog UI
-					Self.els.root.addClass("covered");
+					Self.els.root.addClass("covered no-cursor");
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.dispatch);
 					break;
 				case "mousemove":
-					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max);
+					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max),
+						l2;
+
+					switch (Drag.fFor) {
+						case "input-shadows":
+							l2 = Math.lerp(left, Drag.max, Drag.perc);
+							Drag.h2.css({ left: l2 });
+							break;
+						case "input-highlights":
+							l2 = Math.lerp(Drag.min, left, Drag.perc);
+							Drag.h2.css({ left: l2 });
+							break;
+						case "output-shadows":
+							Drag.tgt1.val(Math.lerp(0, 255, left/300) | 0);
+							break;
+						case "output-highlights":
+							Drag.tgt2.val(Math.lerp(0, 255, left/300) | 0);
+							break;
+					}
+
 					Drag.el.css({ left });
 					break;
 				case "mouseup":
 					// cover dialog UI
-					Self.els.root.removeClass("covered");
+					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
 					UI.doc.off("mousemove mouseup", Self.dispatch);
 					break;
