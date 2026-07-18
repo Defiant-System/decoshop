@@ -6340,22 +6340,28 @@ const Dialogs = {
 					break;
 				case "mousemove":
 					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max),
-						l2;
+						l2, il;
 
 					switch (Drag.fFor) {
 						case "input-shadows":
 							l2 = Math.lerp(left, Drag.max, Drag.perc);
 							Drag.h2.css({ left: l2 });
+							Drag.tgt1.val(Math.lerp(0, 255, left/300) | 0);
+							break;
+						case "input-midtones":
+							il = Math.invLerp(Drag.min, Drag.max, left);
+							Drag.tgt2.val(Misc.precision(Math.lerp(9.9, 0.1, il), 1e-2));
 							break;
 						case "input-highlights":
 							l2 = Math.lerp(Drag.min, left, Drag.perc);
 							Drag.h2.css({ left: l2 });
+							Drag.tgt3.val(Math.lerp(1, 255, left/300) | 0);
 							break;
 						case "output-shadows":
 							Drag.tgt1.val(Math.lerp(0, 255, left/300) | 0);
 							break;
 						case "output-highlights":
-							Drag.tgt2.val(Math.lerp(0, 255, left/300) | 0);
+							Drag.tgt2.val(Math.lerp(1, 255, left/300) | 0);
 							break;
 					}
 
