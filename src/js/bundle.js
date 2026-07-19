@@ -23,7 +23,6 @@
 @import "bundle/growable-byte-buffer.js"
 @import "bundle/keyboard-handler.js"
 @import "bundle/clipboard-handler.js"
-@import "bundle/link-bar.js"
 @import "bundle/command-palette.js"
 @import "bundle/dialog-manager.js"
 @import "bundle/descriptor-mapper.js"

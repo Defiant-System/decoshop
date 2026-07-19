@@ -6303,7 +6303,7 @@ const Dialogs = {
 						tgt1 = Self.els.root.find(`.value span[data-id="${h1.data("for")}"] input`),
 						tgt2 = Self.els.root.find(`.value span[data-id="${h2.data("for")}"] input`),
 						tgt3 = Self.els.root.find(`.value span[data-id="${h3.data("for")}"] input`),
-						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
+						clickX = event.clientX - +el.prop("offsetLeft"),
 						c = Self.values.channel.value,
 						m0 = 0,
 						m2 = 255,
@@ -6354,7 +6354,7 @@ const Dialogs = {
 						case "input-midtones":
 							il = Math.invLerp(Drag.min, Drag.max, left);
 							v = il <= 0.5
-								? Math.lerp(9.9, 1, il*2)
+								? Math.lerp(9.9, .935, il*2)
 								: Math.lerp(1.9, 0.1, il);
 							Drag.tgt2.val(Misc.precision(v, 1e-2));
 							Self.values.levels.value[Drag.c][4] = (v * 100) | 0;
@@ -6453,19 +6453,45 @@ const Dialogs = {
 					break;
 				case "sync-ui-with-levels":
 					// select and loop "handle" elements and set "left"
-
 					let ch = Self.values.channel.value;
-					Self.els.i1.val(Self.values.levels.value[ch][0]);
-					Self.els.i2.val(Self.values.levels.value[ch][4] / 100);
-					Self.els.i3.val(Self.values.levels.value[ch][1]);
-					Self.els.o1.val(Self.values.levels.value[ch][2]);
-					Self.els.o2.val(Self.values.levels.value[ch][3]);
+					let cv = Self.values.levels.value[ch][0];
+					let cl1 = Math.round(Math.lerp(0, 300, cv/255));
+					Self.els.i1.val(cv);
+					Self.els.hI1.css({ left: cl1 });
+
+					cv = Self.values.levels.value[ch][1];
+					let cl2 = Math.round(Math.lerp(0, 300, cv/255));
+					Self.els.i3.val(cv);
+					Self.els.hI3.css({ left: cl2 });
+
+					cv = Self.values.levels.value[ch][4]/100;
+					let cm = (cl2 - cl1) / 2,
+						cl = cv <= 1
+							? cm + Math.lerp(cm, cl1, cv)
+							: Math.lerp(cm, cl1, cv/9.9);
+					Self.els.i2.val(cv);
+					Self.els.hI2.css({ left: cl });
+
+					cv = Self.values.levels.value[ch][2];
+					cl = Math.round(Math.lerp(0, 300, cv/255));
+					Self.els.o1.val(cv);
+					Self.els.hO1.css({ left: cl });
+
+					cv = Self.values.levels.value[ch][3];
+					cl = Math.round(Math.lerp(0, 300, cv/255));
+					Self.els.o2.val(cv);
+					Self.els.hO2.css({ left: cl });
 					break;
 
 				case "dlg-open":
 					// fast references
 					Self.els = {
 						root: event.dEl,
+						hI1: event.dEl.find(`.handle[data-for="input-shadows"]`),
+						hI2: event.dEl.find(`.handle[data-for="input-midtones"]`),
+						hI3: event.dEl.find(`.handle[data-for="input-highlights"]`),
+						hO1: event.dEl.find(`.handle[data-for="output-shadows"]`),
+						hO2: event.dEl.find(`.handle[data-for="output-highlights"]`),
 						i1: event.dEl.find(`.value span[data-id="input-shadows"] input`),
 						i2: event.dEl.find(`.value span[data-id="input-midtones"] input`),
 						i3: event.dEl.find(`.value span[data-id="input-highlights"] input`),
@@ -6492,6 +6518,7 @@ const Dialogs = {
 					});
 					// default levels
 					let value = [
+						// [60, 200, 0, 255, 23],
 						[0, 255, 0, 255, 100],
 						[0, 255, 0, 255, 100],
 						[0, 255, 0, 255, 100],
@@ -6500,6 +6527,8 @@ const Dialogs = {
 					Self.values.levels = { default: structuredClone(value), value };
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
+					// TEMP: ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
 					// bind events
 					Self.els.root.find(".slider").on("mousedown", Self.dispatch);
 					// initial apply
