@@ -271,14 +271,14 @@ const Panels = {
 					Self.channelView = +event.arg;
 					/* falls through */
 				case "update":
-					var Doc = APP.file?.doc,
+					let Doc = APP.file?.doc,
 						rgba = Doc.LT(),
 						fullBounds = new Rect(0, 0, Doc.m, Doc.n),
 						pixelCount = fullBounds.O(),
 						histogram = PixelUtil.histogramFromRgba(rgba);
 					// channel view info
 					histogram[0][255] += 3 * (pixelCount - histogram[5]);
-					for (var ch=1; ch<4; ch++) {
+					for (let ch=1; ch<4; ch++) {
 						histogram[ch][255] += pixelCount - histogram[5];
 					}
 					// Scale bars so tallest peak uses ~60px of the 117px plot height
@@ -291,7 +291,7 @@ const Panels = {
 
 							ctx.beginPath();
 							ctx.moveTo(-2, -2);
-							for (var level = 0; level < Self.cW; level++) {
+							for (let level = 0; level < Self.cW; level++) {
 								ctx.lineTo(level, bins[level] * yScale);
 							}
 							ctx.lineTo(Self.cW+2, -2);
@@ -322,8 +322,8 @@ const Panels = {
 					Self.ctx.setTransform(1, 0, 0, 1, 0, 0);
 					if (pixelCount != null) {
 						if (Self.channelView == 4) Self.channelView = 0;
-						var levelSum = 0;
-						for (var level = 0; level < Self.cW; level++) {
+						let levelSum = 0;
+						for (let level = 0; level < Self.cW; level++) {
 							levelSum += level * histogram[Self.channelView][level];
 						}
 						if (Self.channelView == 0) levelSum /= 3; // luma hist sums R+G+B
@@ -406,7 +406,7 @@ const Panels = {
 			switch (event.type) {
 				// native events
 				case "mousemove":
-					var Doc = APP.file?.doc,
+					let Doc = APP.file?.doc,
 						docPoint = Doc.u.Zx(event.offsetX, event.offsetY),
 						pixelCoord = new Point2D(Math.floor(docPoint.x), Math.floor(docPoint.y)),
 						r = 0,
@@ -415,7 +415,7 @@ const Panels = {
 						a = 0;
 					// Sample composite pixels when cursor is in-bounds and no vector selection is active
 					if (!Doc.ajH() && new Rect(0, 0, Doc.m - 1, Doc.n - 1).xC(pixelCoord)) {
-						var composite = Doc.LT(),
+						let composite = Doc.LT(),
 							pixelOffset = Doc.m * pixelCoord.y + pixelCoord.x << 2;
 						r = composite[pixelOffset + 0],
 						g = composite[pixelOffset + 1],
@@ -703,7 +703,7 @@ const Panels = {
 					Self.vh = h;
 
 					// Target max thumbnail edge: ~300 CSS px, scaled for the device pixel ratio.
-					var edge = Self.maxW * DPR,
+					let edge = Self.maxW * DPR,
 						count = 0,
 						// Seed the pyramid with the full-resolution composite and its bounds.
 						mipmap = [...APP.statusbar._activeFile.mipmap];
@@ -717,7 +717,7 @@ const Panels = {
 					// Size the canvas to the thumbnail's pixel dimensions.
 					Self.cvs.attr({ width: rect.m, height: rect.n });
 					// Copy the thumbnail pixels into the canvas via an ImageData buffer.
-					var iData = Self.ctx.createImageData(rect.m, rect.n);
+					let iData = Self.ctx.createImageData(rect.m, rect.n);
 					PixelUtil.copyByteBuffer(cache[0], iData.data);
 					Self.ctx.putImageData(iData, 0, 0);
 					// Touch a pixel to force the canvas to flush/realize the put (perf quirk).
