@@ -815,7 +815,7 @@ const UI = {
 				if (Dialogs[event.name]) Dialogs[event.name].dispatch({ ...event, dEl });
 				else Self.doDialog({ ...event, type: `${event.type}-common` });
 				// prevent mouse from triggering mouseover
-				Self.content.addClass("cover");
+				Self.content.toggleClass("cover", ![true, undefined].includes(Dialogs[event.name].cover));
 				// open dialog
 				dEl.cssSequence("opening", "animationend", el => {
 						el.addClass("showing").removeClass("opening");

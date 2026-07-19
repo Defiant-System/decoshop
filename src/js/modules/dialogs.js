@@ -6278,6 +6278,7 @@ const Dialogs = {
 	},
 	dlgLevels: {
 		name: "dlgLevels",
+		cover: false,
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -6516,11 +6517,21 @@ const Dialogs = {
 					break;
 
 				case "select-pipette":
-					el = $(event.target).parents("?.pipette");
+					el = $(event.target).parents("?[data-pipette]");
 					event.el.find(".active").removeClass("active");
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
 					if (!el.length) return;
+
 					el.parent().addClass("active");
+					APP.els.content.addClass(`cursor-pipette-${el.data("pipette")}`);
 					break;
+				case "unbind-reset-view":
+					// remove potential pipette cursors
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					// unbind events
+					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					break;
+
 				case "dlg-open":
 					// fast references
 					Self.els = {
@@ -6582,6 +6593,8 @@ const Dialogs = {
 					}
 					break;
 				case "dlg-ok":
+					Self.dispatch({ type: "unbind-reset-view" });
+					// apply filter
 					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "levl" } });
 					PP.update();
 					// close dialog
@@ -6604,8 +6617,7 @@ const Dialogs = {
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
-					// unbind events
-					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					Self.dispatch({ type: "unbind-reset-view" });
 					// common dialog close
 					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "levl" } });
 					PP.update();
@@ -6948,6 +6960,7 @@ const Dialogs = {
 	},
 	dlgCurves: {
 		name: "dlgCurves",
+		cover: false,
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -7063,6 +7076,23 @@ const Dialogs = {
 					});
 					return;
 
+				case "reset-pipette":
+					event.el.find(`i.active[data-click="select-pipette"]`).removeClass("active");
+					break;
+				case "select-pipette":
+					event.el.parent().find(`i.active[data-click="select-pipette"]`).removeClass("active");
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+
+					event.el.addClass("active");
+					APP.els.content.addClass(`cursor-pipette-${event.el.data("arg")}`);
+					break;
+				case "unbind-reset-view":
+					// remove potential pipette cursors
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					// unbind events
+					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					break;
+
 				case "dlg-open":
 					// fast references
 					Self.els = {
@@ -7104,6 +7134,8 @@ const Dialogs = {
 					}
 					break;
 				case "dlg-ok":
+					Self.dispatch({ type: "unbind-reset-view" });
+					// apply filter
 					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "curv" } });
 					PP.update();
 					// close dialog
@@ -7127,8 +7159,7 @@ const Dialogs = {
 					Self.dispatch({ type: "render-canvas" });
 					break;
 				case "dlg-close":
-					// unbind events
-					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
+					Self.dispatch({ type: "unbind-reset-view" });
 					// common dialog close
 					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
 					PP.update();
@@ -8476,6 +8507,7 @@ const Dialogs = {
 	},
 	dlgColors: {
 		name: "dlgColors",
+		cover: false,
 		preview: true,
 		values: {},
 		dispatch(event) {

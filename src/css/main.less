@@ -376,21 +376,14 @@ content {
 		}
 	}
 
-	&.cursor-hand .cvs-wrapper {
-		cursor: url(~/icons/cursor-hand.png) 8 8, auto;
-	}
+	&.cursor-hand .cvs-wrapper { cursor: url(~/icons/cursor-hand.png) 8 8, auto; }
+	&.cursor-hand.cover { cursor: url(~/icons/cursor-hand-grabbed.png) 8 8, auto; }
+	&.cursor-zoom-plus .cvs-wrapper { cursor: url(~/icons/cursor-zoom-plus.png) 8 8, auto; }
+	&.cursor-zoom-minus .cvs-wrapper { cursor: url(~/icons/cursor-zoom-minus.png) 8 8, auto; }
 
-	&.cursor-hand.cover {
-		cursor: url(~/icons/cursor-hand-grabbed.png) 8 8, auto;
-	}
-
-	&.cursor-zoom-plus .cvs-wrapper {
-		cursor: url(~/icons/cursor-zoom-plus.png) 8 8, auto;
-	}
-
-	&.cursor-zoom-minus .cvs-wrapper {
-		cursor: url(~/icons/cursor-zoom-minus.png) 8 8, auto;
-	}
+	&.cursor-pipette-1 .cvs-wrapper { cursor: url(~/icons/tool-pipette-dark.png) 2 28, auto; }
+	&.cursor-pipette-2 .cvs-wrapper { cursor: url(~/icons/tool-pipette-mid.png) 2 28, auto; }
+	&.cursor-pipette-3 .cvs-wrapper { cursor: url(~/icons/tool-pipette-light.png) 2 28, auto; }
 
 	.tools-bar {
 		background-color: rgba(#233,.8);
@@ -6585,6 +6578,9 @@ content {
 			&.tool-pipette-dark { right: 46px; background-image: url(~/icons/tool-pipette-dark.png); }
 			&.tool-pipette-mid { right: 23px; background-image: url(~/icons/tool-pipette-mid.png); }
 			&.tool-pipette-light { right: 0px; background-image: url(~/icons/tool-pipette-light.png); }
+			&.tool-pipette-dark:after,
+			&.tool-pipette-mid:after,
+			&.tool-pipette-light:after { filter: none; }
 
 			&:hover:before {
 				background-color:  #0113;
