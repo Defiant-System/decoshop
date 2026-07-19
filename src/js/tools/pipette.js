@@ -43,8 +43,8 @@
 					b = composite[pixelOffset + 2],
 					a = composite[pixelOffset + 3];
 				}
-				let over = ColorLib.rgbToHex({ r, g, b, a }),
-					curr = "#233";
+				let curr = "#233",
+					over = a === 0 ? curr : ColorLib.rgbToHex({ r, g, b, a });
 				// move tip
 				Self.els.sampler.css({ top, left, "--over": over, "--curr": curr });
 				break;

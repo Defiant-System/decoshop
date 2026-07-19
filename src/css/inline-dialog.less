@@ -3713,11 +3713,14 @@
 									text-align: center;
 
 									input {
-										padding: 0;
-										text-align: center;
-										width: 100%;
 										height: 13px;
 									}
+								}
+
+								input {
+									padding: 0;
+									text-align: center;
+									width: 100%;
 								}
 
 								&.fld-shadows {
@@ -3730,6 +3733,18 @@
 
 								&.fld-highlights {
 									left: 156px;
+								}
+
+								&[data-id="output-shadows"] {
+									background: #0115;
+									left: 1px;
+									width: 53px;
+								}
+
+								&[data-id="output-highlights"] {
+									background: #0115;
+									left: 167px;
+									width: 53px;
 								}
 							}
 						}
