@@ -6401,15 +6401,41 @@ const Dialogs = {
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
+				case "set-algorithm":
+					// 4 types of algorithms
+					event.values = Self.values;
+					event.values.algorithm.value = event.value;
+					event.values.algorithm.text = event.text;
+					if (event.value === "-" || event.value === "") {
+						// None → identity for all channels
+						Self.values.levels.value = structuredClone(Self.values.levels.default);
+					} else {
+						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
+							histogram = PixelUtil.histogramFromRgba(Doc.LT()),
+							mode = +event.value,
+							// Photopea defaults: 0.1% clip each end
+							computed = PixelUtil.levelsFromHistogram([mode, 0.1, 0.1], histogram);
+						histogram[0][255] += 3 * (pixelCount - histogram[5]);
+						for (let ch=1; ch<4; ch++) histogram[ch][255] += pixelCount - histogram[5];
+						// recompute after padding if you want (or pad before calling levelsFromHistogram)
+						for (let ch=0; ch<4; ch++) {
+							let mid = computed[ch][2] == null ? 100 : ~~(100 + .75 * 100 * (computed[ch][2] - 128) / 128);
+							Self.values.levels.value[ch] = [~~computed[ch][0], ~~computed[ch][1], 0, 255, mid];
+						}
+					}
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
 					Self.values = event.values;
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("levl");
-						// preferably loop channels 0..3 from Self.values.levels[ch]
-						let ch = Self.values.channel.value;
-						let value = Self.values.levels.value[ch];
-						LevelsResource.fZ(qv, ch, value);
+						for (let ch=0; ch<4; ch++) {
+							let value = Self.values.levels.value[ch];
+							LevelsResource.fZ(qv, ch, value);
+						}
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "levl", qv, ve: false } });
 						PP.update();
 					});
@@ -6419,20 +6445,25 @@ const Dialogs = {
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
 						channel = +(Self.values.channel?.value ?? 0),
-						rgba = Doc.LT(),
-						pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
-						histogram = PixelUtil.histogramFromRgba(rgba),
-						yScale = 6e3 / histogram[4],
+						// Input Levels histogram is the source image, not the live preview.
+						// Cache on first draw so reset/apply never re-sample adjusted Doc.LT().
+						histogram = Self.vars.histogram,
+						yScale,
 						palette = ["#cdd", "#f99", "#7f7", "#99f"],
 						color = palette[channel] || palette[0],
 						gradient = ctx.createLinearGradient(0, 0, 0, h);
+					if (!histogram) {
+						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O();
+						histogram = PixelUtil.histogramFromRgba(Doc.LT());
+						histogram[0][255] += 3 * (pixelCount - histogram[5]);
+						for (let ch = 1; ch < 4; ch++) {
+							histogram[ch][255] += pixelCount - histogram[5];
+						}
+						Self.vars.histogram = histogram;
+					}
+					yScale = 6e3 / histogram[4];
 					gradient.addColorStop(0, color +"1");
 					gradient.addColorStop(.3, color +"5");
-					// account for fully transparent samples (same as histogram panel)
-					histogram[0][255] += 3 * (pixelCount - histogram[5]);
-					for (let ch = 1; ch < 4; ch++) {
-						histogram[ch][255] += pixelCount - histogram[5];
-					}
 					let bins = histogram[channel] || histogram[0];
 					if (channel === 0) yScale /= 3;
 					// reset canvas — logical space is 256×100, scaled to graph size
@@ -6559,12 +6590,11 @@ const Dialogs = {
 					});
 					// reset mid-point
 					Self.values.levels.value = structuredClone(Self.values.levels.default);
-					// initial apply
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
-					// ui sync
+					// ui sync + histogram (cached source) before re-applying preview
 					Self.dispatch({ type: "sync-ui-with-levels" });
-					// update cavas
-					// Self.dispatch({ type: "render-canvas" });
+					Self.dispatch({ type: "render-canvas" });
+					// re-apply identity levels for preview
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
 					// unbind events
