@@ -3654,76 +3654,82 @@
 							background: transparent;
 							padding: 0;
 
-							> i {
+							> span {
+								background: #0113;
+								border-radius: 20px;
 								position: absolute;
 								top: 0;
-								left: -21px;
-								width: 19px;
-								height: 20px;
-								cursor: pointer;
-								background-size: 0 0;
+								width: 67px;
 
-								&:before {
+								&.active:before {
 									content: "";
-									background: #fee2;
-									border-radius: 20px;
+									position: absolute;
+									top: -2px;
+									left: -2px;
+									right: -2px;
+									bottom: -2px;
+									border: 1px dashed #effb;
+									border-radius: 24px;
+								}
+
+								> i {
 									position: absolute;
 									top: 0;
-									bottom: 0;
 									left: 0;
-									width: 67px;
+									width: 19px;
+									height: 20px;
+									cursor: pointer;
+									background-size: 0 0;
+
+									&.icon-1 { background-image: url(~/icons/tool-pipette-dark.png); }
+									&.icon-2 { background-image: url(~/icons/tool-pipette-mid.png); }
+									&.icon-3 { background-image: url(~/icons/tool-pipette-light.png); }
+
+									&:after {
+										content: "";
+										position: absolute;
+										top: 0;
+										left: 4px;
+										width: inherit;
+										height: inherit;
+										background: 0 0 no-repeat;
+										background-image: inherit;
+										background-position: 2px 2px;
+										background-size: 15px auto;
+										filter: drop-shadow(0 1px 0 #eff5);
+									}
 								}
 
-								&:after {
-									content: "";
-									position: absolute;
-									top: 0;
-									left: 4px;
-									width: inherit;
-									height: inherit;
-									background: 0 0 no-repeat;
-									background-image: inherit;
-									background-position: 2px 2px;
-									background-size: 15px auto;
-									filter: drop-shadow(0 1px 0 #0007);
-								}
-
-								&.icon-1 { left: 0px; background-image: url(~/icons/tool-pipette-dark.png); }
-								&.icon-2 { left: 78px; background-image: url(~/icons/tool-pipette-mid.png); }
-								&.icon-3 { left: 156px; background-image: url(~/icons/tool-pipette-light.png); }
-
-								&:hover:before {
-									background-color:  #fee2;
-								}
-
-								&:active:before {
-									background-color:  #fee4;
-								}
-							}
-
-							> span {
-								background: rgba(#000,.3);
-								position: relative;
-								display: inline-block;
-								width: 43px;
-								border-radius: 21px;
-								padding: 3px 9px;
-								margin-right: 7px;
-								text-align: center;
-
-								input {
-									padding: 0;
+								> span {
+									background: #0113;
+									display: inline-block;
+									position: relative;
+									left: 24px;
+									width: 43px;
+									border-radius: 21px;
+									padding: 3px 9px;
+									margin-right: 7px;
 									text-align: center;
-									width: 100%;
-									height: 13px;
+
+									input {
+										padding: 0;
+										text-align: center;
+										width: 100%;
+										height: 13px;
+									}
 								}
 
-								&[data-id="input-shadows"] { left: 25px; }
-								&[data-id="input-midtones"] { left: 51px; }
-								&[data-id="input-highlights"] { left: 77px; }
+								&.fld-shadows {
+									left: 0px;
+								}
 
-								&[data-id="output-shadows"] { width: 53px; left: 0; }
-								&[data-id="output-highlights"] { width: 53px; left: 106px; }
+								&.fld-midtones {
+									left: 78px;
+								}
+
+								&.fld-highlights {
+									left: 156px;
+								}
 							}
 						}
 					}

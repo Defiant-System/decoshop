@@ -6284,7 +6284,8 @@ const Dialogs = {
 			let APP = decoshop,
 				Self = Dialogs.dlgLevels,
 				Doc = Self.doc,
-				Drag = Self.drag;
+				Drag = Self.drag,
+				el;
 			switch (event.type) {
 				// native events
 				case "mousedown":
@@ -6292,7 +6293,7 @@ const Dialogs = {
 					event.preventDefault();
 					event.stopPropagation();
 					// drag info
-					let el = $(event.target).parents("?.handle");
+					el = $(event.target).parents("?.handle");
 					if (!el.length) return;
 
 					let pEl = el.parent(),
@@ -6514,6 +6515,12 @@ const Dialogs = {
 					Self.els.hO2.css({ left: cl });
 					break;
 
+				case "select-pipette":
+					el = $(event.target).parents("?.pipette");
+					event.el.find(".active").removeClass("active");
+					if (!el.length) return;
+					el.parent().addClass("active");
+					break;
 				case "dlg-open":
 					// fast references
 					Self.els = {
