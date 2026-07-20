@@ -3660,15 +3660,26 @@
 								padding-left: 11px;
 								cursor: pointer;
 
-								&:after {
+								&:before {
 									content: "";
 									position: absolute;
 									top: 4px;
-									left: -4px;
+									left: -5px;
 									width: 13px;
 									height: 13px;
-									background: url(~/icons/icon-times.png) 50% 50% / 13px 13px no-repeat;
-									filter: invert(1) drop-shadow(0 1px 0 #0112);
+									border-radius: 50%;
+									background: #0114;
+								}
+
+								&:after {
+									content: "";
+									position: absolute;
+									top: 5px;
+									left: -4px;
+									width: 11px;
+									height: 11px;
+									background: url(~/icons/icon-times.png) 50% 50%/contain no-repeat;
+									filter: invert(1) drop-shadow(0 1px 0 #0117);
 								}
 							}
 						}
