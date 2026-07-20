@@ -7089,7 +7089,7 @@ const Dialogs = {
 		cover: false,
 		preview: true,
 		values: {},
-		dispatch(event) {
+		doSlider(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
 				Doc = Self.doc,
@@ -7128,7 +7128,7 @@ const Dialogs = {
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
-					UI.doc.on("mousemove mouseup", Self.dispatch);
+					UI.doc.on("mousemove mouseup", Self.doSlider);
 					break;
 				case "mousemove":
 					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max);
@@ -7138,9 +7138,78 @@ const Dialogs = {
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
-					UI.doc.off("mousemove mouseup", Self.dispatch);
+					UI.doc.off("mousemove mouseup", Self.doSlider);
 					break;
+			}
+		},
+		doSvgPath(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgCurves,
+				Doc = Self.doc,
+				Drag = Self.drag;
+			switch (event.type) {
+				// native events
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
 
+					let el = $(event.target);
+					if (el.nodeName() !== "circle") return;
+
+					let click = {
+							x: event.clientX - +el.attr("cx"),
+							y: event.clientY - +el.attr("cy"),
+						};
+					Self.drag = { el, click };
+
+					// cover dialog UI
+					Self.els.root.addClass("covered no-cursor");
+					// bind events
+					UI.doc.on("mousemove mouseup", Self.doSvgPath);
+					break;
+				case "mousemove":
+					let cx = event.clientX - Drag.click.x,
+						cy = event.clientY - Drag.click.y;
+					Drag.el.attr({ cx, cy });
+					break;
+				case "mouseup":
+					// cover dialog UI
+					Self.els.root.removeClass("covered no-cursor");
+					// unbind events
+					UI.doc.off("mousemove mouseup", Self.doSvgPath);
+					break;
+			}
+		},
+		dispatch(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgCurves,
+				Doc = Self.doc,
+				Drag = Self.drag;
+			switch (event.type) {
+				// "fast" events
+				case "set-channel":
+					event.values = Self.values;
+					event.values.channel.value = event.value;
+					event.values.channel.text = event.text;
+					Self.dispatch({ type: "render-canvas" });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-algorithm":
+					break;
+				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					Self.values = event.values;
+					Engine.raf(() => {
+						
+					});
+					return;
+
+				// custom events
 				case "render-canvas":
 					if (!Doc) return;
 					let ctx = Self.els.ctx,
@@ -7179,29 +7248,74 @@ const Dialogs = {
 					ctx.fill();
 					// ctx.stroke();
 					break;
+				case "generate-path-anchors":
+					let svg = Self.els.svg[0],
+						path = svg.querySelector("path"),
+						d = path?.getAttribute("d") || "",
+						tokens = d.match(/[MLQCSTZmlqcstz]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi) || [],
+						points = [],
+						i = 0,
+						x = 0,
+						y = 0,
+						add = (px, py) => points.push([px, py]),
+						atQ = (x0, y0, x1, y1, x2, y2, t) => {
+							let u = 1 - t;
+							return [
+								u * u * x0 + 2 * u * t * x1 + t * t * x2,
+								u * u * y0 + 2 * u * t * y1 + t * t * y2,
+							];
+						},
+						atC = (x0, y0, x1, y1, x2, y2, x3, y3, t) => {
+							let u = 1 - t,
+								uu = u * u,
+								tt = t * t;
+							return [
+								uu * u * x0 + 3 * uu * t * x1 + 3 * u * tt * x2 + tt * t * x3,
+								uu * u * y0 + 3 * uu * t * y1 + 3 * u * tt * y2 + tt * t * y3,
+							];
+						};
+					while (i < tokens.length) {
+						let cmd = tokens[i++];
+						switch (cmd) {
+							case "M":
+							case "L":
+								x = +tokens[i++];
+								y = +tokens[i++];
+								add(x, y);
+								break;
+							case "Q": {
+								let x1 = +tokens[i++], y1 = +tokens[i++],
+									x2 = +tokens[i++], y2 = +tokens[i++];
+								add(...atQ(x, y, x1, y1, x2, y2, .5));
+								x = x2;
+								y = y2;
+								add(x, y);
+								break;
+							}
+							case "C": {
+								let x1 = +tokens[i++], y1 = +tokens[i++],
+									x2 = +tokens[i++], y2 = +tokens[i++],
+									x3 = +tokens[i++], y3 = +tokens[i++];
+								add(...atC(x, y, x1, y1, x2, y2, x3, y3, .5));
+								x = x3;
+								y = y3;
+								add(x, y);
+								break;
+							}
+							case "Z":
+							case "z": break;
+						}
+					}
+					// replace any existing anchor circles
+					svg.querySelectorAll("circle").forEach(el => el.remove());
+					for (let [cx, cy] of points) {
+						let circle = $.svgElem("circle", { cx, cy, r: 3 });
+						svg.appendChild(circle);
+					}
+					break;
 				case "sync-ui-with-levels":
 					break;
-
-				// "fast" events
-				case "set-channel":
-					event.values = Self.values;
-					event.values.channel.value = event.value;
-					event.values.channel.text = event.text;
-					Self.dispatch({ type: "render-canvas" });
-					// ui sync
-					Self.dispatch({ type: "sync-ui-with-levels" });
-					// exit if "preview" is not enabled
-					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
-					break;
-				case "apply-filter-data":
-					if (!Doc || !Self.preview) return;
-					Self.values = event.values;
-					Engine.raf(() => {
-						
-					});
-					return;
-
+					
 				case "reset-pipette":
 					event.el.find(`i.active[data-click="select-pipette"]`).removeClass("active");
 					break;
@@ -7215,8 +7329,6 @@ const Dialogs = {
 				case "unbind-reset-view":
 					// remove potential pipette cursors
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
-					// unbind events
-					Self.els.root.find(".slider").off("mousedown", Self.dispatch);
 					break;
 
 				case "dlg-open":
@@ -7224,6 +7336,7 @@ const Dialogs = {
 					Self.els = {
 						root: event.dEl,
 						cvs: event.dEl.find(".graph.curves canvas"),
+						svg: event.dEl.find(".graph.curves svg"),
 					};
 					Self.doc = APP.file?.doc;
 					// vars
@@ -7244,9 +7357,11 @@ const Dialogs = {
 					});
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
+					// generate circles based on path
+					Self.dispatch({ type: "generate-path-anchors" });
 					// bind events
-					Self.els.cvs.on("mousedown", Self.dispatch);
-					Self.els.root.find(".slider").on("mousedown", Self.dispatch);
+					Self.els.svg.on("mousedown", Self.doSvgPath);
+					Self.els.root.find(".slider").on("mousedown", Self.doSlider);
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
