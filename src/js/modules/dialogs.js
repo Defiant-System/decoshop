@@ -6432,6 +6432,7 @@ const Dialogs = {
 						}
 					}
 					Self.dispatch({ type: "sync-ui-with-levels" });
+					Self.dispatch({ type: "render-canvas" });
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
@@ -6453,13 +6454,14 @@ const Dialogs = {
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
 						channel = +(Self.values.channel?.value ?? 0),
-						// Input Levels histogram is the source image, not the live preview.
-						// Cache on first draw so reset/apply never re-sample adjusted Doc.LT().
+						// Source histogram is cached; RGB view remaps through current R/G/B levels
+						// so pipette/algorithm changes update the graph.
 						histogram = Self.vars.histogram,
 						yScale,
 						palette = ["#cdd", "#f99", "#7f7", "#99f"],
 						color = palette[channel] || palette[0],
-						gradient = ctx.createLinearGradient(0, 0, 0, h);
+						gradient = ctx.createLinearGradient(0, 0, 0, h),
+						bins;
 					if (!histogram) {
 						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O();
 						histogram = PixelUtil.histogramFromRgba(Doc.LT());
@@ -6469,11 +6471,32 @@ const Dialogs = {
 						}
 						Self.vars.histogram = histogram;
 					}
-					yScale = 6e3 / histogram[4];
+					if (channel === 0 && Self.values.levels?.value) {
+						// Remap R/G/B source bins through current per-channel levels LUTs
+						let qv = FilterHelper.oT("levl");
+						for (let ch = 0; ch < 4; ch++) {
+							LevelsResource.fZ(qv, ch, Self.values.levels.value[ch]);
+						}
+						// Keep composite identity while remapping — Photopea does the same
+						LevelsResource.fZ(qv, 0, [0, 255, 0, 255, 100]);
+						let fx = LayerEffectsHelper.buildEffect("levl", qv),
+							luts = [fx.mK, fx._J, fx.xm];
+						bins = new Float64Array(256);
+						for (let c=0; c<3; c++) {
+							let src = histogram[c + 1],
+								lut = luts[c];
+							for (let i=0; i<256; i++) {
+								bins[lut[i]] += src[i];
+							}
+						}
+						yScale = 6e3 / histogram[4] / 3;
+					} else {
+						bins = histogram[channel] || histogram[0];
+						yScale = 6e3 / histogram[4];
+						if (channel === 0) yScale /= 3;
+					}
 					gradient.addColorStop(0, color +"1");
 					gradient.addColorStop(.3, color +"5");
-					let bins = histogram[channel] || histogram[0];
-					if (channel === 0) yScale /= 3;
 					// reset canvas — logical space is 256×100, scaled to graph size
 					Self.els.cvs.attr({ width: w, height: h });
 					ctx.setTransform(w / 256, 0, 0, -h / 100, 0, h);
@@ -6522,14 +6545,13 @@ const Dialogs = {
 					Self.els.hO2.css({ left: cl });
 					break;
 
-
 				case "pipette-color":
 					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
 						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
 						levels = Self.values.levels.value,
 						pipette = +Self.els.root.find(`.value .active i[data-pipette]`).data("pipette");
 					
-					for (let c = 0; c < 3; c++) {
+					for (let c=0; c<3; c++) {
 						// channels 1=R, 2=G, 3=B
 						let L = levels[c + 1].slice(); // [inB, inW, outB, outW, gamma×100]
 						if (pipette === 1) {
@@ -6539,9 +6561,9 @@ const Dialogs = {
 							// highlights → input white
 							L[1] = Math.max(rgb[c], L[0] + 2);
 						} else {
-							// midtones → gamma (Photopea formula)
+							// midtones → gamma
 							let mean = (rgb[0] + rgb[1] + rgb[2]) / 3 / 255,
-									ch = rgb[c] / 255;
+								ch = rgb[c] / 255;
 							if (mean > 0 && ch > 0) {
 								let g = Math.log(ch) / Math.log(mean);
 								L[4] = Math.min(999, Math.max(10, Math.round(100 * g)));
@@ -6549,8 +6571,8 @@ const Dialogs = {
 						}
 						levels[c + 1] = L;
 					}
-
 					Self.dispatch({ type: "sync-ui-with-levels" });
+					Self.dispatch({ type: "render-canvas" });
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "reset-pipette":
@@ -6583,7 +6605,6 @@ const Dialogs = {
 						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
 					}
 					break;
-
 
 				case "unbind-reset-view":
 					// remove potential pipette cursors
