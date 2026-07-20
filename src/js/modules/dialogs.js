@@ -7308,10 +7308,11 @@ const Dialogs = {
 					}
 					// replace any existing anchor circles
 					svg.querySelectorAll("circle").forEach(el => el.remove());
-					for (let [cx, cy] of points) {
-						let circle = $.svgElem("circle", { cx, cy, r: 3 });
+					points.map((p, id) => {
+						let [cx, cy] = p;
+						let circle = $.svgElem("circle", { cx, cy, r: 3, id });
 						svg.appendChild(circle);
-					}
+					});
 					break;
 				case "sync-ui-with-levels":
 					break;
