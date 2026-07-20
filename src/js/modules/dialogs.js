@@ -7157,11 +7157,19 @@ const Dialogs = {
 					let el = $(event.target);
 					if (el.nodeName() !== "circle") return;
 
-					let click = {
+					// drag info
+					let svg = el.parent()[0],
+						path = svg.querySelector("path"),
+						knots = [...svg.querySelectorAll("circle")]
+							.sort((a, b) => +a.id - +b.id)
+							.map(c => [+c.getAttribute("cx"), +c.getAttribute("cy")]),
+						dKnot = knots[+el[0].id],
+						click = {
 							x: event.clientX - +el.attr("cx"),
 							y: event.clientY - +el.attr("cy"),
 						};
-					Self.drag = { el, click };
+					// drag object
+					Self.drag = { el, dKnot, path, knots, click };
 
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
@@ -7172,6 +7180,45 @@ const Dialogs = {
 					let cx = event.clientX - Drag.click.x,
 						cy = event.clientY - Drag.click.y;
 					Drag.el.attr({ cx, cy });
+
+					// update knot
+					Drag.dKnot[0] = cx;
+					Drag.dKnot[1] = cy;
+
+					// circles (by id) are the knots — works for any count as anchors are added/removed
+					let n = Drag.knots.length,
+						d = "";
+					// if (n === 0) {
+					// 	Drag.path?.setAttribute("d", d);
+					// 	break;
+					// }
+					d = `M ${Drag.knots[0][0]} ${Drag.knots[0][1]}`;
+					if (n === 2) {
+						d += ` L ${Drag.knots[1][0]} ${Drag.knots[1][1]}`;
+					} else if (n === 3) {
+						// single Q with middle knot on-curve at t=0.5
+						let [x0, y0] = Drag.knots[0],
+							[mx, my] = Drag.knots[1],
+							[x1, y1] = Drag.knots[2],
+							cpx = 2 * mx - .5 * (x0 + x1),
+							cpy = 2 * my - .5 * (y0 + y1);
+						d += ` Q ${cpx} ${cpy} ${x1} ${y1}`;
+					} else {
+						// N>=4: Catmull-Rom → cubics so every knot stays on-curve
+						for (let i = 0; i < n - 1; i++) {
+							let p0 = Drag.knots[Math.max(0, i - 1)],
+								p1 = Drag.knots[i],
+								p2 = Drag.knots[i + 1],
+								p3 = Drag.knots[Math.min(n - 1, i + 2)],
+								c1x = p1[0] + (p2[0] - p0[0]) / 6,
+								c1y = p1[1] + (p2[1] - p0[1]) / 6,
+								c2x = p2[0] - (p3[0] - p1[0]) / 6,
+								c2y = p2[1] - (p3[1] - p1[1]) / 6;
+							d += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${p2[0]} ${p2[1]}`;
+						}
+					}
+					// rebuild path through every anchor (any count)
+					Drag.path.setAttribute("d", d);
 					break;
 				case "mouseup":
 					// cover dialog UI
