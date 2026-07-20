@@ -7180,19 +7180,12 @@ const Dialogs = {
 					let cx = event.clientX - Drag.click.x,
 						cy = event.clientY - Drag.click.y;
 					Drag.el.attr({ cx, cy });
-
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
-
 					// circles (by id) are the knots — works for any count as anchors are added/removed
 					let n = Drag.knots.length,
-						d = "";
-					// if (n === 0) {
-					// 	Drag.path?.setAttribute("d", d);
-					// 	break;
-					// }
-					d = `M ${Drag.knots[0][0]} ${Drag.knots[0][1]}`;
+						d = `M ${Drag.knots[0][0]} ${Drag.knots[0][1]}`;
 					if (n === 2) {
 						d += ` L ${Drag.knots[1][0]} ${Drag.knots[1][1]}`;
 					} else if (n === 3) {
