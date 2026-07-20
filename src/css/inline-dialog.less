@@ -3650,6 +3650,29 @@
 					.option {
 						height: 37px;
 
+						.label {
+							transition: padding 100ms ease-in-out;
+						}
+
+						&.pipette-active {
+							.label {
+								position: relative;
+								padding-left: 11px;
+								cursor: pointer;
+
+								&:after {
+									content: "";
+									position: absolute;
+									top: 4px;
+									left: -4px;
+									width: 13px;
+									height: 13px;
+									background: url(~/icons/icon-times.png) 50% 50% / 13px 13px no-repeat;
+									filter: invert(1) drop-shadow(0 1px 0 #0112);
+								}
+							}
+						}
+
 						.value {
 							background: transparent;
 							padding: 0;

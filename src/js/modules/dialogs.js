@@ -6527,7 +6527,7 @@ const Dialogs = {
 					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
 						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
 						levels = Self.values.levels.value,
-						pipette = 1;
+						pipette = +Self.els.root.find(`.value .active i[data-pipette]`).data("pipette");
 					
 					for (let c = 0; c < 3; c++) {
 						// channels 1=R, 2=G, 3=B
@@ -6563,10 +6563,12 @@ const Dialogs = {
 					break;
 				case "select-pipette":
 					el = $(event.target).parents("?[data-pipette]");
+					event.el.removeClass("pipette-active");
 					event.el.find(".active").removeClass("active");
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
 					if (!el.length) return Self.dispatch({ ...event, type: "reset-pipette" });
 
+					event.el.addClass("pipette-active");
 					el.parent().addClass("active");
 
 					// change cursor
