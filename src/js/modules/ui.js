@@ -147,6 +147,10 @@ const UI = {
 				}
 				break;
 			// custom event
+			case "toggle-dialog-cover":
+				// prevent mouse from triggering mouseover
+				APP.els.content.toggleClass("cover", !event.state);
+				break;
 			case "clear-submenu":
 				if (Self.srcEl) Self.srcEl.removeClass("opened");
 				if (Self.dEl) Self.dEl.removeClass("covered");

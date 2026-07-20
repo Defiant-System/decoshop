@@ -6278,7 +6278,7 @@ const Dialogs = {
 	},
 	dlgLevels: {
 		name: "dlgLevels",
-		cover: false,
+		// cover: false,
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -6287,14 +6287,20 @@ const Dialogs = {
 				Doc = Self.doc,
 				Drag = Self.drag,
 				el;
+			// console.log(event);
 			switch (event.type) {
 				// native events
 				case "mousedown":
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
+					// drag target element
+					el = $(event.target);
+					if (el.parent().hasClass("cvs-wrapper")) {
+						return Self.dispatch({ type: "pipette-color", orgEvent: event });
+					}
 					// drag info
-					el = $(event.target).parents("?.handle");
+					el = el.parents("?.handle");
 					if (!el.length) return;
 
 					let pEl = el.parent(),
@@ -6516,15 +6522,67 @@ const Dialogs = {
 					Self.els.hO2.css({ left: cl });
 					break;
 
+
+				case "pipette-color":
+					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
+						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
+						levels = Self.values.levels.value,
+						pipette = 1;
+					
+					for (let c = 0; c < 3; c++) {
+						// channels 1=R, 2=G, 3=B
+						let L = levels[c + 1].slice(); // [inB, inW, outB, outW, gamma×100]
+						if (pipette === 1) {
+							// shadows → input black
+							L[0] = Math.min(rgb[c], L[1] - 2);
+						} else if (pipette === 3) {
+							// highlights → input white
+							L[1] = Math.max(rgb[c], L[0] + 2);
+						} else {
+							// midtones → gamma (Photopea formula)
+							let mean = (rgb[0] + rgb[1] + rgb[2]) / 3 / 255,
+									ch = rgb[c] / 255;
+							if (mean > 0 && ch > 0) {
+								let g = Math.log(ch) / Math.log(mean);
+								L[4] = Math.min(999, Math.max(10, Math.round(100 * g)));
+							}
+						}
+						levels[c + 1] = L;
+					}
+
+					Self.dispatch({ type: "sync-ui-with-levels" });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "reset-pipette":
+					// reset flag
+					delete Self.isPipette;
+					// toggle "off" the app cover
+					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
+					// bind event listener
+					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					break;
 				case "select-pipette":
 					el = $(event.target).parents("?[data-pipette]");
 					event.el.find(".active").removeClass("active");
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
-					if (!el.length) return;
+					if (!el.length) return Self.dispatch({ ...event, type: "reset-pipette" });
 
 					el.parent().addClass("active");
+
+					// change cursor
 					APP.els.content.addClass(`cursor-pipette-${el.data("pipette")}`);
+					// no need to bind more event listeners
+					if (!Self.isPipette) {
+						// keep track of state
+						Self.isPipette = true;
+						// toggle "off" the app cover
+						UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
+						// bind event listener
+						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+					}
 					break;
+
+
 				case "unbind-reset-view":
 					// remove potential pipette cursors
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
