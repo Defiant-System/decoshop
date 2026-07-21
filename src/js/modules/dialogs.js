@@ -7153,10 +7153,9 @@ const Dialogs = {
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
-
+					// check event origin
 					let el = $(event.target);
 					if (el.nodeName() !== "circle") return;
-
 					// drag info
 					let svg = el.parent()[0],
 						path = svg.querySelector("path"),
@@ -7167,22 +7166,33 @@ const Dialogs = {
 						click = {
 							x: event.clientX - +el.attr("cx"),
 							y: event.clientY - +el.attr("cy"),
-						};
-					// drag object
-					Self.drag = { el, dKnot, path, knots, click };
+						},
+						min = { x: 0, y: 0 },
+						max = { x: 250, y: 251, w: 250, h: 251 },
+						nextEl = el.nextAll("circle"),
+						prevEl = el.prevAll("circle"),
 
+						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+						clampPt = ([x, y]) => [clamp(x, 0, max.w), clamp(y, 0, max.h)];
+
+					// constraints based on neighbours
+					if (nextEl.length) max.x = +nextEl.get(0).attr("cx");
+					if (prevEl.length) min.x = +prevEl.get(0).attr("cx");
+					// drag object
+					Self.drag = { el, dKnot, path, knots, click, min, max, clamp, clampPt };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.doSvgPath);
 					break;
 				case "mousemove":
-					let cx = event.clientX - Drag.click.x,
-						cy = event.clientY - Drag.click.y;
+					let cx = Math.min(Math.max(event.clientX - Drag.click.x, Drag.min.x), Drag.max.x),
+						cy = Math.min(Math.max(event.clientY - Drag.click.y, Drag.min.y), Drag.max.y);
 					Drag.el.attr({ cx, cy });
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
+
 					// circles (by id) are the knots — works for any count as anchors are added/removed
 					let n = Drag.knots.length,
 						d = `M ${Drag.knots[0][0]} ${Drag.knots[0][1]}`;
@@ -7195,6 +7205,7 @@ const Dialogs = {
 							[x1, y1] = Drag.knots[2],
 							cpx = 2 * mx - .5 * (x0 + x1),
 							cpy = 2 * my - .5 * (y0 + y1);
+						[cpx, cpy] = Drag.clampPt([cpx, cpy]);
 						d += ` Q ${cpx} ${cpy} ${x1} ${y1}`;
 					} else {
 						// N>=4: Catmull-Rom → cubics so every knot stays on-curve
@@ -7207,6 +7218,8 @@ const Dialogs = {
 								c1y = p1[1] + (p2[1] - p0[1]) / 6,
 								c2x = p2[0] - (p3[0] - p1[0]) / 6,
 								c2y = p2[1] - (p3[1] - p1[1]) / 6;
+							[c1x, c1y] = Drag.clampPt([c1x, c1y]);
+							[c2x, c2y] = Drag.clampPt([c2x, c2y]);
 							d += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${p2[0]} ${p2[1]}`;
 						}
 					}
