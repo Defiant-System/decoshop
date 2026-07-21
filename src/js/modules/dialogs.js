@@ -7142,6 +7142,38 @@ const Dialogs = {
 					break;
 			}
 		},
+		parseAnchorPos(el) {
+			let m = (el.getAttribute("transform") || "").match(/translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/);
+			return m ? [+m[1], +m[2]] : [0, 0];
+		},
+		curveSpline(knots, max) {
+			// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
+			// keep original X (don't round) so the spline still passes through each knot
+			let xs = knots.map(([cx]) => +cx);
+			for (let i = 1; i < xs.length; i++) {
+				if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
+			}
+			for (let i = xs.length - 2; i >= 0; i--) {
+				if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
+			}
+			let curveData = knots.map(([ , cy], i) => PixelUtil.presetThumb.yR(xs[i], max.w - cy, true)),
+				parsed = PixelUtil.presetThumb.N6(curveData),
+				segments = [];
+			PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
+			return { parsed, segments };
+		},
+		pathFromKnots(knots, max) {
+			let { parsed, segments } = this.curveSpline(knots, max),
+				clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+				d = "";
+			for (let x = 0; x <= max.w; x++) {
+				let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
+					v = Number.isFinite(raw) ? clamp(raw, 0, max.w) : 0,
+					y = clamp(max.w - v, 0, max.h);
+				d += (x ? " L" : "M") + ` ${x} ${y}`;
+			}
+			return d;
+		},
 		doSvgPath(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
@@ -7154,79 +7186,56 @@ const Dialogs = {
 					event.preventDefault();
 					event.stopPropagation();
 					// check event origin
-					let el = $(event.target);
-					if (el.nodeName() !== "circle") return;
+					let el = $(event.target).parents("?.anchor");
+					if (!el.length) return;
+					
 					// drag info
 					let svg = el.parent()[0],
 						path = svg.querySelector("path"),
-						knots = [...svg.querySelectorAll("circle")]
+						svgRect = svg.getBoundingClientRect(),
+						knots = [...svg.querySelectorAll(".anchor")]
 							.sort((a, b) => +a.id - +b.id)
-							.map(c => [+c.getAttribute("cx"), +c.getAttribute("cy")]),
+							.map(c => Self.parseAnchorPos(c)),
 						dKnot = knots[+el[0].id],
-						click = {
-							x: event.clientX - +el.attr("cx"),
-							y: event.clientY - +el.attr("cy"),
-						},
 						min = { x: 0, y: 0 },
 						max = { x: 250, y: 251, w: 250, h: 251 },
-						nextEl = el.nextAll("circle"),
-						prevEl = el.prevAll("circle"),
+						nextEl = el.nextAll(".anchor"),
+						prevEl = el.prevAll(".anchor"),
+						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
-						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
-						clampPt = ([x, y]) => [clamp(x, 0, max.w), clamp(y, 0, max.h)];
-
-					// constraints based on neighbours
-					if (nextEl.length) max.x = +nextEl.get(0).attr("cx");
-					if (prevEl.length) min.x = +prevEl.get(0).attr("cx");
+					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
+					if (nextEl.length) max.x = Self.parseAnchorPos(nextEl[0])[0] - 1;
+					if (prevEl.length) min.x = Self.parseAnchorPos(prevEl[0])[0] + 1;
 					// drag object
-					Self.drag = { el, dKnot, path, knots, click, min, max, clamp, clampPt };
+					Self.drag = { el, svg, svgRect, dKnot, path, knots, min, max, clamp };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.doSvgPath);
 					break;
-				case "mousemove":
-					let cx = Math.min(Math.max(event.clientX - Drag.click.x, Drag.min.x), Drag.max.x),
-						cy = Math.min(Math.max(event.clientY - Drag.click.y, Drag.min.y), Drag.max.y);
-					Drag.el.attr({ cx, cy });
+				case "mousemove": {
+					let svgW = Drag.svgRect.width  || 1,
+						svgH = Drag.svgRect.height || 1,
+						rawX = (event.clientX - Drag.svgRect.left) / svgW * Drag.max.w,
+						rawY = (event.clientY - Drag.svgRect.top)  / svgH * Drag.max.h,
+						cx = Drag.dKnot[0],
+						cy = Math.round(Math.min(Math.max(rawY, Drag.min.y), Drag.max.y));
+					// only move X when neighbours leave a valid gap
+					if (Drag.min.x <= Drag.max.x) {
+						cx = Math.round(Math.min(Math.max(rawX, Drag.min.x), Drag.max.x));
+					}
+					Drag.el[0].setAttribute("transform", `translate(${cx}, ${cy})`);
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
-
-					// circles (by id) are the knots — works for any count as anchors are added/removed
-					let n = Drag.knots.length,
-						d = `M ${Drag.knots[0][0]} ${Drag.knots[0][1]}`;
-					if (n === 2) {
-						d += ` L ${Drag.knots[1][0]} ${Drag.knots[1][1]}`;
-					} else if (n === 3) {
-						// single Q with middle knot on-curve at t=0.5
-						let [x0, y0] = Drag.knots[0],
-							[mx, my] = Drag.knots[1],
-							[x1, y1] = Drag.knots[2],
-							cpx = 2 * mx - .5 * (x0 + x1),
-							cpy = 2 * my - .5 * (y0 + y1);
-						[cpx, cpy] = Drag.clampPt([cpx, cpy]);
-						d += ` Q ${cpx} ${cpy} ${x1} ${y1}`;
-					} else {
-						// N>=4: Catmull-Rom → cubics so every knot stays on-curve
-						for (let i = 0; i < n - 1; i++) {
-							let p0 = Drag.knots[Math.max(0, i - 1)],
-								p1 = Drag.knots[i],
-								p2 = Drag.knots[i + 1],
-								p3 = Drag.knots[Math.min(n - 1, i + 2)],
-								c1x = p1[0] + (p2[0] - p0[0]) / 6,
-								c1y = p1[1] + (p2[1] - p0[1]) / 6,
-								c2x = p2[0] - (p3[0] - p1[0]) / 6,
-								c2y = p2[1] - (p3[1] - p1[1]) / 6;
-							[c1x, c1y] = Drag.clampPt([c1x, c1y]);
-							[c2x, c2y] = Drag.clampPt([c2x, c2y]);
-							d += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${p2[0]} ${p2[1]}`;
-						}
-					}
-					// rebuild path through every anchor (any count)
-					Drag.path.setAttribute("d", d);
+					// path follows knots; other anchors stay where they are
+					Drag.path.setAttribute("d", Self.pathFromKnots(Drag.knots, Drag.max));
 					break;
+				}
 				case "mouseup":
+					if (Drag) {
+						Drag.path.setAttribute("d", Self.pathFromKnots(Drag.knots, Drag.max));
+					}
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
@@ -7359,12 +7368,21 @@ const Dialogs = {
 							case "z": break;
 						}
 					}
-					// replace any existing anchor circles
-					svg.querySelectorAll("circle").forEach(el => el.remove());
+
+					/*
+						<g id="0" transform="translate(0, 250)">
+							<circle cx="0" cy="0" r="3"></circle>
+							<circle cx="0" cy="0" r="6"></circle>
+						</g>
+					*/
+
+					// replace any existing anchor anchors
+					svg.querySelectorAll(".anchor").forEach(el => el.remove());
 					points.map((p, id) => {
 						let [cx, cy] = p;
-						let circle = $.svgElem("circle", { cx, cy, r: 3, id });
-						svg.appendChild(circle);
+						let transform = `translate(${cx}, ${cy})`;
+						let anchor = $.svgElem("g", { class: "anchor", transform, id }, `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`);
+						svg.appendChild(anchor);
 					});
 					break;
 				case "sync-ui-with-levels":
@@ -7411,7 +7429,7 @@ const Dialogs = {
 					});
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
-					// generate circles based on path
+					// generate anchors based on path
 					Self.dispatch({ type: "generate-path-anchors" });
 					// bind events
 					Self.els.svg.on("mousedown", Self.doSvgPath);

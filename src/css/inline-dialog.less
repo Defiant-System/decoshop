@@ -2380,14 +2380,29 @@
 						stroke-width: 1.5;
 					}
 
-					circle {
-						fill: #485a5a;
-						stroke: #eff9;
-						stroke-width: 1.25;
-						cursor: move;
-
+					g.anchor {
 						&.active {
-							fill: #b1c1c1;
+							circle {
+								fill: #b1c1c1;
+
+								&[r="6"] {
+									display: block;
+								}
+							}
+						}
+
+						circle {
+							fill: #485a5a;
+							stroke: #eff9;
+							stroke-width: 1.25;
+							cursor: move;
+
+							&[r="6"] {
+								display: none;
+								fill: none;
+								stroke: #eff9;
+								stroke-width: 1.25;
+							}
 						}
 					}
 				}
