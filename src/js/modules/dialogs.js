@@ -7372,7 +7372,8 @@ const Dialogs = {
 							}
 							curves[ch] = pts;
 							Self.picEdit = { ch, idx, startY };
-							Self.dispatch({ type: "sync-ui-with-curves" });
+							Self.activeAnchorIdx = idx;
+							Self.dispatch({ type: "sync-ui-with-curves", activeIndex: idx });
 							Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 							UI.doc.on("mousemove mouseup", Self.dispatch);
 							return;
@@ -7430,8 +7431,11 @@ const Dialogs = {
 					break;
 				case "mouseup":
 					if (Self.picEdit) {
+						delete Self.activeAnchorIdx;
 						delete Self.picEdit;
+						Self.els.svg.find("g.active").removeClass("active");
 						UI.doc.off("mousemove mouseup", Self.dispatch);
+						Self.dispatch({ type: "sync-ui-with-curves" });
 						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					}
 					break;
@@ -7604,7 +7608,12 @@ const Dialogs = {
 					}
 
 					svg.querySelectorAll(".anchor").forEach(el => el.remove());
-					knots.forEach(([x, y]) => svg.appendChild(Self.dispatch({ type: "generate-svg-anchor", x, y })));
+					knots.forEach(([x, y], i) => {
+						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y }),
+							activeIdx = event.activeIndex ?? Self.picEdit?.idx ?? Self.activeAnchorIdx;
+						if (i === activeIdx) anchor.classList.add("active");
+						svg.appendChild(anchor);
+					});
 					Self.rebuildPath(Self.els.path[0], knots, max, Self.clamp);
 					Self.els.hInput.css({ left: knots[0][0] });
 					Self.els.hOutput.css({ left: knots[knots.length - 1][0] });
@@ -7615,6 +7624,7 @@ const Dialogs = {
 					event.values = Self.values;
 					event.values.channel.value = event.value;
 					event.values.channel.text = event.text;
+					delete Self.activeAnchorIdx;
 					Self.dispatch({ type: "render-canvas" });
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-curves" });
