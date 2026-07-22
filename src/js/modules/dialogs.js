@@ -7146,9 +7146,14 @@ const Dialogs = {
 			let m = (el.getAttribute("transform") || "").match(/translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/);
 			return m ? [+m[1], +m[2]] : [0, 0];
 		},
-		rebuildPath(path, knots, max, clamp) {
+		rebuildPath(path, orgKnots, max, clamp, skip) {
+			let knots = [].concat(orgKnots);
 			// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
 			let xs = knots.map(([cx]) => +cx);
+			if (skip) {
+				xs.splice(skip, 1);
+				knots.splice(skip, 1);
+			}
 			for (let i = 1; i < xs.length; i++) if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
 			for (let i = xs.length - 2; i >= 0; i--) if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
 			let curveData = knots.map(([, cy], i) => PixelUtil.presetThumb.yR(xs[i], max.w - cy, true)),
@@ -7215,7 +7220,12 @@ const Dialogs = {
 						dKnot = knots[+el[0].id],
 						min = { x: 0, y: 0 },
 						nextEl = el.nextAll(".anchor"),
-						prevEl = el.prevAll(".anchor");
+						prevEl = el.prevAll(".anchor"),
+						kType = !prevEl.length ? "start" : (!nextEl.length ? "end" : prevEl.length),
+						slider = {
+							start: Self.els.root.find(`.slider .handle[data-for="input"]`),
+							end: Self.els.root.find(`.slider .handle[data-for="output"]`),
+						};
 
 					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
 					if (nextEl.length) max.x = Self.parseAnchorPos(nextEl[0])[0] - 1;
@@ -7223,7 +7233,7 @@ const Dialogs = {
 					svg.find(".active").removeClass("active");
 					el.addClass("active");
 					// drag object
-					Self.drag = { el, rect, dKnot, path, knots, min, max, clamp };
+					Self.drag = { el, slider, rect, dKnot, kType, path, knots, min, max, clamp };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
@@ -7231,21 +7241,34 @@ const Dialogs = {
 					break;
 				case "mousemove":
 					let rawX = (event.clientX - Drag.rect.left) / Drag.rect.width * Drag.max.w,
-						rawY = (event.clientY - Drag.rect.top)  / Drag.rect.height * Drag.max.h,
+						rawY = (event.clientY - Drag.rect.top) / Drag.rect.height * Drag.max.h,
 						cx = Drag.dKnot[0],
-						cy = Math.round(Math.min(Math.max(rawY, Drag.min.y), Drag.max.y));
+						cy = Math.round(Math.min(Math.max(rawY, Drag.min.y), Drag.max.y)),
+						skip;
 					// only move X when neighbours leave a valid gap
 					if (Drag.min.x <= Drag.max.x) {
 						cx = Math.round(Math.min(Math.max(rawX, Drag.min.x), Drag.max.x));
 					}
+					switch (Drag.kType) {
+						case "start": Drag.slider.start.css({ left: cx }); break; // move slider start
+						case "end": Drag.slider.end.css({ left: cx }); break; // move slider end
+						default:
+							let isHidden = rawX < Drag.max.x && rawX > Drag.min.x;
+							Drag.el.toggleClass("hidden", isHidden);
+							// draw path without hidden anchor
+							if (!isHidden) skip = Drag.kType;
+					}
+					// move "anchor"
 					Drag.el[0].setAttribute("transform", `translate(${cx}, ${cy})`);
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
 					// path follows knots; other anchors stay where they are
-					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp);
+					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp, skip);
 					break;
 				case "mouseup":
+					// remove anchors tagged as "hidden"
+					Drag.el.parent().find(".anchor.hidden").remove();
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
