@@ -94,6 +94,7 @@ module.exports = {
 	ActionTypes,
 	BrushEngine,
 	CanvasTools,
+	CurvesResource,
 	FilterHelper,
 	FilterEffectPanel,
 	LayerRecord,

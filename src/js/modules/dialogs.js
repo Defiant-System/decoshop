@@ -7086,7 +7086,7 @@ const Dialogs = {
 	},
 	dlgCurves: {
 		name: "dlgCurves",
-		cover: false,
+		// cover: false,
 		preview: true,
 		values: {},
 		doSlider(event) {
@@ -7147,25 +7147,45 @@ const Dialogs = {
 			return m ? [+m[1], +m[2]] : [0, 0];
 		},
 		rebuildPath(path, orgKnots, max, clamp, skip) {
-			let knots = [].concat(orgKnots);
+			let knots = orgKnots.map(([x, y]) => [+x, +y]);
+			if (skip != null) knots.splice(skip, 1);
+			if (knots.length < 2) return;
+
 			// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
-			let xs = knots.map(([cx]) => +cx);
-			if (skip) {
-				xs.splice(skip, 1);
-				knots.splice(skip, 1);
-			}
+			let xs = knots.map(([cx]) => cx);
 			for (let i = 1; i < xs.length; i++) if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
 			for (let i = xs.length - 2; i >= 0; i--) if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
+
 			let curveData = knots.map(([, cy], i) => PixelUtil.presetThumb.yR(xs[i], max.w - cy, true)),
 				parsed = PixelUtil.presetThumb.N6(curveData),
-				segments = [],
-				d = [];
+				segments = [];
 			PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
-			for (let x = 0; x <= max.w; x++) {
-				let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
-					v = Number.isFinite(raw) ? clamp(raw, 0, max.w) : 0,
-					y = clamp(max.w - v, 0, max.h);
-				d.push(`${x ? " L" : "M"} ${x} ${y}`);
+
+			// SVG Y from curve Y; keep path inside the graph
+			let toSvg = (x, y) => [clamp(x, 0, max.w), clamp(max.w - y, 0, max.h)],
+				[x0, y0] = toSvg(xs[0], max.w - knots[0][1]),
+				d = [`M ${x0} ${y0}`];
+
+			if (knots.length === 2) {
+				let [x1, y1] = toSvg(xs[1], max.w - knots[1][1]);
+				d.push(` L ${x1} ${y1}`);
+			} else {
+				// natural cubic spline → one C per knot span (Hermite derivatives in FK)
+				for (let i = 0; i < knots.length - 1; i++) {
+					let g = segments[i],
+						j = g.VT.indexOf(xs[i]),
+						xA = g.VT[j],
+						yA = g.M4[j],
+						xB = g.VT[j + 1],
+						yB = g.M4[j + 1],
+						dx = xB - xA,
+						d0 = g.FK[j],
+						d1 = g.FK[j + 1],
+						[c1x, c1y] = toSvg(xA + dx / 3, yA + d0 * dx / 3),
+						[c2x, c2y] = toSvg(xB - dx / 3, yB - d1 * dx / 3),
+						[x1, y1] = toSvg(xB, yB);
+					d.push(` C ${c1x} ${c1y} ${c2x} ${c2y} ${x1} ${y1}`);
+				}
 			}
 			path.setAttribute("d", d.join(""));
 		},
@@ -7265,9 +7285,13 @@ const Dialogs = {
 					Drag.dKnot[1] = cy;
 					// path follows knots; other anchors stay where they are
 					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp, skip);
+
+					// exit if "preview" is not enabled
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "mouseup":
-					// remove anchors tagged as "hidden"
+					// reset el & remove anchors tagged as "hidden"
+					Drag.el.removeClass("active");
 					Drag.el.parent().find(".anchor.hidden").remove();
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
@@ -7300,7 +7324,33 @@ const Dialogs = {
 					if (!Doc || !Self.preview) return;
 					Self.values = event.values;
 					Engine.raf(() => {
-						
+						let qv = FilterHelper.oT("curv"),
+							ch = +(Self.values.channel?.value ?? 0),
+							max = { w: 250, h: 251 },
+							// SVG anchors → CrPt list in 0..255 (Y flipped)
+							points = [...Self.els.svg[0].querySelectorAll(".anchor")]
+								.map(a => Self.parseAnchorPos(a))
+								.sort((a, b) => a[0] - b[0])
+								.map(([cx, cy]) => PixelUtil.presetThumb.yR(
+									Math.round(cx / max.w * 255),
+									Math.round((max.w - cy) / max.w * 255),
+									true
+								));
+						// keep a per-channel cache so switching RGB/R/G/B doesn't lose curves
+						if (!Self.values.curves) {
+							Self.values.curves = {
+								0: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+								1: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+								2: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+								3: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+							};
+						}
+						Self.values.curves[ch] = points;
+						for (let c=0; c<4; c++) {
+							CurvesResource.fZ(qv, c, Self.values.curves[c]); // CurvesResource.setChannelCurve
+						}
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "curv", qv, ve: false } });
+						PP.update();
 					});
 					return;
 

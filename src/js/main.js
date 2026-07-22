@@ -20,6 +20,7 @@ let {
 	ActionTypes,
 	BrushEngine,
 	CanvasTools,
+	CurvesResource,
 	FilterHelper,
 	LayerRecord,
 	LayerSectionType,

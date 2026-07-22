@@ -6304,6 +6304,8 @@ var cL = function() {
 
 // d3 - BrushResource (.abr brush presets resource handler)
 function d3() {}
+const BrushResource = d3;
+
 // BrushResource.importFromBuffer — parse .abr v6+ → { BF samples, yO patterns, list descriptors }
 d3.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -6554,6 +6556,8 @@ d3.sD = function(l, d, G) {
 
 // cb - CurvesResource (.acv curves adjustment preset resource handler)
 function cb() {}
+const CurvesResource = cb;
+
 // CurvesResource.importFromBuffer — parse .acv → curves adjustment descriptor
 cb.Cd = function(l, d) {
 	var G = new Uint8Array(l),
@@ -6764,6 +6768,8 @@ cb.anq = function(l, d, G) {
 
 // d8 - HueSaturationHelper (hue2 adjustment preset binary codec)
 function d8() {}
+const HueSaturationHelper = d8;
+
 // HueSaturationHelper.readFromPsd — parse hue2 preset block → adjustment descriptor
 d8.nj = function(l, d, G) {
 	var b = {},
@@ -7101,6 +7107,8 @@ hg.IN = function(l, d) {
 
 // d1 - LayerStyleResource (.asl layer styles resource handler)
 function d1() {}
+const LayerStyleResource = d1;
+
 // LayerStyleResource.importFromBuffer — parse .asl → layer style descriptor list
 d1.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -7313,6 +7321,8 @@ iX.qJ = function(l, d, G) {
 
 // eU - ShapeResource (.csh custom shapes resource handler)
 function eU() {}
+const ShapeResource = eU;
+
 // ShapeResource.createDefault — empty custom shape template
 eU.oT = function() {
 	return {
@@ -7576,6 +7586,8 @@ eU.nb = function(l, d, G, b, V) {
 
 // bA - SwatchResource (.aco color swatches resource handler)
 function bA() {}
+const SwatchResource = bA;
+
 // SwatchResource.importFromBuffer — parse .aco → color swatch list
 bA.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -7773,6 +7785,8 @@ bA.L4 = function(l, d, G) {
 
 // jn - ActionResource (.atn Photoshop actions resource handler)
 function jn() {}
+const ActionResource = jn;
+
 // ActionResource.importFromBuffer — parse .atn → action set tree
 jn.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -7915,6 +7929,8 @@ jn.IN = function(l) {
 
 // ei - MeshResource (3D displacement mesh preset resource handler)
 function ei() {}
+const MeshResource = ei;
+
 // MeshResource.importFromBuffer — parse mesh preset → { iJ, Tq, map }
 ei.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -8006,6 +8022,8 @@ ei.CO = function(l) {
 
 // hT - ContourResource (.shc layer style contours resource handler)
 function hT() {}
+const ContourResource = hT;
+
 // ContourResource.importFromBuffer — parse .shc → contour curve list
 hT.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -8110,6 +8128,8 @@ hT.IN = function(l) {
 
 // fv - PatternResource (.pat fill patterns resource handler)
 function fv() {}
+const PatternResource = fv;
+
 // PatternResource.importFromBuffer — parse .pat → pattern descriptor list
 fv.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -8342,6 +8362,8 @@ fv.atL = function(l, d, G, b) {
 
 // eu - GradientResource (.grd gradients resource handler)
 function eu() {}
+const GradientResource = eu;
+
 // GradientResource.importFromBuffer — parse .grd → gradient descriptor list
 eu.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -8602,6 +8624,8 @@ eu.aqi = function(l) {
 
 // cG - ToolPresetResource (.tpl tool presets resource handler)
 function cG() {}
+const ToolPresetResource = cG;
+
 // ToolPresetResource.importFromBuffer — parse .tpl → tool preset descriptor list
 cG.Cd = function(l) {
 	var d = new Uint8Array(l),
@@ -8969,6 +8993,8 @@ iZ.Rs = function(l, d) {
 
 // jO - ActionDescriptorCodec (Adobe ActionDescriptor binary read/write)
 function jO() {}
+const ActionDescriptorCodec = jO;
+
 // ActionDescriptorCodec.readDescriptor — parse ActionDescriptor from buffer at offset
 jO.V$ = function(l, d, G, b, V) {
 	var Q = G,
@@ -9423,6 +9449,8 @@ jO.aAb = function(l) {
 
 // ia - LayerAdditionalInfoParser (PSD layer extra data / tagged blocks parser)
 function ia() {}
+const LayerAdditionalInfoParser = ia;
+
 // LayerAdditionalInfoParser.readLayerInfo — parse 8BIM tagged blocks into layer.add
 ia.ajh = function(l, d, G, b, V, Q) {
 	while (d < G) {
@@ -11063,6 +11091,8 @@ aZ.as$ = function(l, d, G) {
 
 // db - PsdChannelCodec (encode/decode PSD layer channel image data)
 function db() {}
+const PsdChannelCodec = db;
+
 // PsdChannelCodec.decodeLayer — decode all channels for one layer record
 db.Cd = function(l, d, G, b) {
 	b = db.avY(d, d.v_, d.dP, d.RU, l, G, b);
@@ -11386,6 +11416,8 @@ db.YA = function(l, d, G, b, V, Q) {
 
 // c4 - PsdReader (Adobe PSD file format reader)
 function c4() {}
+const PsdReader = c4;
+
 // PsdReader.debugLog — optional debug offset logger (disabled)
 c4.fp = function(l, d, G) {
 	return;
@@ -12656,6 +12688,8 @@ c4.ab5 = function(l, d, G, b, V) {
 
 // gS - PdfDictReader (PDF/PostScript dictionary syntax parser)
 function gS() {}
+const PdfDictReader = gS;
+
 // PdfDictReader.parse — parse PDF dictionary bytes → JS object tree
 gS.Cd = function(l) {
 	var d = {};
@@ -12855,6 +12889,8 @@ gS.a22 = function(l) {
 
 // i0 - PdfDictWriter (serialize object tree to PDF dictionary syntax)
 function i0() {}
+const PdfDictWriter = i0;
+
 // PdfDictWriter.parse — alias: parse PDF dictionary (delegates to gS)
 i0.Cd = function(l) {
 	var d = {};
@@ -13080,6 +13116,8 @@ i0.Zn = function(l, d, G, b) {
 
 // X - BinaryUtil (big-endian binary read/write helpers for PSD and resources)
 function X() {}
+const BinaryUtil = X;
+
 // BinaryUtil.int32ToFourChar — uint32 → 4-char ASCII string (big-endian)
 X.a5J = function(hZ) {
 	var l = "";
@@ -13816,6 +13854,8 @@ X.mL = new Float32Array(X.HP.buffer);
 
 // az - XcfReader (GIMP XCF file format reader)
 function az() {}
+const XcfReader = az;
+
 // XcfReader.importFromBuffer — parse GIMP .xcf → document model
 az.Cd = function(l, d) {
 	var G = new Uint8Array(l),
