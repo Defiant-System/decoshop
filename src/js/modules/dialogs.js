@@ -7254,7 +7254,7 @@ const Dialogs = {
 						if (used.has(x)) while (used.has(x) && x > 0) x--;
 						if (used.has(x)) return;
 
-						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y }),
+						let anchor = Self.generateSvgAnchor({ x, y }),
 							next = [...svg[0].querySelectorAll(".anchor")]
 								.find(a => Self.parseAnchorPos(a)[0] > x);
 						if (next) svg[0].insertBefore(anchor, next);
@@ -7337,6 +7337,11 @@ const Dialogs = {
 					break;
 			}
 		},
+		generateSvgAnchor(p) {
+			let transform = `translate(${p.x}, ${p.y})`,
+				circles = `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`;
+			return $.svgElem("g", { class: "anchor", transform }, circles);
+		},		
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
@@ -7480,7 +7485,6 @@ const Dialogs = {
 
 				// custom events
 				case "render-canvas":
-					if (!Doc) return;
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
 						channel = +(Self.values.channel?.value ?? 0),
@@ -7581,14 +7585,10 @@ const Dialogs = {
 						.slice(1,-1) // first and last item is not user moveable
 						.map((p, id) => {
 							let [x, y] = p;
-							let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y });
+							let anchor = Self.generateSvgAnchor({ x, y });
 							svg.appendChild(anchor);
 						});
 					break;
-				case "generate-svg-anchor":
-					let transform = `translate(${event.x}, ${event.y})`,
-						circles = `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`;
-					return $.svgElem("g", { class: "anchor", transform }, circles);
 
 				case "sync-ui-with-curves": {
 					let ch = +(Self.values.channel?.value ?? 0),
@@ -7609,7 +7609,7 @@ const Dialogs = {
 
 					svg.querySelectorAll(".anchor").forEach(el => el.remove());
 					knots.forEach(([x, y], i) => {
-						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y }),
+						let anchor = Self.generateSvgAnchor({ x, y }),
 							activeIdx = event.activeIndex ?? Self.picEdit?.idx ?? Self.activeAnchorIdx;
 						if (i === activeIdx) anchor.classList.add("active");
 						svg.appendChild(anchor);
@@ -7837,11 +7837,11 @@ const Dialogs = {
 					// reset mid-point
 					Self.values.curves.value = structuredClone(Self.values.curves.default);
 					Self.dispatch({ type: "reset-view" });
+					// apply identity curves immediately
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-curves" });
 					Self.dispatch({ type: "render-canvas" });
-					// apply identity curves immediately
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					break;
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
