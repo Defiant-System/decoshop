@@ -7102,37 +7102,63 @@ const Dialogs = {
 					let el = $(event.target).parents("?.handle");
 					if (!el.length) return;
 
-					let pEl = el.parent(),
-						fFor = el.data("for"),
+					let svg = Self.els.svg,
+						anchors = svg.find(".anchor"),
+						anchor, aPos, aY,
+						path = svg.find("path")[0],
+						pEl = el.parent(),
 						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
-						c = Self.values.channel.value,
-						m0 = 0,
-						m2 = 255,
-						max = pEl.prop("offsetWidth"),
-						min = 0;
+						ch = Self.values.channel.value,
+						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+						max = { x: 250, y: 251, w: 250, h: 251 },
+						min = { x: 0 },
+						knots = svg.find(".anchor")
+									.map(a => { a.id = $(a).prevAll(".anchor").length; return a; })
+									.map(a => Self.parseAnchorPos(a)),
+						dKnot;
 
-					switch (fFor) {
+					switch (el.data("for")) {
 						case "input":
-							// max = +h3.prop("offsetLeft") - 2;
+							anchor = anchors.get(0).addClass("active");
+							aY = Self.parseAnchorPos(anchor[0])[1];
+							aPos = Self.parseAnchorPos(anchors.get(1)[0]);
+							max.x = aPos[0] - 1;
+							dKnot = knots[+anchor[0].id];
 							break;
 						case "output":
-							// min = +h1.prop("offsetLeft") + 1;
+							anchor = anchors.get(anchors.length-1).addClass("active");
+							aY = Self.parseAnchorPos(anchor[0])[1];
+							aPos = Self.parseAnchorPos(anchors.get(anchors.length-2)[0]);
+							min.x = aPos[0] + 1;
+							dKnot = knots[+anchor[0].id];
 							break;
 					}
 					// moves dragged handle on top
 					el.addClass("moved");
 					// drag object
-					Self.drag = { el, fFor, c, clickX, min, max };
+					Self.drag = { el, anchor, path, knots, dKnot, clamp, aY, ch, clickX, min, max };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.doSlider);
 					break;
 				case "mousemove":
-					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min), Drag.max);
+					let left = Math.min(Math.max(event.clientX - Drag.clickX, Drag.min.x), Drag.max.x);
 					Drag.el.css({ left });
+					// move "anchor"
+					Drag.anchor[0].setAttribute("transform", `translate(${left}, ${Drag.aY})`);
+					// update knot
+					Drag.dKnot[0] = left;
+					Drag.dKnot[1] = Drag.aY;
+					// path follows knots; other anchors stay where they are
+					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp);
+
+					// exit if "preview" is not enabled
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "mouseup":
+					// reset anchor
+					Drag.anchor.removeClass("active");
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
@@ -7206,9 +7232,8 @@ const Dialogs = {
 					event.preventDefault();
 					event.stopPropagation();
 					let svg = Self.els.svg,
-						svgEl = svg[0],
 						path = svg.find("path")[0],
-						rect = svgEl.getBoundingClientRect(),
+						rect = svg[0].getBoundingClientRect(),
 						max = { x: 250, y: 251, w: 250, h: 251 },
 						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
 						el = $(event.target).parents("?.anchor");
@@ -7220,18 +7245,18 @@ const Dialogs = {
 						x = clamp(x, 1, max.w - 1);
 						y = clamp(y, 0, max.h);
 						// keep unique X among existing anchors
-						let used = new Set([...svgEl.querySelectorAll(".anchor")].map(a => Self.parseAnchorPos(a)[0]));
+						let used = new Set([...svg[0].querySelectorAll(".anchor")].map(a => Self.parseAnchorPos(a)[0]));
 						while (used.has(x) && x < max.w) x++;
 						if (used.has(x)) while (used.has(x) && x > 0) x--;
 						if (used.has(x)) return;
 
 						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y }),
-							next = [...svgEl.querySelectorAll(".anchor")]
+							next = [...svg[0].querySelectorAll(".anchor")]
 								.find(a => Self.parseAnchorPos(a)[0] > x);
-						if (next) svgEl.insertBefore(anchor, next);
-						else svgEl.appendChild(anchor);
+						if (next) svg[0].insertBefore(anchor, next);
+						else svg[0].appendChild(anchor);
 
-						let knots = [...svgEl.querySelectorAll(".anchor")]
+						let knots = [...svg[0].querySelectorAll(".anchor")]
 							.sort((a, b) => Self.parseAnchorPos(a)[0] - Self.parseAnchorPos(b)[0])
 							.map(a => Self.parseAnchorPos(a));
 						Self.rebuildPath(path, knots, max, clamp);
