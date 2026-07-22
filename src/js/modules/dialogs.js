@@ -7343,6 +7343,18 @@ const Dialogs = {
 				Doc = Self.doc,
 				Drag = Self.drag;
 			switch (event.type) {
+				// native events
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
+					// drag target element
+					let el = $(event.target);
+					if (el.parent().hasClass("cvs-wrapper")) {
+						return Self.dispatch({ type: "pipette-color", orgEvent: event });
+					}
+					break;
+
 				// "fast" events
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
@@ -7589,8 +7601,60 @@ const Dialogs = {
 					Self.dispatch({ type: "reset-view" });
 					break;
 
+				case "pipette-color": {
+					// unlike Levels, black/mid/white always write R/G/B curve channels (1..3),
+					// never the composite. Mid inserts a gamma-style knot instead of levels gamma.
+					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
+						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
+						curves = Self.values.curves.value,
+						pipette = +Self.els.root.find(`i.active[data-click="select-pipette"]`).data("arg")
+							|| +Self.els.root.find(`i.active[data-arg]`).data("arg"),
+						mean = (rgb[0] + rgb[1] + rgb[2]) / 3;
+					if (!pipette) return;
+
+					for (let c = 0; c < 3; c++) {
+						let pts = structuredClone(curves[c + 1]),
+							first = pts[0],
+							last = pts[pts.length - 1];
+						if (pipette === 1) {
+							// shadows → move first knot's input (Hrzn)
+							first.v.Hrzn.v = Math.min(rgb[c], last.v.Hrzn.v - 1);
+						} else if (pipette === 3) {
+							// highlights → move last knot's input (Hrzn)
+							last.v.Hrzn.v = Math.max(rgb[c], first.v.Hrzn.v + 1);
+						} else {
+							// midtones → log-ratio knot at ~middle gray output (Photopea)
+							let ch = rgb[c] / 255,
+								m = mean / 255;
+							if (mean > 0 && ch > 0) {
+								let g = Math.min(999, Math.max(10, Math.round(100 * Math.log(ch) / Math.log(m)))),
+									hx = Math.round(127 - Math.log(g / 100) * 127);
+								hx = Math.max(first.v.Hrzn.v + 1, Math.min(last.v.Hrzn.v - 1, hx));
+								if (pts.length === 2) {
+									pts.splice(1, 0, PixelUtil.presetThumb.yR(hx, 127, true));
+								} else {
+									pts[1].v.Hrzn.v = hx;
+									pts[1].v.Vrtc.v = 127;
+								}
+							}
+						}
+						curves[c + 1] = pts;
+					}
+
+					Self.dispatch({ type: "sync-ui-with-curves" });
+					Self.dispatch({ type: "render-canvas" });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					break;
+				}
+
 				case "reset-pipette":
 					event.el.find(`i.active[data-click="select-pipette"]`).removeClass("active");
+					// reset flag
+					delete Self.isPipette;
+					// toggle "off" the app cover
+					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
+					// bind event listener
+					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
 					break;
 				case "select-pipette":
 					event.el.parent().find(`i.active[data-click="select-pipette"]`).removeClass("active");
@@ -7598,6 +7662,16 @@ const Dialogs = {
 
 					event.el.addClass("active");
 					APP.els.content.addClass(`cursor-pipette-${event.el.data("arg")}`);
+
+					// no need to bind more event listeners
+					if (!Self.isPipette) {
+						// keep track of state
+						Self.isPipette = true;
+						// toggle "off" the app cover
+						UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
+						// bind event listener
+						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+					}
 					break;
 				case "unbind-reset-view":
 					// remove potential pipette cursors
