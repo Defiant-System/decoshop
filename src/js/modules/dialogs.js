@@ -7146,34 +7146,6 @@ const Dialogs = {
 			let m = (el.getAttribute("transform") || "").match(/translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/);
 			return m ? [+m[1], +m[2]] : [0, 0];
 		},
-		curveSpline(knots, max) {
-			// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
-			// keep original X (don't round) so the spline still passes through each knot
-			let xs = knots.map(([cx]) => +cx);
-			for (let i = 1; i < xs.length; i++) {
-				if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
-			}
-			for (let i = xs.length - 2; i >= 0; i--) {
-				if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
-			}
-			let curveData = knots.map(([ , cy], i) => PixelUtil.presetThumb.yR(xs[i], max.w - cy, true)),
-				parsed = PixelUtil.presetThumb.N6(curveData),
-				segments = [];
-			PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
-			return { parsed, segments };
-		},
-		pathFromKnots(knots, max) {
-			let { parsed, segments } = this.curveSpline(knots, max),
-				clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
-				d = "";
-			for (let x = 0; x <= max.w; x++) {
-				let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
-					v = Number.isFinite(raw) ? clamp(raw, 0, max.w) : 0,
-					y = clamp(max.w - v, 0, max.h);
-				d += (x ? " L" : "M") + ` ${x} ${y}`;
-			}
-			return d;
-		},
 		doSvgPath(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
@@ -7187,15 +7159,21 @@ const Dialogs = {
 					event.stopPropagation();
 					// check event origin
 					let el = $(event.target).parents("?.anchor");
-					if (!el.length) return;
-					
+					if (!el.length) {
+						let target = Self.dispatch({ type: "generate-svg-anchor", x: event.offsetX, y: event.offsetY });
+						event.target.appendChild(target);
+						// trigger new mousedown
+						Self.doSvgPath({ type: "mousedown", target, preventDefault() {}, stopPropagation() {} });
+						return;
+					}
+
 					// drag info
-					let svg = el.parent()[0],
-						path = svg.querySelector("path"),
-						svgRect = svg.getBoundingClientRect(),
-						knots = [...svg.querySelectorAll(".anchor")]
-							.sort((a, b) => +a.id - +b.id)
-							.map(c => Self.parseAnchorPos(c)),
+					let svg = el.parent(),
+						path = svg.find("path")[0],
+						rect = svg[0].getBoundingClientRect(),
+						knots = svg.find(".anchor")
+							.map(a => { a.id = $(a).prevAll(".anchor").length; return a; })
+							.map(a => Self.parseAnchorPos(a)),
 						dKnot = knots[+el[0].id],
 						min = { x: 0, y: 0 },
 						max = { x: 250, y: 251, w: 250, h: 251 },
@@ -7206,18 +7184,18 @@ const Dialogs = {
 					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
 					if (nextEl.length) max.x = Self.parseAnchorPos(nextEl[0])[0] - 1;
 					if (prevEl.length) min.x = Self.parseAnchorPos(prevEl[0])[0] + 1;
+					svg.find(".active").removeClass("active");
+					el.addClass("active");
 					// drag object
-					Self.drag = { el, svg, svgRect, dKnot, path, knots, min, max, clamp };
+					Self.drag = { el, rect, dKnot, path, knots, min, max, clamp };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
 					UI.doc.on("mousemove mouseup", Self.doSvgPath);
 					break;
-				case "mousemove": {
-					let svgW = Drag.svgRect.width  || 1,
-						svgH = Drag.svgRect.height || 1,
-						rawX = (event.clientX - Drag.svgRect.left) / svgW * Drag.max.w,
-						rawY = (event.clientY - Drag.svgRect.top)  / svgH * Drag.max.h,
+				case "mousemove":
+					let rawX = (event.clientX - Drag.rect.left) / Drag.rect.width * Drag.max.w,
+						rawY = (event.clientY - Drag.rect.top)  / Drag.rect.height * Drag.max.h,
 						cx = Drag.dKnot[0],
 						cy = Math.round(Math.min(Math.max(rawY, Drag.min.y), Drag.max.y));
 					// only move X when neighbours leave a valid gap
@@ -7228,14 +7206,28 @@ const Dialogs = {
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
-					// path follows knots; other anchors stay where they are
-					Drag.path.setAttribute("d", Self.pathFromKnots(Drag.knots, Drag.max));
-					break;
-				}
-				case "mouseup":
-					if (Drag) {
-						Drag.path.setAttribute("d", Self.pathFromKnots(Drag.knots, Drag.max));
+
+					// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
+					// keep original X (don't round) so the spline still passes through each knot
+					let xs = Drag.knots.map(([cx]) => +cx);
+					for (let i=1; i<xs.length; i++) if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
+					for (let i=xs.length - 2; i>=0; i--) if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
+					let curveData = Drag.knots.map(([ , cy], i) => PixelUtil.presetThumb.yR(xs[i], Drag.max.w - cy, true)),
+						parsed = PixelUtil.presetThumb.N6(curveData),
+						segments = [];
+					PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
+					// build path string
+					let d = [];
+					for (let x = 0; x <= Drag.max.w; x++) {
+						let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
+							v = Number.isFinite(raw) ? Drag.clamp(raw, 0, Drag.max.w) : 0,
+							y = Drag.clamp(Drag.max.w - v, 0, Drag.max.h);
+						d.push(`${x ? " L" : "M"} ${x} ${y}`);
 					}
+					// path follows knots; other anchors stay where they are
+					Drag.path.setAttribute("d", d.join(""));
+					break;
+				case "mouseup":
 					// cover dialog UI
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
@@ -7368,24 +7360,21 @@ const Dialogs = {
 							case "z": break;
 						}
 					}
-
-					/*
-						<g id="0" transform="translate(0, 250)">
-							<circle cx="0" cy="0" r="3"></circle>
-							<circle cx="0" cy="0" r="6"></circle>
-						</g>
-					*/
-
 					// replace any existing anchor anchors
 					svg.querySelectorAll(".anchor").forEach(el => el.remove());
 					points.map((p, id) => {
-						let [cx, cy] = p;
-						let transform = `translate(${cx}, ${cy})`;
-						let anchor = $.svgElem("g", { class: "anchor", transform, id }, `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`);
+						let [x, y] = p;
+						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y });
 						svg.appendChild(anchor);
 					});
 					break;
+				case "generate-svg-anchor":
+					let transform = `translate(${event.x}, ${event.y})`,
+						circles = `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`;
+					return $.svgElem("g", { class: "anchor", transform }, circles);
+
 				case "sync-ui-with-levels":
+					// TODO
 					break;
 					
 				case "reset-pipette":
