@@ -7146,6 +7146,7 @@ const Dialogs = {
 		},
 		rebuildPath(path, orgKnots, max, clamp, skip) {
 			let knots = orgKnots.map(([x, y]) => [+x, +y]);
+			// let knots = structuredClone(orgKnots);
 			if (skip != null) knots.splice(skip, 1);
 			if (knots.length < 2) return;
 
@@ -7249,7 +7250,8 @@ const Dialogs = {
 						slider = {
 							start: Self.els.root.find(`.slider .handle[data-for="input"]`),
 							end: Self.els.root.find(`.slider .handle[data-for="output"]`),
-						};
+						},
+						hidden = false;
 
 					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
 					if (nextEl.length) max.x = Self.parseAnchorPos(nextEl[0])[0] - 1;
@@ -7257,7 +7259,7 @@ const Dialogs = {
 					svg.find(".active").removeClass("active");
 					el.addClass("active");
 					// drag object
-					Self.drag = { el, slider, rect, dKnot, kType, path, knots, min, max, clamp };
+					Self.drag = { el, slider, rect, hidden, dKnot, kType, path, knots, min, max, clamp };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
@@ -7273,12 +7275,18 @@ const Dialogs = {
 					if (Drag.min.x <= Drag.max.x) {
 						cx = Math.round(Math.min(Math.max(rawX, Drag.min.x), Drag.max.x));
 					}
+					// no need to continue if values are same as previous
+					if (Drag.dKnot[0] === cx && Drag.dKnot[1] === cy) return;
+
 					switch (Drag.kType) {
 						case "start": Drag.slider.start.css({ left: cx }); break; // move slider start
 						case "end": Drag.slider.end.css({ left: cx }); break; // move slider end
 						default:
 							let isHidden = rawX < Drag.max.x && rawX > Drag.min.x;
-							Drag.el.toggleClass("hidden", isHidden);
+							if (isHidden !== Drag.hidden) { // prevents touching DOM too much
+								Drag.hidden = isHidden;
+								Drag.el.toggleClass("hidden", isHidden);
+							}
 							// draw path without hidden anchor
 							if (!isHidden) skip = Drag.kType;
 					}
@@ -7340,18 +7348,10 @@ const Dialogs = {
 									Math.round((max.w - cy) / max.w * 255),
 									true
 								));
-						// keep a per-channel cache so switching RGB/R/G/B doesn't lose curves
-						if (!Self.values.curves) {
-							Self.values.curves = {
-								0: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
-								1: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
-								2: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
-								3: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
-							};
-						}
-						Self.values.curves[ch] = points;
+						
+						Self.values.curves.value[ch] = points;
 						for (let c=0; c<4; c++) {
-							CurvesResource.fZ(qv, c, Self.values.curves[c]); // CurvesResource.setChannelCurve
+							CurvesResource.fZ(qv, c, Self.values.curves.value[c]); // CurvesResource.setChannelCurve
 						}
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "curv", qv, ve: false } });
 						PP.update();
@@ -7513,6 +7513,16 @@ const Dialogs = {
 							value = xVal.getAttribute("value");
 						Self.values[el.data("name")] = { text: val, default: value, value };
 					});
+
+					// keep a per-channel cache so switching RGB/R/G/B doesn't lose curves
+					let value = {
+						0: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+						1: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+						2: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+						3: [PixelUtil.presetThumb.yR(0, 0, true), PixelUtil.presetThumb.yR(255, 255, true)],
+					};
+					Self.values.curves = { default: structuredClone(value), value };
+
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
 					// generate anchors based on path
