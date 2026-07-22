@@ -7354,6 +7354,24 @@ const Dialogs = {
 						return Self.dispatch({ type: "pipette-color", orgEvent: event });
 					}
 					break;
+				case "mousemove":
+					if (Self.picEdit) {
+						let { ch, idx, startY } = Self.picEdit,
+							pts = Self.values.curves.value[ch],
+							pt = pts[idx];
+						// Photopea: Vrtc = Hrzn + (startY - currentY)
+						pt.v.Vrtc.v = Math.max(0, Math.min(255, Math.round(pt.v.Hrzn.v + (startY - event.clientY))));
+						Self.dispatch({ type: "sync-ui-with-curves" });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
+					}
+					break;
+				case "mouseup":
+					if (Self.picEdit) {
+						delete Self.picEdit;
+						UI.doc.off("mousemove mouseup", Self.dispatch);
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					}
+					break;
 
 				// "fast" events
 				case "apply-filter-data":
@@ -7602,13 +7620,38 @@ const Dialogs = {
 					break;
 
 				case "pipette-color": {
-					// unlike Levels, black/mid/white always write R/G/B curve channels (1..3),
-					// never the composite. Mid inserts a gamma-style knot instead of levels gamma.
 					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
 						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
-						curves = Self.values.curves.value,
-						pipette = +Self.els.root.find(`i.active[data-click="select-pipette"]`).data("arg")
-							|| +Self.els.root.find(`i.active[data-arg]`).data("arg"),
+						curves = Self.values.curves.value;
+
+					// fourth tool (↕ / in-pic-edit): add/select knot on current channel, drag vertically to set output
+					if (Self.isInPicEdit) {
+						let ch = +(Self.values.channel?.value ?? 0),
+							input = Math.round(ch === 0 ? (rgb[0] + rgb[1] + rgb[2]) / 3 : rgb[ch - 1]),
+							pts = structuredClone(curves[ch]),
+							idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input);
+						if (idx === -1) {
+							let pt = structuredClone(pts[0]);
+							pt.v.Hrzn.v = input;
+							pt.v.Vrtc.v = input;
+							pts.push(pt);
+							pts.sort((a, b) => a.v.Hrzn.v - b.v.Hrzn.v);
+							idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input);
+						}
+						curves[ch] = pts;
+						Self.picEdit = {
+							ch,
+							idx,
+							startY: event.orgEvent.clientY,
+						};
+						Self.dispatch({ type: "sync-ui-with-curves" });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+						UI.doc.on("mousemove mouseup", Self.dispatch);
+						return;
+					}
+
+					// black / mid / white pipettes → always write R/G/B curve channels (1..3)
+					let pipette = +Self.els.root.find(`i.active[data-click="select-pipette"]`).data("arg"),
 						mean = (rgb[0] + rgb[1] + rgb[2]) / 3;
 					if (!pipette) return;
 
@@ -7624,10 +7667,10 @@ const Dialogs = {
 							last.v.Hrzn.v = Math.max(rgb[c], first.v.Hrzn.v + 1);
 						} else {
 							// midtones → log-ratio knot at ~middle gray output (Photopea)
-							let ch = rgb[c] / 255,
+							let chv = rgb[c] / 255,
 								m = mean / 255;
-							if (mean > 0 && ch > 0) {
-								let g = Math.min(999, Math.max(10, Math.round(100 * Math.log(ch) / Math.log(m)))),
+							if (mean > 0 && chv > 0) {
+								let g = Math.min(999, Math.max(10, Math.round(100 * Math.log(chv) / Math.log(m)))),
 									hx = Math.round(127 - Math.log(g / 100) * 127);
 								hx = Math.max(first.v.Hrzn.v + 1, Math.min(last.v.Hrzn.v - 1, hx));
 								if (pts.length === 2) {
@@ -7652,14 +7695,22 @@ const Dialogs = {
 					Self.els.pMid.removeClass("active");
 					Self.els.pLight.removeClass("active");
 					Self.els.inPicEdit.removeClass("active");
+					APP.els.content.removeClass("cursor-pipette-1 cursor-pipette-2 cursor-pipette-3 cursor-ns-resize");
 					// reset flag
 					delete Self.isPipette;
+					delete Self.isInPicEdit;
+					delete Self.picEdit;
 					// toggle "off" the app cover
 					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
-					// bind event listener
+					// unbind event listeners
 					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					UI.doc.off("mousemove mouseup", Self.dispatch);
 					break;
 				case "select-pipette":
+					Self.els.inPicEdit.removeClass("active");
+					delete Self.isInPicEdit;
+					delete Self.picEdit;
+					APP.els.content.removeClass("cursor-ns-resize");
 					event.el.parent().find(`i.active[data-click="select-pipette"]`).removeClass("active");
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
 
@@ -7678,16 +7729,28 @@ const Dialogs = {
 					break;
 
 				case "mode-in-pic-edit":
-					Self.dispatch({ type: "reset-pipette" });
+					// Photopea "↕" sample tool: click image → knot on current channel, drag vertically → output
+					Self.els.pDark.removeClass("active");
+					Self.els.pMid.removeClass("active");
+					Self.els.pLight.removeClass("active");
+					APP.els.content.removeClass("cursor-pipette-1 cursor-pipette-2 cursor-pipette-3");
 					Self.els.inPicEdit.addClass("active");
-
+					Self.isInPicEdit = true;
+					APP.els.content.addClass("cursor-ns-resize");
+					if (!Self.isPipette) {
+						Self.isPipette = true;
+						UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
+						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+					}
 					break;
 
 				case "unbind-reset-view":
 					// remove potential pipette cursors
-					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3 cursor-ns-resize`);
 					// unbind events
 					Self.els.root.find(".slider").off("mousedown", Self.doSlider);
+					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					UI.doc.off("mousemove mouseup", Self.dispatch);
 					break;
 
 				case "dlg-open":
