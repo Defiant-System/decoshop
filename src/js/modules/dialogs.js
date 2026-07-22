@@ -7351,7 +7351,70 @@ const Dialogs = {
 					// drag target element
 					let el = $(event.target);
 					if (el.parent().hasClass("cvs-wrapper")) {
-						return Self.dispatch({ type: "pipette-color", orgEvent: event });
+						let packed = CanvasTools.lS.dh(Doc, { x: event.offsetX, y: event.offsetY }, 1),
+							rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
+							curves = Self.values.curves.value;
+
+						// fourth tool (↕ / in-pic-edit): add/select knot on current channel, drag vertically to set output
+						if (Self.isInPicEdit) {
+							let ch = +(Self.values.channel?.value ?? 0),
+								input = Math.round(ch === 0 ? (rgb[0] + rgb[1] + rgb[2]) / 3 : rgb[ch - 1]),
+								pts = structuredClone(curves[ch]),
+								idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input),
+								startY = event.clientY;
+							if (idx === -1) {
+								let pt = structuredClone(pts[0]);
+								pt.v.Hrzn.v = input;
+								pt.v.Vrtc.v = input;
+								pts.push(pt);
+								pts.sort((a, b) => a.v.Hrzn.v - b.v.Hrzn.v);
+								idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input);
+							}
+							curves[ch] = pts;
+							Self.picEdit = { ch, idx, startY };
+							Self.dispatch({ type: "sync-ui-with-curves" });
+							Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+							UI.doc.on("mousemove mouseup", Self.dispatch);
+							return;
+						}
+
+						// black / mid / white pipettes → always write R/G/B curve channels (1..3)
+						let pipette = +Self.els.root.find(`i.active[data-click="select-pipette"]`).data("arg"),
+							mean = (rgb[0] + rgb[1] + rgb[2]) / 3;
+						if (!pipette) return;
+
+						for (let c = 0; c < 3; c++) {
+							let pts = structuredClone(curves[c + 1]),
+								first = pts[0],
+								last = pts[pts.length - 1];
+							if (pipette === 1) {
+								// shadows → move first knot's input (Hrzn)
+								first.v.Hrzn.v = Math.min(rgb[c], last.v.Hrzn.v - 1);
+							} else if (pipette === 3) {
+								// highlights → move last knot's input (Hrzn)
+								last.v.Hrzn.v = Math.max(rgb[c], first.v.Hrzn.v + 1);
+							} else {
+								// midtones → log-ratio knot at ~middle gray output (Photopea)
+								let chv = rgb[c] / 255,
+									m = mean / 255;
+								if (mean > 0 && chv > 0) {
+									let g = Math.min(999, Math.max(10, Math.round(100 * Math.log(chv) / Math.log(m)))),
+										hx = Math.round(127 - Math.log(g / 100) * 127);
+									hx = Math.max(first.v.Hrzn.v + 1, Math.min(last.v.Hrzn.v - 1, hx));
+									if (pts.length === 2) {
+										pts.splice(1, 0, PixelUtil.presetThumb.yR(hx, 127, true));
+									} else {
+										pts[1].v.Hrzn.v = hx;
+										pts[1].v.Vrtc.v = 127;
+									}
+								}
+							}
+							curves[c + 1] = pts;
+						}
+						Self.dispatch({ type: "sync-ui-with-curves" });
+						Self.dispatch({ type: "render-canvas" });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+						return;
 					}
 					break;
 				case "mousemove":
@@ -7619,77 +7682,6 @@ const Dialogs = {
 					Self.dispatch({ type: "reset-view" });
 					break;
 
-				case "pipette-color": {
-					let packed = CanvasTools.lS.dh(Doc, { x: event.orgEvent.offsetX, y: event.orgEvent.offsetY }, 1),
-						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
-						curves = Self.values.curves.value;
-
-					// fourth tool (↕ / in-pic-edit): add/select knot on current channel, drag vertically to set output
-					if (Self.isInPicEdit) {
-						let ch = +(Self.values.channel?.value ?? 0),
-							input = Math.round(ch === 0 ? (rgb[0] + rgb[1] + rgb[2]) / 3 : rgb[ch - 1]),
-							pts = structuredClone(curves[ch]),
-							idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input);
-						if (idx === -1) {
-							let pt = structuredClone(pts[0]);
-							pt.v.Hrzn.v = input;
-							pt.v.Vrtc.v = input;
-							pts.push(pt);
-							pts.sort((a, b) => a.v.Hrzn.v - b.v.Hrzn.v);
-							idx = pts.findIndex(p => Math.round(p.v.Hrzn.v) === input);
-						}
-						curves[ch] = pts;
-						Self.picEdit = {
-							ch,
-							idx,
-							startY: event.orgEvent.clientY,
-						};
-						Self.dispatch({ type: "sync-ui-with-curves" });
-						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
-						UI.doc.on("mousemove mouseup", Self.dispatch);
-						return;
-					}
-
-					// black / mid / white pipettes → always write R/G/B curve channels (1..3)
-					let pipette = +Self.els.root.find(`i.active[data-click="select-pipette"]`).data("arg"),
-						mean = (rgb[0] + rgb[1] + rgb[2]) / 3;
-					if (!pipette) return;
-
-					for (let c = 0; c < 3; c++) {
-						let pts = structuredClone(curves[c + 1]),
-							first = pts[0],
-							last = pts[pts.length - 1];
-						if (pipette === 1) {
-							// shadows → move first knot's input (Hrzn)
-							first.v.Hrzn.v = Math.min(rgb[c], last.v.Hrzn.v - 1);
-						} else if (pipette === 3) {
-							// highlights → move last knot's input (Hrzn)
-							last.v.Hrzn.v = Math.max(rgb[c], first.v.Hrzn.v + 1);
-						} else {
-							// midtones → log-ratio knot at ~middle gray output (Photopea)
-							let chv = rgb[c] / 255,
-								m = mean / 255;
-							if (mean > 0 && chv > 0) {
-								let g = Math.min(999, Math.max(10, Math.round(100 * Math.log(chv) / Math.log(m)))),
-									hx = Math.round(127 - Math.log(g / 100) * 127);
-								hx = Math.max(first.v.Hrzn.v + 1, Math.min(last.v.Hrzn.v - 1, hx));
-								if (pts.length === 2) {
-									pts.splice(1, 0, PixelUtil.presetThumb.yR(hx, 127, true));
-								} else {
-									pts[1].v.Hrzn.v = hx;
-									pts[1].v.Vrtc.v = 127;
-								}
-							}
-						}
-						curves[c + 1] = pts;
-					}
-
-					Self.dispatch({ type: "sync-ui-with-curves" });
-					Self.dispatch({ type: "render-canvas" });
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
-					break;
-				}
-
 				case "reset-pipette":
 					Self.els.pDark.removeClass("active");
 					Self.els.pMid.removeClass("active");
@@ -7805,7 +7797,7 @@ const Dialogs = {
 					Self.els.svg.on("mousedown", Self.doSvgPath);
 					Self.els.root.find(".slider").on("mousedown", Self.doSlider);
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					break;
 				case "dlg-preview":
 					Self.preview = event.el.data("value") === "on";
