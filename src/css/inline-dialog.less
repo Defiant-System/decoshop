@@ -2355,6 +2355,13 @@
 						var( --clr2 ) calc( 100% - 1px ), var( --clr2 ) 100%,
 					);
 				background-position: 5px -5px;
+
+				&.sketch-mode {
+					.slider .handle,
+					svg .anchor {
+						display: none;
+					}
+				}
 				
 				canvas {
 					// background: #f003;

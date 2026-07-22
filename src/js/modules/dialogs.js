@@ -7234,6 +7234,11 @@ const Dialogs = {
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
+
+					// proxy if sketch mode
+					if (Self.els.graph.hasClass("sketch-mode")) {
+						return Self.doSketchMode(event);
+					}
 					
 					let svg = Self.els.svg,
 						path = svg.find("path")[0],
@@ -7334,6 +7339,97 @@ const Dialogs = {
 					Self.els.root.removeClass("covered no-cursor");
 					// unbind events
 					UI.doc.off("mousemove mouseup", Self.doSvgPath);
+					break;
+			}
+		},
+		// Photopea sketch mode: channel data is a 256-long output LUT (not CrPt knots)
+		isLut(curve) {
+			return Array.isArray(curve) && curve.length === 256 && typeof curve[0] === "number";
+		},
+		identityLut() {
+			return Array.from({ length: 256 }, (_, i) => i);
+		},
+		pathFromLut(path, lut, max = { w: 250 }) {
+			let d = [];
+			for (let i = 0; i < 256; i++) {
+				let x = Math.round(i / 255 * max.w),
+					y = Math.round(max.w - lut[i] / 255 * max.w);
+				d.push(`${i ? "L" : "M"} ${x} ${y}`);
+			}
+			path.setAttribute("d", d.join(" "));
+		},
+		// Linearly fill LUT between two freehand samples (Photopea CurveEditor.Tk)
+		paintSketchStroke(lut, x0, y0, x1, y1) {
+			let clamp = this.clamp;
+			x0 = clamp(Math.round(x0), 0, 255);
+			y0 = clamp(Math.round(y0), 0, 255);
+			x1 = clamp(Math.round(x1), 0, 255);
+			y1 = clamp(Math.round(y1), 0, 255);
+			let lo = x0, hi = x1, yLo = y0, yHi = y1;
+			if (x1 < x0) {
+				lo = x1; hi = x0; yLo = y1; yHi = y0;
+			}
+			lut[x1] = y1;
+			if (lo !== hi) {
+				for (let x = lo; x <= hi; x++) {
+					lut[x] = Math.round(yLo + (x - lo) * (yHi - yLo) / (hi - lo));
+				}
+			}
+		},
+		svgClientToLut(clientX, clientY, rect, max = { w: 250, h: 251 }) {
+			let sx = (clientX - rect.left) / (rect.width || 1) * max.w,
+				sy = (clientY - rect.top) / (rect.height || 1) * max.h,
+				clamp = this.clamp;
+			return [
+				clamp(Math.round(sx / max.w * 255), 0, 255),
+				clamp(Math.round((max.w - sy) / max.w * 255), 0, 255),
+			];
+		},
+		doSketchMode(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgCurves,
+				Doc = Self.doc,
+				Drag = Self.drag;
+			switch (event.type) {
+				// native events
+				case "mousedown":
+					let svg = Self.els.svg,
+						path = svg.find("path")[0],
+						rect = svg[0].getBoundingClientRect(),
+						max = { x: 250, y: 251, w: 250, h: 251 },
+						clamp = Self.clamp,
+						ch = +(Self.values.channel?.value ?? 0),
+						lut = Self.values.curves.value[ch],
+						{ clientY, clientX } = event;
+
+					if (!Self.isLut(lut)) {
+						lut = Self.identityLut();
+						Self.values.curves.value[ch] = lut;
+					}
+					// drag object
+					Self.drag = { clientY, lut, ch, path, rect, max };
+					// trigger mousemove event
+					Self.doSketchMode({ type: "mousemove", clientY, clientX });
+					// cover dialog UI
+					Self.els.root.addClass("covered no-cursor");
+					// bind events
+					UI.doc.on("mousemove mouseup", Self.doSketchMode);
+					break;
+				case "mousemove":
+					let [dx, dy] = Self.svgClientToLut(event.clientX, event.clientY, Drag.rect, Drag.max);
+					if (dx === Drag.lastX && dy === Drag.lastY) return;
+					Self.paintSketchStroke(Drag.lut, Drag.lastX, Drag.lastY, dx, dy);
+					Drag.lastX = dx;
+					Drag.lastY = dy;
+
+					Self.pathFromLut(Drag.path, Drag.lut, Drag.max);
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
+					break;
+				case "mouseup":
+					// cover dialog UI
+					Self.els.root.removeClass("covered no-cursor");
+					// unbind events
+					UI.doc.off("mousemove mouseup", Self.doSketchMode);
 					break;
 			}
 		},
@@ -7453,18 +7549,21 @@ const Dialogs = {
 						let qv = FilterHelper.oT("curv"),
 							ch = +(Self.values.channel?.value ?? 0),
 							max = { w: 250, h: 251 },
-							points = event.fromValues
-								? Self.values.curves.value[ch]
-								: [...Self.els.svg[0].querySelectorAll(".anchor")]
-									.map(a => Self.parseAnchorPos(a))
-									.sort((a, b) => a[0] - b[0])
-									.map(([cx, cy]) => PixelUtil.presetThumb.yR(
-										Math.round(cx / max.w * 255),
-										Math.round((max.w - cy) / max.w * 255),
-										true
-									));
-
-						if (!event.fromValues) Self.values.curves.value[ch] = points;
+							points;
+							
+						if (event.fromValues || Self.sketchMode || Self.isLut(Self.values.curves.value[ch])) {
+							points = Self.values.curves.value[ch];
+						} else {
+							points = [...Self.els.svg[0].querySelectorAll(".anchor")]
+								.map(a => Self.parseAnchorPos(a))
+								.sort((a, b) => a[0] - b[0])
+								.map(([cx, cy]) => PixelUtil.presetThumb.yR(
+									Math.round(cx / max.w * 255),
+									Math.round((max.w - cy) / max.w * 255),
+									true
+								));
+							Self.values.curves.value[ch] = points;
+						}
 						for (let c = 0; c < 4; c++) {
 							CurvesResource.fZ(qv, c, Self.values.curves.value[c]);
 						}
@@ -7475,7 +7574,7 @@ const Dialogs = {
 					if (event.immediate) {
 						if (Engine.timer) {
 							cancelAnimationFrame(Engine.timer);
-							delete Engine.timer;set-sketch-mode
+							delete Engine.timer;
 						}
 						applyCurves();
 					} else {
@@ -7697,13 +7796,29 @@ const Dialogs = {
 					Self.els.toolSpline.addClass("active");
 					Self.els.toolSketch.removeClass("active");
 					Self.dispatch({ type: "reset-view" });
+
+					// switch view
+					Self.els.graph.removeClass("sketch-mode");
+					delete Self.sketchMode;
+
+					// switching mode resets to identity spline points
+					Self.values.curves.value = structuredClone(Self.values.curves.default);
+					Self.dispatch({ type: "sync-ui-with-curves" });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					break;
 				case "set-sketch-mode":
 					Self.els.toolSpline.removeClass("active");
 					Self.els.toolSketch.addClass("active");
 					Self.dispatch({ type: "reset-view" });
-
-					// implement sketch mode
+					// switch view
+					Self.els.graph.addClass("sketch-mode");
+					Self.sketchMode = true;
+					// switching to sketch resets channels to identity 256 LUTs
+					for (let c=0; c<4; c++) {
+						Self.values.curves.value[c] = Self.identityLut();
+					}
+					
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 
 				case "reset-pipette":
@@ -7773,6 +7888,7 @@ const Dialogs = {
 					// fast references
 					Self.els = {
 						root: event.dEl,
+						graph: event.dEl.find(".graph.curves"),
 						cvs: event.dEl.find(".graph.curves canvas"),
 						svg: event.dEl.find(".graph.curves svg"),
 						path: event.dEl.find(".graph.curves svg path"),
@@ -7850,6 +7966,7 @@ const Dialogs = {
 					});
 					// reset mid-point
 					Self.values.curves.value = structuredClone(Self.values.curves.default);
+					Self.dispatch({ type: "set-spline-mode" });
 					Self.dispatch({ type: "reset-view" });
 					// apply identity curves immediately
 					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
