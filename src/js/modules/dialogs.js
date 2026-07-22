@@ -7109,7 +7109,7 @@ const Dialogs = {
 						pEl = el.parent(),
 						clickX = event.clientX + event.offsetX - +el.prop("offsetLeft"),
 						ch = Self.values.channel.value,
-						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+						clamp = Self.clamp,
 						max = { x: 250, y: 251, w: 250, h: 251 },
 						min = { x: 0 },
 						knots = svg.find(".anchor")
@@ -7136,7 +7136,7 @@ const Dialogs = {
 					// moves dragged handle on top
 					el.addClass("moved");
 					// drag object
-					Self.drag = { el, anchor, path, knots, dKnot, clamp, aY, ch, clickX, min, max };
+					Self.drag = { el, anchor, path, knots, dKnot, aY, ch, clickX, min, max };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
@@ -7151,7 +7151,7 @@ const Dialogs = {
 					Drag.dKnot[0] = left;
 					Drag.dKnot[1] = Drag.aY;
 					// path follows knots; other anchors stay where they are
-					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp);
+					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Self.clamp);
 
 					// exit if "preview" is not enabled
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -7165,6 +7165,9 @@ const Dialogs = {
 					UI.doc.off("mousemove mouseup", Self.doSlider);
 					break;
 			}
+		},
+		clamp(v, lo, hi) {
+			return Math.min(Math.max(v, lo), hi);
 		},
 		parseAnchorPos(el) {
 			let m = (el.getAttribute("transform") || "").match(/translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/);
@@ -7231,14 +7234,15 @@ const Dialogs = {
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
+					
 					let svg = Self.els.svg,
 						path = svg.find("path")[0],
 						rect = svg[0].getBoundingClientRect(),
 						max = { x: 250, y: 251, w: 250, h: 251 },
-						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+						clamp = Self.clamp,
 						el = $(event.target).parents("?.anchor");
 
-					// click on empty graph → insert a new anchor (sorted by X) and rebuild curve
+					// click on empty area → insert a new anchor (sorted by element index) and rebuild curve
 					if (!el.length) {
 						let x = Math.round((event.clientX - rect.left) / (rect.width || 1) * max.w),
 							y = Math.round((event.clientY - rect.top) / (rect.height || 1) * max.h);
@@ -7256,8 +7260,8 @@ const Dialogs = {
 						if (next) svg[0].insertBefore(anchor, next);
 						else svg[0].appendChild(anchor);
 
-						let knots = [...svg[0].querySelectorAll(".anchor")]
-							.sort((a, b) => Self.parseAnchorPos(a)[0] - Self.parseAnchorPos(b)[0])
+						let knots = svg.find(".anchor")
+							.map(a => { a.id = $(a).prevAll(".anchor").length; return a; })
 							.map(a => Self.parseAnchorPos(a));
 						Self.rebuildPath(path, knots, max, clamp);
 						el = $(anchor);
@@ -7272,10 +7276,6 @@ const Dialogs = {
 						nextEl = el.nextAll(".anchor"),
 						prevEl = el.prevAll(".anchor"),
 						kType = !prevEl.length ? "start" : (!nextEl.length ? "end" : prevEl.length),
-						slider = {
-							start: Self.els.root.find(`.slider .handle[data-for="input"]`),
-							end: Self.els.root.find(`.slider .handle[data-for="output"]`),
-						},
 						hidden = false;
 
 					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
@@ -7284,7 +7284,7 @@ const Dialogs = {
 					svg.find(".active").removeClass("active");
 					el.addClass("active");
 					// drag object
-					Self.drag = { el, slider, rect, hidden, dKnot, kType, path, knots, min, max, clamp };
+					Self.drag = { el, rect, hidden, dKnot, kType, path, knots, min, max, clamp };
 					// cover dialog UI
 					Self.els.root.addClass("covered no-cursor");
 					// bind events
@@ -7304,8 +7304,8 @@ const Dialogs = {
 					if (Drag.dKnot[0] === cx && Drag.dKnot[1] === cy) return;
 
 					switch (Drag.kType) {
-						case "start": Drag.slider.start.css({ left: cx }); break; // move slider start
-						case "end": Drag.slider.end.css({ left: cx }); break; // move slider end
+						case "start": Self.els.hInput.css({ left: cx }); break; // move slider start
+						case "end": Self.els.hOutput.css({ left: cx }); break; // move slider end
 						default:
 							let isHidden = rawX < Drag.max.x && rawX > Drag.min.x;
 							if (isHidden !== Drag.hidden) { // prevents touching DOM too much
@@ -7321,7 +7321,7 @@ const Dialogs = {
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
 					// path follows knots; other anchors stay where they are
-					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp, skip);
+					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Self.clamp, skip);
 
 					// exit if "preview" is not enabled
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -7344,19 +7344,6 @@ const Dialogs = {
 				Drag = Self.drag;
 			switch (event.type) {
 				// "fast" events
-				case "set-channel":
-					event.values = Self.values;
-					event.values.channel.value = event.value;
-					event.values.channel.text = event.text;
-					Self.dispatch({ type: "render-canvas" });
-					// ui sync
-					Self.dispatch({ type: "sync-ui-with-levels" });
-					// exit if "preview" is not enabled
-					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
-					break;
-				case "set-algorithm":
-					break;
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
 					Self.values = event.values;
@@ -7495,10 +7482,57 @@ const Dialogs = {
 						circles = `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`;
 					return $.svgElem("g", { class: "anchor", transform }, circles);
 
-				case "sync-ui-with-levels":
+				case "sync-ui-with-curves":
 					// TODO
 					break;
 					
+				case "set-channel":
+					event.values = Self.values;
+					event.values.channel.value = event.value;
+					event.values.channel.text = event.text;
+					Self.dispatch({ type: "render-canvas" });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-curves" });
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-algorithm":
+					// 4 types of algorithms
+					event.values = Self.values;
+					event.values.algorithm.value = event.value;
+					event.values.algorithm.text = event.text;
+
+					if (event.value === "-" || event.value === "") {
+						// None → identity for all channels
+						Self.values.curves.value = structuredClone(Self.values.curves.default);
+					} else {
+						console.log(event);
+					}
+
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "reset-view":
+					// reset path
+					Self.els.path[0].setAttribute("d", Self.vars.defaultPath);
+					// generate anchors based on path
+					Self.dispatch({ type: "generate-path-anchors" });
+					// reset handles
+					Self.els.hInput.css({ left: 0 });
+					Self.els.hOutput.css({ left: 250 });
+					break;
+				case "set-spline-mode":
+					Self.els.toolSpline.addClass("active");
+					Self.els.toolSketch.removeClass("active");
+					Self.dispatch({ type: "reset-view" });
+					break;
+				case "set-sketch-mode":
+					Self.els.toolSpline.removeClass("active");
+					Self.els.toolSketch.addClass("active");
+					Self.dispatch({ type: "reset-view" });
+					break;
+
 				case "reset-pipette":
 					event.el.find(`i.active[data-click="select-pipette"]`).removeClass("active");
 					break;
@@ -7520,12 +7554,18 @@ const Dialogs = {
 						root: event.dEl,
 						cvs: event.dEl.find(".graph.curves canvas"),
 						svg: event.dEl.find(".graph.curves svg"),
+						path: event.dEl.find(".graph.curves svg path"),
+						hInput: event.dEl.find(`.slider .handle[data-for="input"]`),
+						hOutput: event.dEl.find(`.slider .handle[data-for="output"]`),
+						toolSpline: event.dEl.find(".tool-spline"),
+						toolSketch: event.dEl.find(".tool-sketch"),
 					};
 					Self.doc = APP.file?.doc;
 					// vars
 					let width = +Self.els.cvs.prop("offsetWidth"),
-						height = +Self.els.cvs.prop("offsetHeight");
-					Self.vars = { width, height };
+						height = +Self.els.cvs.prop("offsetHeight"),
+						defaultPath = "M 0 250 L 0 250 L 250 0 L 250 0";
+					Self.vars = { width, height, defaultPath };
 					// prepare canvas element
 					Self.els.ctx = Self.els.cvs[0].getContext("2d", { willReadFrequently: true });
 					// reset values
@@ -7584,13 +7624,13 @@ const Dialogs = {
 						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
 					});
 					// reset mid-point
-					Self.values.levels.value = structuredClone(Self.values.levels.default);
+					Self.values.curves.value = structuredClone(Self.values.curves.default);
+					Self.dispatch({ type: "reset-view" });
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-curves" });
+					Self.dispatch({ type: "render-canvas" });
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
-					// ui sync
-					Self.dispatch({ type: "sync-ui-with-levels" });
-					// update canvas
-					Self.dispatch({ type: "render-canvas" });
 					break;
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
