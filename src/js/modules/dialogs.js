@@ -6465,7 +6465,7 @@ const Dialogs = {
 						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
 							histogram = PixelUtil.histogramFromRgba(Doc.LT()),
 							mode = +event.value,
-							// Photopea defaults: 0.1% clip each end
+							// defaults: 0.1% clip each end
 							computed = PixelUtil.levelsFromHistogram([mode, 0.1, 0.1], histogram);
 						histogram[0][255] += 3 * (pixelCount - histogram[5]);
 						for (let ch=1; ch<4; ch++) histogram[ch][255] += pixelCount - histogram[5];
@@ -6521,7 +6521,7 @@ const Dialogs = {
 						for (let ch = 0; ch < 4; ch++) {
 							LevelsResource.fZ(qv, ch, Self.values.levels.value[ch]);
 						}
-						// Keep composite identity while remapping — Photopea does the same
+						// Keep composite identity while remapping
 						LevelsResource.fZ(qv, 0, [0, 255, 0, 255, 100]);
 						let fx = LayerEffectsHelper.buildEffect("levl", qv),
 							luts = [fx.mK, fx._J, fx.xm];
@@ -7400,7 +7400,7 @@ const Dialogs = {
 								// highlights → move last knot's input (Hrzn)
 								last.v.Hrzn.v = Math.max(rgb[c], first.v.Hrzn.v + 1);
 							} else {
-								// midtones → log-ratio knot at ~middle gray output (Photopea)
+								// midtones → log-ratio knot at ~middle gray output
 								let chv = rgb[c] / 255,
 									m = mean / 255;
 								if (mean > 0 && chv > 0) {
@@ -7428,7 +7428,7 @@ const Dialogs = {
 						let { ch, idx, startY } = Self.picEdit,
 							pts = Self.values.curves.value[ch],
 							pt = pts[idx];
-						// Photopea: Vrtc = Hrzn + (startY - currentY)
+						// Vrtc = Hrzn + (startY - currentY)
 						pt.v.Vrtc.v = Math.max(0, Math.min(255, Math.round(pt.v.Hrzn.v + (startY - event.clientY))));
 						Self.dispatch({ type: "sync-ui-with-curves" });
 						Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
@@ -7475,7 +7475,7 @@ const Dialogs = {
 					if (event.immediate) {
 						if (Engine.timer) {
 							cancelAnimationFrame(Engine.timer);
-							delete Engine.timer;
+							delete Engine.timer;set-sketch-mode
 						}
 						applyCurves();
 					} else {
@@ -7484,27 +7484,34 @@ const Dialogs = {
 					return;
 
 				// custom events
-				case "render-canvas":
+				case "render-canvas": {
 					let ctx = Self.els.ctx,
 						{ width: w, height: h } = Self.vars,
 						channel = +(Self.values.channel?.value ?? 0),
-						rgba = Doc.LT(),
-						pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
-						histogram = PixelUtil.histogramFromRgba(rgba),
-						yScale = 6e3 / histogram[4],
-						// Photopea curves tint: RGB / R / G / B
+						// Source histogram is cached for the dialog session:
+						// curve edits / preview / reset must not re-sample Doc.LT().
+						histogram = Self.vars.histogram,
+						yScale,
+						// curves tint: RGB / R / G / B
 						palette = ["#cdd", "#fcc", "#cfc", "#ccf"],
 						color = palette[channel] || palette[0],
-						gradient = ctx.createLinearGradient(0, 0, 0, h);
+						gradient = ctx.createLinearGradient(0, 0, 0, h),
+						bins;
+					if (!histogram) {
+						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O();
+						histogram = PixelUtil.histogramFromRgba(Doc.LT());
+						// account for fully transparent samples (same as histogram panel / levels)
+						histogram[0][255] += 3 * (pixelCount - histogram[5]);
+						for (let ch = 1; ch < 4; ch++) {
+							histogram[ch][255] += pixelCount - histogram[5];
+						}
+						Self.vars.histogram = histogram;
+					}
+					bins = histogram[channel] || histogram[0];
+					yScale = 6e3 / histogram[4];
+					if (channel === 0) yScale /= 3;
 					gradient.addColorStop(0, color + "1");
 					gradient.addColorStop(.3, color + "5");
-					// account for fully transparent samples (same as histogram panel / levels)
-					histogram[0][255] += 3 * (pixelCount - histogram[5]);
-					for (let ch = 1; ch < 4; ch++) {
-						histogram[ch][255] += pixelCount - histogram[5];
-					}
-					let bins = histogram[channel] || histogram[0];
-					if (channel === 0) yScale /= 3;
 					// reset canvas — logical space is 256×100, scaled to graph size
 					Self.els.cvs.attr({ width: w, height: h });
 					ctx.setTransform(w / 256, 0, 0, -h / 100, 0, h);
@@ -7521,6 +7528,7 @@ const Dialogs = {
 					ctx.fill();
 					// ctx.stroke();
 					break;
+				}
 				case "generate-path-anchors":
 					let svg = Self.els.svg[0],
 						path = svg.querySelector("path"),
@@ -7633,7 +7641,7 @@ const Dialogs = {
 					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					break;
 				case "set-algorithm": {
-					// Photopea Auto Enhance modes → curve points via levelsFromHistogram
+					// Auto Enhance modes → curve points via levelsFromHistogram
 					event.values = Self.values;
 					event.values.algorithm.value = event.value;
 					event.values.algorithm.text = event.text;
@@ -7642,14 +7650,18 @@ const Dialogs = {
 						// None → identity for all channels
 						Self.values.curves.value = structuredClone(Self.values.curves.default);
 					} else {
-						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
-							histogram = PixelUtil.histogramFromRgba(Doc.LT()),
+						// reuse dialog-session source histogram (same as render-canvas)
+						let histogram = Self.vars.histogram,
 							mode = +event.value;
-						// pad fully transparent samples (same as levels / histogram panel)
-						histogram[0][255] += 3 * (pixelCount - histogram[5]);
-						for (let c = 1; c < 4; c++) histogram[c][255] += pixelCount - histogram[5];
+						if (!histogram) {
+							let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O();
+							histogram = PixelUtil.histogramFromRgba(Doc.LT());
+							histogram[0][255] += 3 * (pixelCount - histogram[5]);
+							for (let c = 1; c < 4; c++) histogram[c][255] += pixelCount - histogram[5];
+							Self.vars.histogram = histogram;
+						}
 
-						// [mode, clipShadows%, clipHighlights%] — Photopea defaults 0.1%
+						// [mode, clipShadows%, clipHighlights%] — defaults 0.1%
 						let computed = PixelUtil.levelsFromHistogram([mode, 0.1, 0.1], histogram);
 						for (let c = 0; c < 4; c++) {
 							let black = Math.round(computed[c][0]),
@@ -7690,6 +7702,8 @@ const Dialogs = {
 					Self.els.toolSpline.removeClass("active");
 					Self.els.toolSketch.addClass("active");
 					Self.dispatch({ type: "reset-view" });
+
+					// implement sketch mode
 					break;
 
 				case "reset-pipette":
@@ -7731,7 +7745,7 @@ const Dialogs = {
 					break;
 
 				case "mode-in-pic-edit":
-					// Photopea "↕" sample tool: click image → knot on current channel, drag vertically → output
+					// "↕" sample tool: click image → knot on current channel, drag vertically → output
 					Self.els.pDark.removeClass("active");
 					Self.els.pMid.removeClass("active");
 					Self.els.pLight.removeClass("active");
