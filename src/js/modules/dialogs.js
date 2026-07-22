@@ -6323,7 +6323,6 @@ const Dialogs = {
 	},
 	dlgLevels: {
 		name: "dlgLevels",
-		// cover: false,
 		preview: true,
 		values: {},
 		dispatch(event) {
@@ -7086,7 +7085,6 @@ const Dialogs = {
 	},
 	dlgCurves: {
 		name: "dlgCurves",
-		// cover: false,
 		preview: true,
 		values: {},
 		doSlider(event) {
@@ -7164,7 +7162,7 @@ const Dialogs = {
 			// SVG Y from curve Y; keep path inside the graph
 			let toSvg = (x, y) => [clamp(x, 0, max.w), clamp(max.w - y, 0, max.h)],
 				[x0, y0] = toSvg(xs[0], max.w - knots[0][1]),
-				d = [`M ${x0} ${y0}`];
+				d = [`M 0 ${y0}`, ` L ${x0} ${y0}`];
 
 			if (knots.length === 2) {
 				let [x1, y1] = toSvg(xs[1], max.w - knots[1][1]);
@@ -7187,6 +7185,8 @@ const Dialogs = {
 					d.push(` C ${c1x} ${c1y} ${c2x} ${c2y} ${x1} ${y1}`);
 				}
 			}
+			let [lc, lx, ly] = d[d.length-1].trim().split(" ");
+			d.push(` ${lc} 250 ${ly}`);
 			path.setAttribute("d", d.join(""));
 		},
 		doSvgPath(event) {
@@ -7453,11 +7453,13 @@ const Dialogs = {
 					}
 					// replace any existing anchor anchors
 					svg.querySelectorAll(".anchor").forEach(el => el.remove());
-					points.map((p, id) => {
-						let [x, y] = p;
-						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y });
-						svg.appendChild(anchor);
-					});
+					points
+						.slice(1,-1) // first and last item is not user moveable
+						.map((p, id) => {
+							let [x, y] = p;
+							let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y });
+							svg.appendChild(anchor);
+						});
 					break;
 				case "generate-svg-anchor":
 					let transform = `translate(${event.x}, ${event.y})`,
