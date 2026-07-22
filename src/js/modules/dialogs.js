@@ -7146,6 +7146,24 @@ const Dialogs = {
 			let m = (el.getAttribute("transform") || "").match(/translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/);
 			return m ? [+m[1], +m[2]] : [0, 0];
 		},
+		rebuildPath(path, knots, max, clamp) {
+			// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
+			let xs = knots.map(([cx]) => +cx);
+			for (let i = 1; i < xs.length; i++) if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
+			for (let i = xs.length - 2; i >= 0; i--) if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
+			let curveData = knots.map(([, cy], i) => PixelUtil.presetThumb.yR(xs[i], max.w - cy, true)),
+				parsed = PixelUtil.presetThumb.N6(curveData),
+				segments = [],
+				d = [];
+			PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
+			for (let x = 0; x <= max.w; x++) {
+				let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
+					v = Number.isFinite(raw) ? clamp(raw, 0, max.w) : 0,
+					y = clamp(max.w - v, 0, max.h);
+				d.push(`${x ? " L" : "M"} ${x} ${y}`);
+			}
+			path.setAttribute("d", d.join(""));
+		},
 		doSvgPath(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgCurves,
@@ -7157,29 +7175,47 @@ const Dialogs = {
 					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
-					// check event origin
-					let el = $(event.target).parents("?.anchor");
+					let svg = Self.els.svg,
+						svgEl = svg[0],
+						path = svg.find("path")[0],
+						rect = svgEl.getBoundingClientRect(),
+						max = { x: 250, y: 251, w: 250, h: 251 },
+						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi),
+						el = $(event.target).parents("?.anchor");
+
+					// click on empty graph → insert a new anchor (sorted by X) and rebuild curve
 					if (!el.length) {
-						let target = Self.dispatch({ type: "generate-svg-anchor", x: event.offsetX, y: event.offsetY });
-						event.target.appendChild(target);
-						// trigger new mousedown
-						Self.doSvgPath({ type: "mousedown", target, preventDefault() {}, stopPropagation() {} });
-						return;
+						let x = Math.round((event.clientX - rect.left) / (rect.width || 1) * max.w),
+							y = Math.round((event.clientY - rect.top) / (rect.height || 1) * max.h);
+						x = clamp(x, 1, max.w - 1);
+						y = clamp(y, 0, max.h);
+						// keep unique X among existing anchors
+						let used = new Set([...svgEl.querySelectorAll(".anchor")].map(a => Self.parseAnchorPos(a)[0]));
+						while (used.has(x) && x < max.w) x++;
+						if (used.has(x)) while (used.has(x) && x > 0) x--;
+						if (used.has(x)) return;
+
+						let anchor = Self.dispatch({ type: "generate-svg-anchor", x, y }),
+							next = [...svgEl.querySelectorAll(".anchor")]
+								.find(a => Self.parseAnchorPos(a)[0] > x);
+						if (next) svgEl.insertBefore(anchor, next);
+						else svgEl.appendChild(anchor);
+
+						let knots = [...svgEl.querySelectorAll(".anchor")]
+							.sort((a, b) => Self.parseAnchorPos(a)[0] - Self.parseAnchorPos(b)[0])
+							.map(a => Self.parseAnchorPos(a));
+						Self.rebuildPath(path, knots, max, clamp);
+						el = $(anchor);
 					}
 
 					// drag info
-					let svg = el.parent(),
-						path = svg.find("path")[0],
-						rect = svg[0].getBoundingClientRect(),
-						knots = svg.find(".anchor")
+					let knots = svg.find(".anchor")
 							.map(a => { a.id = $(a).prevAll(".anchor").length; return a; })
 							.map(a => Self.parseAnchorPos(a)),
 						dKnot = knots[+el[0].id],
 						min = { x: 0, y: 0 },
-						max = { x: 250, y: 251, w: 250, h: 251 },
 						nextEl = el.nextAll(".anchor"),
-						prevEl = el.prevAll(".anchor"),
-						clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+						prevEl = el.prevAll(".anchor");
 
 					// keep at least 1px gap from neighbours (avoids duplicate X → NaN in spline)
 					if (nextEl.length) max.x = Self.parseAnchorPos(nextEl[0])[0] - 1;
@@ -7206,26 +7242,8 @@ const Dialogs = {
 					// update knot
 					Drag.dKnot[0] = cx;
 					Drag.dKnot[1] = cy;
-
-					// ensure strictly increasing X — duplicate X → 1/0 in PixelUtil.presetThumb.PW
-					// keep original X (don't round) so the spline still passes through each knot
-					let xs = Drag.knots.map(([cx]) => +cx);
-					for (let i=1; i<xs.length; i++) if (xs[i] <= xs[i - 1]) xs[i] = xs[i - 1] + 1;
-					for (let i=xs.length - 2; i>=0; i--) if (xs[i] >= xs[i + 1]) xs[i] = xs[i + 1] - 1;
-					let curveData = Drag.knots.map(([ , cy], i) => PixelUtil.presetThumb.yR(xs[i], Drag.max.w - cy, true)),
-						parsed = PixelUtil.presetThumb.N6(curveData),
-						segments = [];
-					PixelUtil.presetThumb.tL(parsed.VT, parsed.M4, parsed.CG, segments);
-					// build path string
-					let d = [];
-					for (let x = 0; x <= Drag.max.w; x++) {
-						let raw = PixelUtil.presetThumb.jY(x, parsed.VT, parsed.M4, segments),
-							v = Number.isFinite(raw) ? Drag.clamp(raw, 0, Drag.max.w) : 0,
-							y = Drag.clamp(Drag.max.w - v, 0, Drag.max.h);
-						d.push(`${x ? " L" : "M"} ${x} ${y}`);
-					}
 					// path follows knots; other anchors stay where they are
-					Drag.path.setAttribute("d", d.join(""));
+					Self.rebuildPath(Drag.path, Drag.knots, Drag.max, Drag.clamp);
 					break;
 				case "mouseup":
 					// cover dialog UI
