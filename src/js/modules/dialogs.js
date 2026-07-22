@@ -7347,27 +7347,38 @@ const Dialogs = {
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
 					Self.values = event.values;
-					Engine.raf(() => {
+					let applyCurves = () => {
 						let qv = FilterHelper.oT("curv"),
 							ch = +(Self.values.channel?.value ?? 0),
 							max = { w: 250, h: 251 },
-							// SVG anchors → CrPt list in 0..255 (Y flipped)
-							points = [...Self.els.svg[0].querySelectorAll(".anchor")]
-								.map(a => Self.parseAnchorPos(a))
-								.sort((a, b) => a[0] - b[0])
-								.map(([cx, cy]) => PixelUtil.presetThumb.yR(
-									Math.round(cx / max.w * 255),
-									Math.round((max.w - cy) / max.w * 255),
-									true
-								));
-						
-						Self.values.curves.value[ch] = points;
-						for (let c=0; c<4; c++) {
-							CurvesResource.fZ(qv, c, Self.values.curves.value[c]); // CurvesResource.setChannelCurve
+							points = event.fromValues
+								? Self.values.curves.value[ch]
+								: [...Self.els.svg[0].querySelectorAll(".anchor")]
+									.map(a => Self.parseAnchorPos(a))
+									.sort((a, b) => a[0] - b[0])
+									.map(([cx, cy]) => PixelUtil.presetThumb.yR(
+										Math.round(cx / max.w * 255),
+										Math.round((max.w - cy) / max.w * 255),
+										true
+									));
+
+						if (!event.fromValues) Self.values.curves.value[ch] = points;
+						for (let c = 0; c < 4; c++) {
+							CurvesResource.fZ(qv, c, Self.values.curves.value[c]);
 						}
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "curv", qv, ve: false } });
 						PP.update();
-					});
+					};
+					// immediate: don't let Engine.raf cancel a pending drag apply
+					if (event.immediate) {
+						if (Engine.timer) {
+							cancelAnimationFrame(Engine.timer);
+							delete Engine.timer;
+						}
+						applyCurves();
+					} else {
+						Engine.raf(applyCurves);
+					}
 					return;
 
 				// custom events
@@ -7482,9 +7493,30 @@ const Dialogs = {
 						circles = `<circle cx="0" cy="0" r="3"></circle><circle cx="0" cy="0" r="6"></circle>`;
 					return $.svgElem("g", { class: "anchor", transform }, circles);
 
-				case "sync-ui-with-curves":
-					// TODO
+				case "sync-ui-with-curves": {
+					let ch = +(Self.values.channel?.value ?? 0),
+						max = { w: 250, h: 251 },
+						curve = Self.values.curves?.value?.[ch],
+						svg = Self.els.svg[0];
+					if (!curve?.length) break;
+
+					// CrPt (0..255, Y up) → SVG knots (0..250, Y down)
+					let knots = curve.map(p => [
+						Math.round(p.v.Hrzn.v / 255 * max.w),
+						Math.round(max.w - p.v.Vrtc.v / 255 * max.w),
+					]);
+					// ensure unique X for spline safety
+					for (let i = 1; i < knots.length; i++) {
+						if (knots[i][0] <= knots[i - 1][0]) knots[i][0] = Math.min(max.w, knots[i - 1][0] + 1);
+					}
+
+					svg.querySelectorAll(".anchor").forEach(el => el.remove());
+					knots.forEach(([x, y]) => svg.appendChild(Self.dispatch({ type: "generate-svg-anchor", x, y })));
+					Self.rebuildPath(Self.els.path[0], knots, max, Self.clamp);
+					Self.els.hInput.css({ left: knots[0][0] });
+					Self.els.hOutput.css({ left: knots[knots.length - 1][0] });
 					break;
+				}
 					
 				case "set-channel":
 					event.values = Self.values;
@@ -7495,10 +7527,10 @@ const Dialogs = {
 					Self.dispatch({ type: "sync-ui-with-curves" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					break;
-				case "set-algorithm":
-					// 4 types of algorithms
+				case "set-algorithm": {
+					// Photopea Auto Enhance modes → curve points via levelsFromHistogram
 					event.values = Self.values;
 					event.values.algorithm.value = event.value;
 					event.values.algorithm.text = event.text;
@@ -7507,12 +7539,36 @@ const Dialogs = {
 						// None → identity for all channels
 						Self.values.curves.value = structuredClone(Self.values.curves.default);
 					} else {
-						console.log(event);
+						let pixelCount = new Rect(0, 0, Doc.m, Doc.n).O(),
+							histogram = PixelUtil.histogramFromRgba(Doc.LT()),
+							mode = +event.value;
+						// pad fully transparent samples (same as levels / histogram panel)
+						histogram[0][255] += 3 * (pixelCount - histogram[5]);
+						for (let c = 1; c < 4; c++) histogram[c][255] += pixelCount - histogram[5];
+
+						// [mode, clipShadows%, clipHighlights%] — Photopea defaults 0.1%
+						let computed = PixelUtil.levelsFromHistogram([mode, 0.1, 0.1], histogram);
+						for (let c = 0; c < 4; c++) {
+							let black = Math.round(computed[c][0]),
+								white = Math.round(computed[c][1]),
+								mid = computed[c][2],
+								points = [
+									PixelUtil.presetThumb.yR(black, 0, true),
+									PixelUtil.presetThumb.yR(white, 255, true),
+								];
+							if (mid != null) {
+								points.splice(1, 0, PixelUtil.presetThumb.yR(128, Math.round(mid), true));
+							}
+							Self.values.curves.value[c] = points;
+						}
 					}
 
+					Self.dispatch({ type: "sync-ui-with-curves" });
+					Self.dispatch({ type: "render-canvas" });
 					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					break;
+				}
 				case "reset-view":
 					// reset path
 					Self.els.path[0].setAttribute("d", Self.vars.defaultPath);
@@ -7629,8 +7685,8 @@ const Dialogs = {
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-curves" });
 					Self.dispatch({ type: "render-canvas" });
-					// initial apply
-					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					// apply identity curves immediately
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
 					break;
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
