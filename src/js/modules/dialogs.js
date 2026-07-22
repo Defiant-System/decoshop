@@ -7161,8 +7161,12 @@ const Dialogs = {
 
 			// SVG Y from curve Y; keep path inside the graph
 			let toSvg = (x, y) => [clamp(x, 0, max.w), clamp(max.w - y, 0, max.h)],
-				[x0, y0] = toSvg(xs[0], max.w - knots[0][1]),
-				d = [`M 0 ${y0}`, ` L ${x0} ${y0}`];
+				yFirst = clamp(knots[0][1], 0, max.h),
+				yLast = clamp(knots[knots.length - 1][1], 0, max.h),
+				[x0] = toSvg(xs[0], max.w - knots[0][1]),
+				// flat lead-in to first anchor (visual only — not an editable knot)
+				d = [`M 0 ${yFirst}`];
+			if (x0 > 0) d.push(` L ${x0} ${yFirst}`);
 
 			if (knots.length === 2) {
 				let [x1, y1] = toSvg(xs[1], max.w - knots[1][1]);
@@ -7185,8 +7189,8 @@ const Dialogs = {
 					d.push(` C ${c1x} ${c1y} ${c2x} ${c2y} ${x1} ${y1}`);
 				}
 			}
-			let [lc, lx, ly] = d[d.length-1].trim().split(" ");
-			d.push(` ${lc} 250 ${ly}`);
+			// flat lead-out from last anchor to right edge (visual only)
+			if (xs[xs.length - 1] < max.w) d.push(` L ${max.w} ${yLast}`);
 			path.setAttribute("d", d.join(""));
 		},
 		doSvgPath(event) {
