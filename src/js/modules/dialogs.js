@@ -7648,7 +7648,10 @@ const Dialogs = {
 				}
 
 				case "reset-pipette":
-					event.el.find(`i.active[data-click="select-pipette"]`).removeClass("active");
+					Self.els.pDark.removeClass("active");
+					Self.els.pMid.removeClass("active");
+					Self.els.pLight.removeClass("active");
+					Self.els.inPicEdit.removeClass("active");
 					// reset flag
 					delete Self.isPipette;
 					// toggle "off" the app cover
@@ -7673,9 +7676,18 @@ const Dialogs = {
 						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
 					}
 					break;
+
+				case "mode-in-pic-edit":
+					Self.dispatch({ type: "reset-pipette" });
+					Self.els.inPicEdit.addClass("active");
+
+					break;
+
 				case "unbind-reset-view":
 					// remove potential pipette cursors
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					// unbind events
+					Self.els.root.find(".slider").off("mousedown", Self.doSlider);
 					break;
 
 				case "dlg-open":
@@ -7687,6 +7699,10 @@ const Dialogs = {
 						path: event.dEl.find(".graph.curves svg path"),
 						hInput: event.dEl.find(`.slider .handle[data-for="input"]`),
 						hOutput: event.dEl.find(`.slider .handle[data-for="output"]`),
+						pDark: event.dEl.find(".tool-pipette-dark"),
+						pMid: event.dEl.find(".tool-pipette-mid"),
+						pLight: event.dEl.find(".tool-pipette-light"),
+						inPicEdit: event.dEl.find(".tool-ns-resize"),
 						toolSpline: event.dEl.find(".tool-spline"),
 						toolSketch: event.dEl.find(".tool-sketch"),
 					};
