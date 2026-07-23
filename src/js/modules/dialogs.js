@@ -6264,25 +6264,26 @@ const Dialogs = {
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHueSaturation,
+				Doc = Self.doc,
 				value,
 				el;
 			switch (event.type) {
 				// "fast events"
-				case "set-hue-value":
+				case "set-hue":
 					event.values = Self.values; // first copy values
 					event.values.hue.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-saturation-value":
+				case "set-saturation":
 					event.values = Self.values; // first copy values
 					event.values.saturation.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
-				case "set-lightness-value":
+				case "set-lightness":
 					event.values = Self.values; // first copy values
 					event.values.lightness.value = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
@@ -6303,8 +6304,24 @@ const Dialogs = {
 
 					// safe & smooth raf
 					Engine.raf(() => {
-						let qv = FilterHelper.oT("hue2");
-						// qv.Clr.v.Lmnc.v = Self.values.hue.value;
+						let qv = FilterHelper.oT("hue2"),
+							range = +(Self.values.colorRange?.value ?? 0), // 0 = Master, 1..6 = R/Y/G/C/B/M
+							h = +Self.values.hue.value,          // -180..180
+							s = +Self.values.saturation.value,   // -100..100
+							l = +Self.values.lightness.value;    // -100..100
+						qv.Clrz.v = Self.values.colorize.value;
+
+						if (range === 0) {
+							// Master (or Colorize master)
+							HueSaturationHelper.fZ(qv, 0, [h, s, l]);
+						} else {
+							// Per-range: keep range stops (mE), write HSL (I3)
+							let adj = HueSaturationHelper.RX(qv, range); // defaults if missing
+							adj.I3 = [h, s, l];
+							// adj.mE = [BgnR, BgnS, EndS, EndR] from your q-slider if edited
+							HueSaturationHelper.fZ(qv, range, adj);
+						}
+
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "hue2", qv, ve: false } });
 						PP.update();
 					});
@@ -6320,7 +6337,7 @@ const Dialogs = {
 					event.el.find(".active").removeClass("active");
 					el = el.addClass("active");
 
-					Self.values.colorRange = el.data("arg");
+					Self.values.colorRange = +el.data("arg");
 
 					if (Self.values.colorRange === "0") {
 						// master
@@ -6370,6 +6387,7 @@ const Dialogs = {
 						sliderTools: event.dEl.find(".has-sliders-only"),
 						qSlider: event.dEl.find(".q-slider"),
 					};
+					Self.doc = APP.file?.doc;
 					// color ranges
 					Self.CR = {
 						0: {}, // q-slider not visible
@@ -6384,7 +6402,7 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					
 					// color options
-					Self.values.colorRange = { default: "0", value: "0" };
+					Self.values.colorRange = { default: 0, value: 0 };
 
 					// save initial state values
 					Self.els.root.find(`.field-row.has-basic-range .value span[data-default]`).map(elem => {

@@ -29,6 +29,7 @@ let {
 	LevelsResource,
 	LutProfileResource,
 	HistoryState,
+	HueSaturationHelper,
 	PixelUtil,
 	Point2D,
 	PsdResourceTypes,
