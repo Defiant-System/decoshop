@@ -543,28 +543,35 @@ const UI = {
 				if (ux === "qr-handle") {
 					ux += event.offsetX <= +mEl.prop("offsetLeft") ? "-left" : "-right";
 				}
-				console.log(ux);
+				// console.log(ux);
 
-				let offset = {
+				let target = {
+						hmin: dEl.find(`span[data-id="range-low-min"]`),
+						mmin: dEl.find(`span[data-id="range-low-mid-min"]`),
+						mmax: dEl.find(`span[data-id="range-high-mid-max"]`),
+						hmax: dEl.find(`span[data-id="range-high-max"]`),
+					},
+					offset = {
 						cX: event.clientX,
-						// x: +el.prop("offsetLeft") - event.clientX,
 						mX: +mEl.prop("offsetLeft"),
 						mW: +mEl.prop("offsetWidth"),
 						hX: +hEl.prop("offsetLeft"),
 						hW: +hEl.prop("offsetWidth"),
+						rW: +rEl.prop("offsetWidth"),
 					},
 					min = 0,
 					max = +rEl.prop("offsetWidth");
 
 				// drag related info
-				Self.drag = { el, rEl, hEl, mEl, ux, offset, min, max };
+				Self.drag = { el, rEl, hEl, mEl, target, ux, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
 				Self.doc.on("mousemove mouseup", Self.doQRange);
 				break;
 			case "mousemove":
-				let diff;
+				let diff,
+					val;
 				switch (Drag.ux) {
 					case "qr-handle-left":
 						diff = event.clientX - Drag.offset.cX;
@@ -596,6 +603,9 @@ const UI = {
 					case "qr-max":
 						diff = event.clientX - Drag.offset.cX;
 						Drag.hEl.css({ width: Drag.offset.hW + diff });
+
+						val = Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.hW + diff) / Drag.offset.rW));
+						Drag.target.hmax.html(`${Math.round(val)}°`);
 						break;
 				}
 				break;
