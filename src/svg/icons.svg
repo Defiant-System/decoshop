@@ -807,6 +807,26 @@
 			C13.5,8,13,8.5,12.4,8.5z"/>
 	</svg>
 
+	<svg id="icon-master-colors" viewBox="0 0 19 19">
+		<style type="text/css">
+			.st0{fill:#FF00FF;}
+			.st1{fill:#F21A20;}
+			.st2{fill:#2382E7;}
+			.st3{fill:#B607FE;}
+			.st4{fill:#3BC038;}
+			.st5{fill:#02D5FA;}
+			.st6{fill:#FF8533;}
+			.st7{fill:#FDCD1A;}
+		</style>
+		<path class="st0" d="M15.5,3.5l-6,6H18C18,7.3,17.2,5.1,15.5,3.5z"/>
+		<path class="st1" d="M9.5,1v8.5l6-6C14,1.9,11.8,1,9.5,1z"/>
+		<path class="st2" d="M15.5,15.5l-6-6V18C11.7,18,13.9,17.2,15.5,15.5z"/>
+		<path class="st3" d="M18,9.5H9.5l6,6C17.1,14,18,11.8,18,9.5z"/>
+		<path class="st4" d="M3.5,15.5l6-6H1C1,11.7,1.8,13.9,3.5,15.5z"/>
+		<path class="st5" d="M9.5,18V9.5l-6,6C5,17.1,7.2,18,9.5,18z"/>
+		<path class="st6" d="M3.5,3.5l6,6V1C7.3,1,5.1,1.8,3.5,3.5z"/>
+		<path class="st7" d="M1,9.5h8.5l-6-6C1.9,5,1,7.2,1,9.5z"/>
+	</svg>
 
 	<svg id="icon-image" viewBox="0 0 17 17">
 		<style type="text/css">

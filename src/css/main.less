@@ -1115,6 +1115,7 @@ content {
 		&.icon-green  { background-image: url(~/icons/icon-green.png); }
 		&.icon-blue   { background-image: url(~/icons/icon-blue.png); }
 		&.icon-colors { background-image: url(~/icons/icon-colors.png); }
+		&.icon-master-colors { background-image: url(~/icons/icon-master-colors.png); width: 19px; height: 19px; }
 
 		&.icon-guide-mtop    { background-image: url(~/icons/icon-guide-mtop.png); }
 		&.icon-guide-mleft   { background-image: url(~/icons/icon-guide-mleft.png); }
@@ -6168,46 +6169,46 @@ content {
 			}
 		}
 
-		&.has-option-tool {
-			.label {
-				position: relative;
+		// &.has-option-tool {
+		// 	.label {
+		// 		position: relative;
 			
-				.toggle-tool {
-					position: absolute;
-					top: 0;
-					right: 0;
-					width: 21px;
-					height: 20px;
-					border-radius: 3px;
+		// 		.toggle-tool {
+		// 			position: absolute;
+		// 			top: 0;
+		// 			right: 0;
+		// 			width: 21px;
+		// 			height: 20px;
+		// 			border-radius: 3px;
 
-					&.active {
-						background: #0113;
-					}
+		// 			&.active {
+		// 				background: #0113;
+		// 			}
 
-					&:active {
-						background: #0114;
-					}
+		// 			&:active {
+		// 				background: #0114;
+		// 			}
 
-					&:not(:active):hover {
-						background: #0112;
-					}
+		// 			&:not(:active):hover {
+		// 				background: #0112;
+		// 			}
 
-					&:before {
-						content: "";
-						position: absolute;
-						top: 2px;
-						left: 2px;
-						width: 17px;
-						height: 17px;
-						background-size: contain;
-						background-repeat: no-repeat;
-						background-position: 50% 50%;
-						background-image: url(~/icons/icon-ew-resize.png);
-						filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 rgba(#000, .5));
-					}
-				}
-			}
-		}
+		// 			&:before {
+		// 				content: "";
+		// 				position: absolute;
+		// 				top: 2px;
+		// 				left: 2px;
+		// 				width: 17px;
+		// 				height: 17px;
+		// 				background-size: contain;
+		// 				background-repeat: no-repeat;
+		// 				background-position: 50% 50%;
+		// 				background-image: url(~/icons/icon-ew-resize.png);
+		// 				filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 rgba(#000, .5));
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 		&.has-basic-range {
 			.option {
@@ -6473,6 +6474,41 @@ content {
 					}
 				}
 			}
+		}
+	}
+
+	ul.color-group {
+		display: inline-block;
+		font-size: 0;
+		
+		li {
+			position: relative;
+			top: -1px;
+			display: inline-block;
+			width: 19px;
+			height: 19px;
+			cursor: pointer;
+			background: #0112;
+			margin-right: 7px;
+			border-radius: 50%;
+			box-shadow: inset 0 0 0 1px #0113,
+						inset 0 2px 3px #0113,
+						0 1px 0 #eff2;
+
+			&.active {
+				cursor: default;
+				box-shadow: inset 0 0 0 1px #0112,
+							inset 0 2px 3px #0113,
+							0 0 0 2px #0112;
+			}
+
+			&.master  { background: url(~/icons/icon-master-colors.png) 50% 50% / contain no-repeat; }
+			&.red     { background: #f00; }
+			&.yellow  { background: #f0f; }
+			&.green   { background: #0f0; }
+			&.cyan    { background: #0ff; }
+			&.blue    { background: #00f; }
+			&.magenta { background: #ff0; }
 		}
 	}
 

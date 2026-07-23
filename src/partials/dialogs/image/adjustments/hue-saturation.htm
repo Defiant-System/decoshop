@@ -6,13 +6,33 @@
 				Hue / Saturation
 			</h2>
 
-			<div class="field-row has-option-tool">
+			<!-- <div class="field-row has-option-tool">
 				<div class="option select" data-change="set-color-range" data-options="fieldset-inline-menubox" data-match="//HSRanges">
 					<span class="label">
 						Range
 						<div class="toggle-tool" data-click="toggle-image-saturation" title="Change saturation in image."></div>
 					</span>
 					<span class="value">Master</span>
+				</div>
+			</div> -->
+
+			<div class="field-row has-option-tool">
+				<div class="option opt-colors">
+					<span class="label">
+						Range
+					</span>
+					<span class="value">
+						<ul class="color-group">
+							<li class="master active"></li>
+							<li class="red"></li>
+							<li class="yellow"></li>
+							<li class="green"></li>
+							<li class="cyan"></li>
+							<li class="blue"></li>
+							<li class="magenta"></li>
+						</ul>
+						<div class="toggle-tool" data-click="toggle-image-saturation" title="Change saturation in image."></div>
+					</span>
 				</div>
 			</div>
 
@@ -61,10 +81,10 @@
 					<span data-id="range-high-mid-max">15°</span> \
 					<span data-id="range-high-max">45°</span>
 				</div>
-				<span class="tool-items" data-click="select-pipette">
-					<span class="item-pipette" data-arg="normal"></span>
-					<span class="item-pipette-plus" data-arg="plus"></span>
-					<span class="item-pipette-minus" data-arg="minus"></span>
+				<span class="tool-items" data-click="reset-pipette">
+					<span class="item-pipette" data-click="set-pipette" data-arg="1"></span>
+					<span class="item-pipette-plus" data-click="set-pipette" data-arg="2"></span>
+					<span class="item-pipette-minus" data-click="set-pipette" data-arg="3"></span>
 				</span>
 			</div>
 
