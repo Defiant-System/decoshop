@@ -894,7 +894,7 @@ const UI = {
 					iEl.find(`li[data-value="${value}"]`).addClass("active");
 				});
 				// make sure togglers are returned to default state
-				dEl.find(`.field-row .toggler[data-default]`).map(elem => {
+				dEl.find(`.toggler[data-default]`).map(elem => {
 					let tEl = $(elem);
 					tEl.data({ value: tEl.data("default") });
 				});

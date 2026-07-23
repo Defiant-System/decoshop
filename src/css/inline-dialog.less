@@ -3965,16 +3965,14 @@
 								vertical-align: top;
 								border-radius: 3px;
 
-								&.active {
-									background: #0113;
-								}
-
+								&.active,
 								&:active {
 									background: #0114;
+									box-shadow: inset 0 2px 3px #0113;
 								}
 
 								&:not(:active):hover {
-									background: #0112;
+									background: #0115;
 								}
 
 								&:before {
@@ -5948,7 +5946,7 @@
 				margin-right: 0;
 
 				&:nth-last-child(2) {
-					bottom: 24px;
+					top: 49px;
 				}
 			}
 		}

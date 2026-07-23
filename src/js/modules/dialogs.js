@@ -6293,6 +6293,10 @@ const Dialogs = {
 				case "toggle-colorize":
 					event.values = Self.values; // first copy values
 					event.values.colorize.value = event.el.data("value") === "on"; // then partial overwrite
+					if (event.values.colorize.value) {
+						// make master color range active
+						Self.els.clrGroup.find(".master").trigger("click");
+					}
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6328,25 +6332,39 @@ const Dialogs = {
 					return;
 
 				case "toggle-in-image":
-					value = event.el.hasClass("active");
-					event.el.toggleClass("active", value);
+					// reset pipete state
+					Self.dispatch({ type: "reset-pipette" });
+
+					if (Self.els.tglInPic.hasClass("active")) {
+						Self.els.tglInPic.removeClass("active");
+						APP.els.content.removeClass(`cursor-ew-resize}`);
+						// bind event listener
+						APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					} else {
+						Self.els.tglInPic.addClass("active");
+						APP.els.content.addClass(`cursor-ew-resize}`);
+						// bind event listener
+						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+					}
 					break;
 				case "set-color-range":
 					el = $(event.target).parents("?li");
 					if (!el.length) return;
 					event.el.find(".active").removeClass("active");
 					el = el.addClass("active");
-
-					Self.values.colorRange = +el.data("arg");
-
-					if (Self.values.colorRange === "0") {
+					// update color range value
+					Self.values.colorRange.value = +el.data("arg");
+					// ui update
+					if (Self.values.colorRange.value === 0) {
 						// master
 						Self.els.rangeTools.addClass("hidden");
 						Self.els.sliderTools.addClass("hidden");
+						// reset pipete state
+						Self.dispatch({ type: "reset-pipette" });
 					} else {
 						Self.els.rangeTools.removeClass("hidden");
 						Self.els.sliderTools.removeClass("hidden");
-						value = Self.CR[Self.values.colorRange];
+						value = Self.CR[Self.values.colorRange.value];
 						Self.els.qSlider.css({
 							"--x1": value.x1,
 							"--w1": value.w1,
@@ -6355,6 +6373,9 @@ const Dialogs = {
 					}
 					break;
 				case "reset-pipette":
+					delete Self.pipette;
+					// reset pipettes
+					Self.els.root.find(".tool-items > span.active").removeClass("active");
 					// reset cursor
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
 					// toggle on the app cover
@@ -6368,9 +6389,11 @@ const Dialogs = {
 					// ui update
 					el.parent().find(".active").removeClass("active");
 					el.addClass("active");
+					// save state
+					Self.pipette = el.data("arg");
 					// change cursor
 					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
-					APP.els.content.addClass(`cursor-pipette-${el.data("arg")}`);
+					APP.els.content.addClass(`cursor-pipette-${Self.pipette}`);
 
 					// toggle "off" the app cover
 					UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
@@ -6383,6 +6406,8 @@ const Dialogs = {
 					// fast references
 					Self.els = {
 						root: event.dEl,
+						clrGroup: event.dEl.find(".color-group"),
+						tglInPic: event.dEl.find(".toggle-tool"),
 						rangeTools: event.dEl.find(".has-ranges-tools"),
 						sliderTools: event.dEl.find(".has-sliders-only"),
 						qSlider: event.dEl.find(".q-slider"),
@@ -6400,10 +6425,8 @@ const Dialogs = {
 					};
 					// reset values
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
-					
 					// color options
 					Self.values.colorRange = { default: 0, value: 0 };
-
 					// save initial state values
 					Self.els.root.find(`.field-row.has-basic-range .value span[data-default]`).map(elem => {
 						let el = $(elem),
@@ -6442,10 +6465,12 @@ const Dialogs = {
 					// close dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
-					Object.keys(Self.values).map(key => {
-						Self.values[key].value = Self.values[key].default;
-						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
-					});
+					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// initial apply
+					// Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					Self.els.tglInPic.removeClass("active");
+					// make master color range active
+					Self.els.clrGroup.find(".master").trigger("click");
 					break;
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
