@@ -534,23 +534,53 @@ const UI = {
 				event.preventDefault();
 
 				let el = $(event.target).parents("?[data-ux]").get(0),
+					rEl = el.parents(".q-slider"),
+					dEl = rEl.parents(".dialog-box"),
+					hEl = rEl.find(".handle"),
+					mEl = rEl.find(".mid-handle"),
 					ux = el.data("ux");
+				// identify which side of mid-handle, if needed
+				if (ux === "qr-handle") {
+					ux += event.offsetX <= +mEl.prop("offsetLeft") ? "-left" : "-right";
+				}
+				// console.log(ux);
 
-				let pEl = el.parent(),
-					dEl = pEl.parents(".dialog-box"),
-					offset = {
+				let offset = {
 						x: +el.prop("offsetLeft") - event.clientX,
+						hX: +hEl.prop("offsetLeft") - event.clientX,
 					},
 					min = 0,
-					max = +pEl.prop("offsetWidth");
+					max = +rEl.prop("offsetWidth");
+
 				// drag related info
-				Self.drag = { el, pEl, offset, min, max };
+				Self.drag = { el, rEl, hEl, ux, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
 				Self.doc.on("mousemove mouseup", Self.doQRange);
 				break;
 			case "mousemove":
+				let diff,
+					left;
+				switch (Drag.ux) {
+					case "qr-handle-left":
+						break;
+					case "qr-handle-right":
+						break;
+					case "qr-min":
+						break;
+					case "qrm-handle":
+						diff = event.clientX + Drag.offset.hX;
+						left = Math.max(Math.min(Drag.max, diff), Drag.min);
+						Drag.hEl.css({ left });
+						break;
+					case "qrm-min":
+						break;
+					case "qrm-max":
+						break;
+					case "qr-max":
+						break;
+				}
 				break;
 			case "mouseup":
 				// unbind event handlers
@@ -660,17 +690,12 @@ const UI = {
 		}
 	},
 	doPanel(event) {
-		let Self = UI,
-			// Drag = Self.drag,
-			// file,
-			// value,
-			// dEl,
-			el;
+		let Self = UI;
 		// console.log(event);
 		switch (event.type) {
 			// native events
 			case "mousedown":
-				el = $(event.target);
+				let el = $(event.target);
 				let ux = el.data("ux");
 
 				switch (true) {

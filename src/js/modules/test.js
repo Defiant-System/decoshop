@@ -84,7 +84,7 @@ let Test = {
 		 */
 		// setTimeout(() => APP.dispatch({ type: "filter-render", arg: "clouds" }), 1600);
 		setTimeout(() => APP.dispatch({ type: "open-dialog", arg: "dlgHueSaturation" }), 1600);
-		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgHueSaturation"] .green`).trigger("click"), 2000);
+		setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgHueSaturation"] .red`).trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgCurves"] .tool-sketch`).trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgLevels"] .fld-shadows .icon-1`).trigger("click"), 2000);
 		// setTimeout(() => APP.els.content.find(`.dialog-box[data-dlg="dlgRadialBlur"] li[data-value="Zm"]`).trigger("mousedown").trigger("mouseup").trigger("click"), 2000);
