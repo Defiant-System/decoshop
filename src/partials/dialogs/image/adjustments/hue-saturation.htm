@@ -22,16 +22,16 @@
 						Range
 					</span>
 					<span class="value">
-						<ul class="color-group">
-							<li class="master active"></li>
-							<li class="red"></li>
-							<li class="yellow"></li>
-							<li class="green"></li>
-							<li class="cyan"></li>
-							<li class="blue"></li>
-							<li class="magenta"></li>
+						<ul class="color-group" data-click="set-color-range">
+							<li class="master active" data-arg="0"></li>
+							<li class="red" data-arg="1"></li>
+							<li class="yellow" data-arg="2"></li>
+							<li class="green" data-arg="3"></li>
+							<li class="cyan" data-arg="4"></li>
+							<li class="blue" data-arg="5"></li>
+							<li class="magenta" data-arg="6"></li>
 						</ul>
-						<div class="toggle-tool" data-click="toggle-image-saturation" title="Change saturation in image."></div>
+						<div class="toggle-tool" data-click="toggle-in-image" title="Change saturation in image."></div>
 					</span>
 				</div>
 			</div>
@@ -82,9 +82,9 @@
 					<span data-id="range-high-max">45°</span>
 				</div>
 				<span class="tool-items" data-click="reset-pipette">
-					<span class="item-pipette" data-click="set-pipette" data-arg="1"></span>
-					<span class="item-pipette-plus" data-click="set-pipette" data-arg="2"></span>
-					<span class="item-pipette-minus" data-click="set-pipette" data-arg="3"></span>
+					<span class="item-pipette" data-click="select-pipette" data-arg="1"></span>
+					<span class="item-pipette-plus" data-click="select-pipette" data-arg="2"></span>
+					<span class="item-pipette-minus" data-click="select-pipette" data-arg="3"></span>
 				</span>
 			</div>
 
@@ -99,7 +99,6 @@
 						<span class="max" data-ux="qr-max" data-for="range-high-max"></span>
 					</span>
 				</div>
-				<!-- <div class="slider no-drag"></div> -->
 			</div>
 			
 		</div>

@@ -6271,53 +6271,129 @@ const Dialogs = {
 				case "set-hue-value":
 				case "set-saturation-value":
 				case "set-lightness-value":
-					event.target.html(event.value)
-					/* falls through */
+					console.log(event.value);
+					break;
 				case "apply-filter-data":
+					if (!Doc || !Self.preview) return;
+					// save applied value - to prevent re-render if it is same value as before
+					Self.values = event.values;
+
+					// safe & smooth raf
+					Engine.raf(() => {
+
+					});
 					return;
 
-				case "toggle-image-saturation":
+				case "toggle-colorize":
+					console.log(event);
+					break;
+				case "toggle-in-image":
 					value = event.el.hasClass("active");
 					event.el.toggleClass("active", value);
 					break;
 				case "set-color-range":
-					el = event.el.parents(".dlg-content").find(".has-ranges-tools, .has-sliders-only");
-					if (event.value === "0") {
+					event.el.find(".active").removeClass("active");
+					el = $(event.target).addClass("active");
+
+					if (el.data("arg") === "0") {
 						// master
-						el.removeClass("show");
+						Self.els.rangeTools.removeClass("show");
+						Self.els.sliderTools.removeClass("show");
 					} else {
-						el.addClass("show");
-						value = Self.colorRanges[event.text.toLowerCase()];
-						el.find(".q-slider").css({
+						Self.els.rangeTools.addClass("show");
+						Self.els.sliderTools.addClass("show");
+						value = Self.colorRanges[el.data("arg")];
+						Self.els.qSlider.css({
 							"--x1": value.x1,
 							"--w1": value.w1,
 							"--w2": value.w2,
 						});
 					}
 					break;
+				case "reset-pipette":
+					// reset cursor
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					// toggle on the app cover
+					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
+					// bind event listener
+					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					break;
 				case "select-pipette":
-					event.el.find(".active").removeClass("active");
-					el = $(event.target).addClass("active");
-					console.log(el.data("arg"));
+					el = $(event.target);
+					if (el.hasClass("active")) return Self.dispatch({ type: "reset-pipette" });
+					// ui update
+					el.parent().find(".active").removeClass("active");
+					el.addClass("active");
+					// change cursor
+					APP.els.content.removeClass(`cursor-pipette-1 cursor-pipette-2 cursor-pipette-3`);
+					APP.els.content.addClass(`cursor-pipette-${el.data("arg")}`);
+
+					// toggle "off" the app cover
+					UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
+					// bind event listener
+					APP.els.cvsWrapper.on("mousedown", Self.dispatch);
 					break;
 
 				// standard dialog events
 				case "dlg-open":
-					Self.colorRanges = {
-						master:  {}, // q-slider not visible
-						cyan:    { x1: 0, w1: 70, w2: 22 },
-						blue:    { x1: 69, w1: 70, w2: 22 },
-						magenta: { x1: 138, w1: 70, w2: 22 },
-						red:     { x1: 207, w1: 70, w2: 22 },
-						yellow:  { x1: 276, w1: 70, w2: 22 },
-						green:   { x1: 345, w1: 70, w2: 22 },
+					// fast references
+					Self.els = {
+						root: event.dEl,
+						rangeTools: event.dEl.find(".has-ranges-tools"),
+						sliderTools: event.dEl.find(".has-sliders-only"),
+						qSlider: event.dEl.find(".q-slider"),
 					};
-				case "dlg-ok":
-				case "dlg-reset":
+					// color ranges
+					Self.colorRanges = {
+						0: {}, // q-slider not visible
+						1: { x1: 207, w1: 70, w2: 22 },
+						2: { x1: 276, w1: 70, w2: 22 },
+						3: { x1: 345, w1: 70, w2: 22 },
+						4: { x1: 0, w1: 70, w2: 22 },
+						5: { x1: 69, w1: 70, w2: 22 },
+						6: { x1: 138, w1: 70, w2: 22 },
+					};
+					break;
 				case "dlg-preview":
+					Self.preview = event.el.data("value") === "on";
+					if (Self.preview) {
+						Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					} else {
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+						PP.update();
+					}
+					break;
+				case "dlg-ok":
+					Self.dispatch({ type: "unbind-reset-view" });
+					// apply filter
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "curv" } });
+					PP.update();
+					// close dialog
+					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
+					break;
+				case "dlg-reset":
+					// close dialog
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
+					// make sure internally stored values are reverted to default values
+					Object.keys(Self.values).map(key => {
+						Self.values[key].value = Self.values[key].default;
+						if (Self.values[key].text != null) Self.values[key].text = Self.els.root.find(`.option.select[data-name="${key}"] .value`).text();
+					});
+					break;
 				case "dlg-close":
+					Self.dispatch({ type: "unbind-reset-view" });
+					// common dialog close
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+					PP.update();
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
+				default:
+					/* Falls through to "master UI"
+					 * Can be handled here if needed - just capture events:
+					 * "dlg-ok", "dlg-open", "dlg-reset", "dlg-preview", "dlg-close"
+					 */
+					// handler standard dialog events
+					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 			}
 		}
 	},
@@ -6622,7 +6698,7 @@ const Dialogs = {
 				case "reset-pipette":
 					// reset flag
 					delete Self.isPipette;
-					// toggle "off" the app cover
+					// toggle on the app cover
 					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
 					// bind event listener
 					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
