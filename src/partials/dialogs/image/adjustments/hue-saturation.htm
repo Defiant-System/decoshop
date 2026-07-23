@@ -16,7 +16,7 @@
 				</div>
 			</div> -->
 
-			<div class="field-row has-option-tool">
+			<div class="field-row has-option-colors">
 				<div class="option opt-colors">
 					<span class="label">
 						Range
@@ -40,10 +40,10 @@
 				<div class="option input">
 					<span class="label">Hue</span>
 					<span class="value">
-						<span data-id="hue-value">0</span>
+						<span data-id="hueValue" data-default="0">0</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-180" data-max="180" data-change="set-hue-value" data-target="hue-value" data-ux="br-track" data-range="hue">
+				<div class="slider" data-min="-180" data-max="180" data-change="set-hue" data-target="hueValue" data-ux="br-track" data-range="hue">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
@@ -52,10 +52,10 @@
 				<div class="option input">
 					<span class="label">Saturation</span>
 					<span class="value">
-						<span data-id="saturation-value">0</span>
+						<span data-id="saturationValue" data-default="0">0</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-100" data-max="100" data-change="set-saturation-value" data-target="saturation-value" data-ux="br-track" data-range="saturation">
+				<div class="slider" data-min="-100" data-max="100" data-change="set-saturation" data-target="saturationValue" data-ux="br-track" data-range="saturation">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
@@ -64,15 +64,15 @@
 				<div class="option input">
 					<span class="label">Lightness</span>
 					<span class="value">
-						<span data-id="lightness-value">0</span>
+						<span data-id="lightnessValue" data-default="0">0</span>
 					</span>
 				</div>
-				<div class="slider" data-min="-100" data-max="100" data-change="set-lightness-value" data-target="lightness-value" data-ux="br-track" data-range="lightness">
+				<div class="slider" data-min="-100" data-max="100" data-change="set-lightness" data-target="lightnessValue" data-ux="br-track" data-range="lightness">
 					<span class="handle" data-ux="br-handle"></span>
 				</div>
 			</div>
 
-			<div class="field-row has-ranges-tools"> <!-- show -->
+			<div class="field-row has-ranges-tools hidden">
 				<div class="range-values-left">
 					<span data-id="range-low-min">315°</span> /
 					<span data-id="range-low-mid-min">345°</span>
@@ -88,7 +88,7 @@
 				</span>
 			</div>
 
-			<div class="field-row has-sliders-only"> <!-- show -->
+			<div class="field-row has-sliders-only hidden">
 				<div class="q-slider">
 					<span class="handle" data-ux="qr-handle">
 						<span class="min" data-ux="qr-min" data-for="range-low-min"></span>

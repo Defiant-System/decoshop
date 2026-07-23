@@ -3993,8 +3993,20 @@
 							}
 						}
 					}
-					&.has-ranges-tools {
-						margin: 23px 11px 5px 0;
+
+					&.has-option-colors {
+						margin-bottom: 23px;
+
+						&:before {
+							content: "";
+							position: absolute;
+							left: 0;
+							right: 0;
+							bottom: -9px;
+							height: 1px;
+							background: linear-gradient(90deg, #aff0, #aff3, #aff0);
+							filter: drop-shadow(0 -1px 0 #011c);
+						}
 					}
 
 					&.has-basic-range {
@@ -4004,18 +4016,6 @@
 									width: 47px;
 								}
 							}
-						}
-					}
-
-					&.has-ranges-tools {
-						height: 25px;
-
-						.tool-items {
-							right: 11px;
-						}
-
-						.range-values-left {
-							width: 210px;
 						}
 					}
 

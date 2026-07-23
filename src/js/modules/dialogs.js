@@ -6269,9 +6269,32 @@ const Dialogs = {
 			switch (event.type) {
 				// "fast events"
 				case "set-hue-value":
+					event.values = Self.values; // first copy values
+					event.values.hue.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-saturation-value":
+					event.values = Self.values; // first copy values
+					event.values.saturation.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
 				case "set-lightness-value":
-					console.log(event.value);
+					event.values = Self.values; // first copy values
+					event.values.lightness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "toggle-colorize":
+					event.values = Self.values; // first copy values
+					event.values.colorize.value = event.el.data("value") === "on"; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
@@ -6280,29 +6303,33 @@ const Dialogs = {
 
 					// safe & smooth raf
 					Engine.raf(() => {
-
+						let qv = FilterHelper.oT("hue2");
+						// qv.Clr.v.Lmnc.v = Self.values.hue.value;
+						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "hue2", qv, ve: false } });
+						PP.update();
 					});
 					return;
 
-				case "toggle-colorize":
-					console.log(event);
-					break;
 				case "toggle-in-image":
 					value = event.el.hasClass("active");
 					event.el.toggleClass("active", value);
 					break;
 				case "set-color-range":
+					el = $(event.target).parents("?li");
+					if (!el.length) return;
 					event.el.find(".active").removeClass("active");
-					el = $(event.target).addClass("active");
+					el = el.addClass("active");
 
-					if (el.data("arg") === "0") {
+					Self.values.colorRange = el.data("arg");
+
+					if (Self.values.colorRange === "0") {
 						// master
-						Self.els.rangeTools.removeClass("show");
-						Self.els.sliderTools.removeClass("show");
+						Self.els.rangeTools.addClass("hidden");
+						Self.els.sliderTools.addClass("hidden");
 					} else {
-						Self.els.rangeTools.addClass("show");
-						Self.els.sliderTools.addClass("show");
-						value = Self.colorRanges[el.data("arg")];
+						Self.els.rangeTools.removeClass("hidden");
+						Self.els.sliderTools.removeClass("hidden");
+						value = Self.CR[Self.values.colorRange];
 						Self.els.qSlider.css({
 							"--x1": value.x1,
 							"--w1": value.w1,
@@ -6344,7 +6371,7 @@ const Dialogs = {
 						qSlider: event.dEl.find(".q-slider"),
 					};
 					// color ranges
-					Self.colorRanges = {
+					Self.CR = {
 						0: {}, // q-slider not visible
 						1: { x1: 207, w1: 70, w2: 22 },
 						2: { x1: 276, w1: 70, w2: 22 },
@@ -6353,20 +6380,42 @@ const Dialogs = {
 						5: { x1: 69, w1: 70, w2: 22 },
 						6: { x1: 138, w1: 70, w2: 22 },
 					};
+					// reset values
+					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
+					
+					// color options
+					Self.values.colorRange = { default: "0", value: "0" };
+
+					// save initial state values
+					Self.els.root.find(`.field-row.has-basic-range .value span[data-default]`).map(elem => {
+						let el = $(elem),
+							def = parseInt(el.data("default"), 10),
+							value = parseInt(el.html(), 10);
+						Self.values[el.data("id")] = { default: def, value };
+					});
+					// togglers
+					Self.els.root.find(`.toggler[data-name]`).map(elem => {
+						let el = $(elem),
+							value = el.data("value") === "on" ? true : false;
+						Self.values[el.attr("data-name")] = { default: value, value };
+					});
+					// return console.log(Self.values);
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-preview":
 					Self.preview = event.el.data("value") === "on";
 					if (Self.preview) {
 						Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					} else {
-						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+						PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "hue2" } });
 						PP.update();
 					}
 					break;
 				case "dlg-ok":
 					Self.dispatch({ type: "unbind-reset-view" });
 					// apply filter
-					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "curv" } });
+					PP.TA({ G: CanvasTools.Qi, data: { a: "confirm", _K: "hue2" } });
 					PP.update();
 					// close dialog
 					UI.doDialog({ ...event, type: `dlg-close-common`, name: Self.name });
@@ -6383,7 +6432,7 @@ const Dialogs = {
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
 					// common dialog close
-					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "curv" } });
+					PP.TA({ G: CanvasTools.Qi, data: { a: "cancel", _K: "hue2" } });
 					PP.update();
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					break;
