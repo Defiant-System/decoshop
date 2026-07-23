@@ -543,42 +543,59 @@ const UI = {
 				if (ux === "qr-handle") {
 					ux += event.offsetX <= +mEl.prop("offsetLeft") ? "-left" : "-right";
 				}
-				// console.log(ux);
+				console.log(ux);
 
 				let offset = {
-						x: +el.prop("offsetLeft") - event.clientX,
-						hX: +hEl.prop("offsetLeft") - event.clientX,
+						cX: event.clientX,
+						// x: +el.prop("offsetLeft") - event.clientX,
+						mX: +mEl.prop("offsetLeft"),
+						mW: +mEl.prop("offsetWidth"),
+						hX: +hEl.prop("offsetLeft"),
+						hW: +hEl.prop("offsetWidth"),
 					},
 					min = 0,
 					max = +rEl.prop("offsetWidth");
 
 				// drag related info
-				Self.drag = { el, rEl, hEl, ux, offset, min, max };
+				Self.drag = { el, rEl, hEl, mEl, ux, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
 				Self.doc.on("mousemove mouseup", Self.doQRange);
 				break;
 			case "mousemove":
-				let diff,
-					left;
+				let diff;
 				switch (Drag.ux) {
 					case "qr-handle-left":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.hEl.css({ left: diff + Drag.offset.hX, width: Drag.offset.hW - diff });
+						Drag.mEl.css({ width: Drag.offset.mW - diff });
 						break;
 					case "qr-handle-right":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.hEl.css({ width: Drag.offset.hW + diff });
+						Drag.mEl.css({ width: Drag.offset.mW + diff });
 						break;
 					case "qr-min":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.hEl.css({ left: diff + Drag.offset.hX, width: Drag.offset.hW - diff });
+						Drag.mEl.css({ left: Drag.offset.mX - diff });
 						break;
 					case "qrm-handle":
-						diff = event.clientX + Drag.offset.hX;
-						left = Math.max(Math.min(Drag.max, diff), Drag.min);
-						Drag.hEl.css({ left });
+						diff = event.clientX - Drag.offset.cX;
+						Drag.hEl.css({ left: diff + Drag.offset.hX });
 						break;
 					case "qrm-min":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.mEl.css({ left: Drag.offset.mX + diff, width: Drag.offset.mW - diff });
 						break;
 					case "qrm-max":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.mEl.css({ width: Drag.offset.mW + diff });
 						break;
 					case "qr-max":
+						diff = event.clientX - Drag.offset.cX;
+						Drag.hEl.css({ width: Drag.offset.hW + diff });
 						break;
 				}
 				break;
