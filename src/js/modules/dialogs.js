@@ -6440,23 +6440,15 @@ const Dialogs = {
 					event.values = Self.values; // first copy values
 					event.values.colorize.value = event.el.data("value") === "on"; // then partial overwrite
 					if (event.values.colorize.value) {
-						// reset hsk values
+						// reset hsl; Photopea colorize default is [0, 50, 0]
 						Self.values.hsl.value = structuredClone(Self.values.hsl.default);
-						let hsl = [0, 50, 0]; // makes image red-ish
-						Self.values.hsl.value[0] = hsl;
-						Self.values.hue.value = hsl[0];
-						Self.values.saturation.value = hsl[1];
-						Self.values.lightness.value = hsl[2];
-						Self.dispatch({ type: "sync-ui-with-hsl" });
-						// make master color range active
-						Self.els.clrGroup.find(".master").trigger("click");
+						Self.values.hsl.value[0] = [0, 50, 0];
 					} else {
-						// reset hsk values
 						Self.values.hsl.value = structuredClone(Self.values.hsl.default);
-						Self.dispatch({ type: "sync-ui-with-hsl" });
-						// make master color range active
-						Self.els.clrGroup.find(".master").trigger("click");
 					}
+					// master range + keep hue/sat/lightness in sync with hsl
+					Self.els.clrGroup.find(".master").trigger("click");
+					Self.dispatch({ type: "sync-ui-with-hsl" });
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6496,6 +6488,11 @@ const Dialogs = {
 				case "sync-ui-with-hsl":
 					rng = Self.values.colorRange.value;
 					let hsv = Self.values.hsl.value[rng];
+					// keep slider fields in sync — apply-filter-data reads these
+					if (Self.values.hue) Self.values.hue.value = hsv[0];
+					if (Self.values.saturation) Self.values.saturation.value = hsv[1];
+					if (Self.values.lightness) Self.values.lightness.value = hsv[2];
+
 					let l1 = Math.round(Math.lerp(0, 200, (hsv[0] + 180)/360));
 					Self.els.iHue.html(hsv[0]);
 					Self.els.hHue.css({ left: l1 });
