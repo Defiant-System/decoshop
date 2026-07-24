@@ -6291,17 +6291,17 @@ const Dialogs = {
 							if (rec.w1) {
 								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.w1) / Drag.offset.rW)));
 								Drag.target.hmax.html(`${val}°`);
-								Drag.base[1] = val; // BgnS
+								Drag.base[3] = val; // EndR
 							}
 							if (rec.l2) {
 								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.l2) / Drag.offset.rW)));
 								Drag.target.mmin.html(`${val}°`);
-								Drag.base[2] = val; // EndS
+								Drag.base[1] = val; // BgnS
 							}
 							if (rec.w2) {
 								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.mX + rec.w2) / Drag.offset.rW)));
 								Drag.target.mmax.html(`${val}°`);
-								Drag.base[3] = val; // EndR
+								Drag.base[2] = val; // EndS
 							}
 							// call hue/sat dialog
 							Self.dispatch({ type: "set-qRange", value: Drag.base });
@@ -6487,6 +6487,7 @@ const Dialogs = {
 					rng = Self.values.colorRange.value;
 					let [bgnR, bgnS, endS, endR] = Self.values.qRange.value[rng],
 					    rW = +Self.els.qSlider.prop("offsetWidth") || 345,
+					    px = v => (v + 180) / 360 * rW,
 					    // unwrap so stops stay ordered left→right on the bar (ranges that cross 0° / 180°)
 					    toSigned = d => { d = ((d % 360) + 360) % 360; return d > 180 ? d - 360 : d; },
 					    s = [bgnR, bgnS, endS, endR].map(toSigned);
@@ -6495,13 +6496,12 @@ const Dialogs = {
 					Self.els.mmax.html(Self.values.qRange.value[rng][2] +"°");
 					Self.els.hmax.html(Self.values.qRange.value[rng][3] +"°");
 					// move sliders
-					for (let i = 1; i < 4; i++) {
+					for (let i=1; i<4; i++) {
 					    while (s[i] < s[i - 1]) {
 					        s[i] += 360;
 					    }
 					}
-					let px = v => (v + 180) / 360 * rW,
-					    p0 = px(s[0]), p1 = px(s[1]), p2 = px(s[2]), p3 = px(s[3]);
+					let p0 = px(s[0]), p1 = px(s[1]), p2 = px(s[2]), p3 = px(s[3]);
 					Self.els.hOuter.css({
 						left: Math.round(p0),      // outer left  ← BgnR
 						width: Math.round(p3 - p0) // outer width ← EndR - BgnR
