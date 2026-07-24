@@ -6281,29 +6281,26 @@ const Dialogs = {
 							parseInt(target.hmax.text(), 10),
 						],
 						values = rec => {
+							// Derive [BgnR, BgnS, EndS, EndR] from outer/mid geometry.
+							// Mid-handle is nested, so absolute mid = outerLeft + midLeft.
 							let corr = v => Math.round(v < 0 ? v + 360 : v),
-								val;
-							if (rec.l1) {
-								val = corr(Math.lerp(-180, 180, (rec.l1 / Drag.offset.rW)));
-								Drag.target.hmin.html(`${val}°`);
-								Drag.base[0] = val; // BgnR
-							}
-							if (rec.w1) {
-								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.w1) / Drag.offset.rW)));
-								Drag.target.hmax.html(`${val}°`);
-								Drag.base[3] = val; // EndR
-							}
-							if (rec.l2) {
-								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.l2) / Drag.offset.rW)));
-								Drag.target.mmin.html(`${val}°`);
-								Drag.base[1] = val; // BgnS
-							}
-							if (rec.w2) {
-								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.mX + rec.w2) / Drag.offset.rW)));
-								Drag.target.mmax.html(`${val}°`);
-								Drag.base[2] = val; // EndS
-							}
-							// call hue/sat dialog
+								rW = Drag.offset.rW,
+								oL = rec.l1 != null ? rec.l1 : Drag.offset.hX,
+								oW = rec.w1 != null ? rec.w1 : Drag.offset.hW,
+								mL = rec.l2 != null ? rec.l2 : Drag.offset.mX,
+								mW = rec.w2 != null ? rec.w2 : Drag.offset.mW,
+								toDeg = px => corr(Math.lerp(-180, 180, px / rW));
+
+							Drag.base[0] = toDeg(oL);             // BgnR — outer left
+							Drag.base[1] = toDeg(oL + mL);        // BgnS — mid left
+							Drag.base[2] = toDeg(oL + mL + mW);   // EndS — mid right
+							Drag.base[3] = toDeg(oL + oW);        // EndR — outer right
+
+							Drag.target.hmin.html(`${Drag.base[0]}°`);
+							Drag.target.mmin.html(`${Drag.base[1]}°`);
+							Drag.target.mmax.html(`${Drag.base[2]}°`);
+							Drag.target.hmax.html(`${Drag.base[3]}°`);
+
 							Self.dispatch({ type: "set-qRange", value: Drag.base });
 						},
 						offset = {
@@ -6327,19 +6324,17 @@ const Dialogs = {
 				case "mousemove":
 					let diff,
 						l1, w1,
-						l2, w2,
-						val;
+						l2, w2;
 					switch (Drag.ux) {
 						case "qr-handle-left":
+							// Resize outer from left; mid is nested so its relative left stays put
 							diff = event.clientX - Drag.offset.cX;
 							l1 = Drag.offset.hX + diff;
 							w1 = Drag.offset.hW - diff;
 							w2 = Drag.offset.mW - diff;
 							Drag.hEl.css({ left: l1, width: w1 });
 							Drag.mEl.css({ width: w2 });
-
-							l2 = Drag.offset.mX - diff;
-							Drag.values({ l1, l2 });
+							Drag.values({ l1, w1, w2 });
 							break;
 						case "qr-handle-right":
 							diff = event.clientX - Drag.offset.cX;
@@ -6347,18 +6342,14 @@ const Dialogs = {
 							w2 = Drag.offset.mW + diff;
 							Drag.hEl.css({ width: w1 });
 							Drag.mEl.css({ width: w2 });
-
 							Drag.values({ w1, w2 });
 							break;
 						case "qrm-handle":
+							// Move whole range; widths unchanged, mid rides with outer
 							diff = event.clientX - Drag.offset.cX;
 							l1 = Drag.offset.hX + diff;
 							Drag.hEl.css({ left: l1 });
-
-							l2 = Drag.offset.mX - diff;
-							w1 = Drag.offset.hW + diff;
-							w2 = Drag.offset.mW + diff;
-							Drag.values({ l1, l2, w1, w2 });
+							Drag.values({ l1 });
 							break;
 
 						case "qr-min":
@@ -6368,29 +6359,25 @@ const Dialogs = {
 							l2 = Drag.offset.mX - diff;
 							Drag.hEl.css({ left: l1, width: w1 });
 							Drag.mEl.css({ left: l2 });
-
-							Drag.values({ l1 });
+							Drag.values({ l1, w1 });
 							break;
 						case "qrm-min":
 							diff = event.clientX - Drag.offset.cX;
 							l2 = Drag.offset.mX + diff;
 							w2 = Drag.offset.mW - diff;
 							Drag.mEl.css({ left: l2, width: w2 });
-
-							Drag.values({ l2 });
+							Drag.values({ l2, w2 });
 							break;
 						case "qrm-max":
 							diff = event.clientX - Drag.offset.cX;
 							w2 = Drag.offset.mW + diff;
 							Drag.mEl.css({ width: w2 });
-
 							Drag.values({ w2 });
 							break;
 						case "qr-max":
 							diff = event.clientX - Drag.offset.cX;
 							w1 = Drag.offset.hW + diff;
 							Drag.hEl.css({ width: w1 });
-
 							Drag.values({ w1 });
 							break;
 					}
