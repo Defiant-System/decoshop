@@ -551,6 +551,26 @@ const UI = {
 						mmax: dEl.find(`span[data-id="range-high-mid-max"]`),
 						hmax: dEl.find(`span[data-id="range-high-max"]`),
 					},
+					values = rec => {
+						let corr = v => Math.round(v < 0 ? v + 360 : v),
+							val;
+						if (rec.l1) {
+							val = Math.lerp(-180, 180, (rec.l1 / Drag.offset.rW));
+							Drag.target.hmin.html(`${corr(val)}°`);
+						}
+						if (rec.w1) {
+							val = Math.lerp(-180, 180, ((Drag.offset.hX + rec.w1) / Drag.offset.rW));
+							Drag.target.hmax.html(`${corr(val)}°`);
+						}
+						if (rec.l2) {
+							val = Math.lerp(-180, 180, ((Drag.offset.hX + rec.l2) / Drag.offset.rW));
+							Drag.target.mmin.html(`${corr(val)}°`);
+						}
+						if (rec.w2) {
+							val = Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.mX + rec.w2) / Drag.offset.rW));
+							Drag.target.mmax.html(`${corr(val)}°`);
+						}
+					},
 					offset = {
 						cX: event.clientX,
 						mX: +mEl.prop("offsetLeft"),
@@ -560,10 +580,10 @@ const UI = {
 						rW: +rEl.prop("offsetWidth"),
 					},
 					min = 0,
-					max = +rEl.prop("offsetWidth");
+					max = offset.rW;
 
 				// drag related info
-				Self.drag = { el, rEl, hEl, mEl, target, ux, offset, min, max };
+				Self.drag = Drag = { el, rEl, hEl, mEl, values, target, ux, offset, min, max };
 
 				// bind event handlers
 				Self.content.addClass("no-dlg-cursor");
@@ -571,41 +591,72 @@ const UI = {
 				break;
 			case "mousemove":
 				let diff,
+					l1, w1,
+					l2, w2,
 					val;
 				switch (Drag.ux) {
 					case "qr-handle-left":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.hEl.css({ left: diff + Drag.offset.hX, width: Drag.offset.hW - diff });
-						Drag.mEl.css({ width: Drag.offset.mW - diff });
+						l1 = Drag.offset.hX + diff;
+						w1 = Drag.offset.hW - diff;
+						w2 = Drag.offset.mW - diff;
+						Drag.hEl.css({ left: l1, width: w1 });
+						Drag.mEl.css({ width: w2 });
+
+						l2 = Drag.offset.mX - diff;
+						Drag.values({ l1, l2 });
 						break;
 					case "qr-handle-right":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.hEl.css({ width: Drag.offset.hW + diff });
-						Drag.mEl.css({ width: Drag.offset.mW + diff });
-						break;
-					case "qr-min":
-						diff = event.clientX - Drag.offset.cX;
-						Drag.hEl.css({ left: diff + Drag.offset.hX, width: Drag.offset.hW - diff });
-						Drag.mEl.css({ left: Drag.offset.mX - diff });
+						w1 = Drag.offset.hW + diff;
+						w2 = Drag.offset.mW + diff;
+						Drag.hEl.css({ width: w1 });
+						Drag.mEl.css({ width: w2 });
+
+						Drag.values({ w1, w2 });
 						break;
 					case "qrm-handle":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.hEl.css({ left: diff + Drag.offset.hX });
+						l1 = Drag.offset.hX + diff;
+						Drag.hEl.css({ left: l1 });
+
+						l2 = Drag.offset.mX - diff;
+						w1 = Drag.offset.hW + diff;
+						w2 = Drag.offset.mW + diff;
+						Drag.values({ l1, l2, w1, w2 });
+						break;
+
+					case "qr-min":
+						diff = event.clientX - Drag.offset.cX;
+						l1 = Drag.offset.hX + diff;
+						w1 = Drag.offset.hW - diff;
+						l2 = Drag.offset.mX - diff;
+						Drag.hEl.css({ left: l1, width: w1 });
+						Drag.mEl.css({ left: l2 });
+
+						Drag.values({ l1 });
 						break;
 					case "qrm-min":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.mEl.css({ left: Drag.offset.mX + diff, width: Drag.offset.mW - diff });
+						l2 = Drag.offset.mX + diff;
+						w2 = Drag.offset.mW - diff;
+						Drag.mEl.css({ left: l2, width: w2 });
+
+						Drag.values({ l2 });
 						break;
 					case "qrm-max":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.mEl.css({ width: Drag.offset.mW + diff });
+						w2 = Drag.offset.mW + diff;
+						Drag.mEl.css({ width: w2 });
+
+						Drag.values({ w2 });
 						break;
 					case "qr-max":
 						diff = event.clientX - Drag.offset.cX;
-						Drag.hEl.css({ width: Drag.offset.hW + diff });
+						w1 = Drag.offset.hW + diff;
+						Drag.hEl.css({ width: w1 });
 
-						val = Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.hW + diff) / Drag.offset.rW));
-						Drag.target.hmax.html(`${Math.round(val)}°`);
+						Drag.values({ w1 });
 						break;
 				}
 				break;

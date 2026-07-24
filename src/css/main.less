@@ -3257,10 +3257,6 @@ content {
 
 										.q-slider {
 											width: 278px;
-											--w1: 70;
-											--w2: 22;
-											--x1: 171;
-											--x2: calc( calc( var( --w1 ) - var( --w2 ) ) * .5 );
 										}
 									}
 								}
@@ -6255,17 +6251,21 @@ content {
 
 			.range-values-left,
 			.range-values-right {
-				position: relative;
-				top: 1px;
+				position: absolute;
+				top: 15px;
 				display: inline-block;
 				font-size: 11px;
 				color: #fffa;
 				text-shadow: 0 1px 0 #0006;
 			}
 
+			.range-values-left {
+				left: 3px;
+			}
+
 			.range-values-right {
-				// width: initial;
-				width: 183px;
+				right: 97px;
+				width: 103px;
 				text-align: right;
 			}
 
@@ -6426,8 +6426,9 @@ content {
 				position: absolute;
 				top: 8px;
 				height: 10px;
-				left: calc( calc( var( --x1 ) - calc( var( --w1 ) * .5 ) ) * 1px );
-				width: calc( var( --w1 ) * 1px );
+				left: 172px; //
+				width: 70px; //
+				transform: none;
 				cursor: ew-resize;
 
 				&:hover,
@@ -6460,8 +6461,8 @@ content {
 					position: absolute;
 					top: 0;
 					height: 10px;
-					left: calc( var( --x2 ) * 1px );
-					width: calc( var( --w2 ) * 1px );
+					left: 24px; //
+					width: 22px; //
 
 					&:hover,
 					&.hover {

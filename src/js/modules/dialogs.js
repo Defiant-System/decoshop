@@ -6351,12 +6351,7 @@ const Dialogs = {
 					} else {
 						Self.els.rangeTools.removeClass("hidden");
 						Self.els.sliderTools.removeClass("hidden");
-						value = Self.CR[Self.values.colorRange.value];
-						Self.els.qSlider.css({
-							"--x1": value.x1,
-							"--w1": value.w1,
-							"--w2": value.w2,
-						});
+						// TODO: calculate values for: x1, w1, x2, w2
 					}
 					break;
 				case "reset-pipette":
@@ -6400,16 +6395,6 @@ const Dialogs = {
 						qSlider: event.dEl.find(".q-slider"),
 					};
 					Self.doc = APP.file?.doc;
-					// color ranges
-					Self.CR = {
-						0: {}, // q-slider not visible
-						1: { x1: 207, w1: 70, w2: 22 },
-						2: { x1: 276, w1: 70, w2: 22 },
-						3: { x1: 345, w1: 70, w2: 22 },
-						4: { x1: 0, w1: 70, w2: 22 },
-						5: { x1: 69, w1: 70, w2: 22 },
-						6: { x1: 138, w1: 70, w2: 22 },
-					};
 					// reset values
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// color options
@@ -6453,11 +6438,11 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
-					// initial apply
-					// Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					Self.els.tglInPic.removeClass("active");
 					// make master color range active
 					Self.els.clrGroup.find(".master").trigger("click");
+					// initial apply
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
 					Self.dispatch({ type: "unbind-reset-view" });
