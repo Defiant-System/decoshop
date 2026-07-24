@@ -6251,28 +6251,32 @@ content {
 
 			.range-values-left,
 			.range-values-right {
+				background: #0113;
 				position: absolute;
-				top: 15px;
+				top: 11px;
+				width: 87px;
+				text-align: center;
 				display: inline-block;
+				padding: 3px 0;
 				font-size: 11px;
 				color: #fffa;
 				text-shadow: 0 1px 0 #0006;
 			}
 
 			.range-values-left {
-				left: 3px;
+				left: 1px;
+				border-radius: 29px 0 0 29px;
 			}
 
 			.range-values-right {
-				right: 97px;
-				width: 103px;
-				text-align: right;
+				left: 91px;
+				border-radius: 0 29px 29px 0;
 			}
 
 			.tool-items {
 				position: absolute;
 				top: 11px;
-				right: 11px;
+				right: 3px;
 				font-size: 0;
 
 				> span {
@@ -6294,6 +6298,7 @@ content {
 						right: -2px;
 						bottom: -2px;
 						border-radius: 4px;
+						cursor: pointer;
 					}
 
 					&:after {
@@ -6306,12 +6311,14 @@ content {
 						background-repeat: no-repeat;
 						background-position: 50% 50%;
 						filter: invert(1) brightness(1.15) drop-shadow(0 1px 0 rgba(#000, .5));
+						cursor: pointer;
 						width: 17px;
 						height: 17px;
 						opacity: .5;
 						z-index: 1;
 					}
 
+					&:hover,
 					&.active {
 						cursor: default;
 

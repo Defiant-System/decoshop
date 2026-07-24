@@ -6254,7 +6254,6 @@ const Dialogs = {
 				Drag = Self.drag;
 			// console.log(event);
 			switch (event.type) {
-				// native events
 				case "mousedown":
 					let el = $(event.target).parents("?[data-ux]").get(0),
 						rEl = el.parents(".q-slider"),
@@ -6266,7 +6265,6 @@ const Dialogs = {
 					if (ux === "qr-handle") {
 						ux += event.offsetX <= +mEl.prop("offsetLeft") ? "-left" : "-right";
 					}
-					// console.log(ux);
 
 					let target = {
 							hmin: dEl.find(`span[data-id="range-low-min"]`),
@@ -6303,6 +6301,33 @@ const Dialogs = {
 
 							Self.dispatch({ type: "set-qRange", value: Drag.base });
 						},
+						// Clamp absolute stops: 0 ≤ BgnR < BgnS < EndS < EndR ≤ rW
+						applyGeom = rec => {
+							let o = Drag.offset,
+								gap = 1,
+								rW = o.rW,
+								oL = rec.l1 != null ? rec.l1 : o.hX,
+								oW = rec.w1 != null ? rec.w1 : o.hW,
+								mL = rec.l2 != null ? rec.l2 : o.mX,
+								mW = rec.w2 != null ? rec.w2 : o.mW,
+								a0 = oL,
+								a1 = oL + mL,
+								a2 = oL + mL + mW,
+								a3 = oL + oW;
+
+							a0 = Math.max(0, Math.min(a0, rW - 3 * gap));
+							a3 = Math.max(a0 + 3 * gap, Math.min(a3, rW));
+							a1 = Math.max(a0 + gap, Math.min(a1, a3 - 2 * gap));
+							a2 = Math.max(a1 + gap, Math.min(a2, a3 - gap));
+
+							let l1 = a0,
+								l2 = a1 - a0,
+								w2 = a2 - a1,
+								w1 = a3 - a0;
+							Drag.hEl.css({ left: l1, width: w1 });
+							Drag.mEl.css({ left: l2, width: w2 });
+							Drag.values({ l1, w1, l2, w2 });
+						},
 						offset = {
 							cX: event.clientX,
 							mX: +mEl.prop("offsetLeft"),
@@ -6310,77 +6335,56 @@ const Dialogs = {
 							hX: +hEl.prop("offsetLeft"),
 							hW: +hEl.prop("offsetWidth"),
 							rW: +rEl.prop("offsetWidth"),
-						},
-						min = 0,
-						max = offset.rW;
+						};
 
 					// drag related info
-					Self.drag = Drag = { el, rEl, hEl, mEl, base, values, target, ux, offset, min, max };
+					Self.drag = Drag = { el, rEl, hEl, mEl, base, values, applyGeom, target, ux, offset };
 
 					// bind event handlers
 					APP.els.content.addClass("no-dlg-cursor");
 					UI.doc.on("mousemove mouseup", Self.doQRange);
 					break;
 				case "mousemove":
-					let diff,
-						l1, w1,
-						l2, w2;
+					let diff = event.clientX - Drag.offset.cX,
+						{ hX, hW, mX, mW } = Drag.offset;
 					switch (Drag.ux) {
 						case "qr-handle-left":
-							// Resize outer from left; mid is nested so its relative left stays put
-							diff = event.clientX - Drag.offset.cX;
-							l1 = Drag.offset.hX + diff;
-							w1 = Drag.offset.hW - diff;
-							w2 = Drag.offset.mW - diff;
-							Drag.hEl.css({ left: l1, width: w1 });
-							Drag.mEl.css({ width: w2 });
-							Drag.values({ l1, w1, w2 });
+							// Resize falloff from left (outer + mid grow/shrink together)
+							Drag.applyGeom({
+								l1: hX + diff,
+								w1: hW - diff,
+								w2: mW - diff,
+							});
 							break;
 						case "qr-handle-right":
-							diff = event.clientX - Drag.offset.cX;
-							w1 = Drag.offset.hW + diff;
-							w2 = Drag.offset.mW + diff;
-							Drag.hEl.css({ width: w1 });
-							Drag.mEl.css({ width: w2 });
-							Drag.values({ w1, w2 });
+							Drag.applyGeom({
+								w1: hW + diff,
+								w2: mW + diff,
+							});
 							break;
 						case "qrm-handle":
-							// Move whole range; widths unchanged, mid rides with outer
-							diff = event.clientX - Drag.offset.cX;
-							l1 = Drag.offset.hX + diff;
-							Drag.hEl.css({ left: l1 });
-							Drag.values({ l1 });
+							// Move whole range; widths unchanged
+							Drag.applyGeom({ l1: hX + diff });
 							break;
-
 						case "qr-min":
-							// Move outer-left only; keep mid/outer-right absolute positions fixed
-							// (mid is nested → compensate relative left: l1+l2 stays constant).
-							diff = event.clientX - Drag.offset.cX;
-							l1 = Drag.offset.hX + diff;
-							w1 = Drag.offset.hW - diff;
-							l2 = Drag.offset.mX - diff;
-							Drag.hEl.css({ left: l1, width: w1 });
-							Drag.mEl.css({ left: l2 });
-							Drag.values({ l1, w1, l2 });
+							// Outer-left only; keep mid/outer-right absolute fixed
+							Drag.applyGeom({
+								l1: hX + diff,
+								w1: hW - diff,
+								l2: mX - diff,
+							});
 							break;
 						case "qrm-min":
-							diff = event.clientX - Drag.offset.cX;
-							l2 = Drag.offset.mX + diff;
-							w2 = Drag.offset.mW - diff;
-							Drag.mEl.css({ left: l2, width: w2 });
-							Drag.values({ l2, w2 });
+							Drag.applyGeom({
+								l2: mX + diff,
+								w2: mW - diff,
+							});
 							break;
 						case "qrm-max":
-							diff = event.clientX - Drag.offset.cX;
-							w2 = Drag.offset.mW + diff;
-							Drag.mEl.css({ width: w2 });
-							Drag.values({ w2 });
+							Drag.applyGeom({ w2: mW + diff });
 							break;
 						case "qr-max":
-							diff = event.clientX - Drag.offset.cX;
-							w1 = Drag.offset.hW + diff;
-							Drag.hEl.css({ width: w1 });
-							Drag.values({ w1 });
+							Drag.applyGeom({ w1: hW + diff });
 							break;
 					}
 					break;
@@ -6388,6 +6392,54 @@ const Dialogs = {
 					// unbind event handlers
 					APP.els.content.removeClass("no-dlg-cursor");
 					UI.doc.off("mousemove mouseup", Self.doQRange);
+					break;
+			}
+		},
+		doInImage(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgHueSaturation,
+				Drag = Self.drag;
+			// console.log(event);
+			switch (event.type) {
+				case "mousedown":
+					// stop default behaviour
+					event.preventDefault();
+					event.stopPropagation();
+
+					let el = Self.els.hSaturation,
+						offset = {
+							x: event.offsetX,
+							y: event.offsetY
+						},
+						packed = CanvasTools.lS.dh(Self.doc, offset, 1),
+						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255];
+					
+					
+
+					// drag related info
+					Self.drag = Drag = { el, offset };
+
+					// bind event handlers
+					APP.els.content.addClass("no-dlg-cursor");
+					UI.doc.on("mousemove mouseup", Self.doInImage);
+					break;
+				case "mousemove":
+					break;
+				case "mouseup":
+					// unbind event handlers
+					APP.els.content.removeClass("no-dlg-cursor");
+					UI.doc.off("mousemove mouseup", Self.doInImage);
+					break;
+			}
+		},
+		doPippette(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgHueSaturation,
+				Drag = Self.drag;
+			// console.log(event);
+			switch (event.type) {
+				case "mousedown":
+					// tree options; pipette solo, add and remove
 					break;
 			}
 		},
@@ -6538,13 +6590,19 @@ const Dialogs = {
 					if (Self.els.tglInPic.hasClass("active")) {
 						Self.els.tglInPic.removeClass("active");
 						APP.els.content.removeClass(`cursor-ew-resize`);
+
+						// toggle "off" the app cover
+						UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
 						// bind event listener
-						APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+						APP.els.cvsWrapper.off("mousedown", Self.doInImage);
 					} else {
 						Self.els.tglInPic.addClass("active");
 						APP.els.content.addClass(`cursor-ew-resize`);
+
+						// toggle "off" the app cover
+						UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
 						// bind event listener
-						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+						APP.els.cvsWrapper.on("mousedown", Self.doInImage);
 					}
 					break;
 				case "set-color-range":
@@ -6578,7 +6636,7 @@ const Dialogs = {
 					// toggle on the app cover
 					UI.dispatch({ type: "toggle-dialog-cover", state: 1 });
 					// bind event listener
-					APP.els.cvsWrapper.off("mousedown", Self.dispatch);
+					APP.els.cvsWrapper.off("mousedown", Self.doPippette);
 					break;
 				case "select-pipette":
 					el = $(event.target);
@@ -6595,7 +6653,7 @@ const Dialogs = {
 					// toggle "off" the app cover
 					UI.dispatch({ type: "toggle-dialog-cover", state: !1 });
 					// bind event listener
-					APP.els.cvsWrapper.on("mousedown", Self.dispatch);
+					APP.els.cvsWrapper.on("mousedown", Self.doPippette);
 					break;
 
 				// standard dialog events
@@ -6690,16 +6748,16 @@ const Dialogs = {
 				case "dlg-reset":
 					// close dialog
 					UI.doDialog({ ...event, type: `${event.type}-common`, name: Self.name });
-					// make sure internally stored values are reverted to default values
-					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
+					// revert values; clone object defaults so we don't alias hsl/qRange/etc.
+					Object.keys(Self.values).forEach(key => {
+						let def = Self.values[key].default;
+						Self.values[key].value = (def != null && typeof def === "object")
+							? structuredClone(def)
+							: def;
+					});
 					Self.els.tglInPic.removeClass("active");
-					// reset hsk values
-					Self.values.hsl.value = structuredClone(Self.values.hsl.default);
-					// reset qRange values
-					Self.values.qRange.value = structuredClone(Self.values.qRange.default);
-					// make master color range active (resets also "Self.values.colorRange")
+					// make master color range active (also syncs hsl UI fields)
 					Self.els.clrGroup.find(".master").trigger("click");
-					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "dlg-close":
