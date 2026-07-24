@@ -6248,11 +6248,166 @@ const Dialogs = {
 		name: "dlgHueSaturation",
 		preview: true,
 		values: {},
+		doQRange(event) {
+			let APP = decoshop,
+				Self = Dialogs.dlgHueSaturation,
+				Drag = Self.drag;
+			// console.log(event);
+			switch (event.type) {
+				// native events
+				case "mousedown":
+					let el = $(event.target).parents("?[data-ux]").get(0),
+						rEl = el.parents(".q-slider"),
+						dEl = rEl.parents(".dialog-box"),
+						hEl = rEl.find(".handle"),
+						mEl = rEl.find(".mid-handle"),
+						ux = el.data("ux");
+					// identify which side of mid-handle, if needed
+					if (ux === "qr-handle") {
+						ux += event.offsetX <= +mEl.prop("offsetLeft") ? "-left" : "-right";
+					}
+					// console.log(ux);
+
+					let target = {
+							hmin: dEl.find(`span[data-id="range-low-min"]`),
+							mmin: dEl.find(`span[data-id="range-low-mid-min"]`),
+							mmax: dEl.find(`span[data-id="range-high-mid-max"]`),
+							hmax: dEl.find(`span[data-id="range-high-max"]`),
+						},
+						base = [
+							parseInt(target.hmin.text(), 10),
+							parseInt(target.mmin.text(), 10),
+							parseInt(target.mmax.text(), 10),
+							parseInt(target.hmax.text(), 10),
+						],
+						values = rec => {
+							let corr = v => Math.round(v < 0 ? v + 360 : v),
+								val;
+							if (rec.l1) {
+								val = corr(Math.lerp(-180, 180, (rec.l1 / Drag.offset.rW)));
+								Drag.target.hmin.html(`${val}°`);
+								Drag.base[0] = val; // BgnR
+							}
+							if (rec.w1) {
+								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.w1) / Drag.offset.rW)));
+								Drag.target.hmax.html(`${val}°`);
+								Drag.base[1] = val; // BgnS
+							}
+							if (rec.l2) {
+								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + rec.l2) / Drag.offset.rW)));
+								Drag.target.mmin.html(`${val}°`);
+								Drag.base[2] = val; // EndS
+							}
+							if (rec.w2) {
+								val = corr(Math.lerp(-180, 180, ((Drag.offset.hX + Drag.offset.mX + rec.w2) / Drag.offset.rW)));
+								Drag.target.mmax.html(`${val}°`);
+								Drag.base[3] = val; // EndR
+							}
+							// call hue/sat dialog
+							Self.dispatch({ type: "set-qRange", value: Drag.base });
+						},
+						offset = {
+							cX: event.clientX,
+							mX: +mEl.prop("offsetLeft"),
+							mW: +mEl.prop("offsetWidth"),
+							hX: +hEl.prop("offsetLeft"),
+							hW: +hEl.prop("offsetWidth"),
+							rW: +rEl.prop("offsetWidth"),
+						},
+						min = 0,
+						max = offset.rW;
+
+					// drag related info
+					Self.drag = Drag = { el, rEl, hEl, mEl, base, values, target, ux, offset, min, max };
+
+					// bind event handlers
+					APP.els.content.addClass("no-dlg-cursor");
+					UI.doc.on("mousemove mouseup", Self.doQRange);
+					break;
+				case "mousemove":
+					let diff,
+						l1, w1,
+						l2, w2,
+						val;
+					switch (Drag.ux) {
+						case "qr-handle-left":
+							diff = event.clientX - Drag.offset.cX;
+							l1 = Drag.offset.hX + diff;
+							w1 = Drag.offset.hW - diff;
+							w2 = Drag.offset.mW - diff;
+							Drag.hEl.css({ left: l1, width: w1 });
+							Drag.mEl.css({ width: w2 });
+
+							l2 = Drag.offset.mX - diff;
+							Drag.values({ l1, l2 });
+							break;
+						case "qr-handle-right":
+							diff = event.clientX - Drag.offset.cX;
+							w1 = Drag.offset.hW + diff;
+							w2 = Drag.offset.mW + diff;
+							Drag.hEl.css({ width: w1 });
+							Drag.mEl.css({ width: w2 });
+
+							Drag.values({ w1, w2 });
+							break;
+						case "qrm-handle":
+							diff = event.clientX - Drag.offset.cX;
+							l1 = Drag.offset.hX + diff;
+							Drag.hEl.css({ left: l1 });
+
+							l2 = Drag.offset.mX - diff;
+							w1 = Drag.offset.hW + diff;
+							w2 = Drag.offset.mW + diff;
+							Drag.values({ l1, l2, w1, w2 });
+							break;
+
+						case "qr-min":
+							diff = event.clientX - Drag.offset.cX;
+							l1 = Drag.offset.hX + diff;
+							w1 = Drag.offset.hW - diff;
+							l2 = Drag.offset.mX - diff;
+							Drag.hEl.css({ left: l1, width: w1 });
+							Drag.mEl.css({ left: l2 });
+
+							Drag.values({ l1 });
+							break;
+						case "qrm-min":
+							diff = event.clientX - Drag.offset.cX;
+							l2 = Drag.offset.mX + diff;
+							w2 = Drag.offset.mW - diff;
+							Drag.mEl.css({ left: l2, width: w2 });
+
+							Drag.values({ l2 });
+							break;
+						case "qrm-max":
+							diff = event.clientX - Drag.offset.cX;
+							w2 = Drag.offset.mW + diff;
+							Drag.mEl.css({ width: w2 });
+
+							Drag.values({ w2 });
+							break;
+						case "qr-max":
+							diff = event.clientX - Drag.offset.cX;
+							w1 = Drag.offset.hW + diff;
+							Drag.hEl.css({ width: w1 });
+
+							Drag.values({ w1 });
+							break;
+					}
+					break;
+				case "mouseup":
+					// unbind event handlers
+					APP.els.content.removeClass("no-dlg-cursor");
+					UI.doc.off("mousemove mouseup", Self.doQRange);
+					break;
+			}
+		},
 		dispatch(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHueSaturation,
 				Doc = Self.doc,
 				value,
+				rng,
 				el;
 			switch (event.type) {
 				// "fast events"
@@ -6273,6 +6428,14 @@ const Dialogs = {
 				case "set-lightness":
 					event.values = Self.values; // first copy values
 					event.values.lightness.value = event.value; // then partial overwrite
+					// exit if "preview" is not enabled
+					if (!Self.preview) return Self.values = event.values;
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
+					break;
+				case "set-qRange":
+					rng = Self.values.colorRange.value;
+					event.values = Self.values; // first copy values
+					event.values.qRange.value[rng] = event.value; // then partial overwrite
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6309,7 +6472,9 @@ const Dialogs = {
 							// Per-range: keep range stops (mE), write HSL (I3)
 							let adj = HueSaturationHelper.RX(qv, range); // defaults if missing
 							adj.I3 = [h, s, l];
-							// adj.mE = [BgnR, BgnS, EndS, EndR] from your q-slider if edited
+							// [BgnR, BgnS, EndS, EndR] from your q-slider if edited
+							adj.mE = Self.values.qRange.value[range];
+							// with qslider values
 							HueSaturationHelper.fZ(qv, range, adj);
 						}
 
@@ -6317,6 +6482,35 @@ const Dialogs = {
 						PP.update();
 					});
 					return;
+
+				case "sync-ui-with-qRange":
+					rng = Self.values.colorRange.value;
+					let [bgnR, bgnS, endS, endR] = Self.values.qRange.value[rng],
+					    rW = +Self.els.qSlider.prop("offsetWidth") || 345,
+					    // unwrap so stops stay ordered left→right on the bar (ranges that cross 0° / 180°)
+					    toSigned = d => { d = ((d % 360) + 360) % 360; return d > 180 ? d - 360 : d; },
+					    s = [bgnR, bgnS, endS, endR].map(toSigned);
+					Self.els.hmin.html(Self.values.qRange.value[rng][0] +"°");
+					Self.els.mmin.html(Self.values.qRange.value[rng][1] +"°");
+					Self.els.mmax.html(Self.values.qRange.value[rng][2] +"°");
+					Self.els.hmax.html(Self.values.qRange.value[rng][3] +"°");
+					// move sliders
+					for (let i = 1; i < 4; i++) {
+					    while (s[i] < s[i - 1]) {
+					        s[i] += 360;
+					    }
+					}
+					let px = v => (v + 180) / 360 * rW,
+					    p0 = px(s[0]), p1 = px(s[1]), p2 = px(s[2]), p3 = px(s[3]);
+					Self.els.hOuter.css({
+						left: Math.round(p0),      // outer left  ← BgnR
+						width: Math.round(p3 - p0) // outer width ← EndR - BgnR
+					});
+					Self.els.hInner.css({
+						left: Math.round(p1 - p0), // mid left (relative to outer) ← BgnS
+						width: Math.round(p2 - p1) // mid width ← EndS - BgnS
+					});
+					break;
 
 				case "toggle-in-image":
 					// reset pipete state
@@ -6352,6 +6546,7 @@ const Dialogs = {
 						Self.els.rangeTools.removeClass("hidden");
 						Self.els.sliderTools.removeClass("hidden");
 						// TODO: calculate values for: x1, w1, x2, w2
+						Self.dispatch({ type: "sync-ui-with-qRange" });
 					}
 					break;
 				case "reset-pipette":
@@ -6392,13 +6587,31 @@ const Dialogs = {
 						tglInPic: event.dEl.find(".toggle-tool"),
 						rangeTools: event.dEl.find(".has-ranges-tools"),
 						sliderTools: event.dEl.find(".has-sliders-only"),
+
 						qSlider: event.dEl.find(".q-slider"),
+						hOuter: event.dEl.find(".q-slider .handle"),
+						hInner: event.dEl.find(".q-slider .mid-handle"),
+						hmin: event.dEl.find(`span[data-id="range-low-min"]`),
+						mmin: event.dEl.find(`span[data-id="range-low-mid-min"]`),
+						mmax: event.dEl.find(`span[data-id="range-high-mid-max"]`),
+						hmax: event.dEl.find(`span[data-id="range-high-max"]`),
 					};
 					Self.doc = APP.file?.doc;
 					// reset values
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// color options
 					Self.values.colorRange = { default: 0, value: 0 };
+
+					value = {
+						1: [315, 345, 15, 45],   // red
+						2: [15, 45, 75, 105],    // yellow
+						3: [75, 105, 135, 165],  // green
+						4: [135, 165, 195, 225], // cyan
+						5: [195, 225, 255, 285], // blue
+						6: [255, 285, 315, 345], // magenta
+					};
+					Self.values.qRange = { default: structuredClone(value), value };
+					
 					// save initial state values
 					Self.els.root.find(`.field-row.has-basic-range .value span[data-default]`).map(elem => {
 						let el = $(elem),
@@ -6439,7 +6652,9 @@ const Dialogs = {
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
 					Self.els.tglInPic.removeClass("active");
-					// make master color range active
+					// reset qRange values
+					Self.values.qRange.value = structuredClone(Self.values.qRange.default);
+					// make master color range active (resets also "Self.values.colorRange")
 					Self.els.clrGroup.find(".master").trigger("click");
 					// initial apply
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });

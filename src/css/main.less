@@ -6349,7 +6349,14 @@ content {
 							margin 150ms ease-in-out;
 			}
 
-			.q-slider,
+			.q-slider {
+				top: 0;
+				left: 0;
+				width: 345px;
+				
+				&:before { background: linear-gradient(90deg, #0ff, #00f, #f0f, #f00, #ff0, #0f0, #0ff); }
+			}
+
 			.slider {
 				top: 0;
 				left: 0;
@@ -6528,11 +6535,11 @@ content {
 
 			&.master  { background: url(~/icons/icon-master-colors.png) 50% 50% / contain no-repeat; }
 			&.red     { background: #f00; }
-			&.yellow  { background: #f0f; }
+			&.yellow  { background: #ff0; }
 			&.green   { background: #0f0; }
 			&.cyan    { background: #0ff; }
 			&.blue    { background: #00f; }
-			&.magenta { background: #ff0; }
+			&.magenta { background: #f0f; }
 		}
 	}
 
