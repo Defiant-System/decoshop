@@ -7,15 +7,12 @@ const Engine = {
 		this.xMemory = $.xmlFromString(`<Files/>`).documentElement;
 	},
 	raf(func) {
-		if (this.timer) {
-			cancelAnimationFrame(this.timer);
-			delete this.timer;
-		} else {
-			this.timer = requestAnimationFrame(() => {
-				func();
-				delete this.timer;
-			});
-		}
+		this._fn = func;
+		if (this.timer) return;
+		this.timer = requestAnimationFrame(() => {
+			this.timer = null;
+			this._fn();
+		});
 	},
 	fromEngine(event) {
 		let APP = decoshop,
