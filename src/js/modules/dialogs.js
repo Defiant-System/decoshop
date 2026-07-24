@@ -6457,12 +6457,26 @@ const Dialogs = {
 		},
 		doPippette(event) {
 			let APP = decoshop,
-				Self = Dialogs.dlgHueSaturation,
-				Drag = Self.drag;
+				Self = Dialogs.dlgHueSaturation;
 			// console.log(event);
 			switch (event.type) {
 				case "mousedown":
+					event.preventDefault();
+					event.stopPropagation();
+
+					let offset = {
+							cX: event.clientX,
+							x: event.offsetX,
+							y: event.offsetY
+						},
+						packed = CanvasTools.lS.dh(Self.doc, offset, 1),
+						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
+						hsb = PixelUtil.rgbToHsb(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255),
+						// Photopea: 1 + round(hue*6)%6 → Red..Magenta
+						range = 1 + Math.round(hsb.Tq * 6) % 6;
+
 					// tree options; pipette solo, add and remove
+					console.log(rgb);
 					break;
 			}
 		},
