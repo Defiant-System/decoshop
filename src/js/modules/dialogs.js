@@ -6353,13 +6353,15 @@ const Dialogs = {
 							break;
 
 						case "qr-min":
+							// Move outer-left only; keep mid/outer-right absolute positions fixed
+							// (mid is nested → compensate relative left: l1+l2 stays constant).
 							diff = event.clientX - Drag.offset.cX;
 							l1 = Drag.offset.hX + diff;
 							w1 = Drag.offset.hW - diff;
 							l2 = Drag.offset.mX - diff;
 							Drag.hEl.css({ left: l1, width: w1 });
 							Drag.mEl.css({ left: l2 });
-							Drag.values({ l1, w1 });
+							Drag.values({ l1, w1, l2 });
 							break;
 						case "qrm-min":
 							diff = event.clientX - Drag.offset.cX;
@@ -6461,23 +6463,18 @@ const Dialogs = {
 					// safe & smooth raf
 					Engine.raf(() => {
 						let qv = FilterHelper.oT("hue2"),
-							range = +(Self.values.colorRange?.value ?? 0), // 0 = Master, 1..6 = R/Y/G/C/B/M
-							h = +Self.values.hue.value,          // -180..180
-							s = +Self.values.saturation.value,   // -100..100
-							l = +Self.values.lightness.value;    // -100..100
-						qv.Clrz.v = Self.values.colorize.value;
+							hsl = Self.values.hsl.value,
+							qRange = Self.values.qRange.value;
+						qv.Clrz.v = !!Self.values.colorize.value;
 
-						if (range === 0) {
-							// Master (or Colorize master)
-							HueSaturationHelper.fZ(qv, 0, [h, s, l]);
-						} else {
-							// Per-range: keep range stops (mE), write HSL (I3)
-							let adj = HueSaturationHelper.RX(qv, range); // defaults if missing
-							adj.I3 = [h, s, l];
-							// [BgnR, BgnS, EndS, EndR] from your q-slider if edited
-							adj.mE = Self.values.qRange.value[range];
-							// with qslider values
-							HueSaturationHelper.fZ(qv, range, adj);
+						// Write every range — oT starts with empty Adjs, so a single-range
+						// fZ would drop edits made on other channels.
+						HueSaturationHelper.fZ(qv, 0, hsl[0]);
+						for (let r = 1; r <= 6; r++) {
+							HueSaturationHelper.fZ(qv, r, {
+								I3: hsl[r],
+								mE: qRange[r],
+							});
 						}
 
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "hue2", qv, ve: false } });
