@@ -6458,25 +6458,65 @@ const Dialogs = {
 		doPippette(event) {
 			let APP = decoshop,
 				Self = Dialogs.dlgHueSaturation;
-			// console.log(event);
 			switch (event.type) {
 				case "mousedown":
 					event.preventDefault();
 					event.stopPropagation();
 
+					let range = +Self.values.colorRange.value;
+					// Pipettes only apply to a non-master range
+					if (range < 1 || range > 6) return;
+
 					let offset = {
-							cX: event.clientX,
 							x: event.offsetX,
 							y: event.offsetY
 						},
 						packed = CanvasTools.lS.dh(Self.doc, offset, 1),
 						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
 						hsb = PixelUtil.rgbToHsb(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255),
-						// Photopea: 1 + round(hue*6)%6 → Red..Magenta
-						range = 1 + Math.round(hsb.Tq * 6) % 6;
+						// fK / a9n: degrees ↔ unit circle with +0.5 offset
+						toUnit = deg => (1000.5 + deg / 360) % 1,
+						toDeg = u => Math.round(36e3 + (u - .5) * 360) % 360,
+						band = 1 / 12,
+						mode = +Self.pipette, // 1 solo, 2 add, 3 remove
+						mE = Self.values.qRange.value[range],
+						units = mE.map(toUnit),
+						sample = .5 + hsb.Tq,
+						bgnS = units[1],
+						endS = units[2];
 
-					// tree options; pipette solo, add and remove
-					console.log(rgb);
+					// Unwrap solid range / sample across the 0 seam
+					if (endS < bgnS) {
+						endS++;
+						if (sample < bgnS && sample + 1 - endS < bgnS - sample) sample++;
+					}
+					let inside = bgnS <= sample && sample <= endS;
+
+					if (mode === 1) {
+						// Solo eyedropper → center a narrow band on the sample
+						bgnS = sample - band / 2;
+						endS = sample + band / 2;
+					} else if (mode === 2 && !inside) {
+						// Add → expand solid range to include sample
+						bgnS = Math.min(sample, bgnS);
+						endS = Math.max(sample, endS);
+					} else if (mode === 3 && inside) {
+						// Remove → shrink from the nearer solid edge to the sample
+						if (sample - bgnS < endS - sample) bgnS = sample;
+						else endS = sample;
+					} else {
+						// add while already inside / remove while outside → no change
+						return;
+					}
+
+					Self.values.qRange.value[range] = [
+						toDeg(bgnS - band),
+						toDeg(bgnS),
+						toDeg(endS),
+						toDeg(endS + band),
+					];
+					Self.dispatch({ type: "sync-ui-with-qRange" });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 			}
 		},
