@@ -6433,6 +6433,7 @@ const Dialogs = {
 					if (event.values.colorize.value) {
 						// make master color range active
 						Self.els.clrGroup.find(".master").trigger("click");
+
 					}
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
@@ -6470,6 +6471,21 @@ const Dialogs = {
 					});
 					return;
 
+				case "sync-ui-with-hsl":
+					rng = Self.values.colorRange.value;
+					let hsv = Self.values.hsl.value[rng];
+					let l1 = Math.round(Math.lerp(0, 200, (hsv[0] + 180)/360));
+					Self.els.iHue.html(hsv[0]);
+					Self.els.hHue.css({ left: l1 });
+
+					l1 = Math.round(Math.lerp(0, 200, (hsv[1] + 100)/200));
+					Self.els.iSaturation.html(hsv[1]);
+					Self.els.hSaturation.css({ left: l1 });
+
+					l1 = Math.round(Math.lerp(0, 200, (hsv[2] + 100)/200));
+					Self.els.iLightness.html(hsv[2]);
+					Self.els.hLightness.css({ left: l1 });
+					break;
 				case "sync-ui-with-qRange":
 					rng = Self.values.colorRange.value;
 					let [bgnR, bgnS, endS, endR] = Self.values.qRange.value[rng],
@@ -6575,6 +6591,13 @@ const Dialogs = {
 						rangeTools: event.dEl.find(".has-ranges-tools"),
 						sliderTools: event.dEl.find(".has-sliders-only"),
 
+						iHue: event.dEl.find(`span[data-id="hue"]`),
+						hHue: event.dEl.find(`.slider[data-range="hue"] .handle`),
+						iSaturation: event.dEl.find(`span[data-id="saturation"]`),
+						hSaturation: event.dEl.find(`.slider[data-range="saturation"] .handle`),
+						iLightness: event.dEl.find(`span[data-id="lightness"]`),
+						hLightness: event.dEl.find(`.slider[data-range="lightness"] .handle`),
+
 						qSlider: event.dEl.find(".q-slider"),
 						hOuter: event.dEl.find(".q-slider .handle"),
 						hInner: event.dEl.find(".q-slider .mid-handle"),
@@ -6588,6 +6611,20 @@ const Dialogs = {
 					UI.doDialog({ ...event, type: `dlg-reset-common`, name: Self.name });
 					// color options
 					Self.values.colorRange = { default: 0, value: 0 };
+
+					// hue-sat-lig
+					value = {
+						0: [0, 50, 0], // master
+						1: [0, 0, 0], // red
+						2: [0, 0, 0], // yellow
+						3: [0, 0, 0], // green
+						4: [0, 0, 0], // cyan
+						5: [0, 0, 0], // blue
+						6: [0, 0, 0], // magenta
+					};
+					Self.values.hsl = { default: structuredClone(value), value };
+					// ui sync
+					Self.dispatch({ type: "sync-ui-with-hsl" });
 
 					value = {
 						1: [315, 345, 15, 45],   // red
@@ -7043,7 +7080,7 @@ const Dialogs = {
 					Self.values.levels = { default: structuredClone(value), value };
 					// draw input levels histogram for the current document
 					Self.dispatch({ type: "render-canvas" });
-					// TEMP: ui sync
+					// ui sync
 					Self.dispatch({ type: "sync-ui-with-levels" });
 					// bind events
 					Self.els.root.find(".slider").on("mousedown", Self.dispatch);
