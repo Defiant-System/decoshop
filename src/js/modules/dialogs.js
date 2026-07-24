@@ -6399,31 +6399,54 @@ const Dialogs = {
 			let APP = decoshop,
 				Self = Dialogs.dlgHueSaturation,
 				Drag = Self.drag;
-			// console.log(event);
 			switch (event.type) {
 				case "mousedown":
-					// stop default behaviour
 					event.preventDefault();
 					event.stopPropagation();
 
-					let el = Self.els.hSaturation,
-						offset = {
+					let offset = {
+							cX: event.clientX,
 							x: event.offsetX,
 							y: event.offsetY
 						},
 						packed = CanvasTools.lS.dh(Self.doc, offset, 1),
-						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255];
-					
-					
+						rgb = [(packed >>> 16) & 255, (packed >>> 8) & 255, packed & 255],
+						hsb = PixelUtil.rgbToHsb(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255),
+						// Photopea: 1 + round(hue*6)%6 → Red..Magenta
+						range = 1 + Math.round(hsb.Tq * 6) % 6;
 
-					// drag related info
-					Self.drag = Drag = { el, offset };
+					// 1. switch to correct color range
+					Self.els.clrGroup.find("li.active").removeClass("active");
+					Self.els.clrGroup.find(`li[data-arg="${range}"]`).addClass("active");
+					Self.values.colorRange.value = range;
+					Self.els.rangeTools.removeClass("hidden");
+					Self.els.sliderTools.removeClass("hidden");
 
+					// 2. qSlider + HSL handles for that range
+					Self.dispatch({ type: "sync-ui-with-qRange" });
+					Self.dispatch({ type: "sync-ui-with-hsl" });
+
+					let saturation = {
+							start: +Self.values.saturation.value,
+							last: +Self.values.saturation.value,
+						};
+					Self.drag = { range, offset, saturation };
 					// bind event handlers
 					APP.els.content.addClass("no-dlg-cursor");
 					UI.doc.on("mousemove mouseup", Self.doInImage);
 					break;
 				case "mousemove":
+					// 3. horizontal drag adjusts saturation of the selected range
+					// sat = clamp(startSat + 0.5 * dx, -100, 100)
+					let diff = event.clientX - Drag.offset.cX,
+						sat = Math.max(-100, Math.min(100, Math.round(Drag.saturation.start + .5 * diff)));
+					if (sat === Drag.saturation.last) return;
+					Drag.saturation.last = sat;
+
+					Self.values.saturation.value = sat;
+					Self.values.hsl.value[Drag.range][1] = sat;
+					Self.dispatch({ type: "sync-ui-with-hsl" });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values });
 					break;
 				case "mouseup":
 					// unbind event handlers
