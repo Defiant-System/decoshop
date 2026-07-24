@@ -6401,6 +6401,9 @@ const Dialogs = {
 				case "set-hue":
 					event.values = Self.values; // first copy values
 					event.values.hue.value = event.value; // then partial overwrite
+					// keep track of value
+					rng = Self.values.colorRange.value;
+					Self.values.hsl.value[rng][0] = event.value;
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6408,6 +6411,9 @@ const Dialogs = {
 				case "set-saturation":
 					event.values = Self.values; // first copy values
 					event.values.saturation.value = event.value; // then partial overwrite
+					// keep track of value
+					rng = Self.values.colorRange.value;
+					Self.values.hsl.value[rng][1] = event.value;
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6415,6 +6421,9 @@ const Dialogs = {
 				case "set-lightness":
 					event.values = Self.values; // first copy values
 					event.values.lightness.value = event.value; // then partial overwrite
+					// keep track of value
+					rng = Self.values.colorRange.value;
+					Self.values.hsl.value[rng][2] = event.value;
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
 					Self.dispatch({ type: "apply-filter-data", values: Self.values });
@@ -6431,9 +6440,22 @@ const Dialogs = {
 					event.values = Self.values; // first copy values
 					event.values.colorize.value = event.el.data("value") === "on"; // then partial overwrite
 					if (event.values.colorize.value) {
+						// reset hsk values
+						Self.values.hsl.value = structuredClone(Self.values.hsl.default);
+						let hsl = [0, 50, 0]; // makes image red-ish
+						Self.values.hsl.value[0] = hsl;
+						Self.values.hue.value = hsl[0];
+						Self.values.saturation.value = hsl[1];
+						Self.values.lightness.value = hsl[2];
+						Self.dispatch({ type: "sync-ui-with-hsl" });
 						// make master color range active
 						Self.els.clrGroup.find(".master").trigger("click");
-
+					} else {
+						// reset hsk values
+						Self.values.hsl.value = structuredClone(Self.values.hsl.default);
+						Self.dispatch({ type: "sync-ui-with-hsl" });
+						// make master color range active
+						Self.els.clrGroup.find(".master").trigger("click");
 					}
 					// exit if "preview" is not enabled
 					if (!Self.preview) return Self.values = event.values;
@@ -6521,12 +6543,12 @@ const Dialogs = {
 
 					if (Self.els.tglInPic.hasClass("active")) {
 						Self.els.tglInPic.removeClass("active");
-						APP.els.content.removeClass(`cursor-ew-resize}`);
+						APP.els.content.removeClass(`cursor-ew-resize`);
 						// bind event listener
 						APP.els.cvsWrapper.off("mousedown", Self.dispatch);
 					} else {
 						Self.els.tglInPic.addClass("active");
-						APP.els.content.addClass(`cursor-ew-resize}`);
+						APP.els.content.addClass(`cursor-ew-resize`);
 						// bind event listener
 						APP.els.cvsWrapper.on("mousedown", Self.dispatch);
 					}
@@ -6551,6 +6573,7 @@ const Dialogs = {
 						// TODO: calculate values for: x1, w1, x2, w2
 						Self.dispatch({ type: "sync-ui-with-qRange" });
 					}
+					Self.dispatch({ type: "sync-ui-with-hsl" });
 					break;
 				case "reset-pipette":
 					delete Self.pipette;
@@ -6614,7 +6637,7 @@ const Dialogs = {
 
 					// hue-sat-lig
 					value = {
-						0: [0, 50, 0], // master
+						0: [0, 0, 0], // master
 						1: [0, 0, 0], // red
 						2: [0, 0, 0], // yellow
 						3: [0, 0, 0], // green
@@ -6676,6 +6699,8 @@ const Dialogs = {
 					// make sure internally stored values are reverted to default values
 					Object.keys(Self.values).map(key => { Self.values[key].value = Self.values[key].default; });
 					Self.els.tglInPic.removeClass("active");
+					// reset hsk values
+					Self.values.hsl.value = structuredClone(Self.values.hsl.default);
 					// reset qRange values
 					Self.values.qRange.value = structuredClone(Self.values.qRange.default);
 					// make master color range active (resets also "Self.values.colorRange")
@@ -7854,7 +7879,7 @@ const Dialogs = {
 							Self.picEdit = { ch, idx, startY };
 							Self.activeAnchorIdx = idx;
 							Self.dispatch({ type: "sync-ui-with-curves", activeIndex: idx });
-							Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+							Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 							UI.doc.on("mousemove mouseup", Self.dispatch);
 							return;
 						}
@@ -7894,7 +7919,7 @@ const Dialogs = {
 						}
 						Self.dispatch({ type: "sync-ui-with-curves" });
 						Self.dispatch({ type: "render-canvas" });
-						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 						return;
 					}
 					break;
@@ -7916,7 +7941,7 @@ const Dialogs = {
 						Self.els.svg.find("g.active").removeClass("active");
 						UI.doc.off("mousemove mouseup", Self.dispatch);
 						Self.dispatch({ type: "sync-ui-with-curves" });
-						Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+						Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					}
 					break;
 
@@ -7924,7 +7949,7 @@ const Dialogs = {
 				case "apply-filter-data":
 					if (!Doc || !Self.preview) return;
 					Self.values = event.values;
-					let applyCurves = () => {
+					Engine.raf(() => {
 						let qv = FilterHelper.oT("curv"),
 							ch = +(Self.values.channel?.value ?? 0),
 							max = { w: 250, h: 251 },
@@ -7948,17 +7973,7 @@ const Dialogs = {
 						}
 						PP.TA({ G: CanvasTools.Qi, data: { a: "edit", _K: "curv", qv, ve: false } });
 						PP.update();
-					};
-					// immediate: don't let Engine.raf cancel a pending drag apply
-					if (event.immediate) {
-						if (Engine.timer) {
-							cancelAnimationFrame(Engine.timer);
-							delete Engine.timer;
-						}
-						applyCurves();
-					} else {
-						Engine.raf(applyCurves);
-					}
+					});
 					return;
 
 				// custom events
@@ -8159,7 +8174,7 @@ const Dialogs = {
 					Self.dispatch({ type: "sync-ui-with-curves" });
 					Self.dispatch({ type: "render-canvas" });
 					if (!Self.preview) return Self.values = event.values;
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					break;
 				}
 				case "reset-view":
@@ -8183,7 +8198,7 @@ const Dialogs = {
 					// switching mode resets to identity spline points
 					Self.values.curves.value = structuredClone(Self.values.curves.default);
 					Self.dispatch({ type: "sync-ui-with-curves" });
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					break;
 				case "set-sketch-mode":
 					Self.els.toolSpline.removeClass("active");
@@ -8316,7 +8331,7 @@ const Dialogs = {
 					Self.els.svg.on("mousedown", Self.doSvgPath);
 					Self.els.root.find(".slider").on("mousedown", Self.doSlider);
 					// initial apply
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					break;
 				case "dlg-preview":
 					Self.preview = event.el.data("value") === "on";
@@ -8348,7 +8363,7 @@ const Dialogs = {
 					Self.dispatch({ type: "set-spline-mode" });
 					Self.dispatch({ type: "reset-view" });
 					// apply identity curves immediately
-					Self.dispatch({ type: "apply-filter-data", values: Self.values, immediate: true, fromValues: true });
+					Self.dispatch({ type: "apply-filter-data", values: Self.values, fromValues: true });
 					// ui sync
 					Self.dispatch({ type: "sync-ui-with-curves" });
 					Self.dispatch({ type: "render-canvas" });
